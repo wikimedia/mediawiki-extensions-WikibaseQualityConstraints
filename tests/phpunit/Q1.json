@@ -1,0 +1,50 @@
+{
+  "id": "Q1",
+  "type": "item",
+  "aliases": {
+    "en": [
+      {
+        "language": "en",
+        "value": "foo"
+      },
+      {
+        "language": "en",
+        "value": "bar"
+      }
+    ],
+    "de": [
+      {
+        "language": "de",
+        "value": "foobar"
+      }
+    ]
+  },
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "foobar"
+    },
+    "de": {
+      "language": "de",
+      "value": "Fubar"
+    }
+  },
+  "claims": {
+    "P1": [
+      {
+        "id": "Q1$c0f25a6f-9e33-41c8-be34-c86a730ff30b",
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1",
+          "datatype": "string",
+          "datavalue": {
+            "value": "foo",
+            "type": "string"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  }
+}

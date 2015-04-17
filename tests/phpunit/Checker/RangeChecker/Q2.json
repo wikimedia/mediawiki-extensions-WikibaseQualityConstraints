@@ -1,0 +1,47 @@
+{
+
+  "pageid": 2694,
+  "ns": 120,
+  "title": "Item:Q2",
+  "lastrevid": 2707,
+  "modified": "2015-03-05T11:00:55Z",
+  "id": "Q2",
+  "type": "item",
+  "labels": {
+
+    "en": {
+      "language": "en",
+      "value": "TestItemRange"
+    }
+
+  },
+  "claims": {
+
+    "P1457": [
+
+      {
+
+        "id": "Q1002$077bb557-4fb0-8703-e13f-72543ff6fbdf",
+        "mainsnak": {
+
+          "snaktype": "value",
+          "property": "P1457",
+          "datatype": "quantity",
+          "datavalue": {
+
+            "value": {
+              "amount": "+42",
+              "unit": "1",
+              "upperBound": "+43",
+              "lowerBound": "+41"
+            },
+            "type": "quantity"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  }
+
+}

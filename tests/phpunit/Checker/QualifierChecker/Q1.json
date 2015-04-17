@@ -1,0 +1,57 @@
+{
+
+  "pageid": 3708,
+  "ns": 120,
+  "title": "Item:Q1",
+  "lastrevid": 3795,
+  "modified": "2015-02-20T16:34:45Z",
+  "id": "Q1",
+  "type": "item",
+  "labels": {
+
+    "en": {
+      "language": "en",
+      "value": "TestItemQualifier"
+    }
+
+  },
+  "descriptions": {
+
+    "en": {
+      "language": "en",
+      "value": "Used for tests"
+    }
+
+  },
+  "claims": {
+
+    "P580": [
+
+      {
+
+        "id": "Q1$dc81f97d-47f9-78da-c129-3f7f883d559d",
+        "mainsnak": {
+
+          "snaktype": "value",
+          "property": "P580",
+          "datatype": "time",
+          "datavalue": {
+
+            "value": {
+              "time": "+00000001970-01-01T00:00:00Z",
+              "timezone": 0,
+              "before": 0,
+              "after": 0,
+              "precision": 11,
+              "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+            },
+            "type": "time"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  }
+
+}

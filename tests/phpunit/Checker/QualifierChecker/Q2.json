@@ -1,0 +1,113 @@
+{
+
+  "pageid": 3708,
+  "ns": 120,
+  "title": "Item:Q2",
+  "lastrevid": 3798,
+  "modified": "2015-02-20T17:16:17Z",
+  "id": "Q2",
+  "type": "item",
+  "labels": {
+
+    "en": {
+      "language": "en",
+      "value": "TestItemQualifier"
+    }
+
+  },
+  "descriptions": {
+
+    "en": {
+      "language": "en",
+      "value": "Used for tests"
+    }
+
+  },
+  "claims": {
+
+    "P39": [
+
+      {
+
+        "id": "Q2$58d44e49-4f6e-0b54-2053-87ca689b782d",
+        "mainsnak": {
+
+          "snaktype": "value",
+          "property": "P39",
+          "datatype": "wikibase-item",
+          "datavalue": {
+
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 11696
+            },
+            "type": "wikibase-entityid"
+          }
+
+        },
+        "qualifiers": {
+
+          "P580": [
+
+            {
+
+              "hash": "260f6c7209e0cca030566a31875f1bbac2b6f897",
+              "snaktype": "value",
+              "property": "P580",
+              "datatype": "time",
+              "datavalue": {
+
+                "value": {
+                  "time": "+00000001970-01-01T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                },
+                "type": "time"
+              }
+            }
+
+          ],
+          "P582": [
+
+            {
+              "hash": "cfd28d592bad8e17a97cc614b65d871234118fac",
+              "snaktype": "somevalue",
+              "property": "P582"
+            }
+
+          ],
+          "P1365": [
+
+            {
+
+              "hash": "becbfbdf359b0a0e96a53c9ef1c433f41a394fef",
+              "snaktype": "value",
+              "property": "P1365",
+              "datatype": "wikibase-item",
+              "datavalue": {
+
+                "value": {
+                  "entity-type": "item",
+                  "numeric-id": 207
+                },
+                "type": "wikibase-entityid"
+              }
+            }
+          ]
+
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582",
+          "P1365"
+        ],
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  }
+
+}

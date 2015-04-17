@@ -1,0 +1,14 @@
+{
+  "@metadata": {
+    "authors": "BP2014N1"
+  },
+
+  "wikidataquality-constraintreport": "Constraint report",
+  "wikidataquality-constraintreport-instructions": "Enter an entity ID and let it be checked against the constraints.",
+  "wikidataquality-constraintreport-instructions-example": "Try any ID, ideally an item ID, and look at the results.",
+  "wikidataquality-constraintreport-empty-result": "There are no constraint defined on this entity.",
+  "wikidataquality-constraintreport-result-table-header-claim": "Claim",
+  "wikidataquality-constraintreport-result-table-header-constraint": "Constraint",
+  "wikidataquality-constraintreport-result-link-to-claim": "go to claim",
+  "wikidataquality-constraintreport-result-link-to-constraint": "go to constraint"
+}

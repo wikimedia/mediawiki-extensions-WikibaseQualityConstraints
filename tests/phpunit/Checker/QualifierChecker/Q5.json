@@ -1,0 +1,79 @@
+{
+
+  "pageid": 2085,
+  "ns": 0,
+  "title": "Q5",
+  "lastrevid": 11076,
+  "modified": "2015-04-06T10:13:25Z",
+  "id": "Q5",
+  "type": "item",
+  "labels": {
+
+    "en": {
+      "language": "en",
+      "value": "TestMandatoryQualifiersItem"
+    }
+
+  },
+  "descriptions": {
+
+    "en": {
+      "language": "en",
+      "value": "Used for tests"
+    }
+
+  },
+  "claims": {
+
+    "P1": [
+
+      {
+
+        "id": "Q5$de3d0187-4eb4-1d4b-fd6c-cd422ef524a7",
+        "mainsnak": {
+
+          "snaktype": "value",
+          "property": "P1",
+          "datatype": "wikibase-item",
+          "datavalue": {
+
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 42
+            },
+            "type": "wikibase-entityid"
+          }
+
+        },
+        "qualifiers": {
+
+          "P2": [
+
+            {
+
+              "hash": "cf7c29ee60da7e91cd4e2a4394544b2528a1c602",
+              "snaktype": "value",
+              "property": "P2",
+              "datatype": "wikibase-item",
+              "datavalue": {
+
+                "value": {
+                  "entity-type": "item",
+                  "numeric-id": 42
+                },
+                "type": "wikibase-entityid"
+              }
+            }
+          ]
+
+        },
+        "qualifiers-order": [
+          "P2"
+        ],
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  }
+
+}
