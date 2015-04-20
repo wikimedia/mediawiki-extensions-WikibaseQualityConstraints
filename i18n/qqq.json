@@ -7,7 +7,6 @@
 			"Robby"
 		]
 	},
-	
 	"wikidataquality-constraintreport": "{{doc-special|ConstraintReport}}",
 	"wikidataquality-constraintreport-instructions": "Instructions for starting a check against the constraints.",
 	"wikidataquality-constraintreport-instructions-example": "Example, what to enter to get good results for constraint reports.",

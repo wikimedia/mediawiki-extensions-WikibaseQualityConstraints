@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Liuxinyu970226"
+		]
+	},
+	"wikidataquality-constraintreport": "约束报告",
+	"wikidataquality-constraintreport-instructions": "输入一个实体ID，并检查它们是否违反约束。",
+	"wikidataquality-constraintreport-instructions-example": "尝试任意ID，理想情况下一个数据项ID，并查看结果。",
+	"wikidataquality-constraintreport-empty-result": "此实体上没有定义约束。",
+	"wikidataquality-constraintreport-result-table-header-claim": "声称",
+	"wikidataquality-constraintreport-result-table-header-constraint": "约束",
+	"wikidataquality-constraintreport-result-link-to-claim": "前往声称",
+	"wikidataquality-constraintreport-result-link-to-constraint": "转到约束条件"
+}

@@ -11,5 +11,5 @@ $specialPageAliases = array();
 
 /** English (English) */
 $specialPageAliases['en'] = array(
-	'ConstraintReport' => array( 'ConstraintReport', 'Constraint Report' )
+	'ConstraintReport' => array( 'ConstraintReport', 'Constraint Report' ),
 );
