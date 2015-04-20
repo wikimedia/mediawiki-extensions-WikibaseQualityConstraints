@@ -37,12 +37,5 @@ $wgHooks[ 'UnitTestsList' ][ ] = 'WikidataQualityConstraintsHooks::onUnitTestsLi
 // Initialize special pages
 $wgSpecialPages[ 'ConstraintReport' ] = 'WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport';
 
-// Define modules
-$wgResourceModules[ 'SpecialCheckResultPage' ] = array(
-    'styles' => '/modules/SpecialCheckResultPage.css',
-    'localBasePath' => __DIR__,
-    'remoteExtPath' => 'WikidataQualityConstraints'
-);
-
 // Define database table names
 define( 'CONSTRAINT_TABLE', 'wdqa_constraints' );

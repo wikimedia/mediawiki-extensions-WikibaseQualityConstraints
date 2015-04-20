@@ -8,7 +8,7 @@ final class WikidataQualityConstraintsHooks {
 	 * @return bool
 	 */
 	public static function onCreateSchema( DatabaseUpdater $updater ) {
-		$updater->addExtensionTable( CONSTRAINT_TABLE, __DIR__ . '/constraint-report/sql/create_wdqa_constraints.sql' );
+		$updater->addExtensionTable( CONSTRAINT_TABLE, __DIR__ . '/sql/create_wdqa_constraints.sql' );
         return true;
 	}
 
