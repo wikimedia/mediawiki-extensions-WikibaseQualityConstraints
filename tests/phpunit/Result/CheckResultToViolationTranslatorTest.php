@@ -33,6 +33,11 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 	private $message;
 	private $entity;
 
+	/**
+	 * @var EntityId[]
+	 */
+	private static $idMap;
+
 	protected function setUp() {
 		parent::setUp();
 		$this->translator = new CheckResultToViolationTranslator();
@@ -43,6 +48,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->entity = new Item();
 		$store = WikibaseRepo::getDefaultInstance()->getEntityStore();
 		$store->saveEntity( $this->entity, 'TestEntityQ1', $GLOBALS[ 'wgUser' ], EDIT_NEW );
+		self::$idMap[ 'Q1' ] = $this->entity->getId();
 	}
 
 	protected function tearDown() {
@@ -67,7 +73,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->assertEquals( 1, sizeof( $violations ) );
 
 		$violation = $violations[0];
-		$this->assertEquals( 'Q', $violation->getEntityId()->getSerialization()[0] );
+		$this->assertEquals( self::$idMap[ 'Q1' ], $violation->getEntityId() );
 		$this->assertEquals( 'P1', $violation->getPropertyId()->getSerialization() );
 		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
 		$this->assertEquals( md5( $this->statement->getGuid() . $checkResult->getConstraintName() ), $violation->getConstraintClaimGuid() );
