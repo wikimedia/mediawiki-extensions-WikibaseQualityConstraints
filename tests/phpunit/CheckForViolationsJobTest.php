@@ -37,7 +37,10 @@ class CheckForViolationsJobTest extends \MediaWikiTestCase {
 		$constraintName = 'Single value';
 		$results = array();
 		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_VIOLATION );
+		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_VIOLATION );
 		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_COMPLIANCE );
+		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_COMPLIANCE );
+		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_EXCEPTION );
 		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_EXCEPTION );
 		$this->results = $results;
 
@@ -71,7 +74,7 @@ class CheckForViolationsJobTest extends \MediaWikiTestCase {
 		$count = $this->db->select(EVALUATION_TABLE, array( 'special_page_id' ), array ( 'special_page_id=1' ) )->numRows();
 		$result = $this->db->selectRow(EVALUATION_TABLE, array( 'result_string' ), array ( 'special_page_id=1' ) );
 		$this->assertEquals( 1, $count );
-		$this->assertEquals( '{Compliances: {Single value: 1, }, {Violations: {Single value: 1, }, {Exceptions: {Single value: 1, }, ', $result->result_string );
+		$this->assertEquals( '{Compliances: {Single value: 2, }, {Violations: {Single value: 2, }, {Exceptions: {Single value: 2, }, ', $result->result_string );
 	}
 
 	public function testCheckForViolationJobDeferred() {
