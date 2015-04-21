@@ -12,7 +12,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\WikibaseRepo;
-use WikidataQuality\CheckForViolationsJob;
+use WikidataQuality\ConstraintReport\CheckForViolationsJob;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator;
 use WikidataQuality\Html\HtmlTable;
