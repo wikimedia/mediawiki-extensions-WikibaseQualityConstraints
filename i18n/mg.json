@@ -1,15 +1,15 @@
 {
-	"@metadata": {
-		"authors": [
-			"Jagwar"
-		]
-	},
-	"wikidataquality-constraintreport": "Tati-pamerana",
-	"wikidataquality-constraintreport-instructions": "Mampidira IDn-javatra ary aoka izy hifanaraka amin'ny famerana.",
-	"wikidataquality-constraintreport-instructions-example": "Manandrama ID, IDn-javatra no tsaa indrindra, ary jereo ny valiny.",
-	"wikidataquality-constraintreport-empty-result": "Tsy misy famerana amin'ity zavatra ity.",
-	"wikidataquality-constraintreport-result-table-header-claim": "Laza",
-	"wikidataquality-constraintreport-result-table-header-constraint": "Famerana",
-	"wikidataquality-constraintreport-result-link-to-claim": "hankany amin'ny laza",
-	"wikidataquality-constraintreport-result-link-to-constraint": "hankany amin'ny famerana"
+  "@metadata": {
+    "authors": [
+      "Jagwar"
+    ]
+  },
+  "wikidataquality-constraintreport": "Tati-pamerana",
+  "wikidataquality-constraintreport-instructions": "Mampidira IDn-javatra ary aoka izy hifanaraka amin'ny famerana.",
+  "wikidataquality-constraintreport-instructions-example": "Manandrama ID, IDn-javatra no tsaa indrindra, ary jereo ny valiny.",
+  "wikidataquality-constraintreport-empty-result": "Tsy misy famerana amin'ity zavatra ity.",
+  "wikidataquality-constraintreport-result-table-header-claim": "Laza",
+  "wikidataquality-constraintreport-result-table-header-constraint": "Famerana",
+  "wikidataquality-constraintreport-result-link-to-claim": "hankany amin'ny laza",
+  "wikidataquality-constraintreport-result-link-to-constraint": "hankany amin'ny famerana"
 }

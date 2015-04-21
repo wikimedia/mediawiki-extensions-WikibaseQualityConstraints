@@ -103,7 +103,7 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 		$results = $constraintChecker->execute( $entity );
 
 		$this->saveResultsInViolationsTable( $entity, $results );
-		$this->doEvaluation( $entity, $results);
+		$this->doEvaluation( $entity, $results );
 		return $results;
 	}
 
@@ -291,7 +291,7 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 	}
 
 	/**
-     * @param EntityDocument $entity
+	 * @param EntityDocument $entity
 	 * @param array $results
 	 */
 	protected function saveResultsInViolationsTable( $entity, $results ) {
@@ -304,12 +304,12 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 	protected function doEvaluation( $entity, $results ) {
 		//TODO: Push (deferred) job(s) in queue
 		$checkTimeStamp = wfTimestamp( TS_MW );
-		$jobs = array();
-		$jobs[] = CheckForViolationsJob::newInsertNow( 1, $entity, $checkTimeStamp, $results );
-		$jobs[] = CheckForViolationsJob::newInsertDeferred( 1, $entity, $checkTimeStamp, 10 );
+		$jobs = array ();
+		$jobs[ ] = CheckForViolationsJob::newInsertNow( 1, $entity, $checkTimeStamp, $results );
+		$jobs[ ] = CheckForViolationsJob::newInsertDeferred( 1, $entity, $checkTimeStamp, 10 );
 
-		$jobs[0]->run();
-		$jobs[1]->run();
+		$jobs[ 0 ]->run();
+		$jobs[ 1 ]->run();
 		JobQueueGroup::singleton()->push( $jobs );
 	}
 

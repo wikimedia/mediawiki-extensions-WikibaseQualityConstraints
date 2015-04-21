@@ -17,8 +17,8 @@ use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
 /**
  * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ConnectionChecker
  *
- * @uses WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -99,7 +99,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array( '' ) );
+		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array ( '' ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -110,7 +110,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array( '' ) );
+		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array ( '' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -121,7 +121,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array( 'Q1' ) );
+		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array ( 'Q1' ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -132,7 +132,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array( 'Q42' ) );
+		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array ( 'Q42' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -143,7 +143,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, null, array( '' ) );
+		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, null, array ( '' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -154,7 +154,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array( 'Q42' ) );
+		$checkResult = $connectionChecker->checkConflictsWithConstraint( $statement, 'P2', array ( 'Q42' ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -169,7 +169,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkItemConstraint( $statement, 'P2', array( '' ) );
+		$checkResult = $connectionChecker->checkItemConstraint( $statement, 'P2', array ( '' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -180,7 +180,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkItemConstraint( $statement, 'P2', array( '' ) );
+		$checkResult = $connectionChecker->checkItemConstraint( $statement, 'P2', array ( '' ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -191,7 +191,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkItemConstraint( $statement, 'P2', array( 'Q1' ) );
+		$checkResult = $connectionChecker->checkItemConstraint( $statement, 'P2', array ( 'Q1' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -202,7 +202,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkItemConstraint( $statement, 'P2', array( 'Q42' ) );
+		$checkResult = $connectionChecker->checkItemConstraint( $statement, 'P2', array ( 'Q42' ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -213,7 +213,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkItemConstraint( $statement, null, array( '' ) );
+		$checkResult = $connectionChecker->checkItemConstraint( $statement, null, array ( '' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -228,7 +228,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array( 'Q42' ) );
+		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array ( 'Q42' ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -239,7 +239,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array( 'Q2' ) );
+		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array ( 'Q2' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -250,7 +250,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array( '' ) );
+		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array ( '' ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -261,7 +261,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P3', array( '' ) );
+		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P3', array ( '' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -272,7 +272,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, null, array( '' ) );
+		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, null, array ( '' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -283,7 +283,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new StringValue( 'Q5' );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array( '' ) );
+		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array ( '' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -294,7 +294,7 @@ class ConnectionCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array( '' ) );
+		$checkResult = $connectionChecker->checkTargetRequiredClaimConstraint( $statement, 'P2', array ( '' ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 

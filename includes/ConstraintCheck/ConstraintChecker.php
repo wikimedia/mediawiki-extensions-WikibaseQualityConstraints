@@ -180,7 +180,7 @@ class ConstraintChecker {
 	}
 
 	private function checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) {
-		$result = array();
+		$result = array ();
 		foreach ( $constraints as $row ) {
 			$constraintParameters = json_decode( $row->constraint_parameters );
 

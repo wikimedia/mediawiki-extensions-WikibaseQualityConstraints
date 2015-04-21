@@ -1,5 +1,4 @@
 {
-
   "pageid": 2067,
   "ns": 0,
   "title": "Q5",
@@ -8,35 +7,26 @@
   "id": "Q5",
   "type": "item",
   "labels": {
-
     "en": {
       "language": "en",
       "value": "ConflictsWithTestItem"
     }
-
   },
   "descriptions": {
-
     "en": {
       "language": "en",
       "value": "Used for tests"
     }
-
   },
   "claims": {
-
     "P1": [
-
       {
-
         "id": "Q5$dbf5a0bd-4954-da3f-39a6-e9a034de5ca5",
         "mainsnak": {
-
           "snaktype": "value",
           "property": "P1",
           "datatype": "wikibase-item",
           "datavalue": {
-
             "value": {
               "entity-type": "item",
               "numeric-id": 42
@@ -47,20 +37,15 @@
         "type": "statement",
         "rank": "normal"
       }
-
     ],
     "P2": [
-
       {
-
         "id": "Q5$69de0802-4db2-b894-e9fe-fb731f9ca0cb",
         "mainsnak": {
-
           "snaktype": "value",
           "property": "P2",
           "datatype": "wikibase-item",
           "datavalue": {
-
             "value": {
               "entity-type": "item",
               "numeric-id": 42
@@ -73,5 +58,4 @@
       }
     ]
   }
-
 }

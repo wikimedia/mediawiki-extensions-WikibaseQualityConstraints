@@ -1,8 +1,8 @@
 {
-	"@metadata": {
-		"authors": [
-			"Sjoerddebruin"
-		]
-	},
-	"wikidataquality-constraintreport-result-table-header-claim": "Verklaring"
+  "@metadata": {
+    "authors": [
+      "Sjoerddebruin"
+    ]
+  },
+  "wikidataquality-constraintreport-result-table-header-claim": "Verklaring"
 }
