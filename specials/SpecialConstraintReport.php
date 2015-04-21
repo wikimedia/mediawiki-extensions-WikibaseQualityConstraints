@@ -291,6 +291,7 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 	}
 
 	/**
+     * @param EntityDocument $entity
 	 * @param array $results
 	 */
 	protected function saveResultsInViolationsTable( $entity, $results ) {

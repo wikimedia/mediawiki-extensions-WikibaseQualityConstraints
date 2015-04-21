@@ -145,6 +145,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
         // assert matchers
         list( $output, ) = $this->executeSpecialPage( $subPage, $request, $userLanguage );
+        echo $output;
         foreach( $matchers as $key => $matcher ) {
             $this->assertTag( $matcher, $output, "Failed to assert output: $key" );
         }
