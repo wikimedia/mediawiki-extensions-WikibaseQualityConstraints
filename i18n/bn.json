@@ -1,8 +1,8 @@
 {
-  "@metadata": {
-    "authors": [
-      "Aftabuzzaman"
-    ]
-  },
-  "wikidataquality-constraintreport-result-table-header-constraint": "সীমাবদ্ধতা"
+	"@metadata": {
+		"authors": [
+			"Aftabuzzaman"
+		]
+	},
+	"wikidataquality-constraintreport-result-table-header-constraint": "সীমাবদ্ধতা"
 }

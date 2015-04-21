@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Purodha"
+		]
+	},
+	"wikidataquality-constraintreport": "Bereesch övver Beschrängkonge",
+	"wikidataquality-constraintreport-instructions": "Jivv en Kännong enn, un lohß se jähje de Beschrängkonge pröhve.",
+	"wikidataquality-constraintreport-instructions-example": "Versöhg en Kännong, et bäß vun en  entity, un belohr wadd eruß küt.",
+	"wikidataquality-constraintreport-empty-result": "Mer han kein Beschränkong för heh di  entity",
+	"wikidataquality-constraintreport-result-table-header-claim": "Behouptong",
+	"wikidataquality-constraintreport-result-table-header-constraint": "Beschränkong",
+	"wikidataquality-constraintreport-result-link-to-claim": "Jangk nod dä Behouptong",
+	"wikidataquality-constraintreport-result-link-to-constraint": "jangk noh de Beschränkong"
+}

@@ -1,9 +1,9 @@
 {
-  "@metadata": {
-    "authors": [
-      "Robby"
-    ]
-  },
-  "wikidataquality-constraintreport-result-table-header-claim": "Behaaptung",
-  "wikidataquality-constraintreport-result-table-header-constraint": "Limitatioun"
+	"@metadata": {
+		"authors": [
+			"Robby"
+		]
+	},
+	"wikidataquality-constraintreport-result-table-header-claim": "Behaaptung",
+	"wikidataquality-constraintreport-result-table-header-constraint": "Limitatioun"
 }

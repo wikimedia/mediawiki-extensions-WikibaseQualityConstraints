@@ -1,8 +1,8 @@
 {
-  "@metadata": {
-    "authors": [
-      "Александр Сигачёв"
-    ]
-  },
-  "wikidataquality-constraintreport": "Отчёт по ограничениям"
+	"@metadata": {
+		"authors": [
+			"Александр Сигачёв"
+		]
+	},
+	"wikidataquality-constraintreport": "Отчёт по ограничениям"
 }

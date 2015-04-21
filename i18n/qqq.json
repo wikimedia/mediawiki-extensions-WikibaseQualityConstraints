@@ -1,18 +1,18 @@
 {
-  "@metadata": {
-    "authors": [
-      "BP2014N1",
-      "Raymond",
-      "Liuxinyu970226",
-      "Robby"
-    ]
-  },
-  "wikidataquality-constraintreport": "{{doc-special|ConstraintReport}}",
-  "wikidataquality-constraintreport-instructions": "Instructions for starting a check against the constraints.",
-  "wikidataquality-constraintreport-instructions-example": "Example, what to enter to get good results for constraint reports.",
-  "wikidataquality-constraintreport-empty-result": "Message that appears, when there are no constraints defined for the given entity.",
-  "wikidataquality-constraintreport-result-table-header-claim": "Header of the column that displays a link to the claim, the used property and its value.\n{{Identical|Claim}}",
-  "wikidataquality-constraintreport-result-table-header-constraint": "Header of the column that gives information about which constraint was checked.",
-  "wikidataquality-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
-  "wikidataquality-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page."
+	"@metadata": {
+		"authors": [
+			"BP2014N1",
+			"Raymond",
+			"Liuxinyu970226",
+			"Robby"
+		]
+	},
+	"wikidataquality-constraintreport": "{{doc-special|ConstraintReport}}",
+	"wikidataquality-constraintreport-instructions": "Instructions for starting a check against the constraints.",
+	"wikidataquality-constraintreport-instructions-example": "Example, what to enter to get good results for constraint reports.",
+	"wikidataquality-constraintreport-empty-result": "Message that appears, when there are no constraints defined for the given entity.",
+	"wikidataquality-constraintreport-result-table-header-claim": "Header of the column that displays a link to the claim, the used property and its value.\n{{Identical|Claim}}",
+	"wikidataquality-constraintreport-result-table-header-constraint": "Header of the column that gives information about which constraint was checked.",
+	"wikidataquality-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
+	"wikidataquality-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page."
 }
