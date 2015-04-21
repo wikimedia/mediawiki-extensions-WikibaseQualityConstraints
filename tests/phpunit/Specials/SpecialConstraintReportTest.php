@@ -145,7 +145,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
         // assert matchers
         list( $output, ) = $this->executeSpecialPage( $subPage, $request, $userLanguage );
-        echo $output;
         foreach( $matchers as $key => $matcher ) {
             $this->assertTag( $matcher, $output, "Failed to assert output: $key" );
         }
@@ -173,7 +172,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
             'attributes' => array(
                 'placeholder' => '(wikidataquality-checkresult-form-entityid-placeholder)',
                 'name' => 'entityId',
-                'class' => 'wdq-checkresult-form-entity-id mw-ui-input'
+                'class' => 'wdq-checkresult-form-entity-id'
             )
         );
 
