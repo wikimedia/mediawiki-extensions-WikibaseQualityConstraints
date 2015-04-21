@@ -17,6 +17,12 @@ use DataValues\DataValue;
  */
 class CheckResult implements \WikidataQuality\Result\CheckResult {
 
+    // Constants for statuses
+    const STATUS_COMPLIANCE = 'compliance';
+    const STATUS_VIOLATION = 'violation';
+    const STATUS_EXCEPTION = 'exception';
+    const STATUS_TODO = 'todo';
+
 	/**
 	 * @var Statement
 	 */

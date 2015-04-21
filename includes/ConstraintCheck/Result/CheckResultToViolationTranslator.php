@@ -23,7 +23,7 @@ class CheckResultToViolationTranslator extends ResultToViolationTranslator{
 
 		$violationArray = array();
 		foreach( $checkResultArray as $checkResult ) {
-			if( $checkResult->getStatus() !== Violation::STATUS_VIOLATION ){
+			if( $checkResult->getStatus() !== CheckResult::STATUS_VIOLATION ){
 				continue;
 			}
 
@@ -41,7 +41,7 @@ class CheckResultToViolationTranslator extends ResultToViolationTranslator{
 			}
 			$constraintClaimGuid = md5( $constraintClaimGuid );
 			$revisionId = $this->getRevisionIdForEntity( $entityId );
-			$status = Violation::STATUS_VIOLATION;
+			$status = CheckResult::STATUS_VIOLATION;
 
 			$violationArray[] = new Violation( $entityId, $statement, $constraintClaimGuid, $constraintTypeEntityId, $revisionId, $status);
 		}
