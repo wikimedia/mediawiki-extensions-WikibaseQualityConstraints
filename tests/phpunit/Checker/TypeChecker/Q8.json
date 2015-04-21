@@ -1,5 +1,4 @@
 {
-
   "pageid": 2076,
   "ns": 0,
   "title": "Q8",
@@ -7,53 +6,28 @@
   "modified": "2015-04-01T13:51:03Z",
   "id": "Q8",
   "type": "item",
-  "labels":
-
-  {
-
-    "en":
-
-    {
+  "labels": {
+    "en": {
       "language": "en",
       "value": "TestItemType"
     }
-
   },
-  "descriptions":
-  {
-
-    "en":
-
-    {
+  "descriptions": {
+    "en": {
       "language": "en",
       "value": "Used for tests"
     }
-
   },
-  "claims":
-  {
-
-    "P279":
-
-    [
-
+  "claims": {
+    "P279": [
       {
-
         "id": "Q8$56e6a474-4431-fb24-cc15-1d580e467559",
-        "mainsnak":
-
-        {
-
+        "mainsnak": {
           "snaktype": "value",
           "property": "P279",
           "datatype": "wikibase-item",
-          "datavalue":
-
-          {
-
-            "value":
-
-            {
+          "datavalue": {
+            "value": {
               "entity-type": "item",
               "numeric-id": 7
             },
@@ -63,28 +37,16 @@
         "type": "statement",
         "rank": "normal"
       }
-
     ],
-    "P1":
-    [
-
+    "P1": [
       {
-
         "id": "Q8$e35707be-4a84-61fe-9b52-623784a316a7",
-        "mainsnak":
-
-        {
-
+        "mainsnak": {
           "snaktype": "value",
           "property": "P1",
           "datatype": "wikibase-item",
-          "datavalue":
-
-          {
-
-            "value":
-
-            {
+          "datavalue": {
+            "value": {
               "entity-type": "item",
               "numeric-id": 42
             },
@@ -96,5 +58,4 @@
       }
     ]
   }
-
 }

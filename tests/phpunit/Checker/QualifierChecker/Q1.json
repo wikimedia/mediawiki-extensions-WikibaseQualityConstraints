@@ -1,5 +1,4 @@
 {
-
   "pageid": 3708,
   "ns": 120,
   "title": "Item:Q1",
@@ -8,35 +7,26 @@
   "id": "Q1",
   "type": "item",
   "labels": {
-
     "en": {
       "language": "en",
       "value": "TestItemQualifier"
     }
-
   },
   "descriptions": {
-
     "en": {
       "language": "en",
       "value": "Used for tests"
     }
-
   },
   "claims": {
-
     "P580": [
-
       {
-
         "id": "Q1$dc81f97d-47f9-78da-c129-3f7f883d559d",
         "mainsnak": {
-
           "snaktype": "value",
           "property": "P580",
           "datatype": "time",
           "datavalue": {
-
             "value": {
               "time": "+00000001970-01-01T00:00:00Z",
               "timezone": 0,
@@ -53,5 +43,4 @@
       }
     ]
   }
-
 }

@@ -8,6 +8,7 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\Repo\WikibaseRepo;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 
+
 class CheckForViolationsJob extends Job {
 
 	private $db;
@@ -20,13 +21,13 @@ class CheckForViolationsJob extends Job {
 		// The Job class wants a Title object for some reason. Supply a dummy.
 		$dummyTitle = Title::newFromText( "CheckForViolationsJob", NS_SPECIAL );
 
-		$params = array();
+		$params = array ();
 
-		$params['specialPage'] = $specialPage;
-		$params['entity'] = $entity;
-		$params['results'] = $results;
-		$params['checkTimestamp'] = $checkTimestamp;
-		$params['referenceTimestamp'] = null;
+		$params[ 'specialPage' ] = $specialPage;
+		$params[ 'entity' ] = $entity;
+		$params[ 'results' ] = $results;
+		$params[ 'checkTimestamp' ] = $checkTimestamp;
+		$params[ 'referenceTimestamp' ] = null;
 
 		return new CheckForViolationsJob( $dummyTitle, $params );
 	}
@@ -39,13 +40,13 @@ class CheckForViolationsJob extends Job {
 		// The Job class wants a Title object for some reason. Supply a dummy.
 		$dummyTitle = Title::newFromText( "CheckForViolationsJob", NS_SPECIAL );
 
-		$params = array();
+		$params = array ();
 
-		$params['specialPage'] = $specialPage;
-		$params['entity'] = $entity;
-		$params['results'] = null;
-		$params['referenceTimestamp'] = $referenceTimestamp;
-		$params['releaseTimestamp'] = wfTimestamp( TS_MW ) + $releaseTimestamp;
+		$params[ 'specialPage' ] = $specialPage;
+		$params[ 'entity' ] = $entity;
+		$params[ 'results' ] = null;
+		$params[ 'referenceTimestamp' ] = $referenceTimestamp;
+		$params[ 'releaseTimestamp' ] = wfTimestamp( TS_MW ) + $releaseTimestamp;
 
 		return new CheckForViolationsJob( $dummyTitle, $params );
 	}
@@ -58,20 +59,20 @@ class CheckForViolationsJob extends Job {
 	}
 
 	public function run() {
-		$checkTimestamp = array_key_exists( 'checkTimestamp', $this->params ) ? $this->params['checkTimestamp'] : wfTimestamp( TS_MW );
+		$checkTimestamp = array_key_exists( 'checkTimestamp', $this->params ) ? $this->params[ 'checkTimestamp' ] : wfTimestamp( TS_MW );
 
-		if( $this->params['results'] === null ) {
+		if ( $this->params[ 'results' ] === null ) {
 			$constraintChecker = new ConstraintChecker( WikibaseRepo::getDefaultInstance()->getEntityLookup() );
-			$results = $constraintChecker->execute( $this->params['entity'] );
+			$results = $constraintChecker->execute( $this->params[ 'entity' ] );
 		} else {
-			$results = $this->params['results'];
+			$results = $this->params[ 'results' ];
 		}
 
 		$accumulator = array (
-			'special_page_id' => $this->params['specialPage'],
-			'entity_id' => $this->params['entity']->getId()->getSerialization(),
+			'special_page_id' => $this->params[ 'specialPage' ],
+			'entity_id' => $this->params[ 'entity' ]->getId()->getSerialization(),
 			'insertion_timestamp' => $checkTimestamp,
-			'reference_timestamp' => $this->params['referenceTimestamp'],
+			'reference_timestamp' => $this->params[ 'referenceTimestamp' ],
 			'result_string' => $this->getResultSerialization( $results )
 		);
 		$success = $this->db->insert( EVALUATION_TABLE, $accumulator );
@@ -81,46 +82,46 @@ class CheckForViolationsJob extends Job {
 
 	private function getResultSerialization( $results ) {
 		$serialization = '';
-		$compliances = $violations = $exceptions = array();
-		foreach( $results as $result ) {
-			switch( $result->getStatus() ) {
+		$compliances = $violations = $exceptions = array ();
+		foreach ( $results as $result ) {
+			switch ( $result->getStatus() ) {
 				case 'compliance':
-					if( array_key_exists( $result->getConstraintName(), $compliances ) ) {
-						$compliances[$result->getConstraintName()] += 1;
+					if ( array_key_exists( $result->getConstraintName(), $compliances ) ) {
+						$compliances[ $result->getConstraintName() ] += 1;
 					} else {
-						$compliances[$result->getConstraintName()] = 1;
+						$compliances[ $result->getConstraintName() ] = 1;
 					}
 					break;
 				case 'violation':
-					if( array_key_exists( $result->getConstraintName(), $violations ) ) {
-						$violations[$result->getConstraintName()] += 1;
+					if ( array_key_exists( $result->getConstraintName(), $violations ) ) {
+						$violations[ $result->getConstraintName() ] += 1;
 					} else {
-						$violations[$result->getConstraintName()] = 1;
+						$violations[ $result->getConstraintName() ] = 1;
 					}
 					break;
 				case 'exception':
-					if( array_key_exists( $result->getConstraintName(), $exceptions ) ) {
-						$exceptions[$result->getConstraintName()] += 1;
+					if ( array_key_exists( $result->getConstraintName(), $exceptions ) ) {
+						$exceptions[ $result->getConstraintName() ] += 1;
 					} else {
-						$exceptions[$result->getConstraintName()] = 1;
+						$exceptions[ $result->getConstraintName() ] = 1;
 					}
 			}
 		}
 
 		$serialization .= '{Compliances: {';
-		foreach( array_keys($compliances) as $key ) {
+		foreach ( array_keys( $compliances ) as $key ) {
 			$serialization .= $key . ': ' . $compliances[ $key ] . ', ';
 		}
 		$serialization .= '}, ';
 
 		$serialization .= '{Violations: {';
-		foreach( array_keys($violations) as $key ) {
+		foreach ( array_keys( $violations ) as $key ) {
 			$serialization .= $key . ': ' . $violations[ $key ] . ', ';
 		}
 		$serialization .= '}, ';
 
 		$serialization .= '{Exceptions: {';
-		foreach( array_keys($compliances) as $key ) {
+		foreach ( array_keys( $compliances ) as $key ) {
 			$serialization .= $key . ': ' . $compliances[ $key ] . ', ';
 		}
 		$serialization .= '}, ';

@@ -1,5 +1,4 @@
 {
-
   "pageid": 3706,
   "ns": 120,
   "title": "Item:Q1",
@@ -8,35 +7,26 @@
   "id": "Q1",
   "type": "item",
   "labels": {
-
     "en": {
       "language": "en",
       "value": "TestItemSingleValue"
     }
-
   },
   "descriptions": {
-
     "en": {
       "language": "en",
       "value": "Used for tests"
     }
-
   },
   "claims": {
-
     "P36": [
-
       {
-
         "id": "Q1$2c2d17d2-442e-3a3b-b3d6-cff3906c97da",
         "mainsnak": {
-
           "snaktype": "value",
           "property": "P36",
           "datatype": "wikibase-item",
           "datavalue": {
-
             "value": {
               "entity-type": "item",
               "numeric-id": 1384
@@ -49,5 +39,4 @@
       }
     ]
   }
-
 }

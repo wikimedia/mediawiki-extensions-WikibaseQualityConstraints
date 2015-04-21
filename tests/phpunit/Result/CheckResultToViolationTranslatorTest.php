@@ -64,7 +64,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 	public function testSingleComplianceResult() {
 		$checkResult = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'compliance', $this->message );
 		$violations = $this->translator->translateToViolation( $this->entity, $checkResult );
-		$this->assertEquals( array(), $violations );
+		$this->assertEquals( array (), $violations );
 	}
 
 	public function testSingleViolationResult() {
@@ -72,7 +72,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$violations = $this->translator->translateToViolation( $this->entity, $checkResult );
 		$this->assertEquals( 1, sizeof( $violations ) );
 
-		$violation = $violations[0];
+		$violation = $violations[ 0 ];
 		$this->assertEquals( self::$idMap[ 'Q1' ], $violation->getEntityId() );
 		$this->assertEquals( 'P1', $violation->getPropertyId()->getSerialization() );
 		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
@@ -82,10 +82,10 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 	}
 
 	public function testMultipleCheckResults() {
-		$checkResults = array();
-		$checkResults[] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
-		$checkResults[] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
-		$checkResults[] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'compliance', $this->message );
+		$checkResults = array ();
+		$checkResults[ ] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
+		$checkResults[ ] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
+		$checkResults[ ] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'compliance', $this->message );
 		$violations = $this->translator->translateToViolation( $this->entity, $checkResults );
 		$this->assertEquals( 2, sizeof( $violations ) );
 	}

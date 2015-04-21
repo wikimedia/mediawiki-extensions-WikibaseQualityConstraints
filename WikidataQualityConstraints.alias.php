@@ -7,9 +7,9 @@
  */
 // @codingStandardsIgnoreFile
 
-$specialPageAliases = array();
+$specialPageAliases = array ();
 
 /** English (English) */
-$specialPageAliases['en'] = array(
-	'ConstraintReport' => array( 'ConstraintReport', 'Constraint Report' ),
+$specialPageAliases[ 'en' ] = array (
+	'ConstraintReport' => array ( 'ConstraintReport', 'Constraint Report' ),
 );

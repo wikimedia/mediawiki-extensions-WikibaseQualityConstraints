@@ -18,8 +18,8 @@ use Wikibase\Repo\WikibaseRepo;
  *
  * @group Database
  *
- * @uses WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -35,13 +35,13 @@ class CheckForViolationsJobTest extends \MediaWikiTestCase {
 
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), new StringValue( 'foo' ) ) ) );
 		$constraintName = 'Single value';
-		$results = array();
-		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_VIOLATION );
-		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_VIOLATION );
-		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_COMPLIANCE );
-		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_COMPLIANCE );
-		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_EXCEPTION );
-		$results[] = new CheckResult( $statement, $constraintName, array(), CheckResult::STATUS_EXCEPTION );
+		$results = array ();
+		$results[ ] = new CheckResult( $statement, $constraintName, array (), CheckResult::STATUS_VIOLATION );
+		$results[ ] = new CheckResult( $statement, $constraintName, array (), CheckResult::STATUS_VIOLATION );
+		$results[ ] = new CheckResult( $statement, $constraintName, array (), CheckResult::STATUS_COMPLIANCE );
+		$results[ ] = new CheckResult( $statement, $constraintName, array (), CheckResult::STATUS_COMPLIANCE );
+		$results[ ] = new CheckResult( $statement, $constraintName, array (), CheckResult::STATUS_EXCEPTION );
+		$results[ ] = new CheckResult( $statement, $constraintName, array (), CheckResult::STATUS_EXCEPTION );
 		$this->results = $results;
 
 		$this->checkTimestamp = wfTimestamp( TS_MW );
@@ -71,8 +71,8 @@ class CheckForViolationsJobTest extends \MediaWikiTestCase {
 	public function testCheckForViolationJobNow() {
 		$job = CheckForViolationsJob::newInsertNow( 1, $this->entity, $this->checkTimestamp, $this->results );
 		$job->run();
-		$count = $this->db->select(EVALUATION_TABLE, array( 'special_page_id' ), array ( 'special_page_id=1' ) )->numRows();
-		$result = $this->db->selectRow(EVALUATION_TABLE, array( 'result_string' ), array ( 'special_page_id=1' ) );
+		$count = $this->db->select( EVALUATION_TABLE, array ( 'special_page_id' ), array ( 'special_page_id=1' ) )->numRows();
+		$result = $this->db->selectRow( EVALUATION_TABLE, array ( 'result_string' ), array ( 'special_page_id=1' ) );
 		$this->assertEquals( 1, $count );
 		$this->assertEquals( '{Compliances: {Single value: 2, }, {Violations: {Single value: 2, }, {Exceptions: {Single value: 2, }, ', $result->result_string );
 	}
@@ -80,7 +80,7 @@ class CheckForViolationsJobTest extends \MediaWikiTestCase {
 	public function testCheckForViolationJobDeferred() {
 		$job = CheckForViolationsJob::newInsertDeferred( 2, $this->entity, $this->checkTimestamp, 10 );
 		$job->run();
-		$count = $this->db->select(EVALUATION_TABLE, array( 'special_page_id' ), array ( 'special_page_id=2' ) )->numRows();
+		$count = $this->db->select( EVALUATION_TABLE, array ( 'special_page_id' ), array ( 'special_page_id=2' ) )->numRows();
 		$this->assertEquals( 1, $count );
 	}
 

@@ -2,7 +2,6 @@
   "@metadata": {
     "authors": "BP2014N1"
   },
-
   "wikidataquality-constraintreport": "Constraint report",
   "wikidataquality-constraintreport-instructions": "Enter an entity ID and let it be checked against the constraints.",
   "wikidataquality-constraintreport-instructions-example": "Try any ID, ideally an item ID, and look at the results.",

@@ -1,5 +1,4 @@
 {
-
   "pageid": 2695,
   "ns": 120,
   "title": "Item:Q3",
@@ -8,27 +7,20 @@
   "id": "Q3",
   "type": "item",
   "labels": {
-
     "en": {
       "language": "en",
       "value": "TestItemRange"
     }
-
   },
   "claims": {
-
     "P1457": [
-
       {
-
         "id": "Q1003$7d1f2c41-4975-57f1-0abf-aba740eaf8cb",
         "mainsnak": {
-
           "snaktype": "value",
           "property": "P1457",
           "datatype": "quantity",
           "datavalue": {
-
             "value": {
               "amount": "+3.141592",
               "unit": "1",
@@ -43,5 +35,4 @@
       }
     ]
   }
-
 }

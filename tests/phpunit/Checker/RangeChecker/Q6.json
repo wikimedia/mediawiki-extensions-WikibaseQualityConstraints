@@ -1,5 +1,4 @@
 {
-
   "pageid": 2699,
   "ns": 120,
   "title": "Item:Q6",
@@ -8,27 +7,20 @@
   "id": "Q6",
   "type": "item",
   "labels": {
-
     "en": {
       "language": "en",
       "value": "TestItemDiffWithinRange"
     }
-
   },
   "claims": {
-
     "P570": [
-
       {
-
         "id": "Q1007$07e366b9-485d-c662-9bd1-00557cccb839",
         "mainsnak": {
-
           "snaktype": "value",
           "property": "P570",
           "datatype": "time",
           "datavalue": {
-
             "value": {
               "time": "+00000001970-01-01T00:00:00Z",
               "timezone": 0,
@@ -43,20 +35,15 @@
         "type": "statement",
         "rank": "normal"
       }
-
     ],
     "P569": [
-
       {
-
         "id": "Q1007$877edbc0-46ab-95b0-f17b-9c0265b5faa3",
         "mainsnak": {
-
           "snaktype": "value",
           "property": "P569",
           "datatype": "time",
           "datavalue": {
-
             "value": {
               "time": "+00000001800-01-01T00:00:00Z",
               "timezone": 0,
@@ -73,5 +60,4 @@
       }
     ]
   }
-
 }
