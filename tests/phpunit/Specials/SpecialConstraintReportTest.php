@@ -172,7 +172,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'placeholder' => '(wikidataquality-checkresult-form-entityid-placeholder)',
 				'name' => 'entityId',
-				'class' => 'wdq-checkresult-form-entity-id'
+				'class' => 'wdqa-checkresult-form-entity-id'
 			)
 		);
 
@@ -192,7 +192,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wdq-checkresult-notice wdq-checkresult-notice-error'
+				'class' => 'wdqa-checkresult-notice wdqa-checkresult-notice-error'
 			),
 			'content' => '(wikidataquality-checkresult-invalid-entity-id)'
 		);
@@ -205,7 +205,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wdq-checkresult-notice wdq-checkresult-notice-error'
+				'class' => 'wdqa-checkresult-notice wdqa-checkresult-notice-error'
 			),
 			'content' => '(wikidataquality-checkresult-not-existent-entity)'
 		);
@@ -258,7 +258,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'value status - violation' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wdq-status wdq-status-error'
+				'class' => 'wdqa-status wdqa-status-error'
 			),
 			'content' => '(wikidataquality-checkresult-status-violation)'
 		);
@@ -266,7 +266,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'value status - compliance' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wdq-status wdq-status-success'
+				'class' => 'wdqa-status wdqa-status-success'
 			),
 			'content' => '(wikidataquality-checkresult-status-compliance)'
 		);
