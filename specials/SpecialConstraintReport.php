@@ -6,7 +6,7 @@ use DataValues;
 use DataValues\DataValue;
 use Html;
 use Wikibase\DataModel;
-use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -93,11 +93,11 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 	/**
 	 * @see SpecialCheckResultPage::executeCheck
 	 *
-	 * @param EntityDocument $entity
+	 * @param Entity $entity
 	 *
 	 * @return string
 	 */
-	protected function executeCheck( EntityDocument $entity ) {
+	protected function executeCheck( Entity $entity ) {
 		// Run constraint checker
 		$constraintChecker = new ConstraintChecker( $this->entityLookup );
 		$results = $constraintChecker->execute( $entity );
