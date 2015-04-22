@@ -41,7 +41,7 @@ class QualifierChecker {
 	 */
 	public function checkQualifierConstraint( Statement $statement ) {
 		$message = 'The property must only be used as a qualifier.';
-		return new CheckResult( $statement, 'Qualifier', array (), 'violation', $message );
+		return new CheckResult( $statement, 'Qualifier', array (), CheckResult::STATUS_VIOLATION, $message );
 	}
 
 	/**
@@ -63,13 +63,13 @@ class QualifierChecker {
 		 */
 
 		$message = '';
-		$status = 'compliance';
+		$status = CheckResult::STATUS_COMPLIANCE;
 
 		foreach ( $statement->getQualifiers() as $qualifier ) {
 			$pid = $qualifier->getPropertyId()->getSerialization();
 			if ( !in_array( $pid, $propertyArray ) ) {
 				$message = 'The property must only be used with (no other than) the qualifiers defined in the parameters.';
-				$status = 'violation';
+				$status = CheckResult::STATUS_VIOLATION;
 				break;
 			}
 		}
@@ -95,12 +95,12 @@ class QualifierChecker {
 		}
 
 		$message = '';
-		$status = 'compliance';
+		$status = CheckResult::STATUS_COMPLIANCE;
 
 		foreach ( $propertyArray as $property ) {
 			if ( !array_key_exists( $property, $qualifiers ) ) {
 				$message = 'The properties defined in the parameters have to be used as qualifiers on this statement.';
-				$status = 'violation';
+				$status = CheckResult::STATUS_VIOLATION;
 				break;
 			}
 		}

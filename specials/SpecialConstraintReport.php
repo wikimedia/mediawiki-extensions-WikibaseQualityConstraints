@@ -12,7 +12,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\WikibaseRepo;
-use WikidataQuality\ConstraintReport\CheckForViolationsJob;
+use WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator;
 use WikidataQuality\Html\HtmlTable;
@@ -305,8 +305,8 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 		//TODO: Push (deferred) job(s) in queue
 		$checkTimeStamp = wfTimestamp( TS_MW );
 		$jobs = array ();
-		$jobs[ ] = CheckForViolationsJob::newInsertNow( 1, $entity, $checkTimeStamp, $results );
-		$jobs[ ] = CheckForViolationsJob::newInsertDeferred( 1, $entity, $checkTimeStamp, 10 );
+		$jobs[ ] = CheckForConstraintViolationsJob::newInsertNow( $entity, $checkTimeStamp, $results );
+		$jobs[ ] = CheckForConstraintViolationsJob::newInsertDeferred( $entity, $checkTimeStamp, 10 );
 
 		$jobs[ 0 ]->run();
 		$jobs[ 1 ]->run();

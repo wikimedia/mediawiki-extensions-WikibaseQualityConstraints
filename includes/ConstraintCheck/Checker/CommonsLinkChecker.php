@@ -53,7 +53,7 @@ class CommonsLinkChecker {
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
 			$message = 'Properties with \'Commons link\' constraint need to have values of type \'string\'.';
-			return new CheckResult( $statement, 'Commons link', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Commons link', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$commonsLink = $dataValue->getValue();
@@ -61,14 +61,14 @@ class CommonsLinkChecker {
 		if ( $this->commonsLinkIsWellFormed( $commonsLink ) ) {
 			if ( $this->urlExists( $commonsLink, $namespace ) ) {
 				$message = '';
-				$status = 'compliance';
+				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
 				$message = 'Commons link must exist.';
-				$status = 'violation';
+				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
 			$message = 'Commons link must be well-formed.';
-			$status = 'violation';
+			$status = CheckResult::STATUS_VIOLATION;
 		}
 
 		return new CheckResult( $statement, 'Commons link', $parameters, $status, $message );

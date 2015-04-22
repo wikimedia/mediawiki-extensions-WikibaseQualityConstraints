@@ -9,50 +9,46 @@ use Wikibase\Repo\WikibaseRepo;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 
 
-class CheckForViolationsJob extends Job {
+class CheckForConstraintViolationsJob extends Job {
 
 	private $db;
 
 	public static function newInsertNow(
-		$specialPage,
 		EntityDocument $entity,
 		$checkTimestamp,
 		$results ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
-		$dummyTitle = Title::newFromText( "CheckForViolationsJob", NS_SPECIAL );
+		$dummyTitle = Title::newFromText( "CheckForConstraintViolationsJob", NS_SPECIAL );
 
 		$params = array ();
 
-		$params[ 'specialPage' ] = $specialPage;
 		$params[ 'entity' ] = $entity;
 		$params[ 'results' ] = $results;
 		$params[ 'checkTimestamp' ] = $checkTimestamp;
 		$params[ 'referenceTimestamp' ] = null;
 
-		return new CheckForViolationsJob( $dummyTitle, $params );
+		return new CheckForConstraintViolationsJob( $dummyTitle, $params );
 	}
 
 	public static function newInsertDeferred(
-		$specialPage,
 		EntityDocument $entity,
 		$referenceTimestamp = null,
 		$releaseTimestamp = 0 ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
-		$dummyTitle = Title::newFromText( "CheckForViolationsJob", NS_SPECIAL );
+		$dummyTitle = Title::newFromText( "CheckForConstraintViolationsJob", NS_SPECIAL );
 
 		$params = array ();
 
-		$params[ 'specialPage' ] = $specialPage;
 		$params[ 'entity' ] = $entity;
 		$params[ 'results' ] = null;
 		$params[ 'referenceTimestamp' ] = $referenceTimestamp;
 		$params[ 'releaseTimestamp' ] = wfTimestamp( TS_MW ) + $releaseTimestamp;
 
-		return new CheckForViolationsJob( $dummyTitle, $params );
+		return new CheckForConstraintViolationsJob( $dummyTitle, $params );
 	}
 
 	public function __construct( Title $title, $params ) {
-		parent::__construct( 'CheckForViolations', $title, $params );
+		parent::__construct( 'checkForConstraintViolations', $title, $params );
 		wfWaitForSlaves();
 		$loadBalancer = wfGetLB();
 		$this->db = $loadBalancer->getConnection( DB_MASTER );
@@ -69,7 +65,7 @@ class CheckForViolationsJob extends Job {
 		}
 
 		$accumulator = array (
-			'special_page_id' => $this->params[ 'specialPage' ],
+			'special_page_id' => 1,
 			'entity_id' => $this->params[ 'entity' ]->getId()->getSerialization(),
 			'insertion_timestamp' => $checkTimestamp,
 			'reference_timestamp' => $this->params[ 'referenceTimestamp' ],

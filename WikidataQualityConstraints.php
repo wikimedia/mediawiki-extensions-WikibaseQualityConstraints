@@ -34,8 +34,13 @@ $wgHooks[ 'LoadExtensionSchemaUpdates' ][ ] = 'WikidataQualityConstraintsHooks::
 // Register hooks for Unit Tests
 $wgHooks[ 'UnitTestsList' ][ ] = 'WikidataQualityConstraintsHooks::onUnitTestsList';
 
+$wgHooks[ 'NewRevisionFromEditComplete' ][] = 'WikidataQualityConstraintsHooks::onNewRevisionFromEditComplete';
+
 // Initialize special pages
 $wgSpecialPages[ 'ConstraintReport' ] = 'WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport';
 
 // Define database table names
 define( 'CONSTRAINT_TABLE', 'wdqa_constraints' );
+
+// Jobs
+$wgJobClasses[ 'checkForConstraintViolations' ] = 'CheckForConstraintViolationsJob';

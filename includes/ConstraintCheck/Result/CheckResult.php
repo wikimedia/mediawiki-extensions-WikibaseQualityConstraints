@@ -49,7 +49,7 @@ class CheckResult implements \WikidataQuality\Result\CheckResult {
 	 */
 	private $message;
 
-	public function __construct( Statement $statement, $constraintName, $parameters = array (), $status = 'todo', $message = '' ) {
+	public function __construct( Statement $statement, $constraintName, $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
 		$this->statement = $statement;
 		$this->constraintName = $constraintName;
 		$this->parameters = $parameters;
