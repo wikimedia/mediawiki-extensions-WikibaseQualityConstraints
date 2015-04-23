@@ -44,19 +44,19 @@ class ConstraintReportHelper {
 	private function parseParameter( $parameter, $type = 'String' ) {
 		if ( $parameter === null ) {
 			return 'null';
-		} else {
-			if ( $type === 'String' ) {
-				return "$parameter";
-			} else { // ItemId, PropertyId
-				$startsWith = strtoupper( substr( $parameter, 0, 1 ) );
-				if ( $startsWith === 'Q' || $startsWith === 'P' ) {
-					$type = 'Wikibase\\DataModel\\Entity\\' . $type;
-					return new $type( $parameter );
-				} else {
-					return '';
-				}
-			}
 		}
+
+		if ( $type === 'String' ) {
+			return "$parameter";
+		}
+
+		$startsWith = strtoupper( substr( $parameter, 0, 1 ) );
+		if ( $startsWith === 'Q' || $startsWith === 'P' ) {
+			$type = 'Wikibase\\DataModel\\Entity\\' . $type;
+			return new $type( $parameter );
+		}
+
+		return '';
 	}
 
 	/**
