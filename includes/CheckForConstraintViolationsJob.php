@@ -4,17 +4,16 @@ namespace WikidataQuality\ConstraintReport;
 
 use Job;
 use Title;
-use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\Entity;
 use Wikibase\Repo\WikibaseRepo;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 
 class CheckForConstraintViolationsJob extends Job {
 
-	private $db;
-
 	public static function newInsertNow(
-		EntityDocument $entity,
+		Entity $entity,
 		$checkTimestamp,
 		$results ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
@@ -31,7 +30,7 @@ class CheckForConstraintViolationsJob extends Job {
 	}
 
 	public static function newInsertDeferred(
-		EntityDocument $entity,
+		Entity $entity,
 		$referenceTimestamp = null,
 		$releaseTimestamp = 0 ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
@@ -49,12 +48,13 @@ class CheckForConstraintViolationsJob extends Job {
 
 	public function __construct( Title $title, $params ) {
 		parent::__construct( 'checkForConstraintViolations', $title, $params );
-		wfWaitForSlaves();
-		$loadBalancer = wfGetLB();
-		$this->db = $loadBalancer->getConnection( DB_MASTER );
 	}
 
 	public function run() {
+		wfWaitForSlaves();
+		$loadBalancer = wfGetLB();
+		$db = $loadBalancer->getConnection( DB_MASTER );
+
 		$checkTimestamp = array_key_exists( 'checkTimestamp', $this->params ) ? $this->params[ 'checkTimestamp' ] : wfTimestamp( TS_MW );
 
 		if ( $this->params[ 'results' ] === null ) {
@@ -71,58 +71,67 @@ class CheckForConstraintViolationsJob extends Job {
 			'reference_timestamp' => $this->params[ 'referenceTimestamp' ],
 			'result_string' => $this->getResultSerialization( $results )
 		);
-		$success = $this->db->insert( EVALUATION_TABLE, $accumulator );
+		$success = $db->insert( EVALUATION_TABLE, $accumulator );
 
 		return $success;
 	}
 
 	private function getResultSerialization( $results ) {
 		$serialization = '';
-		$compliances = $violations = $exceptions = array ();
+		$compliances = $violations = $exceptions = $constraints = array ();
 		foreach ( $results as $result ) {
+			$constraintName = $result->getConstraintName();
+			if( !array_key_exists( $constraintName, $constraints ) ) {
+				$constraints[ $constraintName ] = true;
+			}
 			switch ( $result->getStatus() ) {
-				case 'compliance':
-					if ( array_key_exists( $result->getConstraintName(), $compliances ) ) {
-						$compliances[ $result->getConstraintName() ] += 1;
+				case CheckResult::STATUS_COMPLIANCE:
+					if ( array_key_exists( $constraintName, $compliances ) ) {
+						$compliances[ $constraintName ] += 1;
 					} else {
-						$compliances[ $result->getConstraintName() ] = 1;
+						$compliances[ $constraintName ] = 1;
 					}
 					break;
-				case 'violation':
-					if ( array_key_exists( $result->getConstraintName(), $violations ) ) {
-						$violations[ $result->getConstraintName() ] += 1;
+				case CheckResult::STATUS_VIOLATION:
+					if ( array_key_exists( $constraintName, $violations ) ) {
+						$violations[ $constraintName ] += 1;
 					} else {
-						$violations[ $result->getConstraintName() ] = 1;
+						$violations[ $constraintName ] = 1;
 					}
 					break;
-				case 'exception':
-					if ( array_key_exists( $result->getConstraintName(), $exceptions ) ) {
-						$exceptions[ $result->getConstraintName() ] += 1;
+				case CheckResult::STATUS_EXCEPTION:
+					if ( array_key_exists( $constraintName, $exceptions ) ) {
+						$exceptions[ $constraintName ] += 1;
 					} else {
-						$exceptions[ $result->getConstraintName() ] = 1;
+						$exceptions[ $constraintName ] = 1;
 					}
 			}
 		}
 
-		$serialization .= '{Compliances: {';
-		foreach ( array_keys( $compliances ) as $key ) {
-			$serialization .= $key . ': ' . $compliances[ $key ] . ', ';
-		}
-		$serialization .= '}, ';
+		foreach ( array_keys( $constraints ) as $constraint ) {
+			$serialization .= $constraint . ': {Compliances: ';
+			if( array_key_exists( $constraint, $compliances ) ){
+				$serialization .= $compliances[ $constraint ] . ', ';
+			} else {
+				$serialization .= 0 . ', ';
+			}
 
-		$serialization .= '{Violations: {';
-		foreach ( array_keys( $violations ) as $key ) {
-			$serialization .= $key . ': ' . $violations[ $key ] . ', ';
-		}
-		$serialization .= '}, ';
+			$serialization .= 'Exceptions: ';
+			if( array_key_exists( $constraint, $exceptions ) ){
+				$serialization .= $exceptions[ $constraint ] . ', ';
+			} else {
+				$serialization .= 0 . ', ';
+			}
 
-		$serialization .= '{Exceptions: {';
-		foreach ( array_keys( $compliances ) as $key ) {
-			$serialization .= $key . ': ' . $compliances[ $key ] . ', ';
+			$serialization .= 'Violations: ';
+			if( array_key_exists( $constraint, $violations ) ){
+				$serialization .= $violations[ $constraint ] . '}, ';
+			} else {
+				$serialization .= 0 . '}, ';
+			}
 		}
-		$serialization .= '}, ';
 
-		return $serialization;
+		return substr( $serialization, 0, -2 );
 	}
 
 }

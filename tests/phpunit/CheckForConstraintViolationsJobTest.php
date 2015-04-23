@@ -74,7 +74,7 @@ class CheckForConstraintViolationsJobTest extends \MediaWikiTestCase {
 		$count = $this->db->select( EVALUATION_TABLE, array ( 'special_page_id' ), array ( 'special_page_id=1' ) )->numRows();
 		$result = $this->db->selectRow( EVALUATION_TABLE, array ( 'result_string' ), array ( 'special_page_id=1' ) );
 		$this->assertEquals( 1, $count );
-		$this->assertEquals( '{Compliances: {Single value: 2, }, {Violations: {Single value: 2, }, {Exceptions: {Single value: 2, }, ', $result->result_string );
+		$this->assertEquals( 'Single value: {Compliances: 2, Exceptions: 2, Violations: 2}', $result->result_string );
 	}
 
 	public function testCheckForConstraintViolationJobDeferred() {
