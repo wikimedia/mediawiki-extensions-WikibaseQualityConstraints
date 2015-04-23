@@ -186,7 +186,7 @@ class ConstraintChecker {
 
 			if ( in_array( $entity->getId()->getSerialization(), $this->helper->stringToArray( $this->helper->getPropertyOfJson( $constraintParameters, 'known_exception' ) ) ) ) {
 				$message = 'This entity is a known exception for this constraint and has been marked as such.';
-				$result[ ] = new CheckResult( $statement, $row->constraint_type_qid, array (), 'exception', $message ); // todo: display parameters anyway
+				$result[ ] = new CheckResult( $statement, $row->constraint_type_qid, array (), CheckResult::STATUS_EXCEPTION, $message ); // todo: display parameters anyway
 				continue;
 			}
 

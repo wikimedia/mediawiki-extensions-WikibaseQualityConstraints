@@ -53,21 +53,21 @@ class FormatChecker {
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
 			$message = 'Properties with \'Format\' constraint need to have values of type \'string\'.';
-			return new CheckResult( $statement, 'Format', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( $pattern === null ) {
 			$message = 'Properties with \'Format\' constraint need a parameter \'pattern\'.';
-			return new CheckResult( $statement, 'Format', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$comparativeString = $dataValue->getValue();
 
 		if ( preg_match( '/^' . str_replace( '/', '\/', $pattern ) . '$/', $comparativeString ) ) {
 			$message = '';
-			$status = 'compliance';
+			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
 			$message = 'The property\'s value must match the pattern defined in the parameters.';
-			$status = 'violation';
+			$status = CheckResult::STATUS_VIOLATION;
 		}
 
 		return new CheckResult( $statement, 'Format', $parameters, $status, $message );

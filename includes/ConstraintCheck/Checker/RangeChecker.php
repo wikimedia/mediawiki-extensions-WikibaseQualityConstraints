@@ -84,17 +84,17 @@ class RangeChecker {
 			$message = 'Properties with \'Range\' constraint need to have values of type \'quantity\' or \'time\'.';
 		}
 		if ( isset( $message ) ) {
-			return new CheckResult( $statement, 'Range', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Range', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$comparativeValue = $this->getComparativeValue( $dataValue );
 
 		if ( $comparativeValue < $min || $comparativeValue > $max ) {
 			$message = 'The property\'s value must neither be smaller than the minimum nor larger than the maximum defined in the parameters.';
-			$status = 'violation';
+			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = '';
-			$status = 'compliance';
+			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
 		return new CheckResult( $statement, 'Range', $parameters, $status, $message );
@@ -133,7 +133,7 @@ class RangeChecker {
 			$message = 'Properties with \'Diff within range\' constraint need to have values of type \'quantity\' or \'time\'.';
 		}
 		if ( isset( $message ) ) {
-			return new CheckResult( $statement, 'Diff within range', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Diff within range', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$thisValue = $this->getComparativeValue( $dataValue );
@@ -156,21 +156,21 @@ class RangeChecker {
 
 					if ( $diff < $min || $diff > $max ) {
 						$message = 'The difference between this property\'s value and the value of the property defined in the parameters must neither be smaller than the minimum nor larger than the maximum defined in the parameters.';
-						$status = 'violation';
+						$status = CheckResult::STATUS_VIOLATION;
 					} else {
 						$message = '';
-						$status = 'compliance';
+						$status = CheckResult::STATUS_COMPLIANCE;
 					}
 				} else {
 					$message = 'The property defined in the parameters must have a value of the same type as this property.';
-					$status = 'violation';
+					$status = CheckResult::STATUS_VIOLATION;
 				}
 
 				return new CheckResult( $statement, 'Diff within range', $parameters, $status, $message );
 			}
 		}
 		$message = 'The property defined in the parameters must exist.';
-		$status = 'violation';
+		$status = CheckResult::STATUS_VIOLATION;
 		return new CheckResult( $statement, 'Diff within range', $parameters, $status, $message );
 	}
 

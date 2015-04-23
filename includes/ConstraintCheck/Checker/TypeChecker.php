@@ -75,11 +75,11 @@ class TypeChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = 'Properties with \'Value type\' constraint need to have values of type \'wikibase-entityid\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( $classArray[ 0 ] === '' ) {
 			$message = 'Properties with \'Value type\' constraint need the parameter \'class\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
@@ -92,24 +92,24 @@ class TypeChecker {
 			$relationId = self::subclassId;
 		} else {
 			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 
 		if ( !$item ) {
 			$message = 'This property\'s value entity does not exist.';
-			return new CheckResult( $statement, 'Value type', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$statements = $item->getStatements();
 
 		if ( $this->hasClassInRelation( $statements, $relationId, $classArray ) ) {
 			$message = '';
-			$status = 'compliance';
+			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
 			$message = 'This property\'s value entity must be in the relation to the item (or a subclass of the item) defined in the parameters.';
-			$status = 'violation';
+			$status = CheckResult::STATUS_VIOLATION;
 		}
 
 		return new CheckResult( $statement, 'Value type', $parameters, $status, $message );
@@ -137,7 +137,7 @@ class TypeChecker {
 		 */
 		if ( $classArray[ 0 ] === '' ) {
 			$message = 'Properties with \'Type\' constraint need the parameter \'class\'.';
-			return new CheckResult( $statement, 'Type', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Type', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
@@ -150,15 +150,15 @@ class TypeChecker {
 			$relationId = self::subclassId;
 		} else {
 			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
-			return new CheckResult( $statement, 'Type', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Type', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		if ( $this->hasClassInRelation( $this->statements, $relationId, $classArray ) ) {
 			$message = '';
-			$status = 'compliance';
+			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
 			$message = 'This property must only be used on items that are in the relation to the item (or a subclass of the item) defined in the parameters.';
-			$status = 'violation';
+			$status = CheckResult::STATUS_VIOLATION;
 		}
 
 		return new CheckResult( $statement, 'Type', $parameters, $status, $message );

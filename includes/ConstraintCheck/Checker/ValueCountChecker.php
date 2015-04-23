@@ -59,10 +59,10 @@ class ValueCountChecker {
 
 		if ( $propertyCountArray[ $propertyId->getNumericId() ] > 1 ) {
 			$message = 'This property must only have a single value, that is there must only be one claim using this property.';
-			$status = 'violation';
+			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = '';
-			$status = 'compliance';
+			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
 		return new CheckResult( $statement, 'Single value', $parameters, $status, $message );
@@ -84,10 +84,10 @@ class ValueCountChecker {
 
 		if ( $propertyCountArray[ $propertyId->getNumericId() ] <= 1 ) {
 			$message = 'This property must have a multiple values, that is there must be more than one claim using this property.';
-			$status = 'violation';
+			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = '';
-			$status = 'compliance';
+			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
 		return new CheckResult( $statement, 'Multi value', $parameters, $status, $message );

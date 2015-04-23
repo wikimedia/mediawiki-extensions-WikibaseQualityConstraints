@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\Tests;
+namespace WikidataQuality\ConstraintReport\Tests;
 
 use Wikibase\DataModel\Entity\Item;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -14,7 +14,7 @@ use Wikibase\Repo\WikibaseRepo;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\CheckForViolationsJob
+ * @covers WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob
  *
  * @group Database
  *
@@ -24,7 +24,7 @@ use Wikibase\Repo\WikibaseRepo;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class CheckForViolationsJobTest extends \MediaWikiTestCase {
+class CheckForConstraintViolationsJobTest extends \MediaWikiTestCase {
 
 	private $results;
 	private $entity;

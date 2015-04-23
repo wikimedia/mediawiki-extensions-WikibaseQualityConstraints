@@ -53,19 +53,19 @@ class OneOfChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = 'Properties with \'One of\' constraint need to have values of type \'wikibase-entityid\'.';
-			return new CheckResult( $statement, 'Format', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( $itemArray[ 0 ] === '' ) {
 			$message = 'Properties with \'One of\' constraint need a parameter \'item\'.';
-			return new CheckResult( $statement, 'One of', $parameters, 'violation', $message );
+			return new CheckResult( $statement, 'One of', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		if ( in_array( $dataValue->getEntityId()->getSerialization(), $itemArray ) ) {
 			$message = '';
-			$status = 'compliance';
+			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
 			$message = 'The property\'s value must be one of the items defined in the parameters.';
-			$status = 'violation';
+			$status = CheckResult::STATUS_VIOLATION;
 		}
 
 		return new CheckResult( $statement, 'One of', $parameters, $status, $message );
