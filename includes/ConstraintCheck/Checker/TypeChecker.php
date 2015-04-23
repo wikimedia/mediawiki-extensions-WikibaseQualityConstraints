@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Lib\Store\EntityLookup;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -61,12 +62,23 @@ class TypeChecker {
 	 * @return CheckResult
 	 */
 	public function checkValueTypeConstraint( Statement $statement, $classArray, $relation ) {
-		$dataValue = $statement->getClaim()->getMainSnak()->getDataValue();
-
 		$parameters = array ();
 
 		$parameters[ 'class' ] = $this->helper->parseParameterArray( $classArray, 'ItemId' );
 		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $relation );
+
+		$mainSnak = $statement->getClaim()->getMainSnak();
+
+		/*
+		 * error handling:
+		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
+		 */
+		if ( !$mainSnak instanceof PropertyValueSnak ) {
+			$message = 'Properties with \'Value type\' constraint need to have a value.';
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$dataValue = $mainSnak->getDataValue();
 
 		/*
 		 * error handling:
@@ -119,7 +131,6 @@ class TypeChecker {
 	 * Checks 'Type' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param StatementList $statements
 	 * @param array $classArray
 	 * @param string $relation
 	 *
@@ -181,13 +192,15 @@ class TypeChecker {
 
 				if ( $mainSnak->getType() === 'value' && $mainSnak->getDataValue()->getType() === 'wikibase-entityid' ) {
 					$comparativeClass = $mainSnak->getDataValue()->getEntityId();
+
+					foreach ( $classesToCheck as $class ) {
+						if ( $class === $comparativeClass->getSerialization() ) {
+							return true;
+						}
+					}
+
 				}
 
-				foreach ( $classesToCheck as $class ) {
-					if ( $class === $comparativeClass->getSerialization() ) {
-						return true;
-					}
-				}
 				if ( $depth > self::MAX_DEPTH ) {
 					return false;
 				}

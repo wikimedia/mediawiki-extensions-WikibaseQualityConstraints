@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -40,11 +41,22 @@ class OneOfChecker {
 	 * @return CheckResult
 	 */
 	public function checkOneOfConstraint( Statement $statement, $itemArray ) {
-		$dataValue = $statement->getClaim()->getMainSnak()->getDataValue();
-
 		$parameters = array ();
 
 		$parameters[ 'item' ] = $this->helper->parseParameterArray( $itemArray, 'ItemId' );
+
+		$mainSnak = $statement->getClaim()->getMainSnak();
+
+		/*
+		 * error handling:
+		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
+		 */
+		if ( !$mainSnak instanceof PropertyValueSnak ) {
+			$message = 'Properties with \'One of\' constraint need to have a value.';
+			return new CheckResult( $statement, 'IOne of', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$dataValue = $mainSnak->getDataValue();
 
 		/*
 		 * error handling:

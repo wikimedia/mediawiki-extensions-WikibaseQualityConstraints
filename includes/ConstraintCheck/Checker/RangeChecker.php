@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -53,9 +54,20 @@ class RangeChecker {
 	 * @return CheckResult
 	 */
 	public function checkRangeConstraint( Statement $statement, $minimum_quantity, $maximum_quantity, $minimum_date, $maximum_date ) {
-		$dataValue = $statement->getClaim()->getMainSnak()->getDataValue();
-
 		$parameters = array ();
+
+		$mainSnak = $statement->getClaim()->getMainSnak();
+
+		/*
+		 * error handling:
+		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
+		 */
+		if ( !$mainSnak instanceof PropertyValueSnak ) {
+			$message = 'Properties with \'Range\' constraint need to have a value.';
+			return new CheckResult( $statement, 'Range', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$dataValue = $mainSnak->getDataValue();
 
 		/*
 		 * error handling:
@@ -73,8 +85,8 @@ class RangeChecker {
 			}
 		} elseif ( $dataValue->getType() === 'time' ) {
 			if ( $minimum_quantity === null && $maximum_quantity === null && $minimum_date !== null && $maximum_date !== null ) {
-				$min = $minimum_date->getTime();
-				$max = $maximum_date->getTime();
+				$min = $minimum_date;
+				$max = $maximum_date;
 				$parameters[ 'minimum_date' ] = $this->helper->parseSingleParameter( $minimum_date );
 				$parameters[ 'maximum_date' ] = $this->helper->parseSingleParameter( $maximum_date );
 			} else {
@@ -109,11 +121,22 @@ class RangeChecker {
 	 * @return CheckResult
 	 */
 	public function checkDiffWithinRangeConstraint( Statement $statement, $property, $minimum_quantity, $maximum_quantity ) {
-		$dataValue = $statement->getClaim()->getMainSnak()->getDataValue();
-
 		$parameters = array ();
 
 		$parameters[ 'property' ] = $this->helper->parseSingleParameter( $property, 'PropertyId' );
+
+		$mainSnak = $statement->getClaim()->getMainSnak();
+
+		/*
+		 * error handling:
+		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
+		 */
+		if ( !$mainSnak instanceof PropertyValueSnak ) {
+			$message = 'Properties with \'Diff within range\' constraint need to have a value.';
+			return new CheckResult( $statement, 'Diff within range', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$dataValue = $mainSnak->getDataValue();
 
 		/*
 		 * error handling:

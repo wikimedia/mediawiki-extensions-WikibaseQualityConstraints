@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Lib\Store\EntityLookup;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
@@ -161,12 +162,23 @@ class ConnectionChecker {
 	 * @return CheckResult
 	 */
 	public function checkTargetRequiredClaimConstraint( Statement $statement, $property, $itemArray ) {
-		$dataValue = $statement->getClaim()->getMainSnak()->getDataValue();
-
 		$parameters = array ();
 
 		$parameters[ 'property' ] = $this->helper->parseSingleParameter( $property, 'PropertyId' );
 		$parameters[ 'item' ] = $this->helper->parseParameterArray( $itemArray, 'ItemId' );
+
+		$mainSnak = $statement->getClaim()->getMainSnak();
+
+		/*
+		 * error handling:
+		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
+		 */
+		if ( !$mainSnak instanceof PropertyValueSnak ) {
+			$message = 'Properties with \'Target required claim\' constraint need to have a value.';
+			return new CheckResult( $statement, 'Target required claim', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$dataValue = $mainSnak->getDataValue();
 
 		/*
 		 * error handling:
@@ -224,10 +236,21 @@ class ConnectionChecker {
 	 * @return CheckResult
 	 */
 	public function checkSymmetricConstraint( Statement $statement, $entityIdSerialization ) {
-		$propertyId = $statement->getClaim()->getPropertyId();
-		$dataValue = $statement->getClaim()->getMainSnak()->getDataValue();
-
 		$parameters = array ();
+
+		$mainSnak = $statement->getClaim()->getMainSnak();
+		$propertyId = $statement->getClaim()->getPropertyId();
+
+		/*
+		 * error handling:
+		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
+		 */
+		if ( !$mainSnak instanceof PropertyValueSnak ) {
+			$message = 'Properties with \'Symmetric\' constraint need to have a value.';
+			return new CheckResult( $statement, 'Symmetric', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$dataValue = $mainSnak->getDataValue();
 
 		/*
 		 * error handling:
@@ -266,11 +289,22 @@ class ConnectionChecker {
 	 * @return CheckResult
 	 */
 	public function checkInverseConstraint( Statement $statement, $entityIdSerialization, $property ) {
-		$dataValue = $statement->getClaim()->getMainSnak()->getDataValue();
-
 		$parameters = array ();
 
 		$parameters[ 'property' ] = $this->helper->parseSingleParameter( $property, 'PropertyId' );
+
+		$mainSnak = $statement->getClaim()->getMainSnak();
+
+		/*
+		 * error handling:
+		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
+		 */
+		if ( !$mainSnak instanceof PropertyValueSnak ) {
+			$message = 'Properties with \'Commons link\' constraint need to have a value.';
+			return new CheckResult( $statement, 'Commons link', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$dataValue = $mainSnak->getDataValue();
 
 		/*
 		 * error handling:
