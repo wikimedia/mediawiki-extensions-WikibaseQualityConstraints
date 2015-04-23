@@ -4,7 +4,7 @@ namespace WikidataQuality\ConstraintReport\Tests;
 
 use Wikibase\DataModel\Entity\Item;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikidataQuality\ConstraintReport\CheckForViolationsJob;
+use WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -68,8 +68,8 @@ class CheckForConstraintViolationsJobTest extends \MediaWikiTestCase {
 		$store->saveEntity( $this->entity, 'TestEntityQ1', $GLOBALS[ 'wgUser' ], EDIT_NEW );
 	}
 
-	public function testCheckForViolationJobNow() {
-		$job = CheckForViolationsJob::newInsertNow( 1, $this->entity, $this->checkTimestamp, $this->results );
+	public function testCheckForConstraintViolationJobNow() {
+		$job = CheckForConstraintViolationsJob::newInsertNow( $this->entity, $this->checkTimestamp, $this->results );
 		$job->run();
 		$count = $this->db->select( EVALUATION_TABLE, array ( 'special_page_id' ), array ( 'special_page_id=1' ) )->numRows();
 		$result = $this->db->selectRow( EVALUATION_TABLE, array ( 'result_string' ), array ( 'special_page_id=1' ) );
@@ -77,10 +77,10 @@ class CheckForConstraintViolationsJobTest extends \MediaWikiTestCase {
 		$this->assertEquals( '{Compliances: {Single value: 2, }, {Violations: {Single value: 2, }, {Exceptions: {Single value: 2, }, ', $result->result_string );
 	}
 
-	public function testCheckForViolationJobDeferred() {
-		$job = CheckForViolationsJob::newInsertDeferred( 2, $this->entity, $this->checkTimestamp, 10 );
+	public function testCheckForConstraintViolationJobDeferred() {
+		$job = CheckForConstraintViolationsJob::newInsertDeferred( $this->entity, $this->checkTimestamp, 10 );
 		$job->run();
-		$count = $this->db->select( EVALUATION_TABLE, array ( 'special_page_id' ), array ( 'special_page_id=2' ) )->numRows();
+		$count = $this->db->select( EVALUATION_TABLE, array ( 'special_page_id' ), array ( 'special_page_id=1' ) )->numRows();
 		$this->assertEquals( 1, $count );
 	}
 

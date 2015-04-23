@@ -33,7 +33,7 @@ use Wikibase\DataModel\Entity\EntityId;
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator
  * @uses   WikidataQuality\Violations\Violation
  * @uses   WikidataQuality\Violations\ViolationStore
- * @uses   WikidataQuality\ConstraintReport\CheckForViolationsJob
+ * @uses   WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob
  *
  * @author BP2014N1
  * @license GNU GPL v2+
