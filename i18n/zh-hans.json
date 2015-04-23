@@ -10,6 +10,6 @@
 	"wikidataquality-constraintreport-empty-result": "此实体上没有定义约束。",
 	"wikidataquality-constraintreport-result-table-header-claim": "声称",
 	"wikidataquality-constraintreport-result-table-header-constraint": "约束",
-	"wikidataquality-constraintreport-result-link-to-claim": "前往声称",
+	"wikidataquality-constraintreport-result-link-to-claim": "转到声称",
 	"wikidataquality-constraintreport-result-link-to-constraint": "转到约束条件"
 }
