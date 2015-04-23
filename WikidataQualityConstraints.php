@@ -13,34 +13,35 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-// Set credits
-$wgExtensionCredits[ 'specialpage' ][ ] = array (
-	'path' => __FILE__,
-	'name' => 'WikidataQualityConstraints',
-	'author' => 'BP2014N1',
-	'url' => 'https://www.mediawiki.org/wiki/Extension:WikidataQualityConstraints',
-	'descriptionmsg' => 'wikidataquality-constraints-desc',
-	'version' => '0.0.0'
-);
+call_user_func( function() {
+	// Set credits
+	$GLOBALS['wgExtensionCredits']['specialpage'][] = array(
+		'path' => __FILE__,
+		'name' => 'WikidataQualityConstraints',
+		'author' => 'BP2014N1',
+		'url' => 'https://www.mediawiki.org/wiki/Extension:WikidataQualityConstraints',
+		'descriptionmsg' => 'wikidataquality-constraints-desc',
+		'version' => '0.0.0'
+	);
 
-// Initialize localization and aliases
-$wgMessagesDirs[ 'WikidataQualityConstraints' ] = __DIR__ . '/i18n';
-$wgExtensionMessagesFiles[ 'WikidataQualityConstraintsAlias' ] = __DIR__ . '/WikidataQualityConstraints.alias.php';
+	// Initialize localization and aliases
+	$GLOBALS['wgMessagesDirs']['WikidataQualityConstraints'] = __DIR__ . '/i18n';
+	$GLOBALS['wgExtensionMessagesFiles']['WikidataQualityConstraintsAlias'] = __DIR__ . '/WikidataQualityConstraints.alias.php';
 
-// Initalize hooks for creating database tables
-global $wgHooks;
-$wgHooks[ 'LoadExtensionSchemaUpdates' ][ ] = 'WikidataQualityConstraintsHooks::onCreateSchema';
+	// Initalize hooks for creating database tables
+	$GLOBALS['wgHooks']['LoadExtensionSchemaUpdates'][] = 'WikidataQualityConstraintsHooks::onCreateSchema';
 
-// Register hooks for Unit Tests
-$wgHooks[ 'UnitTestsList' ][ ] = 'WikidataQualityConstraintsHooks::onUnitTestsList';
+	// Register hooks for Unit Tests
+	$GLOBALS['wgHooks']['UnitTestsList'][] = 'WikidataQualityConstraintsHooks::onUnitTestsList';
 
-$wgHooks[ 'NewRevisionFromEditComplete' ][] = 'WikidataQualityConstraintsHooks::onNewRevisionFromEditComplete';
+	$GLOBALS['wgHooks']['NewRevisionFromEditComplete'][] = 'WikidataQualityConstraintsHooks::onNewRevisionFromEditComplete';
 
-// Initialize special pages
-$wgSpecialPages[ 'ConstraintReport' ] = 'WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport';
+	// Initialize special pages
+	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport';
 
-// Define database table names
-define( 'CONSTRAINT_TABLE', 'wdqa_constraints' );
+	// Define database table names
+	define( 'CONSTRAINT_TABLE', 'wdqa_constraints' );
 
-// Jobs
-$wgJobClasses[ 'checkForConstraintViolations' ] = 'CheckForConstraintViolationsJob';
+	// Jobs
+	$GLOBALS['wgJobClasses']['checkForConstraintViolations'] = 'CheckForConstraintViolationsJob';
+} );
