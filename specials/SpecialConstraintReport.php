@@ -53,7 +53,7 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 	 */
 	private $entityTitleLookup;
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct( 'ConstraintReport' );
 
 		$this->entityTitleLookup = WikibaseRepo::getDefaultInstance()->getEntityTitleLookup();
@@ -232,7 +232,7 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 			}
 		} else {
 			// Cases where we format a DataValue
-			return parent::formatDataValues( $value, $linking );
+			return $this->formatDataValues( $value, $linking );
 		}
 	}
 

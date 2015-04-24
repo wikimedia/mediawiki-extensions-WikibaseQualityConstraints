@@ -34,7 +34,7 @@ class ConstraintReportHelper {
 	 * @return array
 	 */
 	public function stringToArray( $templateString ) {
-		if ( is_null( $templateString ) or $templateString === '' ) {
+		if ( is_null( $templateString ) || $templateString === '' ) {
 			return array ( '' );
 		} else {
 			return explode( ',', $this->removeBrackets( str_replace( ' ', '', $templateString ) ) );
@@ -62,7 +62,7 @@ class ConstraintReportHelper {
 	/**
 	 * Helps set/format a single parameter depending on its type.
 	 *
-	 * @param array $parameter
+	 * @param string $parameter
 	 * @param string $type
 	 *
 	 * @return array

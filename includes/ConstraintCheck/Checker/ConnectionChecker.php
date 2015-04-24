@@ -199,7 +199,7 @@ class ConnectionChecker {
 			$message = 'Target entity does not exist.';
 			return new CheckResult( $statement, 'Target required claim', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		$targetEntityStatementsArray = $targetEntity->getStatements();
+		$targetEntityStatementList = $targetEntity->getStatements();
 
 		/*
 		 * 'Target required claim' can be defined with
@@ -207,7 +207,7 @@ class ConnectionChecker {
 		 *   b) a property and a number of items (each combination forming an individual claim)
 		 */
 		if ( $itemArray[ 0 ] === '' ) {
-			if ( $this->hasProperty( $targetEntityStatementsArray, $property ) ) {
+			if ( $this->hasProperty( $targetEntityStatementList, $property ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
@@ -215,7 +215,7 @@ class ConnectionChecker {
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
-			if ( $this->hasClaim( $targetEntityStatementsArray, $property, $itemArray ) ) {
+			if ( $this->hasClaim( $targetEntityStatementList, $property, $itemArray ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
@@ -266,9 +266,9 @@ class ConnectionChecker {
 			$message = 'Target item does not exist.';
 			return new CheckResult( $statement, 'Symmetric', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		$targetItemStatementsArray = $targetItem->getStatements();
+		$targetItemStatementList = $targetItem->getStatements();
 
-		if ( $this->hasClaim( $targetItemStatementsArray, $propertyId->getSerialization(), $entityIdSerialization ) ) {
+		if ( $this->hasClaim( $targetItemStatementList, $propertyId->getSerialization(), $entityIdSerialization ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
@@ -325,9 +325,9 @@ class ConnectionChecker {
 			$message = 'Target item does not exist.';
 			return new CheckResult( $statement, 'Inverse', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		$targetItemStatementsArray = $targetItem->getStatements();
+		$targetItemStatementList = $targetItem->getStatements();
 
-		if ( $this->hasClaim( $targetItemStatementsArray, $property, $entityIdSerialization ) ) {
+		if ( $this->hasClaim( $targetItemStatementList, $property, $entityIdSerialization ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
@@ -341,13 +341,13 @@ class ConnectionChecker {
 	/**
 	 * Checks if there is a statement with a claim using the given property.
 	 *
-	 * @param array $statementsArray
+	 * @param StatementList $statementList
 	 * @param string $propertyIdSerialization
 	 *
 	 * @return boolean
 	 */
-	private function hasProperty( $statementsArray, $propertyIdSerialization ) {
-		foreach ( $statementsArray as $statement ) {
+	private function hasProperty( $statementList, $propertyIdSerialization ) {
+		foreach ( $statementList as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
 				return true;
 			}
@@ -358,14 +358,14 @@ class ConnectionChecker {
 	/**
 	 * Checks if there is a statement with a claim using the given property and having one of the given items as its value.
 	 *
-	 * @param array $statementsArray
+	 * @param StatementList $statementList
 	 * @param string $propertyIdSerialization
 	 * @param string|array $itemIdSerializationOrArray
 	 *
 	 * @return boolean
 	 */
-	private function hasClaim( $statementsArray, $propertyIdSerialization, $itemIdSerializationOrArray ) {
-		foreach ( $statementsArray as $statement ) {
+	private function hasClaim( $statementList, $propertyIdSerialization, $itemIdSerializationOrArray ) {
+		foreach ( $statementList as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
 				if ( is_string( $itemIdSerializationOrArray ) ) { // string
 					$itemIdSerializationArray = array ( $itemIdSerializationOrArray );
