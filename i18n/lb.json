@@ -4,6 +4,10 @@
 			"Robby"
 		]
 	},
+	"wikidataquality-constraintreport": "Rapport vun de Limitatiounen",
+	"wikidataquality-constraintreport-empty-result": "Et si keng Limitatioune fir dës Eenheet definéiert.",
 	"wikidataquality-constraintreport-result-table-header-claim": "Behaaptung",
-	"wikidataquality-constraintreport-result-table-header-constraint": "Limitatioun"
+	"wikidataquality-constraintreport-result-table-header-constraint": "Limitatioun",
+	"wikidataquality-constraintreport-result-link-to-claim": "gitt op d'Behaaptung",
+	"wikidataquality-constraintreport-result-link-to-constraint": "gitt op d'Limitatioun"
 }
