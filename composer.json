@@ -1,32 +1,32 @@
 {
-  "name": "wikidataquality/wikidata-quality-constraints",
-  "type": "mediawiki-extension",
-  "description": "Extension for WikidataQuality to manage constraints in Wikidata.",
-  "homepage": "https://www.mediawiki.org/wiki/WikidataQuality/",
-  "license": "GPL-2.0+",
-  "authors": [
-    {
-      "name": "BP2014N1"
-    }
-  ],
-  "support": {
-    "issues": "https://phabricator.wikimedia.org/project/profile/989/"
-  },
-  "require": {
-    "wikibase/data-model": "~2.6"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "~4.5",
-    "satooshi/php-coveralls": "dev-master"
-  },
-  "autoload": {
-    "psr-4": {
-      "WikidataQuality\\ConstraintReport\\": "includes/",
-      "WikidataQuality\\ConstraintReport\\Specials\\": "specials/",
-      "WikidataQuality\\ConstraintReport\\Tests\\": "tests/phpunit/"
-    },
-    "classmap": [
-      "WikidataQualityConstraintsHooks.php"
-    ]
-  }
+	"name": "wikidataquality/wikidata-quality-constraints",
+	"type": "mediawiki-extension",
+	"description": "Extension for WikidataQuality to manage constraints in Wikidata.",
+	"homepage": "https://www.mediawiki.org/wiki/WikidataQuality/",
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "BP2014N1"
+		}
+	],
+	"support": {
+		"issues": "https://phabricator.wikimedia.org/project/profile/989/"
+	},
+	"require": {
+		"wikibase/data-model": "~2.6"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~4.5",
+		"satooshi/php-coveralls": "dev-master"
+	},
+	"autoload": {
+		"psr-4": {
+			"WikidataQuality\\ConstraintReport\\": "includes/",
+			"WikidataQuality\\ConstraintReport\\Specials\\": "specials/",
+			"WikidataQuality\\ConstraintReport\\Tests\\": "tests/phpunit/"
+		},
+		"classmap": [
+			"WikidataQualityConstraintsHooks.php"
+		]
+	}
 }
