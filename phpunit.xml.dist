@@ -11,7 +11,6 @@
          timeoutForSmallTests="10"
          timeoutForMediumTests="30"
          timeoutForLargeTests="60"
-         strict="true"
          verbose="true">
     <testsuites>
         <testsuite name="Common">
