@@ -28,22 +28,24 @@ class CheckResultToViolationTranslator extends ResultToViolationTranslator {
 			}
 
 			$statement = $checkResult->getStatement();
+			$propertyId = $statement->getPropertyId();
+			$claimGuid = $statement->getGuid();
 			$entityId = $entity->getId();
 
 			//TODO: Use real claimGuid
 			$constraintTypeEntityId = $checkResult->getConstraintName();
-			$constraintClaimGuid = $statement->getGuid() . $constraintTypeEntityId;
+			$constraintId = $claimGuid . $constraintTypeEntityId;
 			$parameters = $checkResult->getParameters();
 			if ( is_array( $parameters ) ) {
 				foreach ( $parameters as $par ) {
-					$constraintClaimGuid .= implode( ', ', $par );
+					$constraintId .= implode( ', ', $par );
 				}
 			}
-			$constraintClaimGuid = md5( $constraintClaimGuid );
+			$constraintId = md5( $constraintId );
 			$revisionId = $this->getRevisionIdForEntity( $entityId );
 			$status = CheckResult::STATUS_VIOLATION;
 
-			$violationArray[ ] = new Violation( $entityId, $statement, $constraintClaimGuid, $constraintTypeEntityId, $revisionId, $status );
+			$violationArray[ ] = new Violation( $entityId, $propertyId, $claimGuid, $constraintId, $constraintTypeEntityId, $revisionId, $status );
 		}
 
 		return $violationArray;

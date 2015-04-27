@@ -16,6 +16,7 @@ use Wikibase\Repo\WikibaseRepo;
 /**
  * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator
  *
+ * @group WikidataQualityConstraints
  * @group Database
  * @group medium
  *
@@ -28,6 +29,8 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 
 	private $translator;
 	private $statement;
+	private $propertyId;
+	private $claimGuid;
 	private $constraintName;
 	private $parameters;
 	private $message;
@@ -42,6 +45,9 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->translator = new CheckResultToViolationTranslator();
 		$this->statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( 'Foo' ) ) ) );
+		$this->propertyId =  new PropertyId( 'P1' );
+		$this->claimGuid = 'P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
+		$this->statement->setGuid( 'P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' );
 		$this->constraintName = 'Range';
 		$this->parameters = array ();
 		$this->message = 'All right';
@@ -76,7 +82,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->assertEquals( self::$idMap[ 'Q1' ], $violation->getEntityId() );
 		$this->assertEquals( 'P1', $violation->getPropertyId()->getSerialization() );
 		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
-		$this->assertEquals( md5( $this->statement->getGuid() . $checkResult->getConstraintName() ), $violation->getConstraintClaimGuid() );
+		$this->assertEquals( md5( $this->statement->getGuid() . $checkResult->getConstraintName() ), $violation->getConstraintId() );
 		$this->assertEquals( $checkResult->getConstraintName(), $violation->getConstraintTypeEntityId() );
 
 	}

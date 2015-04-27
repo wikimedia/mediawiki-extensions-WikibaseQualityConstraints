@@ -10,6 +10,8 @@ use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelp
 /**
  * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
+ * @group WikidataQualityConstraints
+ *
  * @author BP2014N1
  * @license GNU GPL v2+
  */

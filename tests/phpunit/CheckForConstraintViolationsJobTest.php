@@ -16,6 +16,7 @@ use Wikibase\Repo\WikibaseRepo;
 /**
  * @covers WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob
  *
+ * @group WikidataQualityConstraints
  * @group Database
  *
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult

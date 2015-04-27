@@ -18,6 +18,7 @@ use Wikibase\DataModel\Entity\EntityId;
 /**
  * @covers WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport
  *
+ * @group WikidataQualityConstraints
  * @group Database
  * @group medium
  *

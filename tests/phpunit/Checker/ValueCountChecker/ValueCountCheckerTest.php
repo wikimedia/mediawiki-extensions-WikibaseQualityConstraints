@@ -18,6 +18,8 @@ use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
  *
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
+ * @group WikidataQualityConstraints
+ *
  * @author BP2014N1
  * @license GNU GPL v2+
  */
