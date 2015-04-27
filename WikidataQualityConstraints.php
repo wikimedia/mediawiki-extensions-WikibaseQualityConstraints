@@ -34,8 +34,6 @@ call_user_func( function() {
 	// Register hooks for Unit Tests
 	$GLOBALS['wgHooks']['UnitTestsList'][] = 'WikidataQualityConstraintsHooks::onUnitTestsList';
 
-	$GLOBALS['wgHooks']['NewRevisionFromEditComplete'][] = 'WikidataQualityConstraintsHooks::onNewRevisionFromEditComplete';
-
 	// Initialize special pages
 	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport';
 

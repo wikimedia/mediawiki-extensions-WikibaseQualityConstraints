@@ -14,11 +14,9 @@ use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator;
 use WikidataQuality\Html\HtmlTable;
 use WikidataQuality\Html\HtmlTableHeader;
 use WikidataQuality\Specials\SpecialCheckResultPage;
-use WikidataQuality\Violations\ViolationStore;
 use JobQueueGroup;
 
 
@@ -102,7 +100,6 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 		$constraintChecker = new ConstraintChecker( $this->entityLookup );
 		$results = $constraintChecker->execute( $entity );
 
-		$this->saveResultsInViolationsTable( $entity, $results );
 		$this->doEvaluation( $entity, $results );
 		return $results;
 	}
@@ -288,17 +285,6 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 			'exception' => 'warning',
 			'violation' => 'error'
 		);
-	}
-
-	/**
-	 * @param EntityDocument $entity
-	 * @param array $results
-	 */
-	protected function saveResultsInViolationsTable( $entity, $results ) {
-		$translator = new CheckResultToViolationTranslator();
-		$violations = $translator->translateToViolation( $entity, $results );
-		$violationStore = new ViolationStore();
-		$violationStore->insertViolations( $violations );
 	}
 
 	protected function doEvaluation( $entity, $results ) {
