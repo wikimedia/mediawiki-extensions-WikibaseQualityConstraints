@@ -39,40 +39,40 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		parent::tearDown();
 	}
 
-	public function testCheckCommonsLinkConstraintValid() {
+	public function testcheckConstraintValid() {
 		$value = new StringValue( 'President Barack Obama.jpg' );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) ) );
-		$this->assertEquals( 'compliance', $this->commonsLinkChecker->checkCommonsLinkConstraint( $statement, 'File' )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->commonsLinkChecker->checkConstraint( $statement, array( 'namespace' => 'File' ) )->getStatus(), 'check should comply' );
 	}
 
-	public function testCheckCommonsLinkConstraintInvalid() {
+	public function testcheckConstraintInvalid() {
 		$value1 = new StringValue( 'President_Barack_Obama.jpg' );
 		$value2 = new StringValue( 'President%20Barack%20Obama.jpg' );
 		$value3 = new StringValue( 'File:President Barack Obama.jpg' );
 		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), $value1 ) ) );
 		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), $value2 ) ) );
 		$statement3 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), $value3 ) ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkCommonsLinkConstraint( $statement1, 'File' )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkCommonsLinkConstraint( $statement2, 'File' )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkCommonsLinkConstraint( $statement3, 'File' )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement1, array( 'namespace' => 'File' ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement2, array( 'namespace' => 'File' ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement3, array( 'namespace' => 'File' ) )->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckCommonsLinkConstraintWithoutNamespace() {
+	public function testcheckConstraintWithoutNamespace() {
 		$value = new StringValue( 'President Barack Obama.jpg' );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkCommonsLinkConstraint( $statement, null )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, null )->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckCommonsLinkConstraintNotExistent() {
+	public function testcheckConstraintNotExistent() {
 		$value = new StringValue( 'Qwertz Asdfg Yxcv.jpg' );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkCommonsLinkConstraint( $statement, 'File' )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, array( 'namespace' => 'File' ) )->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckCommonsLinkConstraintNoStringValue() {
+	public function testcheckConstraintNoStringValue() {
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkCommonsLinkConstraint( $statement, 'File' )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, array( 'namespace' => 'File' ) )->getStatus(), 'check should not comply' );
 	}
 
 }

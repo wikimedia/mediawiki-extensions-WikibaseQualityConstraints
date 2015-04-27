@@ -3,13 +3,13 @@
 namespace WikidataQuality\ConstraintReport\Test\QualifierChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker
+ * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
  *
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
@@ -17,7 +17,7 @@ use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class QualifierCheckerTest extends \MediaWikiTestCase {
+class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 
 	private $helper;
 	private $lookup;
@@ -40,10 +40,21 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		}
 	}
 
-	public function testQualifierConstraintQualifierProperty() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), array() );
+	public function testMandatoryQualifiersConstraintValid() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
+		$qualifierChecker = new MandatoryQualifiersChecker( $this->helper );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), array( 'property' => array ( 'P2' ) ) );
+		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+	}
+
+	public function testMandatoryQualifiersConstraintInvalid() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
+		$qualifierChecker = new MandatoryQualifiersChecker( $this->helper );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), array( 'property' => array (
+			'P2',
+			'P3'
+		) ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
+
 }

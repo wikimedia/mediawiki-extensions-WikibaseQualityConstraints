@@ -47,45 +47,40 @@ class ConstraintReportHelperTest extends \MediaWikiTestCase {
 
 	public function testGetPropertyOfJson() {
 		$json = json_decode( json_encode( array ( 'namespace' => 'File' ) ) );
-		$this->assertEquals( 'File', $this->helper->getPropertyOfJson( $json, 'namespace' ) );
-		$this->assertEquals( null, $this->helper->getPropertyOfJson( $json, 'Does not exist' ) );
+		$this->assertEquals( 'File', $this->helper->getParameterFromJson( $json, 'namespace' ) );
+		$this->assertEquals( null, $this->helper->getParameterFromJson( $json, 'Does not exist' ) );
 	}
 
 	public function testParseSingleParameter() {
 		$parameter = 'P1';
-		$type = 'PropertyId';
-		$this->assertEquals( array ( new PropertyId( $parameter ) ), $this->helper->parseSingleParameter( $parameter, $type ) );
+		$this->assertEquals( array ( new PropertyId( $parameter ) ), $this->helper->parseSingleParameter( $parameter ) );
 	}
 
 	public function testParseNullParameter() {
 		$parameter = null;
-		$type = 'PropertyId';
-		$this->assertEquals( array ( 'null' ), $this->helper->parseSingleParameter( $parameter, $type ) );
+		$this->assertEquals( array ( 'null' ), $this->helper->parseSingleParameter( $parameter ) );
 	}
 
 	public function testParseNullParameterArray() {
 		$parameter = array ( '' );
-		$type = 'PropertyId';
-		$this->assertEquals( array ( 'null' ), $this->helper->parseParameterArray( $parameter, $type ) );
+		$this->assertEquals( array ( 'null' ), $this->helper->parseParameterArray( $parameter ) );
 	}
 
 	public function testParseParameterArray() {
 		$parameter = array ( 'Q1', 'Q2' );
-		$type = 'ItemId';
 		$this->assertEquals( array (
 								 new ItemId( 'Q1' ),
 								 new ItemId( 'Q2' )
-							 ), $this->helper->parseParameterArray( $parameter, $type ) );
+							 ), $this->helper->parseParameterArray( $parameter ) );
 	}
 
 	public function testParseParameterString() {
 		$parameter = 'instance';
-		$this->assertEquals( array ( 'instance' ), $this->helper->parseSingleParameter( $parameter ) );
+		$this->assertEquals( array ( 'instance' ), $this->helper->parseSingleParameter( $parameter, true ) );
 	}
 
 	public function testParseParameterUnknownParameter() {
 		$parameter = 'R1';
-		$type = 'ItemId';
-		$this->assertEquals( array ( '' ), $this->helper->parseSingleParameter( $parameter, $type ) );
+		$this->assertEquals( array ( '' ), $this->helper->parseSingleParameter( $parameter ) );
 	}
 }

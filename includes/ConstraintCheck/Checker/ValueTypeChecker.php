@@ -15,13 +15,13 @@ use Wikibase\DataModel\Entity\Entity;
 
 /**
  * Class TypeChecker.
- * Checks 'Type' constraint.
+ * Checks 'Value type' constraint.
  *
  * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class TypeChecker implements ConstraintChecker {
+class ValueTypeChecker implements ConstraintChecker {
 
 	/**
 	 * Class for helper functions for constraint checkers.
@@ -55,7 +55,7 @@ class TypeChecker implements ConstraintChecker {
 	}
 
 	/**
-	 * Checks 'Type' constraint.
+	 * Checks 'Value type' constraint.
 	 *
 	 * @param Statement $statement
 	 * @param array $constraintParameters
@@ -69,36 +69,63 @@ class TypeChecker implements ConstraintChecker {
 		$parameters[ 'class' ] = $this->helper->parseParameterArray( $constraintParameters['class'] );
 		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $constraintParameters['relation'] );
 
+		$mainSnak = $statement->getClaim()->getMainSnak();
+
 		/*
 		 * error handling:
-		 *   parameter $constraintParameters['class'] must not be null
+		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
+		if ( !$mainSnak instanceof PropertyValueSnak ) {
+			$message = 'Properties with \'Value type\' constraint need to have a value.';
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$dataValue = $mainSnak->getDataValue();
+
+		/*
+		 * error handling:
+		 *   type of $dataValue for properties with 'Value type' constraint has to be 'wikibase-entityid'
+		 *   parameter $constraintParameters['class']  must not be null
+		 */
+		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
+			$message = 'Properties with \'Value type\' constraint need to have values of type \'wikibase-entityid\'.';
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
 		if ( $constraintParameters['class'][0] === '' ) {
-			$message = 'Properties with \'Type\' constraint need the parameter \'class\'.';
-			return new CheckResult( $statement, 'Type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			$message = 'Properties with \'Value type\' constraint need the parameter \'class\'.';
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
 		 * error handling:
 		 *   parameter $constraintParameters['relation'] must be either 'instance' or 'subclass'
 		 */
-		if ( $constraintParameters['relation'] === 'instance' ) {
+		if ( $constraintParameters[ 'relation' ] === 'instance' ) {
 			$relationId = self::instanceId;
-		} elseif ( $constraintParameters['relation'] === 'subclass' ) {
+		} elseif ( $constraintParameters[ 'relation' ] === 'subclass' ) {
 			$relationId = self::subclassId;
 		} else {
 			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
-			return new CheckResult( $statement, 'Type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		if ( $this->typeCheckerHelper->hasClassInRelation( $entity->getStatements(), $relationId, $constraintParameters['class']  ) ) {
+		$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
+
+		if ( !$item ) {
+			$message = 'This property\'s value entity does not exist.';
+			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
+
+		$statements = $item->getStatements();
+
+		if ( $this->typeCheckerHelper->hasClassInRelation( $statements, $relationId, $constraintParameters[ 'class' ] ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = 'This property must only be used on items that are in the relation to the item (or a subclass of the item) defined in the parameters.';
+			$message = 'This property\'s value entity must be in the relation to the item (or a subclass of the item) defined in the parameters.';
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, 'Type', $parameters, $status, $message );
+		return new CheckResult( $statement, 'Value type', $parameters, $status, $message );
 	}
 }

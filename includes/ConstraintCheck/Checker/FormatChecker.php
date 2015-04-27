@@ -3,10 +3,11 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-
+use Wikibase\DataModel\Entity\Entity;
 
 /**
  * Class FormatChecker.
@@ -16,7 +17,7 @@ use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class FormatChecker {
+class FormatChecker implements ConstraintChecker {
 
 	/**
 	 * Class for helper functions for constraint checkers.
@@ -36,14 +37,15 @@ class FormatChecker {
 	 * Checks 'Format' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param string $pattern
+	 * @param array $constraintParameters
+	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkFormatConstraint( Statement $statement, $pattern ) {
+	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
 		$parameters = array ();
 
-		$parameters[ 'pattern' ] = $this->helper->parseSingleParameter( $pattern );
+		$parameters[ 'pattern' ] = $this->helper->parseSingleParameter( $constraintParameters['pattern'] );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -67,14 +69,14 @@ class FormatChecker {
 			$message = 'Properties with \'Format\' constraint need to have values of type \'string\'.';
 			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		if ( $pattern === null ) {
+		if ( $constraintParameters['pattern'] === null ) {
 			$message = 'Properties with \'Format\' constraint need a parameter \'pattern\'.';
 			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$comparativeString = $dataValue->getValue();
 
-		if ( preg_match( '/^' . str_replace( '/', '\/', $pattern ) . '$/', $comparativeString ) ) {
+		if ( preg_match( '/^' . str_replace( '/', '\/', $constraintParameters['pattern'] ) . '$/', $comparativeString ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

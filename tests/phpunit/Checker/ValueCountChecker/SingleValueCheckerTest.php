@@ -1,0 +1,68 @@
+<?php
+
+namespace WikidataQuality\ConstraintReport\Test\ValueCountChecker;
+
+use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Claim\Claim;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\EntityIdValue;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+
+
+/**
+ * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
+ *
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ *
+ * @author BP2014N1
+ * @license GNU GPL v2+
+ */
+class SingleValueCheckerTest extends \MediaWikiTestCase {
+
+	private $helper;
+	private $singlePropertyId;
+	private $checker;
+	private $lookup;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->helper = new ConstraintReportHelper();
+		$this->singlePropertyId = new PropertyId( 'P36' );
+		$this->checker = new SingleValueChecker( $this->helper );
+		$this->lookup = new JsonFileEntityLookup( __DIR__ );
+	}
+
+	protected function tearDown() {
+		unset( $this->helper );
+		unset( $this->singlePropertyId );
+		unset( $this->checker );
+		unset( $this->lookup );
+		parent::tearDown();
+	}
+
+	public function testCheckSingleValueConstraintOne() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
+		$checkResult = $this->checker->checkConstraint( $statement, array (), $entity );
+		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+	}
+
+	public function testCheckSingleValueConstraintTwo() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
+		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
+		$checkResult = $this->checker->checkConstraint( $statement, array (), $entity );
+		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+	}
+
+	public function testCheckSingleValueConstraintTwoButOneDeprecated() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
+		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
+		$checkResult = $this->checker->checkConstraint( $statement, array (), $entity );
+		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+	}
+}

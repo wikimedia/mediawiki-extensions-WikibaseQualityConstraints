@@ -48,29 +48,29 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 
 		$values = array ( 'Q1', 'Q2', 'Q3' );
 
-		$this->assertEquals( 'compliance', $this->oneOfChecker->checkOneOfConstraint( $statementIn, $values )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'violation', $this->oneOfChecker->checkOneOfConstraint( $statementNotIn, $values )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'compliance', $this->oneOfChecker->checkConstraint( $statementIn, array( 'item' => $values ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'violation', $this->oneOfChecker->checkConstraint( $statementNotIn, array( 'item' => $values ) )->getStatus(), 'check should not comply' );
 	}
 
 	public function testCheckOneOfConstraintWrongType() {
 		$value = new StringValue( 'Q1' );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) ) );
 		$values = array ( 'Q1', 'Q2', 'Q3' );
-		$this->assertEquals( 'violation', $this->oneOfChecker->checkOneOfConstraint( $statement, $values )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->oneOfChecker->checkConstraint( $statement, array( 'item' => $values ) )->getStatus(), 'check should not comply' );
 	}
 
 	public function testCheckOneOfConstraintEmptyArray() {
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) ) );
 		$values = array ( '' );
-		$this->assertEquals( 'violation', $this->oneOfChecker->checkOneOfConstraint( $statement, $values )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->oneOfChecker->checkConstraint( $statement, array( 'item' => $values ) )->getStatus(), 'check should not comply' );
 	}
 
 	public function testCheckOneOfConstraintArrayWithSomevalue() {
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) ) );
 		$values = array ( 'Q1', 'Q2', 'Q3', 'somevalue' );
-		$this->assertEquals( 'compliance', $this->oneOfChecker->checkOneOfConstraint( $statement, $values )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->oneOfChecker->checkConstraint( $statement, array( 'item' => $values ) )->getStatus(), 'check should comply' );
 	}
 
 }

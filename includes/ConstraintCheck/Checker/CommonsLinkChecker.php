@@ -3,9 +3,11 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use Wikibase\DataModel\Entity\Entity;
 
 
 /**
@@ -16,7 +18,7 @@ use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class CommonsLinkChecker {
+class CommonsLinkChecker implements ConstraintChecker {
 
 	/**
 	 * Class for helper functions for constraint checkers.
@@ -36,14 +38,15 @@ class CommonsLinkChecker {
 	 * Checks if data value is well-formed and links to an existing page.
 	 *
 	 * @param Statement $statement
-	 * @param string $namespace
+	 * @param array $constraintParameters
+	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkCommonsLinkConstraint( Statement $statement, $namespace ) {
+	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
 		$parameters = array ();
 
-		$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $namespace );
+		$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $constraintParameters['namespace'] );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -71,7 +74,7 @@ class CommonsLinkChecker {
 		$commonsLink = $dataValue->getValue();
 
 		if ( $this->commonsLinkIsWellFormed( $commonsLink ) ) {
-			if ( $this->urlExists( $commonsLink, $namespace ) ) {
+			if ( $this->urlExists( $commonsLink, $constraintParameters['namespace'] ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {

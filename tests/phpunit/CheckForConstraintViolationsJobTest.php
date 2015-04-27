@@ -19,7 +19,7 @@ use DataValues\StringValue;
  * @group Database
  *
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *
  * @author BP2014N1
  * @license GNU GPL v2+

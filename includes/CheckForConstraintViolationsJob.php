@@ -6,7 +6,9 @@ use Job;
 use Title;
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\Repo\WikibaseRepo;
-use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
+use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 
@@ -45,11 +47,14 @@ class CheckForConstraintViolationsJob extends Job {
 	}
 
 	public function run() {
-		$checkTimestamp = array_key_exists( 'checkTimestamp', $this->params ) ? $this->params['checkTimestamp'] : wfTimestamp( TS_MW );
+	$checkTimestamp = array_key_exists( 'checkTimestamp', $this->params ) ? $this->params[ 'checkTimestamp' ] : wfTimestamp( TS_MW );
 
-		if ( $this->params['results'] === null ) {
-			$constraintChecker = new ConstraintChecker( WikibaseRepo::getDefaultInstance()->getEntityLookup() );
-			$results = $constraintChecker->execute( $this->params['entity'] );
+		if ( $this->params[ 'results' ] === null ) {
+			$lookup = WikibaseRepo::getDefaultInstance()->getEntityLookup();
+			$checkerMap = new CheckerMapBuilder( $lookup, new ConstraintReportHelper() );
+			$constraintChecker = new DelegatingConstraintChecker( $lookup, $checkerMap->getCheckerMap() );
+
+			$results = $constraintChecker->checkAgainstConstraints( $this->params[ 'entity' ] );
 		} else {
 			$results = $this->params['results'];
 		}

@@ -3,20 +3,19 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Class OneOfChecker.
- * Checks 'One of' constraint.
- *
  * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class OneOfChecker {
+class OneOfChecker implements ConstraintChecker {
 
 	/**
 	 * Class for helper functions for constraint checkers.
@@ -36,14 +35,15 @@ class OneOfChecker {
 	 * Checks 'One of' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $itemArray
+	 * @param array $constraintParameters
+	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkOneOfConstraint( Statement $statement, $itemArray ) {
+	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
 		$parameters = array ();
 
-		$parameters[ 'item' ] = $this->helper->parseParameterArray( $itemArray, 'ItemId' );
+		$parameters[ 'item' ] = $this->helper->parseParameterArray( $constraintParameters['item'] );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -67,12 +67,12 @@ class OneOfChecker {
 			$message = 'Properties with \'One of\' constraint need to have values of type \'wikibase-entityid\'.';
 			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		if ( $itemArray[ 0 ] === '' ) {
+		if ( $constraintParameters['item'][ 0 ] === '' ) {
 			$message = 'Properties with \'One of\' constraint need a parameter \'item\'.';
 			return new CheckResult( $statement, 'One of', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		if ( in_array( $dataValue->getEntityId()->getSerialization(), $itemArray ) ) {
+		if ( in_array( $dataValue->getEntityId()->getSerialization(), $constraintParameters['item'] ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

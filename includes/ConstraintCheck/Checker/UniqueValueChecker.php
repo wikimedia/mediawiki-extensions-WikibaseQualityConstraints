@@ -2,39 +2,37 @@
 
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Wikibase\DataModel\Statement\StatementList;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Qualifier' constraint.
+ * Class ValueCountChecker.
+ * Checks 'Unique value' constraint.
  *
  * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class QualifierChecker implements ConstraintChecker {
+class UniqueValueChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
-	 * @var ConstraintReportHelper
+	 * @var ValueCountCheckerHelper
 	 */
-	private $helper;
+	private $valueCountCheckerHelper;
 
-	/**
-	 * @param ConstraintReportHelper $helper
-	 */
-	public function __construct( ConstraintReportHelper $helper ) {
-		$this->helper = $helper;
+	public function __construct() {
+		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 	}
 
+	// todo: implement when index exists that makes it possible in reasonable time
 	/**
-	 * If this method gets invoked, it is automatically a violation since this method only gets invoked
-	 * for properties used in statements.
+	 * Checks 'Unique value' constraint.
 	 *
 	 * @param Statement $statement
 	 * @param array $constraintParameters
@@ -43,7 +41,9 @@ class QualifierChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
-		$message = 'The property must only be used as a qualifier.';
-		return new CheckResult( $statement, 'Qualifier', array (), CheckResult::STATUS_VIOLATION, $message );
+		$parameters = array ();
+
+		$message = 'For technical reasons, the check for this constraint has not yet been implemented.';
+		return new CheckResult( $statement, 'Unique value', $parameters, CheckResult::STATUS_TODO, $message );
 	}
 }

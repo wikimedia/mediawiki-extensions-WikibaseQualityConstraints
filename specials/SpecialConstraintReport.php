@@ -13,7 +13,9 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob;
-use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
+use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\Html\HtmlTable;
 use WikidataQuality\Html\HtmlTableHeader;
 use WikidataQuality\Specials\SpecialCheckResultPage;
@@ -96,9 +98,13 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 	 * @return string
 	 */
 	protected function executeCheck( Entity $entity ) {
-		// Run constraint checker
-		$constraintChecker = new ConstraintChecker( $this->entityLookup );
-		$results = $constraintChecker->execute( $entity );
+
+		$constraintReportHelper = new ConstraintReportHelper();
+		$checkerMapBuilder = new CheckerMapBuilder( $this->entityLookup, $constraintReportHelper );
+		$checkerMap = $checkerMapBuilder->getCheckerMap();
+
+		$constraintChecker = new DelegatingConstraintChecker( $this->entityLookup, $checkerMap );
+		$results = $constraintChecker->checkAgainstConstraints( $entity );
 
 		$this->doEvaluation( $entity, $results );
 		return $results;

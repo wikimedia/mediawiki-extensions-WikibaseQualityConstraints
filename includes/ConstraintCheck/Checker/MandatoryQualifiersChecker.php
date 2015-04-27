@@ -10,13 +10,13 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Qualifier' constraint.
+ * Checks 'Mandatory qualifiers' constraint.
  *
  * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class QualifierChecker implements ConstraintChecker {
+class MandatoryQualifiersChecker implements ConstraintChecker {
 
 	/**
 	 * Class for helper functions for constraint checkers.
@@ -33,8 +33,7 @@ class QualifierChecker implements ConstraintChecker {
 	}
 
 	/**
-	 * If this method gets invoked, it is automatically a violation since this method only gets invoked
-	 * for properties used in statements.
+	 * Checks 'Mandatory qualifiers' constraint.
 	 *
 	 * @param Statement $statement
 	 * @param array $constraintParameters
@@ -43,7 +42,28 @@ class QualifierChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
-		$message = 'The property must only be used as a qualifier.';
-		return new CheckResult( $statement, 'Qualifier', array (), CheckResult::STATUS_VIOLATION, $message );
+		$parameters = array ();
+
+		$parameters[ 'property' ] = $this->helper->parseParameterArray( $constraintParameters['property'] );
+		$qualifiersList = $statement->getQualifiers();
+		$qualifiers = array ();
+
+		foreach ( $qualifiersList as $qualifier ) {
+			$qualifiers[ $qualifier->getPropertyId()->getSerialization() ] = true;
+		}
+
+		$message = '';
+		$status = CheckResult::STATUS_COMPLIANCE;
+
+		foreach ( $constraintParameters['property'] as $property ) {
+			if ( !array_key_exists( $property, $qualifiers ) ) {
+				$message = 'The properties defined in the parameters have to be used as qualifiers on this statement.';
+				$status = CheckResult::STATUS_VIOLATION;
+				break;
+			}
+		}
+
+		return new CheckResult( $statement, 'Mandatory Qualifiers', $parameters, $status, $message );
 	}
+
 }

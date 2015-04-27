@@ -21,9 +21,10 @@ use Wikibase\DataModel\Entity\EntityId;
  * @group Database
  * @group medium
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ValueCountChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikidataQuality\Html\HtmlTable
  * @uses   WikidataQuality\Html\HtmlTableCell
@@ -292,5 +293,5 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 		return $cases;
 	}
-	
+
 }

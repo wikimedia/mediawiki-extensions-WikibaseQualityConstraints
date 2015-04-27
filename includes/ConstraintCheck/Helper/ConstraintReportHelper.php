@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 
@@ -41,19 +42,20 @@ class ConstraintReportHelper {
 		}
 	}
 
-	private function parseParameter( $parameter, $type = 'String' ) {
+	private function parseParameter( $parameter, $asString = false ) {
 		if ( $parameter === null ) {
 			return 'null';
 		}
 
-		if ( $type === 'String' ) {
+		if ( $asString ) {
 			return "$parameter";
 		}
 
 		$startsWith = strtoupper( substr( $parameter, 0, 1 ) );
-		if ( $startsWith === 'Q' || $startsWith === 'P' ) {
-			$type = 'Wikibase\\DataModel\\Entity\\' . $type;
-			return new $type( $parameter );
+		if ( $startsWith === 'Q' ) {
+			return new ItemId( $parameter );
+		} elseif ( $startsWith === 'P' ) {
+			return new PropertyId( $parameter );
 		}
 
 		return '';
@@ -63,29 +65,29 @@ class ConstraintReportHelper {
 	 * Helps set/format a single parameter depending on its type.
 	 *
 	 * @param string $parameter
-	 * @param string $type
+	 * @param bool $asString
 	 *
 	 * @return array
 	 */
-	public function parseSingleParameter( $parameter, $type = 'String' ) {
-		return array ( $this->parseParameter( $parameter, $type ) );
+	public function parseSingleParameter( $parameter, $asString = false ) {
+		return array ( $this->parseParameter( $parameter, $asString ) );
 	}
 
 	/**
 	 * Helps set/format the item/class/property parameter arrays according to their respective type.
 	 *
 	 * @param array $parameterArray
-	 * @param string $type
+	 * @param bool $asString
 	 *
 	 * @return array
 	 */
-	public function parseParameterArray( $parameterArray, $type = 'String' ) {
+	public function parseParameterArray( $parameterArray, $asString = false ) {
 		if ( $parameterArray[ 0 ] === '' ) { // parameter not given
 			return array ( 'null' );
 		} else {
 			$array = array ();
 			foreach ( $parameterArray as $parameter ) {
-				$array[ ] = $this->parseParameter( $parameter, $type );
+				$array[ ] = $this->parseParameter( $parameter, $asString );
 			}
 			return $array;
 		}
@@ -93,13 +95,13 @@ class ConstraintReportHelper {
 
 	/**
 	 * @param $json
-	 * @param string $property
+	 * @param string $parameter
 	 *
 	 * @return null|string
 	 */
-	public function getPropertyOfJson( $json, $property ) {
-		if ( isset( $json->$property ) ) {
-			return $json->$property;
+	public function getParameterFromJson( $json, $parameter ) {
+		if ( isset( $json->$parameter ) ) {
+			return $json->$parameter;
 		} else {
 			return null;
 		}
