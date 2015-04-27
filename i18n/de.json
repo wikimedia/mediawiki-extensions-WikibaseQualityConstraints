@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Inkowik",
+			"Metalhead64"
+		]
+	},
+	"wikidataquality-constraintreport": "Beschränkungsbericht",
+	"wikidataquality-constraintreport-instructions": "Gib eine Objektkennung ein und lasse sie auf Beschränkungen überprüfen.",
+	"wikidataquality-constraintreport-instructions-example": "Versuche eine Kennung, idealerweise eine Objektkennung, und schaue nach den Ergebnissen.",
+	"wikidataquality-constraintreport-empty-result": "Es gibt für dieses Objekt keine definierte Beschränkung.",
+	"wikidataquality-constraintreport-result-table-header-claim": "Behauptung",
+	"wikidataquality-constraintreport-result-table-header-constraint": "Beschränkung",
+	"wikidataquality-constraintreport-result-link-to-claim": "gehe zu Behauptung",
+	"wikidataquality-constraintreport-result-link-to-constraint": "gehe zu Beschränkung"
+}
