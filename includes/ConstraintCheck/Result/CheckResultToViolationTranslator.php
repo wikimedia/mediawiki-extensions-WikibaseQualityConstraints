@@ -5,21 +5,17 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Result;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\Entity;
+use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\Result\ResultToViolationTranslator;
 use WikidataQuality\Violations\Violation;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 
 
 class CheckResultToViolationTranslator extends ResultToViolationTranslator {
 
 	public function translateToViolation( Entity $entity, $checkResultOrArray ) {
 
-		if ( $checkResultOrArray instanceof CheckResult ) {
-			$checkResultArray = array ( $checkResultOrArray );
-		} elseif ( is_array( $checkResultOrArray ) ) {
-			$checkResultArray = $checkResultOrArray;
-		} else {
-			throw new InvalidArgumentException;
-		}
+	    $checkResultArray = $this->setCheckResultArray( $checkResultOrArray );
 
 		$violationArray = array ();
 		foreach ( $checkResultArray as $checkResult ) {
@@ -31,17 +27,9 @@ class CheckResultToViolationTranslator extends ResultToViolationTranslator {
 			$propertyId = $statement->getPropertyId();
 			$claimGuid = $statement->getGuid();
 			$entityId = $entity->getId();
-
 			//TODO: Use real claimGuid
 			$constraintTypeEntityId = $checkResult->getConstraintName();
-			$constraintId = $claimGuid . $constraintTypeEntityId;
-			$parameters = $checkResult->getParameters();
-			if ( is_array( $parameters ) ) {
-				foreach ( $parameters as $par ) {
-					$constraintId .= implode( ', ', $par );
-				}
-			}
-			$constraintId = md5( $constraintId );
+            $constraintId = $this->setConstraintId( $checkResult, $statement, $constraintTypeEntityId );
 			$revisionId = $this->getRevisionIdForEntity( $entityId );
 			$status = CheckResult::STATUS_VIOLATION;
 
@@ -50,4 +38,27 @@ class CheckResultToViolationTranslator extends ResultToViolationTranslator {
 
 		return $violationArray;
 	}
+
+    private function setCheckResultArray( $checkResultOrArray ){
+
+        if ( $checkResultOrArray instanceof CheckResult ) {
+            return array ( $checkResultOrArray );
+        } elseif ( is_array( $checkResultOrArray ) ) {
+            return $checkResultOrArray;
+        }
+
+        throw new InvalidArgumentException;
+    }
+
+    private function setConstraintId( CheckResult $checkResult, Statement $statement, $constraintTypeEntityId  ){
+        $constraintId = $statement->getGuid() . $constraintTypeEntityId;
+        $parameters = $checkResult->getParameters();
+        if ( is_array( $parameters ) ) {
+            foreach ( $parameters as $par ) {
+                $constraintId .= implode( ', ', $par );
+            }
+        }
+
+        return md5( $constraintId );
+    }
 }
