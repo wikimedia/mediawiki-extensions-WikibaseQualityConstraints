@@ -158,8 +158,8 @@ class ConstraintChecker {
 
 	private function checkEveryStatement( $entity, $dbr ) {
 		$result = array ();
-		foreach ( $this->statements as $statement ) {
 
+		foreach ( $this->statements as $statement ) {
 			$claim = $statement->getClaim();
 
 			if ( $claim->getMainSnak()->getType() !== 'value' ) {
@@ -173,7 +173,6 @@ class ConstraintChecker {
 			$constraints = $this->queryConstraintsForProperty( $dbr, $numericPropertyId );
 
 			$result = array_merge( $result, $this->checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) );
-
 		}
 
 		return $result;
@@ -181,6 +180,7 @@ class ConstraintChecker {
 
 	private function checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) {
 		$result = array ();
+
 		foreach ( $constraints as $row ) {
 			$constraintParameters = json_decode( $row->constraint_parameters );
 
@@ -192,6 +192,7 @@ class ConstraintChecker {
 
 			$result[ ] = $this->getCheckResultFor( $statement, $row->constraint_type_qid, $constraintParameters, $entity );
 		}
+
 		return $result;
 	}
 
@@ -292,8 +293,13 @@ class ConstraintChecker {
 		);
 	}
 
+	/**
+	 * @param $result
+	 *
+	 * @return mixed
+	 */
 	private function sortResult( $result ) {
-		$sortFunction = function ( $a, $b ) {
+		$sortFunction = function ( CheckResult $a, CheckResult $b ) {
 			$order = array ( 'other' => 4, 'compliance' => 3, 'exception' => 2, 'violation' => 1 );
 
 			$statusA = $a->getStatus();

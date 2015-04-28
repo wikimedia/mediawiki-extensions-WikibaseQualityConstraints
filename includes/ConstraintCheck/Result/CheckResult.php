@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Result;
 
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\DataValue;
@@ -49,7 +50,7 @@ class CheckResult implements \WikidataQuality\Result\CheckResult {
 	 */
 	private $message;
 
-	public function __construct( Statement $statement, $constraintName, $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
+	public function __construct( Statement $statement, $constraintName, $parameters = array(), $status = self::STATUS_TODO, $message = '' ) {
 		$this->statement = $statement;
 		$this->constraintName = $constraintName;
 		$this->parameters = $parameters;
@@ -72,10 +73,22 @@ class CheckResult implements \WikidataQuality\Result\CheckResult {
 	}
 
 	/**
-	 * @return DataValue
+	 * @return string
+	 */
+	public function getMainSnakType() {
+		return $this->statement->getMainSnak()->getType();
+	}
+
+	/**
+	 * @return mixed
+	 * @throws \Exception
 	 */
 	public function getDataValue() {
-		return $this->statement->getClaim()->getMainSnak()->getDataValue();
+		if ( !$this->statement->getMainSnak() instanceof PropertyValueSnak ) {
+			throw new \Exception( 'Cannot get DataValue, MainSnak is of type ' . $this->getMainSnakType() . '.' );
+		}
+
+		return $this->statement->getMainSnak()->getDataValue();
 	}
 
 	/**

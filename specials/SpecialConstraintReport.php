@@ -140,7 +140,12 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 
 			// Claim column
 			$property = $this->entityIdHtmlLinkFormatter->formatEntityId( $result->getPropertyId() );
-			$value = $this->formatValue( $result->getDataValue() );
+			if ( $result->getMainSnakType() !== 'value' ) {
+				$value = $this->formatValue( $result->getDataValue() );
+			} else {
+				$value = $result->getMainSnakType();
+			}
+
 			$claimLink = $this->getClaimLink(
 				$entityId,
 				$result->getPropertyId(),
