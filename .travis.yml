@@ -11,10 +11,6 @@ matrix:
       php: 5.5
     - env: DBTYPE=sqlite
       php: 5.5
-    - env: DBTYPE=mysql
-      php: hhvm-nightly
-    - env: DBTYPE=sqlite
-      php: hhvm-nightly
 
 before_script:
   - bash ./build/travis/before_script.sh
