@@ -42,4 +42,5 @@ call_user_func( function() {
 
 	// Jobs
 	$GLOBALS['wgJobClasses']['checkForConstraintViolations'] = 'CheckForConstraintViolationsJob';
+	$GLOBALS['wgDebugLogGroups']['wdqa_evaluation'] = '/var/log/mediawiki/wdqa_evaluation.log';
 } );

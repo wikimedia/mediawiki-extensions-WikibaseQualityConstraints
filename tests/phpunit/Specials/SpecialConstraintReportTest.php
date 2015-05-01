@@ -28,7 +28,6 @@ use Wikibase\DataModel\Entity\EntityId;
  * @uses   WikidataQuality\Html\HtmlTable
  * @uses   WikidataQuality\Html\HtmlTableCell
  * @uses   WikidataQuality\Html\HtmlTableHeader
- * @uses   WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -55,9 +54,32 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 */
 	private static $hasSetup;
 
+	private $testLogFileName;
+	private $oldLogFileName;
+
 	protected function setUp() {
 		parent::setUp();
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;
+
+		$this->testLogFileName = '/var/log/mediawiki/test_wdqa_evaluation.log';
+		if( file_exists( $this->testLogFileName ) ) {
+			unlink( $this->testLogFileName );
+		}
+
+		$this->oldLogFileName = $GLOBALS['wgDebugLogGroups']['wdqa_evaluation'];
+		$GLOBALS['wgDebugLogGroups']['wdqa_evaluation'] = $this->testLogFileName;
+	}
+
+	protected function tearDown() {
+		$GLOBALS['wgDebugLogGroups']['wdqa_evaluation'] = $this->oldLogFileName;
+		unset( $this->oldLogFileName );
+
+		if( file_exists( $this->testLogFileName ) ) {
+			unlink( $this->testLogFileName );
+		}
+		unset( $this->testLogFileName );
+
+		parent::tearDown();
 	}
 
 	protected function newSpecialPage() {
@@ -270,5 +292,5 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 		return $cases;
 	}
+	
 }
- 
