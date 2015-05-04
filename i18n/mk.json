@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"wikidataquality-constraintreport": "Извештај за услови",
+	"wikidataquality-constraintreport-instructions": "Внесете назнака на единицата за да бидат проверени согласно условите.",
+	"wikidataquality-constraintreport-instructions-example": "Пробајте било која назнака, по можност на предмет, и погледајте ги резултатите.",
+	"wikidataquality-constraintreport-empty-result": "Нема зададено услови за единицава.",
+	"wikidataquality-constraintreport-result-table-header-claim": "Тврдење",
+	"wikidataquality-constraintreport-result-table-header-constraint": "Услов",
+	"wikidataquality-constraintreport-result-link-to-claim": "оди на тврдењето",
+	"wikidataquality-constraintreport-result-link-to-constraint": "оди на условот"
+}
