@@ -4,6 +4,7 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Lib\Store\EntityLookup;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -58,16 +59,17 @@ class TypeChecker implements ConstraintChecker {
 	 * Checks 'Type' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
 		$parameters[ 'class' ] = $this->helper->parseParameterArray( $constraintParameters['class'] );
-		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $constraintParameters['relation'] );
+		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $constraintParameters['relation'][0] );
 
 		/*
 		 * error handling:
@@ -75,20 +77,20 @@ class TypeChecker implements ConstraintChecker {
 		 */
 		if ( $constraintParameters['class'][0] === '' ) {
 			$message = 'Properties with \'Type\' constraint need the parameter \'class\'.';
-			return new CheckResult( $statement, 'Type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
 		 * error handling:
 		 *   parameter $constraintParameters['relation'] must be either 'instance' or 'subclass'
 		 */
-		if ( $constraintParameters['relation'] === 'instance' ) {
+		if ( $constraintParameters['relation'][0] === 'instance' ) {
 			$relationId = self::instanceId;
-		} elseif ( $constraintParameters['relation'] === 'subclass' ) {
+		} elseif ( $constraintParameters['relation'][0] === 'subclass' ) {
 			$relationId = self::subclassId;
 		} else {
 			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
-			return new CheckResult( $statement, 'Type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		if ( $this->typeCheckerHelper->hasClassInRelation( $entity->getStatements(), $relationId, $constraintParameters['class']  ) ) {
@@ -99,6 +101,6 @@ class TypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, 'Type', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 }

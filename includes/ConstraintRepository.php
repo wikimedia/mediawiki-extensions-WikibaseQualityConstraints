@@ -2,7 +2,9 @@
 
 namespace WikidataQuality\ConstraintReport;
 
-use ResultWrapper;
+
+use WikidataQuality\ConstraintReport\Constraint;
+
 
 class ConstraintRepository {
 
@@ -17,16 +19,26 @@ class ConstraintRepository {
 	/**
 	 * @param $prop
 	 *
-	 * @return bool|ResultWrapper
+	 * @return array
 	 */
 	public function queryConstraintsForProperty( $prop ) {
-		return $this->db->select(
+		$results = $this->db->select(
 			CONSTRAINT_TABLE,
 			array ( 'pid', 'constraint_type_qid', 'constraint_parameters' ),
 			( "pid = $prop" ),
 			__METHOD__,
 			array ( '' )
 		);
+
+		return $this->convertToConstraints( $results );
+	}
+
+	private function convertToConstraints( $results ) {
+		$constraints = array();
+		foreach( $results as $result ) {
+			$constraints[] = new Constraint( $result );
+		}
+		return $constraints;
 	}
 
 }

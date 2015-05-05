@@ -3,8 +3,8 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Statement\StatementList;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -35,15 +35,15 @@ class UniqueValueChecker implements ConstraintChecker {
 	 * Checks 'Unique value' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
 
 		$message = 'For technical reasons, the check for this constraint has not yet been implemented.';
-		return new CheckResult( $statement, 'Unique value', $parameters, CheckResult::STATUS_TODO, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_TODO, $message );
 	}
 }

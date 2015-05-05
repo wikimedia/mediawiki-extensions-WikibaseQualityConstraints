@@ -54,7 +54,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q3' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, array(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -62,7 +62,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q2' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, array(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -70,7 +70,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new StringValue( 'Q3' );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, array(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -78,7 +78,22 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, array(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+	}
+
+	private function getConstraintMock() {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( array() );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Symmetric' );
+
+		return $mock;
 	}
 }

@@ -59,7 +59,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -73,7 +73,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -87,7 +87,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -101,7 +101,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -115,7 +115,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1457' ), new StringValue( '1.1.1970' ) ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -130,7 +130,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$value = new DecimalValue( 42 );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), new QuantityValue( $value, '1', $value, $value ) ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -144,8 +144,22 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Diff within range' );
+
+		return $mock;
+	}
 }

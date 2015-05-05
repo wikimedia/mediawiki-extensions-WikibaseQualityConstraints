@@ -3,6 +3,7 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -37,15 +38,16 @@ class FormatChecker implements ConstraintChecker {
 	 * Checks 'Format' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
-		$parameters[ 'pattern' ] = $this->helper->parseSingleParameter( $constraintParameters['pattern'] );
+		$parameters['pattern'] = $this->helper->parseParameterArray( $constraintParameters['pattern'], true );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -55,7 +57,7 @@ class FormatChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = 'Properties with \'Format\' constraint need to have a value.';
-			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -67,16 +69,16 @@ class FormatChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
 			$message = 'Properties with \'Format\' constraint need to have values of type \'string\'.';
-			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( $constraintParameters['pattern'] === null ) {
 			$message = 'Properties with \'Format\' constraint need a parameter \'pattern\'.';
-			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$comparativeString = $dataValue->getValue();
 
-		if ( preg_match( '/^' . str_replace( '/', '\/', $constraintParameters['pattern'] ) . '$/', $comparativeString ) ) {
+		if ( preg_match( '/^' . str_replace( '/', '\/', $constraintParameters['pattern'][0] ) . '$/', $comparativeString ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
@@ -84,7 +86,7 @@ class FormatChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, 'Format', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }

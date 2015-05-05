@@ -58,7 +58,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'statements' => $entity->getStatements(),
 			'property' => array( 'P1' )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters, $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -73,7 +73,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'statements' => $entity->getStatements(),
 			'property' => array( 'P1' )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters, $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -88,7 +88,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'statements' => $entity->getStatements(),
 			'property' => array( '' )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters, $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -103,7 +103,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'statements' => $entity->getStatements(),
 			'property' => array( 'P1' )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters, $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -118,8 +118,22 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'statements' => $entity->getStatements(),
 			'property' => array( 'P1' )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters, $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Inverse' );
+
+		return $mock;
+	}
 }

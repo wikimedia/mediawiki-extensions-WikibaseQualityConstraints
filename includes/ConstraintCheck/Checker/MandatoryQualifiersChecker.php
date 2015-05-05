@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -36,13 +37,14 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	 * Checks 'Mandatory qualifiers' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
 		$parameters[ 'property' ] = $this->helper->parseParameterArray( $constraintParameters['property'] );
 		$qualifiersList = $statement->getQualifiers();
@@ -63,7 +65,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $statement, 'Mandatory Qualifiers', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }

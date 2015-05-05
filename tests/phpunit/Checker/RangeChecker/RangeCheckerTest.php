@@ -62,7 +62,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_date' => null,
 			'maximum_date' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -78,7 +78,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_date' => null,
 			'maximum_date' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -94,7 +94,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_date' => null,
 			'maximum_date' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -111,7 +111,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_quantity' => null,
 			'maximum_quantity' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -128,7 +128,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_quantity' => null,
 			'maximum_quantity' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -145,7 +145,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_quantity' => null,
 			'maximum_quantity' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -162,7 +162,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_date' => null,
 			'maximum_quantity' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -179,7 +179,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_date' => null,
 			'maximum_quantity' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -196,7 +196,22 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_quantity' => null,
 			'maximum_quantity' => null
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $constraintParameters );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+	}
+
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Range' );
+
+		return $mock;
 	}
 }

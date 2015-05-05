@@ -3,8 +3,8 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Statement\StatementList;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -33,12 +33,12 @@ class SingleValueChecker implements ConstraintChecker {
 	 * Checks 'Single value' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$propertyId = $statement->getClaim()->getPropertyId();
 
 		$parameters = array ();
@@ -53,6 +53,6 @@ class SingleValueChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
-		return new CheckResult( $statement, 'Single value', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 }

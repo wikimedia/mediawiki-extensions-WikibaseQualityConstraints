@@ -5,6 +5,7 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Lib\Store\EntityLookup;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
@@ -56,13 +57,14 @@ class ItemChecker implements ConstraintChecker {
 	 * Checks 'Item' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
 		$parameters['property'] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'] );
 		$parameters['item'] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['item'] );
@@ -75,7 +77,7 @@ class ItemChecker implements ConstraintChecker {
 		 */
 		if ( $property === '' ) {
 			$message = 'Properties with \'Item\' constraint need a parameter \'property\'.';
-			return new CheckResult( $statement, 'Item', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
@@ -101,7 +103,7 @@ class ItemChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $statement, 'Item', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }

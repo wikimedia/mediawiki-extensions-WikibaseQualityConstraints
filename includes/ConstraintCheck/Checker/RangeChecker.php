@@ -4,6 +4,7 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -47,13 +48,14 @@ class RangeChecker implements ConstraintChecker {
 	 * Checks 'Range' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -63,7 +65,7 @@ class RangeChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = 'Properties with \'Range\' constraint need to have a value.';
-			return new CheckResult( $statement, 'Range', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -95,7 +97,7 @@ class RangeChecker implements ConstraintChecker {
 			$message = 'Properties with \'Range\' constraint need to have values of type \'quantity\' or \'time\'.';
 		}
 		if ( isset( $message ) ) {
-			return new CheckResult( $statement, 'Range', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$comparativeValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
@@ -108,6 +110,6 @@ class RangeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
-		return new CheckResult( $statement, 'Range', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 }
