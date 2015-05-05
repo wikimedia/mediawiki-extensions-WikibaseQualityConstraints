@@ -13,6 +13,12 @@
 	"support": {
 		"issues": "https://phabricator.wikimedia.org/project/profile/1202/"
 	},
+	"repositories": [
+		{
+			"type": "git",
+			"url": "ssh://soldag@gerrit.wikimedia.org:29418/mediawiki/extensions/WikidataQuality"
+		}
+	],
 	"require": {
 		"php": ">=5.3.0",
 		"composer/installers": "1.*,>=1.0.1",
