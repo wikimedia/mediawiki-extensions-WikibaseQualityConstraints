@@ -12,6 +12,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\DataValue;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikidataQuality\ConstraintReport\ConstraintRepository;
 
 
 /**
@@ -52,10 +53,9 @@ class DelegatingConstraintChecker {
 
 	public function __construct( EntityLookup $lookup, $checkerMap ) {
 		$this->entityLookup = $lookup;
-
 		$this->checkerMap = $checkerMap;
-
 		$this->helper = new ConstraintReportHelper();
+		$this->constraintRepository = new ConstraintRepository();
 	}
 
 	/**
@@ -94,7 +94,7 @@ class DelegatingConstraintChecker {
 			$propertyId = $claim->getPropertyId();
 			$numericPropertyId = $propertyId->getNumericId();
 
-			$constraints = $this->queryConstraintsForProperty( $dbr, $numericPropertyId );
+			$constraints = $this->constraintRepository->queryConstraintsForProperty( $numericPropertyId );
 
 			$result = array_merge( $result, $this->checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) );
 
@@ -150,16 +150,6 @@ class DelegatingConstraintChecker {
 			'namespace' => $this->helper->getParameterFromJson( $constraintParameters, 'namespace' ),
 			'pattern' => $this->helper->getParameterFromJson( $constraintParameters, 'pattern' ),
 			'relation' => $this->helper->getParameterFromJson( $constraintParameters, 'relation' )
-		);
-	}
-
-	private function queryConstraintsForProperty( $dbr, $prop ) {
-		return $dbr->select(
-			CONSTRAINT_TABLE,
-			array ( 'pid', 'constraint_type_qid', 'constraint_parameters' ),
-			( "pid = $prop" ),
-			__METHOD__,
-			array ( '' )
 		);
 	}
 

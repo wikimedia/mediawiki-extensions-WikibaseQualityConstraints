@@ -39,7 +39,7 @@ class CheckerMapBuilderTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$lookup = new JsonFileEntityLookup();
+		$lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->checkerMap = new CheckerMapBuilder( $lookup, new ConstraintReportHelper() );
 
 	}
