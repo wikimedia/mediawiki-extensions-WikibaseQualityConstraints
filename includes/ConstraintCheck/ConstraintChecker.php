@@ -3,7 +3,7 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck;
 
 use Wikibase\DataModel\Entity\Entity;
-use Wikibase\DataModel\Statement;
+use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\Result\CheckResult;
 
 
@@ -11,7 +11,7 @@ interface ConstraintChecker {
 
 	/**
 	 * @param Statement $statement
-	 * @param $constraintParameters
+	 * @param array $constraintParameters
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
