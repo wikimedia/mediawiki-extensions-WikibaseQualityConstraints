@@ -48,21 +48,36 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 	public function testCheckSingleValueConstraintOne() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
-		$checkResult = $this->checker->checkConstraint( $statement, array (), $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testCheckSingleValueConstraintTwo() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
-		$checkResult = $this->checker->checkConstraint( $statement, array (), $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testCheckSingleValueConstraintTwoButOneDeprecated() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
-		$checkResult = $this->checker->checkConstraint( $statement, array (), $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+	}
+
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Single value' );
+
+		return $mock;
 	}
 }

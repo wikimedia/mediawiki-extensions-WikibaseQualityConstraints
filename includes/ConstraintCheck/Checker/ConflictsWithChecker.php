@@ -5,6 +5,7 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Lib\Store\EntityLookup;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
@@ -55,14 +56,14 @@ class ConflictsWithChecker implements ConstraintChecker {
 	 * Checks 'Conflicts with' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement,Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-
+		$constraintParameters = $constraint->getConstraintParameter();
 		$parameters[ 'property' ] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'] );
 		$parameters[ 'item' ] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['item'] );
 		
@@ -73,7 +74,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 */
 		if ( $property === '' ) {
 			$message = 'Properties with \'Conflicts with\' constraint need a parameter \'property\'.';
-			return new CheckResult( $statement, 'Conflicts with', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
@@ -81,7 +82,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 *   a) a property only
 		 *   b) a property and a number of items (each combination of property and item forming an individual claim)
 		 */
-		if ( $constraintParameters['item'][ 0 ] === '' ) {
+		if ( $constraintParameters['item'][0] === '' ) {
 			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $property ) ) {
 				$message = 'This property must not be used when there is another statement using the property defined in the parameters.';
 				$status = CheckResult::STATUS_VIOLATION;
@@ -99,6 +100,6 @@ class ConflictsWithChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $statement, 'Conflicts with', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 }

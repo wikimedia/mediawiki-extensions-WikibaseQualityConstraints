@@ -5,6 +5,7 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Lib\Store\EntityLookup;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
@@ -58,13 +59,14 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 	 * Checks 'Target required claim' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
 		$parameters['property'] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'] );
 		$parameters['item'] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['item'] );
@@ -77,7 +79,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = 'Properties with \'Target required claim\' constraint need to have a value.';
-			return new CheckResult( $statement, 'Target required claim', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$property = $constraintParameters['property'][0];
@@ -90,17 +92,17 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = 'Properties with \'Target required claim\' constraint need to have values of type \'wikibase-entityid\'.';
-			return new CheckResult( $statement, 'Target required claim', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( $property === '' ) {
 			$message = 'Properties with \'Target required claim\' constraint need a parameter \'property\'.';
-			return new CheckResult( $statement, 'Target required claim', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$targetEntity = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetEntity === null ) {
 			$message = 'Target entity does not exist.';
-			return new CheckResult( $statement, 'Target required claim', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		$targetEntityStatementList = $targetEntity->getStatements();
 
@@ -127,6 +129,6 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $statement, 'Target required claim', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 }

@@ -4,6 +4,7 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Lib\Store\EntityLookup;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -58,16 +59,17 @@ class ValueTypeChecker implements ConstraintChecker {
 	 * Checks 'Value type' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
 		$parameters[ 'class' ] = $this->helper->parseParameterArray( $constraintParameters['class'] );
-		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $constraintParameters['relation'] );
+		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $constraintParameters['relation'][0] );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -77,7 +79,7 @@ class ValueTypeChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = 'Properties with \'Value type\' constraint need to have a value.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -89,31 +91,31 @@ class ValueTypeChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = 'Properties with \'Value type\' constraint need to have values of type \'wikibase-entityid\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( $constraintParameters['class'][0] === '' ) {
 			$message = 'Properties with \'Value type\' constraint need the parameter \'class\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
 		 * error handling:
 		 *   parameter $constraintParameters['relation'] must be either 'instance' or 'subclass'
 		 */
-		if ( $constraintParameters[ 'relation' ] === 'instance' ) {
+		if ( $constraintParameters['relation'][0] === 'instance' ) {
 			$relationId = self::instanceId;
-		} elseif ( $constraintParameters[ 'relation' ] === 'subclass' ) {
+		} elseif ( $constraintParameters['relation'][0] === 'subclass' ) {
 			$relationId = self::subclassId;
 		} else {
 			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 
 		if ( !$item ) {
 			$message = 'This property\'s value entity does not exist.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$statements = $item->getStatements();
@@ -126,6 +128,6 @@ class ValueTypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, 'Value type', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 }

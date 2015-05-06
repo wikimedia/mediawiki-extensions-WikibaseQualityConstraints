@@ -48,8 +48,22 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 	public function testCheckUniqueValueConstraint() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q404' ) ) ) ) );
-		$checkResult = $this->checker->checkConstraint( $statement, array( 'statements' => $entity->getStatements() ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ) );
 		$this->assertEquals( 'todo', $checkResult->getStatus(), 'check should point out that it should be implemented soon' );
 	}
 
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Unique value' );
+
+		return $mock;
+	}
 }

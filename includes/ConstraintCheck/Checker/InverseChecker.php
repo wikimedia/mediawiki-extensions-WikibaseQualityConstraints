@@ -5,6 +5,7 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Lib\Store\EntityLookup;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
@@ -57,13 +58,14 @@ class InverseChecker implements ConstraintChecker {
 	 * Checks 'Inverse' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
 		$parameters[ 'property' ] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'] );
 
@@ -76,7 +78,7 @@ class InverseChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = 'Properties with \'Inverse\' constraint need to have a value.';
-			return new CheckResult( $statement, 'Inverse', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$property = $constraintParameters['property'][0];
@@ -89,17 +91,17 @@ class InverseChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = 'Properties with \'Inverse\' constraint need to have values of type \'wikibase-entityid\'.';
-			return new CheckResult( $statement, 'Inverse', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( $property === '' ) {
 			$message = 'Properties with \'Inverse\' constraint need a parameter \'property\'.';
-			return new CheckResult( $statement, 'Inverse', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$targetItem = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetItem === null ) {
 			$message = 'Target item does not exist.';
-			return new CheckResult( $statement, 'Inverse', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		$targetItemStatementList = $targetItem->getStatements();
 
@@ -111,6 +113,6 @@ class InverseChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, 'Inverse', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 }

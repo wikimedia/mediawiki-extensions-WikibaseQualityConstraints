@@ -4,6 +4,7 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -45,14 +46,14 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	 * Checks 'Diff within range' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-
+		$constraintParameters = $constraint->getConstraintParameter();
 		$parameters[ 'property' ] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'], 'PropertyId' );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
@@ -63,7 +64,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = 'Properties with \'Diff within range\' constraint need to have a value.';
-			return new CheckResult( $statement, 'Diff within range', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$property = $constraintParameters['property'][0];
@@ -87,7 +88,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			$message = 'Properties with \'Diff within range\' constraint need to have values of type \'quantity\' or \'time\'.';
 		}
 		if ( isset( $message ) ) {
-			return new CheckResult( $statement, 'Diff within range', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$thisValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
@@ -120,11 +121,11 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					$status = CheckResult::STATUS_VIOLATION;
 				}
 
-				return new CheckResult( $statement, 'Diff within range', $parameters, $status, $message );
+				return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 			}
 		}
 		$message = 'The property defined in the parameters must exist.';
 		$status = CheckResult::STATUS_VIOLATION;
-		return new CheckResult( $statement, 'Diff within range', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 }

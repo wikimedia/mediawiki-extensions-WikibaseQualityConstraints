@@ -46,21 +46,36 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	public function testQualifiersConstraint() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), array( 'property' => $this->qualifiersList ) );
+		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testQualifiersConstraintToManyQualifiers() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), array( 'property' => $this->qualifiersList ) );
+		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testQualifiersConstraintNoQualifiers() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), array( 'property' => $this->qualifiersList ) );
+		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+	}
+
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Qualifiers' );
+
+		return $mock;
 	}
 }

@@ -13,11 +13,13 @@ use DataValues\DataValue;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikidataQuality\ConstraintReport\ConstraintRepository;
+use WikidataQuality\ConstraintReport\Constraint;
 
 
 /**
- * Class ConstraintCheck
- * Used to start the constraint-check process
+ * Class DelegatingConstraintCheck
+ * Used to start the constraint-check process and to delegate
+ * the statements that has to be checked to the corresponding checkers
  *
  * @package WikidataQuality\ConstraintReport\ConstraintCheck
  * @author BP2014N1
@@ -71,16 +73,14 @@ class DelegatingConstraintChecker {
 
 			$this->statements = $entity->getStatements();
 
-			$dbr = wfGetDB( DB_SLAVE );
-
-			$result = $this->checkEveryStatement( $entity, $dbr );
+			$result = $this->checkEveryStatement( $entity );
 
 			return $this->sortResult( $result );
 		}
 		return null;
 	}
 
-	private function checkEveryStatement( $entity, $dbr ) {
+	private function checkEveryStatement( $entity ) {
 		$result = array ();
 		foreach ( $this->statements as $statement ) {
 
@@ -105,16 +105,15 @@ class DelegatingConstraintChecker {
 
 	private function checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) {
 		$result = array ();
-		foreach ( $constraints as $row ) {
-			$constraintParameters = json_decode( $row->constraint_parameters );
-
-			if ( in_array( $entity->getId()->getSerialization(), $this->helper->stringToArray( $this->helper->getParameterFromJson( $constraintParameters, 'known_exception' ) ) ) ) {
+		foreach ( $constraints as $constraint ) {
+			$parameter = $constraint->getConstraintParameter();
+			if ( in_array( $entity->getId()->getSerialization(), $parameter['exceptions'] ) ) {
 				$message = 'This entity is a known exception for this constraint and has been marked as such.';
-				$result[ ] = new CheckResult( $statement, $row->constraint_type_qid, array (), CheckResult::STATUS_EXCEPTION, $message ); // todo: display parameters anyway
+				$result[ ] = new CheckResult( $statement, $constraint->getConstraintTypeQid(), array (), CheckResult::STATUS_EXCEPTION, $message ); // todo: display parameters anyway
 				continue;
 			}
 
-			$result[ ] = $this->getCheckResultFor( $statement, $row->constraint_type_qid, $constraintParameters, $entity );
+			$result[ ] = $this->getCheckResultFor( $statement, $constraint, $entity );
 		}
 		return $result;
 	}
@@ -127,30 +126,14 @@ class DelegatingConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	private function getCheckResultFor( Statement $statement, $constraintTypeQid, $constraintParameters, Entity $entity ) {
-		$parameters = $this->getParameters( $constraintParameters );
+	private function getCheckResultFor( Statement $statement, Constraint $constraint, Entity $entity ) {
 
-		if( array_key_exists( $constraintTypeQid, $this->checkerMap ) ) {
-			$checker = $this->checkerMap[$constraintTypeQid];
-			return $checker->checkConstraint( $statement, $parameters, $entity );
+		if( array_key_exists( $constraint->getConstraintTypeQid(), $this->checkerMap ) ) {
+			$checker = $this->checkerMap[$constraint->getConstraintTypeQid()];
+			return $checker->checkConstraint( $statement, $constraint, $entity );
 		} else {
-			return new CheckResult( $statement, $constraintTypeQid );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid() );
 		}
-	}
-
-	private function getParameters( $constraintParameters ) {
-		return array(
-			'class' => $this->helper->stringToArray( $this->helper->getParameterFromJson( $constraintParameters, 'class' ) ),
-			'item' => $this->helper->stringToArray( $this->helper->getParameterFromJson( $constraintParameters, 'item' ) ),
-			'property' => $this->helper->stringToArray( $this->helper->getParameterFromJson( $constraintParameters, 'property' ) ),
-			'minimum_quantity' => $this->helper->getParameterFromJson( $constraintParameters, 'minimum_quantity' ),
-			'maximum_quantity' => $this->helper->getParameterFromJson( $constraintParameters, 'maximum_quantity' ),
-			'minimum_date' => $this->helper->getParameterFromJson( $constraintParameters, 'minimum_date' ),
-			'maximum_date' => $this->helper->getParameterFromJson( $constraintParameters, 'maximum_date' ),
-			'namespace' => $this->helper->getParameterFromJson( $constraintParameters, 'namespace' ),
-			'pattern' => $this->helper->getParameterFromJson( $constraintParameters, 'pattern' ),
-			'relation' => $this->helper->getParameterFromJson( $constraintParameters, 'relation' )
-		);
 	}
 
 	private function sortResult( $result ) {

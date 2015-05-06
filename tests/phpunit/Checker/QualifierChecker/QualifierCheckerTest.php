@@ -43,7 +43,22 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	public function testQualifierConstraintQualifierProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), array() );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array() ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+	}
+
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Qualifier' );
+
+		return $mock;
 	}
 }

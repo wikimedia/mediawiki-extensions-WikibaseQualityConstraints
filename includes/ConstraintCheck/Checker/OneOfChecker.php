@@ -3,6 +3,7 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use WikidataQuality\ConstraintReport\Constraint;
 use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -35,15 +36,16 @@ class OneOfChecker implements ConstraintChecker {
 	 * Checks 'One of' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, $constraintParameters, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
-		$parameters[ 'item' ] = $this->helper->parseParameterArray( $constraintParameters['item'] );
+		$parameters['item'] = $this->helper->parseParameterArray( $constraintParameters['item'] );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -65,11 +67,11 @@ class OneOfChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = 'Properties with \'One of\' constraint need to have values of type \'wikibase-entityid\'.';
-			return new CheckResult( $statement, 'Format', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( $constraintParameters['item'][ 0 ] === '' ) {
 			$message = 'Properties with \'One of\' constraint need a parameter \'item\'.';
-			return new CheckResult( $statement, 'One of', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		if ( in_array( $dataValue->getEntityId()->getSerialization(), $constraintParameters['item'] ) ) {
@@ -80,7 +82,7 @@ class OneOfChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, 'One of', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }
