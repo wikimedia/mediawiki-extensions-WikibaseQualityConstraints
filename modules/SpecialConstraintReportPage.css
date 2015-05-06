@@ -1,0 +1,93 @@
+/* Entity id form */
+.wbq-checkresult-form {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.wbq-checkresult-form-entity-id {
+    width: 120px;
+}
+
+.wbq-checkresult-form-submit {
+    margin-left: 5px;
+}
+
+/* Notices */
+.wbq-checkresult-notice {
+    font-style: italic;
+}
+
+.wbq-checkresult-notice-error {
+    font-weight: bold;
+    color: #BA0000;
+}
+
+/* Explanation infobox */
+.wbq-explanation {
+    width: 25%;
+    float: right;
+    padding: 1em;
+    padding-top: 0;
+    border: 1px solid black;
+    margin-left: 1em;
+}
+
+/* Statuses */
+.wbq-status {
+    font-weight: bold;
+}
+
+.wbq-status-success {
+    color: #008000;
+}
+
+.wbq-status-partial-success {
+    color: #6CB500;
+}
+
+.wbq-status-warning {
+    color: #E6B800;
+}
+
+.wbq-status-error {
+    color: #BA0000;
+}
+
+.wbq-status-unknown {
+    color: #404040;
+}
+
+/* Tooltip */
+.wbq-tooltip-indicator:before {
+    content: '[?]';
+    color: #CCC;
+    font-weight: 600;
+}
+
+[tooltip]:before {
+    /* needed - do not touch */
+    content: attr(tooltip);
+    position: absolute;
+    opacity: 0;
+
+    /* customizable */
+    transition: all 0.20s ease;
+    padding: 5px;
+    border: 1px solid #AAA;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px #CCC;
+}
+
+[tooltip]:hover:before {
+    /* needed - do not touch */
+    opacity: 1;
+
+    /* customizable */
+    background: #F2F2F2;
+    margin-top: -35px;
+    margin-left: -5px;
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+    pointer-events: none;
+}

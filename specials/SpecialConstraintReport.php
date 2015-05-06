@@ -2,23 +2,37 @@
 
 namespace WikidataQuality\ConstraintReport\Specials;
 
+use SpecialPage;
+use ValueFormatters\FormatterOptions;
+use Wikibase\Lib\EntityIdHtmlLinkFormatter;
+use Wikibase\Lib\EntityIdLabelFormatter;
+use Wikibase\Lib\EntityIdLinkFormatter;
+use Wikibase\Lib\HtmlUrlFormatter;
+use Wikibase\Lib\LanguageNameLookup;
+use Wikibase\Lib\SnakFormatter;
+use Wikibase\Lib\Store\LanguageLabelDescriptionLookup;
+use Wikibase\Repo\WikibaseRepo;
 use DataValues;
 use DataValues\DataValue;
 use Html;
-use Wikibase\DataModel;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
+use Doctrine\Instantiator\Exception\UnexpectedValueException;
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\EntityIdParsingException;
+use Traversable;
+use Countable;
+use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
-use Wikibase\Repo\WikibaseRepo;
 use WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob;
 use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
 use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\Html\HtmlTable;
 use WikidataQuality\Html\HtmlTableHeader;
-use WikidataQuality\Specials\SpecialCheckResultPage;
 use JobQueueGroup;
 
 
@@ -31,7 +45,7 @@ use JobQueueGroup;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class SpecialConstraintReport extends SpecialCheckResultPage {
+class SpecialConstraintReport extends SpecialPage {
 
 	/**
 	 * Maximum number of displayed values for parameters with multiple ones.
@@ -53,10 +67,235 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 	 */
 	private $entityTitleLookup;
 
-	public function __construct() {
-		parent::__construct( 'ConstraintReport' );
+	/**
+	 * @var \Wikibase\DataModel\Entity\EntityIdParser
+	 */
+	protected $entityIdParser;
+
+	/**
+	 * @var \Wikibase\Lib\Store\EntityLookup
+	 */
+	protected $entityLookup;
+
+	/**
+	 * @var \ValueFormatters\ValueFormatter
+	 */
+	protected $dataValueFormatter;
+
+	/**
+	 * @var EntityIdLabelFormatter
+	 */
+	protected $entityIdLabelFormatter;
+
+	/**
+	 * @var EntityIdLinkFormatter
+	 */
+	protected $entityIdLinkFormatter;
+
+	/**
+	 * @var EntityIdHtmlLinkFormatter
+	 */
+	protected $entityIdHtmlLinkFormatter;
+
+	/**
+	 * @var HtmlUrlFormatter
+	 */
+	protected $htmlUrlFormatter;
+
+	/**
+	 * @param string $name
+	 * @param string $restriction
+	 * @param bool $listed
+	 * @param bool $function
+	 * @param string $file
+	 * @param bool $includable
+	 */
+	public function __construct( $name = 'ConstraintReport', $restriction = '', $listed = true, $function = false, $file = '', $includable = false ) {
+		parent::__construct( $name, $restriction, $listed, $function, $file, $includable );
+
+		$repo = WikibaseRepo::getDefaultInstance();
+
+		// Get entity lookup
+		$this->entityLookup = $repo->getEntityLookup();
+
+		// Get entity id parser
+		$this->entityIdParser = $repo->getEntityIdParser();
+
+		// Get value formatter
+		$formatterOptions = new FormatterOptions();
+		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $this->getLanguage()->getCode() );
+		$this->dataValueFormatter = $repo->getValueFormatterFactory()->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
+
+		// Get entity id link formatters
+		$entityTitleLookup = $repo->getEntityTitleLookup();
+		$labelLookup = new LanguageLabelDescriptionLookup( $repo->getTermLookup(), $this->getLanguage()->getCode() );
+		$this->entityIdLabelFormatter = new EntityIdLabelFormatter( $labelLookup );
+		$this->entityIdLinkFormatter = new EntityIdLinkFormatter( $entityTitleLookup );
+		$this->entityIdHtmlLinkFormatter = new EntityIdHtmlLinkFormatter(
+			$labelLookup,
+			$entityTitleLookup,
+			new LanguageNameLookup()
+		);
+
+		// Get url formatter
+		$formatterOptions = new FormatterOptions();
+		$this->htmlUrlFormatter = new HtmlUrlFormatter( $formatterOptions );
 
 		$this->entityTitleLookup = WikibaseRepo::getDefaultInstance()->getEntityTitleLookup();
+	}
+
+	/**
+	 * @see SpecialPage::execute
+	 *
+	 * @param string|null $subPage
+	 */
+	public function execute( $subPage ) {
+		$out = $this->getOutput();
+
+		$postRequest = $this->getContext()->getRequest()->getVal( 'entityId' );
+		if ( $postRequest ) {
+			$out->redirect( $this->getPageTitle( strtoupper( $postRequest ) )->getLocalURL() );
+			return;
+		}
+
+		$out->addModules( $this->getModules() );
+
+		$this->setHeaders();
+
+		$out->addHTML(
+			$this->getExplanationText()
+			. $this->getInstructionsText()
+			. $this->buildEntityIdForm()
+		);
+
+		if ( !$subPage ) {
+			return;
+		}
+
+		if ( !is_string( $subPage ) ) {
+			throw new InvalidArgumentException( '$subPage must be string.' );
+		}
+
+		try {
+			$entityId = $this->entityIdParser->parse( $subPage );
+			$entity = $this->entityLookup->getEntity( $entityId );
+		} catch ( EntityIdParsingException $e ) {
+			$out->addHTML(
+				$this->buildNotice( $this->msg( 'wikidataquality-checkresult-invalid-entity-id' )->text(), true )
+			);
+			return;
+		}
+
+		if ( !$entity ) {
+			$out->addHTML(
+				$this->buildNotice( $this->msg( 'wikidataquality-checkresult-not-existent-entity' )->text(), true )
+			);
+			return;
+		}
+
+		$results = $this->executeCheck( $entity );
+
+		if ( !is_array( $results ) ) {
+			if ( !( $results instanceof Traversable && $results instanceof Countable ) ) {
+				throw new UnexpectedValueException( 'SpecialCheckResultPage::executeCheck has to return an array or traversable and countable object.' );
+			}
+		}
+
+		if ( $results && count( $results ) > 0 ) {
+			$out->addHTML(
+				$this->buildResultHeader( $entityId )
+				. $this->buildSummary( $results )
+				. $this->buildResultTable( $entityId, $results )
+			);
+		} else {
+			$out->addHTML(
+				$this->buildResultHeader( $entityId )
+				. $this->buildNotice( $this->getEmptyResultText() )
+			);
+		}
+	}
+
+	/**
+	 * Returns html text of the entity id form
+	 *
+	 * @return string
+	 */
+	protected function buildEntityIdForm() {
+		return
+			Html::openElement(
+				'form',
+				array (
+					'class' => 'wbq-checkresult-form',
+					'action' => $this->getPageTitle()->getLocalURL(),
+					'method' => 'post'
+				)
+			)
+			. Html::input(
+				'entityId',
+				'',
+				'text',
+				array (
+					'class' => 'wbq-checkresult-form-entity-id',
+					'placeholder' => $this->msg( 'wikidataquality-checkresult-form-entityid-placeholder' )->text()
+				)
+			)
+			. Html::input(
+				'submit',
+				$this->msg( 'wikidataquality-checkresult-form-submit-label' )->text(),
+				'submit',
+				array (
+					'class' => 'wbq-checkresult-form-submit'
+				)
+			)
+			. Html::closeElement( 'form' );
+	}
+
+	/**
+	 * Builds notice with given message. Optionally notice can be handles as error by settings $error to true
+	 *
+	 * @param string $message
+	 * @param bool $error
+	 *
+	 * @return string
+	 */
+	protected function buildNotice( $message, $error = false ) {
+		if ( !is_string( $message ) ) {
+			throw new InvalidArgumentException( '$message must be string.' );
+		}
+		if ( !is_bool( $error ) ) {
+			throw new InvalidArgumentException( '$error must be bool.' );
+		}
+
+		$cssClasses = 'wbq-checkresult-notice';
+		if ( $error ) {
+			$cssClasses .= ' wbq-checkresult-notice-error';
+		}
+
+		return
+			Html::element(
+				'p',
+				array (
+					'class' => $cssClasses
+				),
+				$message );
+	}
+
+	/**
+	 * Returns array of modules that should be added
+	 *
+	 * @return array
+	 */
+	protected function getModules() {
+		return array ( 'SpecialConstraintReportPage' );
+	}
+
+	/**
+	 * @see SpecialPage::getGroupName
+	 *
+	 * @return string
+	 */
+	function getGroupName() {
+		return 'wikidataquality';
 	}
 
 	/**
@@ -69,8 +308,6 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 	}
 
 	/**
-	 * @see SpecialCheckResultPage::getInstructionsText
-	 *
 	 * @return string
 	 */
 	protected function getInstructionsText() {
@@ -78,6 +315,19 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 			$this->msg( 'wikidataquality-constraintreport-instructions' )->text()
 			. Html::element( 'br' )
 			. $this->msg( 'wikidataquality-constraintreport-instructions-example' )->text();
+	}
+
+	protected function getExplanationText() {
+		return
+			Html::openElement( 'div', array( 'class' => 'wbq-explanation') )
+			. Html::openElement( 'h2' )
+			. $this->msg( 'wikidataquality-constraintreport-explanation-heading' )
+			. Html::closeElement( 'h2' )
+			. $this->msg( 'wikidataquality-constraintreport-explanation-part-one' )
+			. Html::element( 'br' )
+			. Html::element( 'br' )
+			. $this->msg( 'wikidataquality-constraintreport-explanation-part-two' )
+			. Html::closeElement( 'div' );
 	}
 
 	/**
@@ -181,6 +431,167 @@ class SpecialConstraintReport extends SpecialCheckResultPage {
 		}
 
 		return $table->toHtml();
+	}
+
+	/**
+	 * Returns html text of the result header
+	 *
+	 * @param EntityId $entityId
+	 *
+	 * @return string
+	 */
+	protected function buildResultHeader( EntityId $entityId ) {
+		$entityLink = sprintf( '%s (%s)',
+							   $this->entityIdHtmlLinkFormatter->formatEntityId( $entityId ),
+							   $entityId->getSerialization() );
+
+		return
+			Html::openElement( 'h3', array( 'class' => 'wbq-clear' ) ) //TODO delete if not wished
+			. $this->msg( 'wikidataquality-checkresult-result-headline', $entityLink )->text()
+			. Html::closeElement( 'h3' );
+	}
+
+	/**
+	 * Builds summary from given results
+	 *
+	 * @param array|Traversable $results
+	 *
+	 * @return string
+	 */
+	protected function buildSummary( $results ) {
+		$statuses = array ();
+		foreach ( $results as $result ) {
+			$status = strtolower( $result->getStatus() );
+			if ( array_key_exists( $status, $statuses ) ) {
+				$statuses[ $status ]++;
+			} else {
+				$statuses[ $status ] = 1;
+			}
+		}
+
+		$statusElements = array ();
+		foreach ( $statuses as $status => $count ) {
+			if ( $count > 0 ) {
+				$statusElements[ ] =
+					$this->formatStatus( $status )
+					. ": "
+					. $count;
+			}
+		}
+		$summary =
+			Html::openElement( 'p' )
+			. implode( ', ', $statusElements )
+			. Html::closeElement( 'p' );
+
+		return $summary;
+	}
+
+	/**
+	 * Builds a html div element with given content and a tooltip with given tooltip content
+	 * If $tooltipContent is null, no tooltip will be created
+	 *
+	 * @param string $content
+	 * @param string $tooltipContent
+	 *
+	 * @return string
+	 */
+	protected function buildTooltipElement( $content, $tooltipContent ) {
+		if ( !is_string( $content ) ) {
+			throw new InvalidArgumentException( '$content has to be string.' );
+		}
+		if ( $tooltipContent && ( !is_string( $tooltipContent ) ) ) {
+			throw new InvalidArgumentException( '$tooltipContent, if provided, has to be string.' );
+		}
+
+		if ( empty( $tooltipContent ) ) {
+			return $content;
+		}
+
+		$tooltipIndicator = Html::element(
+			'span',
+			array (
+				'class' => 'wbq-tooltip-indicator'
+			)
+		);
+
+		return
+			Html::openElement(
+				'span',
+				array (
+					'tooltip' => $tooltipContent
+				)
+			)
+			. sprintf( '%s %s', $content, $tooltipIndicator )
+			. Html::closeElement( 'span' );
+	}
+
+	/**
+	 * Formats given status to html
+	 *
+	 * @param string $status
+	 *
+	 * @return string
+	 */
+	protected function formatStatus( $status ) {
+		if ( !is_string( $status ) ) {
+			throw new InvalidArgumentException( '$status has to be string.' );
+		}
+
+		$messageName = "wikidataquality-checkresult-status-" . strtolower( $status );
+		$message = $this->msg( $messageName )->text();
+
+		$statusMapping = $this->getStatusMapping();
+		if ( array_key_exists( $status, $statusMapping ) ) {
+			$genericStatus = $statusMapping[ $status ];
+		} else {
+			$genericStatus = 'unknown';
+		}
+
+		$formattedStatus =
+			Html::element(
+				'span',
+				array (
+					'class' => 'wbq-status wbq-status-' . $genericStatus
+				),
+				$message
+			);
+
+		return $formattedStatus;
+	}
+
+	/**
+	 * Parses data values to human-readable string
+	 *
+	 * @param DataValue|array $dataValues
+	 * @param bool $linking
+	 * @param string $separator
+	 *
+	 * @return string
+	 */
+	protected function formatDataValues( $dataValues, $linking = true, $separator = ', ' ) {
+		if ( $dataValues instanceof DataValue ) {
+			$dataValues = array ( $dataValues );
+		} elseif ( !is_array( $dataValues ) ) {
+			throw new InvalidArgumentException( '$dataValues has to be instance of DataValue or an array of DataValues.' );
+		}
+
+		$formattedDataValues = array ();
+		foreach ( $dataValues as $dataValue ) {
+			if ( !( $dataValue instanceof DataValue ) ) {
+				throw new InvalidArgumentException( '$dataValues has to be instance of DataValue or an array of DataValues.' );
+			}
+			if ( $dataValue instanceof EntityIdValue ) {
+				if ( $linking ) {
+					$formattedDataValues[ ] = $this->entityIdHtmlLinkFormatter->formatEntityId( $dataValue->getEntityId() );
+				} else {
+					$formattedDataValues[ ] = $this->entityIdLabelFormatter->formatEntityId( $dataValue->getEntityId() );
+				}
+			} else {
+				$formattedDataValues[ ] = $this->dataValueFormatter->format( $dataValue );
+			}
+		}
+
+		return implode( $separator, $formattedDataValues );
 	}
 
 	/**

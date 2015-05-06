@@ -37,6 +37,13 @@ call_user_func( function() {
 	// Initialize special pages
 	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport';
 
+	// Define modules
+	$GLOBALS['wgResourceModules']['SpecialConstraintReportPage'] = array (
+		'styles' => '/modules/SpecialConstraintReportPage.css',
+		'localBasePath' => __DIR__,
+		'remoteExtPath' => 'WikidataQualityConstraints'
+	);
+
 	// Define database table names
 	define( 'CONSTRAINT_TABLE', 'wdqa_constraints' );
 
