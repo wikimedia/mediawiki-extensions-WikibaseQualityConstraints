@@ -27,10 +27,11 @@ use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
-use WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob;
 use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
 use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikidataQuality\ConstraintReport\EvaluateConstraintReportJob;
+use WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService;
 use WikidataQuality\Html\HtmlTable;
 use WikidataQuality\Html\HtmlTableHeader;
 use JobQueueGroup;
@@ -396,7 +397,7 @@ class SpecialConstraintReport extends SpecialPage {
 
 			// Claim column
 			$property = $this->entityIdHtmlLinkFormatter->formatEntityId( $result->getPropertyId() );
-			if ( $result->getMainSnakType() !== 'value' ) {
+			if ( $result->getMainSnakType() === 'value' ) {
 				$value = $this->formatValue( $result->getDataValue() );
 			} else {
 				$value = $result->getMainSnakType();
@@ -710,14 +711,11 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	protected function doEvaluation( $entity, $results ) {
-		//TODO: Push (deferred) job(s) in queue
+		$service = new EvaluateConstraintReportJobService();
 		$checkTimeStamp = wfTimestamp( TS_MW );
 		$jobs = array ();
-		$jobs[ ] = CheckForConstraintViolationsJob::newInsertNow( $entity, $checkTimeStamp, $results );
-		$jobs[ ] = CheckForConstraintViolationsJob::newInsertDeferred( $entity, $checkTimeStamp, 10 );
-
-		$jobs[ 0 ]->run();
-		$jobs[ 1 ]->run();
+		$jobs[ ] = EvaluateConstraintReportJob::newInsertNow( $service, $entity, $checkTimeStamp, $results );
+		$jobs[ ] = EvaluateConstraintReportJob::newInsertDeferred( $service, $entity, $checkTimeStamp, 10 );
 		JobQueueGroup::singleton()->push( $jobs );
 	}
 
