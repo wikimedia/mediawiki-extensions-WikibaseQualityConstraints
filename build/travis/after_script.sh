@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cd ../wiki/extensions/WikidataQuality/extensions/WikidataQualityConstraints
+cd ../wiki/extensions/WikibaseQualityConstraints
 
 ls build/logs
 
