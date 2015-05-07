@@ -61,25 +61,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	protected function setUp() {
 		parent::setUp();
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;
-
-		$this->testLogFileName = '/var/log/mediawiki/test_wdqa_evaluation.log';
-		if( file_exists( $this->testLogFileName ) ) {
-			unlink( $this->testLogFileName );
-		}
-
-		$this->oldLogFileName = $GLOBALS['wgDebugLogGroups']['wdqa_evaluation'];
-		$GLOBALS['wgDebugLogGroups']['wdqa_evaluation'] = $this->testLogFileName;
 	}
 
 	protected function tearDown() {
-		$GLOBALS['wgDebugLogGroups']['wdqa_evaluation'] = $this->oldLogFileName;
-		unset( $this->oldLogFileName );
-
-		if( file_exists( $this->testLogFileName ) ) {
-			unlink( $this->testLogFileName );
-		}
-		unset( $this->testLogFileName );
-
 		parent::tearDown();
 	}
 
@@ -190,7 +174,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'placeholder' => '(wikidataquality-checkresult-form-entityid-placeholder)',
 				'name' => 'entityId',
-				'class' => 'wdqa-checkresult-form-entity-id'
+				'class' => 'wbq-checkresult-form-entity-id'
 			)
 		);
 
@@ -210,7 +194,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wdqa-checkresult-notice wdqa-checkresult-notice-error'
+				'class' => 'wbq-checkresult-notice wbq-checkresult-notice-error'
 			),
 			'content' => '(wikidataquality-checkresult-invalid-entity-id)'
 		);
@@ -223,7 +207,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wdqa-checkresult-notice wdqa-checkresult-notice-error'
+				'class' => 'wbq-checkresult-notice wbq-checkresult-notice-error'
 			),
 			'content' => '(wikidataquality-checkresult-not-existent-entity)'
 		);
@@ -276,7 +260,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'value status - violation' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wdqa-status wdqa-status-error'
+				'class' => 'wbq-status wbq-status-error'
 			),
 			'content' => '(wikidataquality-checkresult-status-violation)'
 		);
@@ -284,7 +268,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'value status - compliance' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wdqa-status wdqa-status-success'
+				'class' => 'wbq-status wbq-status-success'
 			),
 			'content' => '(wikidataquality-checkresult-status-compliance)'
 		);
