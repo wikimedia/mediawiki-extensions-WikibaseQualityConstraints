@@ -1,7 +1,5 @@
 #! /bin/bash
 
 cd ../wiki/extensions/WikibaseQualityConstraints
-
-ls build/logs
-
+composer remove "wikibase/wikibase"
 php vendor/bin/coveralls -v
