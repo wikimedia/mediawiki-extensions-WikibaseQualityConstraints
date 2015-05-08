@@ -45,7 +45,7 @@ class EvaluateConstraintReportJobService {
 		return $summary;
 	}
 
-	public function getResults( $params) {
+	public function getResults( $params ) {
 		if ( $params[ 'results' ] === null ) {
 			$lookup = WikibaseRepo::getDefaultInstance()->getEntityLookup();
 			$checkerMap = new CheckerMapBuilder( $lookup, new ConstraintReportHelper() );

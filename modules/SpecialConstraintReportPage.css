@@ -24,12 +24,7 @@
 
 /* Explanation infobox */
 .wbq-explanation {
-    width: 25%;
-    float: right;
-    padding: 1em;
-    padding-top: 0;
-    border: 1px solid black;
-    margin-left: 1em;
+    width: 50%;
 }
 
 /* Statuses */
@@ -58,8 +53,7 @@
 }
 
 /* Tooltip */
-.wbq-tooltip-indicator:before {
-    content: '[?]';
+.wbq-tooltip-indicator {
     color: #CCC;
     font-weight: 600;
 }

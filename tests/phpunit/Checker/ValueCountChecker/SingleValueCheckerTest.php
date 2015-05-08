@@ -45,21 +45,21 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		parent::tearDown();
 	}
 
-	public function testCheckSingleValueConstraintOne() {
+	public function testSingleValueConstraintOne() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
-	public function testCheckSingleValueConstraintTwo() {
+	public function testSingleValueConstraintTwo() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckSingleValueConstraintTwoButOneDeprecated() {
+	public function testSingleValueConstraintTwoButOneDeprecated() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
@@ -80,4 +80,5 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\Test\ConnectionChecker;
 
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -141,6 +142,18 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
+	public function testTargetRequiredClaimConstraintNoValueSnak() {
+		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+
+		$constraintParameters = array(
+			'statements' => $this->entity->getStatements(),
+			'property' => array( 'P2' ),
+			'item' => array( '' )
+		);
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+	}
+
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
 			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
@@ -155,4 +168,5 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

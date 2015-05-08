@@ -78,4 +78,5 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

@@ -8,7 +8,7 @@ use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
+ * @covers WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder
  *
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker

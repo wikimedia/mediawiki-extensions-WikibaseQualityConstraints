@@ -57,7 +57,7 @@ class ConnectionCheckerHelper {
 		return false;
 	}
 
-	public function arrayHasClaim( $statement, $itemIdSerializationArray ) {
+	private function arrayHasClaim( $statement, $itemIdSerializationArray ) {
 		$mainSnak = $statement->getMainSnak();
 		if ( $mainSnak->getType() !== 'value' || $mainSnak->getDataValue()->getType() !== 'wikibase-entityid' ) {
 			return false;

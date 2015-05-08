@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\Test\RangeChecker;
 
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -50,7 +51,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	}
 
 
-	public function testCheckRangeConstraintWithinRange() {
+	public function testRangeConstraintWithinRange() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$value = new DecimalValue( 3.1415926536 );
@@ -66,7 +67,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
-	public function testCheckRangeConstraintTooSmall() {
+	public function testRangeConstraintTooSmall() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 
 		$value = new DecimalValue( 42 );
@@ -82,7 +83,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckRangeConstraintTooBig() {
+	public function testRangeConstraintTooBig() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 
 		$value = new DecimalValue( 3.141592 );
@@ -98,7 +99,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckRangeConstraintTimeWithinRange() {
+	public function testRangeConstraintTimeWithinRange() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$min = new TimeValue( '+00000001960-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
@@ -115,7 +116,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
-	public function testCheckRangeConstraintTimeTooSmall() {
+	public function testRangeConstraintTimeTooSmall() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$min = new TimeValue( '+00000001975-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
@@ -132,7 +133,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckRangeConstraintTimeTooBig() {
+	public function testRangeConstraintTimeTooBig() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$min = new TimeValue( '+00000001960-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
@@ -149,7 +150,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckRangeConstraintQuantityWrongParameter() {
+	public function testRangeConstraintQuantityWrongParameter() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$min = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
@@ -166,7 +167,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckRangeConstraintTimeWrongParameter() {
+	public function testRangeConstraintTimeWrongParameter() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$min = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
@@ -183,7 +184,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	public function testCheckRangeConstraintWrongType() {
+	public function testRangeConstraintWrongType() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$min = new TimeValue( '+00000001960-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
@@ -196,6 +197,13 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'minimum_quantity' => null,
 			'maximum_quantity' => null
 		);
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+	}
+
+	public function testRangeConstraintNoValueSnak() {
+		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+		$constraintParameters = array();
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -214,4 +222,5 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

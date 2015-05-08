@@ -54,7 +54,7 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 		$results[] = new CheckResult( $statement, $this->constraintName, array (), 'yet another one' );
 		$this->results = $results;
 
-		$this->params = array( 'entity' => $this->entity, 'referenceTimestamp' => null );
+		$this->params = array( 'entity' => $this->entity, 'referenceTimestamp' => null, 'results' => $results );
 
 	}
 
@@ -85,8 +85,11 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 		$resultForConstraint = (array) $resultSummary[$this->constraintName];
 		$this->assertEquals( 3, count( $resultForConstraint ) );
 		$this->assertEquals( 3, $resultForConstraint[CheckResult::STATUS_COMPLIANCE] );
-
 	}
 
+	public function testGetResults() {
+		$service = new EvaluateConstraintReportJobService();
+		$this->assertEquals( $this->results, $service->getResults( $this->params ) );
+	}
 
 }

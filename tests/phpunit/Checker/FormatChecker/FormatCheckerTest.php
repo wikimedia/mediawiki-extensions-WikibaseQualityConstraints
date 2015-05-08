@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\Test\FormatChecker;
 
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -127,6 +128,12 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
 	}
 
+	public function testFormatConstraintNoValueSnak() {
+		$pattern = ".";
+		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+	}
+
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
 			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
@@ -141,4 +148,5 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

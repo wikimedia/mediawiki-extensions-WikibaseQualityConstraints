@@ -165,7 +165,6 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$out->addHTML(
 			$this->getExplanationText()
-			. $this->getInstructionsText()
 			. $this->buildEntityIdForm()
 		);
 
@@ -308,25 +307,13 @@ class SpecialConstraintReport extends SpecialPage {
 		return $this->msg( 'wikidataquality-constraintreport' )->text();
 	}
 
-	/**
-	 * @return string
-	 */
-	protected function getInstructionsText() {
-		return
-			$this->msg( 'wikidataquality-constraintreport-instructions' )->text()
-			. Html::element( 'br' )
-			. $this->msg( 'wikidataquality-constraintreport-instructions-example' )->text();
-	}
-
 	protected function getExplanationText() {
 		return
 			Html::openElement( 'div', array( 'class' => 'wbq-explanation') )
-			. Html::openElement( 'h2' )
-			. $this->msg( 'wikidataquality-constraintreport-explanation-heading' )
-			. Html::closeElement( 'h2' )
 			. $this->msg( 'wikidataquality-constraintreport-explanation-part-one' )
+			. Html::closeElement( 'div' )
 			. Html::element( 'br' )
-			. Html::element( 'br' )
+			. Html::openElement( 'div', array( 'class' => 'wbq-explanation') )
 			. $this->msg( 'wikidataquality-constraintreport-explanation-part-two' )
 			. Html::closeElement( 'div' );
 	}
@@ -392,33 +379,34 @@ class SpecialConstraintReport extends SpecialPage {
 			// Status column
 			$statusColumn = $this->buildTooltipElement(
 				$this->formatStatus( $result->getStatus() ),
-				$result->getMessage()
+				$result->getMessage(),
+				'[?]'
 			);
 
 			// Claim column
-			$property = $this->entityIdHtmlLinkFormatter->formatEntityId( $result->getPropertyId() );
+			$property = $this->entityIdLabelFormatter->formatEntityId( $result->getPropertyId() );
 			if ( $result->getMainSnakType() === 'value' ) {
 				$value = $this->formatValue( $result->getDataValue() );
 			} else {
 				$value = $result->getMainSnakType();
 			}
 
-			$claimLink = $this->getClaimLink(
+			$claimColumn = $this->getClaimLink(
 				$entityId,
 				$result->getPropertyId(),
-				$this->msg( 'wikidataquality-constraintreport-result-link-to-claim' )->text()
+				$property . ': ' . $value
 			);
-			$claimColumn = sprintf( '%s: %s (%s)', $property, $value, $claimLink );
 
 			// Constraint column
 			$constraintLink = $this->getClaimLink(
 				$result->getPropertyId(),
 				new PropertyId( self::CONSTRAINT_PROPERTY_ID ),
-				$this->msg( 'wikidataquality-constraintreport-result-link-to-constraint' )->text()
+				$result->getConstraintName()
 			);
 			$constraintColumn = $this->buildTooltipElement(
-				sprintf( '%s (%s)', $result->getConstraintName(), $constraintLink ),
-				$this->formatParameters( $result->getParameters() )
+				sprintf( '%s', $constraintLink ),
+				$this->formatParameters( $result->getParameters() ),
+				'[...]'
 			);
 
 			// Append cells
@@ -496,7 +484,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildTooltipElement( $content, $tooltipContent ) {
+	protected function buildTooltipElement( $content, $tooltipContent, $indicator ) {
 		if ( !is_string( $content ) ) {
 			throw new InvalidArgumentException( '$content has to be string.' );
 		}
@@ -512,7 +500,8 @@ class SpecialConstraintReport extends SpecialPage {
 			'span',
 			array (
 				'class' => 'wbq-tooltip-indicator'
-			)
+			),
+			$indicator
 		);
 
 		return
@@ -564,12 +553,11 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Parses data values to human-readable string
 	 *
 	 * @param DataValue|array $dataValues
-	 * @param bool $linking
 	 * @param string $separator
 	 *
 	 * @return string
 	 */
-	protected function formatDataValues( $dataValues, $linking = true, $separator = ', ' ) {
+	protected function formatDataValues( $dataValues, $separator = ', ' ) {
 		if ( $dataValues instanceof DataValue ) {
 			$dataValues = array ( $dataValues );
 		} elseif ( !is_array( $dataValues ) ) {
@@ -582,11 +570,7 @@ class SpecialConstraintReport extends SpecialPage {
 				throw new InvalidArgumentException( '$dataValues has to be instance of DataValue or an array of DataValues.' );
 			}
 			if ( $dataValue instanceof EntityIdValue ) {
-				if ( $linking ) {
-					$formattedDataValues[ ] = $this->entityIdHtmlLinkFormatter->formatEntityId( $dataValue->getEntityId() );
-				} else {
-					$formattedDataValues[ ] = $this->entityIdLabelFormatter->formatEntityId( $dataValue->getEntityId() );
-				}
+				$formattedDataValues[ ] = $this->entityIdLabelFormatter->formatEntityId( $dataValue->getEntityId() );
 			} else {
 				$formattedDataValues[ ] = $this->dataValueFormatter->format( $dataValue );
 			}
@@ -635,24 +619,19 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Formats values of constraints.
 	 *
 	 * @param string|ItemId|PropertyId|DataValue $value
-	 * @param bool $linking
 	 *
 	 * @return string
 	 */
-	private function formatValue( $value, $linking = true ) {
+	private function formatValue( $value ) {
 		if ( is_string( $value ) ) {
 			// Cases like 'Format' 'pattern' or 'minimum'/'maximum' values, which we have stored as strings
 			return ( $value );
 		} elseif ( $value instanceof EntityId ) {
 			// Cases like 'Conflicts with' 'property', to which we can link
-			if ( $linking ) {
-				return $this->entityIdHtmlLinkFormatter->formatEntityId( $value );
-			} else {
-				return $this->entityIdLabelFormatter->formatEntityId( $value );
-			}
+			return $this->entityIdLabelFormatter->formatEntityId( $value );
 		} else {
 			// Cases where we format a DataValue
-			return $this->formatDataValues( $value, $linking );
+			return $this->formatDataValues( $value );
 		}
 	}
 

@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\Test\ConnectionChecker;
 
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -122,6 +123,20 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
+	public function testInverseConstraintNoValueSnak() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+
+		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+
+		$constraintParameters = array(
+			'entity' => 'Q1',
+			'statements' => $entity->getStatements(),
+			'property' => array( 'P1' )
+		);
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+	}
+
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
 			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
@@ -136,4 +151,5 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

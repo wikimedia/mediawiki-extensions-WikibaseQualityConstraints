@@ -71,4 +71,5 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

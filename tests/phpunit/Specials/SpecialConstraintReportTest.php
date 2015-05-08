@@ -159,14 +159,14 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers = array ();
 
 		// Empty input
-		$matchers[ 'instructions' ] = array (
-			'tag' => 'p',
-			'content' => '(wikidataquality-constraintreport-instructions)'
+		$matchers[ 'explanationOne' ] = array (
+			'tag' => 'div',
+			'content' => '(wikidataquality-constraintreport-explanation-part-one)'
 		);
 
-		$matchers[ 'instructions example' ] = array (
-			'tag' => 'p',
-			'content' => '(wikidataquality-constraintreport-instructions-example)'
+		$matchers[ 'explanationTwo' ] = array (
+			'tag' => 'div',
+			'content' => '(wikidataquality-constraintreport-explanation-part-two)'
 		);
 
 		$matchers[ 'entityId' ] = array (

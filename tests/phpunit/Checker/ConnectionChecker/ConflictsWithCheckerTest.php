@@ -162,4 +162,5 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

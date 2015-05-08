@@ -134,4 +134,5 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 
 		return $mock;
 	}
+
 }

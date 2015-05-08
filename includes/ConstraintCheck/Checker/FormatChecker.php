@@ -71,7 +71,7 @@ class FormatChecker implements ConstraintChecker {
 			$message = 'Properties with \'Format\' constraint need to have values of type \'string\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		if ( $constraintParameters['pattern'] === null ) {
+		if ( $constraintParameters['pattern'][0] === null ) {
 			$message = 'Properties with \'Format\' constraint need a parameter \'pattern\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
