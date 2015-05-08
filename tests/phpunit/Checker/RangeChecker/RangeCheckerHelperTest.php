@@ -43,7 +43,7 @@ class RangeCheckerHelperTest extends \MediaWikiTestCase {
 	}
 
 	public function testGetComparativeValueTimeValid() {
-		$this->assertEquals( '+00000001970-01-01T00:00:00Z', $this->helper->getComparativeValue( $this->time ) );
+		$this->assertEquals( '+1970-01-01T00:00:00Z', $this->helper->getComparativeValue( $this->time ) );
 	}
 
 	public function testGetComparativeValueTimeInvalid() {
