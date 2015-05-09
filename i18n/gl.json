@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Elisardojm"
+		]
+	},
+	"wikidataquality-constraintreport": "Informe de restricións",
+	"wikidataquality-constraintreport-instructions": "Indique un identificador de entidade e deixe que se comprobe coas restricións.",
+	"wikidataquality-constraintreport-instructions-example": "Probe calquera identificador, de forma ideal un identificador de elemento, e mire os resultados.",
+	"wikidataquality-constraintreport-empty-result": "Non hai restricións definidas nesta entidade.",
+	"wikidataquality-constraintreport-result-table-header-claim": "Afirmación",
+	"wikidataquality-constraintreport-result-table-header-constraint": "Restrición",
+	"wikidataquality-constraintreport-result-link-to-claim": "ir a afirmación",
+	"wikidataquality-constraintreport-result-link-to-constraint": "ir a restrición"
+}
