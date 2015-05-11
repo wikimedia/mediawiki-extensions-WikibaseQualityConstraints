@@ -39,6 +39,6 @@ call_user_func( function() {
 	define( 'CONSTRAINT_TABLE', 'wdqa_constraints' );
 
 	// Jobs
-	$GLOBALS['wgJobClasses']['checkForConstraintViolations'] = 'CheckForConstraintViolationsJob';
+	$GLOBALS['wgJobClasses']['evaluateConstraintReportJob'] = 'EvaluateConstraintReportJob';
 	$GLOBALS['wgDebugLogGroups']['wdqa_evaluation'] = '/var/log/mediawiki/wdqa_evaluation.log';
 } );

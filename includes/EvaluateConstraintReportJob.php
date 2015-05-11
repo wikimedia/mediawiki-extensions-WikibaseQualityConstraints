@@ -4,7 +4,7 @@ namespace WikidataQuality\ConstraintReport;
 
 use Job;
 use Title;
-use Wikibase\DataModel\Entity\Entity;
+use Wikibase\DataModel\Entity\EntityId;
 
 class EvaluateConstraintReportJob extends Job {
 
@@ -12,20 +12,20 @@ class EvaluateConstraintReportJob extends Job {
 
 	/**
 	 * @param EvaluateConstraintReportJobService $service
-	 * @param Entity $entity
+	 * @param EntityId $entityId
 	 * @param $checkTimestamp
 	 * @param $results
 	 *
 	 * @return EvaluateConstraintReportJob
 	 * @throws \MWException
 	 */
-	public static function newInsertNow( EvaluateConstraintReportJobService $service, Entity $entity, $checkTimestamp, $results ) {
+	public static function newInsertNow( EvaluateConstraintReportJobService $service, EntityId $entity, $checkTimestamp, $results ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
 		$dummyTitle = Title::newFromText( "EvaluateConstraintReportJob", NS_SPECIAL );
 
 		$params = array ();
 
-		$params['entity'] = $entity;
+		$params['entityId'] = $entity;
 		$params['results'] = $results;
 		$params['checkTimestamp'] = $checkTimestamp;
 		$params['referenceTimestamp'] = null;
@@ -35,20 +35,20 @@ class EvaluateConstraintReportJob extends Job {
 
 	/**
 	 * @param EvaluateConstraintReportJobService $service
-	 * @param Entity $entity
+	 * @param EntityId $entityId
 	 * @param null $referenceTimestamp
 	 * @param int $releaseTimestamp
 	 *
 	 * @return EvaluateConstraintReportJob
 	 * @throws \MWException
 	 */
-	public static function newInsertDeferred( EvaluateConstraintReportJobService $service, Entity $entity, $referenceTimestamp = null, $releaseTimestamp = 0 ) {
+	public static function newInsertDeferred( EvaluateConstraintReportJobService $service, EntityId $entity, $referenceTimestamp = null, $releaseTimestamp = 0 ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
 		$dummyTitle = Title::newFromText( "EvaluateConstraintReportJob", NS_SPECIAL );
 
 		$params = array ();
 
-		$params['entity'] = $entity;
+		$params['entityId'] = $entity;
 		$params['results'] = null;
 		$params['referenceTimestamp'] = $referenceTimestamp;
 		$params['releaseTimestamp'] = wfTimestamp( TS_MW ) + $releaseTimestamp;
