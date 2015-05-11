@@ -7,12 +7,11 @@
 			"Robby"
 		]
 	},
-	"wikidataquality-constraintreport": "{{doc-special|ConstraintReport}}",
-    "wikidataquality-constraintreport-explanation-part-one": "Explanation (part one), what this special page does and how it gets its data.",
-    "wikidataquality-constraintreport-explanation-part-one": "Explanation (part two), what this special page does and how it gets its data.",
-	"wikidataquality-constraintreport-empty-result": "Message that appears, when there are no constraints defined for the given entity.",
-	"wikidataquality-constraintreport-result-table-header-claim": "Header of the column that displays a link to the claim, the used property and its value.\n{{Identical|Claim}}",
-	"wikidataquality-constraintreport-result-table-header-constraint": "Header of the column that gives information about which constraint was checked.\n{{Identical|Constraint}}",
-	"wikidataquality-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
-	"wikidataquality-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page."
+	"wbqc-constraintreport": "{{doc-special|ConstraintReport}}",
+    "wbqc-constraintreport-explanation-part-one": "Explanation (part one), what this special page does and how it gets its data.",
+	"wbqc-constraintreport-empty-result": "Message that appears, when there are no constraints defined for the given entity.",
+	"wbqc-constraintreport-result-table-header-claim": "Header of the column that displays a link to the claim, the used property and its value.\n{{Identical|Claim}}",
+	"wbqc-constraintreport-result-table-header-constraint": "Header of the column that gives information about which constraint was checked.\n{{Identical|Constraint}}",
+	"wbqc-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
+	"wbqc-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page."
 }

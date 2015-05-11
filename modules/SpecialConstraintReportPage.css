@@ -1,59 +1,59 @@
 /* Entity id form */
-.wbq-checkresult-form {
+.wbqc-checkresult-form {
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.wbq-checkresult-form-entity-id {
+.wbqc-checkresult-form-entity-id {
     width: 120px;
 }
 
-.wbq-checkresult-form-submit {
+.wbqc-checkresult-form-submit {
     margin-left: 5px;
 }
 
 /* Notices */
-.wbq-checkresult-notice {
+.wbqc-checkresult-notice {
     font-style: italic;
 }
 
-.wbq-checkresult-notice-error {
+.wbqc-checkresult-notice-error {
     font-weight: bold;
     color: #BA0000;
 }
 
 /* Explanation infobox */
-.wbq-explanation {
+.wbqc-explanation {
     width: 50%;
 }
 
 /* Statuses */
-.wbq-status {
+.wbqc-status {
     font-weight: bold;
 }
 
-.wbq-status-success {
+.wbqc-status-success {
     color: #008000;
 }
 
-.wbq-status-partial-success {
+.wbqc-status-partial-success {
     color: #6CB500;
 }
 
-.wbq-status-warning {
+.wbqc-status-warning {
     color: #E6B800;
 }
 
-.wbq-status-error {
+.wbqc-status-error {
     color: #BA0000;
 }
 
-.wbq-status-unknown {
+.wbqc-status-unknown {
     color: #404040;
 }
 
 /* Tooltip */
-.wbq-indicator {
+.wbqc-indicator {
     color: #CCC;
     font-weight: 600;
 }

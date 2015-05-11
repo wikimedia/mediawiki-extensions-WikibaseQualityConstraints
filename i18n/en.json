@@ -2,12 +2,12 @@
   "@metadata": {
     "authors": "BP2014N1"
   },
-  "wikidataquality-constraintreport": "Constraint report",
-  "wikidataquality-constraintreport-explanation-part-one": "This special page performs constraints checks on every entity you want. The entities are fetched from the live system so every constraint violation you fix there will be instantly removed from this list.",
-  "wikidataquality-constraintreport-explanation-part-two": "The constraints are parsed from the property talk pages once a week, so if you add/delete/modify a constraint it might take up to a week until this gets taken into account by this constraint report. There is currently work in progress to migrate the constraints to statements on properties, enabling this special page to do live-checks.",
-  "wikidataquality-constraintreport-empty-result": "There are no constraint defined on this entity.",
-  "wikidataquality-constraintreport-result-table-header-claim": "Claim",
-  "wikidataquality-constraintreport-result-table-header-constraint": "Constraint",
-  "wikidataquality-constraintreport-result-link-to-claim": "go to claim",
-  "wikidataquality-constraintreport-result-link-to-constraint": "go to constraint"
+  "wbqc-constraintreport": "Constraint report",
+  "wbqc-constraintreport-explanation-part-one": "This special page performs constraints checks on every entity you want. The entities are fetched from the live system so every constraint violation you fix there will be instantly removed from this list.",
+  "wbqc-constraintreport-explanation-part-two": "The constraints are parsed from the property talk pages once a week, so if you add/delete/modify a constraint it might take up to a week until this gets taken into account by this constraint report. There is currently work in progress to migrate the constraints to statements on properties, enabling this special page to do live-checks.",
+  "wbqc-constraintreport-empty-result": "There are no constraint defined on this entity.",
+  "wbqc-constraintreport-result-table-header-claim": "Claim",
+  "wbqc-constraintreport-result-table-header-constraint": "Constraint",
+  "wbqc-constraintreport-result-link-to-claim": "go to claim",
+  "wbqc-constraintreport-result-link-to-constraint": "go to constraint"
 }

@@ -11,7 +11,7 @@ call_user_func( function() {
 		'name' => 'WikidataQualityConstraints',
 		'author' => 'BP2014N1',
 		'url' => 'https://www.mediawiki.org/wiki/Extension:WikidataQualityConstraints',
-		'descriptionmsg' => 'wikidataquality-constraints-desc',
+		'descriptionmsg' => 'wbqc-constraints-desc',
 		'version' => '0.0.0'
 	);
 
@@ -36,9 +36,9 @@ call_user_func( function() {
 	);
 
 	// Define database table names
-	define( 'CONSTRAINT_TABLE', 'wdqa_constraints' );
+	define( 'CONSTRAINT_TABLE', 'wbqc_constraints' );
 
 	// Jobs
 	$GLOBALS['wgJobClasses']['evaluateConstraintReportJob'] = 'EvaluateConstraintReportJob';
-	$GLOBALS['wgDebugLogGroups']['wdqa_evaluation'] = '/var/log/mediawiki/wdqa_evaluation.log';
+	$GLOBALS['wgDebugLogGroups']['wbq_evaluation'] = '/var/log/mediawiki/wbq_evaluation.log';
 } );

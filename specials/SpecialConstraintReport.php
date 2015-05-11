@@ -149,6 +149,10 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @see SpecialPage::execute
 	 *
 	 * @param string|null $subPage
+     *
+     * @throws InvalidArgumentException
+     * @throws EntityIdParsingException
+     * @throws UnexpectedValueException
 	 */
 	public function execute( $subPage ) {
 		$out = $this->getOutput();
@@ -181,14 +185,14 @@ class SpecialConstraintReport extends SpecialPage {
 			$entity = $this->entityLookup->getEntity( $entityId );
 		} catch ( EntityIdParsingException $e ) {
 			$out->addHTML(
-				$this->buildNotice( $this->msg( 'wikidataquality-checkresult-invalid-entity-id' )->text(), true )
+				$this->buildNotice( $this->msg( 'wbqc-checkresult-invalid-entity-id' )->text(), true )
 			);
 			return;
 		}
 
 		if ( !$entity ) {
 			$out->addHTML(
-				$this->buildNotice( $this->msg( 'wikidataquality-checkresult-not-existent-entity' )->text(), true )
+				$this->buildNotice( $this->msg( 'wbqc-checkresult-not-existent-entity' )->text(), true )
 			);
 			return;
 		}
@@ -225,7 +229,7 @@ class SpecialConstraintReport extends SpecialPage {
 			Html::openElement(
 				'form',
 				array (
-					'class' => 'wbq-checkresult-form',
+					'class' => 'wbqc-checkresult-form',
 					'action' => $this->getPageTitle()->getLocalURL(),
 					'method' => 'post'
 				)
@@ -235,16 +239,16 @@ class SpecialConstraintReport extends SpecialPage {
 				'',
 				'text',
 				array (
-					'class' => 'wbq-checkresult-form-entity-id',
-					'placeholder' => $this->msg( 'wikidataquality-checkresult-form-entityid-placeholder' )->text()
+					'class' => 'wbqc-checkresult-form-entity-id',
+					'placeholder' => $this->msg( 'wbqc-checkresult-form-entityid-placeholder' )->text()
 				)
 			)
 			. Html::input(
 				'submit',
-				$this->msg( 'wikidataquality-checkresult-form-submit-label' )->text(),
+				$this->msg( 'wbqc-checkresult-form-submit-label' )->text(),
 				'submit',
 				array (
-					'class' => 'wbq-checkresult-form-submit'
+					'class' => 'wbqc-checkresult-form-submit'
 				)
 			)
 			. Html::closeElement( 'form' );
@@ -255,6 +259,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param string $message
 	 * @param bool $error
+     *
+     * @throws InvalidArgumentException
 	 *
 	 * @return string
 	 */
@@ -266,9 +272,9 @@ class SpecialConstraintReport extends SpecialPage {
 			throw new InvalidArgumentException( '$error must be bool.' );
 		}
 
-		$cssClasses = 'wbq-checkresult-notice';
+		$cssClasses = 'wbqc-checkresult-notice';
 		if ( $error ) {
-			$cssClasses .= ' wbq-checkresult-notice-error';
+			$cssClasses .= ' wbqc-checkresult-notice-error';
 		}
 
 		return
@@ -304,17 +310,17 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return string
 	 */
 	public function getDescription() {
-		return $this->msg( 'wikidataquality-constraintreport' )->text();
+		return $this->msg( 'wbqc-constraintreport' )->text();
 	}
 
 	protected function getExplanationText() {
 		return
-			Html::openElement( 'div', array( 'class' => 'wbq-explanation') )
-			. $this->msg( 'wikidataquality-constraintreport-explanation-part-one' )
+			Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
+			. $this->msg( 'wbqc-constraintreport-explanation-part-one' )
 			. Html::closeElement( 'div' )
 			. Html::element( 'br' )
-			. Html::openElement( 'div', array( 'class' => 'wbq-explanation') )
-			. $this->msg( 'wikidataquality-constraintreport-explanation-part-two' )
+			. Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
+			. $this->msg( 'wbqc-constraintreport-explanation-part-two' )
 			. Html::closeElement( 'div' );
 	}
 
@@ -325,7 +331,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	protected function getEmptyResultText() {
 		return
-			$this->msg( 'wikidataquality-constraintreport-empty-result' )->text();
+			$this->msg( 'wbqc-constraintreport-empty-result' )->text();
 	}
 
 	/**
@@ -351,7 +357,7 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * @see SpecialCheckResultPage::buildResultTable
 	 *
-	 * @param EntityId
+	 * @param EntityId $entityId
 	 * @param array|Traversable $results
 	 *
 	 * @return string
@@ -361,15 +367,15 @@ class SpecialConstraintReport extends SpecialPage {
 		$table = new HtmlTable(
 			array (
 				new HtmlTableHeader(
-					$this->msg( 'wikidataquality-checkresult-result-table-header-status' )->text(),
+					$this->msg( 'wbqc-checkresult-result-table-header-status' )->text(),
 					true
 				),
 				new HtmlTableHeader(
-					$this->msg( 'wikidataquality-constraintreport-result-table-header-claim' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-claim' )->text(),
 					true
 				),
 				new HtmlTableHeader(
-					$this->msg( 'wikidataquality-constraintreport-result-table-header-constraint' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->text(),
 					true
 				)
 			)
@@ -435,8 +441,8 @@ class SpecialConstraintReport extends SpecialPage {
 							   $entityId->getSerialization() );
 
 		return
-			Html::openElement( 'h3', array( 'class' => 'wbq-clear' ) ) //TODO delete if not wished
-			. $this->msg( 'wikidataquality-checkresult-result-headline', $entityLink )->text()
+			Html::openElement( 'h3', array( 'class' => 'wbqc-clear' ) ) //TODO delete if not wished
+			. $this->msg( 'wbqc-checkresult-result-headline', $entityLink )->text()
 			. Html::closeElement( 'h3' );
 	}
 
@@ -463,7 +469,7 @@ class SpecialConstraintReport extends SpecialPage {
 			if ( $count > 0 ) {
 				$statusElements[ ] =
 					$this->formatStatus( $status )
-					. ": "
+					. ': '
 					. $count;
 			}
 		}
@@ -481,6 +487,9 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param string $content
 	 * @param string $tooltipContent
+	 * @param $indicator
+     *
+     * @throws InvalidArgumentException
 	 *
 	 * @return string
 	 */
@@ -499,7 +508,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$tooltipIndicator = Html::element(
 			'span',
 			array (
-				'class' => 'wbq-indicator'
+				'class' => 'wbqc-indicator'
 			),
 			$indicator
 		);
@@ -521,7 +530,9 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param string $content
 	 * @param string $expandableContent
-	 * @param string indicator
+	 * @param string $indicator
+     *
+     * @throes InvalidArgumentException
 	 *
 	 * @return string
 	 */
@@ -561,6 +572,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Formats given status to html
 	 *
 	 * @param string $status
+     *
+     * @throws InvalidArgumentException
 	 *
 	 * @return string
 	 */
@@ -569,7 +582,7 @@ class SpecialConstraintReport extends SpecialPage {
 			throw new InvalidArgumentException( '$status has to be string.' );
 		}
 
-		$messageName = "wikidataquality-checkresult-status-" . strtolower( $status );
+		$messageName = 'wbqc-checkresult-status-' . strtolower( $status );
 		$message = $this->msg( $messageName )->text();
 
 		$statusMapping = $this->getStatusMapping();
@@ -583,7 +596,7 @@ class SpecialConstraintReport extends SpecialPage {
 			Html::element(
 				'span',
 				array (
-					'class' => 'wbq-status wbq-status-' . $genericStatus
+					'class' => 'wbqc-status wbqc-status-' . $genericStatus
 				),
 				$message
 			);
@@ -596,6 +609,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param DataValue|array $dataValues
 	 * @param string $separator
+     *
+     * @throws InvalidArgumentException
 	 *
 	 * @return string
 	 */

@@ -159,29 +159,29 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		// Empty input
 		$matchers[ 'explanationOne' ] = array (
 			'tag' => 'div',
-			'content' => '(wikidataquality-constraintreport-explanation-part-one)'
+			'content' => '(wbqc-constraintreport-explanation-part-one)'
 		);
 
 		$matchers[ 'explanationTwo' ] = array (
 			'tag' => 'div',
-			'content' => '(wikidataquality-constraintreport-explanation-part-two)'
+			'content' => '(wbqc-constraintreport-explanation-part-two)'
 		);
 
 		$matchers[ 'entityId' ] = array (
 			'tag' => 'input',
 			'attributes' => array (
-				'placeholder' => '(wikidataquality-checkresult-form-entityid-placeholder)',
+				'placeholder' => '(wbqc-checkresult-form-entityid-placeholder)',
 				'name' => 'entityId',
-				'class' => 'wbq-checkresult-form-entity-id'
+				'class' => 'wbqc-checkresult-form-entity-id'
 			)
 		);
 
 		$matchers[ 'submit' ] = array (
 			'tag' => 'input',
 			'attributes' => array (
-				'class' => 'wbq-checkresult-form-submit',
+				'class' => 'wbqc-checkresult-form-submit',
 				'type' => 'submit',
-				'value' => '(wikidataquality-checkresult-form-submit-label)',
+				'value' => '(wbqc-checkresult-form-submit-label)',
 				'name' => 'submit'
 			)
 		);
@@ -192,9 +192,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wbq-checkresult-notice wbq-checkresult-notice-error'
+				'class' => 'wbqc-checkresult-notice wbqc-checkresult-notice-error'
 			),
-			'content' => '(wikidataquality-checkresult-invalid-entity-id)'
+			'content' => '(wbqc-checkresult-invalid-entity-id)'
 		);
 
 		$cases[ 'invalid input 1' ] = array ( 'Qwertz', array (), $userLanguage, $matchers );
@@ -205,9 +205,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wbq-checkresult-notice wbq-checkresult-notice-error'
+				'class' => 'wbqc-checkresult-notice wbqc-checkresult-notice-error'
 			),
-			'content' => '(wikidataquality-checkresult-not-existent-entity)'
+			'content' => '(wbqc-checkresult-not-existent-entity)'
 		);
 
 		$cases[ 'valid input - not existing item' ] = array (
@@ -221,7 +221,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		unset( $matchers[ 'error' ] );
 		$matchers[ 'result for' ] = array (
 			'tag' => 'h3',
-			'content' => '(wikidataquality-checkresult-result-headline:'
+			'content' => '(wbqc-checkresult-result-headline:'
 		);
 
 		$matchers[ 'result table' ] = array (
@@ -236,7 +236,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'role' => 'columnheader button'
 			),
-			'content' => '(wikidataquality-checkresult-result-table-header-status)'
+			'content' => '(wbqc-checkresult-result-table-header-status)'
 		);
 
 		$matchers[ 'column claim' ] = array (
@@ -244,7 +244,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'role' => 'columnheader button'
 			),
-			'content' => '(wikidataquality-constraintreport-result-table-header-claim)'
+			'content' => '(wbqc-constraintreport-result-table-header-claim)'
 		);
 
 		$matchers[ 'column constraint' ] = array (
@@ -252,23 +252,23 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'role' => 'columnheader button'
 			),
-			'content' => '(wikidataquality-constraintreport-result-table-header-constraint)'
+			'content' => '(wbqc-constraintreport-result-table-header-constraint)'
 		);
 
 		$matchers[ 'value status - violation' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wbq-status wbq-status-error'
+				'class' => 'wbqc-status wbqc-status-error'
 			),
-			'content' => '(wikidataquality-checkresult-status-violation)'
+			'content' => '(wbqc-checkresult-status-violation)'
 		);
 
 		$matchers[ 'value status - compliance' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wbq-status wbq-status-success'
+				'class' => 'wbqc-status wbqc-status-success'
 			),
-			'content' => '(wikidataquality-checkresult-status-compliance)'
+			'content' => '(wbqc-checkresult-status-compliance)'
 		);
 
 		$cases[ 'valid input - existing item' ] = array ( '$id', array (), $userLanguage, $matchers );
