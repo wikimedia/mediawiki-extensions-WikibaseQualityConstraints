@@ -16,8 +16,6 @@ use WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService;
 /**
  * @covers WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService
  *
- * @group Database
- *
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *

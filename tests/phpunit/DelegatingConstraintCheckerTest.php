@@ -6,6 +6,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
 use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikidataQuality\ConstraintReport\ConstraintReportFactory;
 use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
 
 
@@ -46,8 +47,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$checkerMap = new CheckerMapBuilder( $this->lookup, new ConstraintReportHelper() );
-		$this->constraintChecker = new DelegatingConstraintChecker( $this->lookup, $checkerMap->getCheckerMap() );
+		$factory = new ConstraintReportFactory( $this->lookup );
+		$this->constraintChecker = $factory->getConstraintChecker();
 
 		// specify database tables used by this test
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;

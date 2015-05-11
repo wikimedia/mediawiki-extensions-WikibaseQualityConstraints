@@ -30,6 +30,7 @@ use Wikibase\Lib\Store\EntityTitleLookup;
 use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
 use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikidataQuality\ConstraintReport\ConstraintReportFactory;
 use WikidataQuality\ConstraintReport\EvaluateConstraintReportJob;
 use WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService;
 use WikidataQuality\Html\HtmlTable;
@@ -343,11 +344,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	protected function executeCheck( Entity $entity ) {
 
-		$constraintReportHelper = new ConstraintReportHelper();
-		$checkerMapBuilder = new CheckerMapBuilder( $this->entityLookup, $constraintReportHelper );
-		$checkerMap = $checkerMapBuilder->getCheckerMap();
-
-		$constraintChecker = new DelegatingConstraintChecker( $this->entityLookup, $checkerMap );
+		$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
 		$results = $constraintChecker->checkAgainstConstraints( $entity );
 
 		$this->doEvaluation( $entity, $results );

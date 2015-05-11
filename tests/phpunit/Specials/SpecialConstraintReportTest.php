@@ -55,7 +55,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 */
 	private static $hasSetup;
 
-
 	protected function setUp() {
 		parent::setUp();
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;

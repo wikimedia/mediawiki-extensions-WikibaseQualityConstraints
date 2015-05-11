@@ -15,7 +15,7 @@ class Constraint {
 	public function __construct( $constraintEntry ) {
 		$this->constraintTypeQid = $constraintEntry->constraint_type_qid;
 
-		$parameterMap = ConstraintParameterMap::getMap();
+		$parameterMap = ConstraintReportFactory::getDefaultInstance()->getConstraintParameterMap();
 		$constraintParameter = array();
 		$jsonParameter = json_decode( $constraintEntry->constraint_parameters );
 		$helper = new ConstraintReportHelper();
