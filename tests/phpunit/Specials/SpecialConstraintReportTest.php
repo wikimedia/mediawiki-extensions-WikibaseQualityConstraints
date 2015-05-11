@@ -55,8 +55,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 */
 	private static $hasSetup;
 
-	private $testLogFileName;
-	private $oldLogFileName;
 
 	protected function setUp() {
 		parent::setUp();

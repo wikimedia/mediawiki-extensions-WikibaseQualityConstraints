@@ -2,8 +2,11 @@
 
 namespace WikidataQuality\ConstraintReport;
 
-use Wikibase\DataModel\Entity\Entity;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use Wikibase\Repo\WikibaseRepo;
+use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 
 
 class EvaluateConstraintReportJobService {
@@ -16,7 +19,7 @@ class EvaluateConstraintReportJobService {
 		return json_encode(
 			array (
 				'special_page_id' => 'SpecialConstraintReport',
-				'entity_id' => $params['entity']->getId()->getSerialization(),
+				'entity_id' => $params['entityId']->getSerialization(),
 				'insertion_timestamp' => $timestamp,
 				'reference_timestamp' => $params['referenceTimestamp'],
 				'result_summary' => $this->buildResultSummary( $results )
@@ -51,7 +54,7 @@ class EvaluateConstraintReportJobService {
 			$checkerMap = new CheckerMapBuilder( $lookup, new ConstraintReportHelper() );
 			$constraintChecker = new DelegatingConstraintChecker( $lookup, $checkerMap->getCheckerMap() );
 
-			return $constraintChecker->checkAgainstConstraints( $params[ 'entity' ] );
+			return $constraintChecker->checkAgainstConstraints( $lookup->getEntity( $params[ 'entityId' ] ) );
 		} else {
 			return $params['results'];
 		}
