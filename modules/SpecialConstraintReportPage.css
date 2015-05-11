@@ -53,7 +53,7 @@
 }
 
 /* Tooltip */
-.wbq-tooltip-indicator {
+.wbq-indicator {
     color: #CCC;
     font-weight: 600;
 }
@@ -84,4 +84,13 @@
 
 [tooltip]:not([tooltip-persistent]):before {
     pointer-events: none;
+}
+
+.wbq-expandable-content-indicator {
+    cursor: pointer;
+}
+
+.wbq-expandable-content {
+    color: #333;
+    display: none;
 }

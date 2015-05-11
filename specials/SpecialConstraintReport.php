@@ -403,8 +403,8 @@ class SpecialConstraintReport extends SpecialPage {
 				new PropertyId( self::CONSTRAINT_PROPERTY_ID ),
 				$result->getConstraintName()
 			);
-			$constraintColumn = $this->buildTooltipElement(
-				sprintf( '%s', $constraintLink ),
+			$constraintColumn = $this->buildExpandableElement(
+				$constraintLink,
 				$this->formatParameters( $result->getParameters() ),
 				'[...]'
 			);
@@ -499,7 +499,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$tooltipIndicator = Html::element(
 			'span',
 			array (
-				'class' => 'wbq-tooltip-indicator'
+				'class' => 'wbq-indicator'
 			),
 			$indicator
 		);
@@ -513,6 +513,48 @@ class SpecialConstraintReport extends SpecialPage {
 			)
 			. sprintf( '%s %s', $content, $tooltipIndicator )
 			. Html::closeElement( 'span' );
+	}
+
+	/**
+	 * Builds a html div element with given content and a tooltip with given tooltip content
+	 * If $tooltipContent is null, no tooltip will be created
+	 *
+	 * @param string $content
+	 * @param string $expandableContent
+	 * @param string indicator
+	 *
+	 * @return string
+	 */
+	protected function buildExpandableElement( $content, $expandableContent, $indicator ) {
+		if ( !is_string( $content ) ) {
+			throw new InvalidArgumentException( '$content has to be string.' );
+		}
+		if ( $expandableContent && ( !is_string( $expandableContent ) ) ) {
+			throw new InvalidArgumentException( '$tooltipContent, if provided, has to be string.' );
+		}
+
+		if ( empty( $expandableContent ) ) {
+			return $content;
+		}
+
+		$tooltipIndicator = Html::element(
+			'span',
+			array (
+				'class' => 'wbq-expandable-content-indicator wbq-indicator'
+			),
+			$indicator
+		);
+
+		$expandableContent = Html::element(
+			'div',
+			array(
+				'class' => 'wbq-expandable-content'
+			),
+			$expandableContent
+		);
+
+		return
+			sprintf( '%s %s %s', $content, $tooltipIndicator, $expandableContent );
 	}
 
 	/**
@@ -693,8 +735,9 @@ class SpecialConstraintReport extends SpecialPage {
 		$service = new EvaluateConstraintReportJobService();
 		$checkTimeStamp = wfTimestamp( TS_MW );
 		$jobs = array ();
-		$jobs[ ] = EvaluateConstraintReportJob::newInsertNow( $service, $entity, $checkTimeStamp, $results );
-		$jobs[ ] = EvaluateConstraintReportJob::newInsertDeferred( $service, $entity, $checkTimeStamp, 10 );
+		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $service, $entity->getId(), $checkTimeStamp, $results );
+		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $service, $entity->getId(), $checkTimeStamp, 10 );
+		$jobs[0]->run();
 		JobQueueGroup::singleton()->push( $jobs );
 	}
 
