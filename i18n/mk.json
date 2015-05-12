@@ -4,12 +4,17 @@
 			"Bjankuloski06"
 		]
 	},
-	"wikidataquality-constraintreport": "Извештај за услови",
-	"wikidataquality-constraintreport-instructions": "Внесете назнака на единицата за да бидат проверени согласно условите.",
-	"wikidataquality-constraintreport-instructions-example": "Пробајте било која назнака, по можност на предмет, и погледајте ги резултатите.",
-	"wikidataquality-constraintreport-empty-result": "Нема зададено услови за единицава.",
-	"wikidataquality-constraintreport-result-table-header-claim": "Тврдење",
-	"wikidataquality-constraintreport-result-table-header-constraint": "Услов",
-	"wikidataquality-constraintreport-result-link-to-claim": "оди на тврдењето",
-	"wikidataquality-constraintreport-result-link-to-constraint": "оди на условот"
+	"wbqc-constraintreport": "Извештај за услови",
+	"wbqc-constraintreport-explanation-part-one": "Оваа службена страница врши проверки на условите врз единица што ќе ја укажете. Единиците се преземаат од системот во живо, така што секое несогласување со услов што ќе го поправите ќе биде веднаш отстрането од списокот.",
+	"wbqc-constraintreport-explanation-part-two": "Условите се расчленуваат од страниците за разговор на својствата еднаш неделно. Така, ако ставите/избришете/измените услов, може да треба една недела за да се прикаже во овој извештај за услови. Во тек е преселба на условите во тврдењата за својства, овозможувајќи ѝ на оваа службена страница да врши проверки во живо.",
+	"wbqc-constraintreport-form-submit-label": "Провери",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-empty-result": "Нема зададено услови за единицава.",
+	"wbqc-constraintreport-status-violation": "Нескладност",
+	"wbqc-constraintreport-status-compliance": "Усогласеност",
+	"wbqc-constraintreport-status-todo": "За проверување",
+	"wbqc-constraintreport-result-table-header-claim": "Тврдење",
+	"wbqc-constraintreport-result-table-header-constraint": "Услов",
+	"wbqc-constraintreport-result-link-to-claim": "оди на тврдењето",
+	"wbqc-constraintreport-result-link-to-constraint": "оди на условот"
 }
