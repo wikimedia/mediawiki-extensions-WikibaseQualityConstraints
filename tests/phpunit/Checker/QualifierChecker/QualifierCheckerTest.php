@@ -22,19 +22,17 @@ use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
 class QualifierCheckerTest extends \MediaWikiTestCase {
 
 	private $helper;
-	private $qualifiersList;
 	private $lookup;
 
 	protected function setUp() {
 		parent::setUp();
 		$this->helper = new ConstraintReportHelper();
-		$this->qualifiersList = array ( 'P580', 'P582', 'P1365', 'P1366', 'P642', 'P805' );
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 
 	protected function tearDown() {
 		unset( $this->helper );
-		unset( $this->qualifiersList );
+		unset( $this->lookup );
 		parent::tearDown();
 	}
 
@@ -44,61 +42,26 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		}
 	}
 
-	/*
-	 * Following tests are testing the 'Qualifier' constraint.
-	 */
-
 	public function testQualifierConstraintQualifierProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkQualifierConstraint( $this->getFirstStatement( $entity ) );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array() ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	/*
-	 * Following tests are testing the 'Qualifiers' constraint.
-	 */
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Qualifier' );
 
-	public function testQualifiersConstraint() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkQualifiersConstraint( $this->getFirstStatement( $entity ), $this->qualifiersList );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
-	}
-
-	public function testQualifiersConstraintToManyQualifiers() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkQualifiersConstraint( $this->getFirstStatement( $entity ), $this->qualifiersList );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
-	}
-
-	public function testQualifiersConstraintNoQualifiers() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkQualifiersConstraint( $this->getFirstStatement( $entity ), array ( '' ) );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
-	}
-
-	/*
-	 * Following tests are testing the 'Mandatory qualifiers' constraint
-	 */
-
-	public function testMandatoryQualifiersConstraintValid() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkMandatoryQualifiersConstraint( $this->getFirstStatement( $entity ), array ( 'P2' ) );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
-	}
-
-	public function testMandatoryQualifiersConstraintInvalid() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkMandatoryQualifiersConstraint( $this->getFirstStatement( $entity ), array (
-			'P2',
-			'P3'
-		) );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		return $mock;
 	}
 
 }

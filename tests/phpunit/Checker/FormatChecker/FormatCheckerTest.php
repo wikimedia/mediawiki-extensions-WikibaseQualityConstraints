@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\Test\FormatChecker;
 
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -66,16 +67,16 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$statement9 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value9 ) ) );
 		$statement10 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value10 ) ) );
 
-		$this->assertEquals( 'compliance', $this->formatChecker->checkFormatConstraint( $statement1, $pattern )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'compliance', $this->formatChecker->checkFormatConstraint( $statement2, $pattern )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'compliance', $this->formatChecker->checkFormatConstraint( $statement3, $pattern )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'compliance', $this->formatChecker->checkFormatConstraint( $statement4, $pattern )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement5, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement6, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement7, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement8, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement9, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement10, $pattern )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement1, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement2, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement3, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement4, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement5, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement6, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement7, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement8, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement9, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement10, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
 	}
 
 	public function testFormatConstraintTaxonName() {
@@ -103,30 +104,51 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$statement9 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value9 ) ) );
 		$statement10 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value10 ) ) );
 
-		$this->assertEquals( 'compliance', $this->formatChecker->checkFormatConstraint( $statement1, $pattern )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'compliance', $this->formatChecker->checkFormatConstraint( $statement2, $pattern )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'compliance', $this->formatChecker->checkFormatConstraint( $statement3, $pattern )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'compliance', $this->formatChecker->checkFormatConstraint( $statement4, $pattern )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement5, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement6, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement7, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement8, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement9, $pattern )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement10, $pattern )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement1, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement2, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement3, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement4, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement5, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement6, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement7, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement8, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement9, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement10, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
 	}
 
 	public function testFormatConstraintEmptyPattern() {
 		$pattern = null;
 		$value = new StringValue( 'Populus × canescens' );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) ) );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement, $pattern )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
 	}
 
 	public function testFormatConstraintNoStringValue() {
 		$pattern = "(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+(( [A-Z]?[a-z]+)|( ([a-z]+-)?([a-z]+-)?[a-z]+)|( ×([a-z]+-)?([a-z]+-)?([a-z]+-)?([a-z]+-)?[a-z]+)|( \([A-Z][a-z]+\) [a-z]+)|( (‘|')[A-Z][a-z]+(('|’)s)?( de)?( [A-Z][a-z]+(-([A-Z])?[a-z]+)*)*('|’)*)|( ×| Group| (sub)?sp\.| (con)?(sub)?(notho)?var\.| (sub)?ser\.| (sub)?sect\.| subg\.| (sub)?f\.))*))";
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) ) );
-		$this->assertEquals( 'violation', $this->formatChecker->checkFormatConstraint( $statement, $pattern )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+	}
+
+	public function testFormatConstraintNoValueSnak() {
+		$pattern = ".";
+		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => array( $pattern ) ) ) )->getStatus(), 'check should not comply' );
+	}
+
+	private function getConstraintMock( $parameter ) {
+		$mock = $this
+			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintParameter' )
+			 ->willReturn( $parameter );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeQid' )
+			 ->willReturn( 'Format' );
+
+		return $mock;
 	}
 
 }

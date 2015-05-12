@@ -2,6 +2,7 @@
 
 namespace WikidataQuality\ConstraintReport\Test\CheckResult;
 
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -53,6 +54,13 @@ class CheckResultTest extends \MediaWikiTestCase {
 		$this->assertEquals( $this->parameters, $checkResult->getParameters() );
 		$this->assertEquals( $this->status, $checkResult->getStatus() );
 		$this->assertEquals( $this->message, $checkResult->getMessage() );
+		$this->assertEquals( 'value', $checkResult->getMainSnakType() );
+	}
+
+	public function testWithWrongSnakType() {
+		$checkResult = new CheckResult( new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) ), $this->constraintName, $this->parameters, $this->status, $this->message );
+		$this->setExpectedException( '\Exception' );
+		$checkResult->getDataValue();
 	}
 
 }

@@ -1,0 +1,96 @@
+/* Entity id form */
+.wbqc-checkresult-form {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.wbqc-checkresult-form-entity-id {
+    width: 120px;
+}
+
+.wbqc-checkresult-form-submit {
+    margin-left: 5px;
+}
+
+/* Notices */
+.wbqc-checkresult-notice {
+    font-style: italic;
+}
+
+.wbqc-checkresult-notice-error {
+    font-weight: bold;
+    color: #BA0000;
+}
+
+/* Explanation infobox */
+.wbqc-explanation {
+    width: 50%;
+}
+
+/* Statuses */
+.wbqc-status {
+    font-weight: bold;
+}
+
+.wbqc-status-success {
+    color: #008000;
+}
+
+.wbqc-status-partial-success {
+    color: #6CB500;
+}
+
+.wbqc-status-warning {
+    color: #E6B800;
+}
+
+.wbqc-status-error {
+    color: #BA0000;
+}
+
+.wbqc-status-unknown {
+    color: #404040;
+}
+
+/* Tooltip */
+.wbqc-indicator {
+    color: #CCC;
+    font-weight: 600;
+}
+
+[tooltip]:before {
+    /* needed - do not touch */
+    content: attr(tooltip);
+    position: absolute;
+    opacity: 0;
+
+    /* customizable */
+    transition: all 0.20s ease;
+    padding: 5px;
+    border: 1px solid #AAA;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px #CCC;
+}
+
+[tooltip]:hover:before {
+    /* needed - do not touch */
+    opacity: 1;
+
+    /* customizable */
+    background: #F2F2F2;
+    margin-top: -35px;
+    margin-left: -5px;
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+    pointer-events: none;
+}
+
+.wbq-expandable-content-indicator {
+    cursor: pointer;
+}
+
+.wbq-expandable-content {
+    color: #333;
+    display: none;
+}

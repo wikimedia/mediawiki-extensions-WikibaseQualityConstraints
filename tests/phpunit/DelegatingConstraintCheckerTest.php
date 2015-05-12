@@ -3,12 +3,14 @@
 namespace WikidataQuality\ConstraintReport\Test\ConstraintChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
+use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker
+ * @covers WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *
  * @group WikidataQualityConstraints
  * @group Database
@@ -16,18 +18,28 @@ use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ValueCountChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ConnectionChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
  *
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConstraintCheckerTest extends \MediaWikiTestCase {
+class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 	private $constraintChecker;
 	private $lookup;
@@ -35,7 +47,8 @@ class ConstraintCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$this->constraintChecker = new ConstraintChecker( $this->lookup );
+		$checkerMap = new CheckerMapBuilder( $this->lookup, new ConstraintReportHelper() );
+		$this->constraintChecker = new DelegatingConstraintChecker( $this->lookup, $checkerMap->getCheckerMap() );
 
 		// specify database tables used by this test
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;
@@ -221,39 +234,39 @@ class ConstraintCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	public function testExecute() {
+	public function testCheckAgainstConstraints() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$result = $this->constraintChecker->execute( $entity );
+		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 18, count( $result ), 'Every constraint should be represented by one result' );
 	}
 
-	public function testExecuteWithoutEntity() {
-		$result = $this->constraintChecker->execute( null );
+	public function testCheckAgainstConstraintsWithoutEntity() {
+		$result = $this->constraintChecker->checkAgainstConstraints( null );
 		$this->assertEquals( null, $result, 'Should return null' );
 	}
 
-	public function testExecuteDoesNotCrashWhenResultIsEmpty() {
+	public function testCheckAgainstConstraintsDoesNotCrashWhenResultIsEmpty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$result = $this->constraintChecker->execute( $entity );
+		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 0, count( $result ), 'Should be empty' );
 	}
 
-	public function testExecuteWithConstraintThatDoesNotBelongToCheckedConstraints() {
+	public function testCheckAgainstConstraintsWithConstraintThatDoesNotBelongToCheckedConstraints() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$result = $this->constraintChecker->execute( $entity );
+		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 1, count( $result ), 'Should be one result' );
 		$this->assertEquals( 'todo', $result[ 0 ]->getStatus(), 'Should be marked as a todo' );
 	}
 
-	public function testExecuteDoesNotCrashWhenStatementHasNovalue() {
+	public function testCheckAgainstConstraintsDoesNotCrashWhenStatementHasNovalue() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$result = $this->constraintChecker->execute( $entity );
+		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 0, count( $result ), 'Should be empty' );
 	}
 
-	public function testExecuteWithKnownException() {
+	public function testCheckAgainstConstraintsWithKnownException() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$result = $this->constraintChecker->execute( $entity );
+		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 'exception', $result[ 0 ]->getStatus(), 'Should be an exception' );
 	}
 

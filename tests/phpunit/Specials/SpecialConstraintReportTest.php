@@ -22,19 +22,14 @@ use Wikibase\DataModel\Entity\EntityId;
  * @group Database
  * @group medium
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ValueCountChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker
+ * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikidataQuality\Html\HtmlTable
  * @uses   WikidataQuality\Html\HtmlTableCell
  * @uses   WikidataQuality\Html\HtmlTableHeader
- * @uses   WikidataQuality\Html\HtmlTableCell
- * @uses   WikidataQuality\Result\ResultToViolationTranslator
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator
- * @uses   WikidataQuality\Violations\Violation
- * @uses   WikidataQuality\Violations\ViolationStore
- * @uses   WikidataQuality\ConstraintReport\CheckForConstraintViolationsJob
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -61,9 +56,14 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 */
 	private static $hasSetup;
 
+
 	protected function setUp() {
 		parent::setUp();
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;
+	}
+
+	protected function tearDown() {
+		parent::tearDown();
 	}
 
 	protected function newSpecialPage() {
@@ -158,31 +158,31 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers = array ();
 
 		// Empty input
-		$matchers[ 'instructions' ] = array (
-			'tag' => 'p',
-			'content' => '(wikidataquality-constraintreport-instructions)'
+		$matchers[ 'explanationOne' ] = array (
+			'tag' => 'div',
+			'content' => '(wbqc-constraintreport-explanation-part-one)'
 		);
 
-		$matchers[ 'instructions example' ] = array (
-			'tag' => 'p',
-			'content' => '(wikidataquality-constraintreport-instructions-example)'
+		$matchers[ 'explanationTwo' ] = array (
+			'tag' => 'div',
+			'content' => '(wbqc-constraintreport-explanation-part-two)'
 		);
 
 		$matchers[ 'entityId' ] = array (
 			'tag' => 'input',
 			'attributes' => array (
-				'placeholder' => '(wikidataquality-checkresult-form-entityid-placeholder)',
+				'placeholder' => '(wbqc-checkresult-form-entityid-placeholder)',
 				'name' => 'entityId',
-				'class' => 'wdqa-checkresult-form-entity-id'
+				'class' => 'wbqc-checkresult-form-entity-id'
 			)
 		);
 
 		$matchers[ 'submit' ] = array (
 			'tag' => 'input',
 			'attributes' => array (
-				'class' => 'wbq-checkresult-form-submit',
+				'class' => 'wbqc-checkresult-form-submit',
 				'type' => 'submit',
-				'value' => '(wikidataquality-checkresult-form-submit-label)',
+				'value' => '(wbqc-checkresult-form-submit-label)',
 				'name' => 'submit'
 			)
 		);
@@ -193,9 +193,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wdqa-checkresult-notice wdqa-checkresult-notice-error'
+				'class' => 'wbqc-checkresult-notice wbqc-checkresult-notice-error'
 			),
-			'content' => '(wikidataquality-checkresult-invalid-entity-id)'
+			'content' => '(wbqc-checkresult-invalid-entity-id)'
 		);
 
 		$cases[ 'invalid input 1' ] = array ( 'Qwertz', array (), $userLanguage, $matchers );
@@ -206,9 +206,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wdqa-checkresult-notice wdqa-checkresult-notice-error'
+				'class' => 'wbqc-checkresult-notice wbqc-checkresult-notice-error'
 			),
-			'content' => '(wikidataquality-checkresult-not-existent-entity)'
+			'content' => '(wbqc-checkresult-not-existent-entity)'
 		);
 
 		$cases[ 'valid input - not existing item' ] = array (
@@ -222,7 +222,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		unset( $matchers[ 'error' ] );
 		$matchers[ 'result for' ] = array (
 			'tag' => 'h3',
-			'content' => '(wikidataquality-checkresult-result-headline:'
+			'content' => '(wbqc-checkresult-result-headline:'
 		);
 
 		$matchers[ 'result table' ] = array (
@@ -237,7 +237,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'role' => 'columnheader button'
 			),
-			'content' => '(wikidataquality-checkresult-result-table-header-status)'
+			'content' => '(wbqc-checkresult-result-table-header-status)'
 		);
 
 		$matchers[ 'column claim' ] = array (
@@ -245,7 +245,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'role' => 'columnheader button'
 			),
-			'content' => '(wikidataquality-constraintreport-result-table-header-claim)'
+			'content' => '(wbqc-constraintreport-result-table-header-claim)'
 		);
 
 		$matchers[ 'column constraint' ] = array (
@@ -253,28 +253,28 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'role' => 'columnheader button'
 			),
-			'content' => '(wikidataquality-constraintreport-result-table-header-constraint)'
+			'content' => '(wbqc-constraintreport-result-table-header-constraint)'
 		);
 
 		$matchers[ 'value status - violation' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wdqa-status wdqa-status-error'
+				'class' => 'wbqc-status wbqc-status-error'
 			),
-			'content' => '(wikidataquality-checkresult-status-violation)'
+			'content' => '(wbqc-checkresult-status-violation)'
 		);
 
 		$matchers[ 'value status - compliance' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wdqa-status wdqa-status-success'
+				'class' => 'wbqc-status wbqc-status-success'
 			),
-			'content' => '(wikidataquality-checkresult-status-compliance)'
+			'content' => '(wbqc-checkresult-status-compliance)'
 		);
 
 		$cases[ 'valid input - existing item' ] = array ( '$id', array (), $userLanguage, $matchers );
 
 		return $cases;
 	}
+
 }
- 

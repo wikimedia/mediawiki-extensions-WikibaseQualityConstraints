@@ -3,9 +3,12 @@
 namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use Wikibase\DataModel\Entity\Entity;
+use WikidataQuality\ConstraintReport\Constraint;
 
 
 /**
@@ -16,7 +19,7 @@ use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class CommonsLinkChecker {
+class CommonsLinkChecker implements ConstraintChecker {
 
 	/**
 	 * Class for helper functions for constraint checkers.
@@ -36,14 +39,15 @@ class CommonsLinkChecker {
 	 * Checks if data value is well-formed and links to an existing page.
 	 *
 	 * @param Statement $statement
-	 * @param string $namespace
+	 * @param Constraint $constraint
+	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkCommonsLinkConstraint( Statement $statement, $namespace ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-
-		$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $namespace );
+		$constraintParameters = $constraint->getConstraintParameter();
+		$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $constraintParameters['namespace'][0] );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -53,7 +57,7 @@ class CommonsLinkChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = 'Properties with \'Commons link\' constraint need to have a value.';
-			return new CheckResult( $statement, 'Commons link', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -65,13 +69,13 @@ class CommonsLinkChecker {
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
 			$message = 'Properties with \'Commons link\' constraint need to have values of type \'string\'.';
-			return new CheckResult( $statement, 'Commons link', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$commonsLink = $dataValue->getValue();
 
 		if ( $this->commonsLinkIsWellFormed( $commonsLink ) ) {
-			if ( $this->urlExists( $commonsLink, $namespace ) ) {
+			if ( $this->urlExists( $commonsLink, $constraintParameters['namespace'][0] ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
@@ -83,7 +87,7 @@ class CommonsLinkChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, 'Commons link', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 	/**

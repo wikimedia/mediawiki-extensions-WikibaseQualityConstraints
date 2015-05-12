@@ -4,21 +4,25 @@ namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Lib\Store\EntityLookup;
+use WikidataQuality\ConstraintReport\Constraint;
+use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use Wikibase\DataModel\Entity\Entity;
 
 
 /**
  * Class TypeChecker.
- * Checks 'Type' and 'Value type' constraint.
+ * Checks 'Type' constraint.
  *
  * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class TypeChecker {
+class TypeChecker implements ConstraintChecker {
 
 	/**
 	 * Class for helper functions for constraint checkers.
@@ -33,138 +37,63 @@ class TypeChecker {
 	private $entityLookup;
 
 	/**
-	 * @var StatementList
+	 * @var TypeCheckerHelper
 	 */
-	private $statements;
+	private $typeCheckerHelper;
 
 	const instanceId = 31;
 	const subclassId = 279;
-	const MAX_DEPTH = 20;
 
 	/**
-	 * @param StatementList $statements
 	 * @param EntityLookup $lookup
 	 * @param ConstraintReportHelper $helper
+	 * @param TypeCheckerHelper $typeCheckerHelper
 	 */
-	public function __construct( StatementList $statements, EntityLookup $lookup, ConstraintReportHelper $helper ) {
-		$this->statements = $statements;
+	public function __construct( EntityLookup $lookup, ConstraintReportHelper $helper, TypeCheckerHelper $typeCheckerHelper ) {
 		$this->entityLookup = $lookup;
 		$this->helper = $helper;
-	}
-
-	/**
-	 * Checks 'Value type' constraint.
-	 *
-	 * @param Statement $statement
-	 * @param array $classArray
-	 * @param string $relation
-	 *
-	 * @return CheckResult
-	 */
-	public function checkValueTypeConstraint( Statement $statement, $classArray, $relation ) {
-		$parameters = array ();
-
-		$parameters[ 'class' ] = $this->helper->parseParameterArray( $classArray, 'ItemId' );
-		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $relation );
-
-		$mainSnak = $statement->getClaim()->getMainSnak();
-
-		/*
-		 * error handling:
-		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
-		 */
-		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = 'Properties with \'Value type\' constraint need to have a value.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-
-		$dataValue = $mainSnak->getDataValue();
-
-		/*
-		 * error handling:
-		 *   type of $dataValue for properties with 'Value type' constraint has to be 'wikibase-entityid'
-		 *   parameter $classArray must not be null
-		 */
-		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = 'Properties with \'Value type\' constraint need to have values of type \'wikibase-entityid\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-		if ( $classArray[ 0 ] === '' ) {
-			$message = 'Properties with \'Value type\' constraint need the parameter \'class\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-
-		/*
-		 * error handling:
-		 *   parameter $relation must be either 'instance' or 'subclass'
-		 */
-		if ( $relation === 'instance' ) {
-			$relationId = self::instanceId;
-		} elseif ( $relation === 'subclass' ) {
-			$relationId = self::subclassId;
-		} else {
-			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-
-		$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
-
-		if ( !$item ) {
-			$message = 'This property\'s value entity does not exist.';
-			return new CheckResult( $statement, 'Value type', $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-
-		$statements = $item->getStatements();
-
-		if ( $this->hasClassInRelation( $statements, $relationId, $classArray ) ) {
-			$message = '';
-			$status = CheckResult::STATUS_COMPLIANCE;
-		} else {
-			$message = 'This property\'s value entity must be in the relation to the item (or a subclass of the item) defined in the parameters.';
-			$status = CheckResult::STATUS_VIOLATION;
-		}
-
-		return new CheckResult( $statement, 'Value type', $parameters, $status, $message );
+		$this->typeCheckerHelper = $typeCheckerHelper;
 	}
 
 	/**
 	 * Checks 'Type' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param array $classArray
-	 * @param string $relation
+	 * @param Constraint $constraint
+	 * @param Entity $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkTypeConstraint( Statement $statement, $classArray, $relation ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
+		$constraintParameters = $constraint->getConstraintParameter();
 
-		$parameters[ 'class' ] = $this->helper->parseParameterArray( $classArray, 'ItemId' );
-		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $relation );
+		$parameters[ 'class' ] = $this->helper->parseParameterArray( $constraintParameters['class'] );
+		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $constraintParameters['relation'][0] );
 
 		/*
 		 * error handling:
-		 *   parameter $classArray must not be null
+		 *   parameter $constraintParameters['class'] must not be null
 		 */
-		if ( $classArray[ 0 ] === '' ) {
+		if ( $constraintParameters['class'][0] === '' ) {
 			$message = 'Properties with \'Type\' constraint need the parameter \'class\'.';
-			return new CheckResult( $statement, 'Type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
 		 * error handling:
-		 *   parameter $relation must be either 'instance' or 'subclass'
+		 *   parameter $constraintParameters['relation'] must be either 'instance' or 'subclass'
 		 */
-		if ( $relation === 'instance' ) {
+		if ( $constraintParameters['relation'][0] === 'instance' ) {
 			$relationId = self::instanceId;
-		} elseif ( $relation === 'subclass' ) {
+		} elseif ( $constraintParameters['relation'][0] === 'subclass' ) {
 			$relationId = self::subclassId;
 		} else {
 			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
-			return new CheckResult( $statement, 'Type', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		if ( $this->hasClassInRelation( $this->statements, $relationId, $classArray ) ) {
+		if ( $this->typeCheckerHelper->hasClassInRelation( $entity->getStatements(), $relationId, $constraintParameters['class']  ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
@@ -172,75 +101,6 @@ class TypeChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, 'Type', $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
-
-	private function isSubclassOf( $comparativeClass, $classesToCheck, $depth ) {
-		$compliance = null;
-		$item = $this->entityLookup->getEntity( $comparativeClass );
-		if ( !$item ) {
-			return false; // lookup failed, probably because item doesn't exist
-		}
-
-		foreach ( $item->getStatements() as $statement ) {
-			$claim = $statement->getClaim();
-			$propertyId = $claim->getPropertyId();
-			$numericPropertyId = $propertyId->getNumericId();
-
-			if ( $numericPropertyId === self::subclassId ) {
-				$mainSnak = $claim->getMainSnak();
-
-				if ( $mainSnak->getType() === 'value' && $mainSnak->getDataValue()->getType() === 'wikibase-entityid' ) {
-					$comparativeClass = $mainSnak->getDataValue()->getEntityId();
-
-					foreach ( $classesToCheck as $class ) {
-						if ( $class === $comparativeClass->getSerialization() ) {
-							return true;
-						}
-					}
-
-				}
-
-				if ( $depth > self::MAX_DEPTH ) {
-					return false;
-				}
-
-				$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, $depth + 1 );
-
-			}
-			if ( $compliance === true ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private function hasClassInRelation( $statements, $relationId, $classesToCheck ) {
-		$compliance = null;
-		foreach ( $statements as $statement ) {
-			$claim = $statement->getClaim();
-			$propertyId = $claim->getPropertyId();
-			$numericPropertyId = $propertyId->getNumericId();
-
-			if ( $numericPropertyId === $relationId ) {
-				$mainSnak = $claim->getMainSnak();
-
-				if ( $mainSnak->getType() === 'value' && $mainSnak->getDataValue()->getType() === 'wikibase-entityid' ) {
-					$comparativeClass = $mainSnak->getDataValue()->getEntityId();
-				}
-
-				foreach ( $classesToCheck as $class ) {
-					if ( $class === $comparativeClass->getSerialization() ) {
-						return true;
-					}
-				}
-
-				$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, 1 );
-			}
-			if ( $compliance === true ) {
-				return true;
-			}
-		}
-	}
-
 }
