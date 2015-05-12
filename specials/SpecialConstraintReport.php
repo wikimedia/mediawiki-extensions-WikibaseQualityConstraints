@@ -301,7 +301,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return string
 	 */
 	function getGroupName() {
-		return 'wikidataquality';
+		return 'wikibasequality';
 	}
 
 	/**
