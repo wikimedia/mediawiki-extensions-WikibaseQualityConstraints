@@ -26,7 +26,7 @@ use WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService;
  */
 class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 
-	private $entity;
+	private $entityId;
 	private $checkTimestamp;
 	private $constraintName;
 	private $results;
@@ -35,8 +35,7 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->entity = new Item();
-		$this->entity->setId( new ItemId( 'Q23' ) );
+		$this->entityId = new ItemId( 'Q23' );
 
 		$this->checkTimestamp = wfTimestamp( TS_MW );
 
@@ -54,7 +53,7 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 		$results[] = new CheckResult( $statement, $this->constraintName, array (), 'yet another one' );
 		$this->results = $results;
 
-		$this->params = array( 'entity' => $this->entity, 'referenceTimestamp' => null, 'results' => $results );
+		$this->params = array( 'entityId' => $this->entityId, 'referenceTimestamp' => null, 'results' => $results );
 
 	}
 
@@ -63,7 +62,7 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 		unset( $this->results );
 		unset( $this->constraintName );
 		unset( $this->checkTimestamp );
-		unset( $this->entity );
+		unset( $this->entityId );
 		unset( $this->params );
 
 		parent::tearDown();
@@ -75,7 +74,7 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 
 		$this->assertEquals( 5, count( $messageToLog ) );
 		$this->assertEquals( 'SpecialConstraintReport', $messageToLog['special_page_id'] );
-		$this->assertEquals( $this->entity->getId()->getSerialization(), $messageToLog['entity_id'] );
+		$this->assertEquals( $this->entityId->getSerialization(), $messageToLog['entity_id'] );
 		$this->assertEquals( $this->checkTimestamp, $messageToLog['insertion_timestamp'] );
 		$this->assertEquals( null, $messageToLog['reference_timestamp'] );
 

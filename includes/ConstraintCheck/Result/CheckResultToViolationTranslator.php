@@ -6,12 +6,25 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Lib\Store\EntityRevisionLookup;
 use WikidataQuality\Result\ResultToViolationTranslator;
 use WikidataQuality\Violations\Violation;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 
 
-class CheckResultToViolationTranslator extends ResultToViolationTranslator {
+class CheckResultToViolationTranslator {
+
+    /**
+     * @var EntityRevisionLookup
+     */
+    private $entityRevisionLookup;
+
+    /**
+     * @param EntityRevisionLookup $entityRevisionLookup
+     */
+    public function __construct( EntityRevisionLookup $entityRevisionLookup ) {
+        $this->entityRevisionLookup = $entityRevisionLookup;
+    }
 
 	public function translateToViolation( Entity $entity, $checkResultOrArray ) {
 
@@ -30,7 +43,7 @@ class CheckResultToViolationTranslator extends ResultToViolationTranslator {
 			//TODO: Use real claimGuid
 			$constraintTypeEntityId = $checkResult->getConstraintName();
             $constraintId = $this->setConstraintId( $checkResult, $statement, $constraintTypeEntityId );
-			$revisionId = $this->getRevisionIdForEntity( $entityId );
+			$revisionId = $this->entityRevisionLookup->getLatestRevisionId( $entityId );
 			$status = CheckResult::STATUS_VIOLATION;
 
 			$violationArray[ ] = new Violation( $entityId, $propertyId, $claimGuid, $constraintId, $constraintTypeEntityId, $revisionId, $status );
