@@ -185,14 +185,14 @@ class SpecialConstraintReport extends SpecialPage {
 			$entity = $this->entityLookup->getEntity( $entityId );
 		} catch ( EntityIdParsingException $e ) {
 			$out->addHTML(
-				$this->buildNotice( $this->msg( 'wbqc-checkresult-invalid-entity-id' )->text(), true )
+				$this->buildNotice( $this->msg( 'wbqc-constraintreport-invalid-entity-id' )->text(), true )
 			);
 			return;
 		}
 
 		if ( !$entity ) {
 			$out->addHTML(
-				$this->buildNotice( $this->msg( 'wbqc-checkresult-not-existent-entity' )->text(), true )
+				$this->buildNotice( $this->msg( 'wbqc-constraintreport-not-existent-entity' )->text(), true )
 			);
 			return;
 		}
@@ -229,7 +229,7 @@ class SpecialConstraintReport extends SpecialPage {
 			Html::openElement(
 				'form',
 				array (
-					'class' => 'wbqc-checkresult-form',
+					'class' => 'wbqc-constraintreport-form',
 					'action' => $this->getPageTitle()->getLocalURL(),
 					'method' => 'post'
 				)
@@ -239,16 +239,16 @@ class SpecialConstraintReport extends SpecialPage {
 				'',
 				'text',
 				array (
-					'class' => 'wbqc-checkresult-form-entity-id',
-					'placeholder' => $this->msg( 'wbqc-checkresult-form-entityid-placeholder' )->text()
+					'class' => 'wbqc-constraintreport-form-entity-id',
+					'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->text()
 				)
 			)
 			. Html::input(
 				'submit',
-				$this->msg( 'wbqc-checkresult-form-submit-label' )->text(),
+				$this->msg( 'wbqc-constraintreport-form-submit-label' )->text(),
 				'submit',
 				array (
-					'class' => 'wbqc-checkresult-form-submit'
+					'class' => 'wbqc-constraintreport-form-submit'
 				)
 			)
 			. Html::closeElement( 'form' );
@@ -272,9 +272,9 @@ class SpecialConstraintReport extends SpecialPage {
 			throw new InvalidArgumentException( '$error must be bool.' );
 		}
 
-		$cssClasses = 'wbqc-checkresult-notice';
+		$cssClasses = 'wbqc-constraintreport-notice';
 		if ( $error ) {
-			$cssClasses .= ' wbqc-checkresult-notice-error';
+			$cssClasses .= ' wbqc-constraintreport-notice-error';
 		}
 
 		return
@@ -367,7 +367,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$table = new HtmlTable(
 			array (
 				new HtmlTableHeader(
-					$this->msg( 'wbqc-checkresult-result-table-header-status' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->text(),
 					true
 				),
 				new HtmlTableHeader(
@@ -442,7 +442,7 @@ class SpecialConstraintReport extends SpecialPage {
 
 		return
 			Html::openElement( 'h3', array( 'class' => 'wbqc-clear' ) ) //TODO delete if not wished
-			. $this->msg( 'wbqc-checkresult-result-headline', $entityLink )->text()
+			. $this->msg( 'wbqc-constraintreport-result-headline', $entityLink )->text()
 			. Html::closeElement( 'h3' );
 	}
 
@@ -551,7 +551,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$tooltipIndicator = Html::element(
 			'span',
 			array (
-				'class' => 'wbq-expandable-content-indicator wbq-indicator'
+				'class' => 'wbqc-expandable-content-indicator wbqc-indicator'
 			),
 			$indicator
 		);
@@ -559,7 +559,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$expandableContent = Html::element(
 			'div',
 			array(
-				'class' => 'wbq-expandable-content'
+				'class' => 'wbqc-expandable-content'
 			),
 			$expandableContent
 		);
@@ -582,7 +582,7 @@ class SpecialConstraintReport extends SpecialPage {
 			throw new InvalidArgumentException( '$status has to be string.' );
 		}
 
-		$messageName = 'wbqc-checkresult-status-' . strtolower( $status );
+		$messageName = 'wbqc-constraintreport-status-' . strtolower( $status );
 		$message = $this->msg( $messageName )->text();
 
 		$statusMapping = $this->getStatusMapping();

@@ -86,11 +86,11 @@
     pointer-events: none;
 }
 
-.wbq-expandable-content-indicator {
+.wbqc-expandable-content-indicator {
     cursor: pointer;
 }
 
-.wbq-expandable-content {
+.wbqc-expandable-content {
     color: #333;
     display: none;
 }

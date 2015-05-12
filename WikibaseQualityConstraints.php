@@ -31,6 +31,7 @@ call_user_func( function() {
 	// Define modules
 	$GLOBALS['wgResourceModules']['SpecialConstraintReportPage'] = array (
 		'styles' => '/modules/SpecialConstraintReportPage.css',
+        'scripts' => '/modules/SpecialConstraintReportPage.js',
 		'localBasePath' => __DIR__,
 		'remoteExtPath' => 'WikibaseQualityConstraints'
 	);

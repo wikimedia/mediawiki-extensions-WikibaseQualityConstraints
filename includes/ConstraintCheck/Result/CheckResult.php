@@ -16,7 +16,7 @@ use DataValues\DataValue;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class CheckResult implements \WikidataQuality\Result\CheckResult {
+class CheckResult {
 
 	// Constants for statuses
 	const STATUS_COMPLIANCE = 'compliance';
