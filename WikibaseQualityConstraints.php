@@ -8,22 +8,22 @@ call_user_func( function() {
 	// Set credits
 	$GLOBALS['wgExtensionCredits']['specialpage'][] = array(
 		'path' => __FILE__,
-		'name' => 'WikidataQualityConstraints',
+		'name' => 'WikibaseQualityConstraints',
 		'author' => 'BP2014N1',
-		'url' => 'https://www.mediawiki.org/wiki/Extension:WikidataQualityConstraints',
-		'descriptionmsg' => 'wbqc-constraints-desc',
-		'version' => '0.0.0'
+		'url' => 'https://www.mediawiki.org/wiki/Extension:WikibaseQualityConstraints',
+		'descriptionmsg' => 'wbqc-desc',
+		'version' => '1.0.0'
 	);
 
 	// Initialize localization and aliases
-	$GLOBALS['wgMessagesDirs']['WikidataQualityConstraints'] = __DIR__ . '/i18n';
-	$GLOBALS['wgExtensionMessagesFiles']['WikidataQualityConstraintsAlias'] = __DIR__ . '/WikidataQualityConstraints.alias.php';
+	$GLOBALS['wgMessagesDirs']['WikibaseQualityConstraints'] = __DIR__ . '/i18n';
+	$GLOBALS['wgExtensionMessagesFiles']['WikibaseQualityConstraintsAlias'] = __DIR__ . '/WikibaseQualityConstraints.alias.php';
 
 	// Initalize hooks for creating database tables
-	$GLOBALS['wgHooks']['LoadExtensionSchemaUpdates'][] = 'WikidataQualityConstraintsHooks::onCreateSchema';
+	$GLOBALS['wgHooks']['LoadExtensionSchemaUpdates'][] = 'WikibaseQualityConstraintsHooks::onCreateSchema';
 
 	// Register hooks for Unit Tests
-	$GLOBALS['wgHooks']['UnitTestsList'][] = 'WikidataQualityConstraintsHooks::onUnitTestsList';
+	$GLOBALS['wgHooks']['UnitTestsList'][] = 'WikibaseQualityConstraintsHooks::onUnitTestsList';
 
 	// Initialize special pages
 	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport';
@@ -32,7 +32,7 @@ call_user_func( function() {
 	$GLOBALS['wgResourceModules']['SpecialConstraintReportPage'] = array (
 		'styles' => '/modules/SpecialConstraintReportPage.css',
 		'localBasePath' => __DIR__,
-		'remoteExtPath' => 'WikidataQualityConstraints'
+		'remoteExtPath' => 'WikibaseQualityConstraints'
 	);
 
 	// Define database table names

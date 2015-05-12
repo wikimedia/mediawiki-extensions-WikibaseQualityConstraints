@@ -1,6 +1,6 @@
 <?php
 
-final class WikidataQualityConstraintsHooks {
+final class WikibaseQualityConstraintsHooks {
 
 	/**
 	 * @param DatabaseUpdater $updater

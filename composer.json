@@ -37,10 +37,10 @@
 			"WikidataQuality\\ConstraintReport\\Tests\\": "tests/phpunit/"
 		},
 		"classmap": [
-			"WikidataQualityConstraintsHooks.php"
+			"WikibaseQualityConstraintsHooks.php"
 		],
 		"files": [
-			"WikidataQualityConstraints.php"
+			"WikibaseQualityConstraints.php"
 		]
 	}
 }
