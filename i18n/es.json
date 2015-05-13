@@ -1,9 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Fitoschido"
+			"Fitoschido",
+			"Macofe"
 		]
 	},
-	"wikidataquality-constraintreport": "Informe de condicionante",
-	"wikidataquality-constraintreport-result-table-header-claim": "Declaración"
+	"wbqc-constraintreport-form-submit-label": "Verificar",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-status-violation": "Violación",
+	"wbqc-constraintreport-status-compliance": "Cumple",
+	"wbqc-constraintreport-status-todo": "Pendiente"
 }

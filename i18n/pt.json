@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Vitorvicentevalente"
+		]
+	},
+	"wbqc-constraintreport-form-submit-label": "Verificar",
+	"wbqc-constraintreport-result-headline": "Resultados para $1"
+}

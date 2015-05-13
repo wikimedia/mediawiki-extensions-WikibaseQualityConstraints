@@ -10,6 +10,7 @@
 	"wbqc-constraintreport-explanation-part-two": "Die Beschränkungen werden von den Eigenschaftsdiskussionsseiten einmal pro Woche geparst. Falls du eine Beschränkung hinzufügst/löschst/änderst, dauert es also bis zu einer Woche, bis dies vom Beschränkungsbericht in das Benutzerkonto übernommen wird. Es sind derzeit Migrationen der Beschränkungen zu den Aussagen der Eigenschaften in Bearbeitung. Das Aktivieren dieser Spezialseite führt Liveprüfungen aus.",
 	"wbqc-constraintreport-form-submit-label": "Überprüfen",
 	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-result-headline": "Ergebnis für $1",
 	"wbqc-constraintreport-empty-result": "Es gibt keine zu diesem Objekt definierten Beschränkungen.",
 	"wbqc-constraintreport-status-violation": "Verletzung",
 	"wbqc-constraintreport-status-compliance": "Übereinstimmung",

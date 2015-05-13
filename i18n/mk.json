@@ -9,6 +9,7 @@
 	"wbqc-constraintreport-explanation-part-two": "Условите се расчленуваат од страниците за разговор на својствата еднаш неделно. Така, ако ставите/избришете/измените услов, може да треба една недела за да се прикаже во овој извештај за услови. Во тек е преселба на условите во тврдењата за својства, овозможувајќи ѝ на оваа службена страница да врши проверки во живо.",
 	"wbqc-constraintreport-form-submit-label": "Провери",
 	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-result-headline": "Резултат за $1",
 	"wbqc-constraintreport-empty-result": "Нема зададено услови за единицава.",
 	"wbqc-constraintreport-status-violation": "Нескладност",
 	"wbqc-constraintreport-status-compliance": "Усогласеност",

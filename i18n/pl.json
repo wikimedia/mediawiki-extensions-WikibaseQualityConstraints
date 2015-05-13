@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Chrumps"
+		]
+	},
+	"wbqc-constraintreport-form-submit-label": "Sprawdź",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-status-todo": "Do zrobienia"
+}
