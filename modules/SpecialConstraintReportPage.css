@@ -1,23 +1,23 @@
 /* Entity id form */
-.wbqc-checkresult-form {
+.wbqc-constraintreport-form {
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.wbqc-checkresult-form-entity-id {
+.wbqc-constraintreport-form-entity-id {
     width: 120px;
 }
 
-.wbqc-checkresult-form-submit {
+.wbqc-constraintreport-form-submit {
     margin-left: 5px;
 }
 
 /* Notices */
-.wbqc-checkresult-notice {
+.wbqc-constraintreport-notice {
     font-style: italic;
 }
 
-.wbqc-checkresult-notice-error {
+.wbqc-constraintreport-notice-error {
     font-weight: bold;
     color: #BA0000;
 }
@@ -86,11 +86,11 @@
     pointer-events: none;
 }
 
-.wbq-expandable-content-indicator {
+.wbqc-expandable-content-indicator {
     cursor: pointer;
 }
 
-.wbq-expandable-content {
+.wbqc-expandable-content {
     color: #333;
     display: none;
 }
