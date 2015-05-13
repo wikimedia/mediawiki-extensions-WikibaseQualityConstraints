@@ -11,6 +11,7 @@
   "wbqc-constraintreport-empty-result": "There are no constraint defined on this entity.",
   "wbqc-constraintreport-status-violation": "Violation",
   "wbqc-constraintreport-status-compliance": "Compliance",
+  "wbqc-constraintreport-status-exception": "Exception",
   "wbqc-constraintreport-status-todo": "Todo",
   "wbqc-constraintreport-result-table-header-claim": "Claim",
   "wbqc-constraintreport-result-table-header-constraint": "Constraint",
