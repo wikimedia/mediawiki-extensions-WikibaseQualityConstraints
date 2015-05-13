@@ -441,7 +441,7 @@ class SpecialConstraintReport extends SpecialPage {
 							   $entityId->getSerialization() );
 
 		return
-			Html::openElement( 'h3', array( 'class' => 'wbqc-clear' ) ) //TODO delete if not wished
+			Html::openElement( 'h3' )
 			. $this->msg( 'wbqc-constraintreport-result-headline', $entityLink )->text()
 			. Html::closeElement( 'h3' );
 	}
