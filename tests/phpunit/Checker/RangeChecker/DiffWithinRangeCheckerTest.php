@@ -53,98 +53,85 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	public function testDiffWithinRangeConstraintWithinRange() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P569' ),
+			'property' => 'P569',
 			'minimum_quantity' => 0,
 			'maximum_quantity' => 150
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testDiffWithinRangeConstraintTooSmall() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P569' ),
+			'property' => 'P569',
 			'minimum_quantity' => 50,
 			'maximum_quantity' => 150
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testDiffWithinRangeConstraintTooBig() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P569' ),
+			'property' => 'P569',
 			'minimum_quantity' => 0,
 			'maximum_quantity' => 150
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testDiffWithinRangeConstraintWithoutProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( '' ),
-			'minimum_quantity' => null,
-			'maximum_quantity' => null
-		);
+		$constraintParameters = array();
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testDiffWithinRangeConstraintWrongType() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P1' ),
-			'minimum_quantity' => null,
-			'maximum_quantity' => null
+			'property' => 'P1'
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1457' ), new StringValue( '1.1.1970' ) ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testDiffWithinRangeConstraintWrongTypeOfProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q7' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P569' ),
+			'property' => 'P569',
 			'minimum_quantity' => 1,
 			'maximum_quantity' => 100
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testDiffWithinRangeConstraintWithoutBaseProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P1000' ),
+			'property' => 'P1000',
 			'minimum_quantity' => 0,
 			'maximum_quantity' => 150
 		);
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -152,12 +139,11 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P1000' ),
+			'property' => 'P1000',
 			'minimum_quantity' => 0,
 			'maximum_quantity' => 150
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -167,7 +153,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->willReturn( $parameter );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )

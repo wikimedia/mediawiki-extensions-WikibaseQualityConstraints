@@ -45,9 +45,15 @@ class FormatChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
+		$constraintParameters = $constraint->getConstraintParameters();
 
-		$parameters['pattern'] = $this->helper->parseParameterArray( $constraintParameters['pattern'], true );
+		if( array_key_exists( 'pattern', $constraintParameters ) ) {
+			$pattern = $constraintParameters['pattern'];
+			$parameters['pattern'] = $this->helper->parseSingleParameter( $pattern, true );
+		} else {
+			$message = 'Properties with \'Format\' constraint need a parameter \'pattern\'.';
+			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+		}
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -71,14 +77,10 @@ class FormatChecker implements ConstraintChecker {
 			$message = 'Properties with \'Format\' constraint need to have values of type \'string\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		if ( $constraintParameters['pattern'][0] === null ) {
-			$message = 'Properties with \'Format\' constraint need a parameter \'pattern\'.';
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
 
 		$comparativeString = $dataValue->getValue();
 
-		if ( preg_match( '/^' . str_replace( '/', '\/', $constraintParameters['pattern'][0] ) . '$/', $comparativeString ) ) {
+		if ( preg_match( '/^' . str_replace( '/', '\/', $pattern ) . '$/', $comparativeString ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

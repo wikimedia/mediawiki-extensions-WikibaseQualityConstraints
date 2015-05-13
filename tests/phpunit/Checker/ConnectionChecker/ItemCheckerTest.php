@@ -50,9 +50,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	public function testItemConstraintInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( '' )
+			'property' => 'P2'
 		);
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
@@ -64,9 +62,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	public function testItemConstraintProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( '' )
+			'property' => 'P2'
 		);
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
@@ -79,9 +75,8 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	public function testItemConstraintPropertyButNotItem() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( 'Q1' )
+			'property' => 'P2',
+			'item' => 'Q1'
 		);
 		
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
@@ -94,9 +89,8 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	public function testItemConstraintPropertyAndItem() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( 'Q42' )
+			'property' => 'P2',
+			'item' => 'Q42'
 		);
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
@@ -107,11 +101,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 
 	public function testItemConstraintWithoutProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'property' => array( '' ),
-			'item' => array( '' )
-		);
+		$constraintParameters = array();
 		
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
@@ -126,7 +116,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->willReturn( $parameter );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )

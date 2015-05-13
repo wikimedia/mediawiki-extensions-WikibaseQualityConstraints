@@ -43,17 +43,14 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 	public function testMandatoryQualifiersConstraintValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$qualifierChecker = new MandatoryQualifiersChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => array ( 'P2' ) ) ) );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => 'P2' ) ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testMandatoryQualifiersConstraintInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$qualifierChecker = new MandatoryQualifiersChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => array (
-			'P2',
-			'P3'
-		) ) ) );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => 'P2,P3' ) ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -63,7 +60,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->willReturn( $parameter );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )

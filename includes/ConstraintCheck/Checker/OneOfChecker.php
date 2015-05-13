@@ -43,9 +43,13 @@ class OneOfChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
+		$constraintParameters = $constraint->getConstraintParameters();
 
-		$parameters['item'] = $this->helper->parseParameterArray( $constraintParameters['item'] );
+		$items = false;
+		if ( array_key_exists( 'item', $constraintParameters ) ){
+			$items = explode( ',', $constraintParameters['item'] );
+			$parameters['item'] = $this->helper->parseParameterArray( $items );
+		}
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -69,12 +73,12 @@ class OneOfChecker implements ConstraintChecker {
 			$message = 'Properties with \'One of\' constraint need to have values of type \'wikibase-entityid\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		if ( $constraintParameters['item'][ 0 ] === '' ) {
+		if ( !$items ) {
 			$message = 'Properties with \'One of\' constraint need a parameter \'item\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		if ( in_array( $dataValue->getEntityId()->getSerialization(), $constraintParameters['item'] ) ) {
+		if ( in_array( $dataValue->getEntityId()->getSerialization(), $items ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

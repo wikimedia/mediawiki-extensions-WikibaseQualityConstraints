@@ -34,7 +34,8 @@
 		"psr-4": {
 			"WikidataQuality\\ConstraintReport\\": "includes/",
 			"WikidataQuality\\ConstraintReport\\Specials\\": "specials/",
-			"WikidataQuality\\ConstraintReport\\Tests\\": "tests/phpunit/"
+			"WikidataQuality\\ConstraintReport\\Tests\\": "tests/phpunit/",
+		  	"WikidataQuality\\ConstraintReport\\Maintenance": "maintenance"
 		},
 		"classmap": [
 			"WikibaseQualityConstraintsHooks.php"

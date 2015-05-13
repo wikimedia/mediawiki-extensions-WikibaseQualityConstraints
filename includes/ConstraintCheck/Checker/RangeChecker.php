@@ -55,7 +55,7 @@ class RangeChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
+		$constraintParameters = $constraint->getConstraintParameters();
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -76,7 +76,7 @@ class RangeChecker implements ConstraintChecker {
 		 *   parameters (minimum_quantity and maximum_quantity) or (minimum_date and maximum_date) must not be null
 		 */
 		if ( $dataValue->getType() === 'quantity' ) {
-			if ( $constraintParameters['minimum_quantity'] !== null && $constraintParameters['maximum_quantity'] !== null && $constraintParameters['minimum_date'] === null && $constraintParameters['maximum_date'] === null ) {
+			if ( array_key_exists( 'minimum_quantity', $constraintParameters ) && array_key_exists( 'maximum_quantity', $constraintParameters ) && !array_key_exists( 'minimum_date', $constraintParameters ) && !array_key_exists( 'maximum_date', $constraintParameters ) ) {
 				$min = $constraintParameters['minimum_quantity'];
 				$max = $constraintParameters['maximum_quantity'];
 				$parameters[ 'minimum_quantity' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_quantity'] );
@@ -85,7 +85,7 @@ class RangeChecker implements ConstraintChecker {
 				$message = 'Properties with values of type \'quantity\' with \'Range\' constraint need the parameters \'minimum quantity\' and \'maximum quantity\'.';
 			}
 		} elseif ( $dataValue->getType() === 'time' ) {
-			if ( $constraintParameters['minimum_quantity'] === null && $constraintParameters['maximum_quantity'] === null && $constraintParameters['minimum_date'] !== null && $constraintParameters['maximum_date'] !== null ) {
+			if ( !array_key_exists( 'minimum_quantity', $constraintParameters ) && !array_key_exists( 'maximum_quantity', $constraintParameters ) && array_key_exists( 'minimum_date', $constraintParameters ) && array_key_exists( 'maximum_date', $constraintParameters ) ) {
 				$min = $constraintParameters['minimum_date'];
 				$max = $constraintParameters['maximum_date'];
 				$parameters[ 'minimum_date' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_date'] );

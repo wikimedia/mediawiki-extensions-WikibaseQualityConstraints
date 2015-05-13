@@ -21,7 +21,12 @@ class ConstraintTest extends \MediaWikiTestCase {
 		$constraints = $repo->queryConstraintsForProperty( 1 );
 
 		$this->assertEquals( 'Item', $constraints[0]->getConstraintTypeQid() );
-		$this->assertEquals( array( 'property' => array( 'P1' ), 'exceptions' => array( '' ), 'item' => array( '' ) ), $constraints[0]->getConstraintParameter() );
+		$this->assertEquals( 1, $constraints[0]->getPropertyId() );
+		$this->assertEquals( '1', $constraints[0]->getConstraintClaimGuid() );
+		$constraintParameters = $constraints[0]->getConstraintParameters();
+		$this->assertEquals( 2, count( $constraintParameters ) );
+		$this->assertEquals( 'P21', $constraintParameters['property'] );
+		$this->assertEquals( 'mandatory', $constraintParameters['constraint_status'] );
 	}
 
 
@@ -33,7 +38,7 @@ class ConstraintTest extends \MediaWikiTestCase {
 			   'constraint_guid' => '1',
 			   'pid' => 1,
 			   'constraint_type_qid' => 'Item',
-			   'constraint_parameters' => '{"property": "P1"}'
+			   'constraint_parameters' => '{"property":"P21","constraint_status":"mandatory"}'
 		   ) )
 		);
 	}
