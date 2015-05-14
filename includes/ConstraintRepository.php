@@ -50,7 +50,7 @@ class ConstraintRepository {
 	public function deleteAll( $batchSize = 1000 ) {
 		$db = wfGetDB( DB_MASTER );
 		if ( $db->getType() === 'sqlite' ) {
-			$db->delete( CONSTRAINT_TABLE, '' );
+			$db->delete( CONSTRAINT_TABLE, '*' );
 		} else {
 			do {
 				$db->commit( __METHOD__, 'flush' );
