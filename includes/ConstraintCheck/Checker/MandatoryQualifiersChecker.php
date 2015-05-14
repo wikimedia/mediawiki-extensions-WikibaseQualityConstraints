@@ -44,9 +44,13 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
+		$constraintParameters = $constraint->getConstraintParameters();
 
-		$parameters[ 'property' ] = $this->helper->parseParameterArray( $constraintParameters['property'] );
+		$properties = array();
+		if ( array_key_exists( 'property', $constraintParameters ) ) {
+			$properties = explode( ',', $constraintParameters['property'] );
+		}
+		$parameters[ 'property' ] = $this->helper->parseParameterArray( $properties );
 		$qualifiersList = $statement->getQualifiers();
 		$qualifiers = array ();
 
@@ -57,7 +61,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		$message = '';
 		$status = CheckResult::STATUS_COMPLIANCE;
 
-		foreach ( $constraintParameters['property'] as $property ) {
+		foreach ( $properties as $property ) {
 			if ( !array_key_exists( $property, $qualifiers ) ) {
 				$message = 'The properties defined in the parameters have to be used as qualifiers on this statement.';
 				$status = CheckResult::STATUS_VIOLATION;

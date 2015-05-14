@@ -169,18 +169,18 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'entityId' ] = array (
 			'tag' => 'input',
 			'attributes' => array (
-				'placeholder' => '(wbqc-checkresult-form-entityid-placeholder)',
+				'placeholder' => '(wbqc-constraintreport-form-entityid-placeholder)',
 				'name' => 'entityId',
-				'class' => 'wbqc-checkresult-form-entity-id'
+				'class' => 'wbqc-constraintreport-form-entity-id'
 			)
 		);
 
 		$matchers[ 'submit' ] = array (
 			'tag' => 'input',
 			'attributes' => array (
-				'class' => 'wbqc-checkresult-form-submit',
+				'class' => 'wbqc-constraintreport-form-submit',
 				'type' => 'submit',
-				'value' => '(wbqc-checkresult-form-submit-label)',
+				'value' => '(wbqc-constraintreport-form-submit-label)',
 				'name' => 'submit'
 			)
 		);
@@ -191,9 +191,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wbqc-checkresult-notice wbqc-checkresult-notice-error'
+				'class' => 'wbqc-constraintreport-notice wbqc-constraintreport-notice-error'
 			),
-			'content' => '(wbqc-checkresult-invalid-entity-id)'
+			'content' => '(wbqc-constraintreport-invalid-entity-id)'
 		);
 
 		$cases[ 'invalid input 1' ] = array ( 'Qwertz', array (), $userLanguage, $matchers );
@@ -204,9 +204,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'error' ] = array (
 			'tag' => 'p',
 			'attributes' => array (
-				'class' => 'wbqc-checkresult-notice wbqc-checkresult-notice-error'
+				'class' => 'wbqc-constraintreport-notice wbqc-constraintreport-notice-error'
 			),
-			'content' => '(wbqc-checkresult-not-existent-entity)'
+			'content' => '(wbqc-constraintreport-not-existent-entity)'
 		);
 
 		$cases[ 'valid input - not existing item' ] = array (
@@ -220,7 +220,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		unset( $matchers[ 'error' ] );
 		$matchers[ 'result for' ] = array (
 			'tag' => 'h3',
-			'content' => '(wbqc-checkresult-result-headline:'
+			'content' => '(wbqc-constraintreport-result-headline:'
 		);
 
 		$matchers[ 'result table' ] = array (
@@ -235,7 +235,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'role' => 'columnheader button'
 			),
-			'content' => '(wbqc-checkresult-result-table-header-status)'
+			'content' => '(wbqc-constraintreport-result-table-header-status)'
 		);
 
 		$matchers[ 'column claim' ] = array (
@@ -259,7 +259,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'class' => 'wbqc-status wbqc-status-error'
 			),
-			'content' => '(wbqc-checkresult-status-violation)'
+			'content' => '(wbqc-constraintreport-status-violation)'
 		);
 
 		$matchers[ 'value status - compliance' ] = array (
@@ -267,7 +267,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'attributes' => array (
 				'class' => 'wbqc-status wbqc-status-success'
 			),
-			'content' => '(wbqc-checkresult-status-compliance)'
+			'content' => '(wbqc-constraintreport-status-compliance)'
 		);
 
 		$cases[ 'valid input - existing item' ] = array ( '$id', array (), $userLanguage, $matchers );

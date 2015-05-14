@@ -66,10 +66,19 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
+		$constraintParameters = $constraint->getConstraintParameters();
 
-		$parameters['property'] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'] );
-		$parameters['item'] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['item'] );
+		$property = false;
+		if ( array_key_exists( 'property', $constraintParameters ) ) {
+			$property = $constraintParameters['property'];
+			$parameters['property'] = $this->constraintReportHelper->parseSingleParameter( $property );
+		}
+
+		$items = false;
+		if ( array_key_exists( 'item', $constraintParameters ) ) {
+			$items = explode( ',', $constraintParameters['item'] );
+			$parameters['item'] = $this->constraintReportHelper->parseParameterArray( $items );
+		}
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -82,7 +91,6 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$property = $constraintParameters['property'][0];
 		$dataValue = $mainSnak->getDataValue();
 
 		/*
@@ -94,7 +102,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			$message = 'Properties with \'Target required claim\' constraint need to have values of type \'wikibase-entityid\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		if ( $property === '' ) {
+		if ( !$property ) {
 			$message = 'Properties with \'Target required claim\' constraint need a parameter \'property\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
@@ -111,7 +119,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 *   a) a property only
 		 *   b) a property and a number of items (each combination forming an individual claim)
 		 */
-		if ( $constraintParameters['item'][ 0 ] === '' ) {
+		if ( !$items ) {
 			if ( $this->connectionCheckerHelper->hasProperty( $targetEntityStatementList, $property ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
@@ -120,7 +128,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
-			if ( $this->connectionCheckerHelper->hasClaim( $targetEntityStatementList, $property, $constraintParameters['item'] ) ) {
+			if ( $this->connectionCheckerHelper->hasClaim( $targetEntityStatementList, $property, $items ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {

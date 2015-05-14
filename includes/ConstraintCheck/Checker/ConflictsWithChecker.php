@@ -63,27 +63,29 @@ class ConflictsWithChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement,Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
-		$parameters[ 'property' ] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'] );
-		$parameters[ 'item' ] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['item'] );
-		
-		$property = $constraintParameters['property'][0];
+		$constraintParameters = $constraint->getConstraintParameters();
+
 		/*
 		 * error handling:
 		 *   parameter $property must not be null
 		 */
-		if ( $property === '' ) {
+		if ( !array_key_exists( 'property', $constraintParameters ) ) {
 			$message = 'Properties with \'Conflicts with\' constraint need a parameter \'property\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
+
+		$parameters[ 'property' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['property'] );
+		if ( array_key_exists( 'item', $constraintParameters ) ) {
+			$parameters[ 'item' ] = $this->constraintReportHelper->parseParameterArray( explode( ',', $constraintParameters[ 'item' ] ) );
+		};
 
 		/*
 		 * 'Conflicts with' can be defined with
 		 *   a) a property only
 		 *   b) a property and a number of items (each combination of property and item forming an individual claim)
 		 */
-		if ( $constraintParameters['item'][0] === '' ) {
-			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $property ) ) {
+		if ( !array_key_exists( 'item', $constraintParameters ) ) {
+			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $constraintParameters['property'] ) ) {
 				$message = 'This property must not be used when there is another statement using the property defined in the parameters.';
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
@@ -91,7 +93,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_COMPLIANCE;
 			}
 		} else {
-			if ( $this->connectionCheckerHelper->hasClaim( $entity->getStatements(), $property, $constraintParameters['item'] ) ) {
+			if ( $this->connectionCheckerHelper->hasClaim( $entity->getStatements(), $constraintParameters['property'], explode( ',', $constraintParameters['item'] ) ) ) {
 				$message = 'This property must not be used when there is another statement using the property with one of the values defined in the parameters.';
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {

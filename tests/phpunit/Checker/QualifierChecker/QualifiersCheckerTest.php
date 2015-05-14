@@ -26,7 +26,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->helper = new ConstraintReportHelper();
-		$this->qualifiersList = array ( 'P580', 'P582', 'P1365', 'P1366', 'P642', 'P805' );
+		$this->qualifiersList = 'P580,P582,P1365,P1366,P642,P805';
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 
@@ -70,7 +70,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->willReturn( $parameter );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )

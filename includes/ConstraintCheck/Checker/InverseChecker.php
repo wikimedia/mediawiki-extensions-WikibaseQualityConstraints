@@ -65,9 +65,11 @@ class InverseChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
+		$constraintParameters = $constraint->getConstraintParameters();
 
-		$parameters[ 'property' ] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'] );
+		if ( array_key_exists( 'property', $constraintParameters ) ) {
+			$parameters['property'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['property'] );
+		};
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -81,7 +83,6 @@ class InverseChecker implements ConstraintChecker {
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$property = $constraintParameters['property'][0];
 		$dataValue = $mainSnak->getDataValue();
 
 		/*
@@ -93,11 +94,12 @@ class InverseChecker implements ConstraintChecker {
 			$message = 'Properties with \'Inverse\' constraint need to have values of type \'wikibase-entityid\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		if ( $property === '' ) {
+		if ( !array_key_exists( 'property', $constraintParameters ) ) {
 			$message = 'Properties with \'Inverse\' constraint need a parameter \'property\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
+		$property = $constraintParameters['property'];
 		$targetItem = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetItem === null ) {
 			$message = 'Target item does not exist.';

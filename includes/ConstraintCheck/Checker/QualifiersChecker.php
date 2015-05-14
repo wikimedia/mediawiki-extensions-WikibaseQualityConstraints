@@ -44,9 +44,9 @@ class QualifiersChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
+		$constraintParameters = $constraint->getConstraintParameters();
 
-		$parameters[ 'property' ] = $this->helper->parseParameterArray( $constraintParameters['property'] );
+		$parameters[ 'property' ] = $this->helper->parseParameterArray( explode( ',', $constraintParameters['property'] ) );
 
 		/*
 		 * error handling:
@@ -58,7 +58,7 @@ class QualifiersChecker implements ConstraintChecker {
 
 		foreach ( $statement->getQualifiers() as $qualifier ) {
 			$pid = $qualifier->getPropertyId()->getSerialization();
-			if ( !in_array( $pid, $constraintParameters['property'] ) ) {
+			if ( !in_array( $pid, explode( ',', $constraintParameters['property'] ) ) ) {
 				$message = 'The property must only be used with (no other than) the qualifiers defined in the parameters.';
 				$status = CheckResult::STATUS_VIOLATION;
 				break;
