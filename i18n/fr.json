@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Macofe"
+		]
+	},
+	"wbqc-constraintreport-form-submit-label": "Vérifier",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-status-violation": "Violation"
+}

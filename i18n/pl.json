@@ -6,5 +6,7 @@
 	},
 	"wbqc-constraintreport-form-submit-label": "Sprawdź",
 	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-result-headline": "Wynik dla $1",
+	"wbqc-constraintreport-status-violation": "Naruszenie",
 	"wbqc-constraintreport-status-todo": "Do zrobienia"
 }

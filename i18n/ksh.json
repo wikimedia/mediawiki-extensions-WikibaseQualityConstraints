@@ -4,12 +4,9 @@
 			"Purodha"
 		]
 	},
-	"wikidataquality-constraintreport": "Bereesch övver Beschrängkonge",
-	"wikidataquality-constraintreport-instructions": "Jivv en Kännong enn, un lohß se jähje de Beschrängkonge pröhve.",
-	"wikidataquality-constraintreport-instructions-example": "Versöhg en Kännong, et bäß vun en  entity, un belohr wadd eruß küt.",
-	"wikidataquality-constraintreport-empty-result": "Mer han kein Beschränkong för heh di  entity",
-	"wikidataquality-constraintreport-result-table-header-claim": "Behouptong",
-	"wikidataquality-constraintreport-result-table-header-constraint": "Beschränkong",
-	"wikidataquality-constraintreport-result-link-to-claim": "Jangk nod dä Behouptong",
-	"wikidataquality-constraintreport-result-link-to-constraint": "jangk noh de Beschränkong"
+	"wbqc-constraintreport": "Bereesch övver Beschrängkonge",
+	"wbqc-constraintreport-form-submit-label": "Lohß jonn!",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-result-headline": "Wat för $1 eruß kohm",
+	"wbqc-constraintreport-status-todo": "Noch ze donn"
 }

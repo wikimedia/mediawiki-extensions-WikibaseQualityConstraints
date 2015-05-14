@@ -7,6 +7,7 @@
 	"wbqc-constraintreport": "约束报告",
 	"wbqc-constraintreport-form-submit-label": "检查",
 	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-result-headline": "用于$1的结果",
 	"wbqc-constraintreport-empty-result": "此实体上没有定义约束。",
 	"wbqc-constraintreport-status-violation": "侵权",
 	"wbqc-constraintreport-status-compliance": "服从",
