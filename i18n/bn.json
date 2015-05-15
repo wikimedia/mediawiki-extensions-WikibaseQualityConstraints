@@ -4,5 +4,9 @@
 			"Aftabuzzaman"
 		]
 	},
-	"wikidataquality-constraintreport-result-table-header-constraint": "সীমাবদ্ধতা"
+	"wbqc-constraintreport-form-submit-label": "পরীক্ষা করুন",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-result-headline": "$1-এর ফলাফল",
+	"wbqc-constraintreport-status-todo": "করণীয়",
+	"wbqc-constraintreport-result-link-to-claim": "দাবি করতে চলুন"
 }
