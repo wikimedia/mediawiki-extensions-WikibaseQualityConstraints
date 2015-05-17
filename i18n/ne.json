@@ -1,8 +1,18 @@
 {
 	"@metadata": {
 		"authors": [
-			"बिप्लब आनन्द"
+			"बिप्लब आनन्द",
+			"Nirjal stha"
 		]
 	},
-	"wikidataquality-constraintreport": "अनुमानप्रकार विवरण"
+	"wbqc-constraintreport": "श्रोत अभाव प्रतिवेदन",
+	"wbqc-constraintreport-form-submit-label": "जाँच",
+	"wbqc-constraintreport-form-entityid-placeholder": "क्युएक्सएकस/पिएक्सएक्स",
+	"wbqc-constraintreport-result-headline": "$1 को परिणाम",
+	"wbqc-constraintreport-status-violation": "प्रतिपालना",
+	"wbqc-constraintreport-status-compliance": "अनुपालना",
+	"wbqc-constraintreport-status-todo": "टोडो",
+	"wbqc-constraintreport-result-table-header-claim": "दाबि",
+	"wbqc-constraintreport-result-table-header-constraint": "श्रोत अभाव",
+	"wbqc-constraintreport-result-link-to-claim": "दाबीमा जानुहोस्"
 }
