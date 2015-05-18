@@ -1,13 +1,13 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Tests;
+namespace WikibaseQuality\ConstraintReport\Tests;
 
-use WikidataQuality\ConstraintReport\Constraint;
-use WikidataQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintRepository
+ * @covers WikibaseQuality\ConstraintReport\ConstraintRepository
  *
  * @group database
  * @group medium
@@ -25,7 +25,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 
 		$this->assertEquals( true, is_array( $constraints) );
 		$this->assertEquals( 2, count( $constraints ) );
-		$this->assertEquals( 'WikidataQuality\ConstraintReport\Constraint', get_class( $constraints[0] ) );
+		$this->assertEquals( 'WikibaseQuality\ConstraintReport\Constraint', get_class( $constraints[0] ) );
 	}
 
 	public function testQueryConstraintsForNonExistingProperty() {

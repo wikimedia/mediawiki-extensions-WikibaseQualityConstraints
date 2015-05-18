@@ -1,11 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport;
-
-
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintParameterMap;
-
+namespace WikibaseQuality\ConstraintReport;
 
 class Constraint {
 

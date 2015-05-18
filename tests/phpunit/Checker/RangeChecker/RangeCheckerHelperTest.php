@@ -1,24 +1,18 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\RangeChecker;
+namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
-use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
-use DataValues\StringValue;
 use DataValues\TimeValue;
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+

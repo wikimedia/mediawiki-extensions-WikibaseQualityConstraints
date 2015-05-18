@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\RangeChecker;
+namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -10,19 +10,18 @@ use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use DataValues\StringValue;
 use DataValues\TimeValue;
-use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -165,7 +164,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
-			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )

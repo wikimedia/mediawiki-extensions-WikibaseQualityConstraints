@@ -1,12 +1,12 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test;
+namespace WikibaseQuality\ConstraintReport\Test;
 
-use WikidataQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintReportFactory
+ * @covers WikibaseQuality\ConstraintReport\ConstraintReportFactory
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -20,21 +20,21 @@ class ConstraintReportFactoryTest extends \MediaWikiTestCase {
 
 	public function testGetDefaultInstance() {
 		$this->assertInstanceOf(
-			'WikidataQuality\ConstraintReport\ConstraintReportFactory',
+			'WikibaseQuality\ConstraintReport\ConstraintReportFactory',
 			ConstraintReportFactory::getDefaultInstance()
 		);
 	}
 
 	public function testGetConstraintRepository() {
 		$this->assertInstanceOf(
-			'WikidataQuality\ConstraintReport\ConstraintRepository',
+			'WikibaseQuality\ConstraintReport\ConstraintRepository',
 			ConstraintReportFactory::getDefaultInstance()->getConstraintRepository()
 		);
 	}
 
 	public function testGetConstraintChecker() {
 		$this->assertInstanceOf(
-			'WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker',
+			'WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker',
 			ConstraintReportFactory::getDefaultInstance()->getConstraintChecker()
 		);
 	}

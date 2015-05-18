@@ -1,23 +1,22 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Tests;
+namespace WikibaseQuality\ConstraintReport\Tests;
 
-use Wikibase\DataModel\Entity\Item;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\ItemId;
 use DataValues\StringValue;
-use WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService
+ * @covers WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *
  * @author BP2014N1
  * @license GNU GPL v2+

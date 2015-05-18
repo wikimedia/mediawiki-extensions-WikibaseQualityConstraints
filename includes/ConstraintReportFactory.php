@@ -1,33 +1,32 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport;
-
+namespace WikibaseQuality\ConstraintReport;
 
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Lib\Store\EntityLookup;
-use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 
 
 class ConstraintReportFactory {

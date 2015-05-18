@@ -1,12 +1,12 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport;
+namespace WikibaseQuality\ConstraintReport;
 
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\Repo\WikibaseRepo;
-use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 
 
 class EvaluateConstraintReportJobService {

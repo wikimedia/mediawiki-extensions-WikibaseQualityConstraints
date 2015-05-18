@@ -1,18 +1,18 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\QualifierChecker;
+namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -56,7 +56,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
-			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )

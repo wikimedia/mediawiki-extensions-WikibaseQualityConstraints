@@ -1,10 +1,10 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Maintenance;
+namespace WikibaseQuality\ConstraintReport\Maintenance;
 
 // @codeCoverageIgnoreStart
-use WikidataQuality\ConstraintReport\Constraint;
-use WikidataQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 
 
 $basePath = getenv( "MW_INSTALL_PATH" ) !== false ? getenv( "MW_INSTALL_PATH" ) : __DIR__ . "/../../..";

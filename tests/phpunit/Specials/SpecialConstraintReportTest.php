@@ -1,9 +1,8 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Tests\Specials\SpecialConstraintReport;
+namespace WikibaseQuality\ConstraintReport\Tests\Specials\SpecialConstraintReport;
 
 use Wikibase\Test\SpecialPageTestBase;
-use WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use DataValues\StringValue;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Entity\Item;
@@ -13,22 +12,23 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\ClaimGuidGenerator;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
+use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport
+ * @covers WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
  *
  * @group Database
  * @group medium
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\Html\HtmlTable
- * @uses   WikidataQuality\Html\HtmlTableCell
- * @uses   WikidataQuality\Html\HtmlTableHeader
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\Html\HtmlTable
+ * @uses   WikibaseQuality\Html\HtmlTableCell
+ * @uses   WikibaseQuality\Html\HtmlTableHeader
  *
  * @author BP2014N1
  * @license GNU GPL v2+

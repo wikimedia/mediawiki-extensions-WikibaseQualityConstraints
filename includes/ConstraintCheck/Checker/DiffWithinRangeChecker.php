@@ -1,21 +1,20 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Statement\StatementList;
-use WikidataQuality\ConstraintReport\Constraint;
-use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use Wikibase\DataModel\Statement\Statement;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use Wikibase\DataModel\Entity\Entity;
 
 /**
  * Checks 'Diff within range' constraints.
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */

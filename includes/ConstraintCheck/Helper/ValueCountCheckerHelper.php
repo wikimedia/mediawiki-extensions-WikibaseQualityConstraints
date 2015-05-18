@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Helper;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
@@ -9,7 +9,7 @@ use Wikibase\DataModel\Statement\StatementList;
 /**
  * Class for helper functions for value count checkers.
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Helper
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author BP2014N1
  * @license GNU GPL v2+
  */

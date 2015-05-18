@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use Wikibase\Lib\Store\EntityLookup;
 use Wikibase\Repo\Store;
@@ -8,12 +8,10 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Snak;
 use Wikibase\DataModel\Entity\Entity;
-use Wikibase\DataModel\Entity\PropertyId;
-use DataValues\DataValue;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikidataQuality\ConstraintReport\ConstraintRepository;
-use WikidataQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\Constraint;
 
 
 /**
@@ -21,7 +19,7 @@ use WikidataQuality\ConstraintReport\Constraint;
  * Used to start the constraint-check process and to delegate
  * the statements that has to be checked to the corresponding checkers
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck
  * @author BP2014N1
  * @license GNU GPL v2+
  */

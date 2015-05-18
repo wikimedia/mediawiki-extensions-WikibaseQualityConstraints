@@ -1,8 +1,7 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Helper;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 
@@ -11,7 +10,7 @@ use Wikibase\DataModel\Entity\PropertyId;
  * Class ConstraintReportHelper
  * Class for helper functions for constraint checkers.
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Helper
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author BP2014N1
  * @license GNU GPL v2+
  */

@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Specials;
+namespace WikibaseQuality\ConstraintReport\Specials;
 
 use SpecialPage;
 use ValueFormatters\FormatterOptions;
@@ -22,20 +22,17 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Traversable;
 use Countable;
+use JobQueueGroup;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
-use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
-use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintReportFactory;
-use WikidataQuality\ConstraintReport\EvaluateConstraintReportJob;
-use WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService;
-use WikidataQuality\Html\HtmlTable;
-use WikidataQuality\Html\HtmlTableHeader;
-use JobQueueGroup;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
+use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
+use WikibaseQuality\Html\HtmlTable;
+use WikibaseQuality\Html\HtmlTableHeader;
 
 
 /**
@@ -43,7 +40,7 @@ use JobQueueGroup;
  * Special page that displays all constraints that are defined on an Entity with additional information
  * (whether it complied or was a violation, which parameters the constraint has etc.).
  *
- * @package WikidataQuality\ConstraintReport\Specials
+ * @package WikibaseQuality\ConstraintReport\Specials
  * @author BP2014N1
  * @license GNU GPL v2+
  */
@@ -583,10 +580,9 @@ class SpecialConstraintReport extends SpecialPage {
 		$message = $this->msg( $messageName )->text();
 
 		$statusMapping = $this->getStatusMapping();
+        $genericStatus = 'unknown';
 		if ( array_key_exists( $status, $statusMapping ) ) {
 			$genericStatus = $statusMapping[ $status ];
-		} else {
-			$genericStatus = 'unknown';
 		}
 
 		$formattedStatus =

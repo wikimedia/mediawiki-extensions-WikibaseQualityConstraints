@@ -1,14 +1,13 @@
 <?php
-namespace WikidataQuality\ConstraintReport\Test\Helper;
+namespace WikibaseQuality\ConstraintReport\Test\Helper;
 
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+

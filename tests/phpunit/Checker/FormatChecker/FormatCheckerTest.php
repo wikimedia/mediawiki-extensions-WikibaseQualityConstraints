@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\FormatChecker;
+namespace WikibaseQuality\ConstraintReport\Test\FormatChecker;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -10,15 +10,15 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -136,7 +136,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
-			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )

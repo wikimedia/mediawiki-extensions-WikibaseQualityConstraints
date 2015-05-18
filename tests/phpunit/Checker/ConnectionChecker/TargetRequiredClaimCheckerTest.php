@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\ConnectionChecker;
+namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -10,17 +10,17 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -140,7 +140,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
-			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )

@@ -1,13 +1,13 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Tests\Maintenance;
+namespace WikibaseQuality\ConstraintReport\Tests\Maintenance;
 
 
-use WikidataQuality\ConstraintReport\Maintenance\UpdateTable;
+use WikibaseQuality\ConstraintReport\Maintenance\UpdateTable;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\Maintenance\UpdateTable
+ * @covers WikibaseQuality\ConstraintReport\Maintenance\UpdateTable
  *
  * @group Database
  * @group medium

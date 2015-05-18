@@ -1,15 +1,11 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Helper;
-
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
-
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 /**
  * Class for helper functions for the connection checkers.
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Helper
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author BP2014N1
  * @license GNU GPL v2+
  */

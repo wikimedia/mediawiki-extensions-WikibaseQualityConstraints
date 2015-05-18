@@ -1,12 +1,12 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Tests;
+namespace WikibaseQuality\ConstraintReport\Tests;
 
-use WikidataQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\Constraint
+ * @covers WikibaseQuality\ConstraintReport\Constraint
  *
  * @group database
  * @group medium

@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport;
+namespace WikibaseQuality\ConstraintReport;
 
 use Job;
 use Title;

@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\ValueCountChecker;
+namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
@@ -9,11 +9,11 @@ use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+
