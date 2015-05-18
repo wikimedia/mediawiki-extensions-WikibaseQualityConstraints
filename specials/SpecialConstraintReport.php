@@ -344,7 +344,9 @@ class SpecialConstraintReport extends SpecialPage {
 		$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
 		$results = $constraintChecker->checkAgainstConstraints( $entity );
 
-		$this->doEvaluation( $entity, $results );
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ){
+			$this->doEvaluation( $entity, $results );
+		}
 		return $results;
 	}
 
@@ -740,12 +742,12 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	protected function doEvaluation( $entity, $results ) {
-		$service = new EvaluateConstraintReportJobService();
 		$checkTimeStamp = wfTimestamp( TS_MW );
+		$service = new EvaluateConstraintReportJobService();
+		$results = $service->buildResultSummary( $results );
 		$jobs = array ();
-		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $service, $entity->getId(), $checkTimeStamp, $results );
-		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $service, $entity->getId(), $checkTimeStamp, 10 );
-		$jobs[0]->run();
+		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $entity->getId()->getSerialization(), $checkTimeStamp, $results );
+		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 10 );
 		JobQueueGroup::singleton()->push( $jobs );
 	}
 

@@ -46,11 +46,11 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 		$results[] = new CheckResult( $statement, $this->constraintName, array (), CheckResult::STATUS_EXCEPTION );
 		$results[] = new CheckResult( $statement, $this->constraintName, array (), CheckResult::STATUS_VIOLATION );
 		$results[] = new CheckResult( $statement, $this->constraintName, array (), CheckResult::STATUS_VIOLATION );
-		$results[] = new CheckResult( $statement, $this->constraintName, array (), 'some other status' );
-		$results[] = new CheckResult( $statement, $this->constraintName, array (), 'yet another one' );
+		$results[] = new CheckResult( $statement, $this->constraintName, array () );
+		$results[] = new CheckResult( $statement, $this->constraintName, array () );
 		$this->results = $results;
 
-		$this->params = array( 'entityId' => $this->entityId, 'referenceTimestamp' => null, 'results' => $results );
+		$this->params = array( 'entityId' => $this->entityId->getSerialization(), 'referenceTimestamp' => null, 'results' => $results );
 
 	}
 
@@ -64,10 +64,15 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 
 		parent::tearDown();
 	}
+#
+	public function testBuildResultSummary() {
+		$service = new EvaluateConstraintReportJobService();
+		$this->assertEquals( '{"Single value":{"compliance":3,"violation":2,"exception":1,"todo":2}}', $service->buildResultSummary( $this->results ) );
+	}
 
 	public function testBuildMessageForLog() {
 		$service = new EvaluateConstraintReportJobService();
-		$messageToLog = (array) json_decode( $service->buildMessageForLog( $this->results, $this->checkTimestamp, $this->params ) );
+		$messageToLog = (array) json_decode( $service->buildMessageForLog( '{"Single value":{"compliance":3,"violation":2,"exception":1,"todo":2}}', $this->checkTimestamp, $this->params ) );
 
 		$this->assertEquals( 5, count( $messageToLog ) );
 		$this->assertEquals( 'SpecialConstraintReport', $messageToLog['special_page_id'] );
@@ -75,12 +80,15 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 		$this->assertEquals( $this->checkTimestamp, $messageToLog['insertion_timestamp'] );
 		$this->assertEquals( null, $messageToLog['reference_timestamp'] );
 
-		$resultSummary = (array) $messageToLog['result_summary'];
-		$this->assertEquals( 1, count( $resultSummary ) );
+		$resultSummary = (array) json_decode( $messageToLog['result_summary'] );
 
+		$this->assertEquals( 1, count( $resultSummary ) );
 		$resultForConstraint = (array) $resultSummary[$this->constraintName];
-		$this->assertEquals( 3, count( $resultForConstraint ) );
-		$this->assertEquals( 3, $resultForConstraint[CheckResult::STATUS_COMPLIANCE] );
+		$this->assertEquals( 4, count( $resultForConstraint ) );
+		$this->assertEquals( 3, $resultForConstraint[CheckResult::STATUS_COMPLIANCE], 'Compliance' );
+		$this->assertEquals( 1, $resultForConstraint[CheckResult::STATUS_EXCEPTION], 'Exception' );
+		$this->assertEquals( 2, $resultForConstraint[CheckResult::STATUS_VIOLATION], 'Violation' );
+		$this->assertEquals( 2, $resultForConstraint[CheckResult::STATUS_TODO], 'Todo' );
 	}
 
 	public function testGetResults() {
