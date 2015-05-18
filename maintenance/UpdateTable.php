@@ -52,6 +52,6 @@ class UpdateTable extends \Maintenance {
 }
 
 // @codeCoverageIgnoreStart
-$maintClass = 'WikidataQuality\ConstraintReport\Maintenance\UpdateTable';
+$maintClass = 'WikibaseQuality\ConstraintReport\Maintenance\UpdateTable';
 require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd
