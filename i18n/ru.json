@@ -1,8 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"Александр Сигачёв"
+			"Александр Сигачёв",
+			"Дмитрий"
 		]
 	},
-	"wikidataquality-constraintreport": "Отчёт по ограничениям"
+	"wbqc-constraintreport-form-submit-label": "Проверить",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-result-headline": "Результат для $1",
+	"wbqc-constraintreport-status-violation": "Нарушение",
+	"wbqc-constraintreport-status-compliance": "Соответствие",
+	"wbqc-constraintreport-status-todo": "Todo",
+	"wbqc-constraintreport-result-table-header-constraint": "Ограничение",
+	"wbqc-constraintreport-result-link-to-constraint": "пойти на ограничение"
 }
