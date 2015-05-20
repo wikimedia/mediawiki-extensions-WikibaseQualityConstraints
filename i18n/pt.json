@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vitorvicentevalente"
+			"Vitorvicentevalente",
+			"Macofe"
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "Verificar",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Resultados para $1"
 }
