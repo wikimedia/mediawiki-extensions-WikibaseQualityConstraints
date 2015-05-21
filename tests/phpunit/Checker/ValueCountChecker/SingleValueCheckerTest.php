@@ -16,6 +16,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
  *
+ * @group WikibaseQualityConstraints
+ *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
  * @author BP2014N1
