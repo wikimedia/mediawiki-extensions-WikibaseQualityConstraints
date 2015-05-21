@@ -51,6 +51,10 @@ class OneOfChecker implements ConstraintChecker {
 			$parameters['item'] = $this->helper->parseParameterArray( $items );
 		}
 
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
 		/*

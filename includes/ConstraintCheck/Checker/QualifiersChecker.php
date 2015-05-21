@@ -46,6 +46,11 @@ class QualifiersChecker implements ConstraintChecker {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
+
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
 		$parameters[ 'property' ] = $this->helper->parseParameterArray( explode( ',', $constraintParameters['property'] ) );
 
 		/*

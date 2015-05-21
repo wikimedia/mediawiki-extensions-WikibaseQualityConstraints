@@ -50,6 +50,11 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
 			$properties = explode( ',', $constraintParameters['property'] );
 		}
+
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
 		$parameters[ 'property' ] = $this->helper->parseParameterArray( $properties );
 		$qualifiersList = $statement->getQualifiers();
 		$qualifiers = array ();

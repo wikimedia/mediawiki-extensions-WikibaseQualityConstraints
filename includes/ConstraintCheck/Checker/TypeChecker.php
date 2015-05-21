@@ -78,6 +78,10 @@ class TypeChecker implements ConstraintChecker {
 			$parameters['relation'] = $this->helper->parseSingleParameter( $relation, true );
 		}
 
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
 		/*
 		 * error handling:
 		 *   parameter $constraintParameters['class'] must not be null

@@ -64,6 +64,11 @@ class SymmetricChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
 
+		$constraintParameters = $constraint->getConstraintParameters();
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
 		$mainSnak = $statement->getClaim()->getMainSnak();
 		$propertyId = $statement->getClaim()->getPropertyId();
 

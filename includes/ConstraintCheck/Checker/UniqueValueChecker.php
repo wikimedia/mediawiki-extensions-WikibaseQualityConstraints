@@ -42,6 +42,11 @@ class UniqueValueChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
 
+		$constraintParameters = $constraint->getConstraintParameters();
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
 		$message = 'For technical reasons, the check for this constraint has not yet been implemented.';
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_TODO, $message );
 	}

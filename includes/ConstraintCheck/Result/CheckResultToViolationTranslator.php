@@ -23,6 +23,12 @@ class CheckResultToViolationTranslator {
         $this->entityRevisionLookup = $entityRevisionLookup;
     }
 
+    /**
+     * @param Entity $entity
+     * @param CheckResult[] $checkResultOrArray
+     *
+     * @return array
+     */
 	public function translateToViolation( Entity $entity, $checkResultOrArray ) {
 
 	    $checkResultArray = $this->setCheckResultArray( $checkResultOrArray );
@@ -42,8 +48,8 @@ class CheckResultToViolationTranslator {
             $constraintId = $this->setConstraintId( $checkResult, $statement, $constraintTypeEntityId );
 			$revisionId = $this->entityRevisionLookup->getLatestRevisionId( $entityId );
 			$status = CheckResult::STATUS_VIOLATION;
-
-			$violationArray[ ] = new Violation( $entityId, $propertyId, $claimGuid, $constraintId, $constraintTypeEntityId, $revisionId, $status );
+            $parameters = json_encode( $checkResult->getParameters() );
+			$violationArray[ ] = new Violation( $entityId, $propertyId, $claimGuid, $constraintId, $constraintTypeEntityId, $revisionId, $status, $parameters );
 		}
 
 		return $violationArray;

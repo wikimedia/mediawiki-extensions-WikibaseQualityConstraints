@@ -27,7 +27,7 @@ use Wikibase\Repo\WikibaseRepo;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
+class CheckResultTestToViolationTranslatorTest extends \MediaWikiTestCase {
 
     /**
      * @var CheckResultToViolationTranslator
@@ -81,7 +81,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->propertyId =  new PropertyId( 'P1' );
 		$this->claimGuid = 'P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 		$this->statement->setGuid( 'P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' );
-		$this->constraintName = 'Range';
+		$this->constraintName = 'Single value';
 		$this->parameters = array ();
 		$this->message = 'All right';
 		$this->entity = new Item();
@@ -106,7 +106,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->assertEquals( array (), $violations );
 	}
 
-	public function testSingleViolationResult() {
+	public function testSingleViolationResultWithoutParameter() {
 		$checkResult = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
 		$violations = $this->translator->translateToViolation( $this->entity, $checkResult );
 		$this->assertEquals( 1, sizeof( $violations ) );
@@ -117,8 +117,15 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
 		$this->assertEquals( md5( $this->statement->getGuid() . $checkResult->getConstraintName() ), $violation->getConstraintId() );
 		$this->assertEquals( $checkResult->getConstraintName(), $violation->getConstraintTypeEntityId() );
-        $this->assertEquals( 42, $violation->getRevisionId() );
+		$this->assertEquals( 42, $violation->getRevisionId() );
+		$this->assertEquals( '[]', $violation->getAdditionalInfo() );
+	}
 
+	public function testSingleViolationResultWithParameter() {
+		$checkResult = new CheckResult( $this->statement, $this->constraintName, array( array( 'constraint_status' => 'mandatory' ) ), 'violation', $this->message );
+		$violations = $this->translator->translateToViolation( $this->entity, $checkResult );
+		$violation = $violations[0];
+		$this->assertEquals( '[{"constraint_status":"mandatory"}]', $violation->getAdditionalInfo() );
 	}
 
 	public function testMultipleCheckResults() {

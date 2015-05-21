@@ -77,6 +77,10 @@ class ConflictsWithChecker implements ConstraintChecker {
 			$parameters[ 'item' ] = $this->constraintReportHelper->parseParameterArray( explode( ',', $constraintParameters[ 'item' ] ) );
 		};
 
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
 		/*
 		 * 'Conflicts with' can be defined with
 		 *   a) a property only

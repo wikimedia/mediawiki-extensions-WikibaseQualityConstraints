@@ -44,6 +44,12 @@ class QualifierChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+
+		$constraintParameters = $constraint->getConstraintParameters();
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
 		$message = 'The property must only be used as a qualifier.';
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), array (), CheckResult::STATUS_VIOLATION, $message );
 	}
