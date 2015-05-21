@@ -9,6 +9,7 @@ use WikibaseQuality\ConstraintReport\ConstraintRepository;
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintRepository
  *
+ * @group WikibaseQualityConstraints
  * @group database
  * @group medium
  *

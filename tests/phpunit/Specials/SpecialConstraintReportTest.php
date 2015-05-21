@@ -18,6 +18,7 @@ use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 /**
  * @covers WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
  *
+ * @group WikibaseQualityConstraints
  * @group Database
  * @group medium
  *

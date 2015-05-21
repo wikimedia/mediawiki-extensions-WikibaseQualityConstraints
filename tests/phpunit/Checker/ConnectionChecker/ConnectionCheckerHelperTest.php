@@ -16,6 +16,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHel
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper
  *
+ * @group WikibaseQualityConstraints
+ *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *

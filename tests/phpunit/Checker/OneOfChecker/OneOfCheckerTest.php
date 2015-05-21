@@ -17,6 +17,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelp
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
  *
+ * @group WikibaseQualityConstraints
+ *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *

@@ -15,6 +15,8 @@ use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
 /**
  * @covers WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService
  *
+ * @group WikibaseQualityConstraints
+ *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *

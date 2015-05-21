@@ -15,6 +15,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHel
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper
  *
+ * @group WikibaseQualityConstraints
+ *
  * @author BP2014N1
  * @license GNU GPL v2+
  */

@@ -19,6 +19,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
  *
+ * @group WikibaseQualityConstraints
+ *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *

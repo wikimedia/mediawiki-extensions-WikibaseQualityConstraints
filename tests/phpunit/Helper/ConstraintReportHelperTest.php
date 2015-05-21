@@ -9,6 +9,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelp
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
+ * @group WikibaseQualityConstraints
+ *
  * @author BP2014N1
  * @license GNU GPL v2+
  */
