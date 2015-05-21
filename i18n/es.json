@@ -2,13 +2,17 @@
 	"@metadata": {
 		"authors": [
 			"Fitoschido",
-			"Macofe"
+			"Macofe",
+			"Csbotero"
 		]
 	},
+	"wbqc-constraintreport": "Informe de restricción",
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Resultado de $1",
+	"wbqc-constraintreport-empty-result": "No hay restricciones definidas en esta entidad.",
 	"wbqc-constraintreport-status-violation": "Violación",
 	"wbqc-constraintreport-status-compliance": "Cumple",
-	"wbqc-constraintreport-status-todo": "Pendiente"
+	"wbqc-constraintreport-status-todo": "Pendiente",
+	"wbqc-constraintreport-result-link-to-claim": "ir a reclamar"
 }

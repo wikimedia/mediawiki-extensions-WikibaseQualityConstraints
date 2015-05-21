@@ -14,6 +14,7 @@
 	"wbqc-constraintreport-empty-result": "Es gibt keine zu diesem Objekt definierten Beschränkungen.",
 	"wbqc-constraintreport-status-violation": "Verletzung",
 	"wbqc-constraintreport-status-compliance": "Übereinstimmung",
+	"wbqc-constraintreport-status-exception": "Ausnahme",
 	"wbqc-constraintreport-status-todo": "Todo",
 	"wbqc-constraintreport-result-table-header-claim": "Behauptung",
 	"wbqc-constraintreport-result-table-header-constraint": "Beschränkung",
