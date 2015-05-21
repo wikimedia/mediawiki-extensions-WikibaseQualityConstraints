@@ -10,6 +10,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *
+ * @group WikibaseQualityConstraints
  * @group Database
  *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult

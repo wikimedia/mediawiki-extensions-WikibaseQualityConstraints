@@ -9,6 +9,7 @@ use WikibaseQuality\ConstraintReport\Maintenance\UpdateTable;
 /**
  * @covers WikibaseQuality\ConstraintReport\Maintenance\UpdateTable
  *
+ * @group WikibaseQualityConstraints
  * @group Database
  * @group medium
  *

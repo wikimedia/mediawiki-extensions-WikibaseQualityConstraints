@@ -8,6 +8,7 @@ use WikibaseQuality\ConstraintReport\ConstraintRepository;
 /**
  * @covers WikibaseQuality\ConstraintReport\Constraint
  *
+ * @group WikibaseQualityConstraints
  * @group database
  * @group medium
  *
