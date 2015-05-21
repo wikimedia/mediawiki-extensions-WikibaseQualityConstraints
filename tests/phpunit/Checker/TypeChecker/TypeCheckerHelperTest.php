@@ -1,23 +1,21 @@
 <?php
-namespace WikidataQuality\ConstraintReport\Test\TypeChecker;
+namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use DataValues\StringValue;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+

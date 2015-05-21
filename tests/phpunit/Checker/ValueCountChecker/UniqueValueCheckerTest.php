@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\ValueCountChecker;
+namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
@@ -8,15 +8,15 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -54,7 +54,7 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
-			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )

@@ -1,21 +1,21 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\Constraint;
 use Wikibase\DataModel\Statement\Statement;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Entity\Entity;
-use WikidataQuality\ConstraintReport\Constraint;
 
 
 /**
  * Class CommonsLinkChecker.
  * Checks 'Commons link' constraint.
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
@@ -46,8 +46,8 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
-		$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $constraintParameters['namespace'][0] );
+		$constraintParameters = $constraint->getConstraintParameters();
+		$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $constraintParameters['namespace'], true );
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -75,7 +75,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		$commonsLink = $dataValue->getValue();
 
 		if ( $this->commonsLinkIsWellFormed( $commonsLink ) ) {
-			if ( $this->urlExists( $commonsLink, $constraintParameters['namespace'][0] ) ) {
+			if ( $this->urlExists( $commonsLink, $constraintParameters['namespace'] ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {

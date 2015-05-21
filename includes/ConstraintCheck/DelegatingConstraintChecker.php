@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use Wikibase\Lib\Store\EntityLookup;
 use Wikibase\Repo\Store;
@@ -8,12 +8,10 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Snak;
 use Wikibase\DataModel\Entity\Entity;
-use Wikibase\DataModel\Entity\PropertyId;
-use DataValues\DataValue;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikidataQuality\ConstraintReport\ConstraintRepository;
-use WikidataQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\Constraint;
 
 
 /**
@@ -21,7 +19,7 @@ use WikidataQuality\ConstraintReport\Constraint;
  * Used to start the constraint-check process and to delegate
  * the statements that has to be checked to the corresponding checkers
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck
  * @author BP2014N1
  * @license GNU GPL v2+
  */
@@ -106,10 +104,10 @@ class DelegatingConstraintChecker {
 	private function checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) {
 		$result = array ();
 		foreach ( $constraints as $constraint ) {
-			$parameter = $constraint->getConstraintParameter();
-			if ( in_array( $entity->getId()->getSerialization(), $parameter['exceptions'] ) ) {
+			$parameter = $constraint->getConstraintParameters();
+			if ( array_key_exists( 'known_exception', $parameter) && in_array( $entity->getId()->getSerialization(), explode( ',', $parameter['known_exception'] ) ) ) {
 				$message = 'This entity is a known exception for this constraint and has been marked as such.';
-				$result[ ] = new CheckResult( $statement, $constraint->getConstraintTypeQid(), array (), CheckResult::STATUS_EXCEPTION, $message ); // todo: display parameters anyway
+				$result[] = new CheckResult( $statement, $constraint->getConstraintTypeQid(), array (), CheckResult::STATUS_EXCEPTION, $message ); // todo: display parameters anyway
 				continue;
 			}
 

@@ -1,76 +1,71 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport;
+namespace WikibaseQuality\ConstraintReport;
 
 use Job;
 use Title;
-use Wikibase\DataModel\Entity\EntityId;
 
 class EvaluateConstraintReportJob extends Job {
 
 	private $service;
 
 	/**
-	 * @param EvaluateConstraintReportJobService $service
-	 * @param EntityId $entityId
-	 * @param $checkTimestamp
-	 * @param $results
+	 * @param string $entityId
+	 * @param int $checkTimestamp
+	 * @param string $results
 	 *
 	 * @return EvaluateConstraintReportJob
 	 * @throws \MWException
 	 */
-	public static function newInsertNow( EvaluateConstraintReportJobService $service, EntityId $entity, $checkTimestamp, $results ) {
+	public static function newInsertNow( $entityId, $checkTimestamp, $results ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
 		$dummyTitle = Title::newFromText( "EvaluateConstraintReportJob", NS_SPECIAL );
 
 		$params = array ();
 
-		$params['entityId'] = $entity;
+		$params['entityId'] = $entityId;
 		$params['results'] = $results;
 		$params['checkTimestamp'] = $checkTimestamp;
-		$params['referenceTimestamp'] = null;
+		$params['referenceTimestamp'] = 'null';
 
-		return new EvaluateConstraintReportJob( $service, $dummyTitle, $params );
+		return new EvaluateConstraintReportJob( $dummyTitle, $params );
 	}
 
 	/**
-	 * @param EvaluateConstraintReportJobService $service
-	 * @param EntityId $entityId
-	 * @param null $referenceTimestamp
+	 * @param string $entityId
+	 * @param int $referenceTimestamp
 	 * @param int $releaseTimestamp
 	 *
 	 * @return EvaluateConstraintReportJob
 	 * @throws \MWException
 	 */
-	public static function newInsertDeferred( EvaluateConstraintReportJobService $service, EntityId $entity, $referenceTimestamp = null, $releaseTimestamp = 0 ) {
+	public static function newInsertDeferred( $entityId, $referenceTimestamp = 'null', $releaseTimestamp = 0 ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
 		$dummyTitle = Title::newFromText( "EvaluateConstraintReportJob", NS_SPECIAL );
 
 		$params = array ();
 
-		$params['entityId'] = $entity;
-		$params['results'] = null;
+		$params['entityId'] = $entityId;
 		$params['referenceTimestamp'] = $referenceTimestamp;
 		$params['releaseTimestamp'] = wfTimestamp( TS_MW ) + $releaseTimestamp;
 
-		return new EvaluateConstraintReportJob( $service, $dummyTitle, $params );
+		return new EvaluateConstraintReportJob( $dummyTitle, $params );
 	}
 
 	/**
-	 * @param EvaluateConstraintReportJobService $service
 	 * @param Title $title
 	 * @param array|bool $params
 	 */
-	public function __construct( EvaluateConstraintReportJobService $service, Title $title, $params ) {
-		parent::__construct( 'checkForConstraintViolations', $title, $params );
-		$this->service = $service;
+	public function __construct( Title $title, $params ) {
+		parent::__construct( 'evaluateConstraintReportJob', $title, $params );
+		$this->service = new EvaluateConstraintReportJobService();
 	}
 
 	public function run() {
 		$checkTimestamp = array_key_exists( 'checkTimestamp', $this->params ) ? $this->params[ 'checkTimestamp' ] : wfTimestamp( TS_MW );
 
-		$results = $this->service->getResults( $this->params );
-		$messageToLog = $this->service->buildMessageForLog( $results, $checkTimestamp, $this->params );
+		$resultSummary = $this->service->getResults( $this->params );
+		$messageToLog = $this->service->buildMessageForLog( $resultSummary, $checkTimestamp, $this->params );
 		$this->service->writeToLog( $messageToLog );
 
 	}

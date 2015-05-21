@@ -1,25 +1,24 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\ConnectionChecker;
+namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -54,9 +53,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'item' => array( '' ),
-			'property' => array( 'P2' )
+			'property' => 'P2'
 		);
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
@@ -71,9 +68,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'item' => array( '' ),
-			'property' => array( 'P2' )
+			'property' => 'P2'
 		);
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
@@ -88,9 +83,8 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'item' => array( 'Q1' ),
-			'property' => array( 'P2' )
+			'item' => 'Q1',
+			'property' => 'P2'
 		);
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
@@ -105,9 +99,8 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'item' => array( 'Q42' ),
-			'property' => array( 'P2' )
+			'item' => 'Q42',
+			'property' => 'P2'
 		);
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
@@ -121,11 +114,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'item' => array( '' ),
-			'property' => array( '' )
-		);
+		$constraintParameters = array();
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -139,9 +128,8 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $entity->getStatements(),
-			'item' => array( 'Q42' ),
-			'property' => array( 'P2' )
+			'item' => 'Q42',
+			'property' => 'P2'
 		);
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
@@ -150,11 +138,11 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
-			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->willReturn( $parameter );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )

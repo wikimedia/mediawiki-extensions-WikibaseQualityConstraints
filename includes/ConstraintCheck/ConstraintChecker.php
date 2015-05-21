@@ -1,11 +1,11 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Statement\Statement;
-use WikidataQuality\ConstraintReport\Constraint;
-use WikidataQuality\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 
 interface ConstraintChecker {

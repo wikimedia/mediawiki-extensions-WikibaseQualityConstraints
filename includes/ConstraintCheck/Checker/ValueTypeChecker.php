@@ -1,16 +1,15 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Lib\Store\EntityLookup;
-use WikidataQuality\ConstraintReport\Constraint;
-use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Statement\StatementList;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Entity\Entity;
 
 
@@ -18,7 +17,7 @@ use Wikibase\DataModel\Entity\Entity;
  * Class TypeChecker.
  * Checks 'Value type' constraint.
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
@@ -66,11 +65,19 @@ class ValueTypeChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
+		$constraintParameters = $constraint->getConstraintParameters();
 
-		$parameters[ 'class' ] = $this->helper->parseParameterArray( $constraintParameters['class'] );
-		$parameters[ 'relation' ] = $this->helper->parseSingleParameter( $constraintParameters['relation'][0] );
+		$classes = false;
+		if ( array_key_exists( 'class', $constraintParameters ) ) {
+			$classes = explode( ',', $constraintParameters['class'] );
+			$parameters['class'] = $this->helper->parseParameterArray( $classes );
+		}
 
+		$relation = false;
+		if ( array_key_exists( 'relation', $constraintParameters ) ) {
+			$relation = $constraintParameters['relation'];
+			$parameters['relation'] = $this->helper->parseSingleParameter( $relation, true );
+		}
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
 		/*
@@ -93,7 +100,7 @@ class ValueTypeChecker implements ConstraintChecker {
 			$message = 'Properties with \'Value type\' constraint need to have values of type \'wikibase-entityid\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		if ( $constraintParameters['class'][0] === '' ) {
+		if ( !$classes ) {
 			$message = 'Properties with \'Value type\' constraint need the parameter \'class\'.';
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
@@ -102,9 +109,9 @@ class ValueTypeChecker implements ConstraintChecker {
 		 * error handling:
 		 *   parameter $constraintParameters['relation'] must be either 'instance' or 'subclass'
 		 */
-		if ( $constraintParameters['relation'][0] === 'instance' ) {
+		if ( $relation === 'instance' ) {
 			$relationId = self::instanceId;
-		} elseif ( $constraintParameters['relation'][0] === 'subclass' ) {
+		} elseif ( $relation === 'subclass' ) {
 			$relationId = self::subclassId;
 		} else {
 			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
@@ -120,7 +127,7 @@ class ValueTypeChecker implements ConstraintChecker {
 
 		$statements = $item->getStatements();
 
-		if ( $this->typeCheckerHelper->hasClassInRelation( $statements, $relationId, $constraintParameters[ 'class' ] ) ) {
+		if ( $this->typeCheckerHelper->hasClassInRelation( $statements, $relationId, $classes ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

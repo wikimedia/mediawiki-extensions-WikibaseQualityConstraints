@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\ConnectionChecker;
+namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -10,17 +10,17 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -56,9 +56,8 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $this->entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( 'Q42' )
+			'property' => 'P2',
+			'item' => 'Q42'
 		);
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -69,9 +68,8 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $this->entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( 'Q2' )
+			'property' => 'P2',
+			'item' => 'Q2'
 		);
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -82,9 +80,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $this->entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( '' )
+			'property' => 'P2'
 		);
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -95,9 +91,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $this->entity->getStatements(),
-			'property' => array( 'P3' ),
-			'item' => array( '' )
+			'property' => 'P3'
 		);
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -107,11 +101,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
-		$constraintParameters = array(
-			'statements' => $this->entity->getStatements(),
-			'property' => array( '' ),
-			'item' => array( '' )
-		);
+		$constraintParameters = array();
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -121,9 +111,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $this->entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( '' )
+			'property' => 'P2'
 		);
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -134,9 +122,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
 
 		$constraintParameters = array(
-			'statements' => $this->entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( '' )
+			'property' => 'P2'
 		);
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -146,9 +132,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
 
 		$constraintParameters = array(
-			'statements' => $this->entity->getStatements(),
-			'property' => array( 'P2' ),
-			'item' => array( '' )
+			'property' => 'P2'
 		);
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -156,11 +140,11 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
-			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->willReturn( $parameter );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )

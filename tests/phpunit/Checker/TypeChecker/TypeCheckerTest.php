@@ -1,25 +1,23 @@
 <?php
-namespace WikidataQuality\ConstraintReport\Test\TypeChecker;
+namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use DataValues\StringValue;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  *
  * @group WikidataQualityConstraints
  *
@@ -50,8 +48,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintInstanceValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q100', 'Q101' ),
-			'relation' => array( 'instance' )
+			'class' => 'Q100,Q101',
+			'relation' => 'instance'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -60,8 +58,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintInstanceValidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q100', 'Q101' ),
-			'relation' => array( 'instance' )
+			'class' => 'Q100,Q101',
+			'relation' => 'instance'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -70,8 +68,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintInstanceValidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q100', 'Q101' ),
-			'relation' => array( 'instance' )
+			'class' => 'Q100,Q101',
+			'relation' => 'instance'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -81,8 +79,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintSubclassValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q100', 'Q101' ),
-			'relation' => array( 'subclass' )
+			'class' => 'Q100,Q101',
+			'relation' => 'subclass'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -91,8 +89,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintSubclassValidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q100', 'Q101' ),
-			'relation' => array( 'subclass' )
+			'class' => 'Q100,Q101',
+			'relation' => 'subclass'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -101,8 +99,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintSubclassValidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q100', 'Q101' ),
-			'relation' => array( 'subclass' )
+			'class' => 'Q100,Q101',
+			'relation' => 'subclass'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -112,8 +110,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintInstanceInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q200', 'Q201' ),
-			'relation' => array( 'instance' )
+			'class' => 'Q200,Q201',
+			'relation' => 'instance'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -122,8 +120,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintInstanceInvalidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q200', 'Q201' ),
-			'relation' => array( 'instance' )
+			'class' => 'Q200,Q201',
+			'relation' => 'instance'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -132,8 +130,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintInstanceInvalidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q200', 'Q201' ),
-			'relation' => array( 'instance' )
+			'class' => 'Q200,Q201',
+			'relation' => 'instance'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -143,8 +141,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintSubclassInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q200', 'Q201' ),
-			'relation' => array( 'subclass' )
+			'class' => 'Q200,Q201',
+			'relation' => 'subclass'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -153,8 +151,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintSubclassInvalidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q200', 'Q201' ),
-			'relation' => array( 'subclass' )
+			'class' => 'Q200,Q201' ,
+			'relation' => 'subclass'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -163,8 +161,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintSubclassInvalidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q200', 'Q201' ),
-			'relation' => array( 'subclass' )
+			'class' => 'Q200,Q201',
+			'relation' => 'subclass'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -174,8 +172,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintMissingRelation() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q100', 'Q101' ),
-			'relation' => array( '' )
+			'class' => 'Q100,Q101'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -184,8 +181,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintMissingClass() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$constraintParameters = array(
-			'class' => array ( '' ),
-			'relation' => array( 'subclass' )
+			'relation' => 'subclass'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -195,8 +191,8 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	public function testTypeConstraintSubclassCycle() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q7' ) );
 		$constraintParameters = array(
-			'class' => array ( 'Q100', 'Q101' ),
-			'relation' => array( 'instance' )
+			'class' => 'Q100,Q101',
+			'relation' => 'instance'
 		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -204,11 +200,11 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 
 	private function getConstraintMock( $parameter ) {
 		$mock = $this
-			->getMockBuilder( 'WikidataQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->willReturn( $parameter );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )

@@ -32,9 +32,10 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"WikidataQuality\\ConstraintReport\\": "includes/",
-			"WikidataQuality\\ConstraintReport\\Specials\\": "specials/",
-			"WikidataQuality\\ConstraintReport\\Tests\\": "tests/phpunit/"
+			"WikibaseQuality\\ConstraintReport\\": "includes/",
+			"WikibaseQuality\\ConstraintReport\\Specials\\": "specials/",
+			"WikibaseQuality\\ConstraintReport\\Tests\\": "tests/phpunit/",
+		  	"WikibaseQuality\\ConstraintReport\\Maintenance\\": "maintenance/"
 		},
 		"classmap": [
 			"WikibaseQualityConstraintsHooks.php"

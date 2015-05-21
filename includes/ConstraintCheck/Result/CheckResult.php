@@ -1,18 +1,17 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Result;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\PropertyId;
-use DataValues\DataValue;
 
 
 /**
  * Class CheckResult
  * Used for getting information about the result of a constraint check
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Result
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Result
  * @author BP2014N1
  * @license GNU GPL v2+
  */

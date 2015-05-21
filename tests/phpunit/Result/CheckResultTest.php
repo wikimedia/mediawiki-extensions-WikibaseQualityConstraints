@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\CheckResult;
+namespace WikibaseQuality\ConstraintReport\Test\CheckResult;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -8,11 +8,11 @@ use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\StringValue;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
  * @group WikidataQualityConstraints
  *

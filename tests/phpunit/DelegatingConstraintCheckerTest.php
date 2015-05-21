@@ -1,40 +1,37 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\ConstraintChecker;
+namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
-use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
-use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *
- * @group WikidataQualityConstraints
  * @group Database
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -47,8 +44,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$checkerMap = new CheckerMapBuilder( $this->lookup, new ConstraintReportHelper() );
-		$this->constraintChecker = new DelegatingConstraintChecker( $this->lookup, $checkerMap->getCheckerMap() );
+		$factory = new ConstraintReportFactory( $this->lookup );
+		$this->constraintChecker = $factory->getConstraintChecker();
 
 		// specify database tables used by this test
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;

@@ -1,38 +1,62 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport;
-
-
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\ConstraintParameterMap;
-
+namespace WikibaseQuality\ConstraintReport;
 
 class Constraint {
 
+	/**
+	 * @var string
+	 */
+	private $constraintClaimGuid;
+
+	/**
+	 * @var string
+	 */
 	private $constraintTypeQid;
-	private $constraintParameter;
 
-	public function __construct( $constraintEntry ) {
-		$this->constraintTypeQid = $constraintEntry->constraint_type_qid;
+	/**
+	 * @var string
+	 */
+	private $propertyId;
 
-		$parameterMap = ConstraintParameterMap::getMap();
-		$constraintParameter = array();
-		$jsonParameter = json_decode( $constraintEntry->constraint_parameters );
-		$helper = new ConstraintReportHelper();
-		if( array_key_exists( $this->constraintTypeQid, $parameterMap ) ) {
-			foreach( $parameterMap[$this->constraintTypeQid] as $par ) {
-				$constraintParameter[$par] = $helper->stringToArray( $helper->getParameterFromJson( $jsonParameter, $par ) );
-			}
-		}
-		$constraintParameter['exceptions'] = $helper->stringToArray( $helper->getParameterFromJson( $jsonParameter, 'known_exception' ) );
-		$this->constraintParameter = $constraintParameter;
+	/**
+	 * @var array
+	 */
+	private $constraintParameters;
+
+	public function __construct( $constraintClaimGuid, $propertyId, $constraintTypeQid, $constraintParameters) {
+		$this->constraintClaimGuid = $constraintClaimGuid;
+		$this->constraintTypeQid = $constraintTypeQid;
+		$this->propertyId = $propertyId;
+		$this->constraintParameters = $constraintParameters;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getConstraintClaimGuid() {
+		return $this->constraintClaimGuid;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getConstraintTypeQid() {
 		return $this->constraintTypeQid;
 	}
 
-	public function getConstraintParameter() {
-		return $this->constraintParameter;
+	/**
+	 * @return string
+	 */
+	public function getPropertyId() {
+		return $this->propertyId;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getConstraintParameters() {
+		return $this->constraintParameters;
+	}
+
 }

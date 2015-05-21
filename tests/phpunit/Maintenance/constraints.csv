@@ -1,0 +1,3 @@
+"baz","42","ConstraintFromCsv","{""foo"":""bar""}"
+"foobaz","42","ConstraintFromCsv","{""bar"":""baz""}"
+"foobar","42","ConstraintFromCsv","{""foobar"":""bar""}"

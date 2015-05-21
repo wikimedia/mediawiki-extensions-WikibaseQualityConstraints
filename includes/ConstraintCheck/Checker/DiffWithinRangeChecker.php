@@ -1,21 +1,20 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Checker;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Statement\StatementList;
-use WikidataQuality\ConstraintReport\Constraint;
-use WikidataQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use Wikibase\DataModel\Statement\Statement;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use Wikibase\DataModel\Entity\Entity;
 
 /**
  * Checks 'Diff within range' constraints.
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Checker
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
@@ -53,8 +52,12 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
-		$constraintParameters = $constraint->getConstraintParameter();
-		$parameters[ 'property' ] = $this->constraintReportHelper->parseParameterArray( $constraintParameters['property'], 'PropertyId' );
+		$constraintParameters = $constraint->getConstraintParameters();
+		$property = false;
+		if ( array_key_exists( 'property', $constraintParameters ) ) {
+			$property = $constraintParameters['property'];
+			$parameters['property'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['property'], 'PropertyId' );
+		}
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
 
@@ -67,7 +70,6 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$property = $constraintParameters['property'][0];
 		$dataValue = $mainSnak->getDataValue();
 
 		/*
@@ -76,7 +78,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		 *   parameters $property, $minimum_quantity and $maximum_quantity must not be null
 		 */
 		if ( $dataValue->getType() === 'quantity' || $dataValue->getType() === 'time' ) {
-			if ( $property !== '' && $constraintParameters['minimum_quantity'] !== null && $constraintParameters['maximum_quantity'] !== null ) {
+			if ( $property && array_key_exists( 'minimum_quantity', $constraintParameters ) && array_key_exists( 'maximum_quantity', $constraintParameters ) ) {
 				$min = $constraintParameters['minimum_quantity'];
 				$max = $constraintParameters['maximum_quantity'];
 				$parameters[ 'minimum_quantity' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_quantity'] );
@@ -94,7 +96,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$thisValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
-		foreach ( $constraintParameters['statements'] as $statement ) {
+		foreach ( $entity->getStatements() as $statement ) {
 			if ( $property === $statement->getClaim()->getPropertyId()->getSerialization() ) {
 				$mainSnak = $statement->getClaim()->getMainSnak();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Test\CheckResultToViolationTranslator;
+namespace WikibaseQuality\ConstraintReport\Test\CheckResultToViolationTranslator;
 
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
@@ -10,19 +10,19 @@ use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\StringValue;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator;
 use Wikibase\Repo\WikibaseRepo;
 
 
 /**
- * @covers WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator
  *
  * @group WikidataQualityConstraints
  * @group Database
  * @group medium
  *
- * @uses   WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
  * @author BP2014N1
  * @license GNU GPL v2+

@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Helper;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Wikibase\Lib\Store\EntityLookup;
 
@@ -8,7 +8,7 @@ use Wikibase\Lib\Store\EntityLookup;
 /**
  * Class for helper functions for range checkers.
  *
- * @package WikidataQuality\ConstraintReport\ConstraintCheck\Helper
+ * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author BP2014N1
  * @license GNU GPL v2+
  */

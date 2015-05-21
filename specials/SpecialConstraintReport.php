@@ -1,6 +1,6 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\Specials;
+namespace WikibaseQuality\ConstraintReport\Specials;
 
 use SpecialPage;
 use ValueFormatters\FormatterOptions;
@@ -22,19 +22,17 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Traversable;
 use Countable;
+use JobQueueGroup;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
-use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
-use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
-use WikidataQuality\ConstraintReport\EvaluateConstraintReportJob;
-use WikidataQuality\ConstraintReport\EvaluateConstraintReportJobService;
-use WikidataQuality\Html\HtmlTable;
-use WikidataQuality\Html\HtmlTableHeader;
-use JobQueueGroup;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
+use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
+use WikibaseQuality\Html\HtmlTable;
+use WikibaseQuality\Html\HtmlTableHeader;
 
 
 /**
@@ -42,7 +40,7 @@ use JobQueueGroup;
  * Special page that displays all constraints that are defined on an Entity with additional information
  * (whether it complied or was a violation, which parameters the constraint has etc.).
  *
- * @package WikidataQuality\ConstraintReport\Specials
+ * @package WikibaseQuality\ConstraintReport\Specials
  * @author BP2014N1
  * @license GNU GPL v2+
  */
@@ -343,14 +341,12 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	protected function executeCheck( Entity $entity ) {
 
-		$constraintReportHelper = new ConstraintReportHelper();
-		$checkerMapBuilder = new CheckerMapBuilder( $this->entityLookup, $constraintReportHelper );
-		$checkerMap = $checkerMapBuilder->getCheckerMap();
-
-		$constraintChecker = new DelegatingConstraintChecker( $this->entityLookup, $checkerMap );
+		$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
 		$results = $constraintChecker->checkAgainstConstraints( $entity );
 
-		$this->doEvaluation( $entity, $results );
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ){
+			$this->doEvaluation( $entity, $results );
+		}
 		return $results;
 	}
 
@@ -586,10 +582,9 @@ class SpecialConstraintReport extends SpecialPage {
 		$message = $this->msg( $messageName )->text();
 
 		$statusMapping = $this->getStatusMapping();
+        $genericStatus = 'unknown';
 		if ( array_key_exists( $status, $statusMapping ) ) {
 			$genericStatus = $statusMapping[ $status ];
-		} else {
-			$genericStatus = 'unknown';
 		}
 
 		$formattedStatus =
@@ -747,12 +742,12 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	protected function doEvaluation( $entity, $results ) {
-		$service = new EvaluateConstraintReportJobService();
 		$checkTimeStamp = wfTimestamp( TS_MW );
+		$service = new EvaluateConstraintReportJobService();
+		$results = $service->buildResultSummary( $results );
 		$jobs = array ();
-		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $service, $entity->getId(), $checkTimeStamp, $results );
-		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $service, $entity->getId(), $checkTimeStamp, 10 );
-		$jobs[0]->run();
+		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $entity->getId()->getSerialization(), $checkTimeStamp, $results );
+		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 10 );
 		JobQueueGroup::singleton()->push( $jobs );
 	}
 

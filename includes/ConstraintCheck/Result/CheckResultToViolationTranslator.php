@@ -1,14 +1,11 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport\ConstraintCheck\Result;
+namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityRevisionLookup;
-use WikidataQuality\Result\ResultToViolationTranslator;
-use WikidataQuality\Violations\Violation;
+use WikibaseQuality\Violations\Violation;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 
 

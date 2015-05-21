@@ -26,11 +26,11 @@ call_user_func( function() {
 	$GLOBALS['wgHooks']['UnitTestsList'][] = 'WikibaseQualityConstraintsHooks::onUnitTestsList';
 
 	// Initialize special pages
-	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikidataQuality\ConstraintReport\Specials\SpecialConstraintReport';
+	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport';
 
 	// Define modules
 	$GLOBALS['wgResourceModules']['SpecialConstraintReportPage'] = array (
-		'styles' => '/modules/SpecialConstraintReportPage.css',
+        'styles' => '/modules/SpecialConstraintReportPage.css',
         'scripts' => '/modules/SpecialConstraintReportPage.js',
 		'localBasePath' => __DIR__,
 		'remoteExtPath' => 'WikibaseQualityConstraints'
@@ -40,6 +40,6 @@ call_user_func( function() {
 	define( 'CONSTRAINT_TABLE', 'wbqc_constraints' );
 
 	// Jobs
-	$GLOBALS['wgJobClasses']['evaluateConstraintReportJob'] = 'EvaluateConstraintReportJob';
+	$GLOBALS['wgJobClasses']['evaluateConstraintReportJob'] = 'WikidataQuality\ConstraintReport\EvaluateConstraintReportJob';
 	$GLOBALS['wgDebugLogGroups']['wbq_evaluation'] = '/var/log/mediawiki/wbq_evaluation.log';
 } );

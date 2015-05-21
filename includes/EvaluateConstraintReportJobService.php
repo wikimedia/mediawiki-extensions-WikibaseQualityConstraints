@@ -1,33 +1,32 @@
 <?php
 
-namespace WikidataQuality\ConstraintReport;
+namespace WikibaseQuality\ConstraintReport;
 
-use WikidataQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\WikibaseRepo;
-use WikidataQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikidataQuality\ConstraintReport\ConstraintCheck\CheckerMapBuilder;
-use WikidataQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 
 class EvaluateConstraintReportJobService {
 
 	public function writeToLog( $message ) {
-		wfDebugLog( 'wdqa_evaluation', $message );
+		wfDebugLog( 'wbq_evaluation', $message );
 	}
 
-	public function buildMessageForLog( $results, $timestamp, $params ) {
+	public function buildMessageForLog( $resultSummary, $timestamp, $params ) {
 		return json_encode(
 			array (
 				'special_page_id' => 'SpecialConstraintReport',
-				'entity_id' => $params['entityId']->getSerialization(),
+				'entity_id' => $params['entityId'],
 				'insertion_timestamp' => $timestamp,
 				'reference_timestamp' => $params['referenceTimestamp'],
-				'result_summary' => $this->buildResultSummary( $results )
+				'result_summary' => $resultSummary
 			)
 		);
 	}
 
-	private function buildResultSummary( $results ) {
+	public function buildResultSummary( $results ) {
 		$summary = array();
 
 		foreach ( $results as $result ) {
@@ -37,7 +36,8 @@ class EvaluateConstraintReportJobService {
 				$summary[$constraintName] = array(
 					CheckResult::STATUS_COMPLIANCE => 0,
 					CheckResult::STATUS_VIOLATION => 0,
-					CheckResult::STATUS_EXCEPTION => 0
+					CheckResult::STATUS_EXCEPTION => 0,
+					CheckResult::STATUS_TODO => 0
 				);
 			}
 			if( array_key_exists( $status, $summary[$constraintName] ) ) {
@@ -45,16 +45,16 @@ class EvaluateConstraintReportJobService {
 			}
 		}
 
-		return $summary;
+		return json_encode( $summary );
 	}
 
 	public function getResults( $params ) {
-		if ( $params[ 'results' ] === null ) {
+		if ( !array_key_exists( 'results', $params ) ) {
 			$lookup = WikibaseRepo::getDefaultInstance()->getEntityLookup();
-			$checkerMap = new CheckerMapBuilder( $lookup, new ConstraintReportHelper() );
-			$constraintChecker = new DelegatingConstraintChecker( $lookup, $checkerMap->getCheckerMap() );
-
-			return $constraintChecker->checkAgainstConstraints( $lookup->getEntity( $params[ 'entityId' ] ) );
+			$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
+			$entityId = $params['entityId'][0] === 'Q' ? new ItemId( $params['entityId'] ) : new PropertyId( $params['entityId'] );
+			$results = $constraintChecker->checkAgainstConstraints( $lookup->getEntity( $entityId ) );
+			return $this->buildResultSummary( $results );
 		} else {
 			return $params['results'];
 		}
