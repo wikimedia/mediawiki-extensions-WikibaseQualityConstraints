@@ -26,7 +26,7 @@ class EvaluateConstraintReportJob extends Job {
 		$params['entityId'] = $entityId;
 		$params['results'] = $results;
 		$params['checkTimestamp'] = $checkTimestamp;
-		$params['referenceTimestamp'] = 'null';
+		$params['referenceTimestamp'] = null;
 
 		return new EvaluateConstraintReportJob( $dummyTitle, $params );
 	}
@@ -34,12 +34,12 @@ class EvaluateConstraintReportJob extends Job {
 	/**
 	 * @param string $entityId
 	 * @param int $referenceTimestamp
-	 * @param int $releaseTimestamp
+	 * @param int $delay
 	 *
 	 * @return EvaluateConstraintReportJob
 	 * @throws \MWException
 	 */
-	public static function newInsertDeferred( $entityId, $referenceTimestamp = 'null', $releaseTimestamp = 0 ) {
+	public static function newInsertDeferred( $entityId, $referenceTimestamp = 'null', $delay = 0 ) {
 		// The Job class wants a Title object for some reason. Supply a dummy.
 		$dummyTitle = Title::newFromText( "EvaluateConstraintReportJob", NS_SPECIAL );
 
@@ -47,7 +47,7 @@ class EvaluateConstraintReportJob extends Job {
 
 		$params['entityId'] = $entityId;
 		$params['referenceTimestamp'] = $referenceTimestamp;
-		$params['releaseTimestamp'] = wfTimestamp( TS_MW ) + $releaseTimestamp;
+		$params['jobReleaseTimestamp'] = wfTimestamp( TS_UNIX ) + $delay;
 
 		return new EvaluateConstraintReportJob( $dummyTitle, $params );
 	}
@@ -62,7 +62,7 @@ class EvaluateConstraintReportJob extends Job {
 	}
 
 	public function run() {
-		$checkTimestamp = array_key_exists( 'checkTimestamp', $this->params ) ? $this->params[ 'checkTimestamp' ] : wfTimestamp( TS_MW );
+		$checkTimestamp = array_key_exists( 'checkTimestamp', $this->params ) ? $this->params[ 'checkTimestamp' ] : wfTimestamp( TS_UNIX );
 
 		$resultSummary = $this->service->getResults( $this->params );
 		$messageToLog = $this->service->buildMessageForLog( $resultSummary, $checkTimestamp, $this->params );
