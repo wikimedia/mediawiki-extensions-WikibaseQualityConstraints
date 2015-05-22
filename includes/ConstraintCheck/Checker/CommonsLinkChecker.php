@@ -47,8 +47,10 @@ class CommonsLinkChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
+		$namespace = '';
 		if ( array_key_exists( 'namespace', $constraintParameters ) ) {
-			$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $constraintParameters['namespace'], true );
+			$namespace = $constraintParameters['namespace'];
+			$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $namespace, true );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
@@ -81,7 +83,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		$commonsLink = $dataValue->getValue();
 
 		if ( $this->commonsLinkIsWellFormed( $commonsLink ) ) {
-			if ( $this->urlExists( $commonsLink, $constraintParameters['namespace'] ) ) {
+			if ( $this->urlExists( $commonsLink, $namespace ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {

@@ -60,7 +60,7 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->willReturn( $parameter );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )

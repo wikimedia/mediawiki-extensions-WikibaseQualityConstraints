@@ -63,7 +63,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	public function testCommonsLinkConstraintWithoutNamespace() {
 		$value = new StringValue( 'President Barack Obama.jpg' );
 		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( null ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'compliance', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array() ) )->getStatus(), 'check should comply' );
 	}
 
 	public function testCommonsLinkConstraintNotExistent() {
