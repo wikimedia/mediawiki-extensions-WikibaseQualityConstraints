@@ -4,5 +4,6 @@
 			"Robby"
 		]
 	},
-	"wbqc-constraintreport-result-headline": "Resultat fir $1"
+	"wbqc-constraintreport-result-headline": "Resultat fir $1",
+	"wbqc-constraintreport-status-exception": "Ausnahm"
 }

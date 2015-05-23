@@ -13,6 +13,7 @@
 	"wbqc-constraintreport-empty-result": "No hay restricciones definidas en esta entidad.",
 	"wbqc-constraintreport-status-violation": "Violación",
 	"wbqc-constraintreport-status-compliance": "Cumple",
+	"wbqc-constraintreport-status-exception": "Excepción",
 	"wbqc-constraintreport-status-todo": "Pendiente",
 	"wbqc-constraintreport-result-link-to-claim": "ir a reclamar"
 }

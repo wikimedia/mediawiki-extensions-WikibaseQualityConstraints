@@ -5,9 +5,18 @@
 		]
 	},
 	"wbqc-constraintreport": "Bereesch övver Beschrängkonge",
+	"wbqc-constraintreport-explanation-part-one": "Heh di {{int:specialpage}} pröhv de Beschrängkonge vun jehde Saach, di de wells. De Saache wähde vum lebänndeje Süßtehm met de Dahtebangk jehollt, esu weed och jehde Verläzong vun ene Beschrängkung, wam_mer se doh reparehrt hät, tiräk heh uß de Leß jeschmeße.",
+	"wbqc-constraintreport-explanation-part-two": "De Beschrängkonge wähde jehde Woch vun de Klaafsigge övver de Eijeschaffte enjelässe. Dröm, wann De doh en Beschrängkong derbei deiht, fott nemmps, udder veränders, kann et en Woch duehre, bes dat heh em Bereesch ens opdouch. Mer ärbeide draan, dat mer di Beschrängkonge en de Behouptonge övver de Eijeschaffte medd enboue, su dat mer aam ldänndeje Süßtehm den de Dahtebangk pröhve künne.",
 	"wbqc-constraintreport-form-submit-label": "Lohß jonn!",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxy/Pxy",
 	"wbqc-constraintreport-result-headline": "Wat för $1 eruß kohm",
+	"wbqc-constraintreport-empty-result": "Mer han kein Beschrängkonge för di Saach heh ennjereschdt.",
+	"wbqc-constraintreport-status-violation": "Verläzong",
+	"wbqc-constraintreport-status-compliance": "Kütt zepaß",
+	"wbqc-constraintreport-status-exception": "Ußnahm",
 	"wbqc-constraintreport-status-todo": "Noch ze donn",
-	"wbqc-constraintreport-result-table-header-constraint": "Beschrängkong"
+	"wbqc-constraintreport-result-table-header-claim": "Behouptong",
+	"wbqc-constraintreport-result-table-header-constraint": "Beschrängkong",
+	"wbqc-constraintreport-result-link-to-claim": "jangk op di Behouptong",
+	"wbqc-constraintreport-result-link-to-constraint": "jangk op di Beschrängkong"
 }

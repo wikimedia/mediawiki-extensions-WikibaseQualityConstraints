@@ -6,5 +6,6 @@
 	},
 	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Resultat de $1",
-	"wbqc-constraintreport-status-violation": "Violació"
+	"wbqc-constraintreport-status-violation": "Violació",
+	"wbqc-constraintreport-status-exception": "Excepció"
 }

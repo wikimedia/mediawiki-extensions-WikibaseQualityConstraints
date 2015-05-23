@@ -13,6 +13,7 @@
 	"wbqc-constraintreport-empty-result": "Нема зададено услови за единицава.",
 	"wbqc-constraintreport-status-violation": "Нескладност",
 	"wbqc-constraintreport-status-compliance": "Усогласеност",
+	"wbqc-constraintreport-status-exception": "Исклучок",
 	"wbqc-constraintreport-status-todo": "За проверување",
 	"wbqc-constraintreport-result-table-header-claim": "Тврдење",
 	"wbqc-constraintreport-result-table-header-constraint": "Услов",
