@@ -6,7 +6,6 @@
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "Verificar",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Resultados para $1",
 	"wbqc-constraintreport-status-exception": "Exceção"
 }

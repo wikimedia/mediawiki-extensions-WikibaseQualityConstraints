@@ -8,7 +8,6 @@
 	},
 	"wbqc-constraintreport": "Informe de restricción",
 	"wbqc-constraintreport-form-submit-label": "Verificar",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Resultado de $1",
 	"wbqc-constraintreport-empty-result": "No hay restricciones definidas en esta entidad.",
 	"wbqc-constraintreport-status-violation": "Violación",

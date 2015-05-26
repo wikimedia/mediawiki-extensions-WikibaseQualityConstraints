@@ -9,15 +9,19 @@
 	"wbqc-constraintreport-explanation-part-one": "Diese Spezialseite führt Beschränkungsprüfungen zu jedem gewünschten Objekt durch. Die vom Live-System abgerufenen Objekte und jede behobene Beschränkungsverletzung wird sofort von dieser Liste entfernt.",
 	"wbqc-constraintreport-explanation-part-two": "Die Beschränkungen werden von den Eigenschaftsdiskussionsseiten einmal pro Woche geparst. Falls du eine Beschränkung hinzufügst/löschst/änderst, dauert es also bis zu einer Woche, bis dies vom Beschränkungsbericht in das Benutzerkonto übernommen wird. Es sind derzeit Migrationen der Beschränkungen zu den Aussagen der Eigenschaften in Bearbeitung. Das Aktivieren dieser Spezialseite führt Liveprüfungen aus.",
 	"wbqc-constraintreport-form-submit-label": "Überprüfen",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Ergebnis für $1",
+	"wbqc-constraintreport-not-existent-entity": "Das Objekt ist nicht vorhanden!",
 	"wbqc-constraintreport-empty-result": "Es gibt keine zu diesem Objekt definierten Beschränkungen.",
 	"wbqc-constraintreport-status-violation": "Verletzung",
 	"wbqc-constraintreport-status-compliance": "Übereinstimmung",
 	"wbqc-constraintreport-status-exception": "Ausnahme",
 	"wbqc-constraintreport-status-todo": "Todo",
+	"wbqc-constraintreport-result-table-header-status": "Status",
 	"wbqc-constraintreport-result-table-header-claim": "Behauptung",
 	"wbqc-constraintreport-result-table-header-constraint": "Beschränkung",
 	"wbqc-constraintreport-result-link-to-claim": "gehe zu Behauptung",
-	"wbqc-constraintreport-result-link-to-constraint": "gehe zu Beschränkung"
+	"wbqc-constraintreport-result-link-to-constraint": "gehe zu Beschränkung",
+	"wbqc-violations-group": "Beschränkungen",
+	"wbqc-violation-header-parameters": "Parameter:",
+	"wbqc-violation-message": "Die Beschränkungsprüfung hat einen Verstoß aufgezeigt. Bitte klicke auf das Symbol für weitere Informationen."
 }
