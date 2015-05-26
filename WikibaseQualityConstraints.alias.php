@@ -1,6 +1,6 @@
 <?php
 /**
- * Aliases for WikidataQualityConstraints extension
+ * Aliases for WikibaseQualityConstraints extension
  *
  * @file
  * @ingroup Extensions

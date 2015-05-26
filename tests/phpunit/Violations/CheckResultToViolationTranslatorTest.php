@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\CheckResultToViolationTranslator;
+namespace WikibaseQuality\ConstraintReport\Test\Violations;
 
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
@@ -11,14 +11,14 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator;
 
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultToViolationTranslator
+ * @covers WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator
  *
- * @group WikidataQualityConstraints
+ * @group WikibaseQualityConstraints
  * @group Database
  * @group medium
  *
@@ -27,7 +27,7 @@ use Wikibase\Repo\WikibaseRepo;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class CheckResultTestToViolationTranslatorTest extends \MediaWikiTestCase {
+class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 
     /**
      * @var CheckResultToViolationTranslator
@@ -81,7 +81,7 @@ class CheckResultTestToViolationTranslatorTest extends \MediaWikiTestCase {
 		$this->propertyId =  new PropertyId( 'P1' );
 		$this->claimGuid = 'P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 		$this->statement->setGuid( 'P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' );
-		$this->constraintName = 'Single value';
+		$this->constraintName = 'Range';
 		$this->parameters = array ();
 		$this->message = 'All right';
 		$this->entity = new Item();
@@ -106,7 +106,7 @@ class CheckResultTestToViolationTranslatorTest extends \MediaWikiTestCase {
 		$this->assertEquals( array (), $violations );
 	}
 
-	public function testSingleViolationResultWithoutParameter() {
+	public function testSingleViolationResult() {
 		$checkResult = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
 		$violations = $this->translator->translateToViolation( $this->entity, $checkResult );
 		$this->assertEquals( 1, sizeof( $violations ) );
@@ -117,15 +117,8 @@ class CheckResultTestToViolationTranslatorTest extends \MediaWikiTestCase {
 		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
 		$this->assertEquals( md5( $this->statement->getGuid() . $checkResult->getConstraintName() ), $violation->getConstraintId() );
 		$this->assertEquals( $checkResult->getConstraintName(), $violation->getConstraintTypeEntityId() );
-		$this->assertEquals( 42, $violation->getRevisionId() );
-		$this->assertEquals( '[]', $violation->getAdditionalInfo() );
-	}
+        $this->assertEquals( 42, $violation->getRevisionId() );
 
-	public function testSingleViolationResultWithParameter() {
-		$checkResult = new CheckResult( $this->statement, $this->constraintName, array( array( 'constraint_status' => 'mandatory' ) ), 'violation', $this->message );
-		$violations = $this->translator->translateToViolation( $this->entity, $checkResult );
-		$violation = $violations[0];
-		$this->assertEquals( '[{"constraint_status":"mandatory"}]', $violation->getAdditionalInfo() );
 	}
 
 	public function testMultipleCheckResults() {

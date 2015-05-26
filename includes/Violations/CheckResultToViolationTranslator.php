@@ -1,10 +1,11 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
+namespace WikibaseQuality\ConstraintReport\Violations;
 
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityRevisionLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\Violations\Violation;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 
@@ -23,12 +24,6 @@ class CheckResultToViolationTranslator {
         $this->entityRevisionLookup = $entityRevisionLookup;
     }
 
-    /**
-     * @param Entity $entity
-     * @param CheckResult[] $checkResultOrArray
-     *
-     * @return array
-     */
 	public function translateToViolation( Entity $entity, $checkResultOrArray ) {
 
 	    $checkResultArray = $this->setCheckResultArray( $checkResultOrArray );
@@ -48,13 +43,17 @@ class CheckResultToViolationTranslator {
             $constraintId = $this->setConstraintId( $checkResult, $statement, $constraintTypeEntityId );
 			$revisionId = $this->entityRevisionLookup->getLatestRevisionId( $entityId );
 			$status = CheckResult::STATUS_VIOLATION;
-            $parameters = json_encode( $checkResult->getParameters() );
-			$violationArray[ ] = new Violation( $entityId, $propertyId, $claimGuid, $constraintId, $constraintTypeEntityId, $revisionId, $status, $parameters );
+
+			$violationArray[ ] = new Violation( $entityId, $propertyId, $claimGuid, $constraintId, $constraintTypeEntityId, $revisionId, $status );
 		}
 
 		return $violationArray;
 	}
 
+    /**
+     * @param CheckResult|CheckResult[] $checkResultOrArray
+     * @return CheckResult[]
+     */
     private function setCheckResultArray( $checkResultOrArray ){
 
         if ( $checkResultOrArray instanceof CheckResult ) {
@@ -75,6 +74,6 @@ class CheckResultToViolationTranslator {
             }
         }
 
-        return md5( $constraintId );
+        return ConstraintViolationContext::CONTEXT_ID . Violation::CONSTRAINT_ID_DELIMITER . $constraintId;
     }
 }

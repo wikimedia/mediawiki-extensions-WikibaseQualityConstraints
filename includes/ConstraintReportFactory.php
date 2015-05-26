@@ -27,6 +27,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\Violations\ConstraintViolationContext;
 
 
 class ConstraintReportFactory {
@@ -160,4 +161,9 @@ class ConstraintReportFactory {
 		return $this->constraintRepository;
 	}
 
+    public function getViolationContext() {
+        return new ConstraintViolationContext(
+            array_keys( $this->getConstraintCheckerMap() )
+        );
+    }
 }
