@@ -4,12 +4,14 @@ namespace WikibaseQuality\ConstraintReport\Specials;
 
 use SpecialPage;
 use ValueFormatters\FormatterOptions;
+use ValueFormatters\ValueFormatter;
 use Wikibase\Lib\EntityIdHtmlLinkFormatter;
 use Wikibase\Lib\EntityIdLabelFormatter;
 use Wikibase\Lib\EntityIdLinkFormatter;
-use Wikibase\Lib\HtmlUrlFormatter;
+use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\LanguageNameLookup;
 use Wikibase\Lib\SnakFormatter;
+use Wikibase\Lib\Store\EntityLookup;
 use Wikibase\Lib\Store\LanguageLabelDescriptionLookup;
 use Wikibase\Repo\WikibaseRepo;
 use DataValues;
@@ -28,11 +30,15 @@ use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
+use WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator;
 use WikibaseQuality\Html\HtmlTable;
 use WikibaseQuality\Html\HtmlTableHeader;
+use WikibaseQuality\Violations\ViolationRepo;
+use WikibaseQuality\WikibaseQualityFactory;
 
 
 /**
@@ -67,39 +73,39 @@ class SpecialConstraintReport extends SpecialPage {
 	private $entityTitleLookup;
 
 	/**
-	 * @var \Wikibase\DataModel\Entity\EntityIdParser
+	 * @var EntityIdParser
 	 */
-	protected $entityIdParser;
+	private $entityIdParser;
 
 	/**
-	 * @var \Wikibase\Lib\Store\EntityLookup
+	 * @var EntityLookup
 	 */
-	protected $entityLookup;
+	private $entityLookup;
 
 	/**
-	 * @var \ValueFormatters\ValueFormatter
+	 * @var ValueFormatter
 	 */
-	protected $dataValueFormatter;
+	private $dataValueFormatter;
 
 	/**
 	 * @var EntityIdLabelFormatter
 	 */
-	protected $entityIdLabelFormatter;
-
-	/**
-	 * @var EntityIdLinkFormatter
-	 */
-	protected $entityIdLinkFormatter;
+	private $entityIdLabelFormatter;
 
 	/**
 	 * @var EntityIdHtmlLinkFormatter
 	 */
-	protected $entityIdHtmlLinkFormatter;
+	private $entityIdHtmlLinkFormatter;
 
-	/**
-	 * @var HtmlUrlFormatter
-	 */
-	protected $htmlUrlFormatter;
+    /**
+     * @var CheckResultToViolationTranslator
+     */
+    private $checkResultToViolationTranslator;
+
+    /**
+     * @var ViolationRepo
+     */
+    private $violationRepo;
 
 	/**
 	 * @param string $name
@@ -112,36 +118,46 @@ class SpecialConstraintReport extends SpecialPage {
 	public function __construct( $name = 'ConstraintReport', $restriction = '', $listed = true, $function = false, $file = '', $includable = false ) {
 		parent::__construct( $name, $restriction, $listed, $function, $file, $includable );
 
-		$repo = WikibaseRepo::getDefaultInstance();
+        $repo = WikibaseRepo::getDefaultInstance();
 
-		// Get entity lookup
-		$this->entityLookup = $repo->getEntityLookup();
+        $this->entityLookup = $repo->getEntityLookup();
+        $this->entityIdParser = $repo->getEntityIdParser();
+        $this->entityTitleLookup = WikibaseRepo::getDefaultInstance()->getEntityTitleLookup();
 
-		// Get entity id parser
-		$this->entityIdParser = $repo->getEntityIdParser();
+        $formatterOptions = new FormatterOptions();
+        $formatterOptions->setOption( SnakFormatter::OPT_LANG, $this->getLanguage()->getCode() );
+        $this->dataValueFormatter = $repo->getValueFormatterFactory()->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
-		// Get value formatter
-		$formatterOptions = new FormatterOptions();
-		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $this->getLanguage()->getCode() );
-		$this->dataValueFormatter = $repo->getValueFormatterFactory()->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
+        $entityTitleLookup = $repo->getEntityTitleLookup();
+        $labelLookup = new LanguageLabelDescriptionLookup( $repo->getTermLookup(), $this->getLanguage()->getCode() );
+        $this->entityIdLabelFormatter = new EntityIdLabelFormatter( $labelLookup );
+        $this->entityIdHtmlLinkFormatter = new EntityIdHtmlLinkFormatter(
+            $labelLookup,
+            $entityTitleLookup,
+            new LanguageNameLookup()
+        );
 
-		// Get entity id link formatters
-		$entityTitleLookup = $repo->getEntityTitleLookup();
-		$labelLookup = new LanguageLabelDescriptionLookup( $repo->getTermLookup(), $this->getLanguage()->getCode() );
-		$this->entityIdLabelFormatter = new EntityIdLabelFormatter( $labelLookup );
-		$this->entityIdLinkFormatter = new EntityIdLinkFormatter( $entityTitleLookup );
-		$this->entityIdHtmlLinkFormatter = new EntityIdHtmlLinkFormatter(
-			$labelLookup,
-			$entityTitleLookup,
-			new LanguageNameLookup()
-		);
-
-		// Get url formatter
-		$formatterOptions = new FormatterOptions();
-		$this->htmlUrlFormatter = new HtmlUrlFormatter( $formatterOptions );
-
-		$this->entityTitleLookup = WikibaseRepo::getDefaultInstance()->getEntityTitleLookup();
+        $this->checkResultToViolationTranslator = ConstraintReportFactory::getDefaultInstance()->getCheckResultToViolationTranslator();
+        $this->violationRepo = WikibaseQualityFactory::getDefaultInstance()->getViolationRepo();
 	}
+
+    /**
+     * @see SpecialPage::getGroupName
+     *
+     * @return string
+     */
+    function getGroupName() {
+        return 'wikibasequality';
+    }
+
+    /**
+     * @see SpecialPage::getDescription
+     *
+     * @return string
+     */
+    public function getDescription() {
+        return $this->msg( 'wbqc-constraintreport' )->text();
+    }
 
 	/**
 	 * @see SpecialPage::execute
@@ -161,7 +177,7 @@ class SpecialConstraintReport extends SpecialPage {
 			return;
 		}
 
-		$out->addModules( $this->getModules() );
+		$out->addModules( 'SpecialConstraintReportPage' );
 
 		$this->setHeaders();
 
@@ -196,12 +212,7 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 
 		$results = $this->executeCheck( $entity );
-
-		if ( !is_array( $results ) ) {
-			if ( !( $results instanceof Traversable && $results instanceof Countable ) ) {
-				throw new UnexpectedValueException( 'SpecialCheckResultPage::executeCheck has to return an array or traversable and countable object.' );
-			}
-		}
+        $this->saveResultsInViolationsTable( $entity, $results );
 
 		if ( $results && count( $results ) > 0 ) {
 			$out->addHTML(
@@ -212,7 +223,7 @@ class SpecialConstraintReport extends SpecialPage {
 		} else {
 			$out->addHTML(
 				$this->buildResultHeader( $entityId )
-				. $this->buildNotice( $this->getEmptyResultText() )
+				. $this->buildNotice( $this->msg( 'wbqc-constraintreport-empty-result' )->text() )
 			);
 		}
 	}
@@ -222,7 +233,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildEntityIdForm() {
+	private function buildEntityIdForm() {
 		return
 			Html::openElement(
 				'form',
@@ -262,7 +273,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildNotice( $message, $error = false ) {
+	private function buildNotice( $message, $error = false ) {
 		if ( !is_string( $message ) ) {
 			throw new InvalidArgumentException( '$message must be string.' );
 		}
@@ -284,34 +295,7 @@ class SpecialConstraintReport extends SpecialPage {
 				$message );
 	}
 
-	/**
-	 * Returns array of modules that should be added
-	 *
-	 * @return array
-	 */
-	protected function getModules() {
-		return array ( 'SpecialConstraintReportPage' );
-	}
-
-	/**
-	 * @see SpecialPage::getGroupName
-	 *
-	 * @return string
-	 */
-	function getGroupName() {
-		return 'wikibasequality';
-	}
-
-	/**
-	 * @see SpecialPage::getDescription
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->msg( 'wbqc-constraintreport' )->text();
-	}
-
-	protected function getExplanationText() {
+	private function getExplanationText() {
 		return
 			Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
 			. $this->msg( 'wbqc-constraintreport-explanation-part-one' )
@@ -323,23 +307,13 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	/**
-	 * @see SpecialCheckResultPage::getEmptyResultText
-	 *
-	 * @return string
-	 */
-	protected function getEmptyResultText() {
-		return
-			$this->msg( 'wbqc-constraintreport-empty-result' )->text();
-	}
-
-	/**
 	 * @see SpecialCheckResultPage::executeCheck
 	 *
 	 * @param Entity $entity
 	 *
 	 * @return string
 	 */
-	protected function executeCheck( Entity $entity ) {
+	private function executeCheck( Entity $entity ) {
 
 		$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
 		$results = $constraintChecker->checkAgainstConstraints( $entity );
@@ -347,6 +321,7 @@ class SpecialConstraintReport extends SpecialPage {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ){
 			$this->doEvaluation( $entity, $results );
 		}
+
 		return $results;
 	}
 
@@ -354,11 +329,11 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @see SpecialCheckResultPage::buildResultTable
 	 *
 	 * @param EntityId $entityId
-	 * @param array|Traversable $results
+	 * @param CheckResult[] $results
 	 *
 	 * @return string
 	 */
-	protected function buildResultTable( EntityId $entityId, $results ) {
+	private function buildResultTable( EntityId $entityId, $results ) {
 		// Set table headers
 		$table = new HtmlTable(
 			array (
@@ -431,7 +406,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildResultHeader( EntityId $entityId ) {
+	private function buildResultHeader( EntityId $entityId ) {
 		$entityLink = sprintf( '%s (%s)',
 							   $this->entityIdHtmlLinkFormatter->formatEntityId( $entityId ),
 							   $entityId->getSerialization() );
@@ -449,7 +424,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildSummary( $results ) {
+	private function buildSummary( $results ) {
 		$statuses = array ();
 		foreach ( $results as $result ) {
 			$status = strtolower( $result->getStatus() );
@@ -489,7 +464,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildTooltipElement( $content, $tooltipContent, $indicator ) {
+	private function buildTooltipElement( $content, $tooltipContent, $indicator ) {
 		if ( !is_string( $content ) ) {
 			throw new InvalidArgumentException( '$content has to be string.' );
 		}
@@ -532,7 +507,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildExpandableElement( $content, $expandableContent, $indicator ) {
+	private function buildExpandableElement( $content, $expandableContent, $indicator ) {
 		if ( !is_string( $content ) ) {
 			throw new InvalidArgumentException( '$content has to be string.' );
 		}
@@ -573,31 +548,21 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function formatStatus( $status ) {
-		if ( !is_string( $status ) ) {
-			throw new InvalidArgumentException( '$status has to be string.' );
-		}
+    private function formatStatus( $status ) {
+        $messageName = "wbqc-constraintreport-status-" . strtolower( $status );
+        $message = $this->msg( $messageName )->text();
 
-		$messageName = 'wbqc-constraintreport-status-' . strtolower( $status );
-		$message = $this->msg( $messageName )->text();
+        $formattedStatus =
+            Html::element(
+                'span',
+                array (
+                    'class' => 'wbqc-status wbqc-status-' . $status
+                ),
+                $message
+            );
 
-		$statusMapping = $this->getStatusMapping();
-        $genericStatus = 'unknown';
-		if ( array_key_exists( $status, $statusMapping ) ) {
-			$genericStatus = $statusMapping[ $status ];
-		}
-
-		$formattedStatus =
-			Html::element(
-				'span',
-				array (
-					'class' => 'wbqc-status wbqc-status-' . $genericStatus
-				),
-				$message
-			);
-
-		return $formattedStatus;
-	}
+        return $formattedStatus;
+    }
 
 	/**
 	 * Parses data values to human-readable string
@@ -609,7 +574,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function formatDataValues( $dataValues, $separator = ', ' ) {
+	private function formatDataValues( $dataValues, $separator = ', ' ) {
 		if ( $dataValues instanceof DataValue ) {
 			$dataValues = array ( $dataValues );
 		} elseif ( !is_array( $dataValues ) ) {
@@ -728,20 +693,19 @@ class SpecialConstraintReport extends SpecialPage {
 		return $array;
 	}
 
-	/**
-	 * @see SpecialCheckResultPage::getStatusMapping
-	 *
-	 * @return array
-	 */
-	protected function getStatusMapping() {
-		return array (
-			'compliance' => 'success',
-			'exception' => 'warning',
-			'violation' => 'error'
-		);
-	}
 
-	protected function doEvaluation( $entity, $results ) {
+    /**
+     * @param Entity $entity
+     * @param array $results
+     */
+    private function saveResultsInViolationsTable( $entity, $results ) {
+        $violations = $this->checkResultToViolationTranslator->translateToViolation( $entity, $results );
+        foreach( $violations as $violation ) {
+            $this->violationRepo->save( $violation );
+        }
+    }
+
+	private function doEvaluation( $entity, $results ) {
 		$checkTimeStamp = wfTimestamp( TS_UNIX );
 		$service = new EvaluateConstraintReportJobService();
 		$results = $service->buildResultSummary( $results );
@@ -751,5 +715,4 @@ class SpecialConstraintReport extends SpecialPage {
 		//$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 60*60 );
 		JobQueueGroup::singleton()->push( $jobs );
 	}
-
 }

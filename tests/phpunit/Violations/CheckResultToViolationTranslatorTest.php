@@ -115,7 +115,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->assertEquals( self::$idMap[ 'Q1' ], $violation->getEntityId() );
 		$this->assertEquals( 'P1', $violation->getPropertyId()->getSerialization() );
 		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
-		$this->assertEquals( md5( $this->statement->getGuid() . $checkResult->getConstraintName() ), $violation->getConstraintId() );
+		$this->assertEquals( 'wbqc|P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeeeRange', $violation->getConstraintId() );
 		$this->assertEquals( $checkResult->getConstraintName(), $violation->getConstraintTypeEntityId() );
         $this->assertEquals( 42, $violation->getRevisionId() );
 
