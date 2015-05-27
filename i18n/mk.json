@@ -9,13 +9,18 @@
 	"wbqc-constraintreport-explanation-part-two": "Условите се расчленуваат од страниците за разговор на својствата еднаш неделно. Така, ако ставите/избришете/измените услов, може да треба една недела за да се прикаже во овој извештај за услови. Во тек е преселба на условите во тврдењата за својства, овозможувајќи ѝ на оваа службена страница да врши проверки во живо.",
 	"wbqc-constraintreport-form-submit-label": "Провери",
 	"wbqc-constraintreport-result-headline": "Резултат за $1",
+	"wbqc-constraintreport-not-existent-entity": "Единицата не постои!",
 	"wbqc-constraintreport-empty-result": "Нема зададено услови за единицава.",
 	"wbqc-constraintreport-status-violation": "Нескладност",
 	"wbqc-constraintreport-status-compliance": "Усогласеност",
 	"wbqc-constraintreport-status-exception": "Исклучок",
 	"wbqc-constraintreport-status-todo": "За проверување",
+	"wbqc-constraintreport-result-table-header-status": "Статус",
 	"wbqc-constraintreport-result-table-header-claim": "Тврдење",
 	"wbqc-constraintreport-result-table-header-constraint": "Услов",
 	"wbqc-constraintreport-result-link-to-claim": "оди на тврдењето",
-	"wbqc-constraintreport-result-link-to-constraint": "оди на условот"
+	"wbqc-constraintreport-result-link-to-constraint": "оди на условот",
+	"wbqc-violations-group": "Услови",
+	"wbqc-violation-header-parameters": "Параметри:",
+	"wbqc-violation-message": "Проверката на условите укажува на нескладност. Стиснете на иконата за повеќе информации."
 }

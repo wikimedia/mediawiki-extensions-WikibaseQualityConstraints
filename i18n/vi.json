@@ -1,8 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"KhangND"
+			"KhangND",
+			"Darcy Le"
 		]
 	},
-	"wbqc-constraintreport-result-headline": "Các kết quả cho $1"
+	"wbqc-constraintreport-result-headline": "Các kết quả cho $1",
+	"wbqc-constraintreport-result-table-header-status": "Trạng thái",
+	"wbqc-violations-group": "Những giới hạn",
+	"wbqc-violation-message": "Qua việc kiểm tra, chúng tôi phát hiện vi phạm. Xin click vào biểu tượng để biết thêm thông tin."
 }

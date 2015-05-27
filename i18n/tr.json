@@ -2,11 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Demircimehmed",
-			"Sadrettin"
+			"Sadrettin",
+			"Sayginer"
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "Kontrol",
 	"wbqc-constraintreport-status-compliance": "Uyumluluk",
+	"wbqc-constraintreport-result-table-header-status": "Durum",
 	"wbqc-constraintreport-result-table-header-claim": "Talep",
-	"wbqc-constraintreport-result-link-to-claim": "Talebe git."
+	"wbqc-constraintreport-result-link-to-claim": "Talebe git.",
+	"wbqc-violation-header-parameters": "Parametreler:"
 }

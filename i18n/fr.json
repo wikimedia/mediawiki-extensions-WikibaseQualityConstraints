@@ -5,6 +5,7 @@
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "Vérifier",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
-	"wbqc-constraintreport-status-violation": "Violation"
+	"wbqc-constraintreport-status-violation": "Violation",
+	"wbqc-constraintreport-result-table-header-status": "État",
+	"wbqc-violation-header-parameters": "Paramètres:"
 }

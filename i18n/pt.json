@@ -7,5 +7,8 @@
 	},
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-result-headline": "Resultados para $1",
-	"wbqc-constraintreport-status-exception": "Exceção"
+	"wbqc-constraintreport-not-existent-entity": "Entidade inexistente!",
+	"wbqc-constraintreport-status-exception": "Exceção",
+	"wbqc-constraintreport-result-table-header-status": "Estado",
+	"wbqc-violation-header-parameters": "Parâmetros:"
 }

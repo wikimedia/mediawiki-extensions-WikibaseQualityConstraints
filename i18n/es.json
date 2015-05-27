@@ -9,10 +9,13 @@
 	"wbqc-constraintreport": "Informe de restricción",
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-result-headline": "Resultado de $1",
+	"wbqc-constraintreport-not-existent-entity": "La entidad no existe.",
 	"wbqc-constraintreport-empty-result": "No hay restricciones definidas en esta entidad.",
 	"wbqc-constraintreport-status-violation": "Violación",
 	"wbqc-constraintreport-status-compliance": "Cumple",
 	"wbqc-constraintreport-status-exception": "Excepción",
 	"wbqc-constraintreport-status-todo": "Pendiente",
-	"wbqc-constraintreport-result-link-to-claim": "ir a reclamar"
+	"wbqc-constraintreport-result-table-header-status": "Estado",
+	"wbqc-constraintreport-result-link-to-claim": "ir a reclamar",
+	"wbqc-violation-header-parameters": "Parámetros:"
 }
