@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Inkowik",
-			"Metalhead64"
+			"Metalhead64",
+			"Purodha"
 		]
 	},
 	"wbqc-constraintreport": "Beschränkungsbericht",
@@ -23,5 +24,5 @@
 	"wbqc-constraintreport-result-link-to-constraint": "gehe zu Beschränkung",
 	"wbqc-violations-group": "Beschränkungen",
 	"wbqc-violation-header-parameters": "Parameter:",
-	"wbqc-violation-message": "Die Beschränkungsprüfung hat einen Verstoß aufgezeigt. Bitte klicke auf das Symbol für weitere Informationen."
+	"wbqc-violation-message": "Die Beschränkungsprüfung hat einen Verstoß aufgezeigt. Bitte klicke auf das Symbol, um weitere Informationen zu bekommen."
 }
