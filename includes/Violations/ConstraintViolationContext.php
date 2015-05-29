@@ -106,9 +106,31 @@ class ConstraintViolationContext implements ViolationContext {
 
     /**
      * @param Violation $violation
+     * @throws InvalidArgumentException
      * @return string
      */
-    public function getMessage( Violation $violation ) {
+    public function getIconPath( Violation $violation ) {
+        if ( !$this->isContextFor( $violation ) ) {
+            throw new InvalidArgumentException( 'Given violation is not part of current context.' );
+        }
+        //TODO: Choose depending on type
+        return '/wikidata/extensions/Quality/images/severe_arrows.png';
+    }
+
+    /**
+     * @param Violation $violation
+     * @return string
+     */
+    public function getShortMessage( Violation $violation ) {
+        //TODO: Implement message system depending on constraint type
+        return wfMessage( 'wbqc-violation-message' )->text();
+    }
+
+    /**
+     * @param Violation $violation
+     * @return string
+     */
+    public function getLongMessage( Violation $violation ) {
         //TODO: Implement message system depending on constraint type
         return wfMessage( 'wbqc-violation-message' )->text();
     }
