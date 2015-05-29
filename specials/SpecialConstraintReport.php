@@ -494,14 +494,19 @@ class SpecialConstraintReport extends SpecialPage {
 			$indicator
 		);
 
+		$tooltip = HTML::element(
+			'div',
+			array (
+				'class' => 'wbqc-tooltip'
+			),
+			$tooltipContent
+		);
+
 		return
 			Html::openElement(
-				'span',
-				array (
-					'tooltip' => $tooltipContent
-				)
+				'span'
 			)
-			. sprintf( '%s %s', $content, $tooltipIndicator )
+			. sprintf( '%s %s %s', $content, $tooltipIndicator, $tooltip )
 			. Html::closeElement( 'span' );
 	}
 
