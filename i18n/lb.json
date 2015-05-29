@@ -5,5 +5,7 @@
 		]
 	},
 	"wbqc-constraintreport-result-headline": "Resultat fir $1",
-	"wbqc-constraintreport-status-exception": "Ausnahm"
+	"wbqc-constraintreport-status-exception": "Ausnahm",
+	"wbqc-violations-group": "Limitatiounen",
+	"wbqc-violation-header-parameters": "Parameteren:"
 }

@@ -4,12 +4,22 @@
 			"Elisardojm"
 		]
 	},
-	"wikidataquality-constraintreport": "Informe de restricións",
-	"wikidataquality-constraintreport-instructions": "Indique un identificador de entidade e deixe que se comprobe coas restricións.",
-	"wikidataquality-constraintreport-instructions-example": "Probe calquera identificador, de forma ideal un identificador de elemento, e mire os resultados.",
-	"wikidataquality-constraintreport-empty-result": "Non hai restricións definidas nesta entidade.",
-	"wikidataquality-constraintreport-result-table-header-claim": "Afirmación",
-	"wikidataquality-constraintreport-result-table-header-constraint": "Restrición",
-	"wikidataquality-constraintreport-result-link-to-claim": "ir a afirmación",
-	"wikidataquality-constraintreport-result-link-to-constraint": "ir a restrición"
+	"wbqc-constraintreport": "Informe de restrición",
+	"wbqc-constraintreport-explanation-part-one": "Esta páxina especial realiza revisións de restrición e todas as entidades que queira. As entidades búscanse no sistema real polo que cada violación de restrición que amañe será eliminada instantaneamente desta lista.",
+	"wbqc-constraintreport-form-submit-label": "Comprobar",
+	"wbqc-constraintreport-result-headline": "Resultado para $1",
+	"wbqc-constraintreport-not-existent-entity": "A entidade non existe!",
+	"wbqc-constraintreport-empty-result": "Non hai restricións definidas nesta entidade.",
+	"wbqc-constraintreport-status-violation": "Violación",
+	"wbqc-constraintreport-status-compliance": "Cumpre",
+	"wbqc-constraintreport-status-exception": "Excepción",
+	"wbqc-constraintreport-status-todo": "Pendente",
+	"wbqc-constraintreport-result-table-header-status": "Estado",
+	"wbqc-constraintreport-result-table-header-claim": "Afirmación",
+	"wbqc-constraintreport-result-table-header-constraint": "Restrición",
+	"wbqc-constraintreport-result-link-to-claim": "ir a afirmación",
+	"wbqc-constraintreport-result-link-to-constraint": "ir a restrición",
+	"wbqc-violations-group": "Restricións",
+	"wbqc-violation-header-parameters": "Parámetros:",
+	"wbqc-violation-message": "A verificación de restricións detectou unha violación. Prema a icona para obter máis información."
 }
