@@ -40,6 +40,6 @@ call_user_func( function() {
 	define( 'CONSTRAINT_TABLE', 'wbqc_constraints' );
 
 	// Jobs
-	$GLOBALS['wgJobClasses']['evaluateConstraintReportJob'] = 'WikidataQuality\ConstraintReport\EvaluateConstraintReportJob';
+	$GLOBALS['wgJobClasses']['evaluateConstraintReportJob'] = 'WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob';
 	$GLOBALS['wgDebugLogGroups']['wbq_evaluation'] = '/var/log/mediawiki/wbq_evaluation.log';
 } );

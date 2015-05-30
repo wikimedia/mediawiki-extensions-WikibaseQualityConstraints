@@ -51,10 +51,15 @@ class ConstraintReportHelper {
 		}
 
 		$startsWith = strtoupper( substr( $parameter, 0, 1 ) );
-		if ( $startsWith === 'Q' ) {
-			return new ItemId( $parameter );
-		} elseif ( $startsWith === 'P' ) {
-			return new PropertyId( $parameter );
+
+		try {
+			if ( $startsWith === 'Q' ) {
+				return new ItemId( $parameter );
+			} elseif ( $startsWith === 'P' ) {
+				return new PropertyId( $parameter );
+			}
+		} catch (\InvalidArgumentException $e) {
+			return '';
 		}
 
 		return '';
