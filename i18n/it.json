@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Macofe"
+			"Macofe",
+			"Alexmar983"
 		]
 	},
 	"wbqc-constraintreport-result-headline": "Risultati da $1",
+	"wbqc-constraintreport-empty-result": "Non ci sono vincoli definiti su questa entità.",
 	"wbqc-constraintreport-status-violation": "Violazione",
 	"wbqc-constraintreport-result-table-header-status": "Stato",
 	"wbqc-violation-header-parameters": "Parametri:"
