@@ -24,6 +24,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Traversable;
 use Countable;
+use JobQueueGroup;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
@@ -31,6 +32,8 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
+use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
 use WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator;
 use WikibaseQuality\Html\HtmlTable;
 use WikibaseQuality\Html\HtmlTableHeader;
@@ -314,6 +317,10 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
 		$results = $constraintChecker->checkAgainstConstraints( $entity );
+
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ){
+			$this->doEvaluation( $entity, $results );
+		}
 
 		return $results;
 	}
@@ -698,4 +705,14 @@ class SpecialConstraintReport extends SpecialPage {
         }
     }
 
+	private function doEvaluation( $entity, $results ) {
+		$checkTimeStamp = wfTimestamp( TS_UNIX );
+		$service = new EvaluateConstraintReportJobService();
+		$results = $service->buildResultSummary( $results );
+		$jobs = array ();
+		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $entity->getId()->getSerialization(), $checkTimeStamp, $results );
+		//$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 10*60 );
+		//$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 60*60 );
+		JobQueueGroup::singleton()->push( $jobs );
+	}
 }
