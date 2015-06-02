@@ -128,9 +128,10 @@ class ConstraintViolationContext implements ViolationContext {
 
     /**
      * @param Violation $violation
+     * @param bool $permissionStatus
      * @return string
      */
-    public function getLongMessage( Violation $violation ) {
+    public function getLongMessage( Violation $violation, $permissionStatus ) {
         //TODO: Implement message system depending on constraint type
         return wfMessage( 'wbqc-violation-message' )->text();
     }
