@@ -138,9 +138,22 @@ class ConstraintViolationContextTest extends \MediaWikiTestCase {
         );
     }
 
+    public function testGetIconPath() {
+        $actualResult = $this->violationContext->getIconPath( $this->getViolationMock( 'wbqc|foobar', array() ) );
+        $expectedResult = '/wikidata/extensions/Quality/images/severe_arrows.png';
 
-    public function testGetMessage() {
-        $actualResult = $this->violationContext->getMessage( $this->getViolationMock() );
+        $this->assertEquals( $expectedResult, $actualResult );
+    }
+
+    public function testGetShortMessage() {
+        $actualResult = $this->violationContext->getShortMessage( $this->getViolationMock() );
+        $expectedResult = '(wbqc-violation-message)';
+
+        $this->assertEquals( $expectedResult, $actualResult );
+    }
+
+    public function testGetLongMessage() {
+        $actualResult = $this->violationContext->getLongMessage( $this->getViolationMock(), true );
         $expectedResult = '(wbqc-violation-message)';
 
         $this->assertEquals( $expectedResult, $actualResult );
