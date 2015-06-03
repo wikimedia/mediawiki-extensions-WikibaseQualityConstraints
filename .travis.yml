@@ -24,3 +24,6 @@ script:
 
 after_success:
   - bash ./build/travis/after_script.sh
+
+notifications:
+  slack: wikidataquality:6RzuL6LCKzoPupOKuNUhpCSt
