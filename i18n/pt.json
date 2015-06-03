@@ -8,6 +8,7 @@
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-result-headline": "Resultados para $1",
 	"wbqc-constraintreport-not-existent-entity": "Entidade inexistente!",
+	"wbqc-constraintreport-empty-result": "Não há restrições definidas nesta entidade.",
 	"wbqc-constraintreport-status-exception": "Exceção",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
 	"wbqc-violation-header-parameters": "Parâmetros:"
