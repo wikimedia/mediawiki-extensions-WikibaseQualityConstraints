@@ -3,6 +3,8 @@
 	"wbqc-constraintreport": "{{doc-special|ConstraintReport}}",
 	"wbqc-constraintreport-explanation-part-one": "Explanation (part one), what this special page does and how it gets its data.",
 	"wbqc-constraintreport-explanation-part-two": "Explanation (part two), what this special page does and how it gets its data.",
+    "wbqc-crosscheck-form-section": "Header of the section of the entity id form.",
+    "wbqc-crosscheck-form-entityid-label": "Label for the entity id input field.",
 	"wbqc-constraintreport-form-submit-label": "Label of the button, that starts the check.\n{{Identical|Check}}",
 	"wbqc-constraintreport-form-entityid-placeholder": "Entity id placeholder for the input field.",
 	"wbqc-constraintreport-result-headline": "Result headline",

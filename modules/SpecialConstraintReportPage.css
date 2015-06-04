@@ -1,15 +1,11 @@
 /* Entity id form */
-.wbqc-constraintreport-form {
-    margin-top: 10px;
+form {
     margin-bottom: 20px;
+    width: 250px;
 }
 
 .wbqc-constraintreport-form-entity-id {
     width: 120px;
-}
-
-.wbqc-constraintreport-form-submit {
-    margin-left: 5px;
 }
 
 /* Notices */
