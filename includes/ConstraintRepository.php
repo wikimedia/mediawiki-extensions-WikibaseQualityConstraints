@@ -2,6 +2,14 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use InvalidArgumentException;
+
+/**
+ * Class ConstraintRepository
+ * @package WikibaseQuality\ConstraintReport
+ * @author BP2014N1
+ * @license GNU GPL v2+
+ */
 class ConstraintRepository {
 
 	/**
@@ -11,10 +19,11 @@ class ConstraintRepository {
 	 */
 	public function queryConstraintsForProperty( $prop ) {
         $db = wfGetDB( DB_SLAVE );
+
 		$results = $db->select(
 			CONSTRAINT_TABLE,
 			'*',
-			"pid = $prop"
+            array( 'pid' => $prop )
 		);
 
 		return $this->convertToConstraints( $results );
@@ -46,8 +55,15 @@ class ConstraintRepository {
 		return $db->insert( CONSTRAINT_TABLE, $accumulator );
 	}
 
-
+	/**
+	 * @param int $batchSize
+	 *
+	 * @throws \DBUnexpectedError
+	 */
 	public function deleteAll( $batchSize = 1000 ) {
+		if ( !is_int( $batchSize ) ) {
+			throw new InvalidArgumentException();
+		}
 		$db = wfGetDB( DB_MASTER );
 		if ( $db->getType() === 'sqlite' ) {
 			$db->delete( CONSTRAINT_TABLE, '*' );
