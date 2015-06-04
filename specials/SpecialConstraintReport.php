@@ -8,6 +8,9 @@ use Wikibase\Lib\EntityIdHtmlLinkFormatter;
 use Wikibase\Lib\EntityIdLabelFormatter;
 use Wikibase\Lib\EntityIdLinkFormatter;
 use Wikibase\Lib\HtmlUrlFormatter;
+use HTMLForm;
+use IContextSource;
+use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\LanguageNameLookup;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Store\LanguageLabelDescriptionLookup;
@@ -21,7 +24,6 @@ use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Traversable;
-use Countable;
 use JobQueueGroup;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel;
@@ -155,20 +157,18 @@ class SpecialConstraintReport extends SpecialPage {
 	public function execute( $subPage ) {
 		$out = $this->getOutput();
 
-		$postRequest = $this->getContext()->getRequest()->getVal( 'entityId' );
-		if ( $postRequest ) {
-			$out->redirect( $this->getPageTitle( strtoupper( $postRequest ) )->getLocalURL() );
-			return;
-		}
+        $postRequest = $this->getContext()->getRequest()->getVal( 'entityid' );
+        if ( $postRequest ) {
+            $out->redirect( $this->getPageTitle( strtoupper( $postRequest ) )->getLocalURL() );
+            return;
+        }
 
 		$out->addModules( $this->getModules() );
 
 		$this->setHeaders();
 
-		$out->addHTML(
-			$this->getExplanationText()
-			. $this->buildEntityIdForm()
-		);
+		$out->addHTML( $this->getExplanationText() );
+        $this->buildEntityIdForm();
 
 		if ( !$subPage ) {
 			return;
@@ -216,41 +216,29 @@ class SpecialConstraintReport extends SpecialPage {
 			);
 		}
 	}
-
-	/**
-	 * Returns html text of the entity id form
-	 *
-	 * @return string
-	 */
-	protected function buildEntityIdForm() {
-		return
-			Html::openElement(
-				'form',
-				array (
-					'class' => 'wbqc-constraintreport-form',
-					'action' => $this->getPageTitle()->getLocalURL(),
-					'method' => 'post'
-				)
-			)
-			. Html::input(
-				'entityId',
-				'',
-				'text',
-				array (
-					'class' => 'wbqc-constraintreport-form-entity-id',
-					'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->text()
-				)
-			)
-			. Html::input(
-				'submit',
-				$this->msg( 'wbqc-constraintreport-form-submit-label' )->text(),
-				'submit',
-				array (
-					'class' => 'wbqc-constraintreport-form-submit'
-				)
-			)
-			. Html::closeElement( 'form' );
-	}
+    
+    /**
+     * Builds html form for entity id input
+     */
+    private function buildEntityIdForm() {
+        $formDescriptor = array(
+            'entityid' => array(
+                'class' => 'HTMLTextField',
+                'section' => 'section',
+                'name' => 'entityid',
+                'label-message' => 'wbqc-constraintreport-form-entityid-label',
+                'cssclass' => 'wbqc-constraintreport-form-entity-id',
+                'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped()
+            )
+        );
+        $htmlForm = new HTMLForm( $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
+        $htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
+        $htmlForm->setSubmitCallback( function() {
+            return false;
+        } );
+        $htmlForm->setMethod( 'post' );
+        $htmlForm->show();
+    }
 
 	/**
 	 * Builds notice with given message. Optionally notice can be handles as error by settings $error to true
