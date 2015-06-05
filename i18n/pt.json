@@ -6,6 +6,7 @@
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "Verificar",
+	"wbqc-constraintreport-form-entityid-label": "ID da entidade:",
 	"wbqc-constraintreport-result-headline": "Resultados para $1",
 	"wbqc-constraintreport-not-existent-entity": "Entidade inexistente!",
 	"wbqc-constraintreport-empty-result": "Não há restrições definidas nesta entidade.",
