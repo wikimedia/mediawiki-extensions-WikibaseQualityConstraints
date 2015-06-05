@@ -8,7 +8,6 @@ use ValueFormatters\ValueFormatter;
 use Wikibase\Lib\EntityIdHtmlLinkFormatter;
 use Wikibase\Lib\EntityIdLabelFormatter;
 use HTMLForm;
-use IContextSource;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\LanguageNameLookup;
 use Wikibase\Lib\SnakFormatter;
@@ -156,7 +155,7 @@ class SpecialConstraintReport extends SpecialPage {
      * @return string
      */
     public function getDescription() {
-        return $this->msg( 'wbqc-constraintreport' )->text();
+        return $this->msg( 'wbqc-constraintreport' )->escaped();
     }
 
 	/**
@@ -197,14 +196,14 @@ class SpecialConstraintReport extends SpecialPage {
 			$entity = $this->entityLookup->getEntity( $entityId );
 		} catch ( EntityIdParsingException $e ) {
 			$out->addHTML(
-				$this->buildNotice( $this->msg( 'wbqc-constraintreport-invalid-entity-id' )->text(), true )
+				$this->buildNotice( 'wbqc-constraintreport-invalid-entity-id', true )
 			);
 			return;
 		}
 
 		if ( !$entity ) {
 			$out->addHTML(
-				$this->buildNotice( $this->msg( 'wbqc-constraintreport-not-existent-entity' )->text(), true )
+				$this->buildNotice( 'wbqc-constraintreport-not-existent-entity', true )
 			);
 			return;
 		}
@@ -221,7 +220,7 @@ class SpecialConstraintReport extends SpecialPage {
 		} else {
 			$out->addHTML(
 				$this->buildResultHeader( $entityId )
-				. $this->buildNotice( $this->msg( 'wbqc-constraintreport-empty-result' )->text() )
+				. $this->buildNotice( 'wbqc-constraintreport-empty-result' )
 			);
 		}
 	}
@@ -278,7 +277,8 @@ class SpecialConstraintReport extends SpecialPage {
 				array (
 					'class' => $cssClasses
 				),
-				$message );
+				$this->msg( $message )->text()
+            );
 	}
 
 	private function getExplanationText() {
@@ -324,15 +324,15 @@ class SpecialConstraintReport extends SpecialPage {
 		$table = new HtmlTable(
 			array (
 				new HtmlTableHeader(
-					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->escaped(),
 					true
 				),
 				new HtmlTableHeader(
-					$this->msg( 'wbqc-constraintreport-result-table-header-claim' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-claim' )->escaped(),
 					true
 				),
 				new HtmlTableHeader(
-					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->escaped(),
 					true
 				)
 			)
@@ -399,7 +399,7 @@ class SpecialConstraintReport extends SpecialPage {
 
 		return
 			Html::openElement( 'h3' )
-			. $this->msg( 'wbqc-constraintreport-result-headline', $entityLink )->text()
+			. sprintf( '%s %s', $this->msg( 'wbqc-constraintreport-result-headline' )->escaped(), $entityLink )
 			. Html::closeElement( 'h3' );
 	}
 
@@ -536,7 +536,6 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
     private function formatStatus( $status ) {
         $messageName = "wbqc-constraintreport-status-" . strtolower( $status );
-        $message = $this->msg( $messageName )->text();
 
         $formattedStatus =
             Html::element(
@@ -544,7 +543,7 @@ class SpecialConstraintReport extends SpecialPage {
                 array (
                     'class' => 'wbqc-status wbqc-status-' . $status
                 ),
-                $message
+                $this->msg( $messageName )->text()
             );
 
         return $formattedStatus;
@@ -697,8 +696,8 @@ class SpecialConstraintReport extends SpecialPage {
 		$results = $service->buildResultSummary( $results );
 		$jobs = array ();
 		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $entity->getId()->getSerialization(), $checkTimeStamp, $results );
-		//$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 10*60 );
-		//$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 60*60 );
+		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 10*60 );
+		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 60*60 );
 		JobQueueGroup::singleton()->push( $jobs );
 	}
 }

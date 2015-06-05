@@ -219,7 +219,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		unset( $matchers[ 'error' ] );
 		$matchers[ 'result for' ] = array (
 			'tag' => 'h3',
-			'content' => '(wbqc-constraintreport-result-headline:'
+			'content' => '(wbqc-constraintreport-result-headline)'
 		);
 
 		$matchers[ 'result table' ] = array (
