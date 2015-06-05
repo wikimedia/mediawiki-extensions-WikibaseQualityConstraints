@@ -28,23 +28,19 @@ form {
     font-weight: bold;
 }
 
-.wbqc-status-success {
+.wbqc-status-compliance {
     color: #008000;
 }
 
-.wbqc-status-partial-success {
-    color: #6CB500;
-}
-
-.wbqc-status-warning {
+.wbqc-status-exception {
     color: #E6B800;
 }
 
-.wbqc-status-error {
+.wbqc-status-violation {
     color: #BA0000;
 }
 
-.wbqc-status-unknown {
+.wbqc-status-todo {
     color: #404040;
 }
 

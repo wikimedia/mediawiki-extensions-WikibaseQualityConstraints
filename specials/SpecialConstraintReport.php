@@ -9,7 +9,6 @@ use Wikibase\Lib\EntityIdLabelFormatter;
 use Wikibase\Lib\EntityIdLinkFormatter;
 use Wikibase\Lib\HtmlUrlFormatter;
 use HTMLForm;
-use IContextSource;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\LanguageNameLookup;
 use Wikibase\Lib\SnakFormatter;
@@ -146,6 +145,33 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	/**
+	 * Returns array of modules that should be added
+	 *
+	 * @return array
+	 */
+	protected function getModules() {
+		return array ( 'SpecialConstraintReportPage' );
+	}
+
+	/**
+	 * @see SpecialPage::getGroupName
+	 *
+	 * @return string
+	 */
+	function getGroupName() {
+		return 'wikibasequality';
+	}
+
+	/**
+	 * @see SpecialPage::getDescription
+	 *
+	 * @return string
+	 */
+	public function getDescription() {
+		return $this->msg( 'wbqc-constraintreport' )->escaped();
+	}
+
+	/**
 	 * @see SpecialPage::execute
 	 *
 	 * @param string|null $subPage
@@ -183,14 +209,14 @@ class SpecialConstraintReport extends SpecialPage {
 			$entity = $this->entityLookup->getEntity( $entityId );
 		} catch ( EntityIdParsingException $e ) {
 			$out->addHTML(
-				$this->buildNotice( $this->msg( 'wbqc-constraintreport-invalid-entity-id' )->text(), true )
+				$this->buildNotice( 'wbqc-constraintreport-invalid-entity-id', true )
 			);
 			return;
 		}
 
 		if ( !$entity ) {
 			$out->addHTML(
-				$this->buildNotice( $this->msg( 'wbqc-constraintreport-not-existent-entity' )->text(), true )
+				$this->buildNotice( 'wbqc-constraintreport-not-existent-entity', true )
 			);
 			return;
 		}
@@ -212,7 +238,7 @@ class SpecialConstraintReport extends SpecialPage {
 		} else {
 			$out->addHTML(
 				$this->buildResultHeader( $entityId )
-				. $this->buildNotice( $this->getEmptyResultText() )
+				. $this->buildNotice( 'wbqc-constraintreport-empty-result' )
 			);
 		}
 	}
@@ -269,34 +295,8 @@ class SpecialConstraintReport extends SpecialPage {
 				array (
 					'class' => $cssClasses
 				),
-				$message );
-	}
-
-	/**
-	 * Returns array of modules that should be added
-	 *
-	 * @return array
-	 */
-	protected function getModules() {
-		return array ( 'SpecialConstraintReportPage' );
-	}
-
-	/**
-	 * @see SpecialPage::getGroupName
-	 *
-	 * @return string
-	 */
-	function getGroupName() {
-		return 'wikibasequality';
-	}
-
-	/**
-	 * @see SpecialPage::getDescription
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->msg( 'wbqc-constraintreport' )->text();
+				$this->msg( $message )->text()
+            );
 	}
 
 	protected function getExplanationText() {
@@ -351,15 +351,15 @@ class SpecialConstraintReport extends SpecialPage {
 		$table = new HtmlTable(
 			array (
 				new HtmlTableHeader(
-					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->escaped(),
 					true
 				),
 				new HtmlTableHeader(
-					$this->msg( 'wbqc-constraintreport-result-table-header-claim' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-claim' )->escaped(),
 					true
 				),
 				new HtmlTableHeader(
-					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->text(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->escaped(),
 					true
 				)
 			)
@@ -426,7 +426,7 @@ class SpecialConstraintReport extends SpecialPage {
 
 		return
 			Html::openElement( 'h3' )
-			. $this->msg( 'wbqc-constraintreport-result-headline', $entityLink )->text()
+			. sprintf( '%s %s', $this->msg( 'wbqc-constraintreport-result-headline' )->escaped(), $entityLink )
 			. Html::closeElement( 'h3' );
 	}
 
@@ -561,31 +561,20 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function formatStatus( $status ) {
-		if ( !is_string( $status ) ) {
-			throw new InvalidArgumentException( '$status has to be string.' );
-		}
+    private function formatStatus( $status ) {
+        $messageName = "wbqc-constraintreport-status-" . strtolower( $status );
 
-		$messageName = 'wbqc-constraintreport-status-' . strtolower( $status );
-		$message = $this->msg( $messageName )->text();
+        $formattedStatus =
+            Html::element(
+                'span',
+                array (
+                    'class' => 'wbqc-status wbqc-status-' . $status
+                ),
+                $this->msg( $messageName )->text()
+            );
 
-		$statusMapping = $this->getStatusMapping();
-        $genericStatus = 'unknown';
-		if ( array_key_exists( $status, $statusMapping ) ) {
-			$genericStatus = $statusMapping[ $status ];
-		}
-
-		$formattedStatus =
-			Html::element(
-				'span',
-				array (
-					'class' => 'wbqc-status wbqc-status-' . $genericStatus
-				),
-				$message
-			);
-
-		return $formattedStatus;
-	}
+        return $formattedStatus;
+    }
 
 	/**
 	 * Parses data values to human-readable string
@@ -737,7 +726,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $entity->getId()->getSerialization(), $checkTimeStamp, $results );
 		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 15*60 );
 		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 60*60 );
-		JobQueueGroup::singleton()->push( $jobs );
+		//JobQueueGroup::singleton()->push( $jobs );
 	}
 
 }

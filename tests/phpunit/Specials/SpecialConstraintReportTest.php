@@ -219,7 +219,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		unset( $matchers[ 'error' ] );
 		$matchers[ 'result for' ] = array (
 			'tag' => 'h3',
-			'content' => '(wbqc-constraintreport-result-headline:'
+			'content' => '(wbqc-constraintreport-result-headline) '
 		);
 
 		$matchers[ 'result table' ] = array (
@@ -256,7 +256,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'value status - violation' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wbqc-status wbqc-status-error'
+				'class' => 'wbqc-status wbqc-status-violation'
 			),
 			'content' => '(wbqc-constraintreport-status-violation)'
 		);
@@ -264,7 +264,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'value status - compliance' ] = array (
 			'tag' => 'span',
 			'attributes' => array (
-				'class' => 'wbqc-status wbqc-status-success'
+				'class' => 'wbqc-status wbqc-status-compliance'
 			),
 			'content' => '(wbqc-constraintreport-status-compliance)'
 		);
