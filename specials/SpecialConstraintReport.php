@@ -223,12 +223,6 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$results = $this->executeCheck( $entity );
 
-		if ( !is_array( $results ) ) {
-			if ( !( $results instanceof Traversable && $results instanceof Countable ) ) {
-				throw new UnexpectedValueException( 'SpecialCheckResultPage::executeCheck has to return an array or traversable and countable object.' );
-			}
-		}
-
 		if ( $results && count( $results ) > 0 ) {
 			$out->addHTML(
 				$this->buildResultHeader( $entityId )
@@ -274,7 +268,7 @@ class SpecialConstraintReport extends SpecialPage {
      *
      * @throws InvalidArgumentException
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	protected function buildNotice( $message, $error = false ) {
 		if ( !is_string( $message ) ) {
@@ -299,14 +293,17 @@ class SpecialConstraintReport extends SpecialPage {
             );
 	}
 
+    /**
+     * @return string HTML
+     */
 	protected function getExplanationText() {
 		return
 			Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
-			. $this->msg( 'wbqc-constraintreport-explanation-part-one' )
+			. $this->msg( 'wbqc-constraintreport-explanation-part-one' )->escaped()
 			. Html::closeElement( 'div' )
 			. Html::element( 'br' )
 			. Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
-			. $this->msg( 'wbqc-constraintreport-explanation-part-two' )
+			. $this->msg( 'wbqc-constraintreport-explanation-part-two' )->escaped()
 			. Html::closeElement( 'div' );
 	}
 
@@ -342,9 +339,9 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @see SpecialCheckResultPage::buildResultTable
 	 *
 	 * @param EntityId $entityId
-	 * @param array|Traversable $results
+	 * @param array $results
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	protected function buildResultTable( EntityId $entityId, $results ) {
 		// Set table headers
@@ -417,7 +414,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param EntityId $entityId
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	protected function buildResultHeader( EntityId $entityId ) {
 		$entityLink = sprintf( '%s (%s)',
@@ -433,9 +430,9 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * Builds summary from given results
 	 *
-	 * @param array|Traversable $results
+	 * @param array $results
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	protected function buildSummary( $results ) {
 		$statuses = array ();
@@ -469,13 +466,13 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Builds a html div element with given content and a tooltip with given tooltip content
 	 * If $tooltipContent is null, no tooltip will be created
 	 *
-	 * @param string $content
+	 * @param string $content (sanitized HTML)
 	 * @param string $tooltipContent
 	 * @param $indicator
      *
      * @throws InvalidArgumentException
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	protected function buildTooltipElement( $content, $tooltipContent, $indicator ) {
 		if ( !is_string( $content ) ) {
@@ -518,7 +515,7 @@ class SpecialConstraintReport extends SpecialPage {
      *
      * @throes InvalidArgumentException
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	protected function buildExpandableElement( $content, $expandableContent, $indicator ) {
 		if ( !is_string( $content ) ) {
@@ -559,7 +556,7 @@ class SpecialConstraintReport extends SpecialPage {
      *
      * @throws InvalidArgumentException
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
     private function formatStatus( $status ) {
         $messageName = "wbqc-constraintreport-status-" . strtolower( $status );
@@ -584,7 +581,7 @@ class SpecialConstraintReport extends SpecialPage {
      *
      * @throws InvalidArgumentException
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	protected function formatDataValues( $dataValues, $separator = ', ' ) {
 		if ( $dataValues instanceof DataValue ) {
@@ -615,7 +612,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param PropertyId $propertyId
 	 * @param string $text
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	private function getClaimLink( EntityId $entityId, PropertyId $propertyId, $text ) {
 		return
@@ -726,7 +723,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $entity->getId()->getSerialization(), $checkTimeStamp, $results );
 		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 15*60 );
 		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 60*60 );
-		//JobQueueGroup::singleton()->push( $jobs );
+		JobQueueGroup::singleton()->push( $jobs );
 	}
 
 }
