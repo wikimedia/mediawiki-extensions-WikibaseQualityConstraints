@@ -171,7 +171,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'tag' => 'input',
 			'attributes' => array (
 				'placeholder' => '(wbqc-constraintreport-form-entityid-placeholder)',
-				'name' => 'entityId',
+				'name' => 'entityid',
 				'class' => 'wbqc-constraintreport-form-entity-id'
 			)
 		);
@@ -179,10 +179,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers[ 'submit' ] = array (
 			'tag' => 'input',
 			'attributes' => array (
-				'class' => 'wbqc-constraintreport-form-submit',
 				'type' => 'submit',
 				'value' => '(wbqc-constraintreport-form-submit-label)',
-				'name' => 'submit'
 			)
 		);
 
