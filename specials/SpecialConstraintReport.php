@@ -419,7 +419,7 @@ class SpecialConstraintReport extends SpecialPage {
 	protected function buildResultHeader( EntityId $entityId ) {
 		$entityLink = sprintf( '%s (%s)',
 							   $this->entityIdHtmlLinkFormatter->formatEntityId( $entityId ),
-							   $entityId->getSerialization() );
+							   htmlspecialchars( $entityId->getSerialization() ) );
 
 		return
 			Html::openElement( 'h3' )
