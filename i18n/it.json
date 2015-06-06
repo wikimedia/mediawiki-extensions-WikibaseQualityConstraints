@@ -5,7 +5,7 @@
 			"Alexmar983"
 		]
 	},
-	"wbqc-constraintreport-result-headline": "Risultati da $1",
+	"wbqc-constraintreport-result-headline": "Risultato per",
 	"wbqc-constraintreport-not-existent-entity": "L'entità non esiste!",
 	"wbqc-constraintreport-empty-result": "Non ci sono vincoli definiti su questa entità.",
 	"wbqc-constraintreport-status-violation": "Violazione",
