@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Susith Chandira Gts"
+			"Susith Chandira Gts",
+			"Pradeepmaduranga"
 		]
 	},
 	"wbqc-constraintreport": "අවහිරතා වාර්තාව",
 	"wbqc-constraintreport-form-submit-label": "පරික්ෂා කරන්න",
-	"wbqc-constraintreport-result-headline": "$1 සදහා ප්‍රතිඵල"
+	"wbqc-constraintreport-result-headline": "සදහා ප්‍රතිඵල"
 }
