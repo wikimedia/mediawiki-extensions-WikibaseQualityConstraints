@@ -109,12 +109,12 @@ class ConstraintViolationContext implements ViolationContext {
      * @throws InvalidArgumentException
      * @return string
      */
-    public function getIconPath( Violation $violation ) {
+    public function getIconClass( Violation $violation ) {
         if ( !$this->isContextFor( $violation ) ) {
             throw new InvalidArgumentException( 'Given violation is not part of current context.' );
         }
         //TODO: Choose depending on type
-        return '/wikidata/extensions/Quality/images/severe_arrows.png';
+        return '';
     }
 
     /**
