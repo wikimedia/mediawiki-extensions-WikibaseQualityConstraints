@@ -32,8 +32,8 @@ use Wikibase\Lib\Store\EntityTitleLookup;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
-use WikibaseQuality\Html\HtmlTable;
-use WikibaseQuality\Html\HtmlTableHeader;
+use WikibaseQuality\Html\HtmlTableBuilder;
+use WikibaseQuality\Html\HtmlTableHeaderBuilder;
 
 
 /**
@@ -98,11 +98,6 @@ class SpecialConstraintReport extends SpecialPage {
 	protected $entityIdHtmlLinkFormatter;
 
 	/**
-	 * @var HtmlUrlFormatter
-	 */
-	protected $htmlUrlFormatter;
-
-	/**
 	 * @param string $name
 	 * @param string $restriction
 	 * @param bool $listed
@@ -127,21 +122,19 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->dataValueFormatter = $repo->getValueFormatterFactory()->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
 		// Get entity id link formatters
-		$entityTitleLookup = $repo->getEntityTitleLookup();
+		$this->entityTitleLookup = $repo->getEntityTitleLookup();
 		$labelLookup = new LanguageLabelDescriptionLookup( $repo->getTermLookup(), $this->getLanguage()->getCode() );
 		$this->entityIdLabelFormatter = new EntityIdLabelFormatter( $labelLookup );
-		$this->entityIdLinkFormatter = new EntityIdLinkFormatter( $entityTitleLookup );
+		$this->entityIdLinkFormatter = new EntityIdLinkFormatter( $this->entityTitleLookup );
 		$this->entityIdHtmlLinkFormatter = new EntityIdHtmlLinkFormatter(
 			$labelLookup,
-			$entityTitleLookup,
+			$this->entityTitleLookup,
 			new LanguageNameLookup()
 		);
 
 		// Get url formatter
 		$formatterOptions = new FormatterOptions();
 		$this->htmlUrlFormatter = new HtmlUrlFormatter( $formatterOptions );
-
-		$this->entityTitleLookup = WikibaseRepo::getDefaultInstance()->getEntityTitleLookup();
 	}
 
 	/**
@@ -236,7 +229,7 @@ class SpecialConstraintReport extends SpecialPage {
 			);
 		}
 	}
-    
+
     /**
      * Builds html form for entity id input
      */
@@ -345,17 +338,17 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	protected function buildResultTable( EntityId $entityId, $results ) {
 		// Set table headers
-		$table = new HtmlTable(
+		$table = new HtmlTableBuilder(
 			array (
-				new HtmlTableHeader(
+				new HtmlTableHeaderBuilder(
 					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->escaped(),
 					true
 				),
-				new HtmlTableHeader(
+				new HtmlTableHeaderBuilder(
 					$this->msg( 'wbqc-constraintreport-result-table-header-claim' )->escaped(),
 					true
 				),
-				new HtmlTableHeader(
+				new HtmlTableHeaderBuilder(
 					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->escaped(),
 					true
 				)
