@@ -5,6 +5,19 @@
 			"Macofe"
 		]
 	},
+	"wbqc-constraintreport": "Schendingenrapportage",
+	"wbqc-constraintreport-form-submit-label": "Controleren",
+	"wbqc-constraintreport-form-entityid-label": "Entiteit-ID:",
+	"wbqc-constraintreport-result-headline": "Resulaten voor",
+	"wbqc-constraintreport-not-existent-entity": "Entiteit bestaat niet!",
+	"wbqc-constraintreport-empty-result": "Er zijn geen schendingen voor deze entiteit opgegeven.",
+	"wbqc-constraintreport-status-violation": "Schending",
+	"wbqc-constraintreport-status-exception": "Uitzondering",
 	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-constraintreport-result-table-header-claim": "Verklaring",
+	"wbqc-constraintreport-result-table-header-constraint": "Schending",
+	"wbqc-constraintreport-result-link-to-claim": "ga naar verklaring",
+	"wbqc-constraintreport-result-link-to-constraint": "ga naar schending",
+	"wbqc-violations-group": "Schendingen",
 	"wbqc-violation-header-parameters": "Parameters:"
 }
