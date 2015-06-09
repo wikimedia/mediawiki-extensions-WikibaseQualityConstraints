@@ -83,12 +83,18 @@ class CommonsLinkChecker implements ConstraintChecker {
 		$commonsLink = $dataValue->getValue();
 
 		if ( $this->commonsLinkIsWellFormed( $commonsLink ) ) {
-			if ( $this->urlExists( $commonsLink, $namespace ) ) {
-				$message = '';
-				$status = CheckResult::STATUS_COMPLIANCE;
-			} else {
-				$message = 'Commons link must exist.';
-				$status = CheckResult::STATUS_VIOLATION;
+			if ( strtolower( $namespace ) === 'file' ) {
+				if ( $this->fileExists( $commonsLink ) ) {
+					$message = '';
+					$status = CheckResult::STATUS_COMPLIANCE;
+				} else {
+					$message = 'Commons link must exist.';
+					$status = CheckResult::STATUS_VIOLATION;
+				}
+			}
+			else {
+				$message = "Check for namespace '$namespace' is not implemented yet.";
+				$status = CheckResult::STATUS_TODO;
 			}
 		} else {
 			$message = 'Commons link must be well-formed.';
@@ -100,17 +106,26 @@ class CommonsLinkChecker implements ConstraintChecker {
 
 	/**
 	 * @param string $commonsLink
-	 * @param string $namespace
 	 *
 	 * @return bool
 	 */
-	private function urlExists( $commonsLink, $namespace ) {
-		if ( $namespace !== null ) {
-			$namespace .= ':';
+	private function fileExists( $commonsLink ) {
+
+		$commonsLink = str_replace( ' ', '_', $commonsLink );
+
+
+		$commonsWikiId = 'commonswiki';
+
+		if ( defined( 'MW_PHPUNIT_TEST' )) {
+			$commonsWikiId = false;
 		}
-		$response = get_headers( 'http://commons.wikimedia.org/wiki/' . $namespace . str_replace( ' ', '_', $commonsLink ) );
-		$responseCode = substr( $response[ 0 ], 9, 3 );
-		return $responseCode < 400;
+		$dbLoadBalancer = wfGetLB( $commonsWikiId );
+		$dbConnection = $dbLoadBalancer->getConnection(
+			DB_SLAVE, false, $commonsWikiId );
+		$row = $dbConnection->selectRow(
+			'image', '*', array( 'img_name' => $commonsLink ) );
+
+		return $row ? true : false;
 	}
 
 	/**
