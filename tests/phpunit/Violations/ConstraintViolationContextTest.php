@@ -138,11 +138,10 @@ class ConstraintViolationContextTest extends \MediaWikiTestCase {
         );
     }
 
-    public function testGetIconPath() {
-        $actualResult = $this->violationContext->getIconPath( $this->getViolationMock( 'wbqc|foobar', array() ) );
-        $expectedResult = '/wikidata/extensions/Quality/images/severe_arrows.png';
+    public function testGetIconClass() {
+        $actualResult = $this->violationContext->getIconClass( $this->getViolationMock( 'wbqc|foobar', array() ) );
 
-        $this->assertEquals( $expectedResult, $actualResult );
+		$this->assertTrue( is_string( $actualResult ) );
     }
 
     public function testGetShortMessage() {
