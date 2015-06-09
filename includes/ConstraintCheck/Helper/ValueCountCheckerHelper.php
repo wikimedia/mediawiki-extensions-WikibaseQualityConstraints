@@ -29,13 +29,11 @@ class ValueCountCheckerHelper {
 		if ( !isset( $this->propertyCount ) ) {
 			$this->propertyCount = array ();
 			foreach ( $statements as $statement ) {
-				if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-					continue;
-				}
+				$counter = $statement->getRank() === Statement::RANK_DEPRECATED ? 0 : 1;
 				if ( array_key_exists( $statement->getPropertyId()->getNumericId(), $this->propertyCount ) ) {
-					$this->propertyCount[ $statement->getPropertyId()->getNumericId() ]++;
+					$this->propertyCount[$statement->getPropertyId()->getNumericId()] += $counter;
 				} else {
-					$this->propertyCount[ $statement->getPropertyId()->getNumericId() ] = 1;
+					$this->propertyCount[$statement->getPropertyId()->getNumericId()] = $counter;
 				}
 			}
 		}
