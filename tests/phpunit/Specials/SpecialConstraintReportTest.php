@@ -27,9 +27,9 @@ use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikibaseQuality\Html\HtmlTable
- * @uses   WikibaseQuality\Html\HtmlTableCell
- * @uses   WikibaseQuality\Html\HtmlTableHeader
+ * @uses   WikibaseQuality\Html\HtmlTableBuilder
+ * @uses   WikibaseQuality\Html\HtmlTableCellBuilder
+ * @uses   WikibaseQuality\Html\HtmlTableHeaderBuilder
  *
  * @author BP2014N1
  * @license GNU GPL v2+

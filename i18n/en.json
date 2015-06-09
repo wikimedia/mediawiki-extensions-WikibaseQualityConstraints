@@ -22,7 +22,7 @@
   "wbqc-constraintreport-result-link-to-claim": "go to claim",
   "wbqc-constraintreport-result-link-to-constraint": "go to constraint",
 
-  "wbqc-violations-group": "Constraints",
+  "wbq-subextension-name-wbqc": "Constraints",
   "wbqc-violation-header-parameters": "Parameters:",
   "wbqc-violation-message": "Constraint check has pointed out a violation. Please click on icon for further information."
 }
