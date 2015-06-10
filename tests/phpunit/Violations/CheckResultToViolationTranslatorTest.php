@@ -135,7 +135,8 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->assertEquals( 'wbqc|P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeeeRangemandatory', $violation->getConstraintId() );
 		$this->assertEquals( $checkResult->getConstraintName(), $violation->getConstraintTypeEntityId() );
 		$this->assertEquals( 42, $violation->getRevisionId() );
-		$this->assertEquals( 'mandatory', $violation->getAdditionalInfo()['constraint_status'][0] );
+		$additionalInfo = $violation->getAdditionalInfo();
+		$this->assertEquals( 'mandatory', $additionalInfo['constraint_status'][0] );
 	}
 
 	public function testMultipleCheckResults() {
