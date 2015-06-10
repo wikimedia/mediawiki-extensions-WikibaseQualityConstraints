@@ -44,7 +44,15 @@ class CheckResultToViolationTranslator {
 			$revisionId = $this->entityRevisionLookup->getLatestRevisionId( $entityId );
 			$status = CheckResult::STATUS_VIOLATION;
 
-			$violationArray[ ] = new Violation( $entityId, $propertyId, $claimGuid, $constraintId, $constraintTypeEntityId, $revisionId, $status );
+            $constraintParameters = $checkResult->getParameters();
+
+            $additionalInfo = array();
+
+            if ( array_key_exists( 'constraint_status', $constraintParameters )) {
+                $additionalInfo['constraint_status'] = $constraintParameters['constraint_status'];
+            }
+
+            $violationArray[ ] = new Violation( $entityId, $propertyId, $claimGuid, $constraintId, $constraintTypeEntityId, $revisionId, $status, $additionalInfo );
 		}
 
 		return $violationArray;

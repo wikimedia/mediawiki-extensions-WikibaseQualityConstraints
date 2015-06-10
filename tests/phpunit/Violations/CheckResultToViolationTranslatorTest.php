@@ -118,7 +118,24 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->assertEquals( 'wbqc|P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeeeRange', $violation->getConstraintId() );
 		$this->assertEquals( $checkResult->getConstraintName(), $violation->getConstraintTypeEntityId() );
         $this->assertEquals( 42, $violation->getRevisionId() );
+		$this->assertEquals( array(), $violation->getAdditionalInfo() );
 
+	}
+
+	public function testViolationAdditionalInfo() {
+		$parameters = array( 'constraint_status' => array( 'mandatory' ) );
+		$checkResult = new CheckResult( $this->statement, $this->constraintName, $parameters, 'violation', $this->message );
+		$violations = $this->translator->translateToViolation( $this->entity, $checkResult );
+		$this->assertEquals( 1, sizeof( $violations ) );
+
+		$violation = $violations[ 0 ];
+		$this->assertEquals( self::$idMap[ 'Q1' ], $violation->getEntityId() );
+		$this->assertEquals( 'P1', $violation->getPropertyId()->getSerialization() );
+		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
+		$this->assertEquals( 'wbqc|P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeeeRangemandatory', $violation->getConstraintId() );
+		$this->assertEquals( $checkResult->getConstraintName(), $violation->getConstraintTypeEntityId() );
+		$this->assertEquals( 42, $violation->getRevisionId() );
+		$this->assertEquals( 'mandatory', $violation->getAdditionalInfo()['constraint_status'][0] );
 	}
 
 	public function testMultipleCheckResults() {
