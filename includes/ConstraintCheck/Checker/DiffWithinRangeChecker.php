@@ -108,6 +108,10 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				 * error handling:
 				 *   types of this and the other value have to be equal, both must contain actual values
 				 */
+				if ( !$mainSnak instanceof PropertyValueSnak ) {
+					$message = 'Referenced property needs to have a value.';
+					return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+				}
 				if ( $mainSnak->getDataValue()->getType() === $dataValue->getType() && $mainSnak->getType() === 'value' ) {
 
 					$thatValue = $this->rangeCheckerHelper->getComparativeValue( $mainSnak->getDataValue() );
