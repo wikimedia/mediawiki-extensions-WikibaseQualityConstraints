@@ -11,8 +11,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Mandatory qualifiers' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -20,8 +18,6 @@ use Wikibase\DataModel\Entity\Entity;
 class MandatoryQualifiersChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $helper;
@@ -52,10 +48,10 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
-		$parameters[ 'property' ] = $this->helper->parseParameterArray( $properties );
+		$parameters['property'] = $this->helper->parseParameterArray( $properties );
 		$qualifiersList = $statement->getQualifiers();
 		$qualifiers = array ();
 
@@ -68,7 +64,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 
 		foreach ( $properties as $property ) {
 			if ( !array_key_exists( $property, $qualifiers ) ) {
-				$message = 'The properties defined in the parameters have to be used as qualifiers on this statement.';
+				$message = wfMessage( "wbqc-violation-message-mandatory-qualifiers" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 				break;
 			}

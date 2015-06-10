@@ -11,8 +11,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Qualifier' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -20,8 +18,6 @@ use Wikibase\DataModel\Entity\Entity;
 class QualifierChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $helper;
@@ -47,10 +43,11 @@ class QualifierChecker implements ConstraintChecker {
 
 		$constraintParameters = $constraint->getConstraintParameters();
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
-		$message = 'The property must only be used as a qualifier.';
+		$message = wfMessage( "wbqc-violation-message-qualifier" )->escaped();
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), array (), CheckResult::STATUS_VIOLATION, $message );
 	}
+
 }

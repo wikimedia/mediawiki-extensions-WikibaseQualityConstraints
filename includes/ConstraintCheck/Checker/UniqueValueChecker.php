@@ -12,9 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelp
 
 
 /**
- * Class ValueCountChecker.
- * Checks 'Unique value' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -31,15 +28,16 @@ class UniqueValueChecker implements ConstraintChecker {
 	 */
 	private $constraintReportHelper;
 
-	public function __construct( $helper ) {
+	/**
+	 * @param ConstraintReportHelper $helper
+	 */
+	public function __construct( ConstraintReportHelper $helper ) {
 		$this->constraintReportHelper = $helper;
 		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 	}
 
 	// todo: implement when index exists that makes it possible in reasonable time
 	/**
-	 * Checks 'Unique value' constraint.
-	 *
 	 * @param Statement $statement
 	 * @param Constraint $constraint
 	 * @param Entity $entity
@@ -51,10 +49,11 @@ class UniqueValueChecker implements ConstraintChecker {
 
 		$constraintParameters = $constraint->getConstraintParameters();
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters[ 'constraint_status' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
-		$message = 'For technical reasons, the check for this constraint has not yet been implemented.';
+		$message = wfMessage( "wbqc-violation-message-not-yet-implemented" )->escaped();
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_TODO, $message );
 	}
+
 }

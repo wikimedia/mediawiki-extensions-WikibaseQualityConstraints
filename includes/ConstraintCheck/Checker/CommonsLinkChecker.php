@@ -12,9 +12,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Class CommonsLinkChecker.
- * Checks 'Commons link' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -22,8 +19,6 @@ use Wikibase\DataModel\Entity\Entity;
 class CommonsLinkChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $helper;
@@ -45,16 +40,17 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+		$constraintName = 'Commons link';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 		$namespace = '';
 		if ( array_key_exists( 'namespace', $constraintParameters ) ) {
 			$namespace = $constraintParameters['namespace'];
-			$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $namespace, true );
+			$parameters['namespace'] = $this->helper->parseSingleParameter( $namespace, true );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
@@ -64,7 +60,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = 'Properties with \'Commons link\' constraint need to have a value.';
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -76,7 +72,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		 *   parameter $namespace can be null, works for commons galleries
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
-			$message = 'Properties with \'Commons link\' constraint need to have values of type \'string\'.';
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'string' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -88,16 +84,16 @@ class CommonsLinkChecker implements ConstraintChecker {
 					$message = '';
 					$status = CheckResult::STATUS_COMPLIANCE;
 				} else {
-					$message = 'Commons link must exist.';
+					$message = wfMessage( "wbqc-violation-message-commons-link-non-existent" )->escaped();
 					$status = CheckResult::STATUS_VIOLATION;
 				}
 			}
 			else {
-				$message = "Check for namespace '$namespace' is not implemented yet.";
+				$message = wfMessage( "wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented" )->params( strtolower( $namespace ) )->escaped();
 				$status = CheckResult::STATUS_TODO;
 			}
 		} else {
-			$message = 'Commons link must be well-formed.';
+			$message = wfMessage( "wbqc-violation-message-commons-link-not-well-formed" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
@@ -110,10 +106,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * @return bool
 	 */
 	private function fileExists( $commonsLink ) {
-
 		$commonsLink = str_replace( ' ', '_', $commonsLink );
-
-
 		$commonsWikiId = 'commonswiki';
 
 		if ( defined( 'MW_PHPUNIT_TEST' )) {

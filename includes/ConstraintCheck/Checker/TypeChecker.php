@@ -13,9 +13,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Class TypeChecker.
- * Checks 'Type' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -23,8 +20,6 @@ use Wikibase\DataModel\Entity\Entity;
 class TypeChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $helper;
@@ -63,6 +58,7 @@ class TypeChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+		$constraintName = 'Type';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -87,7 +83,7 @@ class TypeChecker implements ConstraintChecker {
 		 *   parameter $constraintParameters['class'] must not be null
 		 */
 		if ( !$classes ) {
-			$message = 'Properties with \'Type\' constraint need the parameter \'class\'.';
+			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraintName, 'class' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -100,7 +96,7 @@ class TypeChecker implements ConstraintChecker {
 		} elseif ( $relation === 'subclass' ) {
 			$relationId = self::subclassId;
 		} else {
-			$message = 'Parameter \'relation\' must be either \'instance\' or \'subclass\'.';
+			$message = wfMessage( "wbqc-violation-message-type-relation-instance-or-subclass" )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -108,10 +104,11 @@ class TypeChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = 'This property must only be used on items that are in the relation to the item (or a subclass of the item) defined in the parameters.';
+			$message = wfMessage( "wbqc-violation-message-type" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
+
 }
