@@ -10,10 +10,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\Entity;
 
+
 /**
- * Class FormatChecker.
- * Checks 'Format' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -21,8 +19,6 @@ use Wikibase\DataModel\Entity\Entity;
 class FormatChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $helper;
@@ -44,6 +40,7 @@ class FormatChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+		$constraintName = 'Format';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -51,12 +48,12 @@ class FormatChecker implements ConstraintChecker {
 			$pattern = $constraintParameters['pattern'];
 			$parameters['pattern'] = $this->helper->parseSingleParameter( $pattern, true );
 		} else {
-			$message = 'Properties with \'Format\' constraint need a parameter \'pattern\'.';
+			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraintName, 'pattern' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$mainSnak = $statement->getClaim()->getMainSnak();
@@ -66,7 +63,7 @@ class FormatChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = 'Properties with \'Format\' constraint need to have a value.';
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -78,7 +75,7 @@ class FormatChecker implements ConstraintChecker {
 		 *   parameter $pattern must not be null
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
-			$message = 'Properties with \'Format\' constraint need to have values of type \'string\'.';
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'string' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -88,7 +85,7 @@ class FormatChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = 'The property\'s value must match the pattern defined in the parameters.';
+			$message = wfMessage( "wbqc-violation-message-format" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 

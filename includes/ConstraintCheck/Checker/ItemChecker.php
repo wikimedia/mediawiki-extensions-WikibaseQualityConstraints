@@ -13,8 +13,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Item' constraints.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -22,15 +20,11 @@ use Wikibase\DataModel\Entity\Entity;
 class ItemChecker implements ConstraintChecker {
 
 	/**
-	 * Wikibase entity lookup.
-	 *
 	 * @var EntityLookup
 	 */
 	private $entityLookup;
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $constraintReportHelper;
@@ -61,6 +55,7 @@ class ItemChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+		$constraintName = 'Item';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -77,7 +72,7 @@ class ItemChecker implements ConstraintChecker {
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters[ 'constraint_status' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		/*
@@ -85,7 +80,7 @@ class ItemChecker implements ConstraintChecker {
 		 *   parameter $property must not be null
 		 */
 		if ( !$property ) {
-			$message = 'Properties with \'Item\' constraint need a parameter \'property\'.';
+			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraintName, 'property' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -99,7 +94,7 @@ class ItemChecker implements ConstraintChecker {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = 'This property must only be used when there is another statement using the property defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-item-property" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
@@ -107,7 +102,7 @@ class ItemChecker implements ConstraintChecker {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = 'This property must only be used when there is another statement using the property with one of the values defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-item-claim" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		}

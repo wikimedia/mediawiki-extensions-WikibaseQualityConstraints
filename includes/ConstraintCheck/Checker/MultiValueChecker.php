@@ -10,9 +10,8 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\Entity;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 
+
 /**
- * Checks 'Multi' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -50,13 +49,13 @@ class MultiValueChecker implements ConstraintChecker {
 
 		$constraintParameters = $constraint->getConstraintParameters();
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters[ 'constraint_status' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $entity->getStatements() );
 
 		if ( $propertyCountArray[ $propertyId->getNumericId() ] <= 1 ) {
-			$message = 'This property must have a multiple values, that is there must be more than one claim using this property.';
+			$message = wfMessage( "wbqc-violation-message-multi-value" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = '';
@@ -65,4 +64,5 @@ class MultiValueChecker implements ConstraintChecker {
 
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
+
 }
