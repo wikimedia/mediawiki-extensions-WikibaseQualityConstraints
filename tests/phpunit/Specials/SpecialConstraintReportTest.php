@@ -12,7 +12,9 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\ClaimGuidGenerator;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
+use WikibaseQuality\WikibaseQualityFactory;
 
 
 /**
@@ -66,14 +68,19 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	protected function newSpecialPage() {
-		$page = new SpecialConstraintReport();
+		$wikibaseQuality = WikibaseQualityFactory::getDefaultInstance();
+		$constraintReportFactory = ConstraintReportFactory
+			::getDefaultInstance();
+		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 
-		$languageNameLookup = $this->getMock( 'Wikibase\Lib\LanguageNameLookup' );
-		$languageNameLookup->expects( $this->any() )
-						   ->method( 'getName' )
-						   ->will( $this->returnValue( 'LANGUAGE NAME' ) );
-
-		return $page;
+		return new SpecialConstraintReport(
+			$wikibaseRepo->getEntityLookup(),
+			$wikibaseRepo->getTermLookup(),
+			$wikibaseRepo->getEntityTitleLookup(),
+			$wikibaseRepo->getEntityIdParser(),
+			$wikibaseRepo->getValueFormatterFactory(),
+			$constraintReportFactory->getConstraintChecker()
+		);
 	}
 
 	/**

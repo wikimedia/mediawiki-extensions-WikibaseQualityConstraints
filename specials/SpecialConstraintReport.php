@@ -2,18 +2,21 @@
 
 namespace WikibaseQuality\ConstraintReport\Specials;
 
+use JobQueueGroup;
 use SpecialPage;
 use ValueFormatters\FormatterOptions;
+use ValueFormatters\ValueFormatter;
+use Wikibase\Lib\EntityIdFormatter;
 use Wikibase\Lib\EntityIdHtmlLinkFormatter;
 use Wikibase\Lib\EntityIdLabelFormatter;
-use Wikibase\Lib\EntityIdLinkFormatter;
-use Wikibase\Lib\HtmlUrlFormatter;
 use HTMLForm;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\LanguageNameLookup;
+use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\SnakFormatter;
+use Wikibase\Lib\Store\EntityLookup;
 use Wikibase\Lib\Store\LanguageLabelDescriptionLookup;
-use Wikibase\Repo\WikibaseRepo;
+use Wikibase\Lib\Store\TermLookup;
 use DataValues;
 use DataValues\DataValue;
 use Html;
@@ -22,14 +25,12 @@ use Doctrine\Instantiator\Exception\UnexpectedValueException;
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
-use Traversable;
-use JobQueueGroup;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
 use WikibaseQuality\Html\HtmlTableBuilder;
@@ -63,78 +64,64 @@ class SpecialConstraintReport extends SpecialPage {
 	const CONSTRAINT_PROPERTY_ID = 'P1';
 
 	/**
-	 * @var EntityTitleLookup
+	 * @var EntityIdParser
 	 */
-	private $entityTitleLookup;
+	private $entityIdParser;
 
 	/**
-	 * @var \Wikibase\DataModel\Entity\EntityIdParser
+	 * @var EntityLookup
 	 */
-	protected $entityIdParser;
+	private $entityLookup;
 
 	/**
-	 * @var \Wikibase\Lib\Store\EntityLookup
+	 * @var ValueFormatter
 	 */
-	protected $entityLookup;
+	private $dataValueFormatter;
 
 	/**
-	 * @var \ValueFormatters\ValueFormatter
+	 * @var EntityIdFormatter
 	 */
-	protected $dataValueFormatter;
+	private $entityIdLabelFormatter;
 
 	/**
-	 * @var EntityIdLabelFormatter
+	 * @var EntityIdFormatter
 	 */
-	protected $entityIdLabelFormatter;
+	private $entityIdLinkFormatter;
 
 	/**
-	 * @var EntityIdLinkFormatter
+	 * @var DelegatingConstraintChecker
 	 */
-	protected $entityIdLinkFormatter;
+	private $constraintChecker;
 
 	/**
-	 * @var EntityIdHtmlLinkFormatter
+	 * @param EntityLookup $entityLookup
+	 * @param TermLookup $termLookup
+	 * @param EntityTitleLookup $entityTitleLookup
+	 * @param EntityIdParser $entityIdParser
+	 * @param OutputFormatValueFormatterFactory $valueFormatterFactory
+	 * @param DelegatingConstraintChecker $constraintChecker
 	 */
-	protected $entityIdHtmlLinkFormatter;
+	public function __construct( EntityLookup $entityLookup, TermLookup $termLookup, EntityTitleLookup $entityTitleLookup, EntityIdParser $entityIdParser,
+								 OutputFormatValueFormatterFactory $valueFormatterFactory, DelegatingConstraintChecker $constraintChecker ) {
+		parent::__construct( 'ConstraintReport' );
 
-	/**
-	 * @param string $name
-	 * @param string $restriction
-	 * @param bool $listed
-	 * @param bool $function
-	 * @param string $file
-	 * @param bool $includable
-	 */
-	public function __construct( $name = 'ConstraintReport', $restriction = '', $listed = true, $function = false, $file = '', $includable = false ) {
-		parent::__construct( $name, $restriction, $listed, $function, $file, $includable );
+		$this->entityLookup = $entityLookup;
+		$this->entityTitleLookup = $entityTitleLookup;
+		$this->entityIdParser = $entityIdParser;
 
-		$repo = WikibaseRepo::getDefaultInstance();
-
-		// Get entity lookup
-		$this->entityLookup = $repo->getEntityLookup();
-
-		// Get entity id parser
-		$this->entityIdParser = $repo->getEntityIdParser();
-
-		// Get value formatter
 		$formatterOptions = new FormatterOptions();
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $this->getLanguage()->getCode() );
-		$this->dataValueFormatter = $repo->getValueFormatterFactory()->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
+		$this->dataValueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
-		// Get entity id link formatters
-		$this->entityTitleLookup = $repo->getEntityTitleLookup();
-		$labelLookup = new LanguageLabelDescriptionLookup( $repo->getTermLookup(), $this->getLanguage()->getCode() );
+		$labelLookup = new LanguageLabelDescriptionLookup( $termLookup, $this->getLanguage()->getCode() );
 		$this->entityIdLabelFormatter = new EntityIdLabelFormatter( $labelLookup );
-		$this->entityIdLinkFormatter = new EntityIdLinkFormatter( $this->entityTitleLookup );
-		$this->entityIdHtmlLinkFormatter = new EntityIdHtmlLinkFormatter(
+		$this->entityIdLinkFormatter = new EntityIdHtmlLinkFormatter(
 			$labelLookup,
 			$this->entityTitleLookup,
 			new LanguageNameLookup()
 		);
 
-		// Get url formatter
-		$formatterOptions = new FormatterOptions();
-		$this->htmlUrlFormatter = new HtmlUrlFormatter( $formatterOptions );
+		$this->constraintChecker = $constraintChecker;
 	}
 
 	/**
@@ -142,7 +129,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return array
 	 */
-	protected function getModules() {
+	private function getModules() {
 		return array ( 'SpecialConstraintReportPage' );
 	}
 
@@ -263,7 +250,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string HTML
 	 */
-	protected function buildNotice( $message, $error = false ) {
+	private function buildNotice( $message, $error = false ) {
 		if ( !is_string( $message ) ) {
 			throw new InvalidArgumentException( '$message must be string.' );
 		}
@@ -289,7 +276,7 @@ class SpecialConstraintReport extends SpecialPage {
     /**
      * @return string HTML
      */
-	protected function getExplanationText() {
+	private function getExplanationText() {
 		return
 			Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
 			. $this->msg( 'wbqc-constraintreport-explanation-part-one' )->escaped()
@@ -305,7 +292,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function getEmptyResultText() {
+	private function getEmptyResultText() {
 		return
 			$this->msg( 'wbqc-constraintreport-empty-result' )->text();
 	}
@@ -317,10 +304,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function executeCheck( Entity $entity ) {
-
-		$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
-		$results = $constraintChecker->checkAgainstConstraints( $entity );
+	private function executeCheck( Entity $entity ) {
+		$results = $this->constraintChecker->checkAgainstConstraints( $entity );
 
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ){
 			$this->doEvaluation( $entity, $results );
@@ -336,7 +321,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string HTML
 	 */
-	protected function buildResultTable( EntityId $entityId, $results ) {
+	private function buildResultTable( EntityId $entityId, $results ) {
 		// Set table headers
 		$table = new HtmlTableBuilder(
 			array (
@@ -411,7 +396,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	protected function buildResultHeader( EntityId $entityId ) {
 		$entityLink = sprintf( '%s (%s)',
-							   $this->entityIdHtmlLinkFormatter->formatEntityId( $entityId ),
+							   $this->entityIdLinkFormatter->formatEntityId( $entityId ),
 							   htmlspecialchars( $entityId->getSerialization() ) );
 
 		return
@@ -705,7 +690,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return array
 	 */
-	protected function getStatusMapping() {
+	private function getStatusMapping() {
 		return array (
 			'compliance' => 'success',
 			'exception' => 'warning',
@@ -713,7 +698,12 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 	}
 
-	protected function doEvaluation( $entity, $results ) {
+	/**
+	 * @param Entity $entity
+	 * @param array $results
+	 * @throws \MWException
+	 */
+	private function doEvaluation( Entity $entity, array $results ) {
 		$checkTimeStamp = wfTimestamp( TS_UNIX );
 		$service = new EvaluateConstraintReportJobService();
 		$results = $service->buildResultSummary( $results );
