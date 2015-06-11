@@ -6,11 +6,11 @@
 		]
 	},
 	"wbqc-constraintreport-result-headline": "Risultato per",
-	"wbqc-constraintreport-not-existent-entity": "L'entità non esiste!",
+	"wbqc-constraintreport-non-existent-entity": "L'entità non esiste!",
 	"wbqc-constraintreport-empty-result": "Non ci sono vincoli definiti su questa entità.",
 	"wbqc-constraintreport-status-violation": "Violazione",
 	"wbqc-constraintreport-result-table-header-status": "Stato",
-	"wbqc-violations-group": "Vincoli",
 	"wbqc-violation-header-parameters": "Parametri:",
+	"wbqc-violations-group": "Vincoli",
 	"wbqc-violation-message": "Il controllo del vincolo ha rilevato una violazione. Si prega di fare clic sull'icona per ulteriori informazioni."
 }

@@ -5,9 +5,9 @@
 		]
 	},
 	"wbqc-constraintreport-result-headline": "Resultat fir",
-	"wbqc-constraintreport-not-existent-entity": "Objet gëtt et net!",
+	"wbqc-constraintreport-non-existent-entity": "Objet gëtt et net!",
 	"wbqc-constraintreport-empty-result": "Et gëtt keng Limitatiounen déi fir dësen Objet definéiert sinn.",
 	"wbqc-constraintreport-status-exception": "Ausnahm",
-	"wbqc-violations-group": "Limitatiounen",
-	"wbqc-violation-header-parameters": "Parameteren:"
+	"wbqc-violation-header-parameters": "Parameteren:",
+	"wbqc-violations-group": "Limitatiounen"
 }

@@ -13,7 +13,7 @@
 	"wbqc-constraintreport-form-submit-label": "Controleren",
 	"wbqc-constraintreport-form-entityid-label": "Entiteits-ID:",
 	"wbqc-constraintreport-result-headline": "Resulaten voor",
-	"wbqc-constraintreport-not-existent-entity": "Entiteit bestaat niet.",
+	"wbqc-constraintreport-non-existent-entity": "Entiteit bestaat niet.",
 	"wbqc-constraintreport-empty-result": "Er zijn geen beperkingen opgegeven voor deze entiteit.",
 	"wbqc-constraintreport-status-violation": "Schending",
 	"wbqc-constraintreport-status-compliance": "Nakoming",
@@ -24,7 +24,7 @@
 	"wbqc-constraintreport-result-table-header-constraint": "Beperking",
 	"wbqc-constraintreport-result-link-to-claim": "naar verklaring gaan",
 	"wbqc-constraintreport-result-link-to-constraint": "naar beperking gaan",
-	"wbqc-violations-group": "Beperkingen",
 	"wbqc-violation-header-parameters": "Parameters:",
+	"wbqc-violations-group": "Beperkingen",
 	"wbqc-violation-message": "De beperkingencontrole heeft een overtreding opgeleverd. Klik op het pictogram voor meer informatie."
 }

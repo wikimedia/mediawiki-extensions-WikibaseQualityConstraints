@@ -11,7 +11,7 @@
 	"wbqc-constraintreport-form-submit-label": "Comprobar",
 	"wbqc-constraintreport-form-entityid-label": "Identificador de entidade:",
 	"wbqc-constraintreport-result-headline": "Resultado para",
-	"wbqc-constraintreport-not-existent-entity": "A entidade non existe!",
+	"wbqc-constraintreport-non-existent-entity": "A entidade non existe!",
 	"wbqc-constraintreport-empty-result": "Non hai restricións definidas nesta entidade.",
 	"wbqc-constraintreport-status-violation": "Violación",
 	"wbqc-constraintreport-status-compliance": "Cumpre",
@@ -22,7 +22,7 @@
 	"wbqc-constraintreport-result-table-header-constraint": "Restrición",
 	"wbqc-constraintreport-result-link-to-claim": "ir a afirmación",
 	"wbqc-constraintreport-result-link-to-constraint": "ir a restrición",
-	"wbqc-violations-group": "Restricións",
 	"wbqc-violation-header-parameters": "Parámetros:",
+	"wbqc-violations-group": "Restricións",
 	"wbqc-violation-message": "A verificación de restricións detectou unha violación. Prema a icona para obter máis información."
 }
