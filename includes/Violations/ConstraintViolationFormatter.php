@@ -91,7 +91,8 @@ class ConstraintViolationFormatter implements ViolationFormatter {
 
 		//TODO: ConstraintTypeEntityId as EntityId when implemented (currently string)
 
-		switch ( $violation->getConstraintTypeEntityId() ) {
+		$constraintType = $violation->getConstraintTypeEntityId();
+		switch ( $constraintType ) {
 			case 'Commons Link':
 				$iconClass = ConstraintViolationFormatter::COMMONS_ICON_CLASS;
 				break;

@@ -153,7 +153,7 @@ class ConstraintViolationFormatterTest extends \MediaWikiTestCase {
 
     private function getViolationMock( $constraintId = null, $additionalInformation = null ) {
         $mock = $this->getMockBuilder( 'WikibaseQuality\Violations\Violation' )
-            ->setMethods( array( 'getConstraintId', 'getAdditionalInfo' ) )
+            ->setMethods( array( 'getConstraintId', 'getAdditionalInfo', 'getConstraintTypeEntityId' ) )
             ->disableOriginalConstructor()
             ->getMock();
         $mock->expects( $this->any() )
@@ -162,6 +162,9 @@ class ConstraintViolationFormatterTest extends \MediaWikiTestCase {
         $mock->expects( $this->any() )
             ->method( 'getAdditionalInfo' )
             ->willReturn( $additionalInformation );
+        $mock->expects( $this->any() )
+            ->method( 'getConstraintTypeEntityId' )
+            ->willReturn( 'Range' );
 
         return $mock;
     }
