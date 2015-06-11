@@ -3,18 +3,18 @@
 namespace WikibaseQuality\ConstraintReport\Test\Violations;
 
 use Language;
-use WikibaseQuality\ConstraintReport\Violations\ConstraintViolationContext;
+use WikibaseQuality\ConstraintReport\Violations\ConstraintViolationFormatter;
 
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Violations\ConstraintViolationContext
+ * @covers WikibaseQuality\ConstraintReport\Violations\ConstraintViolationFormatter
  *
  * @group WikibaseQualityConstraints
  *
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConstraintViolationContextTest extends \MediaWikiTestCase {
+class ConstraintViolationFormatterTest extends \MediaWikiTestCase {
 
     /**
      * @var array
@@ -22,9 +22,9 @@ class ConstraintViolationContextTest extends \MediaWikiTestCase {
     private $types;
 
     /**
-     * @var ConstraintViolationContext
+     * @var ConstraintViolationFormatter
      */
-    private $violationContext;
+    private $violationFormatter;
 
     public function setUp(){
         parent::setUp();
@@ -34,37 +34,29 @@ class ConstraintViolationContextTest extends \MediaWikiTestCase {
             'bar',
             'foobar'
         );
-        $this->violationContext = new ConstraintViolationContext( $this->types );
+        $this->violationFormatter = new ConstraintViolationFormatter( $this->types );
     }
 
     public function tearDown() {
-        unset( $this->violationContext );
+        unset( $this->violationFormatter );
 
         parent::tearDown();
     }
 
-
-    public function testGetTypes() {
-        $actualResult = $this->violationContext->getTypes();
-
-        $this->assertArrayEquals( $this->types, $actualResult );
-    }
-
-
     /**
-     * @dataProvider isContextForDataProvider
+     * @dataProvider isFormatterForDataProvider
      */
-    public function testIsContextFor( $expectedResult, $violation ){
-        $actualResult = $this->violationContext->isContextFor( $violation );
+    public function testIsFormatterFor( $expectedResult, $violation ){
+        $actualResult = $this->violationFormatter->isFormatterFor( $violation );
 
         $this->assertEquals( $expectedResult, $actualResult );
     }
 
     /**
-     * Test cases for testIsContextFor
+     * Test cases for testIsFormatterFor
      * @return array
      */
-    public function isContextForDataProvider() {
+    public function isFormatterForDataProvider() {
         return array(
             array(
                 true,
@@ -86,7 +78,7 @@ class ConstraintViolationContextTest extends \MediaWikiTestCase {
 
         global $wgLang;
         $wgLang = Language::factory( 'qqx' );
-        $actualResult = $this->violationContext->formatAdditionalInformation( $violation );
+        $actualResult = $this->violationFormatter->formatAdditionalInformation( $violation );
 
         $this->assertEquals( $expectedResult, $actualResult );
     }
@@ -139,20 +131,20 @@ class ConstraintViolationContextTest extends \MediaWikiTestCase {
     }
 
     public function testGetIconClass() {
-        $actualResult = $this->violationContext->getIconClass( $this->getViolationMock( 'wbqc|foobar', array() ) );
+        $actualResult = $this->violationFormatter->getIconClass( $this->getViolationMock( 'wbqc|foobar', array() ) );
 
 		$this->assertTrue( is_string( $actualResult ) );
     }
 
     public function testGetShortMessage() {
-        $actualResult = $this->violationContext->getShortMessage( $this->getViolationMock() );
+        $actualResult = $this->violationFormatter->getShortMessage( $this->getViolationMock() );
         $expectedResult = '(wbqc-violation-message)';
 
         $this->assertEquals( $expectedResult, $actualResult );
     }
 
     public function testGetLongMessage() {
-        $actualResult = $this->violationContext->getLongMessage( $this->getViolationMock(), true );
+        $actualResult = $this->violationFormatter->getLongMessage( $this->getViolationMock(), true );
         $expectedResult = '(wbqc-violation-message)';
 
         $this->assertEquals( $expectedResult, $actualResult );

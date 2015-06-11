@@ -47,5 +47,9 @@ call_user_func( function() {
 	$GLOBALS['wgDebugLogGroups']['wbq_evaluation'] = '/var/log/mediawiki/wbq_evaluation.log';
 
     // Register violation context
-    $GLOBALS['wbqViolationContexts'][] = function() { return WikibaseQuality\ConstraintReport\ConstraintReportFactory::getDefaultInstance()->getViolationContext(); };
+	define( 'WBQ_CONSTRAINTS_ID', 'wbqc' );
+	$GLOBALS['wbqSubExtensions'][WBQ_CONSTRAINTS_ID] = array(
+		'violationTypes' => function() { return array_keys( WikibaseQuality\ConstraintReport\ConstraintReportFactory::getDefaultInstance()->getConstraintCheckerMap() ); },
+		'violationFormatter' => function() { return WikibaseQuality\ConstraintReport\ConstraintReportFactory::getDefaultInstance()->getViolationFormatter(); }
+	);
 } );

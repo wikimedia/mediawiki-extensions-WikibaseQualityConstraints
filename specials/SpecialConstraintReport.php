@@ -34,9 +34,9 @@ use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
 use WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator;
-use WikibaseQuality\Html\HtmlTable;
-use WikibaseQuality\Html\HtmlTableHeader;
-use WikibaseQuality\Violations\ViolationRepo;
+use WikibaseQuality\Html\HtmlTableBuilder;
+use WikibaseQuality\Html\HtmlTableHeaderBuilder;
+use WikibaseQuality\Violations\ViolationStore;
 use WikibaseQuality\WikibaseQualityFactory;
 
 
@@ -102,9 +102,9 @@ class SpecialConstraintReport extends SpecialPage {
     private $checkResultToViolationTranslator;
 
     /**
-     * @var ViolationRepo
+     * @var ViolationStore
      */
-    private $violationRepo;
+    private $violationStore;
 
 	/**
 	 * @param string $name
@@ -137,7 +137,7 @@ class SpecialConstraintReport extends SpecialPage {
         );
 
         $this->checkResultToViolationTranslator = ConstraintReportFactory::getDefaultInstance()->getCheckResultToViolationTranslator();
-        $this->violationRepo = WikibaseQualityFactory::getDefaultInstance()->getViolationRepo();
+        $this->violationStore = WikibaseQualityFactory::getDefaultInstance()->getViolationStore();
 	}
 
     /**
@@ -323,17 +323,17 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private function buildResultTable( EntityId $entityId, $results ) {
 		// Set table headers
-		$table = new HtmlTable(
+		$table = new HtmlTableBuilder(
 			array (
-				new HtmlTableHeader(
+				new HtmlTableHeaderBuilder(
 					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->escaped(),
 					true
 				),
-				new HtmlTableHeader(
+				new HtmlTableHeaderBuilder(
 					$this->msg( 'wbqc-constraintreport-result-table-header-claim' )->escaped(),
 					true
 				),
-				new HtmlTableHeader(
+				new HtmlTableHeaderBuilder(
 					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->escaped(),
 					true
 				)
@@ -693,7 +693,7 @@ class SpecialConstraintReport extends SpecialPage {
     private function saveResultsInViolationsTable( $entity, $results ) {
         $violations = $this->checkResultToViolationTranslator->translateToViolation( $entity, $results );
         foreach( $violations as $violation ) {
-            $this->violationRepo->save( $violation );
+            $this->violationStore->save( $violation );
         }
     }
 
@@ -705,6 +705,6 @@ class SpecialConstraintReport extends SpecialPage {
 		$jobs[] = EvaluateConstraintReportJob::newInsertNow( $entity->getId()->getSerialization(), $checkTimeStamp, $results );
 		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 10*60 );
 		$jobs[] = EvaluateConstraintReportJob::newInsertDeferred( $entity->getId()->getSerialization(), $checkTimeStamp, 60*60 );
-		JobQueueGroup::singleton()->push( $jobs );
+		//JobQueueGroup::singleton()->push( $jobs );
 	}
 }

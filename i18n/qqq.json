@@ -16,5 +16,9 @@
 	"wbqc-constraintreport-result-table-header-claim": "Header of the column that displays a link to the claim, the used property and its value.\n{{Identical|Claim}}",
 	"wbqc-constraintreport-result-table-header-constraint": "Header of the column that gives information about which constraint was checked.\n{{Identical|Constraint}}",
 	"wbqc-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
-	"wbqc-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page."
+	"wbqc-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page.",
+
+  "wbq-subextension-name-wbqc": "Name of this subextension. Is shown in special page that lists all the violations.",
+  "wbqc-violation-header-parameters": "Header for section in violations special page that displays the parameters of the constraint.",
+  "wbqc-violation-message": "message that is shown for violated claims in pop-up on item page. First parameter is name of the data source."
 }

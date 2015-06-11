@@ -5,74 +5,30 @@ namespace WikibaseQuality\ConstraintReport\Violations;
 
 use Html;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\Violations\Violation;
-use WikibaseQuality\Violations\ViolationContext;
+use WikibaseQuality\Violations\ViolationFormatter;
 
-class ConstraintViolationContext implements ViolationContext {
+class ConstraintViolationFormatter implements ViolationFormatter {
 
-    const CONTEXT_ID = 'wbqc';
-
-    /**
-     * @var array
-     */
-    private $types;
-
-    /**
-     * @param array $types
-     */
-    public function __construct( array $types ) {
-        $this->types = $types;
-    }
-
-    /**
-     * @see ViolationContext::getId
-     * @codeCoverageIgnore
-     *
-     * @return string
-     */
-    public function getId() {
-        return self::CONTEXT_ID;
-    }
-
-    /**
-     * @see ViolationContext::getName
-     * @codeCoverageIgnore
-     *
-     * @return string
-     */
-    public function getName() {
-        return 'wbqc-violations-group';
-    }
-
-    /**
-     * @see ViolationContext::getTypes
-     *
-     * @return array
-     */
-    public function getTypes() {
-        return $this->types;
-    }
-
-    /**
-     * @see ViolationContext::isContextFor
+	/**
+     * @see ViolationFormatter::isFormatterFor
      *
      * @param Violation $violation
      * @return bool
      */
-    public function isContextFor( Violation $violation ) {
+    public function isFormatterFor( Violation $violation ) {
         $splitConstraintId = explode( Violation::CONSTRAINT_ID_DELIMITER, $violation->getConstraintId() );
         $prefix = $splitConstraintId[0];
 
-        return $prefix === $this->getId();
+        return $prefix === WBQ_CONSTRAINTS_ID;
     }
 
     /**
      * @param Violation $violation
-     * @return string
+     * @return string HTML
      */
     public function formatAdditionalInformation( Violation $violation ) {
-        if ( !$this->isContextFor( $violation ) ) {
+        if ( !$this->isFormatterFor( $violation ) ) {
             throw new InvalidArgumentException( 'Given violation is not part of current context.' );
         }
 
@@ -107,10 +63,10 @@ class ConstraintViolationContext implements ViolationContext {
     /**
      * @param Violation $violation
      * @throws InvalidArgumentException
-     * @return string
+     * @return string HTML
      */
     public function getIconClass( Violation $violation ) {
-        if ( !$this->isContextFor( $violation ) ) {
+        if ( !$this->isFormatterFor( $violation ) ) {
             throw new InvalidArgumentException( 'Given violation is not part of current context.' );
         }
         //TODO: Choose depending on type
@@ -119,20 +75,20 @@ class ConstraintViolationContext implements ViolationContext {
 
     /**
      * @param Violation $violation
-     * @return string
+     * @return string HTML
      */
     public function getShortMessage( Violation $violation ) {
         //TODO: Implement message system depending on constraint type
-        return wfMessage( 'wbqc-violation-message' )->text();
+        return wfMessage( 'wbqc-violation-message' )->escaped();
     }
 
     /**
      * @param Violation $violation
      * @param bool $permissionStatus
-     * @return string
+     * @return string HTML
      */
     public function getLongMessage( Violation $violation, $permissionStatus ) {
         //TODO: Implement message system depending on constraint type
-        return wfMessage( 'wbqc-violation-message' )->text();
+        return wfMessage( 'wbqc-violation-message' )->escaped();
     }
 }

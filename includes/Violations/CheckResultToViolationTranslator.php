@@ -82,6 +82,6 @@ class CheckResultToViolationTranslator {
             }
         }
 
-        return ConstraintViolationContext::CONTEXT_ID . Violation::CONSTRAINT_ID_DELIMITER . $constraintId;
+        return WBQ_CONSTRAINTS_ID. Violation::CONSTRAINT_ID_DELIMITER . $constraintId;
     }
 }

@@ -29,7 +29,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHel
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator;
-use WikibaseQuality\ConstraintReport\Violations\ConstraintViolationContext;
+use WikibaseQuality\ConstraintReport\Violations\ConstraintViolationFormatter;
+use WikibaseQuality\Violations\ViolationFormatter;
 
 
 class ConstraintReportFactory {
@@ -63,6 +64,11 @@ class ConstraintReportFactory {
 	 * @var array
 	 */
 	private $constraintParameterMap;
+
+	/**
+	 * @var ViolationFormatter
+	 */
+	private $violationFormatter;
 
     /**
      * @var CheckResultToViolationTranslator
@@ -111,7 +117,7 @@ class ConstraintReportFactory {
 	/**
 	 * @return array
 	 */
-	private function getConstraintCheckerMap(){
+	public function getConstraintCheckerMap(){
 		if ( $this->constraintCheckerMap === null ) {
 			$constraintReportHelper = new ConstraintReportHelper();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
@@ -185,12 +191,14 @@ class ConstraintReportFactory {
 	}
 
     /**
-     * @return ConstraintViolationContext
+     * @return ViolationFormatter
      */
-    public function getViolationContext() {
-        return new ConstraintViolationContext(
-            array_keys( $this->getConstraintCheckerMap() )
-        );
+    public function getViolationFormatter() {
+		if ( $this->violationFormatter === null ) {
+			$this->violationFormatter = new ConstraintViolationFormatter();
+		}
+
+		return $this->violationFormatter;
     }
 
     /**
