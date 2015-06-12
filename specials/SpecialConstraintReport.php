@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Specials;
 
+use JobQueueGroup;
 use SpecialPage;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
