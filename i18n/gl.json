@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Elisardojm"
+			"Elisardojm",
+			"Banjo"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restrición",
@@ -24,5 +25,8 @@
 	"wbqc-constraintreport-result-link-to-constraint": "ir a restrición",
 	"wbqc-violation-header-parameters": "Parámetros:",
 	"wbqc-violations-group": "Restricións",
-	"wbqc-violation-message": "A verificación de restricións detectou unha violación. Prema a icona para obter máis información."
+	"wbqc-violation-message": "A verificación de restricións detectou unha violación. Prema a icona para obter máis información.",
+	"wbqc-violation-message-target-entity-must-exist": "A entidade obxectivo debe existir.",
+	"wbqc-violation-message-diff-within-range-property-must-exist": "A propiedade definida nos parámetros debe existir.",
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "A propiedade definida nos parámetros debe ter un valor do mesmo tipo que esta propiedade."
 }

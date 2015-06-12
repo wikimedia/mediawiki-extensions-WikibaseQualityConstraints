@@ -9,6 +9,7 @@
 	"wbqc-constraintreport": "Informe de restricción",
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-result-headline": "Resultado de",
+	"wbqc-constraintreport-invalid-entity-id": "Identificador de entidad no válido.",
 	"wbqc-constraintreport-non-existent-entity": "La entidad no existe.",
 	"wbqc-constraintreport-empty-result": "No hay restricciones definidas en esta entidad.",
 	"wbqc-constraintreport-status-violation": "Violación",
@@ -19,5 +20,7 @@
 	"wbqc-constraintreport-result-link-to-claim": "ir a reclamar",
 	"wbqc-violation-header-parameters": "Parámetros:",
 	"wbqc-violations-group": "Restricciones",
-	"wbqc-violation-message": "La verificación de restricciones ha señalado una violación. Pulsa el icono para obtener más información."
+	"wbqc-violation-message": "La verificación de restricciones ha señalado una violación. Pulsa el icono para obtener más información.",
+	"wbqc-violation-message-target-entity-must-exist": "La entidad de destino debe existir.",
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propiedad definida en los parámetros debe tener un valor del mismo tipo que esta propiedad."
 }
