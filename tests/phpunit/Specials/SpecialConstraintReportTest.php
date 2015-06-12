@@ -68,9 +68,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	protected function newSpecialPage() {
-		$wikibaseQuality = WikibaseQualityFactory::getDefaultInstance();
-		$constraintReportFactory = ConstraintReportFactory
-			::getDefaultInstance();
+		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 
 		return new SpecialConstraintReport(
