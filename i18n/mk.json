@@ -11,6 +11,7 @@
 	"wbqc-constraintreport-form-submit-label": "Провери",
 	"wbqc-constraintreport-form-entityid-label": "Назнака на единицата:",
 	"wbqc-constraintreport-result-headline": "Резултат за",
+	"wbqc-constraintreport-invalid-entity-id": "Неважечка назнака на единица:",
 	"wbqc-constraintreport-non-existent-entity": "Единицата не постои!",
 	"wbqc-constraintreport-empty-result": "Нема зададено услови за единицава.",
 	"wbqc-constraintreport-status-violation": "Нескладност",
@@ -22,7 +23,17 @@
 	"wbqc-constraintreport-result-table-header-constraint": "Услов",
 	"wbqc-constraintreport-result-link-to-claim": "оди на тврдењето",
 	"wbqc-constraintreport-result-link-to-constraint": "оди на условот",
+	"wbq-subextension-name-wbqc": "Услови",
 	"wbqc-violation-header-parameters": "Параметри:",
 	"wbqc-violations-group": "Услови",
-	"wbqc-violation-message": "Проверката на условите укажува на нескладност. Стиснете на иконата за повеќе информации."
+	"wbqc-violation-message": "Проверката на условите укажува на нескладност. Стиснете на иконата за повеќе информации.",
+	"wbqc-violation-message-not-yet-implemented": "Од технички причини, проверката на условот „$1“ сè уште не е воведена.",
+	"wbqc-violation-message-value-needed": "Својствата со условот „$1“ треба да имаат вредност.",
+	"wbqc-violation-message-value-needed-of-type": "Својствата со условот „$1“ треба да имаат вредност од типот „$2“.",
+	"wbqc-violation-message-parameter-needed": "Својствата со условот „$1“ имаат потреба од параметар „$2“.",
+	"wbqc-violation-message-target-entity-must-exist": "Целната единица мора да постои.",
+	"wbqc-violation-message-value-entity-must-exist": "Единица со вредност мора да постои.",
+	"wbqc-violation-message-commons-link-non-existent": "Врската до Ризницата мора да постои.",
+	"wbqc-violation-message-commons-link-not-well-formed": "Врската кон Ризницата мора да биде добро срочена.",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Провереката на именскиот простор „$1“ сè уште не е воведена."
 }

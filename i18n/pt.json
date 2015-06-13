@@ -8,6 +8,7 @@
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-form-entityid-label": "ID da entidade:",
 	"wbqc-constraintreport-result-headline": "Resultados para",
+	"wbqc-constraintreport-invalid-entity-id": "Identificador de entidade inválido.",
 	"wbqc-constraintreport-non-existent-entity": "Entidade inexistente!",
 	"wbqc-constraintreport-empty-result": "Não há restrições definidas nesta entidade.",
 	"wbqc-constraintreport-status-exception": "Exceção",
