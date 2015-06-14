@@ -11,7 +11,7 @@
 	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Result for",
 	"wbqc-constraintreport-invalid-entity-id": "Invalid entity ID.",
-	"wbqc-constraintreport-non-existent-entity": "Entity does not exist.",
+	"wbqc-constraintreport-not-existent-entity": "Entity does not exist.",
 	"wbqc-constraintreport-empty-result": "There are no constraints defined on this entity.",
 	"wbqc-constraintreport-status-violation": "Violation",
 	"wbqc-constraintreport-status-compliance": "Compliance",
@@ -36,7 +36,7 @@
 	"wbqc-violation-message-target-entity-must-exist": "The target entity must exist.",
 	"wbqc-violation-message-value-entity-must-exist": "The value entity must exist.",
 
-	"wbqc-violation-message-commons-link-non-existent": "Commons link must exist.",
+	"wbqc-violation-message-commons-link-no-existent": "Commons link must exist.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Commons link must be well-formed.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Check for namespace \"$1\" is not yet implement.",
 	"wbqc-violation-message-conflicts-with-property": "This property must not be used when there is another statement using the property defined in the parameters.",

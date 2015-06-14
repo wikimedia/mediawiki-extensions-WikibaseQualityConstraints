@@ -13,7 +13,7 @@
 	"wbqc-constraintreport-form-entityid-placeholder": "Entity id placeholder for the input field.",
 	"wbqc-constraintreport-result-headline": "Result headline. Label of checked entity is appended to this.",
 	"wbqc-constraintreport-invalid-entity-id": "Text to display when the entered entity id is invalid.",
-	"wbqc-constraintreport-non-existent-entity": "Text to display when the requested entity does not exist.",
+	"wbqc-constraintreport-not-existent-entity": "Text to display when the requested entity does not exist.",
 	"wbqc-constraintreport-empty-result": "Message that appears, when there are no constraints defined for the given entity.",
 	"wbqc-constraintreport-status-violation": "Status for claims that are violated against a constraint.",
 	"wbqc-constraintreport-status-compliance": "Status for claims that comply with a constraint",
