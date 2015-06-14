@@ -4,10 +4,10 @@ $(document).ready(function(){
     });
     $('.wbqc-indicator').hover(
         function(){
-            $(this).parent().parent().find('.wbqc-tooltip').css('display', 'flex');
+            $(this).parent().find('.wbqc-tooltip').show();
         },
         function(){
-            $(this).parent().parent().find('.wbqc-tooltip').css('display', 'none');
+            $(this).parent().find('.wbqc-tooltip').css('display', 'none');
         }
     );
 
@@ -17,7 +17,7 @@ $(document).click(function(e){
     if($(e.target).attr("class") == 'wbqc-indicator') {
         tooltip = $(e.target).parent().find('.wbqc-tooltip');
         if(tooltip.css('display') == 'none') {
-            tooltip.css('display', 'flex');
+            tooltip.show();
         }
     }
 });
