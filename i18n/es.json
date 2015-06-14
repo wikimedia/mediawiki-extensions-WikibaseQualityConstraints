@@ -10,7 +10,7 @@
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-result-headline": "Resultado de",
 	"wbqc-constraintreport-invalid-entity-id": "Identificador de entidad no válido.",
-	"wbqc-constraintreport-non-existent-entity": "La entidad no existe.",
+	"wbqc-constraintreport-not-existent-entity": "La entidad no existe.",
 	"wbqc-constraintreport-empty-result": "No hay restricciones definidas en esta entidad.",
 	"wbqc-constraintreport-status-violation": "Violación",
 	"wbqc-constraintreport-status-compliance": "Cumple",

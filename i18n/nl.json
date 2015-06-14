@@ -13,7 +13,7 @@
 	"wbqc-constraintreport-form-submit-label": "Controleren",
 	"wbqc-constraintreport-form-entityid-label": "Entiteits-ID:",
 	"wbqc-constraintreport-result-headline": "Resulaten voor",
-	"wbqc-constraintreport-non-existent-entity": "Entiteit bestaat niet.",
+	"wbqc-constraintreport-not-existent-entity": "Entiteit bestaat niet.",
 	"wbqc-constraintreport-empty-result": "Er zijn geen beperkingen opgegeven voor deze entiteit.",
 	"wbqc-constraintreport-status-violation": "Schending",
 	"wbqc-constraintreport-status-compliance": "Nakoming",

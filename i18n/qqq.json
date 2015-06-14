@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"Raymond"
 		]
 	},
 	"wbqc-constraintreport": "{{doc-special|ConstraintReport}}",
@@ -34,7 +35,7 @@
 	"wbqc-violation-message-parameter-needed": "Message for when a constraint needs a specific parameter, but it's missing.",
 	"wbqc-violation-message-target-entity-must-exist": "Message for when an entity is referenced, but it doesn't exist (any more).",
 	"wbqc-violation-message-value-entity-must-exist": "Message for when the property has an entity as its value, but it doesn't exist (any more).",
-	"wbqc-violation-message-commons-link-non-existent": "Message for violation of Commons link constraint. When linked commons page does not exist.",
+	"wbqc-violation-message-commons-link-no-existent": "Message for violation of Commons link constraint. When linked commons page does not exist.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Message for violation of Commons link constraint. When link contains invalid characters.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Message for when the check for the Commons link constraint has not yet been implemented for a specific namespace.",
 	"wbqc-violation-message-conflicts-with-property": "Message for violation of Conflicts with constraint. When only a property is given.",

@@ -12,7 +12,7 @@
 	"wbqc-constraintreport-form-entityid-label": "实体ID：",
 	"wbqc-constraintreport-result-headline": "结果用于",
 	"wbqc-constraintreport-invalid-entity-id": "无效的实体ID。",
-	"wbqc-constraintreport-non-existent-entity": "实体不存在。",
+	"wbqc-constraintreport-not-existent-entity": "实体不存在。",
 	"wbqc-constraintreport-empty-result": "此实体上没有定义约束。",
 	"wbqc-constraintreport-status-violation": "违例",
 	"wbqc-constraintreport-status-compliance": "服从",
@@ -33,7 +33,7 @@
 	"wbqc-violation-message-parameter-needed": "带约束“$1”的属性需要参数“$2”。",
 	"wbqc-violation-message-target-entity-must-exist": "目标实体必须存在。",
 	"wbqc-violation-message-value-entity-must-exist": "值实体必须存在。",
-	"wbqc-violation-message-commons-link-non-existent": "共享资源链接必须存在。",
+	"wbqc-violation-message-commons-link-no-existent": "共享资源链接必须存在。",
 	"wbqc-violation-message-commons-link-not-well-formed": "共享资源链接必须符合语法规则。",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "对名字空间“$1”的检查未能执行。",
 	"wbqc-violation-message-conflicts-with-property": "当这里有其他声明使用参数中定义的属性时，此属性必须不被使用。",
@@ -43,6 +43,7 @@
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "参数中定义的属性必须有一个与此属性类型相同的值。",
 	"wbqc-violation-message-format": "属性的值必须匹配参数中定义的模式。",
 	"wbqc-violation-message-item-property": "此属性必须只在当其他声明使用参数中定义的属性时才能使用。",
+	"wbqc-violation-message-item-claim": "此属性必须只在当其他声明使用参数中定义的属性，并带有对应的值之一时才能使用。",
 	"wbqc-violation-message-mandatory-qualifiers": "所有参数中定义的属性在此声明中必定用作限定符。",
 	"wbqc-violation-message-multi-value": "此属性必须有多个值。换言之，这里必须有多于一个声称使用此属性。",
 	"wbqc-violation-message-one-of": "属性的值必须是参数中定义的项之一。",
@@ -52,5 +53,6 @@
 	"wbqc-violation-message-range": "属性的值必须既不小于参数中定义的最低值，又不大于参数中定义的最高值。",
 	"wbqc-violation-message-single-value": "此属性必须只有一个值。换言之，这里必须只有一个声称使用此属性。",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "参数“relation”必须是“instance”或“subclass”两者之一。",
+	"wbqc-violation-message-type": "此属性必须只在与测试定义的项（或项的子集）有关系的项中使用。",
 	"wbqc-violation-message-value-type": "此属性的值实体必须与参数中定义的项（或项的子集）存在关系。"
 }

@@ -4,6 +4,6 @@
 			"McSalama"
 		]
 	},
-	"wbqc-constraintreport-non-existent-entity": "Yhteisöä ei ole!",
+	"wbqc-constraintreport-not-existent-entity": "Yhteisöä ei ole!",
 	"wbqc-constraintreport-result-table-header-status": "Tila"
 }
