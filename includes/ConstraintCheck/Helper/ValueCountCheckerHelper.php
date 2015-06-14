@@ -30,10 +30,10 @@ class ValueCountCheckerHelper {
 			$this->propertyCount = array ();
 			foreach ( $statements as $statement ) {
 				$counter = $statement->getRank() === Statement::RANK_DEPRECATED ? 0 : 1;
-				if ( array_key_exists( $statement->getPropertyId()->getNumericId(), $this->propertyCount ) ) {
-					$this->propertyCount[$statement->getPropertyId()->getNumericId()] += $counter;
+				if ( array_key_exists( $statement->getPropertyId()->getSerialization(), $this->propertyCount ) ) {
+					$this->propertyCount[$statement->getPropertyId()->getSerialization()] += $counter;
 				} else {
-					$this->propertyCount[$statement->getPropertyId()->getNumericId()] = $counter;
+					$this->propertyCount[$statement->getPropertyId()->getSerialization()] = $counter;
 				}
 			}
 		}

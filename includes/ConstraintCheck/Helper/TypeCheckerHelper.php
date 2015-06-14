@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Lib\Store\EntityLookup;
 
 
@@ -15,8 +17,8 @@ use Wikibase\Lib\Store\EntityLookup;
 class TypeCheckerHelper {
 
 	const MAX_DEPTH = 20;
-	const instanceId = 31;
-	const subclassId = 279;
+	const instanceId = 'P31';
+	const subclassId = 'P279';
 
 	/**
 	 * @var EntityLookup $entityLookup
@@ -27,6 +29,18 @@ class TypeCheckerHelper {
 		$this->entityLookup = $lookup;
 	}
 
+	/**
+	 * Checks, if one of the itemId serializations in $classesToCheck
+	 * is subclass of $comparativeClass
+	 * Due to cyclic dependencies, the checks stops after a certain
+	 * depth is reached
+	 *
+	 * @param EntityId $comparativeClass
+	 * @param array $classesToCheck
+	 * @param int $depth
+	 *
+	 * @return bool
+	 */
 	public function isSubclassOf( $comparativeClass, $classesToCheck, $depth ) {
 		$compliance = null;
 		$item = $this->entityLookup->getEntity( $comparativeClass );
@@ -34,64 +48,69 @@ class TypeCheckerHelper {
 			return false; // lookup failed, probably because item doesn't exist
 		}
 
-		foreach ( $item->getStatements() as $statement ) {
-			$claim = $statement->getClaim();
-			$propertyId = $claim->getPropertyId();
-			$numericPropertyId = $propertyId->getNumericId();
+		foreach ( $item->getStatements()->getWithPropertyId( new PropertyId( self::subclassId ) ) as $statement ) {
+			$mainSnak = $statement->getClaim()->getMainSnak();
 
-			if ( $numericPropertyId === self::subclassId ) {
-				$mainSnak = $claim->getMainSnak();
-
-				if ( $mainSnak->getType() === 'value' && $mainSnak->getDataValue()->getType() === 'wikibase-entityid' ) {
-					$comparativeClass = $mainSnak->getDataValue()->getEntityId();
-
-					foreach ( $classesToCheck as $class ) {
-						if ( $class === $comparativeClass->getSerialization() ) {
-							return true;
-						}
-					}
-
-				}
-
-				if ( $depth > self::MAX_DEPTH ) {
-					return false;
-				}
-
-				$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, $depth + 1 );
-
+			if ( !( $this->hasCorrectType( $mainSnak ) ) ) {
+				continue;
 			}
+
+			$comparativeClass = $mainSnak->getDataValue()->getEntityId();
+
+			if( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
+				return true;
+			}
+
+			if ( $depth > self::MAX_DEPTH ) {
+				return false;
+			}
+
+			$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, $depth + 1 );
 			if ( $compliance === true ) {
 				return true;
 			}
+
 		}
 		return false;
 	}
 
-	public function hasClassInRelation( $statements, $relationId, $classesToCheck ) {
+	/**
+	 * Checks, if one of the itemId serializations in $classesToCheck
+	 * is contained in the list of $statements
+	 * via property $relationId or if it is a subclass of
+	 * one of the items referenced in $statements via $relationId
+	 *
+	 * @param StatementList $statements
+	 * @param string $relationId
+	 * @param array $classesToCheck
+	 *
+	 * @return bool
+	 */
+	public function hasClassInRelation( StatementList $statements, $relationId, $classesToCheck ) {
 		$compliance = null;
-		foreach ( $statements as $statement ) {
-			$claim = $statement->getClaim();
-			$propertyId = $claim->getPropertyId();
-			$numericPropertyId = $propertyId->getNumericId();
+		foreach ( $statements->getWithPropertyId( new PropertyId( $relationId ) ) as $statement ) {
+			$mainSnak = $claim = $statement->getClaim()->getMainSnak();
 
-			if ( $numericPropertyId === $relationId ) {
-				$mainSnak = $claim->getMainSnak();
-
-				if ( $mainSnak->getType() === 'value' && $mainSnak->getDataValue()->getType() === 'wikibase-entityid' ) {
-					$comparativeClass = $mainSnak->getDataValue()->getEntityId();
-
-					foreach ( $classesToCheck as $class ) {
-						if ( $class === $comparativeClass->getSerialization() ) {
-							return true;
-						}
-					}
-					$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, 1 );
-				}
+			if ( !$this->hasCorrectType( $mainSnak ) ) {
+				continue;
 			}
+
+			$comparativeClass = $mainSnak->getDataValue()->getEntityId();
+
+			if( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
+				return true;
+			}
+
+			$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, 1 );
 			if ( $compliance === true ) {
 				return true;
 			}
 		}
 		return false;
 	}
+
+	private function hasCorrectType( $mainSnak ) {
+		return $mainSnak->getType() === 'value' && $mainSnak->getDataValue()->getType() === 'wikibase-entityid';
+	}
+
 }

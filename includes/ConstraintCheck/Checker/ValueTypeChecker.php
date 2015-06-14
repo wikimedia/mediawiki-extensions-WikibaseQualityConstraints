@@ -40,8 +40,8 @@ class ValueTypeChecker implements ConstraintChecker {
 	 */
 	private $typeCheckerHelper;
 
-	const instanceId = 31;
-	const subclassId = 279;
+	const instanceId = 'P31';
+	const subclassId = 'P279';
 
 	/**
 	 * @param EntityLookup $lookup

@@ -44,7 +44,7 @@ class SingleValueChecker implements ConstraintChecker {
 
 		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $entity->getStatements() );
 
-		if ( $propertyCountArray[ $propertyId->getNumericId() ] > 1 ) {
+		if ( $propertyCountArray[$propertyId->getSerialization()] > 1 ) {
 			$message = 'This property must only have a single value, that is there must only be one claim using this property.';
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
