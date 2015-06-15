@@ -2,11 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Александр Сигачёв",
-			"Дмитрий"
+			"Дмитрий",
+			"Okras"
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "Проверить",
-	"wbqc-constraintreport-result-headline": "Результат для $1",
+	"wbqc-constraintreport-result-headline": "Результат для",
 	"wbqc-constraintreport-status-violation": "Нарушение",
 	"wbqc-constraintreport-status-compliance": "Соответствие",
 	"wbqc-constraintreport-status-todo": "Todo",
