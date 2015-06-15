@@ -7,12 +7,12 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 call_user_func( function() {
 	// Set credits
 	$GLOBALS['wgExtensionCredits']['specialpage'][] = array(
-		'path' => __FILE__,
+		'path' => __DIR__,
 		'name' => 'WikibaseQualityConstraints',
 		'author' => 'BP2014N1',
 		'url' => 'https://www.mediawiki.org/wiki/Extension:WikibaseQualityConstraints',
 		'descriptionmsg' => 'wbqc-desc',
-		'version' => '1.0.0'
+		'version' => '0.1.0'
 	);
 
 	// Initialize localization and aliases

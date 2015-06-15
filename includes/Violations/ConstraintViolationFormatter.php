@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Violations;
 
 use UnexpectedValueException;
 use Html;
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 use WikibaseQuality\Violations\Violation;
 use WikibaseQuality\Violations\ViolationFormatter;
 

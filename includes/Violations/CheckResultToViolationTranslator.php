@@ -7,7 +7,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityRevisionLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\Violations\Violation;
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 
 class CheckResultToViolationTranslator {

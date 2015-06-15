@@ -20,8 +20,8 @@ use Wikibase\Lib\Store\TermLookup;
 use DataValues;
 use DataValues\DataValue;
 use Html;
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
-use Doctrine\Instantiator\Exception\UnexpectedValueException;
+use InvalidArgumentException;
+use UnexpectedValueException;
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -698,7 +698,7 @@ class SpecialConstraintReport extends SpecialPage {
     private function saveResultsInViolationsTable( $entity, $results ) {
         $violations = $this->checkResultToViolationTranslator->translateToViolation( $entity, $results );
         foreach( $violations as $violation ) {
-            $this->violationStore->save( $violation );
+            $this->violationStore->insert( $violation );
         }
     }
 
