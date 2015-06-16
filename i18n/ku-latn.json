@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"George Animal"
+			"George Animal",
+			"Bikarhêner"
 		]
 	},
-	"wbqc-constraintreport-result-headline": "Encama bo $1"
+	"wbqc-constraintreport-result-headline": "Encama bo",
+	"wbqc-constraintreport-result-table-header-status": "Rewş"
 }
