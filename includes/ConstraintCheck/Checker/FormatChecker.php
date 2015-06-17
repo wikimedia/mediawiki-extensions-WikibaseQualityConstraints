@@ -78,17 +78,7 @@ class FormatChecker implements ConstraintChecker {
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$comparativeString = $dataValue->getValue();
-
-		if ( preg_match( '/^' . str_replace( '/', '\/', $pattern ) . '$/', $comparativeString ) ) {
-			$message = '';
-			$status = CheckResult::STATUS_COMPLIANCE;
-		} else {
-			$message = 'The property\'s value must match the pattern defined in the parameters.';
-			$status = CheckResult::STATUS_VIOLATION;
-		}
-
-		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_TODO, "For security reasons, it is not possible to check the Format constraint at the moment. We are working on a solution." );
 	}
 
 }
