@@ -7,14 +7,11 @@ use Wikibase\DataModel\Entity\PropertyId;
 use InvalidArgumentException;
 
 /**
- * Class ConstraintReportHelper
- * Class for helper functions for constraint checkers.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConstraintReportHelper {
+class ConstraintParameterParser {
 
 	/**
 	 * @param string $templateString
@@ -47,7 +44,7 @@ class ConstraintReportHelper {
 		}
 
 		if ( $asString ) {
-			return "$parameter";
+			return strval( $parameter );
 		}
 
 		$startsWith = strtoupper( substr( $parameter, 0, 1 ) );
@@ -66,7 +63,7 @@ class ConstraintReportHelper {
 	}
 
 	/**
-	 * Helps set/format a single parameter depending on its type.
+	 * Formats a parameter with a single value and wraps it in an array.
 	 *
 	 * @param string $parameter
 	 * @param bool $asString
@@ -78,7 +75,7 @@ class ConstraintReportHelper {
 	}
 
 	/**
-	 * Helps set/format the item/class/property parameter arrays according to their respective type.
+	 * Formats a parameter with an array of values and wraps them in an array.
 	 *
 	 * @param array $parameterArray
 	 * @param bool $asString
@@ -87,11 +84,11 @@ class ConstraintReportHelper {
 	 */
 	public function parseParameterArray( $parameterArray, $asString = false ) {
 		if ( $parameterArray[ 0 ] === '' ) { // parameter not given
-			return array ( 'none' );
+			return array ( wfMessage( "wbqc-constraintreport-no-parameter" )->escaped() );
 		} else {
 			$array = array ();
 			foreach ( $parameterArray as $parameter ) {
-				$array[ ] = $this->parseParameter( $parameter, $asString );
+				$array[] = $this->parseParameter( $parameter, $asString );
 			}
 			return $array;
 		}

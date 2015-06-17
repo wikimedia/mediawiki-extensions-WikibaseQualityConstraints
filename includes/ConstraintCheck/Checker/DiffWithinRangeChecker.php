@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -20,9 +20,9 @@ use Wikibase\DataModel\Entity\Entity;
 class DiffWithinRangeChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var RangeCheckerHelper
@@ -30,11 +30,11 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	private $rangeCheckerHelper;
 
 	/**
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 * @param RangeCheckerHelper $rangeCheckerHelper
 	 */
-	public function __construct( ConstraintReportHelper $helper, RangeCheckerHelper $rangeCheckerHelper ) {
-		$this->constraintReportHelper = $helper;
+	public function __construct( ConstraintParameterParser $helper, RangeCheckerHelper $rangeCheckerHelper ) {
+		$this->constraintParameterParser = $helper;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
 	}
 
@@ -54,7 +54,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$property = false;
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
 			$property = $constraintParameters['property'];
-			$parameters['property'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['property'], 'PropertyId' );
+			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['property'], 'PropertyId' );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
@@ -83,8 +83,8 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			if ( $property && array_key_exists( 'minimum_quantity', $constraintParameters ) && array_key_exists( 'maximum_quantity', $constraintParameters ) ) {
 				$min = $constraintParameters['minimum_quantity'];
 				$max = $constraintParameters['maximum_quantity'];
-				$parameters['minimum_quantity'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_quantity'] );
-				$parameters['maximum_quantity'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['maximum_quantity'] );
+				$parameters['minimum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_quantity'] );
+				$parameters['maximum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_quantity'] );
 			} else {
 				$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraintName, 'property", "minimum_quantity" and "maximum_quantity' )->escaped();
 			}

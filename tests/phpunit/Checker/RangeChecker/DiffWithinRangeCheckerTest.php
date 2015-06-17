@@ -10,7 +10,7 @@ use DataValues\TimeValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -21,7 +21,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -35,7 +35,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintReportHelper();
+		$this->helper = new ConstraintParameterParser();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
 		$this->checker = new DiffWithinRangeChecker( $this->helper, new RangeCheckerHelper() );

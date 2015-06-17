@@ -6,14 +6,12 @@ use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\Entity;
 
 /**
- * Checks 'Conflicts with' constraints.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -21,18 +19,14 @@ use Wikibase\DataModel\Entity\Entity;
 class ConflictsWithChecker implements ConstraintChecker {
 
 	/**
-	 * Wikibase entity lookup.
-	 *
 	 * @var EntityLookup
 	 */
 	private $entityLookup;
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var ConnectionCheckerHelper
@@ -41,12 +35,12 @@ class ConflictsWithChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 * ConnectionCheckerHelper $connectionCheckerHelper
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintReportHelper $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
 		$this->entityLookup = $lookup;
-		$this->constraintReportHelper = $helper;
+		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
 	}
 
@@ -72,9 +66,9 @@ class ConflictsWithChecker implements ConstraintChecker {
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$parameters[ 'property' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['property'] );
+		$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['property'] );
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
-			$parameters[ 'item' ] = $this->constraintReportHelper->parseParameterArray( explode( ',', $constraintParameters[ 'item' ] ) );
+			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( explode( ',', $constraintParameters[ 'item' ] ) );
 		};
 
 		/*
@@ -102,4 +96,5 @@ class ConflictsWithChecker implements ConstraintChecker {
 
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
+
 }

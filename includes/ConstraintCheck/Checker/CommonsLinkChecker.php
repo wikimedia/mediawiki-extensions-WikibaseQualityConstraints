@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Constraint;
 use Wikibase\DataModel\Statement\Statement;
@@ -12,9 +12,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Class CommonsLinkChecker.
- * Checks 'Commons link' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -22,21 +19,19 @@ use Wikibase\DataModel\Entity\Entity;
 class CommonsLinkChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
 	private $helper;
 
 	/**
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 */
-	public function __construct( ConstraintReportHelper $helper ) {
+	public function __construct( ConstraintParameterParser $helper ) {
 		$this->helper = $helper;
 	}
 
 	/**
-	 * Checks if data value is well-formed and links to an existing page.
+	 * Checks 'Commons link' constraint.
 	 *
 	 * @param Statement $statement
 	 * @param Constraint $constraint
@@ -50,11 +45,11 @@ class CommonsLinkChecker implements ConstraintChecker {
 		$namespace = '';
 		if ( array_key_exists( 'namespace', $constraintParameters ) ) {
 			$namespace = $constraintParameters['namespace'];
-			$parameters[ 'namespace' ] = $this->helper->parseSingleParameter( $namespace, true );
+			$parameters['namespace'] = $this->helper->parseSingleParameter( $namespace, true );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$mainSnak = $statement->getMainSnak();

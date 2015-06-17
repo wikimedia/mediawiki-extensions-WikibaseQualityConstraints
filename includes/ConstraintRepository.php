@@ -20,12 +20,12 @@ class ConstraintRepository {
 	 * @return Constraint[]
 	 */
 	public function queryConstraintsForProperty( $prop ) {
-        $db = wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 
 		$results = $db->select(
 			CONSTRAINT_TABLE,
 			'*',
-            array( 'pid' => $prop )
+			array( 'pid' => $prop )
 		);
 
 		return $this->convertToConstraints( $results );

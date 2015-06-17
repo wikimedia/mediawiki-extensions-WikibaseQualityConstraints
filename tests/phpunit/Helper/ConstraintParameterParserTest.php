@@ -3,24 +3,24 @@ namespace WikibaseQuality\ConstraintReport\Test\Helper;
 
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @group WikibaseQualityConstraints
  *
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConstraintReportHelperTest extends \MediaWikiTestCase {
+class ConstraintParameterParserTest extends \MediaWikiTestCase {
 
 	private $helper;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintReportHelper();
+		$this->helper = new ConstraintParameterParser();
 	}
 
 	protected function tearDown() {

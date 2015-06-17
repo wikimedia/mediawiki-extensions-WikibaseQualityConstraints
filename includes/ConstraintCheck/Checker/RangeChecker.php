@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
@@ -20,9 +20,9 @@ use Wikibase\DataModel\Entity\Entity;
 class RangeChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var RangeCheckerHelper
@@ -30,11 +30,11 @@ class RangeChecker implements ConstraintChecker {
 	private $rangeCheckerHelper;
 
 	/**
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 * @param RangeCheckerHelper $rangeCheckerHelper
 	 */
-	public function __construct( ConstraintReportHelper $helper, RangeCheckerHelper $rangeCheckerHelper ) {
-		$this->constraintReportHelper = $helper;
+	public function __construct( ConstraintParameterParser $helper, RangeCheckerHelper $rangeCheckerHelper ) {
+		$this->constraintParameterParser = $helper;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
 	}
 
@@ -53,7 +53,7 @@ class RangeChecker implements ConstraintChecker {
 		$constraintParameters = $constraint->getConstraintParameters();
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$mainSnak = $statement->getMainSnak();
@@ -78,8 +78,8 @@ class RangeChecker implements ConstraintChecker {
 			if ( array_key_exists( 'minimum_quantity', $constraintParameters ) && array_key_exists( 'maximum_quantity', $constraintParameters ) && !array_key_exists( 'minimum_date', $constraintParameters ) && !array_key_exists( 'maximum_date', $constraintParameters ) ) {
 				$min = $constraintParameters['minimum_quantity'];
 				$max = $constraintParameters['maximum_quantity'];
-				$parameters['minimum_quantity'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_quantity'] );
-				$parameters['maximum_quantity'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['maximum_quantity'] );
+				$parameters['minimum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_quantity'] );
+				$parameters['maximum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_quantity'] );
 			} else {
 				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'quantity', 'minimum_quantity" and "maximum_quantity' )->escaped();
 			}
@@ -87,8 +87,8 @@ class RangeChecker implements ConstraintChecker {
 			if ( !array_key_exists( 'minimum_quantity', $constraintParameters ) && !array_key_exists( 'maximum_quantity', $constraintParameters ) && array_key_exists( 'minimum_date', $constraintParameters ) && array_key_exists( 'maximum_date', $constraintParameters ) ) {
 				$min = $constraintParameters['minimum_date'];
 				$max = $constraintParameters['maximum_date'];
-				$parameters['minimum_date'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_date'] );
-				$parameters['maximum_date'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['maximum_date'] );
+				$parameters['minimum_date'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_date'] );
+				$parameters['maximum_date'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_date'] );
 			} else {
 				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'time', 'minimum_date" and "maximum_date' )->escaped();
 			}

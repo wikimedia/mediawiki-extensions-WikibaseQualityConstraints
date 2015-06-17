@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
  * @group WikibaseQualityConstraints
  *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+

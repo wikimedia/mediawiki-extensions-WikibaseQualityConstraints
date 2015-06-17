@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
@@ -95,30 +95,30 @@ class ConstraintReportFactory {
 	 */
 	private function getConstraintCheckerMap(){
 		if ( $this->constraintCheckerMap === null ) {
-			$constraintReportHelper = new ConstraintReportHelper();
+			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
 			$rangeCheckerHelper = new RangeCheckerHelper();
 			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup );
 
 			$this->constraintCheckerMap = array(
-				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Item' => new ItemChecker( $this->lookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Target required claim' => new TargetRequiredClaimChecker( $this->lookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Symmetric' => new SymmetricChecker( $this->lookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Inverse' => new InverseChecker( $this->lookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Qualifier' => new QualifierChecker( $constraintReportHelper ),
-				'Qualifiers' => new QualifiersChecker( $constraintReportHelper ),
-				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $constraintReportHelper ),
-				'Range' => new RangeChecker( $constraintReportHelper, $rangeCheckerHelper ),
-				'Diff within range' => new DiffWithinRangeChecker( $constraintReportHelper, $rangeCheckerHelper ),
-				'Type' => new TypeChecker( $this->lookup, $constraintReportHelper, $typeCheckerHelper ),
-				'Value type' => new ValueTypeChecker( $this->lookup, $constraintReportHelper, $typeCheckerHelper ),
+				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Item' => new ItemChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Target required claim' => new TargetRequiredClaimChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Symmetric' => new SymmetricChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Inverse' => new InverseChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Qualifier' => new QualifierChecker( $constraintParameterParser ),
+				'Qualifiers' => new QualifiersChecker( $constraintParameterParser ),
+				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $constraintParameterParser ),
+				'Range' => new RangeChecker( $constraintParameterParser, $rangeCheckerHelper ),
+				'Diff within range' => new DiffWithinRangeChecker( $constraintParameterParser, $rangeCheckerHelper ),
+				'Type' => new TypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper ),
+				'Value type' => new ValueTypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper ),
 				'Single value' => new SingleValueChecker(),
 				'Multi value' => new MultiValueChecker(),
 				'Unique value' => new UniqueValueChecker(),
-				'Format' => new FormatChecker( $constraintReportHelper ),
-				'Commons link' => new CommonsLinkChecker( $constraintReportHelper ),
-				'One of' => new OneOfChecker( $constraintReportHelper ),
+				'Format' => new FormatChecker( $constraintParameterParser ),
+				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
+				'One of' => new OneOfChecker( $constraintParameterParser ),
 			);
 		}
 

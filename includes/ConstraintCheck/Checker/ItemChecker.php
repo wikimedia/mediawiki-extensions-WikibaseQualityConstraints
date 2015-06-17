@@ -6,15 +6,13 @@ use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Item' constraints.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -22,18 +20,14 @@ use Wikibase\DataModel\Entity\Entity;
 class ItemChecker implements ConstraintChecker {
 
 	/**
-	 * Wikibase entity lookup.
-	 *
 	 * @var EntityLookup
 	 */
 	private $entityLookup;
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var ConnectionCheckerHelper
@@ -42,12 +36,12 @@ class ItemChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintReportHelper $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
 		$this->entityLookup = $lookup;
-		$this->constraintReportHelper = $helper;
+		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
 	}
 
@@ -67,13 +61,13 @@ class ItemChecker implements ConstraintChecker {
 		$property = false;
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
 			$property = $constraintParameters['property'];
-			$parameters['property'] = $this->constraintReportHelper->parseSingleParameter( $property );
+			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $property );
 		}
 
 		$items = false;
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
 			$items = explode(',', $constraintParameters['item'] );
-			$parameters['item'] = $this->constraintReportHelper->parseParameterArray( $items );
+			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( $items );
 		}
 
 		/*

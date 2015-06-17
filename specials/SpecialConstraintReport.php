@@ -155,26 +155,26 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @see SpecialPage::execute
 	 *
 	 * @param string|null $subPage
-     *
-     * @throws InvalidArgumentException
-     * @throws EntityIdParsingException
-     * @throws UnexpectedValueException
+	 *
+	 * @throws InvalidArgumentException
+	 * @throws EntityIdParsingException
+	 * @throws UnexpectedValueException
 	 */
 	public function execute( $subPage ) {
 		$out = $this->getOutput();
 
-        $postRequest = $this->getContext()->getRequest()->getVal( 'entityid' );
-        if ( $postRequest ) {
-            $out->redirect( $this->getPageTitle( strtoupper( $postRequest ) )->getLocalURL() );
-            return;
-        }
+		$postRequest = $this->getContext()->getRequest()->getVal( 'entityid' );
+		if ( $postRequest ) {
+			$out->redirect( $this->getPageTitle( strtoupper( $postRequest ) )->getLocalURL() );
+			return;
+		}
 
 		$out->addModules( $this->getModules() );
 
 		$this->setHeaders();
 
 		$out->addHTML( $this->getExplanationText() );
-        $this->buildEntityIdForm();
+		$this->buildEntityIdForm();
 
 		if ( !$subPage ) {
 			return;
@@ -212,41 +212,41 @@ class SpecialConstraintReport extends SpecialPage {
 		} else {
 			$out->addHTML(
 				$this->buildResultHeader( $entityId )
-				. $this->buildNotice( 'wbqc-constraintreport-empty-result' )
+				. $this->buildNotice( $this->getEmptyResultText() )
 			);
 		}
 	}
 
-    /**
-     * Builds html form for entity id input
-     */
-    private function buildEntityIdForm() {
-        $formDescriptor = array(
-            'entityid' => array(
-                'class' => 'HTMLTextField',
-                'section' => 'section',
-                'name' => 'entityid',
-                'label-message' => 'wbqc-constraintreport-form-entityid-label',
-                'cssclass' => 'wbqc-constraintreport-form-entity-id',
-                'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped()
-            )
-        );
-        $htmlForm = new HTMLForm( $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
-        $htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
-        $htmlForm->setSubmitCallback( function() {
-            return false;
-        } );
-        $htmlForm->setMethod( 'post' );
-        $htmlForm->show();
-    }
+	/**
+	 * Builds html form for entity id input
+	 */
+	private function buildEntityIdForm() {
+		$formDescriptor = array(
+			'entityid' => array(
+				'class' => 'HTMLTextField',
+				'section' => 'section',
+				'name' => 'entityid',
+				'label-message' => 'wbqc-constraintreport-form-entityid-label',
+				'cssclass' => 'wbqc-constraintreport-form-entity-id',
+				'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped()
+			)
+		);
+		$htmlForm = new HTMLForm( $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
+		$htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
+		$htmlForm->setSubmitCallback( function() {
+			return false;
+		} );
+		$htmlForm->setMethod( 'post' );
+		$htmlForm->show();
+	}
 
 	/**
 	 * Builds notice with given message. Optionally notice can be handles as error by settings $error to true
 	 *
 	 * @param string $message
 	 * @param bool $error
-     *
-     * @throws InvalidArgumentException
+	 *
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -270,12 +270,12 @@ class SpecialConstraintReport extends SpecialPage {
 					'class' => $cssClasses
 				),
 				$this->msg( $message )->text()
-            );
+			);
 	}
 
-    /**
-     * @return string HTML
-     */
+	/**
+	 * @return string HTML
+	 */
 	private function getExplanationText() {
 		return
 			Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
@@ -290,11 +290,10 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * @see SpecialCheckResultPage::getEmptyResultText
 	 *
-	 * @return string
+	 * @return string (plain text)
 	 */
 	private function getEmptyResultText() {
-		return
-			$this->msg( 'wbqc-constraintreport-empty-result' )->text();
+		return $this->msg( 'wbqc-constraintreport-empty-result' )->text();
 	}
 
 	/**
@@ -302,7 +301,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param Entity $entity
 	 *
-	 * @return string
+	 * @return CheckResult[]
 	 */
 	private function executeCheck( Entity $entity ) {
 		$results = $this->constraintChecker->checkAgainstConstraints( $entity );
@@ -341,50 +340,56 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 
 		foreach ( $results as $result ) {
-			// Status column
-			$statusColumn = $this->buildTooltipElement(
-				$this->formatStatus( $result->getStatus() ),
-				$result->getMessage(),
-				'[?]'
-			);
-
-			// Claim column
-			$property = $this->entityIdLabelFormatter->formatEntityId( $result->getPropertyId() );
-			if ( $result->getMainSnakType() === 'value' ) {
-				$value = $this->formatValue( $result->getDataValue() );
-			} else {
-				$value = $result->getMainSnakType();
-			}
-
-			$claimColumn = $this->getClaimLink(
-				$entityId,
-				$result->getPropertyId(),
-				$property . ': ' . $value
-			);
-
-			// Constraint column
-			$constraintLink = $this->getClaimLink(
-				$result->getPropertyId(),
-				new PropertyId( self::CONSTRAINT_PROPERTY_ID ),
-				$result->getConstraintName()
-			);
-			$constraintColumn = $this->buildExpandableElement(
-				$constraintLink,
-				$this->formatParameters( $result->getParameters() ),
-				'[...]'
-			);
-
-			// Append cells
-			$table->appendRow(
-				array (
-					$statusColumn,
-					$claimColumn,
-					$constraintColumn
-				)
-			);
+			$table = $this->appendToResultTable( $table, $entityId, $result );
 		}
 
 		return $table->toHtml();
+	}
+
+	private function appendToResultTable( $table, $entityId, $result ) {
+		// Status column
+		$statusColumn = $this->buildTooltipElement(
+			$this->formatStatus( $result->getStatus() ),
+			$result->getMessage(),
+			'[?]'
+		);
+
+		// Claim column
+		$property = $this->entityIdLabelFormatter->formatEntityId( $result->getPropertyId() );
+		if ( $result->getMainSnakType() === 'value' ) {
+			$value = $this->formatValue( $result->getDataValue() );
+		} else {
+			$value = $result->getMainSnakType();
+		}
+
+		$claimColumn = $this->getClaimLink(
+			$entityId,
+			$result->getPropertyId(),
+			$property . ': ' . $value
+		);
+
+		// Constraint column
+		$constraintLink = $this->getClaimLink(
+			$result->getPropertyId(),
+			new PropertyId( self::CONSTRAINT_PROPERTY_ID ),
+			$result->getConstraintName()
+		);
+		$constraintColumn = $this->buildExpandableElement(
+			$constraintLink,
+			$this->formatParameters( $result->getParameters() ),
+			'[...]'
+		);
+
+		// Append cells
+		$table->appendRow(
+			array (
+				$statusColumn,
+				$claimColumn,
+				$constraintColumn
+			)
+		);
+
+		return $table;
 	}
 
 	/**
@@ -416,17 +421,13 @@ class SpecialConstraintReport extends SpecialPage {
 		$statuses = array ();
 		foreach ( $results as $result ) {
 			$status = strtolower( $result->getStatus() );
-			if ( array_key_exists( $status, $statuses ) ) {
-				$statuses[ $status ]++;
-			} else {
-				$statuses[ $status ] = 1;
-			}
+			$statuses[$status] = isset( $statuses[$status] ) ? $statuses[$status] +1 : 1;
 		}
 
 		$statusElements = array ();
 		foreach ( $statuses as $status => $count ) {
 			if ( $count > 0 ) {
-				$statusElements[ ] =
+				$statusElements[] =
 					$this->formatStatus( $status )
 					. ': '
 					. $count;
@@ -447,8 +448,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param string $content (sanitized HTML)
 	 * @param string $tooltipContent
 	 * @param $indicator
-     *
-     * @throws InvalidArgumentException
+	 *
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -495,8 +496,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param string $content
 	 * @param string $expandableContent
 	 * @param string $indicator
-     *
-     * @throes InvalidArgumentException
+	 *
+	 * @throes InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -536,33 +537,33 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Formats given status to html
 	 *
 	 * @param string $status
-     *
-     * @throws InvalidArgumentException
+	 *
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
-    private function formatStatus( $status ) {
-        $messageName = "wbqc-constraintreport-status-" . strtolower( $status );
+	private function formatStatus( $status ) {
+		$messageName = "wbqc-constraintreport-status-" . strtolower( $status );
 
-        $formattedStatus =
-            Html::element(
-                'span',
-                array (
-                    'class' => 'wbqc-status wbqc-status-' . $status
-                ),
-                $this->msg( $messageName )->text()
-            );
+		$formattedStatus =
+			Html::element(
+				'span',
+				array (
+					'class' => 'wbqc-status wbqc-status-' . $status
+				),
+				$this->msg( $messageName )->text()
+			);
 
-        return $formattedStatus;
-    }
+		return $formattedStatus;
+	}
 
 	/**
 	 * Parses data values to human-readable string
 	 *
 	 * @param DataValue|array $dataValues
 	 * @param string $separator
-     *
-     * @throws InvalidArgumentException
+	 *
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -629,12 +630,12 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param string|ItemId|PropertyId|DataValue $value
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	private function formatValue( $value ) {
 		if ( is_string( $value ) ) {
 			// Cases like 'Format' 'pattern' or 'minimum'/'maximum' values, which we have stored as strings
-			return ( $value );
+			return ( htmlspecialchars ( $value ) );
 		} elseif ( $value instanceof EntityId ) {
 			// Cases like 'Conflicts with' 'property', to which we can link
 			return $this->entityIdLabelFormatter->formatEntityId( $value );
@@ -649,7 +650,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param array $parameters
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	private function formatParameters( $parameters ) {
 		if ( $parameters === null || count( $parameters ) == 0 ) {
@@ -657,13 +658,13 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 
 		$valueFormatter = function ( $value ) {
-			return $this->formatValue( $value, false );
+			return $this->formatValue( $value );
 		};
 
 		$formattedParameters = array ();
 		foreach ( $parameters as $parameterName => $parameterValue ) {
 			$formattedParameterValues = implode( ', ', $this->limitArrayLength( array_map( $valueFormatter, $parameterValue ) ) );
-			$formattedParameters[ ] = sprintf( '%s: %s', $parameterName, $formattedParameterValues );
+			$formattedParameters[] = sprintf( '%s: %s', $parameterName, $formattedParameterValues );
 		}
 
 		return implode( '; ', $formattedParameters );

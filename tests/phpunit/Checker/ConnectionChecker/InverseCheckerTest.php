@@ -11,7 +11,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
@@ -21,7 +21,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -36,7 +36,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$this->helper = new ConstraintReportHelper();
+		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new InverseChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
 	}

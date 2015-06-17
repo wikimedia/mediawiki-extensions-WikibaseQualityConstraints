@@ -11,8 +11,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Multi' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -54,4 +52,5 @@ class MultiValueChecker implements ConstraintChecker {
 
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
+
 }

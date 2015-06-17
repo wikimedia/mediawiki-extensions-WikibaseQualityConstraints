@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -25,7 +25,7 @@ class TypeChecker implements ConstraintChecker {
 	/**
 	 * Class for helper functions for constraint checkers.
 	 *
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
 	private $helper;
 
@@ -44,10 +44,10 @@ class TypeChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 * @param TypeCheckerHelper $typeCheckerHelper
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintReportHelper $helper, TypeCheckerHelper $typeCheckerHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, TypeCheckerHelper $typeCheckerHelper ) {
 		$this->entityLookup = $lookup;
 		$this->helper = $helper;
 		$this->typeCheckerHelper = $typeCheckerHelper;

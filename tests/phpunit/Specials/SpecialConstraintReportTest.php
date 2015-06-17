@@ -25,7 +25,7 @@ use WikibaseQuality\WikibaseQualityFactory;
  *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   WikibaseQuality\Html\HtmlTableBuilder

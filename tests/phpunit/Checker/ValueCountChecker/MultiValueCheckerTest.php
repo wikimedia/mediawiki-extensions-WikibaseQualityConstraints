@@ -8,7 +8,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
@@ -32,7 +32,7 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->helper = new ConstraintReportHelper();
+		$this->helper = new ConstraintParameterParser();
 		$this->multiPropertyId = new PropertyId( 'P161' );
 		$this->checker = new MultiValueChecker( $this->helper );
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );

@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\PropertyId;
+use LogicException;
 
 
 /**
@@ -49,7 +50,14 @@ class CheckResult {
 	 */
 	private $message;
 
-	public function __construct( Statement $statement, $constraintName, $parameters = array(), $status = self::STATUS_TODO, $message = '' ) {
+	/**
+	 * @param Statement $statement
+	 * @param string $constraintName
+	 * @param array $parameters (string => string[])
+	 * @param string $status
+	 * @param string $message
+	 */
+	public function __construct( Statement $statement, $constraintName, $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
 		$this->statement = $statement;
 		$this->constraintName = $constraintName;
 		$this->parameters = $parameters;
@@ -79,12 +87,12 @@ class CheckResult {
 	}
 
 	/**
-	 * @return mixed
-	 * @throws \Exception
+	 * @return DataValue
+	 * @throws LogicException
 	 */
 	public function getDataValue() {
 		if ( !$this->statement->getMainSnak() instanceof PropertyValueSnak ) {
-			throw new \Exception( 'Cannot get DataValue, MainSnak is of type ' . $this->getMainSnakType() . '.' );
+			throw new LogicException( 'Cannot get DataValue, MainSnak is of type ' . $this->getMainSnakType() . '.' );
 		}
 
 		return $this->statement->getMainSnak()->getDataValue();
