@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -26,10 +25,10 @@ class ValueCountCheckerHelperTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) ) );
-		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) ) );
-		$statement3 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q3' ) ) ) ) );
-		$statement4 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q4' ) ) ) ) );
+		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
+		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) );
+		$statement3 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q3' ) ) ) );
+		$statement4 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q4' ) ) ) );
 		$statement4->setRank( Statement::RANK_DEPRECATED );
 		$this->statementList = new StatementList( array( $statement1, $statement2, $statement3, $statement4 ) );
 	}

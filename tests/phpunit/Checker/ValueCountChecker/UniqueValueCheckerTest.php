@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -49,7 +48,7 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 	// todo: it is currently only testing that 'todo' comes back
 	public function testCheckUniqueValueConstraint() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q404' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q404' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ) );
 		$this->assertEquals( 'todo', $checkResult->getStatus(), 'check should point out that it should be implemented soon' );
 	}

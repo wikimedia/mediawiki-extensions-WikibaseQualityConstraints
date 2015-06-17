@@ -6,7 +6,6 @@ use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\StringValue;
@@ -77,7 +76,7 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->translator = new CheckResultToViolationTranslator( $this->getEntityRevisionLookupMock() );
-		$this->statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( 'Foo' ) ) ) );
+		$this->statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( 'Foo' ) ) );
 		$this->propertyId =  new PropertyId( 'P1' );
 		$this->claimGuid = 'P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 		$this->statement->setGuid( 'P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' );

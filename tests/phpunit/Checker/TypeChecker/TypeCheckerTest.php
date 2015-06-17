@@ -2,7 +2,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -34,7 +33,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->checker = new TypeChecker( $this->lookup, new ConstraintReportHelper(), new TypeCheckerHelper( $this->lookup ) );
-		$this->typeStatement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) );
+		$this->typeStatement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 	}
 
 	protected function tearDown() {

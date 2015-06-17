@@ -61,7 +61,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			$parameters[ 'constraint_status' ] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
-		$mainSnak = $statement->getClaim()->getMainSnak();
+		$mainSnak = $statement->getMainSnak();
 
 		/*
 		 * error handling:
@@ -99,8 +99,8 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		foreach ( $entity->getStatements() as $statement ) {
-			if ( $property === $statement->getClaim()->getPropertyId()->getSerialization() ) {
-				$mainSnak = $statement->getClaim()->getMainSnak();
+			if ( $property === $statement->getPropertyId()->getSerialization() ) {
+				$mainSnak = $statement->getMainSnak();
 
 				/*
 				 * error handling:

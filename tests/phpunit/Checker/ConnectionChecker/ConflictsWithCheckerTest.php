@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -52,7 +51,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'property' => 'P2'
@@ -67,7 +66,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'property' => 'P2'
@@ -82,7 +81,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'item' => 'Q1',
@@ -98,7 +97,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'item' => 'Q42',
@@ -114,7 +113,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement(new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array();
 
@@ -127,7 +126,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'item' => 'Q42',

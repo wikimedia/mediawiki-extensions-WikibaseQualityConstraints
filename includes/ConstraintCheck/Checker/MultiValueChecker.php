@@ -43,7 +43,7 @@ class MultiValueChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
-		$propertyId = $statement->getClaim()->getPropertyId();
+		$propertyId = $statement->getPropertyId();
 
 		$parameters = array ();
 

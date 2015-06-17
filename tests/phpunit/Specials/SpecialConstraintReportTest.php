@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Specials\SpecialConstraintRepor
 
 use Wikibase\Test\SpecialPageTestBase;
 use DataValues\StringValue;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -101,16 +100,15 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$store->saveEntity( $itemQ1, 'TestEntityQ1', $GLOBALS[ 'wgUser' ], EDIT_NEW );
 			self::$idMap[ 'Q1' ] = $itemQ1->getId();
 
-			$claimGuidGenerator = new ClaimGuidGenerator();
+			$statementGuidGenerator = new ClaimGuidGenerator();
 
 			$dataValue = new StringValue( 'foo' );
 			$snak = new PropertyValueSnak( self::$idMap[ 'P1' ], $dataValue );
-			$claim = new Claim( $snak );
-			$claimGuid = $claimGuidGenerator->newGuid( self::$idMap[ 'Q1' ] );
-			self::$claimGuids[ 'P1' ] = $claimGuid;
-			$claim->setGuid( $claimGuid );
-			$statement = new Statement( $claim );
-			$itemQ1->addClaim( $statement );
+			$statement = new Statement( $snak );
+			$statementGuid = $statementGuidGenerator->newGuid( self::$idMap[ 'Q1' ] );
+			self::$claimGuids[ 'P1' ] = $statementGuid;
+			$statement->setGuid( $statementGuid );
+			$itemQ1->getStatements()->addStatement( $statement );
 
 			$store->saveEntity( $itemQ1, 'TestEntityQ1', $GLOBALS[ 'wgUser' ], EDIT_UPDATE );
 

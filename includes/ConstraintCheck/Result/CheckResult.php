@@ -68,7 +68,7 @@ class CheckResult {
 	 * @return PropertyId
 	 */
 	public function getPropertyId() {
-		return $this->statement->getClaim()->getPropertyId();
+		return $this->statement->getPropertyId();
 	}
 
 	/**

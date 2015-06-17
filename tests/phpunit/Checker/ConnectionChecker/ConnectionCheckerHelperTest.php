@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -31,8 +30,8 @@ class ConnectionCheckerHelperTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) ) );
-		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) ) );
+		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
+		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) );
 		$this->statementList = new StatementList( array( $statement1, $statement2 ) );
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 	}
@@ -67,7 +66,7 @@ class ConnectionCheckerHelperTest extends \MediaWikiTestCase {
 	}
 
 	public function testHasClaimNoValueSnak() {
-		$statementList = new StatementList( new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) ) );
+		$statementList = new StatementList( new Statement( new PropertyNoValueSnak( 1 ) ) );
 		$this->assertEquals( false, $this->connectionCheckerHelper->hasClaim( $statementList, 'P1', array( 'Q1', 'Q2' ) ) );
 	}
 }

@@ -68,7 +68,7 @@ class InverseChecker implements ConstraintChecker {
 			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
-		$mainSnak = $statement->getClaim()->getMainSnak();
+		$mainSnak = $statement->getMainSnak();
 
 		/*
 		/*

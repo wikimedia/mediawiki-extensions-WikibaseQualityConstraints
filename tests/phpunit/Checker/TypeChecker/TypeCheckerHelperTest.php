@@ -39,22 +39,22 @@ class TypeCheckerHelperTest extends \MediaWikiTestCase {
 
 
 	public function testCheckHasClassInRelationValid() {
-		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) );
-		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) ) );
+		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
+		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statements = new StatementList( array( $statement1, $statement2 ) );
 		$this->assertEquals( true, $this->helper->hasClassInRelation( $statements, 'P31', array( 'Q1' ) ) );
 	}
 
 	public function testCheckHasClassInRelationInvalid() {
-		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) );
-		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q100' ) ) ) ) );
+		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
+		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q100' ) ) ) );
 		$statements = new StatementList( array( $statement1, $statement2 ) );
 		$this->assertEquals( false, $this->helper->hasClassInRelation( $statements, 'P31', array( 'Q1' ) ) );
 	}
 
 	public function testCheckHasClassInRelationValidWithIndirection() {
-		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) );
-		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q5' ) ) ) ) );
+		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
+		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q5' ) ) ) );
 		$statements = new StatementList( array( $statement1, $statement2 ) );
 		$this->assertEquals( true, $this->helper->hasClassInRelation( $statements, 'P31', array( 'Q4' ) ) );
 	}
