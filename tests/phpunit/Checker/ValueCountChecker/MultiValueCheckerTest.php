@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -49,21 +48,21 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 
 	public function testMultiValueConstraintOne() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q207' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q207' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testMultiValueConstraintTwo() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q207' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q207' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testMultiValueConstraintTwoButOneDeprecated() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q409' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q409' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}

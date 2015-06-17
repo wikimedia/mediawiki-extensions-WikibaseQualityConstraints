@@ -19,8 +19,6 @@ use Wikibase\DataModel\Entity\Entity;
 class OneOfChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $helper;
@@ -42,6 +40,7 @@ class OneOfChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+		$constraintName = 'One of';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -51,15 +50,19 @@ class OneOfChecker implements ConstraintChecker {
 			$parameters['item'] = $this->helper->parseParameterArray( $items );
 		}
 
-		$mainSnak = $statement->getClaim()->getMainSnak();
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
+		$mainSnak = $statement->getMainSnak();
 
 		/*
 		 * error handling:
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = 'Properties with \'One of\' constraint need to have a value.';
-			return new CheckResult( $statement, 'IOne of', $parameters, CheckResult::STATUS_VIOLATION, $message );
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
+			return new CheckResult( $statement, 'One of', $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -70,11 +73,11 @@ class OneOfChecker implements ConstraintChecker {
 		 *   parameter $itemArray must not be null
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = 'Properties with \'One of\' constraint need to have values of type \'wikibase-entityid\'.';
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'wikibase-entityid' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( !$items ) {
-			$message = 'Properties with \'One of\' constraint need a parameter \'item\'.';
+			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraintName, 'property' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -82,7 +85,7 @@ class OneOfChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = 'The property\'s value must be one of the items defined in the parameters.';
+			$message = wfMessage( "wbqc-violation-message-one-of" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 

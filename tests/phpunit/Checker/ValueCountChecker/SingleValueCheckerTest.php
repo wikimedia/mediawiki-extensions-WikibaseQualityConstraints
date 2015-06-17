@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -49,21 +48,21 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 
 	public function testSingleValueConstraintOne() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testSingleValueConstraintTwo() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testSingleValueConstraintTwoButOneDeprecated() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}

@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -54,7 +53,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P2'
 		);
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -67,7 +66,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		);
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -81,7 +80,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		);
 		
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -94,7 +93,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 			'item' => 'Q42'
 		);
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -105,7 +104,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$constraintParameters = array();
 		
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );

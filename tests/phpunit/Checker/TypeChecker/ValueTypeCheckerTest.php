@@ -2,7 +2,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -50,7 +49,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	// relation 'instance'
 	public function testValueTypeConstraintInstanceValid() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
@@ -60,7 +59,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintInstanceValidWithIndirection() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
@@ -70,7 +69,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintInstanceValidWithMoreIndirection() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
@@ -81,7 +80,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	// relation 'subclass'
 	public function testValueTypeConstraintSubclassValid() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
@@ -91,7 +90,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintSubclassValidWithIndirection() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
@@ -101,7 +100,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintSubclassValidWithMoreIndirection() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
@@ -112,7 +111,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	// relation 'instance', violations
 	public function testValueTypeConstraintInstanceInvalid() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
@@ -122,7 +121,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintInstanceInvalidWithIndirection() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
@@ -132,7 +131,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintInstanceInvalidWithMoreIndirection() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
@@ -143,7 +142,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	// relation 'subclass', violations
 	public function testValueTypeConstraintSubclassInvalid() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
@@ -153,7 +152,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintSubclassInvalidWithIndirection() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
@@ -163,7 +162,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintSubclassInvalidWithMoreIndirection() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
@@ -174,7 +173,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	// edge cases
 	public function testValueTypeConstraintMissingRelation() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$constraintParameters = array(
 			'class' => 'Q100,Q101'
 		);
@@ -183,7 +182,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintMissingClass() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance'
 		);
@@ -192,7 +191,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintWrongType() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new StringValue( 'foo bar baz' ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new StringValue( 'foo bar baz' ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
@@ -202,7 +201,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintNonExistingValue() {
-		$statement = new Statement( new Claim( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q100' ) ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q100' ) ) ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
@@ -212,7 +211,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintNoValueSnak() {
-		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 		$constraintParameters = array(
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'

@@ -30,7 +30,7 @@ class TypeCheckerHelper {
 	}
 
 	/**
-	 * Checks, if one of the itemId serializations in $classesToCheck
+	 * Checks if one of the itemId serializations in $classesToCheck
 	 * is subclass of $comparativeClass
 	 * Due to cyclic dependencies, the checks stops after a certain
 	 * depth is reached
@@ -48,8 +48,8 @@ class TypeCheckerHelper {
 			return false; // lookup failed, probably because item doesn't exist
 		}
 
-		foreach ( $item->getStatements()->getWithPropertyId( new PropertyId( self::subclassId ) ) as $statement ) {
-			$mainSnak = $statement->getClaim()->getMainSnak();
+		foreach ( $item->getStatements()->getByPropertyId( new PropertyId( self::subclassId ) ) as $statement ) {
+			$mainSnak = $statement->getMainSnak();
 
 			if ( !( $this->hasCorrectType( $mainSnak ) ) ) {
 				continue;
@@ -88,8 +88,8 @@ class TypeCheckerHelper {
 	 */
 	public function hasClassInRelation( StatementList $statements, $relationId, $classesToCheck ) {
 		$compliance = null;
-		foreach ( $statements->getWithPropertyId( new PropertyId( $relationId ) ) as $statement ) {
-			$mainSnak = $claim = $statement->getClaim()->getMainSnak();
+		foreach ( $statements->getByPropertyId( new PropertyId( $relationId ) ) as $statement ) {
+			$mainSnak = $claim = $statement->getMainSnak();
 
 			if ( !$this->hasCorrectType( $mainSnak ) ) {
 				continue;

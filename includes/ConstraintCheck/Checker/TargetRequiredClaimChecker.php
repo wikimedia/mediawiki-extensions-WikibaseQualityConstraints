@@ -14,26 +14,18 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Class ConnectionChecker.
- * Checks 'Target required claim' constraints.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
  */
 class TargetRequiredClaimChecker implements ConstraintChecker {
 
-
 	/**
-	 * Wikibase entity lookup.
-	 *
 	 * @var EntityLookup
 	 */
 	private $entityLookup;
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $constraintReportHelper;
@@ -64,6 +56,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+		$constraintName = 'Target required claim';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -79,14 +72,18 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			$parameters['item'] = $this->constraintReportHelper->parseParameterArray( $items );
 		}
 
-		$mainSnak = $statement->getClaim()->getMainSnak();
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
+		$mainSnak = $statement->getMainSnak();
 
 		/*
 		 * error handling:
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = 'Properties with \'Target required claim\' constraint need to have a value.';
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -98,17 +95,17 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 *   parameter $property must not be null
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = 'Properties with \'Target required claim\' constraint need to have values of type \'wikibase-entityid\'.';
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'wikibase-entityid' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( !$property ) {
-			$message = 'Properties with \'Target required claim\' constraint need a parameter \'property\'.';
+			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraintName, 'property' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$targetEntity = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetEntity === null ) {
-			$message = 'Target entity does not exist.';
+			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		$targetEntityStatementList = $targetEntity->getStatements();
@@ -123,7 +120,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = 'This property must only be used when there is a statement on its value entity using the property defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-target-required-claim-property" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
@@ -131,11 +128,12 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = 'This property must only be used when there is a statement on its value entity using the property with one of the values defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-target-required-claim-claim" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		}
 
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
+
 }

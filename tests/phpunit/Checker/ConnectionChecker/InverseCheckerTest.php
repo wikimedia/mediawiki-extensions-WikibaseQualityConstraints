@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -54,7 +53,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		
 		$value = new EntityIdValue( new ItemId( 'Q7' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'property' => 'P1'
@@ -67,7 +66,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$value = new EntityIdValue( new ItemId( 'Q8' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'property' => 'P1'
@@ -80,7 +79,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$value = new EntityIdValue( new ItemId( 'Q7' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array();
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
@@ -91,7 +90,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$value = new StringValue( 'Q7' );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'property' => 'P1'
@@ -104,7 +103,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = array(
 			'property' => 'P1'
@@ -116,7 +115,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	public function testInverseConstraintNoValueSnak() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
-		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 
 		$constraintParameters = array(
 			'property' => 'P1'

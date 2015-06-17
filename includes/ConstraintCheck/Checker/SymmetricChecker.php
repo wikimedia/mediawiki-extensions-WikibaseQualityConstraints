@@ -14,8 +14,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Symmetric' constraints.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -23,15 +21,11 @@ use Wikibase\DataModel\Entity\Entity;
 class SymmetricChecker implements ConstraintChecker {
 
 	/**
-	 * Wikibase entity lookup.
-	 *
 	 * @var EntityLookup
 	 */
 	private $entityLookup;
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $constraintReportHelper;
@@ -62,17 +56,23 @@ class SymmetricChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+		$constraintName = 'Symmetric';
 		$parameters = array ();
 
-		$mainSnak = $statement->getClaim()->getMainSnak();
-		$propertyId = $statement->getClaim()->getPropertyId();
+		$constraintParameters = $constraint->getConstraintParameters();
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
+		$mainSnak = $statement->getMainSnak();
+		$propertyId = $statement->getPropertyId();
 
 		/*
 		 * error handling:
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = 'Properties with \'Symmetric\' constraint need to have a value.';
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -83,13 +83,13 @@ class SymmetricChecker implements ConstraintChecker {
 		 *   type of $dataValue for properties with 'Symmetric' constraint has to be 'wikibase-entityid'
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = 'Properties with \'Symmetric\' constraint need to have values of type \'wikibase-entityid\'.';
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName, 'wikibase-entityid' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$targetItem = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetItem === null ) {
-			$message = 'Target item does not exist.';
+			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		$targetItemStatementList = $targetItem->getStatements();
@@ -98,7 +98,7 @@ class SymmetricChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = 'This property must only be used when there is a statement on its value entity with the same property and this item as its value.';
+			$message = wfMessage( "wbqc-violation-message-symmetric" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 

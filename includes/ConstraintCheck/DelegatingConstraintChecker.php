@@ -82,14 +82,12 @@ class DelegatingConstraintChecker {
 		$result = array ();
 		foreach ( $this->statements as $statement ) {
 
-			$claim = $statement->getClaim();
-
-			if ( $claim->getMainSnak()->getType() !== 'value' ) {
+			if ( $statement->getMainSnak()->getType() !== 'value' ) {
 				// skip 'somevalue' and 'novalue' cases, todo: handle in a better way
 				continue;
 			}
 
-			$propertyId = $claim->getPropertyId();
+			$propertyId = $statement->getPropertyId();
 			$numericPropertyId = $propertyId->getNumericId();
 
 			$constraints = $this->constraintRepository->queryConstraintsForProperty( $numericPropertyId );

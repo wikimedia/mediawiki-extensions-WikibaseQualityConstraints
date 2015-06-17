@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Test\FormatChecker;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -56,16 +55,16 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$value9 = new StringValue( 'nm000139' );
 		$value10 = new StringValue( 'nmnm0001398' );
 
-		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value1 ) ) );
-		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value2 ) ) );
-		$statement3 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value3 ) ) );
-		$statement4 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value4 ) ) );
-		$statement5 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value5 ) ) );
-		$statement6 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value6 ) ) );
-		$statement7 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value7 ) ) );
-		$statement8 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value8 ) ) );
-		$statement9 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value9 ) ) );
-		$statement10 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value10 ) ) );
+		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value1 ) );
+		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value2 ) );
+		$statement3 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value3 ) );
+		$statement4 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value4 ) );
+		$statement5 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value5 ) );
+		$statement6 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value6 ) );
+		$statement7 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value7 ) );
+		$statement8 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value8 ) );
+		$statement9 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value9 ) );
+		$statement10 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value10 ) );
 
 		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement1, $this->getConstraintMock( array( 'pattern' => $pattern ) ) )->getStatus(), 'check should comply' );
 		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement2, $this->getConstraintMock( array( 'pattern' => $pattern ) ) )->getStatus(), 'check should comply' );
@@ -93,16 +92,16 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$value9 = new StringValue( 'Deinococcus-Thermus' );
 		$value10 = new StringValue( 'Escherichia coli O157:H7' );
 
-		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value1 ) ) );
-		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value2 ) ) );
-		$statement3 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value3 ) ) );
-		$statement4 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value4 ) ) );
-		$statement5 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value5 ) ) );
-		$statement6 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value6 ) ) );
-		$statement7 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value7 ) ) );
-		$statement8 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value8 ) ) );
-		$statement9 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value9 ) ) );
-		$statement10 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value10 ) ) );
+		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value1 ) );
+		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value2 ) );
+		$statement3 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value3 ) );
+		$statement4 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value4 ) );
+		$statement5 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value5 ) );
+		$statement6 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value6 ) );
+		$statement7 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value7 ) );
+		$statement8 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value8 ) );
+		$statement9 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value9 ) );
+		$statement10 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value10 ) );
 
 		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement1, $this->getConstraintMock( array( 'pattern' => $pattern ) ) )->getStatus(), 'check should comply' );
 		$this->assertEquals( 'compliance', $this->formatChecker->checkConstraint( $statement2, $this->getConstraintMock( array( 'pattern' => $pattern ) ) )->getStatus(), 'check should comply' );
@@ -119,20 +118,20 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	public function testFormatConstraintEmptyPattern() {
 		$pattern = null;
 		$value = new StringValue( 'Populus × canescens' );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) );
 		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => $pattern ) ) )->getStatus(), 'check should not comply' );
 	}
 
 	public function testFormatConstraintNoStringValue() {
 		$pattern = "(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+(( [A-Z]?[a-z]+)|( ([a-z]+-)?([a-z]+-)?[a-z]+)|( ×([a-z]+-)?([a-z]+-)?([a-z]+-)?([a-z]+-)?[a-z]+)|( \([A-Z][a-z]+\) [a-z]+)|( (‘|')[A-Z][a-z]+(('|’)s)?( de)?( [A-Z][a-z]+(-([A-Z])?[a-z]+)*)*('|’)*)|( ×| Group| (sub)?sp\.| (con)?(sub)?(notho)?var\.| (sub)?ser\.| (sub)?sect\.| subg\.| (sub)?f\.))*))";
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) );
 		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => $pattern ) ) )->getStatus(), 'check should not comply' );
 	}
 
 	public function testFormatConstraintNoValueSnak() {
 		$pattern = ".";
-		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => $pattern ) ) )->getStatus(), 'check should not comply' );
 	}
 

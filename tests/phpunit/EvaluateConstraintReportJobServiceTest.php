@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\ItemId;
@@ -38,7 +37,7 @@ class EvaluateConstraintReportJobServiceTest extends \MediaWikiTestCase {
 
 		$this->checkTimestamp = wfTimestamp( TS_MW );
 
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1337' ), new StringValue( 'f00b4r' ) ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1337' ), new StringValue( 'f00b4r' ) ) );
 		$this->constraintName = 'Single value';
 
 		$results = array ();

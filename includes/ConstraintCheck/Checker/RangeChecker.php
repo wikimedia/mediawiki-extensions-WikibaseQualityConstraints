@@ -13,9 +13,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Class RangeChecker.
- * Checks 'Range' constraints.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -23,8 +20,6 @@ use Wikibase\DataModel\Entity\Entity;
 class RangeChecker implements ConstraintChecker {
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
 	 * @var ConstraintReportHelper
 	 */
 	private $constraintReportHelper;
@@ -53,17 +48,22 @@ class RangeChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
+		$constraintName = 'Range';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$mainSnak = $statement->getClaim()->getMainSnak();
+		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+		}
+
+		$mainSnak = $statement->getMainSnak();
 
 		/*
 		 * error handling:
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = 'Properties with \'Range\' constraint need to have a value.';
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -78,22 +78,22 @@ class RangeChecker implements ConstraintChecker {
 			if ( array_key_exists( 'minimum_quantity', $constraintParameters ) && array_key_exists( 'maximum_quantity', $constraintParameters ) && !array_key_exists( 'minimum_date', $constraintParameters ) && !array_key_exists( 'maximum_date', $constraintParameters ) ) {
 				$min = $constraintParameters['minimum_quantity'];
 				$max = $constraintParameters['maximum_quantity'];
-				$parameters[ 'minimum_quantity' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_quantity'] );
-				$parameters[ 'maximum_quantity' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['maximum_quantity'] );
+				$parameters['minimum_quantity'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_quantity'] );
+				$parameters['maximum_quantity'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['maximum_quantity'] );
 			} else {
-				$message = 'Properties with values of type \'quantity\' with \'Range\' constraint need the parameters \'minimum quantity\' and \'maximum quantity\'.';
+				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'quantity', 'minimum_quantity" and "maximum_quantity' )->escaped();
 			}
 		} elseif ( $dataValue->getType() === 'time' ) {
 			if ( !array_key_exists( 'minimum_quantity', $constraintParameters ) && !array_key_exists( 'maximum_quantity', $constraintParameters ) && array_key_exists( 'minimum_date', $constraintParameters ) && array_key_exists( 'maximum_date', $constraintParameters ) ) {
 				$min = $constraintParameters['minimum_date'];
 				$max = $constraintParameters['maximum_date'];
-				$parameters[ 'minimum_date' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_date'] );
-				$parameters[ 'maximum_date' ] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['maximum_date'] );
+				$parameters['minimum_date'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['minimum_date'] );
+				$parameters['maximum_date'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['maximum_date'] );
 			} else {
-				$message = 'Properties with values of type \'time\' with \'Range\' constraint need the parameters \'minimum date\' and \'maximum date\'.';
+				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'time', 'minimum_date" and "maximum_date' )->escaped();
 			}
 		} else {
-			$message = 'Properties with \'Range\' constraint need to have values of type \'quantity\' or \'time\'.';
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'quantity" or "time' )->escaped();
 		}
 		if ( isset( $message ) ) {
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
@@ -102,7 +102,7 @@ class RangeChecker implements ConstraintChecker {
 		$comparativeValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
 
 		if ( $comparativeValue < $min || $comparativeValue > $max ) {
-			$message = 'The property\'s value must neither be smaller than the minimum nor larger than the maximum defined in the parameters.';
+			$message = wfMessage( "wbqc-violation-message-range" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = '';
@@ -111,4 +111,5 @@ class RangeChecker implements ConstraintChecker {
 
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
+
 }

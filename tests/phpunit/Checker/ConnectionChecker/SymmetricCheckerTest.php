@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Claim\Claim;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -55,7 +54,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	
 	public function testSymmetricConstraintWithCorrectSpouse() {
 		$value = new EntityIdValue( new ItemId( 'Q3' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -63,7 +62,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 	public function testSymmetricConstraintWithWrongSpouse() {
 		$value = new EntityIdValue( new ItemId( 'Q2' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -71,7 +70,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 	public function testSymmetricConstraintWithWrongDataValue() {
 		$value = new StringValue( 'Q3' );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -79,14 +78,14 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 	public function testSymmetricConstraintWithNonExistentEntity() {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testSymmetricConstraintNoValueSnak() {
-		$statement = new Statement( new Claim( new PropertyNoValueSnak( 1 ) ) );
+		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
