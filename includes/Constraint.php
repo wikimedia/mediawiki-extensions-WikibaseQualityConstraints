@@ -2,6 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+/**
+ * Class Constraint
+ *
+ * @package WikibaseQuality\ConstraintReport
+ *
+ * Contains all data belonging to a certain constraint.
+ */
 class Constraint {
 
 	/**
@@ -11,19 +18,30 @@ class Constraint {
 
 	/**
 	 * @var string
+	 *
+	 * ItemId for the constraint (each Constraint will have
+	 * a representation as an item)
+	 * Currently contains the name since the constraints are
+	 * not migrated yet.
 	 */
 	private $constraintTypeQid;
 
 	/**
-	 * @var string
+	 * @var PropertyId
 	 */
 	private $propertyId;
 
 	/**
-	 * @var array
+	 * @var array (variable length; key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21')
 	 */
 	private $constraintParameters;
 
+	/**
+	 * @param string $constraintClaimGuid
+	 * @param string $propertyId
+	 * @param string $constraintTypeQid
+	 * @param array $constraintParameters
+	 */
 	public function __construct( $constraintClaimGuid, $propertyId, $constraintTypeQid, $constraintParameters) {
 		$this->constraintClaimGuid = $constraintClaimGuid;
 		$this->constraintTypeQid = $constraintTypeQid;
@@ -40,20 +58,25 @@ class Constraint {
 
 	/**
 	 * @return string
+	 *
+	 * ItemId for the constraint (each Constraint will have
+	 * a representation as an item)
+	 * Currently contains the name since the constraints are
+	 * not migrated yet.
 	 */
 	public function getConstraintTypeQid() {
 		return $this->constraintTypeQid;
 	}
 
 	/**
-	 * @return string
+	 * @return PropertyId
 	 */
 	public function getPropertyId() {
 		return $this->propertyId;
 	}
 
 	/**
-	 * @return array
+	 * @return array (variable length; key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21')
 	 */
 	public function getConstraintParameters() {
 		return $this->constraintParameters;

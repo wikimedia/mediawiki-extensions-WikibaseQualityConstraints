@@ -3,6 +3,8 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use InvalidArgumentException;
+use Wikibase\DataModel\Entity\PropertyId;
+
 
 /**
  * Class ConstraintRepository
@@ -82,7 +84,7 @@ class ConstraintRepository {
 		foreach( $results as $result ) {
 			$constraintTypeQid = $result->constraint_type_qid;
 			$constraintParameters = (array) json_decode( $result->constraint_parameters );
-			$constraints[] = new Constraint( $result->constraint_guid, $result->pid, $constraintTypeQid, $constraintParameters );
+			$constraints[] = new Constraint( $result->constraint_guid, new PropertyId( $result->pid ), $constraintTypeQid, $constraintParameters );
 		}
 		return $constraints;
 	}

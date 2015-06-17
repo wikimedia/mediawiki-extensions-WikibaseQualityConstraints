@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-
+use InvalidArgumentException;
 
 /**
  * Class ConstraintReportHelper
@@ -34,7 +34,7 @@ class ConstraintReportHelper {
 	 * @return array
 	 */
 	public function stringToArray( $templateString ) {
-		if ( is_null( $templateString ) || $templateString === '' ) {
+		if ( $templateString === null || $templateString === '' ) {
 			return array ( '' );
 		} else {
 			return explode( ',', $this->removeBrackets( str_replace( ' ', '', $templateString ) ) );
@@ -43,7 +43,7 @@ class ConstraintReportHelper {
 
 	private function parseParameter( $parameter, $asString = false ) {
 		if ( $parameter === null ) {
-			return 'null';
+			return wfMessage( "wbqc-constraintreport-no-parameter" )->escaped();
 		}
 
 		if ( $asString ) {
@@ -58,7 +58,7 @@ class ConstraintReportHelper {
 			} elseif ( $startsWith === 'P' ) {
 				return new PropertyId( $parameter );
 			}
-		} catch (\InvalidArgumentException $e) {
+		} catch ( InvalidArgumentException $e ) {
 			return '';
 		}
 
@@ -104,11 +104,7 @@ class ConstraintReportHelper {
 	 * @return null|string
 	 */
 	public function getParameterFromJson( $json, $parameter ) {
-		if ( isset( $json->$parameter ) ) {
-			return $json->$parameter;
-		} else {
-			return null;
-		}
+		isset( $json->$parameter ) ? $json->$parameter : null;
 	}
 
 }
