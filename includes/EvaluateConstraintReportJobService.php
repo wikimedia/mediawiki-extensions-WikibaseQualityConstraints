@@ -8,12 +8,30 @@ use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 
+/**
+ * Class EvaluateConstraintReportJobService
+ *
+ * @package WikibaseQuality\ConstraintReport
+ *
+ * Service that gets used be EvaluateConstraintReportJob
+ * to build a summary to be logged from the results
+ * (or, in case of a deferred job, gets the results from
+ * the ConstraintChecker first)
+ * and finally writes it to wfDebugLog
+ */
 class EvaluateConstraintReportJobService {
 
 	public function writeToLog( $message ) {
 		wfDebugLog( 'wbq_evaluation', $message );
 	}
 
+	/**
+	 * @param string $resultSummary (json representation of checkResults)
+	 * @param int $timestamp (TS_UNIX)
+	 * @param array $params
+	 *
+	 * @return string
+	 */
 	public function buildMessageForLog( $resultSummary, $timestamp, $params ) {
 		return json_encode(
 			array (
@@ -26,6 +44,11 @@ class EvaluateConstraintReportJobService {
 		);
 	}
 
+	/**
+	 * @param $results
+	 *
+	 * @return string
+	 */
 	public function buildResultSummary( $results ) {
 		$summary = array();
 
@@ -48,6 +71,15 @@ class EvaluateConstraintReportJobService {
 		return json_encode( $summary );
 	}
 
+	/**
+	 * Returns json-representation of CheckResults,
+	 * either from params or from ConstraintChecker
+	 * (when invoked via a deferred job; see EvaluateConstraintReportJob)
+	 *
+	 * @param $params
+	 *
+	 * @return string
+	 */
 	public function getResults( $params ) {
 		if ( !array_key_exists( 'results', $params ) ) {
 			$lookup = WikibaseRepo::getDefaultInstance()->getEntityLookup();

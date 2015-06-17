@@ -43,7 +43,7 @@ class ValueCountCheckerHelperTest extends \MediaWikiTestCase {
 		$checker = new ValueCountCheckerHelper();
 		$propertyCount = $checker->getPropertyCount( $this->statementList );
 
-		$this->assertEquals( 1, $propertyCount[1] );
-		$this->assertEquals( 2, $propertyCount[2] );
+		$this->assertEquals( 1, $propertyCount['P1'] );
+		$this->assertEquals( 2, $propertyCount['P2'] );
 	}
 }

@@ -40,7 +40,6 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	protected function tearDown() {
 		unset( $this->lookup );
 		unset( $this->typeStatement );
-		unset( $this->typeStatement );
 		parent::tearDown();
 	}
 
