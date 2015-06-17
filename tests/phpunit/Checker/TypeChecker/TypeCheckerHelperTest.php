@@ -7,6 +7,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
@@ -40,22 +41,22 @@ class TypeCheckerHelperTest extends \MediaWikiTestCase {
 	public function testCheckHasClassInRelationValid() {
 		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) );
 		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) ) );
-		$statements = array( $statement1, $statement2 );
-		$this->assertEquals( true, $this->helper->hasClassInRelation( $statements, 31, array( 'Q1' ) ) );
+		$statements = new StatementList( array( $statement1, $statement2 ) );
+		$this->assertEquals( true, $this->helper->hasClassInRelation( $statements, 'P31', array( 'Q1' ) ) );
 	}
 
 	public function testCheckHasClassInRelationInvalid() {
 		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) );
 		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q100' ) ) ) ) );
-		$statements = array( $statement1, $statement2 );
-		$this->assertEquals( false, $this->helper->hasClassInRelation( $statements, 31, array( 'Q1' ) ) );
+		$statements = new StatementList( array( $statement1, $statement2 ) );
+		$this->assertEquals( false, $this->helper->hasClassInRelation( $statements, 'P31', array( 'Q1' ) ) );
 	}
 
 	public function testCheckHasClassInRelationValidWithIndirection() {
 		$statement1 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) );
 		$statement2 = new Statement( new Claim( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q5' ) ) ) ) );
-		$statements = array( $statement1, $statement2 );
-		$this->assertEquals( true, $this->helper->hasClassInRelation( $statements, 31, array( 'Q4' ) ) );
+		$statements = new StatementList( array( $statement1, $statement2 ) );
+		$this->assertEquals( true, $this->helper->hasClassInRelation( $statements, 'P31', array( 'Q4' ) ) );
 	}
 
 	public function testCheckIsSubclassOfValidWithIndirection() {
