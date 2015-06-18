@@ -59,12 +59,12 @@ class ConstraintReportHelperTest extends \MediaWikiTestCase {
 
 	public function testParseNullParameter() {
 		$parameter = null;
-		$this->assertEquals( array ( 'null' ), $this->helper->parseSingleParameter( $parameter ) );
+		$this->assertEquals( array ( 'none' ), $this->helper->parseSingleParameter( $parameter ) );
 	}
 
 	public function testParseNullParameterArray() {
 		$parameter = array ( '' );
-		$this->assertEquals( array ( 'null' ), $this->helper->parseParameterArray( $parameter ) );
+		$this->assertEquals( array ( 'none' ), $this->helper->parseParameterArray( $parameter ) );
 	}
 
 	public function testParseParameterArray() {

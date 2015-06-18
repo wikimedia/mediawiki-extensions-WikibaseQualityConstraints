@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Maintenance;
 
 // @codeCoverageIgnoreStart
+use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 
@@ -63,7 +64,8 @@ class UpdateTable extends \Maintenance {
 			}
 
 			$constraintParameters = (array) json_decode( $data[3] );
-			$accumulator[] = new Constraint( $data[0], $data[1], $data[2], $constraintParameters );
+			$propertyId = new PropertyId( 'P' . $data[1] );
+			$accumulator[] = new Constraint( $data[0], $propertyId, $data[2], $constraintParameters );
 		}
 
 	}

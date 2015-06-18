@@ -42,7 +42,7 @@ class ConstraintRepository {
 			function ( Constraint $constraint ) {
 				return array(
 					'constraint_guid' => $constraint->getConstraintClaimGuid(),
-					'pid' => $constraint->getPropertyId(),
+					'pid' => $constraint->getPropertyId()->getNumericId(),
 					'constraint_type_qid' => $constraint->getConstraintTypeQid(),
 					'constraint_parameters' => json_encode( $constraint->getConstraintParameters() )
 				);
@@ -84,7 +84,8 @@ class ConstraintRepository {
 		foreach( $results as $result ) {
 			$constraintTypeQid = $result->constraint_type_qid;
 			$constraintParameters = (array) json_decode( $result->constraint_parameters );
-			$constraints[] = new Constraint( $result->constraint_guid, new PropertyId( $result->pid ), $constraintTypeQid, $constraintParameters );
+			$serializedPid = 'P' . $result->pid;
+			$constraints[] = new Constraint( $result->constraint_guid, new PropertyId( $serializedPid ), $constraintTypeQid, $constraintParameters );
 		}
 		return $constraints;
 	}

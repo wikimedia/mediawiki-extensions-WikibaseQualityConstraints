@@ -2,6 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use Wikibase\DataModel\Entity\PropertyId;
+
+
 /**
  * Class Constraint
  *
@@ -38,11 +41,11 @@ class Constraint {
 
 	/**
 	 * @param string $constraintClaimGuid
-	 * @param string $propertyId
+	 * @param PropertyId $propertyId
 	 * @param string $constraintTypeQid
 	 * @param array $constraintParameters
 	 */
-	public function __construct( $constraintClaimGuid, $propertyId, $constraintTypeQid, $constraintParameters) {
+	public function __construct( $constraintClaimGuid, PropertyId $propertyId, $constraintTypeQid, $constraintParameters) {
 		$this->constraintClaimGuid = $constraintClaimGuid;
 		$this->constraintTypeQid = $constraintTypeQid;
 		$this->propertyId = $propertyId;

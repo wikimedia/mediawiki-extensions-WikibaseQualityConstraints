@@ -87,7 +87,7 @@ class ConstraintReportHelper {
 	 */
 	public function parseParameterArray( $parameterArray, $asString = false ) {
 		if ( $parameterArray[ 0 ] === '' ) { // parameter not given
-			return array ( 'null' );
+			return array ( 'none' );
 		} else {
 			$array = array ();
 			foreach ( $parameterArray as $parameter ) {
@@ -104,7 +104,7 @@ class ConstraintReportHelper {
 	 * @return null|string
 	 */
 	public function getParameterFromJson( $json, $parameter ) {
-		isset( $json->$parameter ) ? $json->$parameter : null;
+		return isset( $json->$parameter ) ? $json->$parameter : null;
 	}
 
 }

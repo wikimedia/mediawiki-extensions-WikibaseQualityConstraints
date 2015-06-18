@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
@@ -43,8 +44,8 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
         $this->insertTestData();
 
         $constraints = array(
-            new Constraint( 'foo', 42, 'TestConstraint', array( 'foo' => 'bar' ) ),
-            new Constraint( 'bar', 42, 'TestConstraint', array( 'bar' => 'baz' ) )
+            new Constraint( 'foo', new PropertyId('P42'), 'TestConstraint', array( 'foo' => 'bar' ) ),
+            new Constraint( 'bar', new PropertyId('P42'), 'TestConstraint', array( 'bar' => 'baz' ) )
         );
         $repo = new ConstraintRepository();
         $repo->insertBatch( $constraints );
