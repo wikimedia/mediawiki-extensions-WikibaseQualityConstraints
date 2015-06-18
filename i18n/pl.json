@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"Chrumps"
+		]
+	},
+	"wbqc-constraintreport-form-submit-label": "Sprawdź",
+	"wbqc-constraintreport-result-headline": "Wynik dla",
+	"wbqc-constraintreport-status-violation": "Naruszenie",
+	"wbqc-constraintreport-status-exception": "Wyjątek",
+	"wbqc-constraintreport-status-todo": "Do zrobienia",
+	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-violation-header-parameters": "Parametry:",
+	"wbqc-violation-message-diff-within-range-property-must-exist": "Właściwość określona w parametrach musi istnieć.",
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Właściwość określona w parametrach musi mieć wartość tego samego typu jak ta właściwość.",
+	"wbqc-violation-message-format": "Wartości właściwości musi pasować do wzorca określonego w parametrach.",
+	"wbqc-violation-message-item-property": "Ta właściwość może stosowana tylko wtedy, gdy nie ma innej deklaracji używającej właściwości określonej w parametrach.",
+	"wbqc-violation-message-one-of": "Wartości właściwości musi być jednym z elementów określonych w parametrach.",
+	"wbqc-violation-message-qualifier": "Ta właściwość może być stosowana tylko jako kwalifikator.",
+	"wbqc-violation-message-range": "Wartość właściwość nie może być mniejsza niż minimalna ani większy niż maksymalna w określonych parametrach.",
+	"wbqc-violation-message-single-value": "Ta właściwość może mieć tylko jedną wartość. Oznacza to, że może być tylko jedno stwierdzenie używające tej właściwości."
+}
