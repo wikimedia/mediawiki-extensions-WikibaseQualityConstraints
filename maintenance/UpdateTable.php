@@ -2,15 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Maintenance;
 
-// @codeCoverageIgnoreStart
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 
-
-$basePath = getenv( "MW_INSTALL_PATH" ) !== false ? getenv( "MW_INSTALL_PATH" ) : __DIR__ . "/../../..";
-require_once $basePath . "/maintenance/Maintenance.php";
-// @codeCoverageIgnoreEnd
 
 /**
  * Class UpdateTable

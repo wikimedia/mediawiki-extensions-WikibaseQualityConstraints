@@ -12,10 +12,9 @@ final class WikibaseQualityConstraintsHooks {
 		return true;
 	}
 
-	public static function onUnitTestsList( &$files ) {
-		$files = array_merge(
-			$files,
-			glob( __DIR__ . '/tests/phpunit/*Test.php' ) );
+	public static function onUnitTestsList( &$paths ) {
+		$paths[] = __DIR__ . '/tests/phpunit';
 		return true;
 	}
+
 }

@@ -1,0 +1,20 @@
+{
+	// https://github.com/jscs-dev/node-jscs/blob/master/presets/wikimedia.json
+	"preset": "wikimedia",
+
+	// ----
+	// Own rules
+
+	"disallowSpaceAfterKeywords": [
+		"catch",
+		"for",
+//		"if",
+		"switch",
+		"while"
+	],
+	"requireSpaceAfterKeywords": [
+		"else"
+	],
+
+	"excludeFiles": [ "node_modules/**", "vendor/**" ]
+}

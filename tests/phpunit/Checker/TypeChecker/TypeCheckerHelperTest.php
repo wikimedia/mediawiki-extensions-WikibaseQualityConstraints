@@ -70,4 +70,5 @@ class TypeCheckerHelperTest extends \MediaWikiTestCase {
 	public function testCheckIsSubclassCyclic() {
 		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q7' ), array( 'Q100', 'Q101' ), 1) );
 	}
+
 }

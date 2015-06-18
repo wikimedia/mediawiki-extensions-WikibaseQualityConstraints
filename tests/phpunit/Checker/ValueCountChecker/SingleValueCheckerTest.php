@@ -74,10 +74,10 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameter' )
-			 ->willReturn( $parameter );
+			 ->will( $this->returnValue( $parameter ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
-			 ->willReturn( 'Single value' );
+			 ->will( $this->returnValue( 'Single value' ) );
 
 		return $mock;
 	}

@@ -44,7 +44,6 @@ class RangeCheckerHelperTest extends \MediaWikiTestCase {
 
 	public function testGetComparativeValueTimeInvalid() {
 		$this->assertNotEquals( '1.1.1970', $this->helper->getComparativeValue( $this->time ) );
-
 	}
 
 	public function testGetComparativeValueQuantityValid() {
@@ -54,4 +53,5 @@ class RangeCheckerHelperTest extends \MediaWikiTestCase {
 	public function testGetComparativeValueQuantityInvalid() {
 		$this->assertNotEquals( $this->quantity, $this->helper->getComparativeValue( $this->quantity ) );
 	}
+
 }
