@@ -40,7 +40,6 @@ class FormatChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
-		$constraintName = 'Format';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -48,7 +47,7 @@ class FormatChecker implements ConstraintChecker {
 			$pattern = $constraintParameters['pattern'];
 			$parameters['pattern'] = $this->helper->parseSingleParameter( $pattern, true );
 		} else {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraintName, 'pattern' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'pattern' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -63,7 +62,7 @@ class FormatChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -75,7 +74,7 @@ class FormatChecker implements ConstraintChecker {
 		 *   parameter $pattern must not be null
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'string' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 

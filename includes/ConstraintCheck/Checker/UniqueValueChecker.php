@@ -11,9 +11,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Class ValueCountChecker.
- * Checks 'Unique value' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -42,7 +39,8 @@ class UniqueValueChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
 
-		$message = 'For technical reasons, the check for this constraint has not yet been implemented.';
+		$message = wfMessage( "wbqc-violation-message-not-yet-implemented" )->escaped();
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_TODO, $message );
 	}
+
 }

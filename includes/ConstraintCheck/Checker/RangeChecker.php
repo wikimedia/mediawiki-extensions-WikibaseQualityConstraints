@@ -48,7 +48,6 @@ class RangeChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
-		$constraintName = 'Range';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -63,7 +62,7 @@ class RangeChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -93,7 +92,7 @@ class RangeChecker implements ConstraintChecker {
 				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'time', 'minimum_date" and "maximum_date' )->escaped();
 			}
 		} else {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'quantity" or "time' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'quantity" or "time' )->escaped();
 		}
 		if ( isset( $message ) ) {
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );

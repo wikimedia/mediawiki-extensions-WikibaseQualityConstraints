@@ -66,7 +66,7 @@ class ItemChecker implements ConstraintChecker {
 
 		$items = false;
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
-			$items = explode(',', $constraintParameters['item'] );
+			$items = explode( ',', $constraintParameters['item'] );
 			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( $items );
 		}
 
@@ -75,7 +75,7 @@ class ItemChecker implements ConstraintChecker {
 		 *   parameter $property must not be null
 		 */
 		if ( !$property ) {
-			$message = 'Properties with \'Item\' constraint need a parameter \'property\'.';
+			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -89,7 +89,7 @@ class ItemChecker implements ConstraintChecker {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = 'This property must only be used when there is another statement using the property defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-item-property" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
@@ -97,7 +97,7 @@ class ItemChecker implements ConstraintChecker {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = 'This property must only be used when there is another statement using the property with one of the values defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-item-claim" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		}

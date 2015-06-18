@@ -42,8 +42,8 @@ class MultiValueChecker implements ConstraintChecker {
 
 		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $entity->getStatements() );
 
-		if ( $propertyCountArray[ $propertyId->getSerialization() ] <= 1 ) {
-			$message = 'This property must have a multiple values, that is there must be more than one claim using this property.';
+		if ( $propertyCountArray[$propertyId->getSerialization()] <= 1 ) {
+			$message = wfMessage( "wbqc-violation-message-multi-value" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = '';

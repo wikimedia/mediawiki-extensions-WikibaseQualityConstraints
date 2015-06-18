@@ -11,8 +11,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Qualifiers' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -46,7 +44,7 @@ class QualifiersChecker implements ConstraintChecker {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$parameters[ 'property' ] = $this->helper->parseParameterArray( explode( ',', $constraintParameters['property'] ) );
+		$parameters['property'] = $this->helper->parseParameterArray( explode( ',', $constraintParameters['property'] ) );
 
 		/*
 		 * error handling:
@@ -59,7 +57,7 @@ class QualifiersChecker implements ConstraintChecker {
 		foreach ( $statement->getQualifiers() as $qualifier ) {
 			$pid = $qualifier->getPropertyId()->getSerialization();
 			if ( !in_array( $pid, explode( ',', $constraintParameters['property'] ) ) ) {
-				$message = 'The property must only be used with (no other than) the qualifiers defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-qualifiers" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 				break;
 			}
@@ -67,4 +65,5 @@ class QualifiersChecker implements ConstraintChecker {
 
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
+
 }

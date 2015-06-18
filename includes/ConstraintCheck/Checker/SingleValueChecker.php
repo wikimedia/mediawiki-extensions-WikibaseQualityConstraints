@@ -11,8 +11,6 @@ use Wikibase\DataModel\Entity\Entity;
 
 
 /**
- * Checks 'Single value' constraint.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -45,7 +43,7 @@ class SingleValueChecker implements ConstraintChecker {
 		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $entity->getStatements() );
 
 		if ( $propertyCountArray[$propertyId->getSerialization()] > 1 ) {
-			$message = 'This property must only have a single value, that is there must only be one claim using this property.';
+			$message = wfMessage( "wbqc-violation-message-single-value" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = '';
@@ -54,4 +52,5 @@ class SingleValueChecker implements ConstraintChecker {
 
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
+
 }

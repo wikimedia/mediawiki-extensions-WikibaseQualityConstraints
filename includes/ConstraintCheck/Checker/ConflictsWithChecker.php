@@ -53,7 +53,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement,Constraint $constraint, Entity $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -62,7 +62,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 *   parameter $property must not be null
 		 */
 		if ( !array_key_exists( 'property', $constraintParameters ) ) {
-			$message = 'Properties with \'Conflicts with\' constraint need a parameter \'property\'.';
+			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -78,7 +78,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 */
 		if ( !array_key_exists( 'item', $constraintParameters ) ) {
 			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $constraintParameters['property'] ) ) {
-				$message = 'This property must not be used when there is another statement using the property defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )->params( $constraint->getConstraintTypeName() )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
 				$message = '';
@@ -86,7 +86,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 			}
 		} else {
 			if ( $this->connectionCheckerHelper->hasClaim( $entity->getStatements(), $constraintParameters['property'], explode( ',', $constraintParameters['item'] ) ) ) {
-				$message = 'This property must not be used when there is another statement using the property with one of the values defined in the parameters.';
+				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )->params( $constraint->getConstraintTypeName() )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
 				$message = '';

@@ -46,7 +46,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
 			$properties = explode( ',', $constraintParameters['property'] );
 		}
-		$parameters[ 'property' ] = $this->helper->parseParameterArray( $properties );
+		$parameters['property'] = $this->helper->parseParameterArray( $properties );
 		$qualifiersList = $statement->getQualifiers();
 		$qualifiers = array ();
 
@@ -59,7 +59,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 
 		foreach ( $properties as $property ) {
 			if ( !array_key_exists( $property, $qualifiers ) ) {
-				$message = 'The properties defined in the parameters have to be used as qualifiers on this statement.';
+				$message = wfMessage( "wbqc-violation-message-mandatory-qualifiers" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 				break;
 			}
