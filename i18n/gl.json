@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Elisardojm",
+			"Banjo"
+		]
+	},
+	"wbqc-constraintreport": "Informe de restrición",
+	"wbqc-constraintreport-explanation-part-one": "Esta páxina especial realiza revisións de restrición e todas as entidades que queira. As entidades búscanse no sistema real polo que cada violación de restrición que amañe será eliminada instantaneamente desta lista.",
+	"wbqc-constraintreport-explanation-part-two": "As restricións son analizadas nas páxinas de conversa das propiedades unha vez á semana, polo que se engade/borra/cambia unha restrición pode tardar ata unha semana ata que sexa reflectido neste informe de restricións. Actualmente hai traballos en progreso para migrar as restricións a declaracións en propiedades, permitindo que esta páxina especial faga revisións en vivo.",
+	"wbqc-constraintreport-form-section": "Revisar restriccións para entidade",
+	"wbqc-constraintreport-form-submit-label": "Comprobar",
+	"wbqc-constraintreport-form-entityid-label": "Identificador de entidade:",
+	"wbqc-constraintreport-result-headline": "Resultado para",
+	"wbqc-constraintreport-not-existent-entity": "A entidade non existe!",
+	"wbqc-constraintreport-empty-result": "Non hai restricións definidas nesta entidade.",
+	"wbqc-constraintreport-status-violation": "Violación",
+	"wbqc-constraintreport-status-compliance": "Cumpre",
+	"wbqc-constraintreport-status-exception": "Excepción",
+	"wbqc-constraintreport-status-todo": "Pendente",
+	"wbqc-constraintreport-result-table-header-status": "Estado",
+	"wbqc-constraintreport-result-table-header-claim": "Afirmación",
+	"wbqc-constraintreport-result-table-header-constraint": "Restrición",
+	"wbqc-constraintreport-result-link-to-claim": "ir a afirmación",
+	"wbqc-constraintreport-result-link-to-constraint": "ir a restrición",
+	"wbq-subextension-name-wbqc": "Restricións",
+	"wbqc-violation-header-parameters": "Parámetros:",
+	"wbqc-violations-group": "Restricións",
+	"wbqc-violation-message": "A verificación de restricións detectou unha violación. Prema a icona para obter máis información.",
+	"wbqc-violation-message-value-needed": "As propiedades coa restricción \"$1\" deben ter un valor.",
+	"wbqc-violation-message-value-needed-of-type": "As propiedades coa restricción \"$1\" deben ter valores do tipo \"$2\".",
+	"wbqc-violation-message-parameter-needed": "As propiedades coa restricción \"$1\" necesitan un parámetro \"$2\".",
+	"wbqc-violation-message-target-entity-must-exist": "A entidade obxectivo debe existir.",
+	"wbqc-violation-message-diff-within-range-property-must-exist": "A propiedade definida nos parámetros debe existir.",
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "A propiedade definida nos parámetros debe ter un valor do mesmo tipo que esta propiedade.",
+	"wbqc-violation-message-one-of": "O valor da propiedade debe ser un dos elementos definidos nos parámetros."
+}

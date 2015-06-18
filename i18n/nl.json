@@ -1,8 +1,30 @@
 {
 	"@metadata": {
 		"authors": [
-			"Sjoerddebruin"
+			"Sjoerddebruin",
+			"Macofe",
+			"Siebrand"
 		]
 	},
-	"wikidataquality-constraintreport-result-table-header-claim": "Verklaring"
+	"wbqc-constraintreport": "Beperkingenrapportage",
+	"wbqc-constraintreport-explanation-part-one": "Via deze pagina kunt u een beperkingencontrole uitvoeren voor iedere entiteit. De entiteiten worden uit het productiesysteem opgehaald, dus iedere overtreding op de beperkingen die u hier oplost, wordt direct uit deze lijst verwijderd.",
+	"wbqc-constraintreport-explanation-part-two": "De beperkingen worden eens per week verwerkt vanaf de overlegpagina van de eigenschap, dus als u een beperking toevoegt, verwijdert of aanpast, kan het tot een week duren voordat deze is opgenomen in deze rapportage. Er wordt momenteel gewerkt aan het migreren van beperkingen naar beweringen bij eigenschappen, zodat via deze pagina direct controles uitgevoerd kunnen worden.",
+	"wbqc-constraintreport-form-section": "Beperkingen voor entiteit controleren",
+	"wbqc-constraintreport-form-submit-label": "Controleren",
+	"wbqc-constraintreport-form-entityid-label": "Entiteits-ID:",
+	"wbqc-constraintreport-result-headline": "Resulaten voor",
+	"wbqc-constraintreport-not-existent-entity": "Entiteit bestaat niet.",
+	"wbqc-constraintreport-empty-result": "Er zijn geen beperkingen opgegeven voor deze entiteit.",
+	"wbqc-constraintreport-status-violation": "Schending",
+	"wbqc-constraintreport-status-compliance": "Nakoming",
+	"wbqc-constraintreport-status-exception": "Uitzondering",
+	"wbqc-constraintreport-status-todo": "Te doen",
+	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-constraintreport-result-table-header-claim": "Verklaring",
+	"wbqc-constraintreport-result-table-header-constraint": "Beperking",
+	"wbqc-constraintreport-result-link-to-claim": "naar verklaring gaan",
+	"wbqc-constraintreport-result-link-to-constraint": "naar beperking gaan",
+	"wbqc-violation-header-parameters": "Parameters:",
+	"wbqc-violations-group": "Beperkingen",
+	"wbqc-violation-message": "De beperkingencontrole heeft een overtreding opgeleverd. Klik op het pictogram voor meer informatie."
 }

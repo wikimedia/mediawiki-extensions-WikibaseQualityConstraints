@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Reza1615"
+		]
+	},
+	"wbqc-constraintreport": "محدوده گزارش",
+	"wbqc-constraintreport-explanation-part-one": "این صفحه محدویت‌های کنترلی بر روی هر ورودی‌ای که شما می‌خواهید اعمال می‌کند. ورودی‌ها از سامانه‌های زنده گرفته می‌شوند در نتیجه هر محدودیت خرابکاری که شما اینجا تعمیر می‌کنید از این فهرست حذف می‌شود.",
+	"wbqc-constraintreport-explanation-part-two": "محدودیت‌ها از بحث صفحهٔ خصوصیت‌ها هفته‌ای یک بار گرفته می‌شود در نتیجه اگر یکی از آنها را حذف/اضافه/ویرایش کرده‌اید یک هفته زمان می‌برد تا در گزارش محدودیت‌ها بیاید.در حال حاضر در حال انتقال دادن محدودیت‌ها از اظهارها به خصوصیت‌ها  و فعال‌سازی صفحهٔ ویژه برای چک کردن زنده آنها هستیم.",
+	"wbqc-constraintreport-form-submit-label": "بررسی",
+	"wbqc-constraintreport-result-headline": "نتیجه برای $1",
+	"wbqc-constraintreport-empty-result": "هیچ محدودیتی برای این ورودی تعریف نشده‌است.",
+	"wbqc-constraintreport-status-violation": "خرابکاری",
+	"wbqc-constraintreport-status-compliance": "مطلوبیت",
+	"wbqc-constraintreport-status-exception": "استثنا",
+	"wbqc-constraintreport-status-todo": "برای انجام",
+	"wbqc-constraintreport-result-table-header-claim": "اظهار",
+	"wbqc-constraintreport-result-table-header-constraint": "محدودیت",
+	"wbqc-constraintreport-result-link-to-claim": "رفتن به اظهارات",
+	"wbqc-constraintreport-result-link-to-constraint": "رفتن به محدودیت"
+}
