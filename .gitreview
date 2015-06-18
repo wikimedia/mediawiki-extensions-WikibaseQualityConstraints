@@ -1,6 +1,6 @@
 [gerrit]
 host=gerrit.wikimedia.org
 port=29418
-project=mediawiki/extensions/WikidataQualityConstraints.git
+project=mediawiki/extensions/WikibaseQualityConstraints.git
 defaultbranch=master
 defaultrebase=0
