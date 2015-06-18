@@ -6,7 +6,7 @@ use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\Entity;
@@ -25,9 +25,9 @@ class ItemChecker implements ConstraintChecker {
 	private $entityLookup;
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var ConnectionCheckerHelper
@@ -36,12 +36,12 @@ class ItemChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintReportHelper $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
 		$this->entityLookup = $lookup;
-		$this->constraintReportHelper = $helper;
+		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
 	}
 
@@ -55,24 +55,23 @@ class ItemChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
-		$constraintName = 'Item';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
 		$property = false;
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
 			$property = $constraintParameters['property'];
-			$parameters['property'] = $this->constraintReportHelper->parseSingleParameter( $property );
+			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $property );
 		}
 
 		$items = false;
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
 			$items = explode(',', $constraintParameters['item'] );
-			$parameters['item'] = $this->constraintReportHelper->parseParameterArray( $items );
+			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( $items );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		/*
@@ -80,7 +79,7 @@ class ItemChecker implements ConstraintChecker {
 		 *   parameter $property must not be null
 		 */
 		if ( !$property ) {
-			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraintName, 'property' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 

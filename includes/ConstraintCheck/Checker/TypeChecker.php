@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -20,7 +20,7 @@ use Wikibase\DataModel\Entity\Entity;
 class TypeChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
 	private $helper;
 
@@ -39,10 +39,10 @@ class TypeChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 * @param TypeCheckerHelper $typeCheckerHelper
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintReportHelper $helper, TypeCheckerHelper $typeCheckerHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, TypeCheckerHelper $typeCheckerHelper ) {
 		$this->entityLookup = $lookup;
 		$this->helper = $helper;
 		$this->typeCheckerHelper = $typeCheckerHelper;
@@ -58,7 +58,6 @@ class TypeChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
-		$constraintName = 'Type';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -83,7 +82,7 @@ class TypeChecker implements ConstraintChecker {
 		 *   parameter $constraintParameters['class'] must not be null
 		 */
 		if ( !$classes ) {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraintName, 'class' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'class' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 

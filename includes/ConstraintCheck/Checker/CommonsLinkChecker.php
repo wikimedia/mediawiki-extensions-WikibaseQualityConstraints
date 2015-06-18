@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Constraint;
 use Wikibase\DataModel\Statement\Statement;
@@ -19,19 +19,19 @@ use Wikibase\DataModel\Entity\Entity;
 class CommonsLinkChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
 	private $helper;
 
 	/**
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 */
-	public function __construct( ConstraintReportHelper $helper ) {
+	public function __construct( ConstraintParameterParser $helper ) {
 		$this->helper = $helper;
 	}
 
 	/**
-	 * Checks if data value is well-formed and links to an existing page.
+	 * Checks 'Commons link' constraint.
 	 *
 	 * @param Statement $statement
 	 * @param Constraint $constraint
@@ -40,7 +40,6 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
-		$constraintName = 'Commons link';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 		$namespace = '';

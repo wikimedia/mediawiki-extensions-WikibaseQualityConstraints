@@ -56,7 +56,6 @@ class InverseChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
-		$constraintName = 'Inverse';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -70,7 +69,6 @@ class InverseChecker implements ConstraintChecker {
 
 		$mainSnak = $statement->getMainSnak();
 
-		/*
 		/*
 		 * error handling:
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
@@ -88,11 +86,11 @@ class InverseChecker implements ConstraintChecker {
 		 *   parameter $property must not be null
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'wikibase-entityid' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( !array_key_exists( 'property', $constraintParameters ) ) {
-			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraintName, 'property' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -108,7 +106,7 @@ class InverseChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = wfMessage( "wbqc-violation-message-inverse" )->params( $constraintName, 'string' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-inverse" )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 

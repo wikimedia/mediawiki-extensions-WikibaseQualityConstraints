@@ -6,7 +6,7 @@ use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\Entity;
@@ -25,9 +25,9 @@ class ConflictsWithChecker implements ConstraintChecker {
 	private $entityLookup;
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var ConnectionCheckerHelper
@@ -36,12 +36,12 @@ class ConflictsWithChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintReportHelper $constraintReportHelper
-	 * ConnectionCheckerHelper $connectionCheckerHelper
+	 * @param ConstraintParameterParser $helper
+	 * @param ConnectionCheckerHelper $connectionCheckerHelper
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintReportHelper $constraintReportHelper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
 		$this->entityLookup = $lookup;
-		$this->constraintReportHelper = $constraintReportHelper;
+		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
 	}
 
@@ -54,8 +54,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement,Constraint $constraint, Entity $entity = null ) {
-		$constraintName = 'Conflicts with';
+	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -64,17 +63,17 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 *   parameter $property must not be null
 		 */
 		if ( !array_key_exists( 'property', $constraintParameters ) ) {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraintName, 'property' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$parameters['property'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['property'] );
+		$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['property'] );
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
-			$parameters['item'] = $this->constraintReportHelper->parseParameterArray( explode( ',', $constraintParameters['item'] ) );
+			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( explode( ',', $constraintParameters['item'] ) );
 		};
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		/*
@@ -84,7 +83,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 */
 		if ( !array_key_exists( 'item', $constraintParameters ) ) {
 			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $constraintParameters['property'] ) ) {
-				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )->params( $constraintName )->escaped();
+				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )->params( $constraint->getConstraintTypeName() )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
 				$message = '';
@@ -92,7 +91,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 			}
 		} else {
 			if ( $this->connectionCheckerHelper->hasClaim( $entity->getStatements(), $constraintParameters['property'], explode( ',', $constraintParameters['item'] ) ) ) {
-				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )->params( $constraintName )->escaped();
+				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )->params( $constraint->getConstraintTypeName() )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
 				$message = '';

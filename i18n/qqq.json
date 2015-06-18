@@ -42,6 +42,7 @@
 	"wbqc-violation-message-conflicts-with-claim": "Message for violation of Conflicts with constraint. When property and value are given.",
 	"wbqc-violation-message-diff-within-range": "Message for violation of Diff within range constraint. When difference is smaller or larger than allowed.",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "Message for violation of Diff within range constraint. When given property does not exist (any more).",
+	"wbqc-violation-message-diff-within-range-property-needs value": "Message for violation of Diff within range constraint. When given property does not have a value.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Message for violation of Diff within range constraint. When this and the given property differ in value type.",
 	"wbqc-violation-message-format": "Message for violation of format constraint. When string does not match given pattern.",
 	"wbqc-violation-message-inverse": "Message for violation of inverse constraint. When inverse statement does not exist.",

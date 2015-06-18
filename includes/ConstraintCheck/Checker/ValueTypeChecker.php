@@ -59,7 +59,6 @@ class ValueTypeChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, Entity $entity = null ) {
-		$constraintName = 'Value type';
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -86,7 +85,7 @@ class ValueTypeChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraintName )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -98,11 +97,11 @@ class ValueTypeChecker implements ConstraintChecker {
 		 *   parameter $constraintParameters['class']  must not be null
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraintName, 'wikibase-entityid' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		if ( !$classes ) {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraintName, 'class' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'class' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 

@@ -8,7 +8,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHel
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\Entity;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 
 
 /**
@@ -24,15 +24,15 @@ class UniqueValueChecker implements ConstraintChecker {
 	private $valueCountCheckerHelper;
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
 	private $constraintReportHelper;
 
 	/**
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 */
-	public function __construct( ConstraintReportHelper $helper ) {
-		$this->constraintReportHelper = $helper;
+	public function __construct( ConstraintParameterParser $helper ) {
+		$this->constraintParameterParser = $helper;
 		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 	}
 
