@@ -21,11 +21,12 @@
 	],
 	"require": {
 		"php": ">=5.3.0",
-		"wikibase/data-model": "~3.0"
+		"wikibase/data-model": "~3.0",
+		"serialization/serialization": "3.*,>=3.2.1"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~4.5",
-		"satooshi/php-coveralls": "dev-master"
+		"phpunit/phpunit": "~3.7,>=3.7.37|~4.5",
+		"satooshi/php-coveralls": "master-dev"
 	},
 	"autoload": {
 		"psr-4": {
@@ -35,7 +36,8 @@
 		  	"WikibaseQuality\\ConstraintReport\\Maintenance\\": "maintenance/"
 		},
 		"classmap": [
-			"WikibaseQualityConstraintsHooks.php"
+			"WikibaseQualityConstraintsHooks.php",
+			"maintenance/UpdateTable.php"
 		]
 	}
 }
