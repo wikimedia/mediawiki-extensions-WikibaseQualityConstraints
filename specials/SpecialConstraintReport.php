@@ -212,7 +212,7 @@ class SpecialConstraintReport extends SpecialPage {
 		} else {
 			$out->addHTML(
 				$this->buildResultHeader( $entityId )
-				. $this->buildNotice( $this->getEmptyResultText() )
+				. $this->buildNotice( 'wbqc-constraintreport-empty-result' )
 			);
 		}
 	}
@@ -243,15 +243,15 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * Builds notice with given message. Optionally notice can be handles as error by settings $error to true
 	 *
-	 * @param string $message
+	 * @param string $messageKey
 	 * @param bool $error
 	 *
 	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
-	private function buildNotice( $message, $error = false ) {
-		if ( !is_string( $message ) ) {
+	private function buildNotice( $messageKey, $error = false ) {
+		if ( !is_string( $messageKey ) ) {
 			throw new InvalidArgumentException( '$message must be string.' );
 		}
 		if ( !is_bool( $error ) ) {
@@ -269,7 +269,7 @@ class SpecialConstraintReport extends SpecialPage {
 				array (
 					'class' => $cssClasses
 				),
-				$this->msg( $message )->text()
+				$this->msg( $messageKey )->escaped()
 			);
 	}
 
@@ -285,15 +285,6 @@ class SpecialConstraintReport extends SpecialPage {
 			. Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
 			. $this->msg( 'wbqc-constraintreport-explanation-part-two' )->escaped()
 			. Html::closeElement( 'div' );
-	}
-
-	/**
-	 * @see SpecialCheckResultPage::getEmptyResultText
-	 *
-	 * @return string (plain text)
-	 */
-	private function getEmptyResultText() {
-		return $this->msg( 'wbqc-constraintreport-empty-result' )->text();
 	}
 
 	/**
