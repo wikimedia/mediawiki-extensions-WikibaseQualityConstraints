@@ -22,6 +22,7 @@
 	"wbqc-constraintreport-result-table-header-constraint": "Constraint",
 	"wbqc-constraintreport-result-link-to-claim": "go to claim",
 	"wbqc-constraintreport-result-link-to-constraint": "go to constraint",
+	"wbqc-constraintreport-no-parameter": "none",
 
 	"wbq-subextension-name-wbqc": "Constraints",
 	"wbqc-violation-header-parameters": "Parameters:",
