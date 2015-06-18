@@ -20,8 +20,6 @@ use Wikibase\Lib\Store\TermLookup;
 use DataValues;
 use DataValues\DataValue;
 use Html;
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
-use Doctrine\Instantiator\Exception\UnexpectedValueException;
 use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -30,10 +28,13 @@ use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
 use WikibaseQuality\Html\HtmlTableBuilder;
+use WikibaseQuality\Html\HtmlTableCellBuilder;
 use WikibaseQuality\Html\HtmlTableHeaderBuilder;
 
 
@@ -92,6 +93,20 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @var DelegatingConstraintChecker
 	 */
 	private $constraintChecker;
+
+	public static function newFromGlobalState()	{
+		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
+		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
+
+		return new self(
+			$wikibaseRepo->getEntityLookup(),
+			$wikibaseRepo->getTermLookup(),
+			$wikibaseRepo->getEntityTitleLookup(),
+			$wikibaseRepo->getEntityIdParser(),
+			$wikibaseRepo->getValueFormatterFactory(),
+			$constraintReportFactory->getConstraintChecker()
+		);
+	}
 
 	/**
 	 * @param EntityLookup $entityLookup
@@ -374,9 +389,21 @@ class SpecialConstraintReport extends SpecialPage {
 		// Append cells
 		$table->appendRow(
 			array (
-				$statusColumn,
-				$claimColumn,
-				$constraintColumn
+				new HtmlTableCellBuilder(
+					$statusColumn,
+					array(),
+					true
+				),
+				new HtmlTableCellBuilder(
+					$claimColumn,
+					array(),
+					true
+				),
+				new HtmlTableCellBuilder(
+					$constraintColumn,
+					array(),
+					true
+				)
 			)
 		);
 
