@@ -7,11 +7,8 @@ use SpecialPage;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
 use Wikibase\Lib\EntityIdFormatter;
-use Wikibase\Lib\EntityIdHtmlLinkFormatter;
-use Wikibase\Lib\EntityIdLabelFormatter;
 use HTMLForm;
 use Wikibase\DataModel\Entity\EntityIdParser;
-use Wikibase\Lib\LanguageNameLookup;
 use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Store\EntityLookup;
@@ -28,6 +25,8 @@ use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
+use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
+use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
@@ -102,6 +101,8 @@ class SpecialConstraintReport extends SpecialPage {
 			$wikibaseRepo->getEntityLookup(),
 			$wikibaseRepo->getTermLookup(),
 			$wikibaseRepo->getEntityTitleLookup(),
+			new EntityIdLabelFormatterFactory(),
+			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
 			$constraintReportFactory->getConstraintChecker()
@@ -112,12 +113,22 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param EntityLookup $entityLookup
 	 * @param TermLookup $termLookup
 	 * @param EntityTitleLookup $entityTitleLookup
+	 * @param EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory
+	 * @param EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory
 	 * @param EntityIdParser $entityIdParser
 	 * @param OutputFormatValueFormatterFactory $valueFormatterFactory
 	 * @param DelegatingConstraintChecker $constraintChecker
 	 */
-	public function __construct( EntityLookup $entityLookup, TermLookup $termLookup, EntityTitleLookup $entityTitleLookup, EntityIdParser $entityIdParser,
-								 OutputFormatValueFormatterFactory $valueFormatterFactory, DelegatingConstraintChecker $constraintChecker ) {
+	public function __construct(
+		EntityLookup $entityLookup,
+		TermLookup $termLookup,
+		EntityTitleLookup $entityTitleLookup,
+		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
+		EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory,
+		EntityIdParser $entityIdParser,
+		OutputFormatValueFormatterFactory $valueFormatterFactory,
+		DelegatingConstraintChecker $constraintChecker
+	) {
 		parent::__construct( 'ConstraintReport' );
 
 		$this->entityLookup = $entityLookup;
@@ -129,12 +140,8 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->dataValueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
 		$labelLookup = new LanguageLabelDescriptionLookup( $termLookup, $this->getLanguage()->getCode() );
-		$this->entityIdLabelFormatter = new EntityIdLabelFormatter( $labelLookup );
-		$this->entityIdLinkFormatter = new EntityIdHtmlLinkFormatter(
-			$labelLookup,
-			$this->entityTitleLookup,
-			new LanguageNameLookup()
-		);
+		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormater( $labelLookup );
+		$this->entityIdLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormater( $labelLookup );
 
 		$this->constraintChecker = $constraintChecker;
 	}
