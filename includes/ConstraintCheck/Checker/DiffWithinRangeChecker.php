@@ -106,7 +106,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				 *   types of this and the other value have to be equal, both must contain actual values
 				 */
 				if ( !$mainSnak instanceof PropertyValueSnak ) {
-					$message = 'Referenced property needs to have a value.';
+					$message = wfMessage( "wbqc-violation-message-diff-within-range-property-needs value" )->escaped();
 					return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 				}
 				if ( $mainSnak->getDataValue()->getType() === $dataValue->getType() && $mainSnak->getType() === 'value' ) {
