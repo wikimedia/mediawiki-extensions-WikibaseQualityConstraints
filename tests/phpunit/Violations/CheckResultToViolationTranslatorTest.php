@@ -28,50 +28,50 @@ use WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator
  */
 class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 
-    /**
-     * @var CheckResultToViolationTranslator
-     */
-    private $translator;
+	/**
+	 * @var CheckResultToViolationTranslator
+	 */
+	private $translator;
 
-    /**
-     * @var PropertyId
-     */
-    private $propertyId;
+	/**
+	 * @var PropertyId
+	 */
+	private $propertyId;
 
-    /**
-     * @var Statement
-     */
-    private $statement;
+	/**
+	 * @var Statement
+	 */
+	private $statement;
 
-    /**
-     * @var array
-     */
-    private $parameters;
+	/**
+	 * @var array
+	 */
+	private $parameters;
 
-    /**
-     * @var string
-     */
-    private $message;
+	/**
+	 * @var string
+	 */
+	private $message;
 
-    /**
-     * @var string
-     */
-    private $claimGuid;
+	/**
+	 * @var string
+	 */
+	private $claimGuid;
 
-    /**
-     * @var string
-     */
-    private $constraintName;
+	/**
+	 * @var string
+	 */
+	private $constraintName;
 
-    /**
-     * @var Entity
-     */
-    private $entity;
+	/**
+	 * @var Entity
+	 */
+	private $entity;
 
-    /**
-     * @var EntityId[]
-     */
-    private static $idMap;
+	/**
+	 * @var EntityId[]
+	 */
+	private static $idMap;
 
 	protected function setUp() {
 		parent::setUp();
@@ -85,8 +85,8 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->message = 'All right';
 		$this->entity = new Item();
 		$store = WikibaseRepo::getDefaultInstance()->getEntityStore();
-		$store->saveEntity( $this->entity, 'TestEntityQ1', $GLOBALS[ 'wgUser' ], EDIT_NEW );
-		self::$idMap[ 'Q1' ] = $this->entity->getId();
+		$store->saveEntity( $this->entity, 'TestEntityQ1', $GLOBALS['wgUser'], EDIT_NEW );
+		self::$idMap['Q1'] = $this->entity->getId();
 	}
 
 	protected function tearDown() {
@@ -111,12 +111,12 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$this->assertEquals( 1, sizeof( $violations ) );
 
 		$violation = $violations[ 0 ];
-		$this->assertEquals( self::$idMap[ 'Q1' ], $violation->getEntityId() );
+		$this->assertEquals( self::$idMap['Q1'], $violation->getEntityId() );
 		$this->assertEquals( 'P1', $violation->getPropertyId()->getSerialization() );
 		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
 		$this->assertEquals( 'wbqc|P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeeeRange', $violation->getConstraintId() );
 		$this->assertEquals( $checkResult->getConstraintName(), $violation->getConstraintTypeEntityId() );
-        $this->assertEquals( 42, $violation->getRevisionId() );
+		$this->assertEquals( 42, $violation->getRevisionId() );
 		$this->assertEquals( array(), $violation->getAdditionalInfo() );
 
 	}
@@ -127,8 +127,8 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 		$violations = $this->translator->translateToViolation( $this->entity, $checkResult );
 		$this->assertEquals( 1, sizeof( $violations ) );
 
-		$violation = $violations[ 0 ];
-		$this->assertEquals( self::$idMap[ 'Q1' ], $violation->getEntityId() );
+		$violation = $violations[0];
+		$this->assertEquals( self::$idMap['Q1'], $violation->getEntityId() );
 		$this->assertEquals( 'P1', $violation->getPropertyId()->getSerialization() );
 		$this->assertEquals( $this->statement->getGuid(), $violation->getClaimGuid() );
 		$this->assertEquals( 'wbqc|P1$aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeeeRangemandatory', $violation->getConstraintId() );
@@ -140,22 +140,23 @@ class CheckResultTestToViolationTranslator extends \MediaWikiTestCase {
 
 	public function testMultipleCheckResults() {
 		$checkResults = array ();
-		$checkResults[ ] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
-		$checkResults[ ] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
-		$checkResults[ ] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'compliance', $this->message );
+		$checkResults[] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
+		$checkResults[] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'violation', $this->message );
+		$checkResults[] = new CheckResult( $this->statement, $this->constraintName, $this->parameters, 'compliance', $this->message );
 		$violations = $this->translator->translateToViolation( $this->entity, $checkResults );
 		$this->assertEquals( 2, sizeof( $violations ) );
 	}
 
 
-    private function getEntityRevisionLookupMock() {
-        $mock = $this->getMockBuilder( 'Wikibase\Lib\Store\EntityRevisionLookup' )
-            ->setMethods( array( 'getLatestRevisionId' ) )
-            ->getMockForAbstractClass();
-        $mock->expects( $this->any() )
-            ->method( 'getLatestRevisionId' )
-            ->willReturn( 42 );
+	private function getEntityRevisionLookupMock() {
+		$mock = $this->getMockBuilder( 'Wikibase\Lib\Store\EntityRevisionLookup' )
+			->setMethods( array( 'getLatestRevisionId' ) )
+			->getMockForAbstractClass();
+		$mock->expects( $this->any() )
+			->method( 'getLatestRevisionId' )
+			->will( $this->returnValue( 42 ) );
 
-        return $mock;
-    }
+		return $mock;
+	}
+
 }
