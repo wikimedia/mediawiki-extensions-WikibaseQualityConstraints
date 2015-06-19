@@ -29,8 +29,8 @@ class MultiValueChecker implements ConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
-	 * @param $helper
-	 * @param $valueCountCheckerHelper
+	 * @param ConstraintParameterParser $helper
+	 * @param ValueCountCheckerHelper $valueCountCheckerHelper
 	 */
 	public function __construct( $helper, $valueCountCheckerHelper ) {
 		$this->constraintParameterParser = $helper;

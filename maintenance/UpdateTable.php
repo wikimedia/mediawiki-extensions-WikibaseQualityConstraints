@@ -39,7 +39,6 @@ class UpdateTable extends \Maintenance {
 	}
 
 	private function insertValues( $constraintRepo, $csvFile ) {
-
 		$i = 0;
 		$accumulator = array();
 		while ( true ) {
@@ -62,8 +61,8 @@ class UpdateTable extends \Maintenance {
 			$propertyId = new PropertyId( 'P' . $data[1] );
 			$accumulator[] = new Constraint( $data[0], $propertyId, $data[2], $constraintParameters );
 		}
-
 	}
+
 }
 
 // @codeCoverageIgnoreStart

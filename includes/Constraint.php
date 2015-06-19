@@ -2,6 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use Wikibase\DataModel\Entity\PropertyId;
+
+
 class Constraint {
 
 	/**

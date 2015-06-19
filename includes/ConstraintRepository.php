@@ -3,6 +3,8 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use InvalidArgumentException;
+use Wikibase\DataModel\Entity\PropertyId;
+
 
 /**
  * Class ConstraintRepository
@@ -13,17 +15,17 @@ use InvalidArgumentException;
 class ConstraintRepository {
 
 	/**
-	 * @param $prop
+	 * @param int $prop
 	 *
 	 * @return Constraint[]
 	 */
 	public function queryConstraintsForProperty( $prop ) {
-        $db = wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 
 		$results = $db->select(
 			CONSTRAINT_TABLE,
 			'*',
-            array( 'pid' => $prop )
+			array( 'pid' => $prop )
 		);
 
 		return $this->convertToConstraints( $results );
@@ -40,7 +42,7 @@ class ConstraintRepository {
 			function ( Constraint $constraint ) {
 				return array(
 					'constraint_guid' => $constraint->getConstraintClaimGuid(),
-					'pid' => $constraint->getPropertyId(),
+					'pid' => $constraint->getPropertyId()->getNumericId(),
 					'constraint_type_qid' => $constraint->getConstraintTypeQid(),
 					'constraint_parameters' => json_encode( $constraint->getConstraintParameters() )
 				);
@@ -58,7 +60,7 @@ class ConstraintRepository {
 	/**
 	 * @param int $batchSize
 	 *
-	 * @throws \DBUnexpectedError
+	 * @throws InvalidArgumentException
 	 */
 	public function deleteAll( $batchSize = 1000 ) {
 		if ( !is_int( $batchSize ) ) {
@@ -82,7 +84,8 @@ class ConstraintRepository {
 		foreach( $results as $result ) {
 			$constraintTypeQid = $result->constraint_type_qid;
 			$constraintParameters = (array) json_decode( $result->constraint_parameters );
-			$constraints[] = new Constraint( $result->constraint_guid, $result->pid, $constraintTypeQid, $constraintParameters );
+			$serializedPid = 'P' . $result->pid;
+			$constraints[] = new Constraint( $result->constraint_guid, new PropertyId( $serializedPid ), $constraintTypeQid, $constraintParameters );
 		}
 		return $constraints;
 	}

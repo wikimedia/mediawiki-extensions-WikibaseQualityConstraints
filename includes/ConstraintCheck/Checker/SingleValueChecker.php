@@ -8,7 +8,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHel
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\Entity;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 
 
 /**
@@ -24,13 +24,17 @@ class SingleValueChecker implements ConstraintChecker {
 	private $valueCountCheckerHelper;
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
-	public function __construct( $helper ) {
-		$this->constraintReportHelper = $helper;
-		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
+	/**
+	 * @param ConstraintParameterParser $helper
+	 * @param ValueCountCheckerHelper $valueCountCheckerHelper
+	 */
+	public function __construct( ConstraintParameterParser $helper, ValueCountCheckerHelper $valueCountCheckerHelper ) {
+		$this->constraintParameterParser = $helper;
+		$this->valueCountCheckerHelper = $valueCountCheckerHelper;
 	}
 
 	/**
@@ -49,7 +53,7 @@ class SingleValueChecker implements ConstraintChecker {
 
 		$constraintParameters = $constraint->getConstraintParameters();
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $entity->getStatements() );

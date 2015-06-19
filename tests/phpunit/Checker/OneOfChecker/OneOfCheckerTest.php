@@ -10,7 +10,7 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 
 
 /**
@@ -19,7 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelp
  * @group WikibaseQualityConstraints
  *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -31,7 +31,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintReportHelper();
+		$this->helper = new ConstraintParameterParser();
 		$this->oneOfChecker = new OneOfChecker( $this->helper );
 	}
 

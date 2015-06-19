@@ -26,14 +26,15 @@ class UniqueValueChecker implements ConstraintChecker {
 	/**
 	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
 	/**
 	 * @param ConstraintParameterParser $helper
+	 * @param ValueCountCheckerHelper $valueCountCheckerHelper
 	 */
-	public function __construct( ConstraintParameterParser $helper ) {
+	public function __construct( ConstraintParameterParser $helper, ValueCountCheckerHelper $valueCountCheckerHelper ) {
 		$this->constraintParameterParser = $helper;
-		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
+		$this->valueCountCheckerHelper = $valueCountCheckerHelper;
 	}
 
 	// todo: implement when index exists that makes it possible in reasonable time
@@ -49,7 +50,7 @@ class UniqueValueChecker implements ConstraintChecker {
 
 		$constraintParameters = $constraint->getConstraintParameters();
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$message = wfMessage( "wbqc-violation-message-not-yet-implemented" )->escaped();

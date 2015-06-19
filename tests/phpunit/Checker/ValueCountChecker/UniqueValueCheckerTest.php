@@ -9,6 +9,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
@@ -17,7 +18,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  *
  * @group WikibaseQualityConstraints
  *
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -25,6 +26,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 class UniqueValueCheckerTest extends \MediaWikiTestCase {
 
 	private $helper;
+	private $valueCountCheckerHelper;
 	private $uniquePropertyId;
 	private $checker;
 	private $lookup;
@@ -33,8 +35,9 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 
 		$this->helper = new ConstraintParameterParser();
+		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 		$this->uniquePropertyId = new PropertyId( 'P227' );
-		$this->checker = new UniqueValueChecker( $this->helper );
+		$this->checker = new UniqueValueChecker( $this->helper, $this->valueCountCheckerHelper );
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 

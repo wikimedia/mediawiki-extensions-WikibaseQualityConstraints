@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
@@ -14,7 +14,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper
+ * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -26,7 +26,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintReportHelper();
+		$this->helper = new ConstraintParameterParser();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 

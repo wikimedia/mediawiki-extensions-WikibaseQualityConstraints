@@ -6,7 +6,7 @@ use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
@@ -28,6 +28,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator;
 use WikibaseQuality\ConstraintReport\Violations\ConstraintViolationFormatter;
 use WikibaseQuality\Violations\ViolationFormatter;
@@ -35,17 +36,17 @@ use WikibaseQuality\Violations\ViolationFormatter;
 
 class ConstraintReportFactory {
 
-    /**
-     * @var EntityLookup
-     */
-    private $entityLookup;
+	/**
+	 * @var EntityLookup
+	 */
+	private $entityLookup;
 
-    /**
-     * @var EntityRevisionLookup
-     */
-    private $entityRevisionLookup;
+	/**
+	 * @var EntityRevisionLookup
+	 */
+	private $entityRevisionLookup;
 
-    /**
+	/**
 	 * @var constraintRepository
 	 */
 	private $constraintRepository;
@@ -70,10 +71,10 @@ class ConstraintReportFactory {
 	 */
 	private $violationFormatter;
 
-    /**
-     * @var CheckResultToViolationTranslator
-     */
-    private $checkResultToViolationTranslator;
+	/**
+	 * @var CheckResultToViolationTranslator
+	 */
+	private $checkResultToViolationTranslator;
 
 	/**
 	 * Returns the default instance.
@@ -86,21 +87,21 @@ class ConstraintReportFactory {
 
 		if ( $instance === null ) {
 			$instance = new self(
-                WikibaseRepo::getDefaultInstance()->getEntityLookup(),
-                WikibaseRepo::getDefaultInstance()->getEntityRevisionLookup()
-            );
+				WikibaseRepo::getDefaultInstance()->getEntityLookup(),
+				WikibaseRepo::getDefaultInstance()->getEntityRevisionLookup()
+			);
 		}
 
 		return $instance;
 	}
 
-    /**
-     * @param EntityLookup $entityLookup
-     * @param EntityRevisionLookup $entityRevisionLookup
-     */
+	/**
+	 * @param EntityLookup $entityLookup
+	 * @param EntityRevisionLookup $entityRevisionLookup
+	 */
 	public function __construct( EntityLookup $entityLookup, EntityRevisionLookup $entityRevisionLookup ) {
 		$this->entityLookup = $entityLookup;
-        $this->entityRevisionLookup = $entityRevisionLookup;
+		$this->entityRevisionLookup = $entityRevisionLookup;
 	}
 
 	/**
@@ -119,39 +120,40 @@ class ConstraintReportFactory {
 	 */
 	public function getConstraintCheckerMap(){
 		if ( $this->constraintCheckerMap === null ) {
-			$constraintReportHelper = new ConstraintReportHelper();
+			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
 			$rangeCheckerHelper = new RangeCheckerHelper();
 			$typeCheckerHelper = new TypeCheckerHelper( $this->entityLookup );
+			$valueCountCheckerHelper = new ValueCountCheckerHelper();
 
 			$this->constraintCheckerMap = array(
-				'Conflicts with' => new ConflictsWithChecker( $this->entityLookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Item' => new ItemChecker( $this->entityLookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Target required claim' => new TargetRequiredClaimChecker( $this->entityLookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Symmetric' => new SymmetricChecker( $this->entityLookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Inverse' => new InverseChecker( $this->entityLookup, $constraintReportHelper, $connectionCheckerHelper ),
-				'Qualifier' => new QualifierChecker( $constraintReportHelper ),
-				'Qualifiers' => new QualifiersChecker( $constraintReportHelper ),
-				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $constraintReportHelper ),
-				'Range' => new RangeChecker( $constraintReportHelper, $rangeCheckerHelper ),
-				'Diff within range' => new DiffWithinRangeChecker( $constraintReportHelper, $rangeCheckerHelper ),
-				'Type' => new TypeChecker( $this->entityLookup, $constraintReportHelper, $typeCheckerHelper ),
-				'Value type' => new ValueTypeChecker( $this->entityLookup, $constraintReportHelper, $typeCheckerHelper ),
-				'Single value' => new SingleValueChecker( $constraintReportHelper ),
-				'Multi value' => new MultiValueChecker( $constraintReportHelper ),
-				'Unique value' => new UniqueValueChecker( $constraintReportHelper ),
-				'Format' => new FormatChecker( $constraintReportHelper ),
-				'Commons link' => new CommonsLinkChecker( $constraintReportHelper ),
-				'One of' => new OneOfChecker( $constraintReportHelper ),
+				'Conflicts with' => new ConflictsWithChecker( $this->entityLookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Item' => new ItemChecker( $this->entityLookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Target required claim' => new TargetRequiredClaimChecker( $this->entityLookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Symmetric' => new SymmetricChecker( $this->entityLookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Inverse' => new InverseChecker( $this->entityLookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Qualifier' => new QualifierChecker( $constraintParameterParser ),
+				'Qualifiers' => new QualifiersChecker( $constraintParameterParser ),
+				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $constraintParameterParser ),
+				'Range' => new RangeChecker( $constraintParameterParser, $rangeCheckerHelper ),
+				'Diff within range' => new DiffWithinRangeChecker( $constraintParameterParser, $rangeCheckerHelper ),
+				'Type' => new TypeChecker( $this->entityLookup, $constraintParameterParser, $typeCheckerHelper ),
+				'Value type' => new ValueTypeChecker( $this->entityLookup, $constraintParameterParser, $typeCheckerHelper ),
+				'Single value' => new SingleValueChecker( $constraintParameterParser, $valueCountCheckerHelper ),
+				'Multi value' => new MultiValueChecker( $constraintParameterParser, $valueCountCheckerHelper ),
+				'Unique value' => new UniqueValueChecker( $constraintParameterParser, $valueCountCheckerHelper ),
+				'Format' => new FormatChecker( $constraintParameterParser ),
+				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
+				'One of' => new OneOfChecker( $constraintParameterParser ),
 			);
 		}
 
 		return $this->constraintCheckerMap;
 	}
 
-    /**
-     * @return array
-     */
+	/**
+	 * @return array
+	 */
 	public function getConstraintParameterMap() {
 		if ( $this->constraintParameterMap === null ) {
 			$this->constraintParameterMap = array(
@@ -179,9 +181,9 @@ class ConstraintReportFactory {
 		return $this->constraintParameterMap;
 	}
 
-    /**
-     * @return ConstraintRepository
-     */
+	/**
+	 * @return ConstraintRepository
+	 */
 	public function getConstraintRepository() {
 		if ( $this->constraintRepository === null ) {
 			$this->constraintRepository = new ConstraintRepository( CONSTRAINT_TABLE );
@@ -190,25 +192,26 @@ class ConstraintReportFactory {
 		return $this->constraintRepository;
 	}
 
-    /**
-     * @return ViolationFormatter
-     */
-    public function getViolationFormatter() {
+	/**
+	 * @return ViolationFormatter
+	 */
+	public function getViolationFormatter() {
 		if ( $this->violationFormatter === null ) {
 			$this->violationFormatter = new ConstraintViolationFormatter();
 		}
 
 		return $this->violationFormatter;
-    }
+	}
 
-    /**
-     * @return CheckResultToViolationTranslator
-     */
-    public function getCheckResultToViolationTranslator() {
-        if ( $this->checkResultToViolationTranslator === null ) {
-            $this->checkResultToViolationTranslator = new CheckResultToViolationTranslator( $this->entityRevisionLookup );
-        }
+	/**
+	 * @return CheckResultToViolationTranslator
+	 */
+	public function getCheckResultToViolationTranslator() {
+		if ( $this->checkResultToViolationTranslator === null ) {
+			$this->checkResultToViolationTranslator = new CheckResultToViolationTranslator( $this->entityRevisionLookup );
+		}
 
-        return $this->checkResultToViolationTranslator;
-    }
+		return $this->checkResultToViolationTranslator;
+	}
+
 }

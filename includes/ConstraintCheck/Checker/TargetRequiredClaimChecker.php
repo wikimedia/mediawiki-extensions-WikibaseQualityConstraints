@@ -6,7 +6,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Lib\Store\EntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
@@ -26,9 +26,9 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 	private $entityLookup;
 
 	/**
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintReportHelper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var ConnectionCheckerHelper
@@ -37,12 +37,12 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintReportHelper $helper
+	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintReportHelper $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
 		$this->entityLookup = $lookup;
-		$this->constraintReportHelper = $helper;
+		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
 	}
 
@@ -62,17 +62,17 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		$property = false;
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
 			$property = $constraintParameters['property'];
-			$parameters['property'] = $this->constraintReportHelper->parseSingleParameter( $property );
+			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $property );
 		}
 
 		$items = false;
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
 			$items = explode( ',', $constraintParameters['item'] );
-			$parameters['item'] = $this->constraintReportHelper->parseParameterArray( $items );
+			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( $items );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->constraintReportHelper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$mainSnak = $statement->getMainSnak();

@@ -4,17 +4,14 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-
+use InvalidArgumentException;
 
 /**
- * Class ConstraintReportHelper
- * Class for helper functions for constraint checkers.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConstraintReportHelper {
+class ConstraintParameterParser {
 
 	/**
 	 * @param string $templateString
@@ -34,7 +31,7 @@ class ConstraintReportHelper {
 	 * @return array
 	 */
 	public function stringToArray( $templateString ) {
-		if ( is_null( $templateString ) || $templateString === '' ) {
+		if ( $templateString === null || $templateString === '' ) {
 			return array ( '' );
 		} else {
 			return explode( ',', $this->removeBrackets( str_replace( ' ', '', $templateString ) ) );
@@ -43,11 +40,11 @@ class ConstraintReportHelper {
 
 	private function parseParameter( $parameter, $asString = false ) {
 		if ( $parameter === null ) {
-			return 'null';
+			return wfMessage( "wbqc-constraintreport-no-parameter" )->escaped();
 		}
 
 		if ( $asString ) {
-			return "$parameter";
+			return strval( $parameter );
 		}
 
 		$startsWith = strtoupper( substr( $parameter, 0, 1 ) );
@@ -58,7 +55,7 @@ class ConstraintReportHelper {
 			} elseif ( $startsWith === 'P' ) {
 				return new PropertyId( $parameter );
 			}
-		} catch (\InvalidArgumentException $e) {
+		} catch ( InvalidArgumentException $e ) {
 			return '';
 		}
 
@@ -66,7 +63,7 @@ class ConstraintReportHelper {
 	}
 
 	/**
-	 * Helps set/format a single parameter depending on its type.
+	 * Formats a parameter with a single value and wraps it in an array.
 	 *
 	 * @param string $parameter
 	 * @param bool $asString
@@ -78,7 +75,7 @@ class ConstraintReportHelper {
 	}
 
 	/**
-	 * Helps set/format the item/class/property parameter arrays according to their respective type.
+	 * Formats a parameter with an array of values and wraps them in an array.
 	 *
 	 * @param array $parameterArray
 	 * @param bool $asString
@@ -86,12 +83,12 @@ class ConstraintReportHelper {
 	 * @return array
 	 */
 	public function parseParameterArray( $parameterArray, $asString = false ) {
-		if ( $parameterArray[ 0 ] === '' ) { // parameter not given
-			return array ( 'null' );
+		if ( $parameterArray[0] === '' ) { // parameter not given
+			return array ( wfMessage( "wbqc-constraintreport-no-parameter" )->escaped() );
 		} else {
 			$array = array ();
 			foreach ( $parameterArray as $parameter ) {
-				$array[ ] = $this->parseParameter( $parameter, $asString );
+				$array[] = $this->parseParameter( $parameter, $asString );
 			}
 			return $array;
 		}
@@ -104,11 +101,7 @@ class ConstraintReportHelper {
 	 * @return null|string
 	 */
 	public function getParameterFromJson( $json, $parameter ) {
-		if ( isset( $json->$parameter ) ) {
-			return $json->$parameter;
-		} else {
-			return null;
-		}
+		return isset( $json->$parameter ) ? $json->$parameter : null;
 	}
 
 }

@@ -9,6 +9,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
@@ -25,6 +26,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 class SingleValueCheckerTest extends \MediaWikiTestCase {
 
 	private $helper;
+	private $valueCountCheckerHelper;
 	private $singlePropertyId;
 	private $checker;
 	private $lookup;
@@ -33,8 +35,9 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 
 		$this->helper = new ConstraintParameterParser();
+		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 		$this->singlePropertyId = new PropertyId( 'P36' );
-		$this->checker = new SingleValueChecker( $this->helper );
+		$this->checker = new SingleValueChecker( $this->helper, $this->valueCountCheckerHelper );
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 

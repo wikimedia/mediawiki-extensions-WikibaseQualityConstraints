@@ -8,7 +8,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Snak;
 use Wikibase\DataModel\Entity\Entity;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -35,7 +35,7 @@ class DelegatingConstraintChecker {
 	/**
 	 * Class for helper functions for constraint checkers.
 	 *
-	 * @var ConstraintReportHelper
+	 * @var ConstraintParameterParser
 	 */
 	private $helper;
 
@@ -54,7 +54,7 @@ class DelegatingConstraintChecker {
 	public function __construct( EntityLookup $lookup, $checkerMap ) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
-		$this->helper = new ConstraintReportHelper();
+		$this->helper = new ConstraintParameterParser();
 		$this->constraintRepository = new ConstraintRepository();
 	}
 
