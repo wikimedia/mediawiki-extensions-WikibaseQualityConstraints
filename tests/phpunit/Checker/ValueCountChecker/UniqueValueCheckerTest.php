@@ -8,7 +8,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintReportHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 
@@ -32,7 +32,7 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->helper = new ConstraintReportHelper();
+		$this->helper = new ConstraintParameterParser();
 		$this->uniquePropertyId = new PropertyId( 'P227' );
 		$this->checker = new UniqueValueChecker( $this->helper );
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
@@ -60,11 +60,12 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->willReturn( $parameter );
+			 ->will( $this->returnValue( $parameter ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
-			 ->willReturn( 'Unique value' );
+			 ->will( $this->returnValue( 'Unique value' ) );
 
 		return $mock;
 	}
+
 }

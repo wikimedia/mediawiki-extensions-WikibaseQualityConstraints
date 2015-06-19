@@ -117,10 +117,10 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->willReturn( $parameter );
+			 ->will( $this->returnValue( $parameter ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
-			 ->willReturn( 'Commons link' );
+			 ->will( $this->returnValue( 'Commons link' ) );
 
 		return $mock;
 	}

@@ -63,10 +63,10 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->willReturn( $parameter );
+			 ->will( $this->returnValue( $parameter ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
-			 ->willReturn( 'Mandatory qualifiers' );
+			 ->will( $this->returnValue( 'Mandatory qualifiers' ) );
 
 		return $mock;
 	}

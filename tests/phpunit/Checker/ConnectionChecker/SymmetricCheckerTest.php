@@ -98,10 +98,10 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->willReturn( array() );
+			 ->will( $this->returnValue( array() ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
-			 ->willReturn( 'Symmetric' );
+			 ->will( $this->returnValue( 'Symmetric' ) );
 
 		return $mock;
 	}
