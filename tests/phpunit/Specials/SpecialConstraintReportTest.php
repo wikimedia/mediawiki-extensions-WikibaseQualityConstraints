@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Specials\SpecialConstraintReport;
 
+use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Test\SpecialPageTestBase;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\Item;
@@ -75,6 +76,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getEntityLookup(),
 			$wikibaseRepo->getTermLookup(),
 			$wikibaseRepo->getEntityTitleLookup(),
+			new EntityIdLabelFormatterFactory(),
+			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
 			$constraintReportFactory->getConstraintChecker(),

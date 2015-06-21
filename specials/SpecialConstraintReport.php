@@ -7,11 +7,8 @@ use SpecialPage;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
 use Wikibase\Lib\EntityIdFormatter;
-use Wikibase\Lib\EntityIdHtmlLinkFormatter;
-use Wikibase\Lib\EntityIdLabelFormatter;
 use HTMLForm;
 use Wikibase\DataModel\Entity\EntityIdParser;
-use Wikibase\Lib\LanguageNameLookup;
 use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Store\EntityLookup;
@@ -30,14 +27,20 @@ use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
+use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
+use Wikibase\Repo\EntityIdLabelFormatterFactory;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
 use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
 use WikibaseQuality\ConstraintReport\Violations\CheckResultToViolationTranslator;
 use WikibaseQuality\Html\HtmlTableBuilder;
+use WikibaseQuality\Html\HtmlTableCellBuilder;
 use WikibaseQuality\Html\HtmlTableHeaderBuilder;
 use WikibaseQuality\Violations\ViolationStore;
+use WikibaseQuality\WikibaseQualityFactory;
 
 
 /**
@@ -111,19 +114,49 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private $violationStore;
 
+	public static function newFromGlobalState()	{
+		$wikibaseQuality = WikibaseQualityFactory::getDefaultInstance();
+		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
+		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
+
+		return new self(
+			$wikibaseRepo->getEntityLookup(),
+			$wikibaseRepo->getTermLookup(),
+			$wikibaseRepo->getEntityTitleLookup(),
+			new EntityIdLabelFormatterFactory(),
+			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
+			$wikibaseRepo->getEntityIdParser(),
+			$wikibaseRepo->getValueFormatterFactory(),
+			$constraintReportFactory->getConstraintChecker(),
+			$constraintReportFactory->getCheckResultToViolationTranslator(),
+			$wikibaseQuality->getViolationStore()
+		);
+	}
+
 	/**
 	 * @param EntityLookup $entityLookup
 	 * @param TermLookup $termLookup
 	 * @param EntityTitleLookup $entityTitleLookup
+	 * @param EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory
+	 * @param EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory
 	 * @param EntityIdParser $entityIdParser
 	 * @param OutputFormatValueFormatterFactory $valueFormatterFactory
 	 * @param DelegatingConstraintChecker $constraintChecker
 	 * @param CheckResultToViolationTranslator $checkResultToViolationTranslator
 	 * @param ViolationStore $violationStore
 	 */
-	public function __construct( EntityLookup $entityLookup, TermLookup $termLookup, EntityTitleLookup $entityTitleLookup, EntityIdParser $entityIdParser,
-								 OutputFormatValueFormatterFactory $valueFormatterFactory, DelegatingConstraintChecker $constraintChecker,
-								 CheckResultToViolationTranslator $checkResultToViolationTranslator, ViolationStore $violationStore ) {
+	public function __construct(
+		EntityLookup $entityLookup,
+		TermLookup $termLookup,
+		EntityTitleLookup $entityTitleLookup,
+		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
+		EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory,
+		EntityIdParser $entityIdParser,
+		OutputFormatValueFormatterFactory $valueFormatterFactory,
+		DelegatingConstraintChecker $constraintChecker,
+		CheckResultToViolationTranslator $checkResultToViolationTranslator,
+		ViolationStore $violationStore
+	) {
 		parent::__construct( 'ConstraintReport' );
 
 		$this->entityLookup = $entityLookup;
@@ -135,12 +168,8 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->dataValueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
 		$labelLookup = new LanguageLabelDescriptionLookup( $termLookup, $this->getLanguage()->getCode() );
-		$this->entityIdLabelFormatter = new EntityIdLabelFormatter( $labelLookup );
-		$this->entityIdLinkFormatter = new EntityIdHtmlLinkFormatter(
-			$labelLookup,
-			$this->entityTitleLookup,
-			new LanguageNameLookup()
-		);
+		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormater( $labelLookup );
+		$this->entityIdLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormater( $labelLookup );
 
 		$this->constraintChecker = $constraintChecker;
 		$this->checkResultToViolationTranslator = $checkResultToViolationTranslator;
@@ -382,9 +411,21 @@ class SpecialConstraintReport extends SpecialPage {
 			// Append cells
 			$table->appendRow(
 				array (
-					$statusColumn,
-					$claimColumn,
-					$constraintColumn
+					new HtmlTableCellBuilder(
+						$statusColumn,
+						array(),
+						true
+					),
+					new HtmlTableCellBuilder(
+						$claimColumn,
+						array(),
+						true
+					),
+					new HtmlTableCellBuilder(
+						$constraintColumn,
+						array(),
+						true
+					)
 				)
 			);
 		}

@@ -26,7 +26,7 @@ call_user_func( function() {
 	$GLOBALS['wgHooks']['UnitTestsList'][] = 'WikibaseQualityConstraintsHooks::onUnitTestsList';
 
 	// Initialize special pages
-	$GLOBALS['wgSpecialPages']['ConstraintReport'] = array( 'WikibaseQuality\ConstraintReport\SpecialPageFactory', 'newSpecialConstraintReport' );
+	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport::newFromGlobalState';
 
 	// Define modules
     $remoteExtPathParts = explode(
