@@ -2,12 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Maintenance;
 
-
-use WikibaseQuality\ConstraintReport\Maintenance\UpdateTable;
+use WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable;
 
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Maintenance\UpdateTable
+ * @covers WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable
  *
  * @group WikibaseQualityConstraints
  * @group Database
@@ -16,7 +15,7 @@ use WikibaseQuality\ConstraintReport\Maintenance\UpdateTable;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class UpdateTableTest extends \MediaWikiTestCase {
+class UpdateConstraintsTableTest extends \MediaWikiTestCase {
 
     protected function setup() {
         parent::setup();
@@ -44,7 +43,7 @@ class UpdateTableTest extends \MediaWikiTestCase {
     }
 
     public function testExecute() {
-        $maintenanceScript = new UpdateTable();
+        $maintenanceScript = new UpdateConstraintsTable();
         $args = array(
             'csv-file' => __DIR__ . '/constraints.csv',
             'batch-size' => 2,
