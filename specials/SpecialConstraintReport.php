@@ -114,7 +114,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private $violationStore;
 
-	public static function newFromGlobalState()	{
+	public static function newFromGlobalState() {
 		$wikibaseQuality = WikibaseQualityFactory::getDefaultInstance();
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
@@ -176,48 +176,48 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->violationStore = $violationStore;
 	}
 
-    /**
-     * @see SpecialPage::getGroupName
-     *
-     * @return string
-     */
-    function getGroupName() {
-        return 'wikibasequality';
-    }
+	/**
+	 * @see SpecialPage::getGroupName
+	 *
+	 * @return string
+	 */
+	function getGroupName() {
+		return 'wikibasequality';
+	}
 
-    /**
-     * @see SpecialPage::getDescription
-     *
-     * @return string
-     */
-    public function getDescription() {
-        return $this->msg( 'wbqc-constraintreport' )->escaped();
-    }
+	/**
+	 * @see SpecialPage::getDescription
+	 *
+	 * @return string
+	 */
+	public function getDescription() {
+		return $this->msg( 'wbqc-constraintreport' )->escaped();
+	}
 
 	/**
 	 * @see SpecialPage::execute
 	 *
 	 * @param string|null $subPage
-     *
-     * @throws InvalidArgumentException
-     * @throws EntityIdParsingException
-     * @throws UnexpectedValueException
+	 *
+	 * @throws InvalidArgumentException
+	 * @throws EntityIdParsingException
+	 * @throws UnexpectedValueException
 	 */
 	public function execute( $subPage ) {
 		$out = $this->getOutput();
 
-        $postRequest = $this->getContext()->getRequest()->getVal( 'entityid' );
-        if ( $postRequest ) {
-            $out->redirect( $this->getPageTitle( strtoupper( $postRequest ) )->getLocalURL() );
-            return;
-        }
+		$postRequest = $this->getContext()->getRequest()->getVal( 'entityid' );
+		if ( $postRequest ) {
+			$out->redirect( $this->getPageTitle( strtoupper( $postRequest ) )->getLocalURL() );
+			return;
+		}
 
 		$out->addModules( 'SpecialConstraintReportPage' );
 
 		$this->setHeaders();
 
 		$out->addHTML( $this->getExplanationText() );
-        $this->buildEntityIdForm();
+		$this->buildEntityIdForm();
 
 		if ( !$subPage ) {
 			return;
@@ -245,7 +245,7 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 
 		$results = $this->executeCheck( $entity );
-        $this->saveResultsInViolationsTable( $entity, $results );
+		$this->saveResultsInViolationsTable( $entity, $results );
 
 		if ( $results && count( $results ) > 0 ) {
 			$out->addHTML(
@@ -261,36 +261,36 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 	}
 
-    /**
-     * Builds html form for entity id input
-     */
-    private function buildEntityIdForm() {
-        $formDescriptor = array(
-            'entityid' => array(
-                'class' => 'HTMLTextField',
-                'section' => 'section',
-                'name' => 'entityid',
-                'label-message' => 'wbqc-constraintreport-form-entityid-label',
-                'cssclass' => 'wbqc-constraintreport-form-entity-id',
-                'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped()
-            )
-        );
-        $htmlForm = new HTMLForm( $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
-        $htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
-        $htmlForm->setSubmitCallback( function() {
-            return false;
-        } );
-        $htmlForm->setMethod( 'post' );
-        $htmlForm->show();
-    }
+	/**
+	 * Builds html form for entity id input
+	 */
+	private function buildEntityIdForm() {
+		$formDescriptor = array(
+			'entityid' => array(
+				'class' => 'HTMLTextField',
+				'section' => 'section',
+				'name' => 'entityid',
+				'label-message' => 'wbqc-constraintreport-form-entityid-label',
+				'cssclass' => 'wbqc-constraintreport-form-entity-id',
+				'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped()
+			)
+		);
+		$htmlForm = new HTMLForm( $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
+		$htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
+		$htmlForm->setSubmitCallback( function() {
+			return false;
+		} );
+		$htmlForm->setMethod( 'post' );
+		$htmlForm->show();
+	}
 
 	/**
 	 * Builds notice with given message. Optionally notice can be handles as error by settings $error to true
 	 *
 	 * @param string $message
 	 * @param bool $error
-     *
-     * @throws InvalidArgumentException
+	 *
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -314,12 +314,12 @@ class SpecialConstraintReport extends SpecialPage {
 					'class' => $cssClasses
 				),
 				$this->msg( $message )->text()
-            );
+			);
 	}
 
-    /**
-     * @return string HTML
-     */
+	/**
+	 * @return string HTML
+	 */
 	private function getExplanationText() {
 		return
 			Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
@@ -493,8 +493,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param string $content (sanitized HTML)
 	 * @param string $tooltipContent
 	 * @param $indicator
-     *
-     * @throws InvalidArgumentException
+	 *
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -541,8 +541,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param string $content
 	 * @param string $expandableContent
 	 * @param string $indicator
-     *
-     * @throes InvalidArgumentException
+	 *
+	 * @throes InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -582,33 +582,33 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Formats given status to html
 	 *
 	 * @param string $status
-     *
-     * @throws InvalidArgumentException
+	 *
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
-    private function formatStatus( $status ) {
-        $messageName = "wbqc-constraintreport-status-" . strtolower( $status );
+	private function formatStatus( $status ) {
+		$messageName = "wbqc-constraintreport-status-" . strtolower( $status );
 
-        $formattedStatus =
-            Html::element(
-                'span',
-                array (
-                    'class' => 'wbqc-status wbqc-status-' . $status
-                ),
-                $this->msg( $messageName )->text()
-            );
+		$formattedStatus =
+			Html::element(
+				'span',
+				array (
+					'class' => 'wbqc-status wbqc-status-' . $status
+				),
+				$this->msg( $messageName )->text()
+			);
 
-        return $formattedStatus;
-    }
+		return $formattedStatus;
+	}
 
 	/**
 	 * Parses data values to human-readable string
 	 *
 	 * @param DataValue|array $dataValues
 	 * @param string $separator
-     *
-     * @throws InvalidArgumentException
+	 *
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -732,16 +732,16 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 
-    /**
-     * @param Entity $entity
-     * @param array $results
-     */
-    private function saveResultsInViolationsTable( $entity, $results ) {
-        $violations = $this->checkResultToViolationTranslator->translateToViolation( $entity, $results );
-        foreach( $violations as $violation ) {
-            $this->violationStore->insert( $violation, true );
-        }
-    }
+	/**
+	 * @param Entity $entity
+	 * @param array $results
+	 */
+	private function saveResultsInViolationsTable( $entity, $results ) {
+		$violations = $this->checkResultToViolationTranslator->translateToViolation( $entity, $results );
+		foreach( $violations as $violation ) {
+			$this->violationStore->insert( $violation, true );
+		}
+	}
 
 	private function doEvaluation( $entity, $results ) {
 		$checkTimeStamp = wfTimestamp( TS_UNIX );
