@@ -53,4 +53,4 @@ require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";
 * Last but not least, you need to fill the constraints table - for that you need the
 [constraints from templates script](https://github.com/WikidataQuality/ConstraintsFromTemplates).  
 Follow the instruction in the README to create a csv file.  
-Run `php maintenance/runScript.php extensions/Constraints/maintenance/UpdateTable.php --csv-file <path_to_csv_file>`.
+Run `php maintenance/runScript.php extensions/Constraints/maintenance/UpdateConstraintsTable.php --csv-file <path_to_csv_file>`.

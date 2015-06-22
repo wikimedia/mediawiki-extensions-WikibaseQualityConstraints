@@ -37,7 +37,7 @@
 		},
 		"classmap": [
 			"WikibaseQualityConstraintsHooks.php",
-			"maintenance/UpdateTable.php"
+			"maintenance/UpdateConstraintsTable.php"
 		]
 	}
 }
