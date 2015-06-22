@@ -28,7 +28,7 @@ class Constraint {
 	private $propertyId;
 
 	/**
-	 * @var array (variable length; key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21')
+	 * @var string[] key/value pairs representing constraint parameters, as defined on-wiki.
 	 */
 	private $constraintParameters;
 
@@ -36,7 +36,7 @@ class Constraint {
 	 * @param string $constraintClaimGuid
 	 * @param PropertyId $propertyId
 	 * @param string $constraintTypeQid
-	 * @param array $constraintParameters
+	 * @param string[] $constraintParameters key/value pairs representing constraint parameters, as defined on-wiki.
 	 */
 	public function __construct( $constraintClaimGuid, PropertyId $propertyId, $constraintTypeQid, $constraintParameters) {
 		$this->constraintClaimGuid = $constraintClaimGuid;
@@ -75,7 +75,7 @@ class Constraint {
 	}
 
 	/**
-	 * @return array (variable length; key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21')
+	 * @return string[] key/value pairs representing constraint parameters, as defined on-wiki.
 	 */
 	public function getConstraintParameters() {
 		return $this->constraintParameters;
