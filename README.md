@@ -1,10 +1,10 @@
 # Wikibase Quality Constraints
-[![Build Status](https://travis-ci.org/wikimedia/mediawiki-extensions-WikidataQualityConstraints.svg?branch=master)]
-(https://travis-ci.org/wikimedia/mediawiki-extensions-WikidataQualityConstraints)
-[![Coverage Status](https://coveralls.io/repos/wikimedia/mediawiki-extensions-WikidataQualityConstraints/badge.svg)]
-(https://coveralls.io/r/wikimedia/mediawiki-extensions-WikidataQualityConstraints)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikidataQualityConstraints/badges/quality-score.png?b=master)]
-(https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikidataQualityConstraints/?branch=master)
+[![Build Status](https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints.svg?branch=master)]
+(https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints)
+[![Coverage Status](https://coveralls.io/repos/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badge.svg)]
+(https://coveralls.io/r/wikimedia/mediawiki-extensions-WikibaseQualityConstraints)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badges/quality-score.png?b=master)]
+(https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/?branch=master)
 
 This is a complementary extension for the [Wikibase Quality base extension]
 (https://github.com/wikimedia/mediawiki-extensions-WikidataQuality.git).  
@@ -21,21 +21,21 @@ composer.local.json._
 * Add the following lines:
 ```json
 {
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikidataQuality"
-        },
-        {
-            "type": "git",
-            "url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikidataQualityConstraints"
-        }
-    ],
-    "require": {
-        "wikibase/quality": "@dev",
-        "wikibase/wikibase": "@dev",
-        "wikibase/constraints": "1.x-dev"
-    }
+	"repositories": [
+		{
+			"type": "git",
+			"url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseQuality"
+		},
+		{
+			"type": "git",
+			"url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseQualityConstraints"
+		}
+	],
+	"require": {
+		"wikibase/quality": "@dev",
+		"wikibase/wikibase": "@dev",
+		"wikibase/constraints": "1.x-dev"
+	}
 }
 ```
 
