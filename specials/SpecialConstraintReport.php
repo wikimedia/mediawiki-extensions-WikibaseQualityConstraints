@@ -739,7 +739,7 @@ class SpecialConstraintReport extends SpecialPage {
     private function saveResultsInViolationsTable( $entity, $results ) {
         $violations = $this->checkResultToViolationTranslator->translateToViolation( $entity, $results );
         foreach( $violations as $violation ) {
-            $this->violationStore->insert( $violation );
+            $this->violationStore->insert( $violation, true );
         }
     }
 
