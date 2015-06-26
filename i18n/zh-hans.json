@@ -42,6 +42,7 @@
 	"wbqc-violation-message-diff-within-range-property-must-exist": "参数中定义的属性必须存在。",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "参数中定义的属性必须有一个与此属性类型相同的值。",
 	"wbqc-violation-message-format": "属性的值必须匹配参数中定义的模式。",
+	"wbqc-violation-message-inverse": "此属性必须只在当有一个声明在它的值实体，并使用参数定义的属性与其项作为值时才能使用。",
 	"wbqc-violation-message-item-property": "此属性必须只在当其他声明使用参数中定义的属性时才能使用。",
 	"wbqc-violation-message-item-claim": "此属性必须只在当其他声明使用参数中定义的属性，并带有对应的值之一时才能使用。",
 	"wbqc-violation-message-mandatory-qualifiers": "所有参数中定义的属性在此声明中必定用作限定符。",
@@ -52,7 +53,10 @@
 	"wbqc-violation-message-range-properties-needed": "带类型“$1”的值与约束“Range”的属性需要参数“$2”。",
 	"wbqc-violation-message-range": "属性的值必须既不小于参数中定义的最低值，又不大于参数中定义的最高值。",
 	"wbqc-violation-message-single-value": "此属性必须只有一个值。换言之，这里必须只有一个声称使用此属性。",
+	"wbqc-violation-message-symmetric": "此属性必须只在当这里有一个声明在它的值实体，并且值为相同属性及其项时才能使用。",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "参数“relation”必须是“instance”或“subclass”两者之一。",
 	"wbqc-violation-message-type": "此属性必须只在与测试定义的项（或项的子集）有关系的项中使用。",
+	"wbqc-violation-message-target-required-claim-property": "此属性必须只在有一个声明在使用参数定义的属性的值实体上时才能使用。",
+	"wbqc-violation-message-target-required-claim-claim": "此属性必须只在有一个声明在它的值实体上，并使用带有参数定义的值之一的属性时才能使用。",
 	"wbqc-violation-message-value-type": "此属性的值实体必须与参数中定义的项（或项的子集）存在关系。"
 }
