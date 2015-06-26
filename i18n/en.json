@@ -31,6 +31,7 @@
 
 
 	"wbqc-violation-message-not-yet-implemented": "For technical reasons, the check for the constraint \"$1\" has not yet been implemented.",
+	"wbqc-violation-message-security-reason": "For security reasons, it is not possible to check the \"$1\" constraint at the moment. We are working on a solution.",
 	"wbqc-violation-message-value-needed": "Properties with constraint \"$1\" need to have a value.",
 	"wbqc-violation-message-value-needed-of-type": "Properties with constraint \"$1\" need to have values of type \"$2\".",
 	"wbqc-violation-message-parameter-needed": "Properties with constraint \"$1\" need a parameter \"$2\".",

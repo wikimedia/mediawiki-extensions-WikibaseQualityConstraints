@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Specials;
 
+use UnexpectedValueException;
+use InvalidArgumentException;
 use JobQueueGroup;
 use SpecialPage;
 use ValueFormatters\FormatterOptions;
@@ -372,7 +374,7 @@ class SpecialConstraintReport extends SpecialPage {
 		if ( $result->getMainSnakType() === 'value' ) {
 			$value = $this->formatValue( $result->getDataValue() );
 		} else {
-			$value = $result->getMainSnakType();
+			$value = htmlspecialchars( $result->getMainSnakType() );
 		}
 
 		$claimColumn = $this->getClaimLink(
@@ -471,7 +473,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * If $tooltipContent is null, no tooltip will be created
 	 *
 	 * @param string $content (sanitized HTML)
-	 * @param string $tooltipContent
+	 * @param string $tooltipContent (sanitized HTML)
 	 * @param $indicator
 	 *
 	 * @throws InvalidArgumentException
@@ -498,7 +500,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$indicator
 		);
 
-		$tooltip = HTML::element(
+		$tooltip = HTML::rawElement(
 			'div',
 			array (
 				'class' => 'wbqc-tooltip'
@@ -619,13 +621,13 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param EntityId $entityId
 	 * @param PropertyId $propertyId
-	 * @param string $text
+	 * @param string $text HTML
 	 *
 	 * @return string HTML
 	 */
 	private function getClaimLink( EntityId $entityId, PropertyId $propertyId, $text ) {
 		return
-			Html::element(
+			Html::rawElement(
 				'a',
 				array (
 					'href' => $this->getClaimUrl( $entityId, $propertyId ),

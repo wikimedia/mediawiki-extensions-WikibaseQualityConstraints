@@ -55,7 +55,7 @@ class CheckResult {
 	 * @param string $constraintName
 	 * @param array $parameters (string => string[])
 	 * @param string $status
-	 * @param string $message
+	 * @param string $message (sanitized HTML)
 	 */
 	public function __construct( Statement $statement, $constraintName, $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
 		$this->statement = $statement;
@@ -120,7 +120,7 @@ class CheckResult {
 	}
 
 	/**
-	 * @return string
+	 * @return string (sanitized HTML)
 	 */
 	public function getMessage() {
 		return $this->message;
