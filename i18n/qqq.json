@@ -25,7 +25,7 @@
 	"wbqc-constraintreport-result-table-header-constraint": "Header of the column that gives information about which constraint was checked.\n{{Identical|Constraint}}",
 	"wbqc-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
 	"wbqc-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page.",
-	"wbqc-constraintreport-no-parameter": "Text that is displayed when there was no value for a parameter given.",
+	"wbqc-constraintreport-no-parameter": "Text that is displayed when there was no value for a parameter given.\n{{Identical|None}}",
 	"wbq-subextension-name-wbqc": "Name of this subextension. Is shown in special page that lists all the violations.\n{{Identical|Constraint}}",
 	"wbqc-violation-header-parameters": "Header for section in violations special page that displays the parameters of the constraint.\n{{Identical|Parameter}}",
 	"wbqc-violations-group": "Type of violations this extension finds.\n{{Identical|Constraint}}",

@@ -20,10 +20,12 @@
 	"wbqc-constraintreport-result-table-header-constraint": "Beschrängkong",
 	"wbqc-constraintreport-result-link-to-claim": "jangk op di Behouptong",
 	"wbqc-constraintreport-result-link-to-constraint": "jangk op di Beschrängkong",
+	"wbqc-constraintreport-no-parameter": "keine",
 	"wbq-subextension-name-wbqc": "Beschrängkonge",
 	"wbqc-violation-header-parameters": "Parramehtere:",
 	"wbqc-violations-group": "Beschrängkonge",
 	"wbqc-violation-message": "De Pröhfong hädd_en Verläzong vum Berett för de müjjelesche Wääte jefonge. Op dat Minnibelldsche Kleke brängk Der mih Aanjahbe derzoh.",
+	"wbqc-violation-message-diff-within-range-property-needs value": "Di Eijeschaff, di övver heh dä Parramehter faß jelaht weed, moß ene Wäät han.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Di Eijeschaff, di en dä Parramehtere faßjelaht es, moß ene Wäät vun dersällve Zoot han, wi heh di Eijeschaff.",
 	"wbqc-violation-message-range": "Dä Wäät för di eijeschaff darref nit kleijner sin wi der kleinste zohjelohße Wääd un nit jrühßer wi der jrühße zohjelohße Wäät, dä en de Parrmehtere faßjelaht sin.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Dä Parramehter „Relation“ muss entweder „Instanz“ oder „Unterklasse“ sein."

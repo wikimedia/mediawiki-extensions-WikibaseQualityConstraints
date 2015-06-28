@@ -5,5 +5,6 @@
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "檢查",
-	"wbqc-constraintreport-result-table-header-status": "狀態"
+	"wbqc-constraintreport-result-table-header-status": "狀態",
+	"wbqc-constraintreport-no-parameter": "無"
 }
