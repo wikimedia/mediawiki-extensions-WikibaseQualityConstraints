@@ -40,7 +40,7 @@ use WikibaseQuality\Html\HtmlTableBuilder;
 use WikibaseQuality\Html\HtmlTableCellBuilder;
 use WikibaseQuality\Html\HtmlTableHeaderBuilder;
 use WikibaseQuality\Violations\ViolationStore;
-use WikibaseQuality\WikibaseQualityFactory;
+use WikibaseQuality\WikibaseQualityServices;
 
 
 /**
@@ -115,7 +115,7 @@ class SpecialConstraintReport extends SpecialPage {
 	private $violationStore;
 
 	public static function newFromGlobalState() {
-		$wikibaseQuality = WikibaseQualityFactory::getDefaultInstance();
+		$wikibaseQuality = WikibaseQualityServices::getDefaultInstance();
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 

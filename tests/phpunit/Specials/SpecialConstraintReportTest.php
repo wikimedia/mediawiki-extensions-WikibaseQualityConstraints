@@ -14,7 +14,7 @@ use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
-use WikibaseQuality\WikibaseQualityFactory;
+use WikibaseQuality\WikibaseQualityServices;
 
 
 /**
@@ -68,7 +68,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	protected function newSpecialPage() {
-		$wikibaseQuality = WikibaseQualityFactory::getDefaultInstance();
+		$wikibaseQuality = WikibaseQualityServices::getDefaultInstance();
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 
