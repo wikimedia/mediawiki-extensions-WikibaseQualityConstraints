@@ -6,6 +6,7 @@
 		]
 	},
 	"wbqc-constraintreport": "{{doc-special|ConstraintReport}}",
+	"wbqc-desc": "{{desc|name=Wikibase Quality Constraints|url=https://www.mediawiki.org/wiki/Extension:WikibaseQualityConstraints}}",
 	"wbqc-constraintreport-explanation-part-one": "Explanation (part one), what this special page does and how it gets its data.",
 	"wbqc-constraintreport-explanation-part-two": "Explanation (part two), what this special page does and how it gets its data.",
 	"wbqc-constraintreport-form-section": "Header of the section of the entity id form.",
