@@ -51,9 +51,6 @@ class ConstraintRepository {
 		);
 
 		$db = wfGetDB( DB_MASTER );
-		$db->commit( __METHOD__, "flush" );
-		wfWaitForSlaves();
-
 		return $db->insert( CONSTRAINT_TABLE, $accumulator );
 	}
 

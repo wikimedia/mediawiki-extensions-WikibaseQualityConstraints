@@ -46,11 +46,16 @@ class UpdateTable extends \Maintenance {
 	private function insertValues( $constraintRepo, $csvFile ) {
 
 		$i = 0;
+		$db = wfGetDB( DB_MASTER );
 		$accumulator = array();
 		while ( true ) {
 			$data = fgetcsv( $csvFile );
 			if ( $data === false || ++$i % $this->mBatchSize === 0 ) {
 				$constraintRepo->insertBatch( $accumulator );
+
+				$db->commit( __METHOD__, 'flush' );
+				wfWaitForSlaves();
+
 				if ( !$this->isQuiet() ) {
 					$this->output( "\r\033[K" );
 					$this->output( "$i rows inserted" );
