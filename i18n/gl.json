@@ -12,6 +12,7 @@
 	"wbqc-constraintreport-form-submit-label": "Comprobar",
 	"wbqc-constraintreport-form-entityid-label": "Identificador de entidade:",
 	"wbqc-constraintreport-result-headline": "Resultado para",
+	"wbqc-constraintreport-invalid-entity-id": "Identificador de entidade non válido.",
 	"wbqc-constraintreport-not-existent-entity": "A entidade non existe!",
 	"wbqc-constraintreport-empty-result": "Non hai restricións definidas nesta entidade.",
 	"wbqc-constraintreport-status-violation": "Violación",
@@ -23,6 +24,7 @@
 	"wbqc-constraintreport-result-table-header-constraint": "Restrición",
 	"wbqc-constraintreport-result-link-to-claim": "ir a afirmación",
 	"wbqc-constraintreport-result-link-to-constraint": "ir a restrición",
+	"wbqc-constraintreport-no-parameter": "ningún",
 	"wbq-subextension-name-wbqc": "Restricións",
 	"wbqc-violation-header-parameters": "Parámetros:",
 	"wbqc-violations-group": "Restricións",
@@ -31,7 +33,15 @@
 	"wbqc-violation-message-value-needed-of-type": "As propiedades coa restricción \"$1\" deben ter valores do tipo \"$2\".",
 	"wbqc-violation-message-parameter-needed": "As propiedades coa restricción \"$1\" necesitan un parámetro \"$2\".",
 	"wbqc-violation-message-target-entity-must-exist": "A entidade obxectivo debe existir.",
+	"wbqc-violation-message-value-entity-must-exist": "O valor entidade debe existir.",
+	"wbqc-violation-message-commons-link-no-existent": "A ligazón a Commons debe existir.",
+	"wbqc-violation-message-commons-link-not-well-formed": "A ligazón a Commons debe estar ben formada.",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "A propiedade definida nos parámetros debe existir.",
+	"wbqc-violation-message-diff-within-range-property-needs value": "A propiedade definida nos parámetros debe ter un valor.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "A propiedade definida nos parámetros debe ter un valor do mesmo tipo que esta propiedade.",
-	"wbqc-violation-message-one-of": "O valor da propiedade debe ser un dos elementos definidos nos parámetros."
+	"wbqc-violation-message-format": "O valor da propiedade debe coincidir co patrón definido nos parámetros.",
+	"wbqc-violation-message-one-of": "O valor da propiedade debe ser un dos elementos definidos nos parámetros.",
+	"wbqc-violation-message-qualifier": "A propiedade só debe ser usada como cualificador.",
+	"wbqc-violation-message-range": "O valor da propiedade non debe ser menor que o mínimo, nin maior que o máximo definido nos parámetros.",
+	"wbqc-violation-message-type-relation-instance-or-subclass": "O parámetro \"relation\" (relación) debe ser \"instance\" (caso) ou \"subclass\" (subclase)."
 }

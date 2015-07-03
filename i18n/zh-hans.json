@@ -41,6 +41,7 @@
 	"wbqc-violation-message-conflicts-with-claim": "当这里有其他声明使用参数中定义的带有一个或更多值的属性时，此属性必须不被使用。",
 	"wbqc-violation-message-diff-within-range": "此属性值与测试定义的属性值之间的差异必须既不小于参数定义的最小值，又不大于参数定义的最大值。",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "参数中定义的属性必须存在。",
+	"wbqc-violation-message-diff-within-range-property-needs value": "参数中定义的属性需要有一个值。",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "参数中定义的属性必须有一个与此属性类型相同的值。",
 	"wbqc-violation-message-format": "属性的值必须匹配参数中定义的模式。",
 	"wbqc-violation-message-inverse": "此属性必须只在当有一个声明在它的值实体，并使用参数定义的属性与其项作为值时才能使用。",
