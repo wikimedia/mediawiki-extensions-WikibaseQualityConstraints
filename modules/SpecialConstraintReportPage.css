@@ -20,7 +20,7 @@ form {
 
 /* Explanation infobox */
 .wbqc-explanation {
-    width: 50%;
+	max-width: 65em; /* similar to .wikibase-entityview */
 }
 
 /* Statuses */
