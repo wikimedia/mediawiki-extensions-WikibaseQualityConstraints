@@ -1,11 +1,37 @@
 {
 	"@metadata": {
 		"authors": [
-			"Macofe"
+			"Macofe",
+			"Ayack"
 		]
 	},
+	"wbqc-constraintreport": "Rapport de contrainte",
+	"wbqc-constraintreport-form-section": "Vérifier les contraintes pour l'entité",
 	"wbqc-constraintreport-form-submit-label": "Vérifier",
+	"wbqc-constraintreport-form-entityid-label": "Identifiant de l'entité :",
+	"wbqc-constraintreport-result-headline": "Résultats pour",
+	"wbqc-constraintreport-invalid-entity-id": "Identifiant d'entité invalide.",
+	"wbqc-constraintreport-not-existent-entity": "L'entité n'existe pas.",
+	"wbqc-constraintreport-empty-result": "Il n'existe pas de contrainte définie sur cette entité.",
 	"wbqc-constraintreport-status-violation": "Violation",
+	"wbqc-constraintreport-status-compliance": "Conforme",
+	"wbqc-constraintreport-status-exception": "En exception",
+	"wbqc-constraintreport-status-todo": "En attente",
 	"wbqc-constraintreport-result-table-header-status": "État",
-	"wbqc-violation-header-parameters": "Paramètres:"
+	"wbqc-constraintreport-result-table-header-claim": "Déclaration",
+	"wbqc-constraintreport-result-table-header-constraint": "Contrainte",
+	"wbqc-constraintreport-result-link-to-claim": "aller à la déclaration",
+	"wbqc-constraintreport-result-link-to-constraint": "aller à la contrainte",
+	"wbqc-constraintreport-no-parameter": "aucune",
+	"wbq-subextension-name-wbqc": "Contraintes",
+	"wbqc-violation-header-parameters": "Paramètres :",
+	"wbqc-violations-group": "Contraintes",
+	"wbqc-violation-message": "La vérification de contrainte a identifié une violation. Veuillez cliquer sur l'icône pour plus d'informations.",
+	"wbqc-violation-message-not-yet-implemented": "Pour des raisons techniques, la vérification de la contrainte \"$1\" n'a pas encore été mis en œuvre.",
+	"wbqc-violation-message-value-needed": "Les propriétés avec la contrainte \"$1\" requièrent une valeur.",
+	"wbqc-violation-message-value-needed-of-type": "Les propriétés avec la contrainte \"$1\" requièrent des valeurs de type \"$2\".",
+	"wbqc-violation-message-parameter-needed": "Les propriétés avec la contrainte \"$1\" requièrent un paramètre \"$2\".",
+	"wbqc-violation-message-target-entity-must-exist": "L'entité cible doit exister.",
+	"wbqc-violation-message-value-entity-must-exist": "La valeur de l'entité doit exister.",
+	"wbqc-violation-message-commons-link-no-existent": "Le lien Commons doit exister."
 }
