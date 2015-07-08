@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"wbqc-constraintreport": "דו\"ח אילוצים",
+	"wbqc-constraintreport-explanation-part-one": "הדף המיוחד הזה מבצע בדיקות אילוצים על כל ישות שתרצה. הישויות מאוחזרות מהמערכת החיה כך שכל הפרת אילוץ שמתוקנת שם תוסר מהרשימה הזאת מיד.",
+	"wbqc-constraintreport-form-submit-label": "לבדוק",
+	"wbqc-constraintreport-form-entityid-label": "מזהה ישות:",
+	"wbqc-constraintreport-result-headline": "תוצאה עבור",
+	"wbqc-constraintreport-invalid-entity-id": "מזהה ישות בלתי־תקין.",
+	"wbqc-constraintreport-not-existent-entity": "הישות אינה קיימת.",
+	"wbqc-constraintreport-empty-result": "אין אילוצים מוגדרים לישות הזאת.",
+	"wbqc-constraintreport-status-violation": "הפרה",
+	"wbqc-constraintreport-status-compliance": "התאמה",
+	"wbqc-constraintreport-status-exception": "יוצא־דופן",
+	"wbqc-constraintreport-status-todo": "מטלות",
+	"wbqc-constraintreport-result-table-header-status": "מצב",
+	"wbqc-constraintreport-result-table-header-claim": "טענה",
+	"wbqc-constraintreport-result-table-header-constraint": "אילוץ",
+	"wbqc-constraintreport-result-link-to-claim": "ללכת אל טענה",
+	"wbqc-constraintreport-result-link-to-constraint": "ללכת על אילוץ",
+	"wbqc-constraintreport-no-parameter": "אין",
+	"wbq-subextension-name-wbqc": "אילוצים",
+	"wbqc-violation-header-parameters": "פרמטרים:",
+	"wbqc-violations-group": "אילוצים",
+	"wbqc-violation-message": "בדיקת אילוצים הצביעה על הפרה. נא ללחוץ על הסמל למידע נוסף.",
+	"wbqc-violation-message-not-yet-implemented": "מסיבות טכניות הבדיקה של האילוץ \"$1\" עוד לא מומשה.",
+	"wbqc-violation-message-value-needed": "למאפיינים עם האילוץ \"$1\" צריך להיות ערך.",
+	"wbqc-violation-message-value-needed-of-type": "למאפיינים עם האילוץ \"$1\" צריכים להיות ערכים מסוג \"$2\".",
+	"wbqc-violation-message-parameter-needed": "מאפיינים עם האילוץ \"$1\" צריכים פרמטר \"$2\".",
+	"wbqc-violation-message-target-entity-must-exist": "ישות יעד צריכה להתקיים."
+}
