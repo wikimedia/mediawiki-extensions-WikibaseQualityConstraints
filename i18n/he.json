@@ -42,5 +42,5 @@
 	"wbqc-violation-message-diff-within-range": "ההבדל בין הערך של המאפיין הזה לבין הערך של המאפיין שמוגדר בפרמטרים צריך להיות לא קטן יותר מהערך המזערי ולא גדול יותר מהערך המרבי שמוגדר בפרמטרים.",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "המאפיין שמוגדר בפרמטרים צריך להתקיים.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "למאפיין שהוגדר בפרמטרים צריך להיות ערך.",
-	"wbqc-violation-message-diff-within-range-must-have-equal-types": "למאפיין שהוגדר בפרמטרים צריך להיות ערך מאותו הסוג כמו המאפיין הזה."
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "למאפיין שהוגדר בפרמטרים צריך להיות ערך מאותו הסוג כמו למאפיין הזה."
 }
