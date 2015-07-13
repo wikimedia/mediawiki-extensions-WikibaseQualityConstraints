@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Maintenance;
 
 use WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable;
 
-
 /**
  * @covers WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable
  *
@@ -19,20 +18,21 @@ class UpdateConstraintsTableTest extends \MediaWikiTestCase {
 
 	protected function setup() {
 		parent::setup();
+
 		$this->tablesUsed[] = CONSTRAINT_TABLE;
 	}
 
 	public function addDBData() {
 		$this->db->delete( CONSTRAINT_TABLE, '*' );
 		$this->db->insert( CONSTRAINT_TABLE,
-			array (
-				array (
+			array(
+				array(
 					'constraint_guid' => 'foo',
 					'pid' => 42,
 					'constraint_type_qid' => 'TestConstraint',
 					'constraint_parameters' => '{}'
 				),
-				array (
+				array(
 					'constraint_guid' => 'bar',
 					'pid' => 42,
 					'constraint_type_qid' => 'TestConstraint',
