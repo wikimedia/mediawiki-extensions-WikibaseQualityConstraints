@@ -45,7 +45,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-        $entityRevisionLookupMock = $this->getMockForAbstractClass( 'Wikibase\Lib\Store\EntityRevisionLookup' );
+		$entityRevisionLookupMock = $this->getMockForAbstractClass( 'Wikibase\Lib\Store\EntityRevisionLookup' );
 		$factory = new ConstraintReportFactory( $this->lookup, $entityRevisionLookupMock );
 		$this->constraintChecker = $factory->getConstraintChecker();
 
