@@ -6,7 +6,7 @@
 		]
 	},
 	"wbqc-constraintreport": "Informe de restrición",
-	"wbqc-constraintreport-explanation-part-one": "Esta páxina especial realiza revisións de restrición e todas as entidades que queira. As entidades búscanse no sistema real polo que cada violación de restrición que amañe será eliminada instantaneamente desta lista.",
+	"wbqc-constraintreport-explanation-part-one": "Esta páxina especial realiza revisións de restrición nas entidades que queira. As entidades búscanse no sistema real, polo que cada violación de restrición que amañe será eliminada instantaneamente desta lista.",
 	"wbqc-constraintreport-explanation-part-two": "As restricións son analizadas nas páxinas de conversa das propiedades unha vez á semana, polo que se engade/borra/cambia unha restrición pode tardar ata unha semana ata que sexa reflectido neste informe de restricións. Actualmente hai traballos en progreso para migrar as restricións a declaracións en propiedades, permitindo que esta páxina especial faga revisións en vivo.",
 	"wbqc-constraintreport-form-section": "Revisar restriccións para entidade",
 	"wbqc-constraintreport-form-submit-label": "Comprobar",

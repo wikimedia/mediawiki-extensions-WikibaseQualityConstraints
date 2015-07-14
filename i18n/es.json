@@ -23,8 +23,10 @@
 	"wbqc-violations-group": "Restricciones",
 	"wbqc-violation-message": "La verificación de restricciones ha señalado una violación. Pulsa el icono para obtener más información.",
 	"wbqc-violation-message-target-entity-must-exist": "La entidad de destino debe existir.",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La verificación para el espacio de nombres \"$1\" todavía no está implementada.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "La propiedad definida en los parámetros debe tener un valor.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propiedad definida en los parámetros debe tener un valor del mismo tipo que esta propiedad.",
+	"wbqc-violation-message-multi-value": "Esta propiedad debe tener varios valores. Es decir, debe haber más de una solicitud utilizando esta propiedad.",
 	"wbqc-violation-message-one-of": "El valor de la propiedad debe ser uno de los elementos definidos en los parámetros.",
 	"wbqc-violation-message-range": "El valor de la propiedad no debe ser menor que el mínimo, ni mayor que el máximo definido en los parámetros.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "El parámetro \"relation\" debe ser \"instance\" o \"subclass\"."
