@@ -59,6 +59,8 @@
 	"wbqc-violation-message-single-value": "Cette propriété doit avoir une valeur unique. C’est-à-dire qu’il doit y avoir une seule déclaration utilisant cette propriété.",
 	"wbqc-violation-message-symmetric": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété dont la valeur est cet élément.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Le paramètre « relation » doit être soit « instance », soit « sous-classe ».",
+	"wbqc-violation-message-type": "Cette propriété doit être utilisée uniquement sur les éléments qui ont une relation avec l’élément (ou une sous-classe de l’élément) définie dans les paramètres.",
 	"wbqc-violation-message-target-required-claim-property": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété définie dans les paramètres.",
-	"wbqc-violation-message-target-required-claim-claim": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété avec l’une des valeurs définies en paramètres."
+	"wbqc-violation-message-target-required-claim-claim": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété avec l’une des valeurs définies en paramètres.",
+	"wbqc-violation-message-value-type": "L’entité définie en valeur pour cette propriété doit avoir une relation avec l’élément (ou une sous-classe de l’élément) définie dans les paramètres."
 }
