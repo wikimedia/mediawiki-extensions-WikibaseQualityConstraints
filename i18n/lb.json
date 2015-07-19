@@ -10,5 +10,6 @@
 	"wbqc-constraintreport-status-exception": "Ausnahm",
 	"wbqc-constraintreport-no-parameter": "keng",
 	"wbqc-violation-header-parameters": "Parameteren:",
-	"wbqc-violations-group": "Limitatiounen"
+	"wbqc-violations-group": "Limitatiounen",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "D'Nokucke fir den Nummraum \"$1\" ass nach net implementéiert."
 }
