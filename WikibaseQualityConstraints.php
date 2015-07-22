@@ -44,5 +44,4 @@ call_user_func( function() {
 
 	// Jobs
 	$GLOBALS['wgJobClasses']['evaluateConstraintReportJob'] = 'WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob';
-	$GLOBALS['wgDebugLogGroups']['wbq_evaluation'] = '/var/log/mediawiki/wbq_evaluation.log';
 } );
