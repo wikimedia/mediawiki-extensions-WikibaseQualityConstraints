@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Specials\SpecialConstraintReport;
 
+use Wikibase\DataModel\Services\Statement\GuidGenerator;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Test\SpecialPageTestBase;
 use DataValues\StringValue;
@@ -9,7 +10,6 @@ use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\Lib\ClaimGuidGenerator;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
@@ -103,7 +103,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$store->saveEntity( $itemQ1, 'TestEntityQ1', $GLOBALS[ 'wgUser' ], EDIT_NEW );
 			self::$idMap[ 'Q1' ] = $itemQ1->getId();
 
-			$statementGuidGenerator = new ClaimGuidGenerator();
+			$statementGuidGenerator = new GuidGenerator();
 
 			$dataValue = new StringValue( 'foo' );
 			$snak = new PropertyValueSnak( self::$idMap[ 'P1' ], $dataValue );
