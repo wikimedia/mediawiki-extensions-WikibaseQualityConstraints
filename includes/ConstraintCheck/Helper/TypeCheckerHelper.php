@@ -2,10 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\StatementList;
+use Wikibase\DataModel\Statement\StatementListProvider;
 use Wikibase\Lib\Store\EntityLookup;
-
 
 /**
  * Class for helper functions for range checkers.
@@ -35,20 +37,26 @@ class TypeCheckerHelper {
 	 * Due to cyclic dependencies, the checks stops after a certain
 	 * depth is reached
 	 *
+	 * FIXME: the implementation here relies on the ID being passed being an ItemId.
+	 * However, the callers can not provide a guarentee of this.
+	 *
 	 * @param EntityId $comparativeClass
 	 * @param array $classesToCheck
 	 * @param int $depth
 	 *
 	 * @return bool
 	 */
-	public function isSubclassOf( $comparativeClass, $classesToCheck, $depth ) {
-		$compliance = null;
+	public function isSubclassOf( EntityId $comparativeClass, $classesToCheck, $depth ) {
+		/**
+		 * @var Item $item
+		 */
 		$item = $this->entityLookup->getEntity( $comparativeClass );
-		if ( !$item ) {
-			return false; // lookup failed, probably because item doesn't exist
+
+		if ( $item === null ) {
+			return false;
 		}
 
-		foreach ( $item->getStatements()->getByPropertyId( new PropertyId( self::subclassId ) ) as $statement ) {
+		foreach ( $this->getSubclassStatements( $item ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
 			if ( !( $this->hasCorrectType( $mainSnak ) ) ) {
@@ -65,13 +73,17 @@ class TypeCheckerHelper {
 				return false;
 			}
 
-			$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, $depth + 1 );
-			if ( $compliance === true ) {
+			if ( $this->isSubclassOf( $comparativeClass, $classesToCheck, $depth + 1 ) ) {
 				return true;
 			}
 
 		}
 		return false;
+	}
+
+	private function getSubclassStatements( StatementListProvider $statementListProvider ) {
+		return $statementListProvider->getStatements()
+			->getByPropertyId( new PropertyId( self::subclassId ) )->toArray();
 	}
 
 	/**
