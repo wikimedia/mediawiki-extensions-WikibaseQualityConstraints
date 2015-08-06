@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Maintenance;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
-
+use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
 /**
  * Class UpdateConstraintsTable
@@ -38,7 +38,7 @@ class UpdateConstraintsTable extends \Maintenance {
 		fclose( $csvFile );
 	}
 
-	private function insertValues( $constraintRepo, $csvFile ) {
+	private function insertValues( ConstraintRepository $constraintRepo, $csvFile ) {
 		$i = 0;
 		$accumulator = array();
 		while ( true ) {
