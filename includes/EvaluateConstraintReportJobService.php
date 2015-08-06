@@ -7,7 +7,6 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
-
 /**
  * Class EvaluateConstraintReportJobService
  *
@@ -45,16 +44,17 @@ class EvaluateConstraintReportJobService {
 	}
 
 	/**
-	 * @param $results
+	 * @param CheckResult[] $results
 	 *
 	 * @return string
 	 */
-	public function buildResultSummary( $results ) {
+	public function buildResultSummary( array $results ) {
 		$summary = array();
 
 		foreach ( $results as $result ) {
 			$constraintName = $result->getConstraintName();
 			$status = $result->getStatus();
+
 			if( !array_key_exists( $constraintName, $summary ) ) {
 				$summary[$constraintName] = array(
 					CheckResult::STATUS_COMPLIANCE => 0,
@@ -63,6 +63,7 @@ class EvaluateConstraintReportJobService {
 					CheckResult::STATUS_TODO => 0
 				);
 			}
+
 			if( array_key_exists( $status, $summary[$constraintName] ) ) {
 				$summary[$constraintName][$status]++;
 			}
@@ -81,14 +82,15 @@ class EvaluateConstraintReportJobService {
 	 * @return string
 	 */
 	public function getResults( $params ) {
-		if ( !array_key_exists( 'results', $params ) ) {
-			$lookup = WikibaseRepo::getDefaultInstance()->getEntityLookup();
-			$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
-			$entityId = $params['entityId'][0] === 'Q' ? new ItemId( $params['entityId'] ) : new PropertyId( $params['entityId'] );
-			$results = $constraintChecker->checkAgainstConstraints( $lookup->getEntity( $entityId ) );
-			return $this->buildResultSummary( $results );
-		} else {
+		if ( array_key_exists( 'results', $params ) ) {
 			return $params['results'];
 		}
+
+		$lookup = WikibaseRepo::getDefaultInstance()->getEntityLookup();
+		$constraintChecker = ConstraintReportFactory::getDefaultInstance()->getConstraintChecker();
+		$entityId = $params['entityId'][0] === 'Q' ? new ItemId( $params['entityId'] ) : new PropertyId( $params['entityId'] );
+		$results = $constraintChecker->checkAgainstConstraints( $lookup->getEntity( $entityId ) );
+
+		return $this->buildResultSummary( $results );
 	}
 }
