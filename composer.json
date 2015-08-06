@@ -13,12 +13,6 @@
 	"support": {
 		"issues": "https://phabricator.wikimedia.org/project/profile/1202/"
 	},
-	"repositories": [
-		{
-			"type": "git",
-			"url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikidataQuality"
-		}
-	],
 	"require": {
 		"php": ">=5.3.0",
 		"wikibase/data-model": "~4.0",
