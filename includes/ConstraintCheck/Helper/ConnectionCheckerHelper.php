@@ -2,6 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Statement\StatementList;
+
 /**
  * Class for helper functions for the connection checkers.
  *
@@ -19,8 +23,8 @@ class ConnectionCheckerHelper {
 	 *
 	 * @return boolean
 	 */
-	public function hasProperty( $statementList, $propertyIdSerialization ) {
-		foreach ( $statementList as $statement ) {
+	public function hasProperty( StatementList $statementList, $propertyIdSerialization ) {
+		foreach ( $statementList->toArray() as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
 				return true;
 			}
@@ -38,7 +42,7 @@ class ConnectionCheckerHelper {
 	 * @return boolean
 	 */
 	public function hasClaim( $statementList, $propertyIdSerialization, $itemIdSerializationOrArray ) {
-		foreach ( $statementList as $statement ) {
+		foreach ( $statementList->toArray() as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
 				if ( is_string( $itemIdSerializationOrArray ) ) { // string
 					$itemIdSerializationArray = array ( $itemIdSerializationOrArray );
@@ -53,8 +57,12 @@ class ConnectionCheckerHelper {
 		return false;
 	}
 
-	private function arrayHasClaim( $statement, $itemIdSerializationArray ) {
+	private function arrayHasClaim( Statement $statement, $itemIdSerializationArray ) {
 		$mainSnak = $statement->getMainSnak();
+
+		/**
+		 * @var PropertyValueSnak $mainSnak
+		 */
 		if ( $mainSnak->getType() !== 'value' || $mainSnak->getDataValue()->getType() !== 'wikibase-entityid' ) {
 			return false;
 		}
