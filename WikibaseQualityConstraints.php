@@ -47,8 +47,15 @@ call_user_func( function() {
 
     // Register violation context
 	define( 'WBQ_CONSTRAINTS_ID', 'wbqc' );
+
 	$GLOBALS['wbqSubExtensions'][WBQ_CONSTRAINTS_ID] = array(
-		'violationTypes' => function() { return array_keys( WikibaseQuality\ConstraintReport\ConstraintReportFactory::getDefaultInstance()->getConstraintCheckerMap() ); },
-		'violationFormatter' => function() { return WikibaseQuality\ConstraintReport\ConstraintReportFactory::getDefaultInstance()->getViolationFormatter(); }
+		'violationTypes' => function() {
+			return array_keys(
+				WikibaseQuality\ConstraintReport\ConstraintReportFactory::getDefaultInstance()->getConstraintCheckerMap()
+			);
+		},
+		'violationFormatter' => function() {
+			return WikibaseQuality\ConstraintReport\ConstraintReportFactory::getDefaultInstance()->getViolationFormatter();
+		}
 	);
 } );
