@@ -703,7 +703,7 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 
 		$valueFormatter = function ( $value ) {
-			return $this->formatValue( $value, false );
+			return $this->formatValue( $value );
 		};
 
 		$formattedParameters = array ();
