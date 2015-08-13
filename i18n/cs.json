@@ -41,5 +41,6 @@
 	"wbqc-violation-message-diff-within-range-property-must-exist": "Vlastnost definovaná v parametrech musí existovat.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "Vlastnost definovaná v parametrech musí mít hodnotu.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Vlastnost definovaná v parametrech musí mít hodnotu stejného typu jako tato vlastnost.",
-	"wbqc-violation-message-format": "Hodnota vlastnosti musí odpovídat vzoru definovanému v parametrech."
+	"wbqc-violation-message-format": "Hodnota vlastnosti musí odpovídat vzoru definovanému v parametrech.",
+	"wbqc-violation-message-qualifier": "Tuto vlastnost lze využívat jen jako vymezení."
 }
