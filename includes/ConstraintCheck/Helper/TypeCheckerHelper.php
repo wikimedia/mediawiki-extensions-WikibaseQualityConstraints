@@ -5,9 +5,9 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
-use Wikibase\Lib\Store\EntityLookup;
 
 /**
  * Class for helper functions for range checkers.

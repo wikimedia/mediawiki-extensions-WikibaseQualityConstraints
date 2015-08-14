@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
-use Wikibase\Lib\Store\EntityLookup;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Repo\Store;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
