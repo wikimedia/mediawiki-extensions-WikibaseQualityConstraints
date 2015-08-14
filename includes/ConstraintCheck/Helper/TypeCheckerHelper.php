@@ -3,8 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementList;
-use Wikibase\Lib\Store\EntityLookup;
 
 
 /**
