@@ -1,13 +1,13 @@
 # Wikibase Quality Constraints
-[![Build Status](https://travis-ci.org/wikimedia/mediawiki-extensions-WikidataQualityConstraints.svg?branch=master)]
-(https://travis-ci.org/wikimedia/mediawiki-extensions-WikidataQualityConstraints)
-[![Coverage Status](https://coveralls.io/repos/wikimedia/mediawiki-extensions-WikidataQualityConstraints/badge.svg)]
-(https://coveralls.io/r/wikimedia/mediawiki-extensions-WikidataQualityConstraints)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikidataQualityConstraints/badges/quality-score.png?b=master)]
-(https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikidataQualityConstraints/?branch=master)
+[![Build Status](https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints.svg?branch=master)]
+(https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints)
+[![Coverage Status](https://coveralls.io/repos/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badge.svg)]
+(https://coveralls.io/r/wikimedia/mediawiki-extensions-WikibaseQualityConstraints)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badges/quality-score.png?b=master)]
+(https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/?branch=master)
 
 This is a complementary extension for the [Wikibase Quality base extension]
-(https://github.com/wikimedia/mediawiki-extensions-WikidataQuality.git).  
+(https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality.git).
 It performs constraint checks in Wikibase.
 
 ## Installation
@@ -24,11 +24,11 @@ composer.local.json._
     "repositories": [
         {
             "type": "git",
-            "url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikidataQuality"
+            "url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseQuality"
         },
         {
             "type": "git",
-            "url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikidataQualityConstraints"
+            "url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseQualityConstraints"
         }
     ],
     "require": {
