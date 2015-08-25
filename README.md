@@ -7,7 +7,7 @@
 (https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/?branch=master)
 
 This is a complementary extension for the [Wikibase Quality base extension]
-(https://github.com/wikimedia/mediawiki-extensions-WikidataQuality.git).  
+(https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality.git).
 It performs constraint checks in Wikibase.
 
 ## Installation

@@ -21,10 +21,10 @@ rm master.tar.gz
 mv mediawiki-extensions-Wikibase-master wiki/extensions/Wikibase
 
 # checkout WikibaseQuality
-wget https://github.com/wikimedia/mediawiki-extensions-WikidataQuality/archive/master.tar.gz
+wget https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality/archive/master.tar.gz
 tar -zxf master.tar.gz
 rm master.tar.gz
-mv mediawiki-extensions-WikidataQuality-master wiki/extensions/WikibaseQuality
+mv mediawiki-extensions-WikibaseQuality-master wiki/extensions/WikibaseQuality
 
 cd wiki
 
