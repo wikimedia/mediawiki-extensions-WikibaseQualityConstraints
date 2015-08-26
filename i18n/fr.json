@@ -3,12 +3,15 @@
 		"authors": [
 			"Macofe",
 			"Ayack",
-			"Yzelf"
+			"Yzelf",
+			"Gomoko",
+			"Wladek92"
 		]
 	},
 	"wbqc-constraintreport": "Rapport de contrainte",
-	"wbqc-constraintreport-explanation-part-one": "Cette page spéciale effectue les vérifications de contraintes sur toute entité de votre choix. Les entités sont extraites du système en direct, de sorte que chaque violation de contrainte que vous corrigez maintenant sera immédiatement retirée de cette liste.",
-	"wbqc-constraintreport-explanation-part-two": "Les contraintes sont analysées à partir de la page de discussion des propriétés une fois par semaine, donc si vous ajoutez, supprimez ou modifiez une contrainte, il peut falloir attendre jusqu'à une semaine pour que cette contrainte soit prise en compte dans ce rapport de contraintes. Il y a actuellement des travaux en cours pour migrer les contraintes de déclarations sur les propriétés, permettant ainsi à cette page spéciale d'effectuer des vérifications en direct.",
+	"wbqc-desc": "Vérifie les contraintes à la fois sur les éléments ainsi que les propriétés et affiche les résultats sur une page spéciale",
+	"wbqc-constraintreport-explanation-part-one": "Cette page spéciale effectue les vérifications de contraintes sur toutes les entités de votre choix. Les entités sont extraites du système en direct, de sorte que chaque violation de contrainte que vous corrigez maintenant sera immédiatement retirée de cette liste.",
+	"wbqc-constraintreport-explanation-part-two": "Les contraintes sont analysées à partir des pages de discussion de la propriété une fois par semaine, donc si vous ajoutez/supprimez/modifiez une contrainte, il peut falloir attendre jusqu’à une semaine pour que cette contrainte soit prise en compte dans ce rapport de contraintes. Il y a actuellement des travaux en cours pour migrer les contraintes de déclarations sur les propriétés, permettant ainsi à cette page spéciale d’effectuer des vérifications en direct.",
 	"wbqc-constraintreport-form-section": "Vérifier les contraintes pour l'entité",
 	"wbqc-constraintreport-form-submit-label": "Vérifier",
 	"wbqc-constraintreport-form-entityid-label": "Identifiant de l'entité :",
@@ -31,6 +34,7 @@
 	"wbqc-violations-group": "Contraintes",
 	"wbqc-violation-message": "La vérification de contrainte a identifié une violation. Veuillez cliquer sur l'icône pour plus d'informations.",
 	"wbqc-violation-message-not-yet-implemented": "Pour des raisons techniques, la vérification de la contrainte « $1 » n’a pas encore été implémentée.",
+	"wbqc-violation-message-security-reason": "Pour des raisons de sécurité, il n’est pas possible de vérifier la contrainte « $1 » pour l’instant. Nous travaillons à résoudre cela.",
 	"wbqc-violation-message-value-needed": "Les propriétés avec la contrainte « $1 » requièrent une valeur.",
 	"wbqc-violation-message-value-needed-of-type": "Les propriétés avec la contrainte « $1 » requièrent des valeurs de type « $2 ».",
 	"wbqc-violation-message-parameter-needed": "Les propriétés avec la contrainte « $1 » requièrent un paramètre « $2 ».",
@@ -38,7 +42,7 @@
 	"wbqc-violation-message-value-entity-must-exist": "L’entité définie en valeur doit exister.",
 	"wbqc-violation-message-commons-link-no-existent": "Le lien Commons doit exister.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Le lien vers Commons contient des caractères invalides.",
-	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La vérification pour l’espace de noms « $1 » n’est pas encore implémentée.",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La vérification pour l’espace de noms «$1» n’est pas encore implémentée.",
 	"wbqc-violation-message-conflicts-with-property": "Cette propriété ne doit pas être utilisée lorsqu’il y a une autre déclaration utilisant cette propriété définie dans les paramètres.",
 	"wbqc-violation-message-conflicts-with-claim": "Cette propriété ne doit pas être utilisée lorsqu’il y a une autre déclaration utilisant cette propriété avec l’une des valeurs définies dans les paramètres.",
 	"wbqc-violation-message-diff-within-range": "La différence entre la valeur de cette propriété et la valeur de la propriété définie dans les paramètres doit être ni inférieure au minimum, ni supérieure au maximum définis dans les paramètres.",
