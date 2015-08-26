@@ -6,6 +6,7 @@
 		]
 	},
 	"wbqc-constraintreport": "{{doc-special|ConstraintReport}}",
+	"wbqc-desc": "{{desc|name=Wikibase Quality Constraints|url=https://www.mediawiki.org/wiki/Extension:WikibaseQualityConstraints}}",
 	"wbqc-constraintreport-explanation-part-one": "Explanation (part one), what this special page does and how it gets its data.",
 	"wbqc-constraintreport-explanation-part-two": "Explanation (part two), what this special page does and how it gets its data.",
 	"wbqc-constraintreport-form-section": "Header of the section of the entity id form.",
@@ -31,6 +32,7 @@
 	"wbqc-violations-group": "Type of violations this extension finds.\n{{Identical|Constraint}}",
 	"wbqc-violation-message": "Generic message to tell that there was a violation.",
 	"wbqc-violation-message-not-yet-implemented": "Message for when a check is yet to be implemented. Not actually a violation, more of a todo.",
+	"wbqc-violation-message-security-reason": "Message for when a check is not possible due to security reasons. Not actually a violation, more of a todo.",
 	"wbqc-violation-message-value-needed": "Message for when a property needs a value (rather than no or some value), but hasn't.",
 	"wbqc-violation-message-value-needed-of-type": "Message for when a property needs a value of a specific type (like string or wikibase-entityid), but it doesn't.",
 	"wbqc-violation-message-parameter-needed": "Message for when a constraint needs a specific parameter, but it's missing.",

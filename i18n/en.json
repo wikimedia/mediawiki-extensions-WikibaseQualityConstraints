@@ -6,6 +6,7 @@
 		]
 	},
 	"wbqc-constraintreport": "Constraint report",
+	"wbqc-desc": "Checks constraints on both items and properties and displays the results on a special page",
 	"wbqc-constraintreport-explanation-part-one": "This special page performs constraint checks on any entity you want. The entities are fetched from the live system, so every constraint violation you fix there will be instantly removed from this list.",
 	"wbqc-constraintreport-explanation-part-two": "The constraints are parsed from the property talk pages once a week, so if you add, delete or modify a constraint, it might take up to a week until this gets taken into account by this constraint report. There is currently work in progress to migrate the constraints to statements on properties, enabling this special page to do live-checks.",
 	"wbqc-constraintreport-form-section": "Check constraints for entity",
@@ -32,7 +33,9 @@
 	"wbqc-violations-group": "Constraints",
 	"wbqc-violation-message": "Constraint check has pointed out a violation. Please click on icon for further information.",
 
+
 	"wbqc-violation-message-not-yet-implemented": "For technical reasons, the check for the constraint \"$1\" has not yet been implemented.",
+	"wbqc-violation-message-security-reason": "For security reasons, it is not possible to check the \"$1\" constraint at the moment. We are working on a solution.",
 	"wbqc-violation-message-value-needed": "Properties with constraint \"$1\" need to have a value.",
 	"wbqc-violation-message-value-needed-of-type": "Properties with constraint \"$1\" need to have values of type \"$2\".",
 	"wbqc-violation-message-parameter-needed": "Properties with constraint \"$1\" need a parameter \"$2\".",
