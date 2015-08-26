@@ -8,6 +8,8 @@
 	"wbqc-constraintreport-not-existent-entity": "Objet gëtt et net.",
 	"wbqc-constraintreport-empty-result": "Et gëtt keng Limitatiounen déi fir dësen Objet definéiert sinn.",
 	"wbqc-constraintreport-status-exception": "Ausnahm",
+	"wbqc-constraintreport-no-parameter": "keng",
 	"wbqc-violation-header-parameters": "Parameteren:",
-	"wbqc-violations-group": "Limitatiounen"
+	"wbqc-violations-group": "Limitatiounen",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "D'Nokucke fir den Nummraum \"$1\" ass nach net implementéiert."
 }

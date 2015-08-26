@@ -2,14 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Elisardojm",
-			"Banjo",
-			"Toliño"
+			"Banjo"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restrición",
-	"wbqc-desc": "Comproba as restricións nos elementos e nas propiedades e mostra os resultados nunha páxina especial",
-	"wbqc-constraintreport-explanation-part-one": "Esta páxina especial realiza revisións de restrición nas entidades que queira. As entidades búscanse no sistema en vivo, polo que cada violación de restrición que amañe será eliminada instantaneamente desta lista.",
-	"wbqc-constraintreport-explanation-part-two": "As restricións analízanse nas páxinas de conversa das propiedades unha vez á semana, polo que se engade/borra/modifica unha restrición pode tardar unha semana en reflectirse neste informe de restricións. Actualmente hai traballos en progreso para migrar as restricións a declaracións en propiedades, permitindo que esta páxina especial faga revisións en vivo.",
+	"wbqc-constraintreport-explanation-part-one": "Esta páxina especial realiza revisións de restrición nas entidades que queira. As entidades búscanse no sistema real, polo que cada violación de restrición que amañe será eliminada instantaneamente desta lista.",
+	"wbqc-constraintreport-explanation-part-two": "As restricións son analizadas nas páxinas de conversa das propiedades unha vez á semana, polo que se engade/borra/cambia unha restrición pode tardar ata unha semana ata que sexa reflectido neste informe de restricións. Actualmente hai traballos en progreso para migrar as restricións a declaracións en propiedades, permitindo que esta páxina especial faga revisións en vivo.",
 	"wbqc-constraintreport-form-section": "Revisar restriccións para entidade",
 	"wbqc-constraintreport-form-submit-label": "Comprobar",
 	"wbqc-constraintreport-form-entityid-label": "Identificador de entidade:",
@@ -32,7 +30,6 @@
 	"wbqc-violations-group": "Restricións",
 	"wbqc-violation-message": "A verificación de restricións detectou unha violación. Prema a icona para obter máis información.",
 	"wbqc-violation-message-not-yet-implemented": "Por razóns técnicas, a verificación da constante \"$1\" aínda non está desenvolvida.",
-	"wbqc-violation-message-security-reason": "Por motivos de seguridade, non é posible comprobar a restrición \"$1\" neste momento. Estamos traballando nunha solución.",
 	"wbqc-violation-message-value-needed": "As propiedades coa restricción \"$1\" deben ter un valor.",
 	"wbqc-violation-message-value-needed-of-type": "As propiedades coa restricción \"$1\" deben ter valores do tipo \"$2\".",
 	"wbqc-violation-message-parameter-needed": "As propiedades coa restricción \"$1\" necesitan un parámetro \"$2\".",
@@ -40,7 +37,7 @@
 	"wbqc-violation-message-value-entity-must-exist": "O valor entidade debe existir.",
 	"wbqc-violation-message-commons-link-no-existent": "A ligazón a Commons debe existir.",
 	"wbqc-violation-message-commons-link-not-well-formed": "A ligazón a Commons debe estar ben formada.",
-	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "A comprobación para o espazo de nomes \"$1\" aínda non está desenvolvida.",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "O chequeo para o espazo de nomes \"$1\" aínda non está desenvolvido.",
 	"wbqc-violation-message-conflicts-with-property": "Esta propiedade non debe usarse cando hai outra instrución usando a propiedade definida nos parámetros.",
 	"wbqc-violation-message-conflicts-with-claim": "Esta propiedade non debe usarse cando hai outra instrución usando a propiedade cun dos valores definidos nos parámetros.",
 	"wbqc-violation-message-diff-within-range": "A diferencia entre o valor desta propiedade e o valor da propiedade definida nos parámetros nunca debe ser menor que o mínimo nin maior que o máximo definido nos parámetros.",

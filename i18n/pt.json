@@ -13,5 +13,6 @@
 	"wbqc-constraintreport-empty-result": "Não há restrições definidas nesta entidade.",
 	"wbqc-constraintreport-status-exception": "Exceção",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
+	"wbqc-constraintreport-no-parameter": "nenhum",
 	"wbqc-violation-header-parameters": "Parâmetros:"
 }

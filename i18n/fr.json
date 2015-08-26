@@ -27,7 +27,7 @@
 	"wbqc-constraintreport-result-link-to-constraint": "aller à la contrainte",
 	"wbqc-constraintreport-no-parameter": "aucune",
 	"wbq-subextension-name-wbqc": "Contraintes",
-	"wbqc-violation-header-parameters": "Paramètres:",
+	"wbqc-violation-header-parameters": "Paramètres :",
 	"wbqc-violations-group": "Contraintes",
 	"wbqc-violation-message": "La vérification de contrainte a identifié une violation. Veuillez cliquer sur l'icône pour plus d'informations.",
 	"wbqc-violation-message-not-yet-implemented": "Pour des raisons techniques, la vérification de la contrainte « $1 » n’a pas encore été implémentée.",

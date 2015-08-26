@@ -1,8 +1,32 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kingu"
+			"Kingu",
+			"Jeblad"
 		]
 	},
-	"wikidataquality-constraintreport-result-table-header-claim": "Krav"
+	"wbqc-constraintreport": "Rapporterte begrensinger",
+	"wbqc-constraintreport-form-section": "Sjekk begrensinger for entitet",
+	"wbqc-constraintreport-form-submit-label": "Sjekk",
+	"wbqc-constraintreport-form-entityid-label": "Entitetens ID:",
+	"wbqc-constraintreport-result-headline": "Resultat for",
+	"wbqc-constraintreport-invalid-entity-id": "Ugyldig ID for entiteten.",
+	"wbqc-constraintreport-not-existent-entity": "Entiteten finnes ikke.",
+	"wbqc-constraintreport-status-violation": "Brudd",
+	"wbqc-constraintreport-status-compliance": "Samsvar",
+	"wbqc-constraintreport-status-exception": "Unntak",
+	"wbqc-constraintreport-status-todo": "Å gjøre",
+	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-constraintreport-result-table-header-claim": "Påstand",
+	"wbqc-constraintreport-result-table-header-constraint": "Begrensing",
+	"wbqc-constraintreport-result-link-to-claim": "gå til påstand",
+	"wbqc-constraintreport-result-link-to-constraint": "gå til begrensing",
+	"wbqc-constraintreport-no-parameter": "ingen",
+	"wbq-subextension-name-wbqc": "Begrensing",
+	"wbqc-violation-header-parameters": "Parametre:",
+	"wbqc-violations-group": "Begrensing",
+	"wbqc-violation-message-target-entity-must-exist": "Målentiteten må eksistere.",
+	"wbqc-violation-message-value-entity-must-exist": "Verdientiteten må eksistere.",
+	"wbqc-violation-message-commons-link-no-existent": "Lenka til Commons må eksistere.",
+	"wbqc-violation-message-commons-link-not-well-formed": "Lenka til Commons må være vellformet."
 }

@@ -1,8 +1,46 @@
 {
 	"@metadata": {
 		"authors": [
-			"Cvanca"
+			"Cvanca",
+			"Mormegil"
 		]
 	},
-	"wikidataquality-constraintreport-result-table-header-constraint": "Omezení"
+	"wbqc-constraintreport": "Zpráva o omezeních",
+	"wbqc-constraintreport-explanation-part-one": "Tato speciální stránka provádí kontrolu omezení na libovolné požadované entitě. Entity se načítají z živého systému, takže každé porušení omezení, které opravíte, se z tohoto seznamu okamžitě odebere.",
+	"wbqc-constraintreport-explanation-part-two": "Omezení se z diskusních stránek vlastností načítají jednou týdně, takže pokud omezení přidáte, odstraníte nebo změníte, může to trvat až týden, než na to tato zpráva začne brát ohled. V současnosti se pracuje na převedení omezení na výroky u vlastností, aby tato speciální stránka mohla provádět kontrolu podle živých dat.",
+	"wbqc-constraintreport-form-section": "Zkontrolovat omezení u entity",
+	"wbqc-constraintreport-form-submit-label": "Zkontrolovat",
+	"wbqc-constraintreport-form-entityid-label": "ID entity:",
+	"wbqc-constraintreport-result-headline": "Výsledky pro",
+	"wbqc-constraintreport-invalid-entity-id": "Chybné ID entity.",
+	"wbqc-constraintreport-not-existent-entity": "Entita neexistuje.",
+	"wbqc-constraintreport-empty-result": "Pro tuto entitu nejsou definována žádná omezení.",
+	"wbqc-constraintreport-status-violation": "Porušení",
+	"wbqc-constraintreport-status-compliance": "Splnění",
+	"wbqc-constraintreport-status-exception": "Výjimka",
+	"wbqc-constraintreport-status-todo": "Chybí",
+	"wbqc-constraintreport-result-table-header-status": "Stav",
+	"wbqc-constraintreport-result-table-header-claim": "Tvrzení",
+	"wbqc-constraintreport-result-table-header-constraint": "Omezení",
+	"wbqc-constraintreport-result-link-to-claim": "přejít na tvrzení",
+	"wbqc-constraintreport-result-link-to-constraint": "přejít na omezení",
+	"wbqc-constraintreport-no-parameter": "není",
+	"wbq-subextension-name-wbqc": "Omezení",
+	"wbqc-violation-header-parameters": "Parametry:",
+	"wbqc-violations-group": "Omezení",
+	"wbqc-violation-message": "Kontrola omezení objevila porušení. Více informací získáte kliknutím na ikonku.",
+	"wbqc-violation-message-not-yet-implemented": "Z technických důvodů nebyla kontrola omezení „$1“ dosud implementována.",
+	"wbqc-violation-message-value-needed": "Vlastnosti s omezením „$1“ musí mít hodnotu.",
+	"wbqc-violation-message-value-needed-of-type": "Vlastnosti s omezením „$1“ musí mít hodnoty typu „$2“.",
+	"wbqc-violation-message-parameter-needed": "Vlastnosti s omezením „$1“ potřebují parametr „$2“.",
+	"wbqc-violation-message-target-entity-must-exist": "Cílová entita musí existovat.",
+	"wbqc-violation-message-value-entity-must-exist": "Entita v hodnotě musí existovat.",
+	"wbqc-violation-message-commons-link-no-existent": "Cíl odkazu na Commons musí existovat.",
+	"wbqc-violation-message-commons-link-not-well-formed": "Odkaz na Commons musí mít správný formát.",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Kontrola pro jmenný prostor „$1“ dosud nebyla implementována.",
+	"wbqc-violation-message-diff-within-range-property-must-exist": "Vlastnost definovaná v parametrech musí existovat.",
+	"wbqc-violation-message-diff-within-range-property-needs value": "Vlastnost definovaná v parametrech musí mít hodnotu.",
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Vlastnost definovaná v parametrech musí mít hodnotu stejného typu jako tato vlastnost.",
+	"wbqc-violation-message-format": "Hodnota vlastnosti musí odpovídat vzoru definovanému v parametrech.",
+	"wbqc-violation-message-qualifier": "Tuto vlastnost lze využívat jen jako vymezení."
 }

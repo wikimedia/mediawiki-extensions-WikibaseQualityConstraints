@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"LiteHell"
+			"LiteHell",
+			"Alex00728"
 		]
 	},
-	"wbqc-constraintreport-result-headline": "$1의 결과"
+	"wbqc-constraintreport-result-headline": "$1의 결과",
+	"wbqc-constraintreport-result-table-header-status": "상태",
+	"wbqc-violation-header-parameters": "변수:"
 }

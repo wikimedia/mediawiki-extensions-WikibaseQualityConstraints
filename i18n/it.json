@@ -2,15 +2,26 @@
 	"@metadata": {
 		"authors": [
 			"Macofe",
-			"Alexmar983"
+			"Alexmar983",
+			"Beta16"
 		]
 	},
+	"wbqc-constraintreport-form-submit-label": "Controlla",
+	"wbqc-constraintreport-form-entityid-label": "ID entità:",
 	"wbqc-constraintreport-result-headline": "Risultato per",
 	"wbqc-constraintreport-invalid-entity-id": "Entità ID non valida.",
 	"wbqc-constraintreport-not-existent-entity": "L'entità non esiste!",
 	"wbqc-constraintreport-empty-result": "Non ci sono vincoli definiti su questa entità.",
 	"wbqc-constraintreport-status-violation": "Violazione",
+	"wbqc-constraintreport-status-compliance": "Conforme",
+	"wbqc-constraintreport-status-exception": "Eccezione",
+	"wbqc-constraintreport-status-todo": "Da fare",
 	"wbqc-constraintreport-result-table-header-status": "Stato",
+	"wbqc-constraintreport-result-table-header-claim": "Asserzione",
+	"wbqc-constraintreport-result-table-header-constraint": "Vincolo",
+	"wbqc-constraintreport-result-link-to-claim": "vai all'asserzione",
+	"wbqc-constraintreport-result-link-to-constraint": "vai al vincolo",
+	"wbqc-constraintreport-no-parameter": "nessuno",
 	"wbq-subextension-name-wbqc": "Vincoli",
 	"wbqc-violation-header-parameters": "Parametri:",
 	"wbqc-violations-group": "Vincoli",

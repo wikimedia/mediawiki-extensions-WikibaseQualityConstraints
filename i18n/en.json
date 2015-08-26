@@ -1,11 +1,13 @@
 {
 	"@metadata": {
-		"authors": "BP2014N1"
+		"authors": [
+			"BP2014N1",
+			"Andreas Burmeister"
+		]
 	},
 	"wbqc-constraintreport": "Constraint report",
-	"wbqc-desc": "Checks constraints on both items and properties and displays the results on a special page",
-	"wbqc-constraintreport-explanation-part-one": "This special page performs constraint checks on every entity you want. The entities are fetched from the live system so every constraint violation you fix there will be instantly removed from this list.",
-	"wbqc-constraintreport-explanation-part-two": "The constraints are parsed from the property talk pages once a week, so if you add/delete/modify a constraint it might take up to a week until this gets taken into account by this constraint report. There is currently work in progress to migrate the constraints to statements on properties, enabling this special page to do live-checks.",
+	"wbqc-constraintreport-explanation-part-one": "This special page performs constraint checks on any entity you want. The entities are fetched from the live system, so every constraint violation you fix there will be instantly removed from this list.",
+	"wbqc-constraintreport-explanation-part-two": "The constraints are parsed from the property talk pages once a week, so if you add, delete or modify a constraint, it might take up to a week until this gets taken into account by this constraint report. There is currently work in progress to migrate the constraints to statements on properties, enabling this special page to do live-checks.",
 	"wbqc-constraintreport-form-section": "Check constraints for entity",
 	"wbqc-constraintreport-form-submit-label": "Check",
 	"wbqc-constraintreport-form-entityid-label": "Entity ID:",
@@ -30,9 +32,7 @@
 	"wbqc-violations-group": "Constraints",
 	"wbqc-violation-message": "Constraint check has pointed out a violation. Please click on icon for further information.",
 
-
 	"wbqc-violation-message-not-yet-implemented": "For technical reasons, the check for the constraint \"$1\" has not yet been implemented.",
-	"wbqc-violation-message-security-reason": "For security reasons, it is not possible to check the \"$1\" constraint at the moment. We are working on a solution.",
 	"wbqc-violation-message-value-needed": "Properties with constraint \"$1\" need to have a value.",
 	"wbqc-violation-message-value-needed-of-type": "Properties with constraint \"$1\" need to have values of type \"$2\".",
 	"wbqc-violation-message-parameter-needed": "Properties with constraint \"$1\" need a parameter \"$2\".",
@@ -41,7 +41,7 @@
 
 	"wbqc-violation-message-commons-link-no-existent": "Commons link must exist.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Commons link must be well-formed.",
-	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Check for namespace \"$1\" is not yet implement.",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Check for namespace \"$1\" is not yet implemented.",
 	"wbqc-violation-message-conflicts-with-property": "This property must not be used when there is another statement using the property defined in the parameters.",
 	"wbqc-violation-message-conflicts-with-claim": "This property must not be used when there is another statement using the property with one of the values defined in the parameters.",
 	"wbqc-violation-message-diff-within-range": "The difference between this property's value and the value of the property defined in the parameters must neither be smaller than the minimum nor larger than the maximum defined in the parameters.",
@@ -53,7 +53,7 @@
 	"wbqc-violation-message-item-property": "This property must only be used when there is another statement using the property defined in the parameters.",
 	"wbqc-violation-message-item-claim": "This property must only be used when there is another statement using the property with one of the values defined in the parameters.",
 	"wbqc-violation-message-mandatory-qualifiers": "All of the properties defined in the parameters have to be used as qualifiers on this statement.",
-	"wbqc-violation-message-multi-value": "This property must have a multiple values. That is, there must be more than one claim using this property.",
+	"wbqc-violation-message-multi-value": "This property must have multiple values. That is, there must be more than one claim using this property.",
 	"wbqc-violation-message-one-of": "The property's value must be one of the items defined in the parameters.",
 	"wbqc-violation-message-qualifier": "The property must only be used as a qualifier.",
 	"wbqc-violation-message-qualifiers": "The property must only be used with (no other than) the qualifiers defined in the parameters.",
