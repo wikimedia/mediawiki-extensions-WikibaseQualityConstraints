@@ -41,7 +41,4 @@ call_user_func( function() {
 
 	// Define database table names
 	define( 'CONSTRAINT_TABLE', 'wbqc_constraints' );
-
-	// Jobs
-	$GLOBALS['wgJobClasses']['evaluateConstraintReportJob'] = 'WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob';
 } );
