@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Otokoume",
+			"Sujiniku"
+		]
+	},
+	"wbqc-constraintreport-explanation-part-one": "この特別ページでは、任意の実体に制約チェックを行えます。実体は稼働中のシステムから取得することができるので、制約違反があった場合はこの一覧から即座に削除されます。",
+	"wbqc-constraintreport-no-parameter": "なし",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "名前空間「$1」は実装されていません。間違っていないか確認して下さい。"
+}
