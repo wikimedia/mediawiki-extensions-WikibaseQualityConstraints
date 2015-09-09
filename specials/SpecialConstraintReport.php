@@ -142,8 +142,8 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->dataValueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
 		$labelLookup = new LanguageLabelDescriptionLookup( $termLookup, $this->getLanguage()->getCode() );
-		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormater( $labelLookup );
-		$this->entityIdLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormater( $labelLookup );
+		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $labelLookup );
+		$this->entityIdLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelLookup );
 
 		$this->constraintChecker = $constraintChecker;
 	}
