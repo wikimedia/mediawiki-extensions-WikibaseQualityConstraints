@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConstraintParameterParserTest extends \MediaWikiTestCase {
+class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 	private $helper;
 
