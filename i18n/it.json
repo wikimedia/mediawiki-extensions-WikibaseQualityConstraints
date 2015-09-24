@@ -6,6 +6,7 @@
 			"Beta16"
 		]
 	},
+	"wbqc-constraintreport-form-section": "Controlla i vincoli per l'entità",
 	"wbqc-constraintreport-form-submit-label": "Controlla",
 	"wbqc-constraintreport-form-entityid-label": "ID entità:",
 	"wbqc-constraintreport-result-headline": "Risultato per",
@@ -31,6 +32,7 @@
 	"wbqc-violation-message-value-needed-of-type": "Proprietà con vincolo \"$1\" devono disporre di valori di tipo \"$2\".",
 	"wbqc-violation-message-parameter-needed": "Proprietà con il vincolo \"$1\" necessitano di un parametro \"$2\".",
 	"wbqc-violation-message-target-entity-must-exist": "L'entità di destinazione deve esistere.",
+	"wbqc-violation-message-value-entity-must-exist": "Il valore dell'entità deve esistere.",
 	"wbqc-violation-message-commons-link-no-existent": "Il collegamento a Commons deve esistere.",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "La proprietà definita nei parametri deve esistere.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La proprietà definita nei parametri deve avere un valore dello stesso tipo di questa proprietà.",
