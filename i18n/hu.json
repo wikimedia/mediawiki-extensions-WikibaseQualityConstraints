@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tacsipacsi"
+		]
+	},
+	"wbqc-constraintreport-form-submit-label": "Ellenőrzés",
+	"wbqc-constraintreport-form-entityid-label": "Elem azonosítója:",
+	"wbqc-constraintreport-result-headline": "Eredmény ehhez:",
+	"wbqc-constraintreport-invalid-entity-id": "Érvénytelen azonosító.",
+	"wbqc-constraintreport-not-existent-entity": "Az elem nem létezik."
+}
