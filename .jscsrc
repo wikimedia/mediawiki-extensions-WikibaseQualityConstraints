@@ -2,9 +2,6 @@
 	// https://github.com/jscs-dev/node-jscs/blob/master/presets/wikimedia.json
 	"preset": "wikimedia",
 
-	// maybe enable?
-	"requireVarDeclFirst": null,
-
 	// ----
 	// Own rules
 

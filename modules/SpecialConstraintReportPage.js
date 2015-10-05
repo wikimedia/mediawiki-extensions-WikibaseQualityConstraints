@@ -16,9 +16,10 @@
 	} );
 
 	$( document ).click( function( e ) {
+		var tooltip;
 		$( '.wbqc-tooltip' ).css( 'display', 'none' );
 		if( $( e.target ).attr( 'class' ) === 'wbqc-indicator' ) {
-			var tooltip = $( e.target ).parent().find( '.wbqc-tooltip' );
+			tooltip = $( e.target ).parent().find( '.wbqc-tooltip' );
 			if( tooltip.css( 'display' ) === 'none' ) {
 				tooltip.show();
 			}
