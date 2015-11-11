@@ -11,8 +11,6 @@ use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use HTMLForm;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
-use Wikibase\DataModel\Services\Lookup\LanguageLabelDescriptionLookup;
-use Wikibase\DataModel\Services\Lookup\TermLookup;
 use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\SnakFormatter;
 use DataValues;
@@ -27,6 +25,7 @@ use Wikibase\DataModel;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityTitleLookup;
+use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
 use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
@@ -101,10 +100,10 @@ class SpecialConstraintReport extends SpecialPage {
 
 		return new self(
 			$wikibaseRepo->getEntityLookup(),
-			$wikibaseRepo->getTermLookup(),
 			$wikibaseRepo->getEntityTitleLookup(),
 			new EntityIdLabelFormatterFactory(),
 			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
+			$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
 			$constraintReportFactory->getConstraintChecker()
@@ -113,20 +112,20 @@ class SpecialConstraintReport extends SpecialPage {
 
 	/**
 	 * @param EntityLookup $entityLookup
-	 * @param TermLookup $termLookup
 	 * @param EntityTitleLookup $entityTitleLookup
 	 * @param EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory
 	 * @param EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory
+	 * @param LanguageFallbackLabelDescriptionLookupFactory $fallbackLabelDescLookupFactory
 	 * @param EntityIdParser $entityIdParser
 	 * @param OutputFormatValueFormatterFactory $valueFormatterFactory
 	 * @param DelegatingConstraintChecker $constraintChecker
 	 */
 	public function __construct(
 		EntityLookup $entityLookup,
-		TermLookup $termLookup,
 		EntityTitleLookup $entityTitleLookup,
 		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
 		EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory,
+		LanguageFallbackLabelDescriptionLookupFactory $fallbackLabelDescLookupFactory,
 		EntityIdParser $entityIdParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $constraintChecker
@@ -137,13 +136,24 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->entityTitleLookup = $entityTitleLookup;
 		$this->entityIdParser = $entityIdParser;
 
-		$formatterOptions = new FormatterOptions();
-		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $this->getLanguage()->getCode() );
-		$this->dataValueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
+		$language = $this->getLanguage();
 
-		$labelLookup = new LanguageLabelDescriptionLookup( $termLookup, $this->getLanguage()->getCode() );
-		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $labelLookup );
-		$this->entityIdLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelLookup );
+		$formatterOptions = new FormatterOptions();
+		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
+		$this->dataValueFormatter = $valueFormatterFactory->getValueFormatter(
+			SnakFormatter::FORMAT_HTML,
+			$formatterOptions
+		);
+
+		$labelLookup = $fallbackLabelDescLookupFactory->newLabelDescriptionLookup( $language );
+
+		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter(
+			$labelLookup
+		);
+
+		$this->entityIdLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter(
+			$labelLookup
+		);
 
 		$this->constraintChecker = $constraintChecker;
 	}
