@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Specials;
 
 use UnexpectedValueException;
 use InvalidArgumentException;
-use JobQueueGroup;
 use SpecialPage;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
@@ -31,12 +30,9 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
-use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJob;
-use WikibaseQuality\ConstraintReport\EvaluateConstraintReportJobService;
 use WikibaseQuality\Html\HtmlTableBuilder;
 use WikibaseQuality\Html\HtmlTableCellBuilder;
 use WikibaseQuality\Html\HtmlTableHeaderBuilder;
-
 
 /**
  * Class SpecialConstraintReport

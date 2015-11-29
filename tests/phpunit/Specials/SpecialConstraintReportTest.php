@@ -14,8 +14,6 @@ use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
-use WikibaseQuality\WikibaseQualityFactory;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport

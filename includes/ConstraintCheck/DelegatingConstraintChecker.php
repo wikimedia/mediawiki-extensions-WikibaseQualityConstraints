@@ -3,16 +3,13 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
-use Wikibase\Repo\Store;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
-use Wikibase\DataModel\Snak;
 use Wikibase\DataModel\Entity\Entity;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\Constraint;
-
 
 /**
  * Class DelegatingConstraintCheck
