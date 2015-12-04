@@ -55,9 +55,10 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * Id of the property, that is used to specify constraints on entities.
 	 *
+	 * TODO set, when properties are created
+	 *
 	 * @var int
 	 */
-	// TODO set, when properties are created
 	const CONSTRAINT_PROPERTY_ID = 'P1';
 
 	/**
