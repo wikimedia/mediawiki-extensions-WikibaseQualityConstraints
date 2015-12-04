@@ -2,9 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Specials\SpecialConstraintReport;
 
+use SpecialPageTestBase;
 use Wikibase\DataModel\Services\Statement\GuidGenerator;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
-use Wikibase\Test\SpecialPageTestBase;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\Property;
