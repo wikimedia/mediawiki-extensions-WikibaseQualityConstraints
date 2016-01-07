@@ -1,0 +1,47 @@
+{
+	"load_composer_autoloader": true,
+	"name": "WikibaseQualityConstraints",
+	"author": "BP2014N1",
+	"url": "https://www.mediawiki.org/wiki/Extension:WikibaseQualityConstraints",
+	"descriptionmsg": "wbqc-desc",
+	"version": "1.0.0",
+	"license-name": "GPL-2.0+",
+	"type": "wikibase",
+	"callback": "WikibaseQualityConstraintsHooks::onExtensionRegistration",
+	"MessagesDirs": {
+		"WikibaseQualityConstraints": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"WikibaseQualityConstraintsAlias": "WikibaseQualityConstraints.alias.php"
+	},
+	"Hooks": {
+		"LoadExtensionSchemaUpdates": [
+			"WikibaseQualityConstraintsHooks::onCreateSchema"
+		],
+		"UnitTestsList": [
+			"WikibaseQualityConstraintsHooks::onUnitTestsList"
+		]
+	},
+	"SpecialPages": {
+		"ConstraintReport": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState"
+	},
+	"APIModules": {
+		"wbcheckconstraints": {
+			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints",
+			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints::newFromGlobalState"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "WikibaseQualityConstraints"
+	},
+	"ResourceModules": {
+		"SpecialConstraintReportPage": {
+			"styles": "modules/SpecialConstraintReportPage.css",
+			"scripts": "modules/SpecialConstraintReportPage.js"
+		}
+	},
+	"manifest_version": 1
+}
