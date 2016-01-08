@@ -2,37 +2,36 @@
 
 namespace WikibaseQuality\ConstraintReport\Specials;
 
-use UnexpectedValueException;
-use InvalidArgumentException;
-use SpecialPage;
-use ValueFormatters\FormatterOptions;
-use ValueFormatters\ValueFormatter;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
-use HTMLForm;
-use Wikibase\DataModel\Services\Lookup\EntityLookup;
-use Wikibase\Lib\OutputFormatValueFormatterFactory;
-use Wikibase\Lib\SnakFormatter;
 use DataValues;
 use DataValues\DataValue;
+use HTMLForm;
 use Html;
-use Wikibase\DataModel\Entity\Entity;
-use Wikibase\DataModel\Entity\EntityId;
-use Wikibase\DataModel\Entity\EntityIdParser;
-use Wikibase\DataModel\Entity\EntityIdParsingException;
-use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel;
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\Lib\Store\EntityTitleLookup;
-use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
-use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
-use Wikibase\Repo\EntityIdLabelFormatterFactory;
-use Wikibase\Repo\WikibaseRepo;
+use InvalidArgumentException;
+use SpecialPage;
+use UnexpectedValueException;
+use ValueFormatters\FormatterOptions;
+use ValueFormatters\ValueFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\Html\HtmlTableBuilder;
 use WikibaseQuality\Html\HtmlTableCellBuilder;
 use WikibaseQuality\Html\HtmlTableHeaderBuilder;
+use Wikibase\DataModel\Entity\Entity;
+use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\EntityIdParser;
+use Wikibase\DataModel\Entity\EntityIdParsingException;
+use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\Lib\OutputFormatValueFormatterFactory;
+use Wikibase\Lib\SnakFormatter;
+use Wikibase\Lib\Store\EntityTitleLookup;
+use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
+use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
+use Wikibase\Repo\EntityIdLabelFormatterFactory;
+use Wikibase\Repo\WikibaseRepo;
 
 /**
  * Class SpecialConstraintReport
