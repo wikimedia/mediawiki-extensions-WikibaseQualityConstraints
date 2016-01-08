@@ -318,8 +318,6 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	/**
-	 * @see SpecialCheckResultPage::executeCheck
-	 *
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult[]
@@ -329,8 +327,6 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	/**
-	 * @see SpecialCheckResultPage::buildResultTable
-	 *
 	 * @param EntityId $entityId
 	 * @param array $results
 	 *
@@ -715,8 +711,6 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	/**
-	 * @see SpecialCheckResultPage::getStatusMapping
-	 *
 	 * @return array
 	 */
 	private function getStatusMapping() {
