@@ -12,7 +12,8 @@ call_user_func( function() {
 		'author' => 'BP2014N1',
 		'url' => 'https://www.mediawiki.org/wiki/Extension:WikibaseQualityConstraints',
 		'descriptionmsg' => 'wbqc-desc',
-		'version' => '1.0.0'
+		'version' => '1.0.0',
+		'license-name' => 'GPL-2.0+'
 	);
 
 	// Initialize localization and aliases
