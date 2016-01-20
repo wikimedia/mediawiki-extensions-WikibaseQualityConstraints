@@ -13,6 +13,7 @@
 	"wbqc-constraintreport-form-submit-label": "Controleren",
 	"wbqc-constraintreport-form-entityid-label": "Entiteits-ID:",
 	"wbqc-constraintreport-result-headline": "Resulaten voor",
+	"wbqc-constraintreport-invalid-entity-id": "Ongeldige entiteitsidentificatiecode.",
 	"wbqc-constraintreport-not-existent-entity": "Entiteit bestaat niet.",
 	"wbqc-constraintreport-empty-result": "Er zijn geen beperkingen opgegeven voor deze entiteit.",
 	"wbqc-constraintreport-status-violation": "Schending",
@@ -24,7 +25,19 @@
 	"wbqc-constraintreport-result-table-header-constraint": "Beperking",
 	"wbqc-constraintreport-result-link-to-claim": "naar verklaring gaan",
 	"wbqc-constraintreport-result-link-to-constraint": "naar beperking gaan",
+	"wbqc-constraintreport-no-parameter": "geen",
+	"wbq-subextension-name-wbqc": "Beperkingen",
 	"wbqc-violation-header-parameters": "Parameters:",
 	"wbqc-violations-group": "Beperkingen",
-	"wbqc-violation-message": "De beperkingencontrole heeft een overtreding opgeleverd. Klik op het pictogram voor meer informatie."
+	"wbqc-violation-message": "De beperkingencontrole heeft een overtreding opgeleverd. Klik op het pictogram voor meer informatie.",
+	"wbqc-violation-message-not-yet-implemented": "Vanwege technische redenen kan de controle op de beperking \"$1\" nog niet worden uitgevoerd.",
+	"wbqc-violation-message-security-reason": "Om veiligheidsredenen kan de controle op de beperking \"$1\" nog niet worden uitgevoerd. We werken aan een oplossing.",
+	"wbqc-violation-message-value-needed": "Eigenschappen met de beperking \"$1\" moeten een waarde hebben.",
+	"wbqc-violation-message-value-needed-of-type": "Eigenschappen met de beperking \"$1\" moeten waarden hebben van het type \"$2'.",
+	"wbqc-violation-message-parameter-needed": "Eigenschappen met de beperking \"$1\" moeten de parameter \"$2\" hebben.",
+	"wbqc-violation-message-target-entity-must-exist": "De doelentiteit moet bestaan.",
+	"wbqc-violation-message-value-entity-must-exist": "De entiteit die opgegeven is als waarde moet bestaan.",
+	"wbqc-violation-message-commons-link-no-existent": "Het bestand op Commons moet bestaan.",
+	"wbqc-violation-message-commons-link-not-well-formed": "De link naar Commons moet geen ongeldige karakters bevatten.",
+	"wbqc-violation-message-qualifier": "De eigenschap mag alleen als kwalificatie worden gebruikt."
 }
