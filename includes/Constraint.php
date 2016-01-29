@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Wikibase\DataModel\Entity\PropertyId;
 
-
 /**
  * Class Constraint
  *
@@ -17,7 +16,12 @@ class Constraint {
 	/**
 	 * @var string
 	 */
-	private $constraintClaimGuid;
+	private $constraintStatementGuid;
+
+	/**
+	 * @var PropertyId
+	 */
+	private $propertyId;
 
 	/**
 	 * @var string
@@ -30,33 +34,33 @@ class Constraint {
 	private $constraintTypeQid;
 
 	/**
-	 * @var PropertyId
-	 */
-	private $propertyId;
-
-	/**
-	 * @var array (variable length; key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21')
+	 * @var array (key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21'))
 	 */
 	private $constraintParameters;
 
 	/**
-	 * @param string $constraintClaimGuid
+	 * @param string $constraintStatementGuid
 	 * @param PropertyId $propertyId
 	 * @param string $constraintTypeQid
 	 * @param array $constraintParameters
 	 */
-	public function __construct( $constraintClaimGuid, PropertyId $propertyId, $constraintTypeQid, $constraintParameters) {
-		$this->constraintClaimGuid = $constraintClaimGuid;
-		$this->constraintTypeQid = $constraintTypeQid;
+	public function __construct(
+		$constraintStatementGuid,
+		PropertyId $propertyId,
+		$constraintTypeQid,
+		array $constraintParameters
+	) {
+		$this->constraintStatementGuid = $constraintStatementGuid;
 		$this->propertyId = $propertyId;
+		$this->constraintTypeQid = $constraintTypeQid;
 		$this->constraintParameters = $constraintParameters;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getConstraintClaimGuid() {
-		return $this->constraintClaimGuid;
+	public function getConstraintStatementGuid() {
+		return $this->constraintStatementGuid;
 	}
 
 	/**
@@ -87,7 +91,7 @@ class Constraint {
 	}
 
 	/**
-	 * @return array (variable length; key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21')
+	 * @return array (key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21'))
 	 */
 	public function getConstraintParameters() {
 		return $this->constraintParameters;

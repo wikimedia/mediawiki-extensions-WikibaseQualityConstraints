@@ -24,7 +24,7 @@ class ConstraintTest extends \MediaWikiTestCase {
 
 		$this->assertEquals( 'Item', $constraints[0]->getConstraintTypeQid() );
 		$this->assertEquals( new PropertyId('P1'), $constraints[0]->getPropertyId() );
-		$this->assertEquals( '1', $constraints[0]->getConstraintClaimGuid() );
+		$this->assertEquals( '1', $constraints[0]->getConstraintStatementGuid() );
 		$constraintParameters = $constraints[0]->getConstraintParameters();
 		$this->assertEquals( 2, count( $constraintParameters ) );
 		$this->assertEquals( 'P21', $constraintParameters['property'] );

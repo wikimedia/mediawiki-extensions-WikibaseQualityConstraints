@@ -51,10 +51,10 @@ class UpdateConstraintsTable extends \Maintenance {
 	}
 
 	private function insertValues( $constraintRepo, $csvFile ) {
-
 		$i = 0;
 		$db = wfGetDB( DB_MASTER );
 		$accumulator = array();
+
 		while ( true ) {
 			$data = fgetcsv( $csvFile );
 			if ( $data === false || ++$i % $this->mBatchSize === 0 ) {
@@ -75,12 +75,13 @@ class UpdateConstraintsTable extends \Maintenance {
 				}
 			}
 
-			$constraintParameters = (array) json_decode( $data[3] );
+			list( $statementGuid, $numericPropertyId, $constraintTypeQid, $params ) = $data;
+			$constraintParameters = (array) json_decode( $params );
 
 			$accumulator[] = new Constraint(
-				$data[0],
-				PropertyId::newFromNumber( $data[1] ),
-				$data[2],
+				$statementGuid,
+				PropertyId::newFromNumber( $numericPropertyId ),
+				$constraintTypeQid,
 				$constraintParameters
 			);
 		}
