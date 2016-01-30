@@ -27,7 +27,7 @@ class UpdateConstraintsTable extends \Maintenance {
 	public function __construct() {
 		parent::__construct();
 
-		$this->mDescription = "Reads csv file and writes its contents into constraints table";
+		$this->addDescription( "Reads csv file and writes its contents into constraints table" );
 		$this->addOption(
 			'csv-file',
 			'csv file that contains constraints parsed from the property talk pages.',
