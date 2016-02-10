@@ -497,7 +497,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$indicator
 		);
 
-		$tooltip = HTML::rawElement(
+		$tooltip = Html::rawElement(
 			'div',
 			array (
 				'class' => 'wbqc-tooltip'
