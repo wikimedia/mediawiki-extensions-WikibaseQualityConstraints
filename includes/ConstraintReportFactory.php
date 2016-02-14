@@ -24,10 +24,10 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChec
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
-
 
 class ConstraintReportFactory {
 
@@ -37,7 +37,7 @@ class ConstraintReportFactory {
 	private $constraintRepository;
 
 	/**
-	 * @var array
+	 * @var ConstraintChecker[]
 	 */
 	private $constraintCheckerMap;
 
@@ -52,7 +52,7 @@ class ConstraintReportFactory {
 	private $lookup;
 
 	/**
-	 * @var array
+	 * @var array[]
 	 */
 	private $constraintParameterMap;
 
@@ -60,7 +60,7 @@ class ConstraintReportFactory {
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
-	 * @return ConstraintReportFactory
+	 * @return self
 	 */
 	public static function getDefaultInstance() {
 		static $instance = null;
@@ -91,7 +91,7 @@ class ConstraintReportFactory {
 	}
 
 	/**
-	 * @return array
+	 * @return ConstraintChecker[]
 	 */
 	private function getConstraintCheckerMap(){
 		if ( $this->constraintCheckerMap === null ) {
@@ -125,6 +125,9 @@ class ConstraintReportFactory {
 		return $this->constraintCheckerMap;
 	}
 
+	/**
+	 * @return array[]
+	 */
 	public function getConstraintParameterMap() {
 		if ( $this->constraintParameterMap === null ) {
 			$this->constraintParameterMap = array(
@@ -152,6 +155,9 @@ class ConstraintReportFactory {
 		return $this->constraintParameterMap;
 	}
 
+	/**
+	 * @return ConstraintRepository
+	 */
 	public function getConstraintRepository() {
 		if ( $this->constraintRepository === null ) {
 			$this->constraintRepository = new ConstraintRepository( CONSTRAINT_TABLE );

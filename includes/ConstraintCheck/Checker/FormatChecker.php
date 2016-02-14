@@ -34,7 +34,7 @@ class FormatChecker implements ConstraintChecker {
 	 * Checks 'Format' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param Constraint constraint
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult

@@ -2,8 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Maintenance;
 
+use MediaWikiTestCase;
 use WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable
@@ -15,10 +15,11 @@ use WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class UpdateConstraintsTableTest extends \MediaWikiTestCase {
+class UpdateConstraintsTableTest extends MediaWikiTestCase {
 
-    protected function setup() {
-        parent::setup();
+	protected function setUp() {
+		parent::setUp();
+
         $this->tablesUsed[] = CONSTRAINT_TABLE;
     }
 
@@ -83,4 +84,5 @@ class UpdateConstraintsTableTest extends \MediaWikiTestCase {
             )
         );
     }
+
 }
