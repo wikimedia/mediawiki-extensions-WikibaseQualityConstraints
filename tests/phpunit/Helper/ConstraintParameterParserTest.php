@@ -16,6 +16,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
  */
 class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
+	/**
+	 * @var ConstraintParameterParser
+	 */
 	private $helper;
 
 	protected function setUp() {

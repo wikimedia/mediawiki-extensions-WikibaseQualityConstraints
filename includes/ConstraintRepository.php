@@ -2,7 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use DBUnexpectedError;
 use InvalidArgumentException;
+use ResultWrapper;
 use Wikibase\DataModel\Entity\PropertyId;
 
 
@@ -15,17 +17,17 @@ use Wikibase\DataModel\Entity\PropertyId;
 class ConstraintRepository {
 
 	/**
-	 * @param $prop
+	 * @param int $numericPropertyId
 	 *
 	 * @return Constraint[]
 	 */
-	public function queryConstraintsForProperty( $prop ) {
+	public function queryConstraintsForProperty( $numericPropertyId ) {
 		$db = wfGetDB( DB_SLAVE );
 
 		$results = $db->select(
 			CONSTRAINT_TABLE,
 			'*',
-			array( 'pid' => $prop )
+			array( 'pid' => $numericPropertyId )
 		);
 
 		return $this->convertToConstraints( $results );
@@ -34,8 +36,8 @@ class ConstraintRepository {
 	/**
 	 * @param Constraint[] $constraints
 	 *
+	 * @throws DBUnexpectedError
 	 * @return bool
-	 * @throws \DBUnexpectedError
 	 */
 	public function insertBatch( array $constraints ) {
 		$accumulator = array_map(
@@ -57,7 +59,8 @@ class ConstraintRepository {
 	/**
 	 * @param int $batchSize
 	 *
-	 * @throws \DBUnexpectedError
+	 * @throws InvalidArgumentException
+	 * @throws DBUnexpectedError
 	 */
 	public function deleteAll( $batchSize = 1000 ) {
 		if ( !is_int( $batchSize ) ) {
@@ -76,7 +79,12 @@ class ConstraintRepository {
 		}
 	}
 
-	private function convertToConstraints( $results ) {
+	/**
+	 * @param ResultWrapper $results
+	 *
+	 * @return Constraint[]
+	 */
+	private function convertToConstraints( ResultWrapper $results ) {
 		$constraints = array();
 		foreach( $results as $result ) {
 			$constraintTypeQid = $result->constraint_type_qid;

@@ -32,17 +32,17 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 class ConstraintReportFactory {
 
 	/**
-	 * @var constraintRepository
+	 * @var ConstraintRepository|null
 	 */
 	private $constraintRepository;
 
 	/**
-	 * @var ConstraintChecker[]
+	 * @var ConstraintChecker[]|null
 	 */
 	private $constraintCheckerMap;
 
 	/**
-	 * @var DelegatingConstraintChecker
+	 * @var DelegatingConstraintChecker|null
 	 */
 	private $delegatingConstraintChecker;
 
@@ -52,7 +52,7 @@ class ConstraintReportFactory {
 	private $lookup;
 
 	/**
-	 * @var array[]
+	 * @var array[]|null
 	 */
 	private $constraintParameterMap;
 

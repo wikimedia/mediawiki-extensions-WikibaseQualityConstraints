@@ -95,7 +95,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param $json
+	 * @param mixed $json
 	 * @param string $parameter
 	 *
 	 * @return null|string

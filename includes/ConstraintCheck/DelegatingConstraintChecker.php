@@ -96,7 +96,14 @@ class DelegatingConstraintChecker {
 		return $result;
 	}
 
-	private function checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) {
+	/**
+	 * @param Constraint[] $constraints
+	 * @param Entity $entity
+	 * @param Statement $statement
+	 *
+	 * @return CheckResult[]
+	 */
+	private function checkConstraintsForStatementOnEntity( array $constraints, $entity, $statement ) {
 		$result = array ();
 		foreach ( $constraints as $constraint ) {
 			$parameter = $constraint->getConstraintParameters();
@@ -113,8 +120,7 @@ class DelegatingConstraintChecker {
 
 	/**
 	 * @param Statement $statement
-	 * @param string $constraintTypeQid
-	 * @param $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult

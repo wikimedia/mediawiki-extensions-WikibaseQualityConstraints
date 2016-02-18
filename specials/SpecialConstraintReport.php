@@ -12,6 +12,7 @@ use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\Html\HtmlTableBuilder;
 use WikibaseQuality\Html\HtmlTableCellBuilder;
@@ -320,7 +321,7 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * @param Entity $entity
 	 *
-	 * @return CheckResult[]
+	 * @return CheckResult[]|null
 	 */
 	private function executeCheck( Entity $entity ) {
 		return $this->constraintChecker->checkAgainstConstraints( $entity );
@@ -328,11 +329,11 @@ class SpecialConstraintReport extends SpecialPage {
 
 	/**
 	 * @param EntityId $entityId
-	 * @param array $results
+	 * @param CheckResult[] $results
 	 *
 	 * @return string HTML
 	 */
-	private function buildResultTable( EntityId $entityId, $results ) {
+	private function buildResultTable( EntityId $entityId, array $results ) {
 		// Set table headers
 		$table = new HtmlTableBuilder(
 			array (
@@ -358,7 +359,7 @@ class SpecialConstraintReport extends SpecialPage {
 		return $table->toHtml();
 	}
 
-	private function appendToResultTable( $table, $entityId, $result ) {
+	private function appendToResultTable( HtmlTableBuilder $table, EntityId $entityId, CheckResult $result ) {
 		// Status column
 		$statusColumn = $this->buildTooltipElement(
 			$this->formatStatus( $result->getStatus() ),
@@ -437,11 +438,11 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * Builds summary from given results
 	 *
-	 * @param array $results
+	 * @param CheckResult[] $results
 	 *
 	 * @return string HTML
 	 */
-	protected function buildSummary( $results ) {
+	protected function buildSummary( array $results ) {
 		$statuses = array ();
 		foreach ( $results as $result ) {
 			$status = strtolower( $result->getStatus() );
@@ -471,7 +472,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @param string $content (sanitized HTML)
 	 * @param string $tooltipContent (sanitized HTML)
-	 * @param $indicator
+	 * @param string $indicator
 	 *
 	 * @throws InvalidArgumentException
 	 *
@@ -521,7 +522,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param string $expandableContent
 	 * @param string $indicator
 	 *
-	 * @throes InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
@@ -708,17 +709,6 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 
 		return $array;
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getStatusMapping() {
-		return array (
-			'compliance' => 'success',
-			'exception' => 'warning',
-			'violation' => 'error'
-		);
 	}
 
 }
