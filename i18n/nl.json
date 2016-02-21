@@ -38,6 +38,6 @@
 	"wbqc-violation-message-target-entity-must-exist": "De doelentiteit moet bestaan.",
 	"wbqc-violation-message-value-entity-must-exist": "De entiteit die opgegeven is als waarde moet bestaan.",
 	"wbqc-violation-message-commons-link-no-existent": "Het bestand op Commons moet bestaan.",
-	"wbqc-violation-message-commons-link-not-well-formed": "De link naar Commons moet geen ongeldige karakters bevatten.",
+	"wbqc-violation-message-commons-link-not-well-formed": "De koppeling naar Commons mag geen ongeldige tekens bevatten.",
 	"wbqc-violation-message-qualifier": "De eigenschap mag alleen als kwalificatie worden gebruikt."
 }
