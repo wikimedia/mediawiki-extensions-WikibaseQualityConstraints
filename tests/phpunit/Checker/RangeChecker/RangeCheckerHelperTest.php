@@ -5,8 +5,8 @@ namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use DataValues\TimeValue;
+use PHPUnit_Framework_TestCase;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper
@@ -19,10 +19,21 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class RangeCheckerHelperTest extends \MediaWikiTestCase {
+class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
+	/**
+	 * @var RangeCheckerHelper
+	 */
 	private $helper;
+
+	/**
+	 * @var TimeValue
+	 */
 	private $time;
+
+	/**
+	 * @var QuantityValue
+	 */
 	private $quantity;
 
 	protected function setUp() {

@@ -9,11 +9,11 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
@@ -28,9 +28,24 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class InverseCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var JsonFileEntityLookup
+	 */
 	private $lookup;
+
+	/**
+	 * @var ConstraintParameterParser
+	 */
 	private $helper;
+
+	/**
+	 * @var ConnectionCheckerHelper
+	 */
 	private $connectionCheckerHelper;
+
+	/**
+	 * @var InverseChecker
+	 */
 	private $checker;
 
 	protected function setUp() {
@@ -51,7 +66,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 
 	public function testInverseConstraintValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		
+
 		$value = new EntityIdValue( new ItemId( 'Q7' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
@@ -124,14 +139,19 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	private function getConstraintMock( $parameter ) {
+	/**
+	 * @param string[] $parameters
+	 *
+	 * @return Constraint
+	 */
+	private function getConstraintMock( array $parameters ) {
 		$mock = $this
 			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( $parameter ) );
+			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
 			 ->will( $this->returnValue( 'Inverse' ) );

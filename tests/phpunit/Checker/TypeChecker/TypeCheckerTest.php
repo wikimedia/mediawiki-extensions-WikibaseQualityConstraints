@@ -1,4 +1,5 @@
 <?php
+
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use Wikibase\DataModel\Statement\Statement;
@@ -6,11 +7,11 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker
@@ -25,8 +26,19 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class TypeCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var JsonFileEntityLookup
+	 */
 	private $lookup;
+
+	/**
+	 * @var TypeChecker
+	 */
 	private $checker;
+
+	/**
+	 * @var Statement
+	 */
 	private $typeStatement;
 
 	protected function setUp() {
@@ -196,14 +208,19 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	private function getConstraintMock( $parameter ) {
+	/**
+	 * @param string[] $parameters
+	 *
+	 * @return Constraint
+	 */
+	private function getConstraintMock( array $parameters ) {
 		$mock = $this
 			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( $parameter ) );
+			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
 			 ->will( $this->returnValue( 'Type' ) );

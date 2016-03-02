@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
+use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -19,8 +20,11 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class TypeCheckerHelperTest extends \MediaWikiTestCase {
+class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
+	/**
+	 * @var TypeCheckerHelper
+	 */
 	private $helper;
 
 	protected function setUp() {

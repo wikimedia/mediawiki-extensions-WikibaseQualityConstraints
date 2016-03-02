@@ -1,4 +1,5 @@
 <?php
+
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use Wikibase\DataModel\Statement\Statement;
@@ -8,11 +9,11 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use DataValues\StringValue;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
@@ -27,13 +28,23 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var JsonFileEntityLookup
+	 */
 	private $lookup;
+
+	/**
+	 * @var ValueTypeChecker
+	 */
 	private $checker;
+
+	/**
+	 * @var PropertyId
+	 */
 	private $valueTypePropertyId;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintParameterParser();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->checker = new ValueTypeChecker( $this->lookup, new ConstraintParameterParser(), new TypeCheckerHelper( $this->lookup ) );
 		$this->valueTypePropertyId = new PropertyId( 'P1234' );
@@ -220,14 +231,19 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	private function getConstraintMock( $parameter ) {
+	/**
+	 * @param string[] $parameters
+	 *
+	 * @return Constraint
+	 */
+	private function getConstraintMock( array $parameters ) {
 		$mock = $this
 			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( $parameter ) );
+			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
 			 ->will( $this->returnValue( 'Value type' ) );

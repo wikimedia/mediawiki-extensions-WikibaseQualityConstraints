@@ -9,9 +9,9 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
@@ -28,7 +28,14 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
  */
 class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var ConstraintParameterParser
+	 */
 	private $helper;
+
+	/**
+	 * @var CommonsLinkChecker
+	 */
 	private $commonsLinkChecker;
 
 	protected function setUp() {
@@ -110,14 +117,19 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ) )->getStatus(), 'check should not comply' );
 	}
 
-	private function getConstraintMock( $parameter ) {
+	/**
+	 * @param string[] $parameters
+	 *
+	 * @return Constraint
+	 */
+	private function getConstraintMock( array $parameters ) {
 		$mock = $this
 			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( $parameter ) );
+			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
 			 ->will( $this->returnValue( 'Commons link' ) );

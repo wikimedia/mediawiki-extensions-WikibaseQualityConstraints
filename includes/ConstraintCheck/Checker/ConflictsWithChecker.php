@@ -36,7 +36,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
-	 * ConnectionCheckerHelper $connectionCheckerHelper
+	 * @param ConnectionCheckerHelper $connectionCheckerHelper
 	 */
 	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
 		$this->entityLookup = $lookup;

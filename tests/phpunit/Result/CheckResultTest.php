@@ -2,13 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\CheckResult;
 
+use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
@@ -17,12 +17,31 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class CheckResultTest extends \MediaWikiTestCase {
+class CheckResultTest extends PHPUnit_Framework_TestCase {
 
+	/**
+	 * @var Statement
+	 */
 	private $statement;
+
+	/**
+	 * @var string
+	 */
 	private $constraintName;
+
+	/**
+	 * @var array
+	 */
 	private $parameters;
+
+	/**
+	 * @var string
+	 */
 	private $status;
+
+	/**
+	 * @var string
+	 */
 	private $message;
 
 	protected function setUp() {

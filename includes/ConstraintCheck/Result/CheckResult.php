@@ -2,11 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 
+use DataValues\DataValue;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\PropertyId;
 use LogicException;
-
 
 /**
  * Class CheckResult

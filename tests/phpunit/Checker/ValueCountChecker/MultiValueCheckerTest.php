@@ -7,10 +7,10 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
@@ -24,9 +24,24 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class MultiValueCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var ConstraintParameterParser
+	 */
 	private $helper;
+
+	/**
+	 * @var PropertyId
+	 */
 	private $multiPropertyId;
+
+	/**
+	 * @var MultiValueChecker
+	 */
 	private $checker;
+
+	/**
+	 * @var JsonFileEntityLookup
+	 */
 	private $lookup;
 
 	protected function setUp() {
@@ -67,14 +82,19 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	private function getConstraintMock( $parameter ) {
+	/**
+	 * @param string[] $parameters
+	 *
+	 * @return Constraint
+	 */
+	private function getConstraintMock( array $parameters ) {
 		$mock = $this
 			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameter' )
-			 ->will( $this->returnValue( $parameter ) );
+			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
 			 ->will( $this->returnValue( 'Multi value' ) );

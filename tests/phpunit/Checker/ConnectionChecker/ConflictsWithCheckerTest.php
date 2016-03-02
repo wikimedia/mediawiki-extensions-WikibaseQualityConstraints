@@ -7,11 +7,11 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker
@@ -26,9 +26,24 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var JsonFileEntityLookup
+	 */
 	private $lookup;
+
+	/**
+	 * @var ConstraintParameterParser
+	 */
 	private $helper;
+
+	/**
+	 * @var ConnectionCheckerHelper
+	 */
 	private $connectionCheckerHelper;
+
+	/**
+	 * @var ConflictsWithChecker
+	 */
 	private $checker;
 
 	protected function setUp() {
@@ -137,14 +152,19 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
-	private function getConstraintMock( $parameter ) {
+	/**
+	 * @param string[] $parameters
+	 *
+	 * @return Constraint
+	 */
+	private function getConstraintMock( array $parameters ) {
 		$mock = $this
 			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( $parameter ) );
+			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
 			 ->will( $this->returnValue( 'Conflicts with' ) ) ;

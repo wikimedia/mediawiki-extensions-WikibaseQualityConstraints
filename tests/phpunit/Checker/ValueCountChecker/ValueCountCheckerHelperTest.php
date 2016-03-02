@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
+use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
@@ -9,7 +10,6 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper
@@ -19,8 +19,11 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHel
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ValueCountCheckerHelperTest extends \MediaWikiTestCase {
+class ValueCountCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
+	/**
+	 * @var StatementList
+	 */
 	private $statementList;
 
 	protected function setUp() {
@@ -45,4 +48,5 @@ class ValueCountCheckerHelperTest extends \MediaWikiTestCase {
 		$this->assertEquals( 1, $propertyCount['P1'] );
 		$this->assertEquals( 2, $propertyCount['P2'] );
 	}
+
 }

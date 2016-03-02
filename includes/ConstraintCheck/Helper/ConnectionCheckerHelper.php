@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Wikibase\DataModel\Statement\StatementList;
+
 /**
  * Class for helper functions for the connection checkers.
  *
@@ -66,4 +68,5 @@ class ConnectionCheckerHelper {
 		}
 		return false;
 	}
+
 }

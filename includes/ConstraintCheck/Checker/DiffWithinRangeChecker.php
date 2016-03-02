@@ -53,11 +53,11 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$property = false;
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
 			$property = $constraintParameters['property'];
-			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['property'], 'PropertyId' );
+			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['property'], true );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
 		}
 
 		$mainSnak = $statement->getMainSnak();

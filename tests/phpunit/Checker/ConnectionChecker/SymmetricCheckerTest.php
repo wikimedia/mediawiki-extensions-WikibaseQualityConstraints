@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
+use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -9,11 +10,11 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
@@ -28,10 +29,29 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class SymmetricCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var JsonFileEntityLookup
+	 */
 	private $lookup;
+
+	/**
+	 * @var ConstraintParameterParser
+	 */
 	private $helper;
+
+	/**
+	 * @var ConnectionCheckerHelper
+	 */
 	private $connectionCheckerHelper;
+
+	/**
+	 * @var SymmetricChecker
+	 */
 	private $checker;
+
+	/**
+	 * @var EntityDocument
+	 */
 	private $entity;
 
 	protected function setUp() {
@@ -51,7 +71,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		unset( $this->entity );
 		parent::tearDown();
 	}
-	
+
 	public function testSymmetricConstraintWithCorrectSpouse() {
 		$value = new EntityIdValue( new ItemId( 'Q3' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
@@ -91,6 +111,9 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
+	/**
+	 * @return Constraint
+	 */
 	private function getConstraintMock() {
 		$mock = $this
 			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )

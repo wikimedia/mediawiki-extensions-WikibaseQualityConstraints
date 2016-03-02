@@ -30,7 +30,7 @@ class MultiValueChecker implements ConstraintChecker {
 	 * Checks 'Multi value' constraint.
 	 *
 	 * @param Statement $statement
-	 * @param Constraint $constraintParameters
+	 * @param Constraint $constraint
 	 * @param Entity $entity
 	 *
 	 * @return CheckResult

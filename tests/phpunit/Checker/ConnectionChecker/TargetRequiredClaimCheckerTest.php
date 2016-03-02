@@ -9,11 +9,11 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
@@ -28,11 +28,25 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var JsonFileEntityLookup
+	 */
 	private $lookup;
+
+	/**
+	 * @var ConstraintParameterParser
+	 */
 	private $helper;
+
+	/**
+	 * @var ConnectionCheckerHelper
+	 */
 	private $connectionCheckerHelper;
+
+	/**
+	 * @var TargetRequiredClaimChecker
+	 */
 	private $checker;
-	private $entity;
 
 	protected function setUp() {
 		parent::setUp();
@@ -40,7 +54,6 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new TargetRequiredClaimChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
-		$this->entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 	}
 
 	protected function tearDown() {
@@ -48,7 +61,6 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		unset( $this->helper );
 		unset( $this->connectionCheckerHelper );
 		unset( $this->checker );
-		unset( $this->entity );
 		parent::tearDown();
 	}
 
@@ -139,14 +151,19 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
-	private function getConstraintMock( $parameter ) {
+	/**
+	 * @param string[] $parameters
+	 *
+	 * @return Constraint
+	 */
+	private function getConstraintMock( array $parameters ) {
 		$mock = $this
 			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( $parameter ) );
+			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
 			 ->will( $this->returnValue( 'Target required claim' ) );

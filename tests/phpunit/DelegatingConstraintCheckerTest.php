@@ -3,9 +3,9 @@
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
@@ -39,7 +39,14 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
+	/**
+	 * @var DelegatingConstraintChecker
+	 */
 	private $constraintChecker;
+
+	/**
+	 * @var JsonFileEntityLookup
+	 */
 	private $lookup;
 
 	protected function setUp() {

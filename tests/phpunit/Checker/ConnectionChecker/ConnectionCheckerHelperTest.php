@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
+use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -10,7 +11,6 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper
@@ -23,9 +23,16 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHel
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConnectionCheckerHelperTest extends \MediaWikiTestCase {
+class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
+	/**
+	 * @var StatementList
+	 */
 	private $statementList;
+
+	/**
+	 * @var ConnectionCheckerHelper
+	 */
 	private $connectionCheckerHelper;
 
 	protected function setUp() {
@@ -69,4 +76,5 @@ class ConnectionCheckerHelperTest extends \MediaWikiTestCase {
 		$statementList = new StatementList( new Statement( new PropertyNoValueSnak( 1 ) ) );
 		$this->assertEquals( false, $this->connectionCheckerHelper->hasClaim( $statementList, 'P1', array( 'Q1', 'Q2' ) ) );
 	}
+
 }
