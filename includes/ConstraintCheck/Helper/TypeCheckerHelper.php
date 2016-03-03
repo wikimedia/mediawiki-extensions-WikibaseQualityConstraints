@@ -6,6 +6,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementList;
+use Wikibase\DataModel\Statement\StatementListProvider;
 
 /**
  * Class for helper functions for range checkers.
@@ -41,10 +42,9 @@ class TypeCheckerHelper {
 	 *
 	 * @return bool
 	 */
-	public function isSubclassOf( $comparativeClass, $classesToCheck, $depth ) {
-		$compliance = null;
+	public function isSubclassOf( EntityId $comparativeClass, $classesToCheck, $depth ) {
 		$item = $this->entityLookup->getEntity( $comparativeClass );
-		if ( !$item ) {
+		if ( !( $item instanceof StatementListProvider ) ) {
 			return false; // lookup failed, probably because item doesn't exist
 		}
 
@@ -65,12 +65,11 @@ class TypeCheckerHelper {
 				return false;
 			}
 
-			$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, $depth + 1 );
-			if ( $compliance === true ) {
+			if ( $this->isSubclassOf( $comparativeClass, $classesToCheck, $depth + 1 ) ) {
 				return true;
 			}
-
 		}
+
 		return false;
 	}
 
@@ -87,7 +86,6 @@ class TypeCheckerHelper {
 	 * @return bool
 	 */
 	public function hasClassInRelation( StatementList $statements, $relationId, $classesToCheck ) {
-		$compliance = null;
 		foreach ( $statements->getByPropertyId( new PropertyId( $relationId ) ) as $statement ) {
 			$mainSnak = $claim = $statement->getMainSnak();
 
@@ -101,11 +99,11 @@ class TypeCheckerHelper {
 				return true;
 			}
 
-			$compliance = $this->isSubclassOf( $comparativeClass, $classesToCheck, 1 );
-			if ( $compliance === true ) {
+			if ( $this->isSubclassOf( $comparativeClass, $classesToCheck, 1 ) ) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
