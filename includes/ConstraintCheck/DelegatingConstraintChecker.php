@@ -2,10 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
+use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
-use Wikibase\DataModel\Entity\Entity;
+use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
@@ -37,7 +38,7 @@ class DelegatingConstraintChecker {
 	private $helper;
 
 	/**
-	 * @var
+	 * @var ConstraintChecker[]
 	 */
 	private $checkerMap;
 
@@ -48,7 +49,11 @@ class DelegatingConstraintChecker {
 	 */
 	private $statements;
 
-	public function __construct( EntityLookup $lookup, $checkerMap ) {
+	/**
+	 * @param EntityLookup $lookup
+	 * @param ConstraintChecker[] $checkerMap
+	 */
+	public function __construct( EntityLookup $lookup, array $checkerMap ) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
 		$this->helper = new ConstraintParameterParser();
@@ -59,26 +64,32 @@ class DelegatingConstraintChecker {
 	 * Starts the whole constraint-check process.
 	 * Statements of the entity will be checked against every constraint that is defined on the property.
 	 *
-	 * @param Entity $entity - Entity that shall be checked against constraints
+	 * @param EntityDocument|null $entity
 	 *
 	 * @return CheckResult[]|null
 	 */
-	public function checkAgainstConstraints( $entity ) {
-		if ( $entity ) {
-
+	public function checkAgainstConstraints( EntityDocument $entity = null ) {
+		if ( $entity instanceof StatementListProvider ) {
 			$this->statements = $entity->getStatements();
 
 			$result = $this->checkEveryStatement( $entity );
 
 			return $this->sortResult( $result );
 		}
+
 		return null;
 	}
 
-	private function checkEveryStatement( $entity ) {
+	/**
+	 * @param EntityDocument $entity
+	 *
+	 * @return CheckResult[]
+	 */
+	private function checkEveryStatement( EntityDocument $entity ) {
 		$result = array ();
-		foreach ( $this->statements as $statement ) {
 
+		/** @var Statement $statement */
+		foreach ( $this->statements as $statement ) {
 			if ( $statement->getMainSnak()->getType() !== 'value' ) {
 				// skip 'somevalue' and 'novalue' cases, todo: handle in a better way
 				continue;
@@ -90,7 +101,6 @@ class DelegatingConstraintChecker {
 			$constraints = $this->constraintRepository->queryConstraintsForProperty( $numericPropertyId );
 
 			$result = array_merge( $result, $this->checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) );
-
 		}
 
 		return $result;
@@ -98,13 +108,14 @@ class DelegatingConstraintChecker {
 
 	/**
 	 * @param Constraint[] $constraints
-	 * @param Entity $entity
+	 * @param EntityDocument $entity
 	 * @param Statement $statement
 	 *
 	 * @return CheckResult[]
 	 */
-	private function checkConstraintsForStatementOnEntity( array $constraints, $entity, $statement ) {
+	private function checkConstraintsForStatementOnEntity( array $constraints, EntityDocument $entity, $statement ) {
 		$result = array ();
+
 		foreach ( $constraints as $constraint ) {
 			$parameter = $constraint->getConstraintParameters();
 			if ( array_key_exists( 'known_exception', $parameter) && in_array( $entity->getId()->getSerialization(), explode( ',', $parameter['known_exception'] ) ) ) {
@@ -115,18 +126,18 @@ class DelegatingConstraintChecker {
 
 			$result[ ] = $this->getCheckResultFor( $statement, $constraint, $entity );
 		}
+
 		return $result;
 	}
 
 	/**
 	 * @param Statement $statement
 	 * @param Constraint $constraint
-	 * @param Entity $entity
+	 * @param EntityDocument $entity
 	 *
 	 * @return CheckResult
 	 */
-	private function getCheckResultFor( Statement $statement, Constraint $constraint, Entity $entity ) {
-
+	private function getCheckResultFor( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		if( array_key_exists( $constraint->getConstraintTypeQid(), $this->checkerMap ) ) {
 			$checker = $this->checkerMap[$constraint->getConstraintTypeQid()];
 			return $checker->checkConstraint( $statement, $constraint, $entity );
@@ -135,12 +146,17 @@ class DelegatingConstraintChecker {
 		}
 	}
 
-	private function sortResult( $result ) {
+	/**
+	 * @param CheckResult[] $result
+	 *
+	 * @return CheckResult[]
+	 */
+	private function sortResult( array $result ) {
 		if ( count( $result ) < 2 ) {
 			return $result;
 		}
 
-		$sortFunction = function ( $a, $b ) {
+		$sortFunction = function ( CheckResult $a, CheckResult $b ) {
 			$order = array ( 'other' => 4, 'compliance' => 3, 'exception' => 2, 'violation' => 1 );
 
 			$statusA = $a->getStatus();
@@ -160,4 +176,5 @@ class DelegatingConstraintChecker {
 
 		return $result;
 	}
+
 }

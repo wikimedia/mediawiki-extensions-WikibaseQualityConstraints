@@ -11,13 +11,13 @@ use SpecialPage;
 use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
+use Wikibase\DataModel\Entity\EntityDocument;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\Html\HtmlTableBuilder;
 use WikibaseQuality\Html\HtmlTableCellBuilder;
 use WikibaseQuality\Html\HtmlTableHeaderBuilder;
-use Wikibase\DataModel\Entity\Entity;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -319,11 +319,11 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	/**
-	 * @param Entity $entity
+	 * @param EntityDocument $entity
 	 *
 	 * @return CheckResult[]|null
 	 */
-	private function executeCheck( Entity $entity ) {
+	private function executeCheck( EntityDocument $entity ) {
 		return $this->constraintChecker->checkAgainstConstraints( $entity );
 	}
 
