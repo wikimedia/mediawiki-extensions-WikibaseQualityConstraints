@@ -97,6 +97,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$thisValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
+		/** @var Statement $statement */
 		foreach ( $entity->getStatements() as $statement ) {
 			if ( $property === $statement->getPropertyId()->getSerialization() ) {
 				$mainSnak = $statement->getMainSnak();

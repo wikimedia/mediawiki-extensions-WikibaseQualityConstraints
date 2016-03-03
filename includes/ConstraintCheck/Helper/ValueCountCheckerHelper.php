@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 
-
 /**
  * Class for helper functions for value count checkers.
  *
@@ -16,18 +15,20 @@ use Wikibase\DataModel\Statement\StatementList;
 class ValueCountCheckerHelper {
 
 	/**
-	 * @var array $propertyCount
+	 * @var int[] $propertyCount
 	 */
 	private $propertyCount;
 
 	/**
 	 * @param StatementList $statements
 	 *
-	 * @return array
+	 * @return int[]
 	 */
 	public function getPropertyCount( StatementList $statements ) {
 		if ( !isset( $this->propertyCount ) ) {
 			$this->propertyCount = array ();
+
+			/** @var Statement $statement */
 			foreach ( $statements as $statement ) {
 				$counter = $statement->getRank() === Statement::RANK_DEPRECATED ? 0 : 1;
 				if ( array_key_exists( $statement->getPropertyId()->getSerialization(), $this->propertyCount ) ) {
@@ -37,6 +38,8 @@ class ValueCountCheckerHelper {
 				}
 			}
 		}
+
 		return $this->propertyCount;
 	}
+
 }

@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 
 /**
@@ -21,7 +22,8 @@ class ConnectionCheckerHelper {
 	 *
 	 * @return boolean
 	 */
-	public function hasProperty( $statementList, $propertyIdSerialization ) {
+	public function hasProperty( StatementList $statementList, $propertyIdSerialization ) {
+		/** @var Statement $statement */
 		foreach ( $statementList as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
 				return true;
@@ -39,7 +41,12 @@ class ConnectionCheckerHelper {
 	 *
 	 * @return boolean
 	 */
-	public function hasClaim( $statementList, $propertyIdSerialization, $itemIdSerializationOrArray ) {
+	public function hasClaim(
+		StatementList $statementList,
+		$propertyIdSerialization,
+		$itemIdSerializationOrArray
+	) {
+		/** @var Statement $statement */
 		foreach ( $statementList as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
 				if ( is_string( $itemIdSerializationOrArray ) ) { // string

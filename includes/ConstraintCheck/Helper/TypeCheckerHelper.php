@@ -5,6 +5,9 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Snak\Snak;
+use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 
@@ -37,17 +40,18 @@ class TypeCheckerHelper {
 	 * depth is reached
 	 *
 	 * @param EntityId $comparativeClass
-	 * @param array $classesToCheck
+	 * @param string[] $classesToCheck
 	 * @param int $depth
 	 *
 	 * @return bool
 	 */
-	public function isSubclassOf( EntityId $comparativeClass, $classesToCheck, $depth ) {
+	public function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, $depth ) {
 		$item = $this->entityLookup->getEntity( $comparativeClass );
 		if ( !( $item instanceof StatementListProvider ) ) {
 			return false; // lookup failed, probably because item doesn't exist
 		}
 
+		/** @var Statement $statement */
 		foreach ( $item->getStatements()->getByPropertyId( new PropertyId( self::subclassId ) ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
@@ -55,6 +59,7 @@ class TypeCheckerHelper {
 				continue;
 			}
 
+			/** @var PropertyValueSnak $mainSnak */
 			$comparativeClass = $mainSnak->getDataValue()->getEntityId();
 
 			if( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
@@ -81,11 +86,12 @@ class TypeCheckerHelper {
 	 *
 	 * @param StatementList $statements
 	 * @param string $relationId
-	 * @param array $classesToCheck
+	 * @param string[] $classesToCheck
 	 *
 	 * @return bool
 	 */
-	public function hasClassInRelation( StatementList $statements, $relationId, $classesToCheck ) {
+	public function hasClassInRelation( StatementList $statements, $relationId, array $classesToCheck ) {
+		/** @var Statement $statement */
 		foreach ( $statements->getByPropertyId( new PropertyId( $relationId ) ) as $statement ) {
 			$mainSnak = $claim = $statement->getMainSnak();
 
@@ -93,6 +99,7 @@ class TypeCheckerHelper {
 				continue;
 			}
 
+			/** @var PropertyValueSnak $mainSnak */
 			$comparativeClass = $mainSnak->getDataValue()->getEntityId();
 
 			if( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
@@ -107,8 +114,9 @@ class TypeCheckerHelper {
 		return false;
 	}
 
-	private function hasCorrectType( $mainSnak ) {
-		return $mainSnak->getType() === 'value' && $mainSnak->getDataValue()->getType() === 'wikibase-entityid';
+	private function hasCorrectType( Snak $mainSnak ) {
+		return $mainSnak instanceof PropertyValueSnak
+			&& $mainSnak->getDataValue()->getType() === 'wikibase-entityid';
 	}
 
 }
