@@ -3,6 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -50,10 +52,14 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 		parent::tearDown();
 	}
 
-	private function getFirstStatement( $entity ) {
-		foreach ( $entity->getStatements() as $statement ) {
-			return $statement;
-		}
+	/**
+	 * @param StatementListProvider $entity
+	 *
+	 * @return Statement|false
+	 */
+	private function getFirstStatement( StatementListProvider $entity ) {
+		$statements = $entity->getStatements()->toArray();
+		return reset( $statements );
 	}
 
 	public function testQualifiersConstraint() {

@@ -54,7 +54,7 @@ class ValueTypeChecker implements ConstraintChecker {
 	 *
 	 * @param Statement $statement
 	 * @param Constraint $constraint
-	 * @param EntityDocument $entity
+	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */

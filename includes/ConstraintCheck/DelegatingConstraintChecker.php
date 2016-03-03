@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\Statement;
@@ -81,7 +82,7 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
-	 * @param EntityDocument $entity
+	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult[]
 	 */
@@ -108,7 +109,7 @@ class DelegatingConstraintChecker {
 
 	/**
 	 * @param Constraint[] $constraints
-	 * @param EntityDocument $entity
+	 * @param EntityDocument|StatementListProvider $entity
 	 * @param Statement $statement
 	 *
 	 * @return CheckResult[]
@@ -133,8 +134,9 @@ class DelegatingConstraintChecker {
 	/**
 	 * @param Statement $statement
 	 * @param Constraint $constraint
-	 * @param EntityDocument $entity
+	 * @param EntityDocument|StatementListProvider $entity
 	 *
+	 * @throws InvalidArgumentException
 	 * @return CheckResult
 	 */
 	private function getCheckResultFor( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
