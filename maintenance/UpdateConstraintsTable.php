@@ -62,7 +62,7 @@ class UpdateConstraintsTable extends \Maintenance {
 				$constraintRepo->insertBatch( $accumulator );
 
 				$db->commit( __METHOD__, 'flush' );
-				wfWaitForSlaves();
+				wfGetLBFactory()->waitForReplication();
 
 				if ( !$this->isQuiet() ) {
 					$this->output( "\r\033[K" );
