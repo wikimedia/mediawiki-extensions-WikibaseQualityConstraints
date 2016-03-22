@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 
@@ -37,7 +39,7 @@ class ConnectionCheckerHelper {
 	 *
 	 * @param StatementList $statementList
 	 * @param string $propertyIdSerialization
-	 * @param string|array $itemIdSerializationOrArray
+	 * @param string|string[] $itemIdSerializationOrArray
 	 *
 	 * @return boolean
 	 */
@@ -62,17 +64,26 @@ class ConnectionCheckerHelper {
 		return false;
 	}
 
-	private function arrayHasClaim( $statement, $itemIdSerializationArray ) {
+	/**
+	 * @param Statement $statement
+	 * @param string[] $itemIdSerializationArray
+	 *
+	 * @return bool
+	 */
+	private function arrayHasClaim( Statement $statement, array $itemIdSerializationArray ) {
 		$mainSnak = $statement->getMainSnak();
-		if ( $mainSnak->getType() !== 'value' || $mainSnak->getDataValue()->getType() !== 'wikibase-entityid' ) {
-			return false;
+
+		if ( $mainSnak instanceof PropertyValueSnak ) {
+			$dataValue = $mainSnak->getDataValue();
+
+			return $dataValue instanceof EntityIdValue
+				&& in_array(
+					$dataValue->getEntityId()->getSerialization(),
+					$itemIdSerializationArray,
+					true
+				);
 		}
 
-		foreach ( $itemIdSerializationArray as $itemIdSerialization ) {
-			if ( $mainSnak->getDataValue()->getEntityId()->getSerialization() === $itemIdSerialization ) {
-				return true;
-			}
-		}
 		return false;
 	}
 
