@@ -72,7 +72,7 @@ class ConstraintRepository {
 		} else {
 			do {
 				$db->commit( __METHOD__, 'flush' );
-				wfWaitForSlaves();
+				wfGetLBFactory()->waitForReplication();
 				$table = $db->tableName( CONSTRAINT_TABLE );
 				$db->query( sprintf('DELETE FROM %s LIMIT %s', $table, $batchSize ) );
 			} while ( $db->affectedRows() > 0 );
