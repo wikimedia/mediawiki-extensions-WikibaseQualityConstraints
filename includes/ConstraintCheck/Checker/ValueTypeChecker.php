@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -100,6 +101,8 @@ class ValueTypeChecker implements ConstraintChecker {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeQid(), 'wikibase-entityid' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
+		/** @var EntityIdValue $dataValue */
+
 		if ( !$classes ) {
 			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeQid(), 'class' )->escaped();
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );

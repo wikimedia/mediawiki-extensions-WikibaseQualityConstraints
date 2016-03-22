@@ -91,11 +91,13 @@ class CheckResult {
 	 * @throws LogicException
 	 */
 	public function getDataValue() {
-		if ( !$this->statement->getMainSnak() instanceof PropertyValueSnak ) {
-			throw new LogicException( 'Cannot get DataValue, MainSnak is of type ' . $this->getMainSnakType() . '.' );
+		$mainSnak = $this->statement->getMainSnak();
+
+		if ( $mainSnak instanceof PropertyValueSnak ) {
+			return $mainSnak->getDataValue();
 		}
 
-		return $this->statement->getMainSnak()->getDataValue();
+		throw new LogicException( 'Cannot get DataValue, MainSnak is of type ' . $this->getMainSnakType() . '.' );
 	}
 
 	/**

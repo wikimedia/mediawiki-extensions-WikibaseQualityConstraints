@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
@@ -50,6 +51,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		$qualifiersList = $statement->getQualifiers();
 		$qualifiers = array ();
 
+		/** @var Snak $qualifier */
 		foreach ( $qualifiersList as $qualifier ) {
 			$qualifiers[ $qualifier->getPropertyId()->getSerialization() ] = true;
 		}

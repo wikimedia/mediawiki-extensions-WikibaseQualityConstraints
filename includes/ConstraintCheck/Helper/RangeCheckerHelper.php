@@ -2,6 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use DataValues\DataValue;
+use DataValues\QuantityValue;
+use DataValues\TimeValue;
+use InvalidArgumentException;
+
 /**
  * Class for helper functions for range checkers.
  *
@@ -11,12 +16,14 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
  */
 class RangeCheckerHelper {
 
-	public function getComparativeValue( $dataValue ) {
-		if ( $dataValue->getType() === 'time' ) {
+	public function getComparativeValue( DataValue $dataValue ) {
+		if ( $dataValue instanceof TimeValue ) {
 			return $dataValue->getTime();
-		} else {
-			// 'quantity'
+		} elseif ( $dataValue instanceof QuantityValue ) {
 			return $dataValue->getAmount()->getValue();
 		}
+
+		throw new InvalidArgumentException( 'Unsupported data value type' );
 	}
+
 }

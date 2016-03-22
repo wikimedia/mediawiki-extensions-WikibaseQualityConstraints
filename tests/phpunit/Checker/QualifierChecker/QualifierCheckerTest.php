@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -56,6 +57,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testQualifierConstraintQualifierProperty() {
+		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$qualifierChecker = new QualifierChecker( $this->helper );
 		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array() ) );
@@ -69,7 +71,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	 */
 	private function getConstraintMock( array $parameters ) {
 		$mock = $this
-			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )

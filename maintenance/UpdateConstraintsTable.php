@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Maintenance;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
 $basePath = getenv( "MW_INSTALL_PATH" ) !== false
 	? getenv( "MW_INSTALL_PATH" ) : __DIR__ . "/../../..";
@@ -50,7 +51,7 @@ class UpdateConstraintsTable extends \Maintenance {
 		fclose( $csvFile );
 	}
 
-	private function insertValues( $constraintRepo, $csvFile ) {
+	private function insertValues( ConstraintRepository $constraintRepo, $csvFile ) {
 		$i = 0;
 		$db = wfGetDB( DB_MASTER );
 		$accumulator = array();
@@ -90,6 +91,6 @@ class UpdateConstraintsTable extends \Maintenance {
 }
 
 // @codeCoverageIgnoreStart
-$maintClass = 'WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable';
+$maintClass = UpdateConstraintsTable::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

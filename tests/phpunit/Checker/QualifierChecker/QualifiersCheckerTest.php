@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -63,6 +64,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testQualifiersConstraint() {
+		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
@@ -70,6 +72,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testQualifiersConstraintToManyQualifiers() {
+		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
@@ -77,6 +80,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testQualifiersConstraintNoQualifiers() {
+		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
@@ -90,7 +94,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	 */
 	private function getConstraintMock( array $parameters ) {
 		$mock = $this
-			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )

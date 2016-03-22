@@ -116,7 +116,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	 */
 	private function getConstraintMock() {
 		$mock = $this
-			->getMockBuilder( 'WikibaseQuality\ConstraintReport\Constraint' )
+			->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )

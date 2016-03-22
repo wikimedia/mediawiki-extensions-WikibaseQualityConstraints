@@ -27,7 +27,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 
 		$this->assertEquals( true, is_array( $constraints) );
 		$this->assertEquals( 2, count( $constraints ) );
-		$this->assertEquals( 'WikibaseQuality\ConstraintReport\Constraint', get_class( $constraints[0] ) );
+		$this->assertInstanceOf( Constraint::class, $constraints[0] );
 	}
 
 	public function testQueryConstraintsForNonExistingProperty() {

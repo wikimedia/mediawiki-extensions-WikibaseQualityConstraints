@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -58,9 +59,11 @@ class TypeCheckerHelper {
 			if ( !( $this->hasCorrectType( $mainSnak ) ) ) {
 				continue;
 			}
-
 			/** @var PropertyValueSnak $mainSnak */
-			$comparativeClass = $mainSnak->getDataValue()->getEntityId();
+			/** @var EntityIdValue $dataValue */
+
+			$dataValue = $mainSnak->getDataValue();
+			$comparativeClass = $dataValue->getEntityId();
 
 			if( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
 				return true;
@@ -93,14 +96,16 @@ class TypeCheckerHelper {
 	public function hasClassInRelation( StatementList $statements, $relationId, array $classesToCheck ) {
 		/** @var Statement $statement */
 		foreach ( $statements->getByPropertyId( new PropertyId( $relationId ) ) as $statement ) {
-			$mainSnak = $claim = $statement->getMainSnak();
+			$mainSnak = $statement->getMainSnak();
 
 			if ( !$this->hasCorrectType( $mainSnak ) ) {
 				continue;
 			}
-
 			/** @var PropertyValueSnak $mainSnak */
-			$comparativeClass = $mainSnak->getDataValue()->getEntityId();
+			/** @var EntityIdValue $dataValue */
+
+			$dataValue = $mainSnak->getDataValue();
+			$comparativeClass = $dataValue->getEntityId();
 
 			if( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
 				return true;
