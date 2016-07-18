@@ -39,7 +39,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	/**
 	 * Id of a item that (hopefully) does not exist.
 	 */
-	const NOT_EXISTENT_ITEM_ID = 'Q5678765432345678';
+	const NOT_EXISTENT_ITEM_ID = 'Q2147483647';
 
 	/**
 	 * @var EntityId[]
