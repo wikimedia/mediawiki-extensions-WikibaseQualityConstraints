@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Mr. Ibrahem"
+		]
+	},
+	"wbqc-constraintreport": "تقارير القيود",
+	"wbqc-constraintreport-explanation-part-one": "هذه الصفحة الخاصة تقوم بتدقيق القيود المفروضة على الخواص المستخدمة في أي عنصر ويكي بيانات ترغب بفحصه، أي قيمة يتم إصلاحها سيتم إزالتها من القائمة فوراً.",
+	"wbqc-constraintreport-explanation-part-two": "يتم تحليل قيود استخدام الخواص من صفحات نقاشها مرة واحدة في الأسبوع، لذت إذا قمت بإضافة أو حذف أو تعديل تلك القيود فإن ذلك ربما يستغرق أسبوعاً حتى يتم العمل به في هذه الصفحة الخاصة.\nهناك حالياً عمل قيد التنفيذ يهدف لترحيل تلك القيود إلى بيانات تضاف إلى الخواص مباشرة، وذلك لتمكين هذه الصفحة الخاصة من القيام بعملية التدقيق بشكل مباشر.",
+	"wbqc-constraintreport-form-section": "تحقق من قيود عنصر",
+	"wbqc-constraintreport-form-entityid-label": "معرف العنصر:",
+	"wbqc-constraintreport-result-headline": "النتيجة لـ",
+	"wbqc-constraintreport-status-compliance": "مطابق",
+	"wbqc-constraintreport-status-todo": "بحاجة للعمل"
+}
