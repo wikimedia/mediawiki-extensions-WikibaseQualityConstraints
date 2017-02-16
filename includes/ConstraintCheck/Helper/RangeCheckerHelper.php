@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use DataValues\DataValue;
 use DataValues\QuantityValue;
 use DataValues\TimeValue;
+use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 
 /**
@@ -20,6 +21,8 @@ class RangeCheckerHelper {
 		if ( $dataValue instanceof TimeValue ) {
 			return $dataValue->getTime();
 		} elseif ( $dataValue instanceof QuantityValue ) {
+			return $dataValue->getAmount()->getValue();
+		} elseif ( $dataValue instanceof UnboundedQuantityValue ) {
 			return $dataValue->getAmount()->getValue();
 		}
 

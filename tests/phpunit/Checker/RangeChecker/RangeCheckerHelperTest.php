@@ -2,9 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
+use DataValues\DataValue;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
+use DataValues\StringValue;
 use DataValues\TimeValue;
+use DataValues\UnboundedQuantityValue;
+use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 
@@ -22,47 +26,48 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var RangeCheckerHelper
+	 * @dataProvider getComparativeValueProvider
 	 */
-	private $helper;
+	public function testGetComparativeValue( $expected, DataValue $dataValue ) {
+		$rangeCheckHelper = new RangeCheckerHelper();
+		$comparativeValue = $rangeCheckHelper->getComparativeValue( $dataValue );
+
+		$this->assertSame( $expected, $comparativeValue );
+	}
+
+	public function getComparativeValueProvider() {
+		$cases = [
+			[ '+1970-01-01T00:00:00Z', $this->getTimeValue() ],
+			[ '+42', $this->getQuantityValue() ],
+			[ '+9000', UnboundedQuantityValue::newFromNumber( '+9000' ) ]
+		];
+
+		return $cases;
+	}
 
 	/**
-	 * @var TimeValue
+	 * @expectedException InvalidArgumentException
 	 */
-	private $time;
-
-	/**
-	 * @var QuantityValue
-	 */
-	private $quantity;
-
-	protected function setUp() {
-		parent::setUp();
-		$this->helper = new RangeCheckerHelper();
-		$this->time = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
-		$value = new DecimalValue( 3.1415926536 );
-		$this->quantity = new QuantityValue( $value, '1', $value, $value );
+	public function testGetComparativeValue_unsupportedDataValueTypeThrowsException() {
+		$rangeCheckHelper = new RangeCheckerHelper();
+		$rangeCheckHelper->getComparativeValue( new StringValue( 'kittens' ) );
 	}
 
-	protected function tearDown() {
-		unset( $this->helper );
-		parent::tearDown();
+	private function getTimeValue() {
+		return new TimeValue(
+			'+00000001970-01-01T00:00:00Z',
+			0,
+			0,
+			0,
+			11,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
 	}
 
-	public function testGetComparativeValueTimeValid() {
-		$this->assertEquals( '+1970-01-01T00:00:00Z', $this->helper->getComparativeValue( $this->time ) );
-	}
+	private function getQuantityValue() {
+		$decimalValue = new DecimalValue( 42 );
 
-	public function testGetComparativeValueTimeInvalid() {
-		$this->assertNotEquals( '1.1.1970', $this->helper->getComparativeValue( $this->time ) );
-	}
-
-	public function testGetComparativeValueQuantityValid() {
-		$this->assertEquals( '3.1415926536', $this->helper->getComparativeValue( $this->quantity ) );
-	}
-
-	public function testGetComparativeValueQuantityInvalid() {
-		$this->assertNotEquals( $this->quantity, $this->helper->getComparativeValue( $this->quantity ) );
+		return new QuantityValue( $decimalValue, '1', $decimalValue, $decimalValue );
 	}
 
 }
