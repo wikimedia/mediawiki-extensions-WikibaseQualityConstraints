@@ -141,7 +141,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	/**
 	 * @dataProvider executeProvider
 	 */
-	public function testExecute( $subPage, $request, $userLanguage, $matchers ) {
+	public function testExecute( $subPage, array $request, $userLanguage, array $matchers ) {
 		$request = new \FauxRequest( $request );
 
 		// the added item is Q1; this solves the problem that the provider is executed before the test
@@ -151,7 +151,12 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		// assert matchers
 		list( $output, ) = $this->executeSpecialPage( $subPage, $request, $userLanguage );
 		foreach ( $matchers as $key => $matcher ) {
-			$this->assertTag( $matcher, $output, "Failed to assert output: $key" );
+			assertThat(
+				"Failed to assert output: $key",
+				$output,
+				is( htmlPiece( havingChild( $matcher ) ) )
+			);
+			$this->addToAssertionCount( 1 ); // To avoid risky tests warning
 		}
 	}
 
@@ -161,56 +166,45 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers = array ();
 
 		// Empty input
-		$matchers[ 'explanationOne' ] = array (
-			'tag' => 'div',
-			'content' => '(wbqc-constraintreport-explanation-part-one)'
+		$matchers['explanationOne'] = both( withTagName( 'div' ) )
+			->andAlso( havingTextContents( '(wbqc-constraintreport-explanation-part-one)' ) );
+
+		$matchers['explanationTwo'] = both( withTagName( 'div' ) )
+			->andAlso( havingTextContents( '(wbqc-constraintreport-explanation-part-two)' ) );
+
+		$matchers['entityId'] = tagMatchingOutline(
+			'<input
+				placeholder="(wbqc-constraintreport-form-entityid-placeholder)"
+				name="entityid"
+				class="wbqc-constraintreport-form-entity-id"/>'
 		);
 
-		$matchers[ 'explanationTwo' ] = array (
-			'tag' => 'div',
-			'content' => '(wbqc-constraintreport-explanation-part-two)'
-		);
-
-		$matchers[ 'entityId' ] = array (
-			'tag' => 'input',
-			'attributes' => array (
-				'placeholder' => '(wbqc-constraintreport-form-entityid-placeholder)',
-				'name' => 'entityid',
-				'class' => 'wbqc-constraintreport-form-entity-id'
-			)
-		);
-
-		$matchers[ 'submit' ] = array (
-			'tag' => 'input',
-			'attributes' => array (
-				'type' => 'submit',
-				'value' => '(wbqc-constraintreport-form-submit-label)',
-			)
+		$matchers['submit'] = tagMatchingOutline(
+			'<input
+				type="submit"
+				value="(wbqc-constraintreport-form-submit-label)"/>'
 		);
 
 		$cases[ 'empty' ] = array ( '', array (), $userLanguage, $matchers );
 
 		// Invalid input
-		$matchers[ 'error' ] = array (
-			'tag' => 'p',
-			'attributes' => array (
-				'class' => 'wbqc-constraintreport-notice wbqc-constraintreport-notice-error'
-			),
-			'content' => '(wbqc-constraintreport-invalid-entity-id)'
-		);
+		$matchers['error'] = both(
+			tagMatchingOutline(
+				'<p class="wbqc-constraintreport-notice wbqc-constraintreport-notice-error"/>'
+			)
+		)->andAlso( havingTextContents( '(wbqc-constraintreport-invalid-entity-id)' ) );
 
 		$cases[ 'invalid input 1' ] = array ( 'Qwertz', array (), $userLanguage, $matchers );
 		$cases[ 'invalid input 2' ] = array ( '300', array (), $userLanguage, $matchers );
 
 		// Valid input but entity does not exist
 		unset( $matchers[ 'error' ] );
-		$matchers[ 'error' ] = array (
-			'tag' => 'p',
-			'attributes' => array (
-				'class' => 'wbqc-constraintreport-notice wbqc-constraintreport-notice-error'
-			),
-			'content' => '(wbqc-constraintreport-not-existent-entity)'
-		);
+
+		$matchers['error'] = both(
+			tagMatchingOutline(
+				'<p class="wbqc-constraintreport-notice wbqc-constraintreport-notice-error"/>'
+			)
+		)->andAlso( havingTextContents( '(wbqc-constraintreport-not-existent-entity)' ) );
 
 		$cases[ 'valid input - not existing item' ] = array (
 			self::NOT_EXISTENT_ITEM_ID,
@@ -226,51 +220,44 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			'content' => '(wbqc-constraintreport-result-headline) '
 		);
 
-		$matchers[ 'result table' ] = array (
-			'tag' => 'table',
-			'attributes' => array (
-				'class' => 'wikitable sortable jquery-tablesort'
-			)
+		$matchers['result for'] = both(
+			withTagName( 'h3' )
+		)->andAlso(
+			havingTextContents( containsString( '(wbqc-constraintreport-result-headline) ' ) )
 		);
 
-		$matchers[ 'column status' ] = array (
-			'tag' => 'th',
-			'attributes' => array (
-				'role' => 'columnheader button'
-			),
-			'content' => '(wbqc-constraintreport-result-table-header-status)'
+		$matchers['result table'] = tagMatchingOutline(
+			'<table class="wikitable sortable jquery-tablesort"/>'
 		);
 
-		$matchers[ 'column claim' ] = array (
-			'tag' => 'th',
-			'attributes' => array (
-				'role' => 'columnheader button'
-			),
-			'content' => '(wbqc-constraintreport-result-table-header-claim)'
+		$matchers['column status'] = both(
+			tagMatchingOutline( '<th role="columnheader button"/>' )
+		)->andAlso(
+			havingTextContents( '(wbqc-constraintreport-result-table-header-status)' )
 		);
 
-		$matchers[ 'column constraint' ] = array (
-			'tag' => 'th',
-			'attributes' => array (
-				'role' => 'columnheader button'
-			),
-			'content' => '(wbqc-constraintreport-result-table-header-constraint)'
+		$matchers['column claim'] = both(
+			tagMatchingOutline( '<th role="columnheader button"/>' )
+		)->andAlso(
+			havingTextContents( '(wbqc-constraintreport-result-table-header-claim)' )
 		);
 
-		$matchers[ 'value status - violation' ] = array (
-			'tag' => 'span',
-			'attributes' => array (
-				'class' => 'wbqc-status wbqc-status-violation'
-			),
-			'content' => '(wbqc-constraintreport-status-violation)'
+		$matchers['column constraint'] = both(
+			tagMatchingOutline( '<th role="columnheader button"/>' )
+		)->andAlso(
+			havingTextContents( '(wbqc-constraintreport-result-table-header-constraint)' )
 		);
 
-		$matchers[ 'value status - compliance' ] = array (
-			'tag' => 'span',
-			'attributes' => array (
-				'class' => 'wbqc-status wbqc-status-compliance'
-			),
-			'content' => '(wbqc-constraintreport-status-compliance)'
+		$matchers['value status - violation'] = both(
+			tagMatchingOutline( '<span class="wbqc-status wbqc-status-violation"/>' )
+		)->andAlso(
+			havingTextContents( '(wbqc-constraintreport-status-violation)' )
+		);
+
+		$matchers['value status - compliance'] = both(
+			tagMatchingOutline( '<span class="wbqc-status wbqc-status-compliance"/>' )
+		)->andAlso(
+			havingTextContents( '(wbqc-constraintreport-status-compliance)' )
 		);
 
 		$cases[ 'valid input - existing item' ] = array ( '$id', array (), $userLanguage, $matchers );
