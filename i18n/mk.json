@@ -11,7 +11,7 @@
 	"wbqc-constraintreport-form-section": "Провери ги условите на единицата",
 	"wbqc-constraintreport-form-submit-label": "Провери",
 	"wbqc-constraintreport-form-entityid-label": "Назнака на единицата:",
-	"wbqc-constraintreport-result-headline": "Резултат за",
+	"wbqc-constraintreport-result-headline": "Исход за",
 	"wbqc-constraintreport-invalid-entity-id": "Неважечка назнака на единица:",
 	"wbqc-constraintreport-not-existent-entity": "Единицата не постои!",
 	"wbqc-constraintreport-empty-result": "Нема зададено услови за единицава.",
