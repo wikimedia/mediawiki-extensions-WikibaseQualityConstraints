@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use InvalidArgumentException;
+use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\Statement;
@@ -142,7 +143,16 @@ class DelegatingConstraintChecker {
 	private function getCheckResultFor( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		if( array_key_exists( $constraint->getConstraintTypeQid(), $this->checkerMap ) ) {
 			$checker = $this->checkerMap[$constraint->getConstraintTypeQid()];
-			return $checker->checkConstraint( $statement, $constraint, $entity );
+			$statsd = MediaWikiServices::getInstance()->getStatsdDataFactory();
+
+			$startTime = microtime( true );
+			$result = $checker->checkConstraint( $statement, $constraint, $entity );
+			$statsd->timing(
+				'wikibase.quality.constraints.check.timing' . $constraint->getConstraintTypeQid(),
+				( microtime( true ) - $startTime ) * 1000
+			);
+
+			return $result;
 		} else {
 			return new CheckResult( $statement, $constraint->getConstraintTypeQid() );
 		}
