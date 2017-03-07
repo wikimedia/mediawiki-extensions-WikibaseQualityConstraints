@@ -68,7 +68,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -91,7 +91,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'quantity" or "time' )->escaped();
 		}
 		if ( isset( $message ) ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$thisValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
@@ -108,7 +108,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				 */
 				if ( !$mainSnak instanceof PropertyValueSnak ) {
 					$message = wfMessage( "wbqc-violation-message-diff-within-range-property-needs value" )->escaped();
-					return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+					return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
 				}
 
 				if ( $mainSnak->getDataValue()->getType() === $dataValue->getType() && $mainSnak->getType() === 'value' ) {
@@ -129,13 +129,13 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					$status = CheckResult::STATUS_VIOLATION;
 				}
 
-				return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+				return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, $status, $message );
 			}
 		}
 
 		$message = wfMessage( "wbqc-violation-message-diff-within-range-property-must-exist" )->escaped();
 		$status = CheckResult::STATUS_VIOLATION;
-		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, $status, $message );
 	}
 
 }

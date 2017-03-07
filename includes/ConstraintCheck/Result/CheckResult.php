@@ -40,6 +40,11 @@ class CheckResult {
 	private $constraintName;
 
 	/**
+	 * @var string
+	 */
+	private $constraintId;
+
+	/**
 	 * @var array
 	 * Includes arrays of ItemIds or PropertyIds or strings.
 	 */
@@ -59,14 +64,16 @@ class CheckResult {
 	 * @param EntityId $entityId
 	 * @param Statement $statement
 	 * @param string $constraintName
+	 * @param string $constraintId
 	 * @param array $parameters (string => string[])
 	 * @param string $status
 	 * @param string $message (sanitized HTML)
 	 */
-	public function __construct( EntityId $entityId, Statement $statement, $constraintName, $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
+	public function __construct( EntityId $entityId, Statement $statement, $constraintName, $constraintId,  $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
 		$this->entityId = $entityId;
 		$this->statement = $statement;
 		$this->constraintName = $constraintName;
+		$this->constraintId = $constraintId;
 		$this->parameters = $parameters;
 		$this->status = $status;
 		$this->message = $message;
@@ -119,6 +126,13 @@ class CheckResult {
 	 */
 	public function getConstraintName() {
 		return $this->constraintName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getConstraintId() {
+		return $this->constraintId;
 	}
 
 	/**

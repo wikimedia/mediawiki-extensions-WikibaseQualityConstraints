@@ -79,7 +79,7 @@ class TypeChecker implements ConstraintChecker {
 		 */
 		if ( !$classes ) {
 			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'class' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		/*
@@ -92,7 +92,7 @@ class TypeChecker implements ConstraintChecker {
 			$relationId = self::subclassId;
 		} else {
 			$message = wfMessage( "wbqc-violation-message-type-relation-instance-or-subclass" )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		if ( $this->typeCheckerHelper->hasClassInRelation( $entity->getStatements(), $relationId, $classes ) ) {
@@ -103,7 +103,7 @@ class TypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
 	}
 
 }

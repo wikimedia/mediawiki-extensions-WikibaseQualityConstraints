@@ -40,7 +40,7 @@ class UniqueValueChecker implements ConstraintChecker {
 		$parameters = array ();
 
 		$message = wfMessage( "wbqc-violation-message-not-yet-implemented" )->params( $constraint->getConstraintTypeName() )->escaped();
-		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_TODO, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_TODO, $message );
 	}
 
 }

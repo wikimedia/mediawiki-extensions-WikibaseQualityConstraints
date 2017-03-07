@@ -48,7 +48,7 @@ class FormatChecker implements ConstraintChecker {
 			$parameters['pattern'] = $this->helper->parseSingleParameter( $pattern, true );
 		} else {
 			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'pattern' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
@@ -63,7 +63,7 @@ class FormatChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -75,11 +75,11 @@ class FormatChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$message = wfMessage( 'wbqc-violation-message-security-reason' )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
-		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_TODO, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_TODO, $message );
 	}
 
 }

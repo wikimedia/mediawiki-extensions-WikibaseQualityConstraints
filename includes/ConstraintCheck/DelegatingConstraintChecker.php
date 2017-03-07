@@ -117,7 +117,7 @@ class DelegatingConstraintChecker {
 			$parameter = $constraint->getConstraintParameters();
 			if ( array_key_exists( 'known_exception', $parameter) && in_array( $entity->getId()->getSerialization(), explode( ',', $parameter['known_exception'] ) ) ) {
 				$message = 'This entity is a known exception for this constraint and has been marked as such.';
-				$result[] = new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), array (), CheckResult::STATUS_EXCEPTION, $message ); // todo: display parameters anyway
+				$result[] = new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), array (), CheckResult::STATUS_EXCEPTION, $message ); // todo: display parameters anyway
 				continue;
 			}
 
@@ -149,7 +149,8 @@ class DelegatingConstraintChecker {
 
 			return $result;
 		} else {
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid() );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(),
+				$constraint->getConstraintId(), null, CheckResult::STATUS_TODO, null );
 		}
 	}
 
