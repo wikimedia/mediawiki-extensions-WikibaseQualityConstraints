@@ -29,6 +29,16 @@ call_user_func( function() {
 	// Initialize special pages
 	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport::newFromGlobalState';
 
+	$GLOBALS['wgAPIModules']['wbcheckconstraints'] = [
+		'class' => '\WikibaseQuality\ConstraintReport\Api\CheckConstraints',
+		'factory' => function ( $main, $name ) {
+			return \WikibaseQuality\ConstraintReport\Api\CheckConstraints::newFromGlobalState(
+				$main,
+				$name
+			);
+		}
+	];
+
 	// Define modules
 	$remoteExtPathParts = explode(
 		DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, __DIR__, 2

@@ -27,6 +27,7 @@
 	"autoload": {
 		"psr-4": {
 			"WikibaseQuality\\ConstraintReport\\": "includes/",
+			"WikibaseQuality\\ConstraintReport\\Api\\": "api/",
 			"WikibaseQuality\\ConstraintReport\\Specials\\": "specials/",
 			"WikibaseQuality\\ConstraintReport\\Tests\\": "tests/phpunit/",
 			"WikibaseQuality\\ConstraintReport\\Maintenance\\": "maintenance/"

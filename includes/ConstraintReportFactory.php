@@ -28,6 +28,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 
 class ConstraintReportFactory {
 
@@ -57,6 +58,11 @@ class ConstraintReportFactory {
 	private $constraintParameterMap;
 
 	/**
+	 * @var StatementGuidParser
+	 */
+	private $statementGuidParser;
+
+	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -66,7 +72,7 @@ class ConstraintReportFactory {
 		static $instance = null;
 
 		if ( $instance === null ) {
-			$instance = new self( WikibaseRepo::getDefaultInstance()->getEntityLookup() );
+			$instance = new self( WikibaseRepo::getDefaultInstance()->getEntityLookup(), WikibaseRepo::getDefaultInstance()->getStatementGuidParser() );
 		}
 
 		return $instance;
@@ -74,9 +80,11 @@ class ConstraintReportFactory {
 
 	/**
 	 * @param EntityLookup $lookup
+	 * @param StatementGuidParser $statementGuidParser
 	 */
-	public function __construct( EntityLookup $lookup ) {
+	public function __construct( EntityLookup $lookup, StatementGuidParser $statementGuidParser ) {
 		$this->lookup = $lookup;
+		$this->statementGuidParser = $statementGuidParser;
 	}
 
 	/**

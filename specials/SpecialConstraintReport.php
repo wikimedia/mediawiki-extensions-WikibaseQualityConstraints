@@ -13,6 +13,7 @@ use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityDocument;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -44,13 +45,6 @@ use WikibaseQuality\Html\HtmlTableHeaderBuilder;
  * @license GNU GPL v2+
  */
 class SpecialConstraintReport extends SpecialPage {
-
-	/**
-	 * Maximum number of displayed values for parameters with multiple ones.
-	 *
-	 * @var int
-	 */
-	const MAX_PARAMETER_ARRAY_LENGTH = 5;
 
 	/**
 	 * Id of the property, that is used to specify constraints on entities.
@@ -95,6 +89,11 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @var DelegatingConstraintChecker
 	 */
 	private $constraintChecker;
+
+	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
 
 	public static function newFromGlobalState()	{
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
@@ -158,6 +157,8 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 
 		$this->constraintChecker = $constraintChecker;
+
+		$this->constraintParameterRenderer = new ConstraintParameterRenderer( $this->entityIdLabelFormatter, $this->dataValueFormatter );
 	}
 
 	/**
@@ -378,7 +379,7 @@ class SpecialConstraintReport extends SpecialPage {
 		// Claim column
 		$property = $this->entityIdLabelFormatter->formatEntityId( $result->getPropertyId() );
 		if ( $result->getMainSnakType() === 'value' ) {
-			$value = $this->formatValue( $result->getDataValue() );
+			$value = $this->constraintParameterRenderer->formatValue( $result->getDataValue() );
 		} else {
 			$value = htmlspecialchars( $result->getMainSnakType() );
 		}
@@ -397,7 +398,7 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 		$constraintColumn = $this->buildExpandableElement(
 			$constraintLink,
-			$this->formatParameters( $result->getParameters() ),
+			$this->constraintParameterRenderer->formatParameters( $result->getParameters() ),
 			'[...]'
 		);
 
@@ -656,67 +657,6 @@ class SpecialConstraintReport extends SpecialPage {
 		$entityUrl = sprintf( '%s#%s', $title->getLocalURL(), $propertyId->getSerialization() );
 
 		return $entityUrl;
-	}
-
-	/**
-	 * Formats values of constraints.
-	 *
-	 * @param string|ItemId|PropertyId|DataValue $value
-	 *
-	 * @return string HTML
-	 */
-	private function formatValue( $value ) {
-		if ( is_string( $value ) ) {
-			// Cases like 'Format' 'pattern' or 'minimum'/'maximum' values, which we have stored as strings
-			return ( htmlspecialchars ( $value ) );
-		} elseif ( $value instanceof EntityId ) {
-			// Cases like 'Conflicts with' 'property', to which we can link
-			return $this->entityIdLabelFormatter->formatEntityId( $value );
-		} else {
-			// Cases where we format a DataValue
-			return $this->formatDataValues( $value );
-		}
-	}
-
-	/**
-	 * Formats constraint parameters.
-	 *
-	 * @param array $parameters
-	 *
-	 * @return string HTML
-	 */
-	private function formatParameters( $parameters ) {
-		if ( $parameters === null || count( $parameters ) == 0 ) {
-			return null;
-		}
-
-		$valueFormatter = function ( $value ) {
-			return $this->formatValue( $value );
-		};
-
-		$formattedParameters = array ();
-		foreach ( $parameters as $parameterName => $parameterValue ) {
-			$formattedParameterValues = implode( ', ', $this->limitArrayLength( array_map( $valueFormatter, $parameterValue ) ) );
-			$formattedParameters[] = sprintf( '%s: %s', $parameterName, $formattedParameterValues );
-		}
-
-		return implode( '; ', $formattedParameters );
-	}
-
-	/**
-	 * Cuts an array after n values and appends dots if needed.
-	 *
-	 * @param array $array
-	 *
-	 * @return array
-	 */
-	private function limitArrayLength( $array ) {
-		if ( count( $array ) > self::MAX_PARAMETER_ARRAY_LENGTH ) {
-			$array = array_slice( $array, 0, self::MAX_PARAMETER_ARRAY_LENGTH );
-			array_push( $array, '...' );
-		}
-
-		return $array;
 	}
 
 }

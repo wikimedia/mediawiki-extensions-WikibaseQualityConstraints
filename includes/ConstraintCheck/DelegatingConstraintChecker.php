@@ -7,11 +7,13 @@ use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Statement\StatementGuid;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
+use Wikibase\DataModel\Entity\EntityId;
 
 /**
  * Used to start the constraint-check process and to delegate
@@ -50,12 +52,16 @@ class DelegatingConstraintChecker {
 	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintChecker[] $checkerMap
-	 * @param ConstraintLookup $constraintLookup
+	 * @param ConstraintLookup $constraintRepository
 	 */
-	public function __construct( EntityLookup $lookup, array $checkerMap, ConstraintLookup $constraintLookup ) {
+	public function __construct(
+		EntityLookup $lookup,
+		array $checkerMap,
+		ConstraintLookup $constraintRepository
+	) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
-		$this->constraintLookup = $constraintLookup;
+		$this->constraintLookup = $constraintRepository;
 	}
 
 	/**
@@ -79,26 +85,103 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
+	 * Starts the whole constraint-check process for entity or constraint ID on entity.
+	 * Statements of the entity will be checked against every constraint that is defined on the property.
+	 *
+	 * @param EntityId $entityId
+	 * @param array $constraintIds
+	 *
+	 * @return CheckResult[]
+	 *
+	 */
+	public function checkAgainstConstraintsOnEntityId( EntityId $entityId, $constraintIds = null ) {
+
+		$entity = $this->entityLookup->getEntity( $entityId );
+		if ( $entity instanceof StatementListProvider ) {
+			$this->statements = $entity->getStatements();
+			$result = $this->checkEveryStatement( $this->entityLookup->getEntity( $entityId ), $constraintIds );
+			$output = $this->sortResult( $result );
+			return $output;
+		}
+
+		return [];
+	}
+
+	/**
+	 * Starts the whole constraint-check process.
+	 * Statements of the entity will be checked against every constraint that is defined on the claim.
+	 *
+	 * @param StatementGuid $guid
+	 * @param array $constraintIds
+	 * @return CheckResult[]
+	 */
+	public function checkAgainstConstraintsOnClaimId( StatementGuid $guid, $constraintIds = null ) {
+
+		$entityId = $guid->getEntityId();
+		$entity = $this->entityLookup->getEntity( $entityId );
+		if ( $entity instanceof StatementListProvider ) {
+			$statement = $entity->getStatements()->getFirstStatementWithGuid( $guid->getSerialization() );
+			if ( $statement ) {
+				$result = $this->checkStatement( $entity, $statement, $constraintIds );
+				$output = $this->sortResult( $result );
+				return $output;
+			}
+		}
+
+		return [];
+	}
+
+	/**
 	 * @param EntityDocument|StatementListProvider $entity
+	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
 	 *
 	 * @return CheckResult[]
 	 */
-	private function checkEveryStatement( EntityDocument $entity ) {
+	private function checkEveryStatement( EntityDocument $entity, $constraintIds = null ) {
 		$result = array ();
 
 		/** @var Statement $statement */
 		foreach ( $this->statements as $statement ) {
-			if ( $statement->getMainSnak()->getType() !== 'value' ) {
-				// skip 'somevalue' and 'novalue' cases, todo: handle in a better way
-				continue;
-			}
-
-			$constraints = $this->constraintLookup->queryConstraintsForProperty(
-				$statement->getPropertyId()
-			);
-
-			$result = array_merge( $result, $this->checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) );
+			$result = array_merge( $result, $this->checkStatement( $entity, $statement, $constraintIds ) );
 		}
+
+		return $result;
+	}
+
+	/**
+	 *
+	 * @param EntityDocument|StatementListProvider $entity
+	 * @param Statement $statement
+	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
+	 *
+	 *
+	 * @return CheckResult[]
+	 */
+	private function checkStatement( EntityDocument $entity, Statement $statement, $constraintIds = null ) {
+		$result = array();
+
+		if ( $statement->getMainSnak()->getType() !== 'value' ) {
+			// skip 'somevalue' and 'novalue' cases, todo: handle in a better way
+			return [];
+		}
+
+		$constraints = $this->constraintLookup->queryConstraintsForProperty(
+			$statement->getPropertyId()
+		);
+		if ( $constraintIds !== null ) {
+			$constraintsToUse = [];
+			foreach ( $constraints as $constraint ) {
+				if ( in_array( $constraint->getConstraintId(), $constraintIds ) ) {
+					$constraintsToUse[] = $constraint;
+				}
+			}
+		} else {
+			$constraintsToUse = $constraints;
+		}
+		$result = array_merge(
+			$result,
+			$this->checkConstraintsForStatementOnEntity( $constraintsToUse, $entity, $statement )
+		);
 
 		return $result;
 	}

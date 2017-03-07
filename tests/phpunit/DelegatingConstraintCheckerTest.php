@@ -2,8 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\ItemIdParser;
+use Wikibase\DataModel\Services\Statement\StatementGuidParser;
+use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -49,10 +54,19 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $lookup;
 
+	/**
+	 * @var StatementGuidParser
+	 */
+	private $statementGuidParser;
+
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$factory = new ConstraintReportFactory( $this->lookup );
+		$this->lookup = $this->createEntityLookup();
+		$this->statementGuidParser = new StatementGuidParser( new ItemIdParser() );
+		$factory = new ConstraintReportFactory(
+			$this->lookup,
+			$this->statementGuidParser
+		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 
 		// specify database tables used by this test
@@ -273,6 +287,52 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 'exception', $result[ 0 ]->getStatus(), 'Should be an exception' );
+	}
+
+	public function testCheckAgainstConstraints_ByClaims() {
+		$factory = new ConstraintReportFactory(
+			$this->createEntityLookup(),
+			$this->statementGuidParser
+		);
+		$constraintChecker = $factory->getConstraintChecker();
+
+		$result = $constraintChecker->checkAgainstConstraintsOnClaimId(
+			$this->statementGuidParser->parse( 'Q1$c0f25a6f-9e33-41c8-be34-c86a730ff30b' ) );
+
+		$this->assertCount( 18, $result, 'Every constraint should be represented by one result' );
+	}
+
+	public function testCheckAgainstConstraintsDoesNotCrashWhenResultIsEmpty_ByClaims() {
+		$factory = new ConstraintReportFactory(
+			$this->createEntityLookup(),
+			$this->statementGuidParser
+		);
+		$constraintChecker = $factory->getConstraintChecker();
+
+		$result = $constraintChecker->checkAgainstConstraintsOnClaimId(
+			$this->statementGuidParser->parse( 'Q2$c0f25a6f-9e33-41c8-be34-c86a730ff30b' ) );
+
+		$this->assertCount( 0, $result, 'Should be empty' );
+	}
+
+	public function testCheckAgainstConstraintsDoesNotCrashWhenClaimDoesNotExist() {
+		$factory = new ConstraintReportFactory(
+			$this->createEntityLookup(),
+			$this->statementGuidParser
+		);
+		$constraintChecker = $factory->getConstraintChecker();
+
+		$result = $constraintChecker->checkAgainstConstraintsOnClaimId(
+			$this->statementGuidParser->parse( 'Q99$does-not-exist' ) );
+
+		$this->assertCount( 0, $result, 'Should be empty' );
+	}
+
+	/**
+	 * @return JsonFileEntityLookup
+	 */
+	private function createEntityLookup() {
+		return new JsonFileEntityLookup( __DIR__ );
 	}
 
 }

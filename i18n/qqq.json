@@ -64,5 +64,9 @@
 	"wbqc-violation-message-type": "Message for violation of Type constraint. When entity is not of given type.",
 	"wbqc-violation-message-target-required-claim-property": "Message for violation of Target required claim constraint. When only a property is given.",
 	"wbqc-violation-message-target-required-claim-claim": "Message for violation of Target required claim constraint. When property and value are given.",
-	"wbqc-violation-message-value-type": "Message for violation of Value type constraint. When value is not of given type."
+	"wbqc-violation-message-value-type": "Message for violation of Value type constraint. When value is not of given type.",
+	"apihelp-wbcheckconstraints-description": "{{doc-apihelp-description|wbcheckconstraints}}",
+	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",
+	"apihelp-wbcheckconstraints-param-claimid": "{{doc-apihelp-param|wbcheckconstraints|claimid}}",
+	"apihelp-wbcheckconstraints-param-constraintid": "{{doc-apihelp-param|wbcheckconstraints|constraintid}}"
 }

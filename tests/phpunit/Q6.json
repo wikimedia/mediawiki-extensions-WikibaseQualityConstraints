@@ -1,0 +1,97 @@
+{
+  "id": "Q6",
+  "type": "item",
+  "aliases": {},
+  "labels": {},
+  "claims": {
+    "P1": [
+      {
+        "id": "Q6$01015a6f-9e33-41c8-be34-c86a730ff30b",
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1",
+          "datatype": "string",
+          "datavalue": {
+            "value": "foo",
+            "type": "string"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      },
+      {
+        "id": "Q6$01025a6f-9e33-41c8-be34-c86a730ff30b",
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1",
+          "datatype": "string",
+          "datavalue": {
+            "value": "foo",
+            "type": "string"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P2": [
+      {
+        "id": "Q6$02015a6f-9e33-41c8-be34-c86a730ff30b",
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P2",
+          "datatype": "string",
+          "datavalue": {
+            "value": "foo",
+            "type": "string"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P3": [
+      {
+        "id": "Q6$03015a6f-9e33-41c8-be34-c86a730ff30b",
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P3",
+          "datatype": "string",
+          "datavalue": {
+            "value": "foo",
+            "type": "string"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P4": [
+      {
+        "id": "Q6$04015a6f-9e33-41c8-be34-c86a730ff30b",
+        "mainsnak": {
+          "snaktype": "novalue",
+          "property": "P4"
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P10": [
+      {
+        "id": "Q6$10015a6f-9e33-41c8-be34-c86a730ff30b",
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P10",
+          "datatype": "string",
+          "datavalue": {
+            "value": "foo",
+            "type": "string"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  }
+}
