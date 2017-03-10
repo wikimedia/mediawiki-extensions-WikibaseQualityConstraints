@@ -84,7 +84,11 @@ class ConstraintReportFactory {
 	 */
 	public function getConstraintChecker() {
 		if ( $this->delegatingConstraintChecker === null ) {
-			$this->delegatingConstraintChecker = new DelegatingConstraintChecker( $this->lookup, $this->getConstraintCheckerMap( $this->lookup ) );
+			$this->delegatingConstraintChecker = new DelegatingConstraintChecker(
+				$this->lookup,
+				$this->getConstraintCheckerMap(),
+				new ConstraintRepository()
+			);
 		}
 
 		return $this->delegatingConstraintChecker;

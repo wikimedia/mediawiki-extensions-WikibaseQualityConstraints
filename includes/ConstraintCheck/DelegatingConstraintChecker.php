@@ -9,9 +9,8 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 
 /**
@@ -33,13 +32,6 @@ class DelegatingConstraintChecker {
 	private $entityLookup;
 
 	/**
-	 * Class for helper functions for constraint checkers.
-	 *
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
-
-	/**
 	 * @var ConstraintChecker[]
 	 */
 	private $checkerMap;
@@ -52,14 +44,19 @@ class DelegatingConstraintChecker {
 	private $statements;
 
 	/**
+	 * @var ConstraintLookup
+	 */
+	private $constraintLookup;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintChecker[] $checkerMap
+	 * @param ConstraintLookup $constraintLookup
 	 */
-	public function __construct( EntityLookup $lookup, array $checkerMap ) {
+	public function __construct( EntityLookup $lookup, array $checkerMap, ConstraintLookup $constraintLookup ) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
-		$this->helper = new ConstraintParameterParser();
-		$this->constraintRepository = new ConstraintRepository();
+		$this->constraintLookup = $constraintLookup;
 	}
 
 	/**
@@ -100,7 +97,7 @@ class DelegatingConstraintChecker {
 			$propertyId = $statement->getPropertyId();
 			$numericPropertyId = $propertyId->getNumericId();
 
-			$constraints = $this->constraintRepository->queryConstraintsForProperty( $numericPropertyId );
+			$constraints = $this->constraintLookup->queryConstraintsForProperty( $numericPropertyId );
 
 			$result = array_merge( $result, $this->checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) );
 		}
