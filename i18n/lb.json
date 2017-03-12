@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Robby"
+			"Robby",
+			"Les Meloures"
 		]
 	},
 	"wbqc-constraintreport-result-headline": "Resultat fir",
@@ -11,5 +12,6 @@
 	"wbqc-constraintreport-no-parameter": "keng",
 	"wbqc-violation-header-parameters": "Parameteren:",
 	"wbqc-violations-group": "Limitatiounen",
-	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "D'Nokucke fir den Nummraum \"$1\" ass nach net implementéiert."
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "D'Nokucke fir den Nummraum \"$1\" ass nach net implementéiert.",
+	"wbqc-violation-message-qualifier": "D'Eegenschaft däerf nëmme fir d'Bestëmmung gebraucht ginn"
 }
