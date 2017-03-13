@@ -72,6 +72,11 @@ class SpecialConstraintReport extends SpecialPage {
 	private $entityLookup;
 
 	/**
+	 * @var EntityTitleLookup
+	 */
+	private $entityTitleLookup;
+
+	/**
 	 * @var ValueFormatter
 	 */
 	private $dataValueFormatter;
