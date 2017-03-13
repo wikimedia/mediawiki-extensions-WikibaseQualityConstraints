@@ -113,7 +113,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		}
 		$dbLoadBalancer = wfGetLB( $commonsWikiId );
 		$dbConnection = $dbLoadBalancer->getConnection(
-			DB_SLAVE, false, $commonsWikiId );
+			DB_REPLICA, false, $commonsWikiId );
 		$row = $dbConnection->selectRow(
 			'image', '*', array( 'img_name' => $commonsLink ) );
 
