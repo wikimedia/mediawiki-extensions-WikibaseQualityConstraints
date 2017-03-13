@@ -12,7 +12,7 @@ use Wikibase\DataModel\Entity\PropertyId;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConstraintRepository {
+class ConstraintRepository implements ConstraintLookup {
 
 	/**
 	 * @param int $numericPropertyId
