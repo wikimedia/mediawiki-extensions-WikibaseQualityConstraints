@@ -71,7 +71,6 @@ class InverseChecker implements ConstraintChecker {
 		$mainSnak = $statement->getMainSnak();
 
 		/*
-		/*
 		 * error handling:
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */

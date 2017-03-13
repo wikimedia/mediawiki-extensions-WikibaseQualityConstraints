@@ -13,8 +13,6 @@ $basePath = getenv( "MW_INSTALL_PATH" ) !== false
 require_once $basePath . "/maintenance/Maintenance.php";
 
 /**
- * Class UpdateConstraintsTable
- *
  * @package WikibaseQuality\ConstraintReport\Maintenance
  *
  * Fills constraint table with constraints given in a csv file passed to this.
@@ -86,8 +84,8 @@ class UpdateConstraintsTable extends \Maintenance {
 				$constraintParameters
 			);
 		}
-
 	}
+
 }
 
 // @codeCoverageIgnoreStart

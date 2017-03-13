@@ -110,8 +110,8 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					$message = wfMessage( "wbqc-violation-message-diff-within-range-property-needs value" )->escaped();
 					return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 				}
-				if ( $mainSnak->getDataValue()->getType() === $dataValue->getType() && $mainSnak->getType() === 'value' ) {
 
+				if ( $mainSnak->getDataValue()->getType() === $dataValue->getType() && $mainSnak->getType() === 'value' ) {
 					$thatValue = $this->rangeCheckerHelper->getComparativeValue( $mainSnak->getDataValue() );
 
 					// negative difference is possible
@@ -132,6 +132,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 			}
 		}
+
 		$message = wfMessage( "wbqc-violation-message-diff-within-range-property-must-exist" )->escaped();
 		$status = CheckResult::STATUS_VIOLATION;
 		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );

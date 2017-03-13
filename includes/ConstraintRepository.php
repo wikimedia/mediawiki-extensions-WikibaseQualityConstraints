@@ -7,9 +7,7 @@ use InvalidArgumentException;
 use ResultWrapper;
 use Wikibase\DataModel\Entity\PropertyId;
 
-
 /**
- * Class ConstraintRepository
  * @package WikibaseQuality\ConstraintReport
  * @author BP2014N1
  * @license GNU GPL v2+
