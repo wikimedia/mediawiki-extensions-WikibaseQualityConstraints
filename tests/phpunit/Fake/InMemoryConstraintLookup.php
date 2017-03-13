@@ -25,6 +25,7 @@ class InMemoryConstraintLookup implements ConstraintLookup {
 
 	/**
 	 * @param PropertyId $propertyId
+	 *
 	 * @return Constraint[]
 	 */
 	public function queryConstraintsForProperty( PropertyId $propertyId ) {

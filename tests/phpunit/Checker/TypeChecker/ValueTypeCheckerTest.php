@@ -57,7 +57,6 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		parent::tearDown();
 	}
 
-
 	// relation 'instance'
 	public function testValueTypeConstraintInstanceValid() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );

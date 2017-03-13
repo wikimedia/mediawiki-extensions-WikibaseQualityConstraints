@@ -20,69 +20,67 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-        $this->tablesUsed[] = CONSTRAINT_TABLE;
-    }
+		$this->tablesUsed[] = CONSTRAINT_TABLE;
+	}
 
-    public function addDBData() {
-        $this->db->delete( CONSTRAINT_TABLE, '*' );
-        $this->db->insert( CONSTRAINT_TABLE,
-            array (
-                array (
-                    'constraint_guid' => 'foo',
-                    'pid' => 42,
-                    'constraint_type_qid' => 'TestConstraint',
-                    'constraint_parameters' => '{}'
-                ),
-                array (
-                    'constraint_guid' => 'bar',
-                    'pid' => 42,
-                    'constraint_type_qid' => 'TestConstraint',
-                    'constraint_parameters' => '{}'
-                )
-            )
-        );
-    }
+	public function addDBData() {
+		$this->db->delete( CONSTRAINT_TABLE, '*' );
+		$this->db->insert( CONSTRAINT_TABLE, [
+			[
+				'constraint_guid' => 'foo',
+				'pid' => 42,
+				'constraint_type_qid' => 'TestConstraint',
+				'constraint_parameters' => '{}'
+			],
+			[
+				'constraint_guid' => 'bar',
+				'pid' => 42,
+				'constraint_type_qid' => 'TestConstraint',
+				'constraint_parameters' => '{}'
+			],
+		] );
+	}
 
-    public function testExecute() {
-        $maintenanceScript = new UpdateConstraintsTable();
-        $args = array(
-            'csv-file' => __DIR__ . '/constraints.csv',
-            'batch-size' => 2,
-            'quiet' => true
-        );
-        $maintenanceScript->loadParamsAndArgs( null, $args );
-        $maintenanceScript->execute();
+	public function testExecute() {
+		$maintenanceScript = new UpdateConstraintsTable();
+		$args = [
+			'csv-file' => __DIR__ . '/constraints.csv',
+			'batch-size' => 2,
+			'quiet' => true,
+		];
+		$maintenanceScript->loadParamsAndArgs( null, $args );
+		$maintenanceScript->execute();
 
-        $this->assertSelect(
-            CONSTRAINT_TABLE,
-            array(
-                'constraint_guid',
-                'pid',
-                'constraint_type_qid',
-                'constraint_parameters'
-            ),
-            array(),
-            array(
-                array(
-                    'baz',
-                    '42',
-                    'ConstraintFromCsv',
-                    '{"foo":"bar"}'
-                ),
-                array(
-                    'foobar',
-                    '42',
-                    'ConstraintFromCsv',
-                    '{"foobar":"bar"}'
-                ),
-                array(
-                    'foobaz',
-                    '42',
-                    'ConstraintFromCsv',
-                    '{"bar":"baz"}'
-                )
-            )
-        );
-    }
+		$this->assertSelect(
+			CONSTRAINT_TABLE,
+			[
+				'constraint_guid',
+				'pid',
+				'constraint_type_qid',
+				'constraint_parameters',
+			],
+			[],
+			[
+				[
+					'baz',
+					'42',
+					'ConstraintFromCsv',
+					'{"foo":"bar"}'
+				],
+				[
+					'foobar',
+					'42',
+					'ConstraintFromCsv',
+					'{"foobar":"bar"}'
+				],
+				[
+					'foobaz',
+					'42',
+					'ConstraintFromCsv',
+					'{"bar":"baz"}'
+				],
+			]
+		);
+	}
 
 }

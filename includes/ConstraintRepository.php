@@ -16,10 +16,11 @@ class ConstraintRepository implements ConstraintLookup {
 
 	/**
 	 * @param PropertyId $propertyId
+	 *
 	 * @return Constraint[]
 	 */
 	public function queryConstraintsForProperty( PropertyId $propertyId ) {
-		$db = wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_REPLICA );
 
 		$results = $db->select(
 			CONSTRAINT_TABLE,

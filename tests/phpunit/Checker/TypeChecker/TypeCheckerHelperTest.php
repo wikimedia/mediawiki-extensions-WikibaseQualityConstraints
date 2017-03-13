@@ -37,7 +37,6 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
-
 	public function testCheckHasClassInRelationValid() {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );

@@ -30,12 +30,12 @@ call_user_func( function() {
 	$GLOBALS['wgSpecialPages']['ConstraintReport'] = 'WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport::newFromGlobalState';
 
 	// Define modules
-    $remoteExtPathParts = explode(
-        DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, __DIR__, 2
-    );
+	$remoteExtPathParts = explode(
+		DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, __DIR__, 2
+	);
 	$GLOBALS['wgResourceModules']['SpecialConstraintReportPage'] = array (
-        'styles' => '/modules/SpecialConstraintReportPage.css',
-        'scripts' => '/modules/SpecialConstraintReportPage.js',
+		'styles' => '/modules/SpecialConstraintReportPage.css',
+		'scripts' => '/modules/SpecialConstraintReportPage.js',
 		'localBasePath' => __DIR__,
 		'remoteExtPath' => $remoteExtPathParts[1]
 	);
