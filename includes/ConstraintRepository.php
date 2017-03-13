@@ -17,17 +17,16 @@ use Wikibase\DataModel\Entity\PropertyId;
 class ConstraintRepository implements ConstraintLookup {
 
 	/**
-	 * @param int $numericPropertyId
-	 *
+	 * @param PropertyId $propertyId
 	 * @return Constraint[]
 	 */
-	public function queryConstraintsForProperty( $numericPropertyId ) {
+	public function queryConstraintsForProperty( PropertyId $propertyId ) {
 		$db = wfGetDB( DB_SLAVE );
 
 		$results = $db->select(
 			CONSTRAINT_TABLE,
 			'*',
-			array( 'pid' => $numericPropertyId )
+			array( 'pid' => $propertyId->getNumericId() )
 		);
 
 		return $this->convertToConstraints( $results );

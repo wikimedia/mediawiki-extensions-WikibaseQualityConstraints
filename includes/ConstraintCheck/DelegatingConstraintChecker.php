@@ -94,10 +94,9 @@ class DelegatingConstraintChecker {
 				continue;
 			}
 
-			$propertyId = $statement->getPropertyId();
-			$numericPropertyId = $propertyId->getNumericId();
-
-			$constraints = $this->constraintLookup->queryConstraintsForProperty( $numericPropertyId );
+			$constraints = $this->constraintLookup->queryConstraintsForProperty(
+				$statement->getPropertyId()
+			);
 
 			$result = array_merge( $result, $this->checkConstraintsForStatementOnEntity( $constraints, $entity, $statement ) );
 		}

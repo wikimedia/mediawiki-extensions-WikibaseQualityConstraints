@@ -23,7 +23,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$this->insertTestData();
 
 		$repo = new ConstraintRepository();
-		$constraints = $repo->queryConstraintsForProperty( 1 );
+		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
 
 		$this->assertEquals( true, is_array( $constraints) );
 		$this->assertEquals( 2, count( $constraints ) );
@@ -34,7 +34,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$this->insertTestData();
 
 		$repo = new ConstraintRepository();
-		$constraints = $repo->queryConstraintsForProperty( 2 );
+		$constraints = $repo->queryConstraintsForProperty(  new PropertyId( 'P2' ) );
 
 		$this->assertEquals( true, is_array( $constraints ) );
 		$this->assertEquals( 0, count( $constraints ) );
