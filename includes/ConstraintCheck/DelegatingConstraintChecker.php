@@ -15,7 +15,6 @@ use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\Constraint;
 
 /**
- * Class DelegatingConstraintCheck
  * Used to start the constraint-check process and to delegate
  * the statements that has to be checked to the corresponding checkers
  *

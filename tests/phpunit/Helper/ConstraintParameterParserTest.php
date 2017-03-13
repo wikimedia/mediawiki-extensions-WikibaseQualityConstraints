@@ -1,10 +1,10 @@
 <?php
+
 namespace WikibaseQuality\ConstraintReport\Test\Helper;
 
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
@@ -87,4 +87,5 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$parameter = 'R1';
 		$this->assertEquals( array ( '' ), $this->helper->parseSingleParameter( $parameter ) );
 	}
+
 }

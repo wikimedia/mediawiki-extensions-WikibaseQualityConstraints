@@ -9,7 +9,6 @@ use Wikibase\DataModel\Entity\PropertyId;
 use LogicException;
 
 /**
- * Class CheckResult
  * Used for getting information about the result of a constraint check
  *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Result

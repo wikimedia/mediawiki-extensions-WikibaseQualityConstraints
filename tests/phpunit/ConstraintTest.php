@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
-
 /**
  * @covers WikibaseQuality\ConstraintReport\Constraint
  *
