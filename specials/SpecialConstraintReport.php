@@ -4,20 +4,15 @@ namespace WikibaseQuality\ConstraintReport\Specials;
 
 use DataValues;
 use DataValues\DataValue;
-use HTMLForm;
 use Html;
+use HTMLForm;
 use InvalidArgumentException;
+use MediaWiki\MediaWikiServices;
 use SpecialPage;
 use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityDocument;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
-use WikibaseQuality\Html\HtmlTableBuilder;
-use WikibaseQuality\Html\HtmlTableCellBuilder;
-use WikibaseQuality\Html\HtmlTableHeaderBuilder;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -33,6 +28,12 @@ use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
 use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\Html\HtmlTableBuilder;
+use WikibaseQuality\Html\HtmlTableCellBuilder;
+use WikibaseQuality\Html\HtmlTableHeaderBuilder;
 
 /**
  * Special page that displays all constraints that are defined on an Entity with additional information
@@ -328,6 +329,9 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return CheckResult[]|null
 	 */
 	private function executeCheck( EntityDocument $entity ) {
+		MediaWikiServices::getInstance()->getStatsdDataFactory()
+			->increment( 'wikibase.quality.constraints.specials.specialConstraintReport.executeCheck' );
+
 		return $this->constraintChecker->checkAgainstConstraints( $entity );
 	}
 
