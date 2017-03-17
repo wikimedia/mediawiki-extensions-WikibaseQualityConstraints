@@ -143,7 +143,7 @@ class DelegatingConstraintChecker {
 			$startTime = microtime( true );
 			$result = $checker->checkConstraint( $statement, $constraint, $entity );
 			$statsd->timing(
-				'wikibase.quality.constraints.check.timing' . $constraint->getConstraintTypeQid(),
+				'wikibase.quality.constraints.check.timing.' . $constraint->getConstraintTypeQid(),
 				( microtime( true ) - $startTime ) * 1000
 			);
 
