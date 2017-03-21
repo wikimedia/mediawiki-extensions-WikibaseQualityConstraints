@@ -65,7 +65,6 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		parent::tearDown();
 	}
 
-
 	public function testRangeConstraintWithinRange() {
 		$value = new DecimalValue( 3.1415926536 );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );

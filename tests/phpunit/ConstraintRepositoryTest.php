@@ -33,7 +33,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$this->insertTestData();
 
 		$repo = new ConstraintRepository();
-		$constraints = $repo->queryConstraintsForProperty(  new PropertyId( 'P2' ) );
+		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P2' ) );
 
 		$this->assertEquals( true, is_array( $constraints ) );
 		$this->assertEquals( 0, count( $constraints ) );
@@ -42,12 +42,12 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 	public function testInsertBatch() {
 		$this->insertTestData();
 
-        $constraints = array(
-            new Constraint( 'foo', new PropertyId('P42'), 'TestConstraint', array( 'foo' => 'bar' ) ),
-            new Constraint( 'bar', new PropertyId('P42'), 'TestConstraint', array( 'bar' => 'baz' ) )
-        );
-        $repo = new ConstraintRepository();
-        $repo->insertBatch( $constraints );
+		$constraints = [
+			new Constraint( 'foo', new PropertyId( 'P42' ), 'TestConstraint', [ 'foo' => 'bar' ] ),
+			new Constraint( 'bar', new PropertyId( 'P42' ), 'TestConstraint', [ 'bar' => 'baz' ] ),
+		];
+		$repo = new ConstraintRepository();
+		$repo->insertBatch( $constraints );
 
 		$this->assertSelect(
 			CONSTRAINT_TABLE,
@@ -105,22 +105,20 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 
 	public function insertTestData() {
 		$this->db->delete( CONSTRAINT_TABLE, '*' );
-		$this->db->insert( CONSTRAINT_TABLE,
-			array (
-			   array (
-					'constraint_guid' => '1',
-					'pid' => 1,
-					'constraint_type_qid' => 'Multi value',
-					'constraint_parameters' => '{}'
-			   ),
-			   array (
-					'constraint_guid' => '3',
-					'pid' => 1,
-					'constraint_type_qid' => 'Single value',
-					'constraint_parameters' => '{}'
-				)
-			)
-		);
+		$this->db->insert( CONSTRAINT_TABLE, [
+			[
+				'constraint_guid' => '1',
+				'pid' => 1,
+				'constraint_type_qid' => 'Multi value',
+				'constraint_parameters' => '{}'
+			],
+			[
+				'constraint_guid' => '3',
+				'pid' => 1,
+				'constraint_type_qid' => 'Single value',
+				'constraint_parameters' => '{}'
+			],
+		] );
 	}
 
 }
