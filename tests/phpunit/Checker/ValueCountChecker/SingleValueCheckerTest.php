@@ -13,11 +13,11 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
  *
  * @group WikibaseQualityConstraints
  *
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
  * @author BP2014N1
  * @license GNU GPL v2+

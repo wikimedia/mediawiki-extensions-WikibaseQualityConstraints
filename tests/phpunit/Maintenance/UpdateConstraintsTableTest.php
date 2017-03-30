@@ -6,7 +6,7 @@ use MediaWikiTestCase;
 use WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable
+ * @covers \WikibaseQuality\ConstraintReport\Maintenance\UpdateConstraintsTable
  *
  * @group WikibaseQualityConstraints
  * @group Database
