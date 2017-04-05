@@ -16,20 +16,20 @@ use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
+ * @covers \WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
  *
  * @group WikibaseQualityConstraints
  * @group Database
  * @group medium
  *
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikibaseQuality\Html\HtmlTableBuilder
- * @uses   WikibaseQuality\Html\HtmlTableCellBuilder
- * @uses   WikibaseQuality\Html\HtmlTableHeaderBuilder
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   \WikibaseQuality\Html\HtmlTableBuilder
+ * @uses   \WikibaseQuality\Html\HtmlTableCellBuilder
+ * @uses   \WikibaseQuality\Html\HtmlTableHeaderBuilder
  *
  * @author BP2014N1
  * @license GNU GPL v2+

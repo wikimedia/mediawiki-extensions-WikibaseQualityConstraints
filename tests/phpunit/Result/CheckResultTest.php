@@ -12,7 +12,7 @@ use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
  * @group WikibaseQualityConstraints
  * @author BP2014N1

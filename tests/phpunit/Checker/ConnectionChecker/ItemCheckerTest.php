@@ -14,12 +14,12 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
  *
  * @group WikibaseQualityConstraints
  *
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
