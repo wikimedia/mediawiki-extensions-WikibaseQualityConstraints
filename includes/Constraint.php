@@ -14,7 +14,7 @@ class Constraint {
 	/**
 	 * @var string
 	 */
-	private $constraintStatementGuid;
+	private $constraintId;
 
 	/**
 	 * @var PropertyId
@@ -37,18 +37,18 @@ class Constraint {
 	private $constraintParameters;
 
 	/**
-	 * @param string $constraintStatementGuid
+	 * @param string $constraintId
 	 * @param PropertyId $propertyId
 	 * @param string $constraintTypeQid
 	 * @param array $constraintParameters
 	 */
 	public function __construct(
-		$constraintStatementGuid,
+		$constraintId,
 		PropertyId $propertyId,
 		$constraintTypeQid,
 		array $constraintParameters
 	) {
-		$this->constraintStatementGuid = $constraintStatementGuid;
+		$this->constraintId = $constraintId;
 		$this->propertyId = $propertyId;
 		$this->constraintTypeQid = $constraintTypeQid;
 		$this->constraintParameters = $constraintParameters;
@@ -57,8 +57,8 @@ class Constraint {
 	/**
 	 * @return string
 	 */
-	public function getConstraintStatementGuid() {
-		return $this->constraintStatementGuid;
+	public function getConstraintId() {
+		return $this->constraintId;
 	}
 
 	/**

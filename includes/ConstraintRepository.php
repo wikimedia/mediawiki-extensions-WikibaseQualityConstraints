@@ -41,7 +41,7 @@ class ConstraintRepository implements ConstraintLookup {
 		$accumulator = array_map(
 			function ( Constraint $constraint ) {
 				return array(
-					'constraint_guid' => $constraint->getConstraintStatementGuid(),
+					'constraint_guid' => $constraint->getConstraintId(),
 					'pid' => $constraint->getPropertyId()->getNumericId(),
 					'constraint_type_qid' => $constraint->getConstraintTypeQid(),
 					'constraint_parameters' => json_encode( $constraint->getConstraintParameters() )
