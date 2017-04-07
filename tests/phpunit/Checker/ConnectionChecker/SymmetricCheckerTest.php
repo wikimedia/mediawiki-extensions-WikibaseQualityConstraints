@@ -8,6 +8,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -49,18 +50,12 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $checker;
 
-	/**
-	 * @var EntityDocument
-	 */
-	private $entity;
-
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new SymmetricChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
-		$this->entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 	}
 
 	protected function tearDown() {
@@ -68,7 +63,6 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		unset( $this->helper );
 		unset( $this->connectionCheckerHelper );
 		unset( $this->checker );
-		unset( $this->entity );
 		parent::tearDown();
 	}
 
@@ -76,7 +70,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q3' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -84,7 +78,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q2' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -92,7 +86,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new StringValue( 'Q3' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -100,14 +94,14 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testSymmetricConstraintNoValueSnak() {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -127,6 +121,13 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Symmetric' ) );
 
 		return $mock;
+	}
+
+	/**
+	 * @return EntityDocument
+	 */
+	private function getEntity() {
+		return new Item( new ItemId( 'Q1' ) );
 	}
 
 }

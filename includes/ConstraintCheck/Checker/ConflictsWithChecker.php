@@ -54,7 +54,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -64,7 +64,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 */
 		if ( !array_key_exists( 'property', $constraintParameters ) ) {
 			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['property'] );
@@ -95,7 +95,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }

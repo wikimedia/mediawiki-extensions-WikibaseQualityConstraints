@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -64,7 +65,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -74,7 +75,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -84,7 +85,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -95,7 +96,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -105,7 +106,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -115,7 +116,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -126,7 +127,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -136,7 +137,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -146,7 +147,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -157,7 +158,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -167,7 +168,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -177,7 +178,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -187,7 +188,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$constraintParameters = array(
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -196,7 +197,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$constraintParameters = array(
 			'relation' => 'instance'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -206,7 +207,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -216,7 +217,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -226,7 +227,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ) );
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -248,6 +249,13 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Value type' ) );
 
 		return $mock;
+	}
+
+	/**
+	 * @return EntityDocument
+	 */
+	private function getEntity() {
+		return new Item( new ItemId( 'Q1' ) );
 	}
 
 }

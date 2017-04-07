@@ -7,6 +7,8 @@ use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Entity\Item;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -19,6 +21,11 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * @license GNU GPL v2+
  */
 class CheckResultTest extends PHPUnit_Framework_TestCase {
+
+	/**
+	 * @var EntityId
+	 */
+	private $entityId;
 
 	/**
 	 * @var Statement
@@ -47,6 +54,7 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		parent::setUp();
+		$this->entityId = new ItemId( 'Q1' );
 		$this->statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( 'Foo' ) ) );
 		$this->constraintName = 'Range';
 		$this->parameters = array ();
@@ -56,6 +64,7 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 		parent::tearDown();
+		unset( $this->entityId );
 		unset( $this->statement );
 		unset( $this->constraintName );
 		unset( $this->parameters );
@@ -64,7 +73,8 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructAndGetters() {
-		$checkResult = new CheckResult( $this->statement, $this->constraintName, $this->parameters, $this->status, $this->message );
+		$checkResult = new CheckResult( $this->entityId, $this->statement, $this->constraintName, $this->parameters, $this->status, $this->message );
+		$this->assertEquals( $this->entityId, $checkResult->getEntityId() );
 		$this->assertEquals( $this->statement, $checkResult->getStatement() );
 		$this->assertEquals( $this->statement->getPropertyId(), $checkResult->getPropertyId() );
 		$this->assertEquals( $this->statement->getMainSnak()->getDataValue(), $checkResult->getDataValue() );
@@ -76,7 +86,7 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testWithWrongSnakType() {
-		$checkResult = new CheckResult( new Statement( new PropertyNoValueSnak( 1 ) ), $this->constraintName, $this->parameters, $this->status, $this->message );
+		$checkResult = new CheckResult( $this->entityId, new Statement( new PropertyNoValueSnak( 1 ) ), $this->constraintName, $this->parameters, $this->status, $this->message );
 		$this->setExpectedException( LogicException::class );
 		$checkResult->getDataValue();
 	}

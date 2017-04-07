@@ -56,7 +56,7 @@ class SymmetricChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = array ();
 
 		$constraintParameters = $constraint->getConstraintParameters();
@@ -73,7 +73,7 @@ class SymmetricChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -84,14 +84,14 @@ class SymmetricChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
 
 		$targetItem = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetItem === null ) {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		$targetItemStatementList = $targetItem->getStatements();
 
@@ -103,7 +103,7 @@ class SymmetricChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }

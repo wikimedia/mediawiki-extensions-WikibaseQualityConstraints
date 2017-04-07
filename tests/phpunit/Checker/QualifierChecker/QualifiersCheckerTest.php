@@ -67,7 +67,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
+		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -75,7 +75,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
+		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
@@ -83,7 +83,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$qualifiersChecker = new QualifiersChecker( $this->helper );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ) );
+		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => $this->qualifiersList ) ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 

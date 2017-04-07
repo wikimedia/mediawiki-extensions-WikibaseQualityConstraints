@@ -47,7 +47,7 @@ class RangeChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -63,7 +63,7 @@ class RangeChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -95,7 +95,7 @@ class RangeChecker implements ConstraintChecker {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'quantity" or "time' )->escaped();
 		}
 		if ( isset( $message ) ) {
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$comparativeValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
@@ -108,7 +108,7 @@ class RangeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
-		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }

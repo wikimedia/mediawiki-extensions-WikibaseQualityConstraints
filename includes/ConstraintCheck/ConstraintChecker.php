@@ -17,6 +17,6 @@ interface ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null );
+	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity );
 
 }

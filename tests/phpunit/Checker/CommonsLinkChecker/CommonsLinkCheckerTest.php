@@ -7,6 +7,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -75,7 +76,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	public function testCommonsLinkConstraintValid() {
 		$value = new StringValue( 'test image.jpg' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
-		$this->assertEquals( 'compliance', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ) )->getStatus(), 'check should comply' );
+		$this->assertEquals( 'compliance', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ), $this->getEntity() )->getStatus(), 'check should comply' );
 	}
 
 	public function testCommonsLinkConstraintInvalid() {
@@ -85,36 +86,36 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value1 ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value2 ) );
 		$statement3 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value3 ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement1, $this->getConstraintMock( array( 'namespace' => 'File' ) ) )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement2, $this->getConstraintMock( array( 'namespace' => 'File' ) ) )->getStatus(), 'check should not comply' );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement3, $this->getConstraintMock( array( 'namespace' => 'File' ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement1, $this->getConstraintMock( array( 'namespace' => 'File' ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement2, $this->getConstraintMock( array( 'namespace' => 'File' ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement3, $this->getConstraintMock( array( 'namespace' => 'File' ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
 	}
 
 	public function testNotImplementedNamespaces() {
 		$value = new StringValue( 'test image.jpg' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
-		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array() ) )->getStatus(), 'check is not implemented' );
-		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'Gallery') ) )->getStatus(), 'check is not implemented' );
-		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'Institution') ) )->getStatus(), 'check is not implemented' );
-		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'Museum') ) )->getStatus(), 'check is not implemented' );
-		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'Creator') ) )->getStatus(), 'check is not implemented' );
+		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array() ), $this->getEntity() )->getStatus(), 'check is not implemented' );
+		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'Gallery') ), $this->getEntity() )->getStatus(), 'check is not implemented' );
+		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'Institution') ), $this->getEntity() )->getStatus(), 'check is not implemented' );
+		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'Museum') ), $this->getEntity() )->getStatus(), 'check is not implemented' );
+		$this->assertEquals( 'todo', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'Creator') ), $this->getEntity() )->getStatus(), 'check is not implemented' );
 	}
 
 	public function testCommonsLinkConstraintNotExistent() {
 		$value = new StringValue( 'no image.jpg' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
 	}
 
 	public function testCommonsLinkConstraintNoStringValue() {
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
 	}
 
 	public function testCommonsLinkConstraintNoValueSnak() {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
-		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ) )->getStatus(), 'check should not comply' );
+		$this->assertEquals( 'violation', $this->commonsLinkChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'namespace' => 'File' ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
 	}
 
 	/**
@@ -135,6 +136,13 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Commons link' ) );
 
 		return $mock;
+	}
+
+	/**
+	 * @return EntityDocument
+	 */
+	private function getEntity() {
+		return new Item( new ItemId( 'Q1' ) );
 	}
 
 }

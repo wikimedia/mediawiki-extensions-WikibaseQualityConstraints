@@ -39,9 +39,9 @@ class QualifierChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$message = wfMessage( "wbqc-violation-message-qualifier" )->escaped();
-		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), array (), CheckResult::STATUS_VIOLATION, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), array (), CheckResult::STATUS_VIOLATION, $message );
 	}
 
 }

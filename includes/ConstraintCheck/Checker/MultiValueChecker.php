@@ -35,7 +35,7 @@ class MultiValueChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$propertyId = $statement->getPropertyId();
 
 		$parameters = array ();
@@ -50,7 +50,7 @@ class MultiValueChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
-		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }

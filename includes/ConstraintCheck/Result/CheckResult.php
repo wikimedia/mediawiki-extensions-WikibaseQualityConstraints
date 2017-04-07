@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 use DataValues\DataValue;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\PropertyId;
 use LogicException;
 
@@ -22,6 +23,11 @@ class CheckResult {
 	const STATUS_VIOLATION = 'violation';
 	const STATUS_EXCEPTION = 'exception';
 	const STATUS_TODO = 'todo';
+
+	/**
+	 * @var EntityId
+	 */
+	private $entityId;
 
 	/**
 	 * @var Statement
@@ -50,18 +56,27 @@ class CheckResult {
 	private $message;
 
 	/**
+	 * @param EntityId $entityId
 	 * @param Statement $statement
 	 * @param string $constraintName
 	 * @param array $parameters (string => string[])
 	 * @param string $status
 	 * @param string $message (sanitized HTML)
 	 */
-	public function __construct( Statement $statement, $constraintName, $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
+	public function __construct( EntityId $entityId, Statement $statement, $constraintName, $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
+		$this->entityId = $entityId;
 		$this->statement = $statement;
 		$this->constraintName = $constraintName;
 		$this->parameters = $parameters;
 		$this->status = $status;
 		$this->message = $message;
+	}
+
+	/**
+	 * @return EntityId
+	 */
+	public function getEntityId() {
+		return $this->entityId;
 	}
 
 	/**

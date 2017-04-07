@@ -41,7 +41,7 @@ class QualifiersChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -65,7 +65,7 @@ class QualifiersChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }

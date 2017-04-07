@@ -56,7 +56,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null ) {
+	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
@@ -84,7 +84,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -96,19 +96,19 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
 
 		if ( !$property ) {
 			$message = wfMessage( "wbqc-violation-message-property-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$targetEntity = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetEntity === null ) {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
-			return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		$targetEntityStatementList = $targetEntity->getStatements();
 
@@ -135,7 +135,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $parameters, $status, $message );
 	}
 
 }
