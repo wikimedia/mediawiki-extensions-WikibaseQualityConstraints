@@ -43,5 +43,9 @@
 			"scripts": "modules/SpecialConstraintReportPage.js"
 		}
 	},
+	"config": {
+		"WBQualityConstraintsInstanceOfId": "P31",
+		"WBQualityConstraintsSubclassOfId": "P279"
+	},
 	"manifest_version": 1
 }

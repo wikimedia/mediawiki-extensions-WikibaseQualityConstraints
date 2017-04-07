@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Config;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -22,16 +23,20 @@ use Wikibase\DataModel\Statement\StatementListProvider;
 class TypeCheckerHelper {
 
 	const MAX_DEPTH = 20;
-	const instanceId = 'P31';
-	const subclassId = 'P279';
 
 	/**
 	 * @var EntityLookup $entityLookup
 	 */
 	private $entityLookup;
 
-	public function __construct( EntityLookup $lookup ) {
+	/**
+	 * @var Config
+	 */
+	private $config;
+
+	public function __construct( EntityLookup $lookup, Config $config ) {
 		$this->entityLookup = $lookup;
+		$this->config = $config;
 	}
 
 	/**
@@ -52,8 +57,9 @@ class TypeCheckerHelper {
 			return false; // lookup failed, probably because item doesn't exist
 		}
 
+		$subclassId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 		/** @var Statement $statement */
-		foreach ( $item->getStatements()->getByPropertyId( new PropertyId( self::subclassId ) ) as $statement ) {
+		foreach ( $item->getStatements()->getByPropertyId( new PropertyId( $subclassId ) ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
 			if ( !( $this->hasCorrectType( $mainSnak ) ) ) {

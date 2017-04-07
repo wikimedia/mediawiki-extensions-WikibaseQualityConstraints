@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use Config;
+use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -63,6 +65,11 @@ class ConstraintReportFactory {
 	private $statementGuidParser;
 
 	/**
+	 * @var Config
+	 */
+	private $config;
+
+	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -72,7 +79,11 @@ class ConstraintReportFactory {
 		static $instance = null;
 
 		if ( $instance === null ) {
-			$instance = new self( WikibaseRepo::getDefaultInstance()->getEntityLookup(), WikibaseRepo::getDefaultInstance()->getStatementGuidParser() );
+			$instance = new self(
+				WikibaseRepo::getDefaultInstance()->getEntityLookup(),
+				WikibaseRepo::getDefaultInstance()->getStatementGuidParser(),
+				MediaWikiServices::getInstance()->getMainConfig()
+			);
 		}
 
 		return $instance;
@@ -82,9 +93,10 @@ class ConstraintReportFactory {
 	 * @param EntityLookup $lookup
 	 * @param StatementGuidParser $statementGuidParser
 	 */
-	public function __construct( EntityLookup $lookup, StatementGuidParser $statementGuidParser ) {
+	public function __construct( EntityLookup $lookup, StatementGuidParser $statementGuidParser, Config $config ) {
 		$this->lookup = $lookup;
 		$this->statementGuidParser = $statementGuidParser;
+		$this->config = $config;
 	}
 
 	/**
@@ -110,7 +122,7 @@ class ConstraintReportFactory {
 			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
 			$rangeCheckerHelper = new RangeCheckerHelper();
-			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup );
+			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config );
 
 			$this->constraintCheckerMap = array(
 				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
@@ -123,8 +135,8 @@ class ConstraintReportFactory {
 				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $constraintParameterParser ),
 				'Range' => new RangeChecker( $constraintParameterParser, $rangeCheckerHelper ),
 				'Diff within range' => new DiffWithinRangeChecker( $constraintParameterParser, $rangeCheckerHelper ),
-				'Type' => new TypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper ),
-				'Value type' => new ValueTypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper ),
+				'Type' => new TypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper, $this->config ),
+				'Value type' => new ValueTypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper, $this->config ),
 				'Single value' => new SingleValueChecker(),
 				'Multi value' => new MultiValueChecker(),
 				'Unique value' => new UniqueValueChecker(),

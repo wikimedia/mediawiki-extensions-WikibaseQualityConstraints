@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
+use HashConfig;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
@@ -63,9 +64,11 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->lookup = $this->createEntityLookup();
 		$this->statementGuidParser = new StatementGuidParser( new ItemIdParser() );
+		$config = new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] );
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
-			$this->statementGuidParser
+			$this->statementGuidParser,
+			$config
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 
@@ -292,7 +295,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	public function testCheckAgainstConstraints_ByClaims() {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
-			$this->statementGuidParser
+			$this->statementGuidParser,
+			new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] )
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 
@@ -305,7 +309,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	public function testCheckAgainstConstraintsDoesNotCrashWhenResultIsEmpty_ByClaims() {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
-			$this->statementGuidParser
+			$this->statementGuidParser,
+			new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] )
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 
@@ -318,7 +323,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	public function testCheckAgainstConstraintsDoesNotCrashWhenClaimDoesNotExist() {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
-			$this->statementGuidParser
+			$this->statementGuidParser,
+			new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] )
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 

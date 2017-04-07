@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Config;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -34,18 +35,22 @@ class TypeChecker implements ConstraintChecker {
 	 */
 	private $typeCheckerHelper;
 
-	const instanceId = 'P31';
-	const subclassId = 'P279';
+	/**
+	 * @var Config
+	 */
+	private $config;
 
 	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
 	 * @param TypeCheckerHelper $typeCheckerHelper
+	 * @param Config $config
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, TypeCheckerHelper $typeCheckerHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, TypeCheckerHelper $typeCheckerHelper, Config $config ) {
 		$this->entityLookup = $lookup;
 		$this->helper = $helper;
 		$this->typeCheckerHelper = $typeCheckerHelper;
+		$this->config = $config;
 	}
 
 	/**
@@ -87,9 +92,9 @@ class TypeChecker implements ConstraintChecker {
 		 *   parameter $constraintParameters['relation'] must be either 'instance' or 'subclass'
 		 */
 		if ( $relation === 'instance' ) {
-			$relationId = self::instanceId;
+			$relationId = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
 		} elseif ( $relation === 'subclass' ) {
-			$relationId = self::subclassId;
+			$relationId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 		} else {
 			$message = wfMessage( "wbqc-violation-message-type-relation-instance-or-subclass" )->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );

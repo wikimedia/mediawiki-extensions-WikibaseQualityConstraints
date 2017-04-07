@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
+use HashConfig;
 use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -29,7 +30,10 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new TypeCheckerHelper( new JsonFileEntityLookup( __DIR__ ) );
+		$this->helper = new TypeCheckerHelper(
+			new JsonFileEntityLookup( __DIR__ ),
+			new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] )
+		);
 	}
 
 	protected function tearDown() {
