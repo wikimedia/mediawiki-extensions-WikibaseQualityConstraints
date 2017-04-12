@@ -5,44 +5,32 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use ApiBase;
 use ApiMain;
 use ApiResult;
-use DataValues\DataValue;
-use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
-
+use Language;
+use MediaWiki\MediaWikiServices;
 use RequestContext;
-
+use ValueFormatters\FormatterOptions;
+use Wikibase\ChangeOp\StatementChangeOpFactory;
 use Wikibase\DataModel\Entity\EntityId;
-
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
-use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
+use Wikibase\DataModel\Services\Lookup\TermLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
-use Wikibase\Repo\Api\ApiErrorReporter;
-use Wikibase\Repo\Api\ApiHelperFactory;
-
-use Wikibase\Repo\WikibaseRepo;
-
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-
-use Wikibase\Repo\EntityIdLabelFormatterFactory;
-use ValueFormatters\FormatterOptions;
+use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
+use Wikibase\DataModel\Services\Term\TermBuffer;
+use Wikibase\LanguageFallbackChainFactory;
 use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\SnakFormatter;
-
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
-
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
-
-use Wikibase\ChangeOp\StatementChangeOpFactory;
-use Wikibase\LanguageFallbackChain;
-use Wikibase\LanguageFallbackChainFactory;
-use Wikibase\DataModel\Services\Lookup\TermLookup;
-use Wikibase\DataModel\Services\Term\TermBuffer;
+use Wikibase\Repo\Api\ApiErrorReporter;
+use Wikibase\Repo\Api\ApiHelperFactory;
+use Wikibase\Repo\EntityIdLabelFormatterFactory;
+use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use Wikimedia\Assert\Assert;
-use Language;
 
 /**
  * API module that performs constraint check of entities, claims and constraint ID
@@ -184,6 +172,9 @@ class CheckConstraints extends ApiBase {
 	 * Evaluates the parameters, runs the requested constraint check, and sets up the result
 	 */
 	public function execute() {
+		MediaWikiServices::getInstance()->getStatsdDataFactory()
+			->increment( 'wikibase.quality.constraints.api.checkConstraints.execute' );
+
 		$params = $this->extractRequestParams();
 		$output = [];
 
