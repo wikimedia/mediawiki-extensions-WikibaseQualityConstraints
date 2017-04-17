@@ -27,6 +27,10 @@
 	"wbqc-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
 	"wbqc-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page.",
 	"wbqc-constraintreport-no-parameter": "Text that is displayed when there was no value for a parameter given.\n{{Identical|None}}",
+	"apihelp-wbcheckconstraints-description": "{{doc-apihelp-description|wbcheckconstraints}}",
+	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",
+	"apihelp-wbcheckconstraints-param-claimid": "{{doc-apihelp-param|wbcheckconstraints|claimid}}",
+	"apihelp-wbcheckconstraints-param-constraintid": "{{doc-apihelp-param|wbcheckconstraints|constraintid}}",
 	"wbq-subextension-name-wbqc": "Name of this subextension. Is shown in special page that lists all the violations.\n{{Identical|Constraint}}",
 	"wbqc-violation-header-parameters": "Header for section in violations special page that displays the parameters of the constraint.\n{{Identical|Parameter}}",
 	"wbqc-violations-group": "Type of violations this extension finds.\n{{Identical|Constraint}}",
@@ -64,9 +68,5 @@
 	"wbqc-violation-message-type": "Message for violation of Type constraint. When entity is not of given type.",
 	"wbqc-violation-message-target-required-claim-property": "Message for violation of Target required claim constraint. When only a property is given.",
 	"wbqc-violation-message-target-required-claim-claim": "Message for violation of Target required claim constraint. When property and value are given.",
-	"wbqc-violation-message-value-type": "Message for violation of Value type constraint. When value is not of given type.",
-	"apihelp-wbcheckconstraints-description": "{{doc-apihelp-description|wbcheckconstraints}}",
-	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",
-	"apihelp-wbcheckconstraints-param-claimid": "{{doc-apihelp-param|wbcheckconstraints|claimid}}",
-	"apihelp-wbcheckconstraints-param-constraintid": "{{doc-apihelp-param|wbcheckconstraints|constraintid}}"
+	"wbqc-violation-message-value-type": "Message for violation of Value type constraint. When value is not of given type."
 }
