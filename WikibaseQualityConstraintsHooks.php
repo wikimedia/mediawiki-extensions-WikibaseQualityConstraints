@@ -2,6 +2,11 @@
 
 final class WikibaseQualityConstraintsHooks {
 
+	public static function onExtensionRegistration() {
+		// Define database table names
+		define( 'CONSTRAINT_TABLE', 'wbqc_constraints' );
+	}
+
 	/**
 	 * @param DatabaseUpdater $updater
 	 *

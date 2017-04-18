@@ -57,17 +57,17 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 	public function testParseSingleParameter() {
 		$parameter = 'P1';
-		$this->assertEquals( array ( new PropertyId( $parameter ) ), $this->helper->parseSingleParameter( $parameter ) );
+		$this->assertEquals( array( new PropertyId( $parameter ) ), $this->helper->parseSingleParameter( $parameter ) );
 	}
 
 	public function testParseNullParameter() {
 		$parameter = null;
-		$this->assertEquals( array ( 'none' ), $this->helper->parseSingleParameter( $parameter ) );
+		$this->assertEquals( array( 'none' ), $this->helper->parseSingleParameter( $parameter ) );
 	}
 
 	public function testParseNullParameterArray() {
-		$parameter = array ( '' );
-		$this->assertEquals( array ( 'none' ), $this->helper->parseParameterArray( $parameter ) );
+		$parameter = array( '' );
+		$this->assertEquals( array( 'none' ), $this->helper->parseParameterArray( $parameter ) );
 	}
 
 	public function testParseParameterArray() {
