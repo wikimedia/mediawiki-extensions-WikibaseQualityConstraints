@@ -1,74 +1,74 @@
 /* Entity id form */
 form {
-    margin-bottom: 20px;
-    width: 250px;
+	margin-bottom: 20px;
+	width: 250px;
 }
 
 .wbqc-constraintreport-form-entity-id {
-    width: 120px;
+	width: 120px;
 }
 
 /* Notices */
 .wbqc-constraintreport-notice {
-    font-style: italic;
+	font-style: italic;
 }
 
 .wbqc-constraintreport-notice-error {
-    font-weight: bold;
-    color: #BA0000;
+	font-weight: bold;
+	color: #ba0000;
 }
 
 /* Explanation infobox */
 .wbqc-explanation {
-    width: 50%;
+	width: 50%;
 }
 
 /* Statuses */
 .wbqc-status {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .wbqc-status-compliance {
-    color: #008000;
+	color: #008000;
 }
 
 .wbqc-status-exception {
-    color: #E6B800;
+	color: #e6b800;
 }
 
 .wbqc-status-violation {
-    color: #BA0000;
+	color: #ba0000;
 }
 
 .wbqc-status-todo {
-    color: #404040;
+	color: #404040;
 }
 
 /* Tooltip */
 .wbqc-indicator {
-    color: #CCC;
-    font-weight: 600;
+	color: #ccc;
+	font-weight: 600;
 }
 
 .wbqc-tooltip {
-    margin-top: -40px;
-    margin-left: -5px;
-    background-color: #F2F2F2;
-    border: 1px solid #AAA;
-    border-radius: 5px;
-    box-shadow: 2px 2px 1px #CCC;
-    padding: 2px 5px 2px 5px;
-    position: absolute;
-    float: left;
+	margin-top: -40px;
+	margin-left: -5px;
+	background-color: #f2f2f2;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	box-shadow: 2px 2px 1px #ccc;
+	padding: 2px 5px 2px 5px;
+	position: absolute;
+	float: left;
 
-    display: none;
+	display: none;
 }
 
 .wbqc-expandable-content-indicator {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .wbqc-expandable-content {
-    color: #333;
-    display: none;
+	color: #333;
+	display: none;
 }
