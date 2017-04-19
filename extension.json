@@ -66,6 +66,11 @@
 			"description": "Whether to import property constraint statements into the constraint database or not.",
 			"public": true
 		},
+		"WBQualityConstraintsSparqlEndpoint": {
+			"value": "https://query.wikidata.org/bigdata/namespace/wdq/sparql",
+			"description": "The URL of the SPARQL endpoint. Should accept the URL parameters 'query' and 'format'.",
+			"public": true
+		},
 		"WBQualityConstraintsInstanceOfId": {
 			"value": "P31",
 			"description": "The property ID of the 'instance of' property, which specifies the class(es) of an item.",

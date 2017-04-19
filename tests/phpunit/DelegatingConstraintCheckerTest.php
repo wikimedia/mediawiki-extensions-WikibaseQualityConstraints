@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
+use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -63,13 +64,20 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = $this->createEntityLookup();
-		$this->statementGuidParser = new StatementGuidParser( new ItemIdParser() );
+		$itemIdParser = new ItemIdParser();
+		$this->statementGuidParser = new StatementGuidParser( $itemIdParser );
 		$config = $this->getDefaultConfig();
+		$rdfVocabulary = new RdfVocabulary(
+			'http://www.wikidata.org/entity/',
+			'http://www.wikidata.org/wiki/Special:EntityData/'
+		);
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
 			$this->statementGuidParser,
 			$config,
-			$this->getConstraintParameterRenderer()
+			$this->getConstraintParameterRenderer(),
+			$rdfVocabulary,
+			$itemIdParser
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 
@@ -80,6 +88,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	protected function tearDown() {
 		unset( $this->lookup );
 		unset( $this->constraintChecker );
+		unset( $this->statementGuidParser );
 		parent::tearDown();
 	}
 

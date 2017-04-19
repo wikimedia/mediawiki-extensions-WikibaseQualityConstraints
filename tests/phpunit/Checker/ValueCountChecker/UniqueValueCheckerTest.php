@@ -7,10 +7,15 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
+use WikibaseQuality\ConstraintReport\Tests\SparqlHelperMock;
+use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
@@ -19,10 +24,17 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  *
- * @author BP2014N1
+ * @author Olga Bode
  * @license GNU GPL v2+
  */
-class UniqueValueCheckerTest extends \MediaWikiTestCase {
+class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
+
+	use SparqlHelperMock;
+
+	/**
+	 * @var JsonFileEntityLookup
+	 */
+	private $lookup;
 
 	use ResultAssertions;
 
@@ -38,23 +50,43 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
+		$this->lookup = new JsonFileEntityLookup( __DIR__ );
+		$this->uniquePropertyId = new PropertyId( 'P31' );
 
-		$this->uniquePropertyId = new PropertyId( 'P227' );
-		$this->checker = new UniqueValueChecker();
 	}
 
 	protected function tearDown() {
 		unset( $this->uniquePropertyId );
+		unset( $this->lookup );
 		parent::tearDown();
 	}
 
-	public function testCheckUniqueValueConstraint() {
-		$itemId = new ItemId( 'Q404' );
-		$entity = new Item( $itemId );
-		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( $itemId ) ) );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+	public function testCheckUniqueValueConstraintInvalid() {
+		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
+		$statement->setGuid( 'Q6$e35707be-4a84-61fe-9b52-623784a316a7' );
 
-		$this->assertTodo( $checkResult );
+		$mock = $this->getSparqlHelperMockFindEntities( $statement, [ new ItemId( 'Q42' ) ] );
+
+		$this->checker = new UniqueValueChecker( $mock );
+
+		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-unique-value' );
+	}
+
+	public function testCheckUniqueValueConstraintValid() {
+		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
+		$statement->setGuid( "Q1$56e6a474-4431-fb24-cc15-1d580e467559" );
+
+		$mock = $this->getSparqlHelperMockFindEntities( $statement, [] );
+
+		$this->checker = new UniqueValueChecker( $mock );
+
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$this->assertCompliance( $checkResult );
 	}
 
 	/**

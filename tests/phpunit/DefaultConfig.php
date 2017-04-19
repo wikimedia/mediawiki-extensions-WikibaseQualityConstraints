@@ -26,6 +26,8 @@ trait DefaultConfig {
 			}
 			// reduce some limits to make tests run faster
 			$this->defaultConfig->set( 'WBQualityConstraintsTypeCheckMaxEntities', 10 );
+			// never query remote servers
+			$this->defaultConfig->set( 'WBQualityConstraintsSparqlEndpoint', 'http://localhost:65536/' );
 		}
 
 		return $this->defaultConfig;

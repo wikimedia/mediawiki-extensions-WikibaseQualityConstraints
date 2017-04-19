@@ -5,8 +5,10 @@ namespace WikibaseQuality\ConstraintReport;
 use Config;
 use MediaWiki\MediaWikiServices;
 use ValueFormatters\FormatterOptions;
+use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Lib\SnakFormatter;
+use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -28,10 +30,14 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChec
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeSparqlChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeSparqlChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerSparqlHelper;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 
 class ConstraintReportFactory {
@@ -77,6 +83,16 @@ class ConstraintReportFactory {
 	private $constraintParameterRenderer;
 
 	/**
+	 * @var RdfVocabulary
+	 */
+	private $rdfVocabulary;
+
+	/**
+	 * @var EntityIdParser
+	 */
+	private $entityIdParser;
+
+	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -102,7 +118,9 @@ class ConstraintReportFactory {
 						SnakFormatter::FORMAT_HTML,
 						new FormatterOptions()
 					)
-				)
+				),
+				$wikibaseRepo->getRdfVocabulary(),
+				$wikibaseRepo->getEntityIdParser()
 			);
 		}
 
@@ -113,12 +131,16 @@ class ConstraintReportFactory {
 		EntityLookup $lookup,
 		StatementGuidParser $statementGuidParser,
 		Config $config,
-		ConstraintParameterRenderer $constraintParameterRenderer
+		ConstraintParameterRenderer $constraintParameterRenderer,
+		RdfVocabulary $rdfVocabulary,
+		EntityIdParser $entityIdParser
 	) {
 		$this->lookup = $lookup;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
+		$this->rdfVocabulary = $rdfVocabulary;
+		$this->entityIdParser = $entityIdParser;
 	}
 
 	/**
@@ -145,6 +167,11 @@ class ConstraintReportFactory {
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
 			$rangeCheckerHelper = new RangeCheckerHelper();
 			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config, $this->constraintParameterRenderer );
+			$sparqlHelper = new SparqlHelper(
+				$this->config,
+				$this->rdfVocabulary,
+				$this->entityIdParser
+			);
 
 			$this->constraintCheckerMap = [
 				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
@@ -161,10 +188,12 @@ class ConstraintReportFactory {
 				'Value type' => new ValueTypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper, $this->config ),
 				'Single value' => new SingleValueChecker(),
 				'Multi value' => new MultiValueChecker(),
-				'Unique value' => new UniqueValueChecker(),
+				'Unique value' => new UniqueValueChecker( $sparqlHelper ),
 				'Format' => new FormatChecker( $constraintParameterParser ),
 				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
 				'One of' => new OneOfChecker( $constraintParameterParser, $this->constraintParameterRenderer ),
+				'Type (SPARQL)' => new TypeSparqlChecker( $this->lookup, $constraintParameterParser, $sparqlHelper ),
+				'Value type (SPARQL)' => new ValueTypeSparqlChecker( $this->lookup, $constraintParameterParser, $sparqlHelper ),
 			];
 			$this->constraintCheckerMap += [
 				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ) => $this->constraintCheckerMap['Unique value'],
