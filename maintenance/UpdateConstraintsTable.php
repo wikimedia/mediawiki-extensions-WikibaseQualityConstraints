@@ -70,6 +70,9 @@ class UpdateConstraintsTable extends \Maintenance {
 				$accumulator = array();
 
 				if ( $data === false ) {
+					if ( !$this->isQuiet() ) {
+						$this->output( "\n" );
+					}
 					break;
 				}
 			}
