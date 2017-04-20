@@ -26,14 +26,16 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 	public function addDBData() {
 		$this->db->delete( CONSTRAINT_TABLE, '*' );
 		$this->db->insert( CONSTRAINT_TABLE, [
+			// a constraint imported from a template (UUID)
 			[
-				'constraint_guid' => 'foo',
+				'constraint_guid' => 'afbbe0c2-2bc4-47b6-958c-a318a53814ac',
 				'pid' => 42,
 				'constraint_type_qid' => 'TestConstraint',
 				'constraint_parameters' => '{}'
 			],
+			// a constraint imported from a statement (statement ID)
 			[
-				'constraint_guid' => 'bar',
+				'constraint_guid' => 'P2$2892c48c-53e5-40ef-94a2-274ebf35075c',
 				'pid' => 42,
 				'constraint_type_qid' => 'TestConstraint',
 				'constraint_parameters' => '{}'
@@ -61,24 +63,33 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 			],
 			[],
 			[
+				// existing constraint imported from a statement is not deleted
 				[
-					'baz',
+					'P2$2892c48c-53e5-40ef-94a2-274ebf35075c',
+					42,
+					'TestConstraint',
+					'{}'
+				],
+				// new constraints
+				[
+					'c3d49df6-a4f1-413d-903d-57907aa439f9',
 					'42',
 					'ConstraintFromCsv',
 					'{"foo":"bar"}'
 				],
 				[
-					'foobar',
-					'42',
-					'ConstraintFromCsv',
-					'{"foobar":"bar"}'
-				],
-				[
-					'foobaz',
+					'daa9c35c-0455-4c8d-8804-a73cd78fcc4a',
 					'42',
 					'ConstraintFromCsv',
 					'{"bar":"baz"}'
 				],
+				[
+					'e28b1517-a7f6-4479-bdc8-6687e944ba31',
+					'42',
+					'ConstraintFromCsv',
+					'{"foobar":"bar"}'
+				],
+				// existing constrant imported from a template is deleted
 			]
 		);
 	}

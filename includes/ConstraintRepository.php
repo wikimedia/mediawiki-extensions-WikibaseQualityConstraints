@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use DBUnexpectedError;
 use InvalidArgumentException;
+use Wikimedia\Rdbms\LikeMatch;
 use ResultWrapper;
 use Wikibase\DataModel\Entity\PropertyId;
 
@@ -52,6 +53,34 @@ class ConstraintRepository implements ConstraintLookup {
 
 		$db = wfGetDB( DB_MASTER );
 		return $db->insert( CONSTRAINT_TABLE, $accumulator );
+	}
+
+	/**
+	 * @param LikeMatch $any should be IDatabase::anyChar()
+	 */
+	private function uuidPattern( LikeMatch $any ) {
+		return array_merge(
+			array_fill( 0, 8, $any ), [ '-' ],
+			array_fill( 0, 4, $any ), [ '-' ],
+			array_fill( 0, 4, $any ), [ '-' ],
+			array_fill( 0, 4, $any ), [ '-' ],
+			array_fill( 0, 12, $any )
+		);
+	}
+
+	/**
+	 * Delete all constraints where the constraint ID is a UUID
+	 * (formatted in groups of 8-4-4-4-12 digits).
+	 *
+	 * @throws DBUnexpectedError
+	 */
+	public function deleteWhereConstraintIdIsUuid() {
+		$db = wfGetDB( DB_MASTER );
+		$db->delete(
+			CONSTRAINT_TABLE,
+			// WHERE constraint_guid LIKE ________-____-____-____-____________
+			'constraint_guid ' . $db->buildLike( $this->uuidPattern( $db->anyChar() ) )
+		);
 	}
 
 	/**

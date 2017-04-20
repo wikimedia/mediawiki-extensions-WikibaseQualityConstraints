@@ -44,7 +44,7 @@ class UpdateConstraintsTable extends \Maintenance {
 		}
 
 		$constraintRepo = ConstraintReportFactory::getDefaultInstance()->getConstraintRepository();
-		$constraintRepo->deleteAll( $this->mBatchSize );
+		$constraintRepo->deleteWhereConstraintIdIsUuid();
 		$this->insertValues( $constraintRepo, $csvFile );
 		fclose( $csvFile );
 	}
