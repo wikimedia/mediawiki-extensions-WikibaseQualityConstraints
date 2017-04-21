@@ -44,8 +44,16 @@
 		}
 	},
 	"config": {
-		"WBQualityConstraintsInstanceOfId": "P31",
-		"WBQualityConstraintsSubclassOfId": "P279"
+		"WBQualityConstraintsInstanceOfId": {
+			"value": "P31",
+			"description": "The property ID of the 'instance of' property, which specifies the class(es) of an item.",
+			"public": true
+		},
+		"WBQualityConstraintsSubclassOfId": {
+			"value": "P279",
+			"description": "The property ID of the 'subclass of' property, which specifies the superclass(es) of an item.",
+			"public": true
+		}
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }
