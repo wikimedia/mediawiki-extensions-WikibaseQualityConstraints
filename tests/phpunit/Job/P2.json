@@ -1,0 +1,34 @@
+{
+  "id": "P2",
+  "type": "property",
+  "datatype": "wikibase-item",
+  "aliases": {},
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "my property"
+    }
+  },
+  "claims": {
+    "P2302": [
+      {
+        "id": "P2$484b7eaf-e86c-4f25-91dc-7ae19f8be8de",
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P2302",
+          "datatype": "wikibase-item",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 19474404,
+              "id": "Q19474404"
+            },
+            "type": "wikibase-entityid"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  }
+}

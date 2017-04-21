@@ -22,6 +22,9 @@
 		],
 		"UnitTestsList": [
 			"WikibaseQualityConstraintsHooks::onUnitTestsList"
+		],
+		"WikibaseChangeNotification": [
+			"WikibaseQualityConstraintsHooks::onWikibaseChange"
 		]
 	},
 	"SpecialPages": {
@@ -49,10 +52,18 @@
 			]
 		}
 	},
+	"JobClasses": {
+		"constraintsTableUpdate": "WikibaseQuality\\ConstraintReport\\UpdateConstraintsTableJob::newFromGlobalState"
+	},
 	"config": {
 		"WBQualityConstraintsTypeCheckMaxEntities": {
 			"value": 1000,
 			"description": "The maximum number of entities that are accessed when checking type or subtype relations.",
+			"public": true
+		},
+		"WBQualityConstraintsEnableConstraintsImportFromStatements": {
+			"value": false,
+			"description": "Whether to import property constraint statements into the constraint database or not.",
 			"public": true
 		},
 		"WBQualityConstraintsInstanceOfId": {
@@ -63,6 +74,36 @@
 		"WBQualityConstraintsSubclassOfId": {
 			"value": "P279",
 			"description": "The property ID of the 'subclass of' property, which specifies the superclass(es) of an item.",
+			"public": true
+		},
+		"WBQualityConstraintsPropertyConstraintId": {
+			"value": "P2302",
+			"description": "The property ID of the 'property constraint' property, which specifies the various constraints of a property.",
+			"public": true
+		},
+		"WBQualityConstraintsDistinctValuesConstraintId": {
+			"value": "Q21502410",
+			"description": "The item ID of the 'distinct values constraint' item, which, when used in a 'property constraint' statement on a property, indicates that all values for this property should differ from each other, or, equivalently, that each value for this property should be unique to one item.",
+			"public": true
+		},
+		"WBQualityConstraintsMultiValueConstraintId": {
+			"value": "Q21510857",
+			"description": "The item ID of the 'multi-value constraint' item, which, when used in a 'property constraint' statement on a property, indicates that a property should have more than one value per entity.",
+			"public": true
+		},
+		"WBQualityConstraintsUsedAsQualifierConstraintId": {
+			"value": "Q21510863",
+			"description": "The item ID of the 'used as qualifier constraint' item, which, when used in a 'property constraint' statement on a property, indicates that a property should only be used as a qualifier.",
+			"public": true
+		},
+		"WBQualityConstraintsSingleValueConstraintId": {
+			"value": "Q19474404",
+			"description": "The item ID of the 'single value constraint' item, which, when used in a 'property constraint' statement on a property, indicates that a property should have no more than one value per entity.",
+			"public": true
+		},
+		"WBQualityConstraintsSymmetricConstraintId": {
+			"value": "Q21510862",
+			"description": "The item ID of the 'symmetric constraint' item, which, when used in a 'property constraint' statement on a property, indicates that a referenced entity should refer back to the original entity.",
 			"public": true
 		}
 	},

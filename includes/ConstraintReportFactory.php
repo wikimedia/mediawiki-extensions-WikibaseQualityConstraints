@@ -166,6 +166,13 @@ class ConstraintReportFactory {
 				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
 				'One of' => new OneOfChecker( $constraintParameterParser, $this->constraintParameterRenderer ),
 			];
+			$this->constraintCheckerMap += [
+				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ) => $this->constraintCheckerMap['Unique value'],
+				$this->config->get( 'WBQualityConstraintsMultiValueConstraintId' ) => $this->constraintCheckerMap['Multi value'],
+				$this->config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' ) => $this->constraintCheckerMap['Qualifier'],
+				$this->config->get( 'WBQualityConstraintsSingleValueConstraintId' ) => $this->constraintCheckerMap['Single value'],
+				$this->config->get( 'WBQualityConstraintsSymmetricConstraintId' ) => $this->constraintCheckerMap['Symmetric'],
+			];
 		}
 
 		return $this->constraintCheckerMap;

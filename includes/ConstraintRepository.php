@@ -86,6 +86,24 @@ class ConstraintRepository implements ConstraintLookup {
 	}
 
 	/**
+	 * Delete all constraints for the property ID where the constraint ID is a statement ID
+	 * (an entity ID, a '$' separator, and a UUID).
+	 *
+	 * @throws DBUnexpectedError
+	 */
+	public function deleteForPropertyWhereConstraintIdIsStatementId( PropertyId $propertyId ) {
+		$db = wfGetDB( DB_MASTER );
+		$db->delete(
+			CONSTRAINT_TABLE,
+			[
+				'pid' => $propertyId->getNumericId(),
+				// AND constraint_guid LIKE %$________-____-____-____-____________
+				'constraint_guid ' . $db->buildLike( array_merge( [ $db->anyString(), '$' ], $this->uuidPattern( $db->anyChar() ) ) )
+			]
+		);
+	}
+
+	/**
 	 * @param int $batchSize
 	 *
 	 * @throws InvalidArgumentException

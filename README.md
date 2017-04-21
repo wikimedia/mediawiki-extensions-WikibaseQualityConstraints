@@ -58,3 +58,33 @@ require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";
 [constraints from templates script](https://github.com/WikidataQuality/ConstraintsFromTemplates).  
 Follow the instruction in the README to create a csv file.  
 Run `php maintenance/runScript.php extensions/Constraints/maintenance/UpdateConstraintsTable.php --csv-file <path_to_csv_file>`.
+
+* Optional: to enable importing constraints from statements on properties,
+  add the following line to your `LocalSettings`.php:
+  ```php
+  $wgWBQualityConstraintsEnableConstraintsImportFromStatements = true;
+  ```
+
+### Data import
+
+For local development, it’s easiest to import some data from Wikidata.
+You can use the [WikibaseImport] extension to do this;
+once you have installed it, you can use the following command
+to import the essential entities that this extension needs
+(stuff like the “instance of” property):
+
+```sh
+# working directory should be the MediaWiki installation folder, i.e. where LocalSettings.php is
+jq -r '.config | with_entries(select(.key | endswith("Id"))) | .[] | .value' extensions/WikibaseQualityConstraints/extension.json | php extensions/WikibaseImport/maintenance/importEntities.php --stdin
+```
+
+Afterwards, export the resulting entity IDs to your local config (since they’ll be different than on Wikidata):
+
+```sh
+# from the MediaWiki installation folder
+extensions/WikibaseQualityConstraints/maintenance/exportEntityMapping
+# or directly from the extension folder
+maintenance/exportEntityMapping
+```
+
+[WikibaseImport]: https://github.com/filbertkm/WikibaseImport
