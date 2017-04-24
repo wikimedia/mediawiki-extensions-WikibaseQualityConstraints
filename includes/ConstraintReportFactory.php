@@ -184,7 +184,7 @@ class ConstraintReportFactory {
 	 */
 	public function getConstraintRepository() {
 		if ( $this->constraintRepository === null ) {
-			$this->constraintRepository = new ConstraintRepository( CONSTRAINT_TABLE );
+			$this->constraintRepository = new ConstraintRepository();
 		}
 
 		return $this->constraintRepository;
