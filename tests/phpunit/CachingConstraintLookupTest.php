@@ -1,0 +1,32 @@
+<?php
+
+namespace WikibaseQuality\ConstraintReport\Tests;
+
+use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintLookup;
+use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
+
+class CachingConstraintLookupTest extends \PHPUnit_Framework_TestCase {
+
+	public function testQuery_CalledOnce() {
+		$p2 = new PropertyId( 'P2' );
+		$p3 = new PropertyId( 'P3' );
+
+		$mock = $this->getMockBuilder( ConstraintLookup::class )->getMock();
+		$mock->expects( $this->exactly( 2 ) )
+			->method( 'queryConstraintsForProperty' )
+			->willReturn( [] )
+			->withConsecutive(
+				[ $this->equalTo( $p2 ) ],
+				[ $this->equalTo( $p3 ) ]
+			);
+
+		$lookup = new CachingConstraintLookup( $mock );
+
+		$this->assertSame( [], $lookup->queryConstraintsForProperty( $p2 ) );
+		$this->assertSame( [], $lookup->queryConstraintsForProperty( $p2 ) );
+		$this->assertSame( [], $lookup->queryConstraintsForProperty( $p3 ) );
+		$this->assertSame( [], $lookup->queryConstraintsForProperty( $p2 ) );
+	}
+
+}

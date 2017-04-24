@@ -107,7 +107,7 @@ class ConstraintReportFactory {
 			$this->delegatingConstraintChecker = new DelegatingConstraintChecker(
 				$this->lookup,
 				$this->getConstraintCheckerMap(),
-				new ConstraintRepository()
+				new CachingConstraintLookup( $this->getConstraintRepository() )
 			);
 		}
 
