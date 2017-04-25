@@ -33,6 +33,9 @@
 	"apihelp-wbcheckconstraints-param-claimid": "GUID list identifying a claim to check a constraint report.  Separate values with '|'.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Optional filter to return only the constraints that have the specified constraint ID",
 
+	"apihelp-wbcheckconstraints-example-1": "Check all constraints on the items Q5 and Q42.",
+	"apihelp-wbcheckconstraints-example-2": "Check all constraints on a single statement.",
+
 	"wbq-subextension-name-wbqc": "Constraints",
 	"wbqc-violation-header-parameters": "Parameters:",
 	"wbqc-violations-group": "Constraints",
