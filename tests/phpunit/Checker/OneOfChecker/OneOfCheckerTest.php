@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\OneOfChecker;
 
+use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
