@@ -4,10 +4,10 @@ namespace WikibaseQuality\ConstraintReport\Test\CheckResult;
 
 use LogicException;
 use PHPUnit_Framework_TestCase;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\StringValue;
@@ -36,6 +36,11 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 	 * @var string
 	 */
 	private $constraintName;
+
+	/**
+	 * @var string
+	 */
+	private $constraintId;
 
 	/**
 	 * @var array
