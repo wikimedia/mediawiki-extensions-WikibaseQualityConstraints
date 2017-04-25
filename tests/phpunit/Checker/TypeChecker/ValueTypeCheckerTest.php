@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use HashConfig;
+use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
