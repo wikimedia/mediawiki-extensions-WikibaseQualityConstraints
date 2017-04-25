@@ -10,24 +10,21 @@ use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
 use Wikibase\ChangeOp\StatementChangeOpFactory;
-use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
-use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
-use Wikibase\DataModel\Services\Lookup\TermLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
-use Wikibase\DataModel\Services\Term\TermBuffer;
 use Wikibase\LanguageFallbackChainFactory;
 use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
+use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use Wikimedia\Assert\Assert;
@@ -69,16 +66,15 @@ class CheckConstraints extends ApiBase {
 	private $delegatingConstraintChecker;
 
 	/**
+	 * @var ResultBuilder
+	 */
+	private $resultBuilder;
+
+	/**
 	 *
 	 * @var ApiErrorReporter
 	 */
 	private $errorReporter;
-
-	/**
-	 *
-	 * @var EntityIdFormatter
-	 */
-	private $entityIdLabelFormatter;
 
 	/**
 	 *
@@ -93,11 +89,6 @@ class CheckConstraints extends ApiBase {
 	private $constraintParameterRenderer;
 
 	/**
-	 * @var TermLookup
-	 */
-	private $termLookup;
-
-	/**
 	 * Creates new instance from global state.
 	 *
 	 * @param ApiMain $main
@@ -109,7 +100,6 @@ class CheckConstraints extends ApiBase {
 	public static function newFromGlobalState( ApiMain $main, $name, $prefix = '' ) {
 		$repo = WikibaseRepo::getDefaultInstance();
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
-		$changeOpFactoryProvider = $repo->getChangeOpFactoryProvider();
 		$termLookup = $repo->getTermLookup();
 		$termBuffer = $repo->getTermBuffer();
 		$languageFallbackChainFactory = new LanguageFallbackChainFactory();
@@ -133,7 +123,6 @@ class CheckConstraints extends ApiBase {
 	}
 
 	/**
-	 *
 	 * @param ApiMain $main
 	 * @param string $name
 	 * @param string $prefix
@@ -153,7 +142,6 @@ class CheckConstraints extends ApiBase {
 		parent::__construct( $main, $name, $prefix );
 
 		$repo = WikibaseRepo::getDefaultInstance();
-		$this->statementDeserializer = $repo->getExternalFormatStatementDeserializer();
 		$changeOpFactoryProvider = $repo->getChangeOpFactoryProvider();
 
 		$this->statementChangeOpFactory = $changeOpFactoryProvider->getStatementChangeOpFactory();
@@ -191,8 +179,8 @@ class CheckConstraints extends ApiBase {
 
 
 	private function checkItems( array $entityIds, $constraintIds ) {
-
 		$checkResults = [];
+
 		foreach ( $entityIds as $entityId ) {
 			$currentCheckResults = $this->delegatingConstraintChecker->checkAgainstConstraintsOnEntityId(
 				$entityId, $constraintIds );
@@ -205,8 +193,8 @@ class CheckConstraints extends ApiBase {
 	}
 
 	private function checkClaimIds( array $claimIds, $constraintIds ) {
-
 		$checkResults = [];
+
 		foreach ( $claimIds as $claimId ) {
 			$currentCheckResults = $this->delegatingConstraintChecker->checkAgainstConstraintsOnClaimId(
 				$claimId, $constraintIds );
@@ -287,7 +275,6 @@ class CheckConstraints extends ApiBase {
 	 * @return array
 	 */
 	private function buildResult( array $checkResults, $entityIds = null ) {
-
 		$constraintReport = array();
 		ApiResult::setArrayType( $constraintReport, 'assoc' );
 
@@ -300,7 +287,6 @@ class CheckConstraints extends ApiBase {
 		}
 
 		foreach ( $checkResults as $checkResult ) {
-
 			$statement = $checkResult->getStatement();
 
 			$entityId = $checkResult->getEntityId()->getSerialization();
