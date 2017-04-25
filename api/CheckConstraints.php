@@ -220,48 +220,42 @@ class CheckConstraints extends ApiBase {
 
 	private function parseEntityIds( array $params ) {
 		$ids = $params[self::PARAM_ID];
-		if ( $ids !== null ) {
-			if ( $ids ) {
-				foreach ( $ids as $id ) {
-					try {
-						$entityIds[] = $this->entityIdParser->parse( $id );
-					} catch ( EntityIdParsingException $e ) {
-						$this->errorReporter->dieError(
-							"Invalid id: $id", 'invalid-entity-id', 0, [ self::PARAM_ID => $id ] );
-					}
-				}
-				return $entityIds;
-			} else {
-				$paramId = self::PARAM_ID;
-				$this->errorReporter->dieError(
-					"If $paramId is specified, it must be nonempty.", 'no-data' );
-			}
-		} else {
+
+		if ( $ids === null ) {
 			return [];
+		} elseif ( $ids === [] ) {
+			$this->errorReporter->dieError(
+				'If ' . self::PARAM_ID . ' is specified, it must be nonempty.', 'no-data' );
 		}
+
+		return array_map( function ( $id ) {
+			try {
+				return $this->entityIdParser->parse( $id );
+			} catch ( EntityIdParsingException $e ) {
+				$this->errorReporter->dieError(
+					"Invalid id: $id", 'invalid-entity-id', 0, [ self::PARAM_ID => $id ] );
+			}
+		}, $ids );
 	}
 
 	private function parseClaimIds( array $params ) {
 		$ids = $params[self::PARAM_CLAIM_ID];
-		if ( $ids !== null ) {
-			if ( $ids ) {
-				foreach ( $ids as $id ) {
-					try {
-						$claimIds[] = $this->statementGuidParser->parse( $id );
-					} catch ( EntityIdParsingException $e ) {
-						$this->errorReporter->dieError(
-							"Invalid claim id: $id", 'invalid-guid', 0, [ self::PARAM_CLAIM_ID => $id ] );
-					}
-				}
-				return $claimIds;
-			} else {
-				$paramClaimId = self::PARAM_CLAIM_ID;
-				$this->errorReporter->dieError(
-					"If $paramClaimId is specified, it must be nonempty.", 'no-data' );
-			}
-		} else {
+
+		if ( $ids === null ) {
 			return [];
+		} elseif ( $ids === [] ) {
+			$this->errorReporter->dieError(
+				'If ' . self::PARAM_CLAIM_ID . ' is specified, it must be nonempty.', 'no-data' );
 		}
+
+		return array_map( function ( $id ) {
+			try {
+				return $this->statementGuidParser->parse( $id );
+			} catch ( EntityIdParsingException $e ) {
+				$this->errorReporter->dieError(
+					"Invalid claim id: $id", 'invalid-guid', 0, [ self::PARAM_CLAIM_ID => $id ] );
+			}
+		}, $ids );
 	}
 
 	private function validateParameters( array $params ) {
