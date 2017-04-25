@@ -257,7 +257,21 @@ class DelegatingConstraintChecker {
 			$orderB = array_key_exists( $statusB, $order ) ? $order[ $statusB ] : $order[ 'other' ];
 
 			if ( $orderA === $orderB ) {
-				return 0;
+				$pidA = $a->getPropertyId()->getSerialization();
+				$pidB = $b->getPropertyId()->getSerialization();
+
+				if ( $pidA === $pidB ) {
+					$hashA = $a->getStatement()->getHash();
+					$hashB = $b->getStatement()->getHash();
+
+					if ( $hashA === $hashB ) {
+						return 0;
+					} else {
+						return ( $hashA > $hashB ) ? 1 : -1;
+					}
+				} else {
+					return ( $pidA > $pidB ) ? 1 : -1;
+				}
 			} else {
 				return ( $orderA > $orderB ) ? 1 : -1;
 			}
