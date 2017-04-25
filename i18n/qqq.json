@@ -31,6 +31,8 @@
 	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",
 	"apihelp-wbcheckconstraints-param-claimid": "{{doc-apihelp-param|wbcheckconstraints|claimid}}",
 	"apihelp-wbcheckconstraints-param-constraintid": "{{doc-apihelp-param|wbcheckconstraints|constraintid}}",
+	"apihelp-wbcheckconstraints-example-1": "{{doc-apihelp-example|wbcheckconstraints}}",
+	"apihelp-wbcheckconstraints-example-2": "{{doc-apihelp-example|wbcheckconstraints}}",
 	"wbq-subextension-name-wbqc": "Name of this subextension. Is shown in special page that lists all the violations.\n{{Identical|Constraint}}",
 	"wbqc-violation-header-parameters": "Header for section in violations special page that displays the parameters of the constraint.\n{{Identical|Parameter}}",
 	"wbqc-violations-group": "Type of violations this extension finds.\n{{Identical|Constraint}}",
