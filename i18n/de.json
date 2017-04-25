@@ -31,6 +31,8 @@
 	"apihelp-wbcheckconstraints-param-id": "Kennung der Objektliste, von der die Daten abgerufen werden sollen. Mehrere Werte mit „|“ oder Ähnlichem trennen.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID-Liste, die eine Behauptung erkennt, um einen Beschränkungsbericht zu prüfen. Mehrere Werte mit „|“ trennen.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Optionaler Filter, um nur die Beschränkungen zurückzugeben, die die angegebenen Beschränkungskennungen haben.",
+	"apihelp-wbcheckconstraints-example-1": "Überprüft alle Beschränkungen der Objekte Q5 und Q42.",
+	"apihelp-wbcheckconstraints-example-2": "Überprüft alle Beschränkungen einer einzelnen Aussage.",
 	"wbq-subextension-name-wbqc": "Beschränkungen",
 	"wbqc-violation-header-parameters": "Parameter:",
 	"wbqc-violations-group": "Beschränkungen",

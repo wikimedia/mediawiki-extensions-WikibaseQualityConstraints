@@ -29,6 +29,8 @@
 	"apihelp-wbcheckconstraints-param-id": "רשימת מזהי ישויות שמהן צריך לקבל נתונים. יש להפריד את הערכים בתו '|' או חלופות.",
 	"apihelp-wbcheckconstraints-param-claimid": "רשימת GUID־ים שמזהים טענה שצריך לבדוק אל מול דו\"ח אילוצים. יש להפריד ערכים בתו '|'.",
 	"apihelp-wbcheckconstraints-param-constraintid": "מסנן אופציונלי שיחזיר רק את האילוצים שיש להם מזה אילוץ שצוין",
+	"apihelp-wbcheckconstraints-example-1": "בדיקה של כל האילוצים על הפריטים Q5 ו־Q42.",
+	"apihelp-wbcheckconstraints-example-2": "בדיקת כל האילוצים על טענה בודדת.",
 	"wbq-subextension-name-wbqc": "אילוצים",
 	"wbqc-violation-header-parameters": "פרמטרים:",
 	"wbqc-violations-group": "אילוצים",

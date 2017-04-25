@@ -33,6 +33,8 @@
 	"apihelp-wbcheckconstraints-param-id": "Liste d'ID des entités pour lesquelles ont veux les informations. Séparez les valeurs avec  '|' ou similaire.",
 	"apihelp-wbcheckconstraints-param-claimid": "Liste de GUID identifiant une demande de vérification d'un rapport de contraintes. Valeurs séparées par '|'.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Filtre optionnel pour ne retourner que les contraintes qui ont l'ID de contrainte spécifié",
+	"apihelp-wbcheckconstraints-example-1": "Vérifier toutes les contraintes sur les éléments Q5 et Q42.",
+	"apihelp-wbcheckconstraints-example-2": "Vérifier toutes les contraintes sur une seule affirmation.",
 	"wbq-subextension-name-wbqc": "Contraintes",
 	"wbqc-violation-header-parameters": "Paramètres :",
 	"wbqc-violations-group": "Contraintes",
