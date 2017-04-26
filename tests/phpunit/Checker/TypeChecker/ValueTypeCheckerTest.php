@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
-use HashConfig;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -16,6 +15,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -30,6 +30,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @license GNU GPL v2+
  */
 class ValueTypeCheckerTest extends \MediaWikiTestCase {
+
+	use DefaultConfig;
 
 	/**
 	 * @var JsonFileEntityLookup
@@ -49,9 +51,11 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$config = new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] );
 		$this->checker = new ValueTypeChecker(
-			$this->lookup, new ConstraintParameterParser(), new TypeCheckerHelper( $this->lookup, $config ), $config
+			$this->lookup,
+			new ConstraintParameterParser(),
+			new TypeCheckerHelper( $this->lookup, $this->getDefaultConfig() ),
+			$this->getDefaultConfig()
 		);
 		$this->valueTypePropertyId = new PropertyId( 'P1234' );
 	}

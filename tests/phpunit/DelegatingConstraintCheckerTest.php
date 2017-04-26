@@ -2,12 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
-use HashConfig;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -42,6 +42,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
+	use DefaultConfig;
+
 	/**
 	 * @var DelegatingConstraintChecker
 	 */
@@ -61,11 +63,10 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->lookup = $this->createEntityLookup();
 		$this->statementGuidParser = new StatementGuidParser( new ItemIdParser() );
-		$config = new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] );
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
 			$this->statementGuidParser,
-			$config
+			$this->getDefaultConfig()
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 
@@ -293,7 +294,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
 			$this->statementGuidParser,
-			new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] )
+			$this->getDefaultConfig()
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 
@@ -307,7 +308,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
 			$this->statementGuidParser,
-			new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] )
+			$this->getDefaultConfig()
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 
@@ -321,7 +322,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
 			$this->statementGuidParser,
-			new HashConfig( [ 'WBQualityConstraintsInstanceOfId' => 'P31', 'WBQualityConstraintsSubclassOfId' => 'P279' ] )
+			$this->getDefaultConfig()
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 
