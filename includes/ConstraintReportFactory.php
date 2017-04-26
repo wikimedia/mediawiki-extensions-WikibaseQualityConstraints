@@ -89,10 +89,6 @@ class ConstraintReportFactory {
 		return $instance;
 	}
 
-	/**
-	 * @param EntityLookup $lookup
-	 * @param StatementGuidParser $statementGuidParser
-	 */
 	public function __construct( EntityLookup $lookup, StatementGuidParser $statementGuidParser, Config $config ) {
 		$this->lookup = $lookup;
 		$this->statementGuidParser = $statementGuidParser;

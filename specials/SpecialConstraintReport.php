@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Specials;
 
-use DataValues;
 use DataValues\DataValue;
 use Html;
 use HTMLForm;
@@ -18,7 +17,6 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;

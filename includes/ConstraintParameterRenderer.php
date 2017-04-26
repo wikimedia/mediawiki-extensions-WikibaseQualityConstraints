@@ -1,28 +1,12 @@
 <?php
 namespace WikibaseQuality\ConstraintReport;
 
-use DataValues;
 use DataValues\DataValue;
-use HTMLForm;
-use Html;
-use InvalidArgumentException;
-use SpecialPage;
-use UnexpectedValueException;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
-use Wikibase\DataModel\Entity\EntityIdParser;
-use Wikibase\DataModel\Entity\EntityIdParsingException;
-use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
-use Wikibase\DataModel\Services\Lookup\EntityLookup;
-use Wikibase\Lib\OutputFormatValueFormatterFactory;
-use Wikibase\Lib\SnakFormatter;
-use Wikibase\Lib\Store\EntityTitleLookup;
-use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
-use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
-use Wikibase\Repo\EntityIdLabelFormatterFactory;
 
 /**
  * Class ConstraintParameterRenderer

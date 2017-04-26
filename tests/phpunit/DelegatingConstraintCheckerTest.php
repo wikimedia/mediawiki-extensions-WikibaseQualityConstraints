@@ -3,13 +3,10 @@
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
 use HashConfig;
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
-use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
