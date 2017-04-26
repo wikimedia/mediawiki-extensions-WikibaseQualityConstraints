@@ -45,7 +45,7 @@ class ConstraintRepository implements ConstraintLookup {
 					'constraint_guid' => $constraint->getConstraintId(),
 					'pid' => $constraint->getPropertyId()->getNumericId(),
 					'constraint_type_qid' => $constraint->getConstraintTypeQid(),
-					'constraint_parameters' => json_encode( $constraint->getConstraintParameters() )
+					'constraint_parameters' => json_encode( $constraint->getConstraintParameters(), JSON_FORCE_OBJECT )
 				);
 			},
 			$constraints

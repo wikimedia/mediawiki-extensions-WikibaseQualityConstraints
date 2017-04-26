@@ -45,6 +45,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$constraints = [
 			new Constraint( 'foo', new PropertyId( 'P42' ), 'TestConstraint', [ 'foo' => 'bar' ] ),
 			new Constraint( 'bar', new PropertyId( 'P42' ), 'TestConstraint', [ 'bar' => 'baz' ] ),
+			new Constraint( 'baz', new PropertyId( 'P42' ), 'TestConstraint', [] ),
 		];
 		$repo = new ConstraintRepository();
 		$repo->insertBatch( $constraints );
@@ -76,6 +77,12 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 					'42',
 					'TestConstraint',
 					'{"bar":"baz"}'
+				),
+				array (
+					'baz',
+					'42',
+					'TestConstraint',
+					'{}'
 				),
 				array (
 					'foo',
