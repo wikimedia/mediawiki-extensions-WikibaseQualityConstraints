@@ -2,7 +2,9 @@
 
 ( function( mw, $, OO ) {
 	'use strict';
-	var entityJson, entityId;
+
+	var entityJson,
+		entityId;
 
 	function buildWidget( $reports ) {
 		var widget = new OO.ui.PopupButtonWidget( {
@@ -18,16 +20,19 @@
 				label: $( '<h4>' ).text( 'Constraint report' )
 			}
 		} );
+
 		widget.$element.css( {
 			'margin-inline-start': '0.5em',
 			'margin-left': '0.5em' // margin-inline-start is not supported by all browsers, margin-left is equivalent in ltr languages
 		} );
 		widget.popup.$element.css( 'z-index', 2 ); // prevent collision with rank selector and property grey field; TODO better way to do this?
+
 		return widget;
 	}
 
 	function buildReport( result ) {
 		var report;
+
 		if ( result.status === 'violation' ) {
 			report = 'Status: ' + result.status;
 			if ( result[ 'message-html' ] ) {
@@ -37,6 +42,7 @@
 			if ( result.constraint.detailMessage ) {
 				report += '<br>' + result.constraint.detailMessage;
 			}
+
 			return new OO.ui.PanelLayout( {
 				expanded: false,
 				framed: true,
@@ -51,13 +57,20 @@
 	}
 
 	function addReportsToStatement( entityData, $statement ) {
-		var statementId = $statement.parents( '.wikibase-statementview' )[ 0 ].className.replace( /^.*wikibase-statement-([A-Za-z][0-9]*\$[0-9A-Fa-f-]*).*$/, '$1' ),
+		var match = $statement.parents( '.wikibase-statementview' )[ 0 ].className.match(
+				/\bwikibase-statement-[^\s$]+\$[\dA-F-]+\b/i
+			),
+			statementId = match && match[ 1 ],
 			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
-			results, $reports,
-			i, $report;
+			results,
+			$reports,
+			i,
+			$report;
+
 		if ( !( propertyId in entityData && statementId in entityData[ propertyId ] ) ) {
 			return;
 		}
+
 		results = entityData[ propertyId ][ statementId ];
 		$reports = $( '<div>' ).addClass( 'wbqc-reports' );
 
@@ -74,6 +87,7 @@
 	}
 
 	entityJson = mw.config.get( 'wbEntity' );
+
 	if ( entityJson !== null ) {
 		entityId = JSON.parse( entityJson ).id;
 		mw.loader.using( [ 'oojs-ui-core', 'oojs-ui-widgets' ] ).done( function () {
