@@ -48,7 +48,7 @@
 	}
 
 	function addReportsToStatement( entityData, $statement ) {
-		var statementId = $statement.parents( '.wikibase-statementview' )[ 0 ].className.replace( /^.*wikibase-statement-([A-Z][0-9]*\$[0-9a-fA-F-]*).*$/, '$1' ),
+		var statementId = $statement.parents( '.wikibase-statementview' )[ 0 ].className.replace( /^.*wikibase-statement-([A-Za-z][0-9]*\$[0-9A-Fa-f-]*).*$/, '$1' ),
 			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
 			results, $reports,
 			i, $report;
