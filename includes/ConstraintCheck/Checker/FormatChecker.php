@@ -70,11 +70,12 @@ class FormatChecker implements ConstraintChecker {
 
 		/*
 		 * error handling:
-		 *   type of $dataValue for properties with 'Format' constraint has to be 'string'
+		 *   type of $dataValue for properties with 'Format' constraint has to be 'string' or 'monolingualtext'
 		 *   parameter $pattern must not be null
 		 */
-		if ( $dataValue->getType() !== 'string' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
+		$type = $dataValue->getType();
+		if ( $type !== 'string' && $type !== 'monolingualtext' ) {
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-types-2" )->params( $constraint->getConstraintTypeName(), 'string', 'monolingualtext' )->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
