@@ -46,7 +46,9 @@
 	"wbqc-violation-message-security-reason": "For security reasons, it is not possible to check the \"$1\" constraint at the moment. We are working on a solution.",
 	"wbqc-violation-message-value-needed": "Properties with constraint \"$1\" need to have a value.",
 	"wbqc-violation-message-value-needed-of-type": "Properties with constraint \"$1\" need to have values of type \"$2\".",
+	"wbqc-violation-message-value-needed-of-types-2": "Properties with constraint \"$1\" need to have values of type \"$2\" or \"$3\".",
 	"wbqc-violation-message-parameter-needed": "Properties with constraint \"$1\" need a parameter \"$2\".",
+	"wbqc-violation-message-parameters-needed-3": "Properties with constraint \"$1\" need parameters \"$2\",  \"$3\", and  \"$4\".",
 	"wbqc-violation-message-target-entity-must-exist": "The target entity must exist.",
 	"wbqc-violation-message-value-entity-must-exist": "The value entity must exist.",
 
@@ -68,7 +70,7 @@
 	"wbqc-violation-message-one-of": "The property's value must be one of the items defined in the parameters.",
 	"wbqc-violation-message-qualifier": "The property must only be used as a qualifier.",
 	"wbqc-violation-message-qualifiers": "The property must only be used with (no other than) the qualifiers defined in the parameters.",
-	"wbqc-violation-message-range-properties-needed": "Properties with values of type \"$1\" with constraint \"Range\" need the parameters \"$2\".",
+	"wbqc-violation-message-range-parameters-needed": "Properties with values of type \"$1\" with constraint \"Range\" need the parameters \"$2\" and \"$3\".",
 	"wbqc-violation-message-range": "The property's value must neither be smaller than the minimum nor larger than the maximum defined in the parameters.",
 	"wbqc-violation-message-single-value": "This property must only have a single value. That is, there must only be one claim using this property.",
 	"wbqc-violation-message-symmetric": "This property must only be used when there is a statement on its value entity with the same property and this item as its value.",

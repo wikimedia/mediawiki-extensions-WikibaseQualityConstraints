@@ -85,10 +85,10 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				$parameters['minimum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_quantity'], true );
 				$parameters['maximum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_quantity'], true );
 			} else {
-				$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'property", "minimum_quantity" and "maximum_quantity' )->escaped();
+				$message = wfMessage( "wbqc-violation-message-parameters-needed-3" )->params( $constraint->getConstraintTypeName(), 'property', 'minimum_quantity', 'maximum_quantity' )->escaped();
 			}
 		} else {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'quantity" or "time' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-types-2" )->params( $constraint->getConstraintTypeName(), 'quantity', 'time' )->escaped();
 		}
 		if ( isset( $message ) ) {
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
