@@ -80,7 +80,7 @@ class RangeChecker implements ConstraintChecker {
 				$parameters['minimum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_quantity'], true );
 				$parameters['maximum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_quantity'], true );
 			} else {
-				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'quantity', 'minimum_quantity" and "maximum_quantity' )->escaped();
+				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'quantity', 'minimum_quantity', 'maximum_quantity' )->escaped();
 			}
 		} elseif ( $dataValue->getType() === 'time' ) {
 			if ( !array_key_exists( 'minimum_quantity', $constraintParameters ) && !array_key_exists( 'maximum_quantity', $constraintParameters ) && array_key_exists( 'minimum_date', $constraintParameters ) && array_key_exists( 'maximum_date', $constraintParameters ) ) {
@@ -89,10 +89,10 @@ class RangeChecker implements ConstraintChecker {
 				$parameters['minimum_date'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_date'], true );
 				$parameters['maximum_date'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_date'], true );
 			} else {
-				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'time', 'minimum_date" and "maximum_date' )->escaped();
+				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'time', 'minimum_date', 'maximum_date' )->escaped();
 			}
 		} else {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'quantity" or "time' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-types-2" )->params( $constraint->getConstraintTypeName(), 'quantity', 'time' )->escaped();
 		}
 		if ( isset( $message ) ) {
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
