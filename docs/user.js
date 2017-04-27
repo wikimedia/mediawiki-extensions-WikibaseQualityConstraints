@@ -48,14 +48,14 @@
 	}
 
 	function addReportsToStatement( entityData, $statement ) {
-		var claimId = $statement.parents( '.wikibase-statementview' )[ 0 ].className.replace( /^.*wikibase-statement-([A-Z][0-9]*\$[0-9a-fA-F-]*).*$/, '$1' ),
+		var statementId = $statement.parents( '.wikibase-statementview' )[ 0 ].className.replace( /^.*wikibase-statement-([A-Z][0-9]*\$[0-9a-fA-F-]*).*$/, '$1' ),
 			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
 			results, $reports,
 			i, $report;
-		if ( !( propertyId in entityData && claimId in entityData[ propertyId ] ) ) {
+		if ( !( propertyId in entityData && statementId in entityData[ propertyId ] ) ) {
 			return;
 		}
-		results = entityData[ propertyId ][ claimId ];
+		results = entityData[ propertyId ][ statementId ];
 		$reports = $( '<div>' ).addClass( 'wbqc-reports' );
 
 		for( i = 0; i < results.length; i++ ) {
