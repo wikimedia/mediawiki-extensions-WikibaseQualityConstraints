@@ -60,7 +60,6 @@
 	"wbqc-violation-message-one-of": "הערך של המאפיין הזה צריך להיות אחד מהפריטים שמוגדרים בפרמטרים.",
 	"wbqc-violation-message-qualifier": "המאפיין הזה יכול לשמש רק כמבחין.",
 	"wbqc-violation-message-qualifiers": "המאפיין יכול לשמש רק עם המאפיינים שמוגדרים בפרמטרים.",
-	"wbqc-violation-message-range-properties-needed": "מאפיינים עם ערכים מסוג \"$1\" עם האילוץ \"Range\" צריכים את הפרמטרים \"$2\".",
 	"wbqc-violation-message-range": "הערך של המאפיין צריך להיות לא קטן יותר מהערך המזערי ולא גדול יותר מהערך המרבי שמוגדר בפרמטרים.",
 	"wbqc-violation-message-single-value": "למאפיין הזה צריך להיות רק ערך אחד. כלומר, צריכה להיות רק טענה אחת שמשתמשת במאפיין הזה.",
 	"wbqc-violation-message-symmetric": "המאפיין הזה יכול לשמש רק אם יש קביעה על ישות הערך שלו עם אותו מאפיין ואם הפריט הזה בתור ערך.",

@@ -60,7 +60,6 @@
 	"wbqc-violation-message-one-of": "属性的值必须是参数中定义的项之一。",
 	"wbqc-violation-message-qualifier": "属性必须只用作限定符。",
 	"wbqc-violation-message-qualifiers": "属性必须只与参数中定义的限定符一起使用。",
-	"wbqc-violation-message-range-properties-needed": "带类型“$1”的值与约束“Range”的属性需要参数“$2”。",
 	"wbqc-violation-message-range": "属性的值必须既不小于参数中定义的最低值，又不大于参数中定义的最高值。",
 	"wbqc-violation-message-single-value": "此属性必须只有一个值。换言之，这里必须只有一个声称使用此属性。",
 	"wbqc-violation-message-symmetric": "此属性必须只在当这里有一个声明在它的值实体，并且值为相同属性及其项时才能使用。",

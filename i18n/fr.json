@@ -64,7 +64,6 @@
 	"wbqc-violation-message-one-of": "La valeur de la propriété doit être l’un des éléments définis dans les paramètres.",
 	"wbqc-violation-message-qualifier": "La propriété doit être utilisée uniquement comme qualificateur.",
 	"wbqc-violation-message-qualifiers": "La propriété doit être utilisée uniquement avec les qualificateurs définis dans les paramètres (et aucun autre).",
-	"wbqc-violation-message-range-properties-needed": "Les propriétés avec des valeurs de type « $1 » avec la contrainte « Intervalle » (''Range'') nécessitent les paramètres « $2 ».",
 	"wbqc-violation-message-range": "La valeur de la propriété ne doit pas être inférieure au minimum, ni supérieure au maximum définis dans les paramètres.",
 	"wbqc-violation-message-single-value": "Cette propriété doit avoir une valeur unique. C’est-à-dire qu’il doit y avoir une seule déclaration utilisant cette propriété.",
 	"wbqc-violation-message-symmetric": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété dont la valeur est cet élément.",
