@@ -75,7 +75,7 @@
 		entityId = JSON.parse( entityJson ).id;
 		mw.loader.using( [ 'oojs-ui-core', 'oojs-ui-widgets' ] ).done( function () {
 			$.getJSON( '../api.php?action=wbcheckconstraints&format=json&id=' + entityId, function( data ) {
-				$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak-container .wikibase-snakview-value' )
+				$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak .wikibase-snakview-value' )
 					.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 			} );
 		} );
