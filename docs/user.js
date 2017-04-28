@@ -77,7 +77,12 @@
 	if ( entityJson !== null ) {
 		entityId = JSON.parse( entityJson ).id;
 		mw.loader.using( [ 'oojs-ui-core', 'oojs-ui-widgets' ] ).done( function () {
-			$.getJSON( '../api.php?action=wbcheckconstraints&format=json&id=' + entityId, function( data ) {
+			var api = new mw.Api();
+			api.get( {
+				action: 'wbcheckconstraints',
+				format: 'json',
+				id: entityId
+			} ).done( function( data ) {
 				$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak .wikibase-snakview-value' )
 					.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 			} );
