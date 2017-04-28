@@ -29,13 +29,19 @@
 	function buildReport( result ) {
 		var report;
 		if ( result.status === 'violation' ) {
-			report = 'Status: ' + result.status;
+			report = $( '<div>' );
+			report.append(
+				$( '<h5>' ).text( result.constraint.type )
+			);
 			if ( result[ 'message-html' ] ) {
-				report += '<br>Message: ' + result[ 'message-html' ];
+				report.append(
+					$( '<p>' ).html( result[ 'message-html' ] )
+				);
 			}
-			report += '<br>Constraint: ' + result.constraint.type;
-			if ( result.constraint.detailMessage ) {
-				report += '<br>' + result.constraint.detailMessage;
+			if ( result.constraint.detailHTML ) {
+				report.append( $( '<p>' ).append(
+					$( '<small>' ).html( result.constraint.detailHTML )
+				) );
 			}
 			return new OO.ui.PanelLayout( {
 				expanded: false,
@@ -43,7 +49,7 @@
 				padded: true,
 				$content: $( '<div>' )
 					.addClass( 'wbqc-report' )
-					.html( report )
+					.append( report )
 			} ).$element;
 		} else {
 			return null;
