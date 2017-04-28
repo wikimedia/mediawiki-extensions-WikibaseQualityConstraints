@@ -18,7 +18,10 @@
 				label: $( '<h4>' ).text( 'Constraint report' )
 			}
 		} );
-		widget.$element.css( 'margin-left', '0.5em' );
+		widget.$element.css( {
+			'margin-inline-start': '0.5em',
+			'margin-left': '0.5em' // margin-inline-start is not supported by all browsers, margin-left is equivalent in ltr languages
+		} );
 		widget.popup.$element.css( 'z-index', 2 ); // prevent collision with rank selector and property grey field; TODO better way to do this?
 		return widget;
 	}
