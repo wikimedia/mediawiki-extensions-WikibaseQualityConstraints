@@ -69,8 +69,11 @@
 	"wbqc-violation-message-single-value": "Message for violation of Single value constraint. When more than one value exists.",
 	"wbqc-violation-message-symmetric": "Message for violation of Symmetric constraint. When symmetric statement does not exist.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Message for violation of Type/Value type constraint. When relation is neither instance nor subclass.",
-	"wbqc-violation-message-type": "Message for violation of Type constraint. When entity is not of given type.",
+	"wbqc-violation-message-type": "Message for a violation of the “Type” or “Value type” constraint, when an entity (either the subject or the object of a statement) should have a certain type but doesn't. $1 is {{msg-mw|wbqc-violation-message-type-subject-type}} or {{msg-mw|wbqc-violation-message-type-subject-valueType}}; $2 is {{msg-mw|wbqc-violation-message-type-relation-instance}} or {{msg-mw|wbqc-violation-message-type-relation-subclass}}; $3 is the entity that doesn't have the required type; $4 is the number of classes; $5 is an HTML list of all classes; and $6, $7 etc. are the individual classes.",
+	"wbqc-violation-message-type-entity-type": "Fragment of {{msg-mw|wbqc-violation-message-type}} when the constraint is a “Type” constraint, and the entity that doesn't have the required type is the subject of the statement (the entity the statement is placed on). $1 is the property of the statement.",
+	"wbqc-violation-message-type-entity-valueType": "Fragment of {{msg-mw|wbqc-violation-message-type}} when the constraint is a “Value type” constraint, and the entity that doesn't have the required type is the object (value) of the statement. $1 is the property of the statement.",
+	"wbqc-violation-message-type-relation-instance": "Fragment of {{msg-mw|wbqc-violation-message-type}} when the relation is “instance”, and the entity should be an instance of one of the classes.",
+	"wbqc-violation-message-type-relation-subclass": "Fragment of {{msg-mw|wbqc-violation-message-type}} when the relation is “instance”, and the entity should be a subclass of one of the classes.",
 	"wbqc-violation-message-target-required-claim-property": "Message for violation of Target required claim constraint. When only a property is given.",
-	"wbqc-violation-message-target-required-claim-claim": "Message for violation of Target required claim constraint. When property and value are given.",
-	"wbqc-violation-message-value-type": "Message for violation of Value type constraint. When value is not of given type."
+	"wbqc-violation-message-target-required-claim-claim": "Message for violation of Target required claim constraint. When property and value are given."
 }

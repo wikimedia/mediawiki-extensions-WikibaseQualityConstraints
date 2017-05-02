@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -50,7 +51,11 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new TypeChecker(
 			$this->lookup,
 			new ConstraintParameterParser(),
-			new TypeCheckerHelper( $this->lookup, $this->getDefaultConfig() ),
+			new TypeCheckerHelper(
+				$this->lookup,
+				$this->getDefaultConfig(),
+				new PlainEntityIdFormatter()
+			),
 			$this->getDefaultConfig()
 		);
 		$this->typeStatement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );

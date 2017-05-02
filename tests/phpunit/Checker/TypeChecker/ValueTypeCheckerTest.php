@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -50,11 +51,16 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
+
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->checker = new ValueTypeChecker(
 			$this->lookup,
 			new ConstraintParameterParser(),
-			new TypeCheckerHelper( $this->lookup, $this->getDefaultConfig() ),
+			new TypeCheckerHelper(
+				$this->lookup,
+				$this->getDefaultConfig(),
+				new PlainEntityIdFormatter()
+			),
 			$this->getDefaultConfig()
 		);
 		$this->valueTypePropertyId = new PropertyId( 'P1234' );

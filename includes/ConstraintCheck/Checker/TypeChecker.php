@@ -104,7 +104,13 @@ class TypeChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = wfMessage( "wbqc-violation-message-type" )->escaped();
+			$message = $this->typeCheckerHelper->getViolationMessage(
+				$statement->getPropertyId(),
+				$entity->getId(),
+				$classes,
+				'type',
+				$relation
+			);
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 

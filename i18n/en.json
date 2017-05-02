@@ -75,8 +75,11 @@
 	"wbqc-violation-message-single-value": "This property must only have a single value. That is, there must only be one claim using this property.",
 	"wbqc-violation-message-symmetric": "This property must only be used when there is a statement on its value entity with the same property and this item as its value.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Parameter \"relation\" must be either \"instance\" or \"subclass\".",
-	"wbqc-violation-message-type": "This property must only be used on items that are in the relation to the item (or a subclass of the item) defined in the parameters.",
+	"wbqc-violation-message-type": "$1 should be $2 of {{PLURAL:$4|1=$6|2=$6 or $7|one of the following classes}} (or {{PLURAL:$4|1=a subclass of it|2=a subclass of them|their subclasses}}), but $3 currently {{PLURAL:$4|1=isn't.|2=isn't.|isn't: $5}}",
+	"wbqc-violation-message-type-entity-type": "Entities using the $1 property",
+	"wbqc-violation-message-type-entity-valueType": "Values of $1 statements",
+	"wbqc-violation-message-type-relation-instance": "instances",
+	"wbqc-violation-message-type-relation-subclass": "subclasses",
 	"wbqc-violation-message-target-required-claim-property": "This property must only be used when there is a statement on its value entity using the property defined in the parameters.",
-	"wbqc-violation-message-target-required-claim-claim": "This property must only be used when there is a statement on its value entity using the property with one of the values defined in the parameters.",
-	"wbqc-violation-message-value-type": "This property's value entity must be in the relation to the item (or a subclass of the item) defined in the parameters."
+	"wbqc-violation-message-target-required-claim-claim": "This property must only be used when there is a statement on its value entity using the property with one of the values defined in the parameters."
 }
