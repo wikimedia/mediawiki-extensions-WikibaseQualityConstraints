@@ -88,6 +88,13 @@ class RangeChecker implements ConstraintChecker {
 				$max = $constraintParameters['maximum_date'];
 				$parameters['minimum_date'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_date'], true );
 				$parameters['maximum_date'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_date'], true );
+			} else if ( array_key_exists( 'minimum_quantity', $constraintParameters ) && array_key_exists( 'maximum_quantity', $constraintParameters ) && !array_key_exists( 'minimum_date', $constraintParameters ) && !array_key_exists( 'maximum_date', $constraintParameters ) ) {
+				// temporary workaround for T164087: ConstraintsFromTemplates always calls the parameters _quantity, even for time properties, so fall back to that
+				// TODO remove this `else if` once we only import constraints from statements and the other ones have been removed from the constraints table in the database
+				$min = $constraintParameters['minimum_quantity'];
+				$max = $constraintParameters['maximum_quantity'];
+				$parameters['minimum_date'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_quantity'], true );
+				$parameters['maximum_date'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_quantity'], true );
 			} else {
 				$message = wfMessage( "wbqc-violation-message-range-parameters-needed" )->params( 'time', 'minimum_date', 'maximum_date' )->escaped();
 			}
