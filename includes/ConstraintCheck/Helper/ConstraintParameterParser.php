@@ -38,6 +38,12 @@ class ConstraintParameterParser {
 		}
 	}
 
+	/**
+	 * @param mixed $parameter
+	 * @param bool $asString
+	 *
+	 * @return string|ItemId|PropertyId
+	 */
 	private function parseParameter( $parameter, $asString = false ) {
 		if ( $parameter === null ) {
 			return wfMessage( "wbqc-constraintreport-no-parameter" )->escaped();
