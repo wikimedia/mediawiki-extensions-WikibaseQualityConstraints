@@ -114,6 +114,15 @@ class RangeChecker implements ConstraintChecker {
 				$message = wfMessage( 'wbqc-violation-message-range-parameters-needed' )
 					->params( 'time', 'minimum_date', 'maximum_date' )->escaped();
 			}
+			if ( isset( $min ) && isset( $max ) ) {
+				$now = gmdate( '+Y-m-d\TH:i:s\Z' );
+				if ( $min === 'now' ) {
+					$min = $now;
+				}
+				if ( $max === 'now' ) {
+					$max = $now;
+				}
+			}
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-value-needed-of-types-2' )
 				->params( $constraint->getConstraintTypeName(), 'quantity', 'time' )->escaped();

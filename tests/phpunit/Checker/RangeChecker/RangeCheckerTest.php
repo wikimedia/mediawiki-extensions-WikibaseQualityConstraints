@@ -114,6 +114,18 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
+	public function testRangeConstraintTimeWithinRangeToNow() {
+		$min = '+1960-01-01T00:00:00Z'; // TODO add leading zeroes as in testRangeConstraintTimeWithinRange
+		$max = 'now';
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$constraintParameters = array(
+			'minimum_date' => $min,
+			'maximum_date' => $max
+		);
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+	}
+
 	public function testRangeConstraintTimeTooSmall() {
 		$min = '+00000001975-01-01T00:00:00Z';
 		$max = '+00000001980-01-01T00:00:00Z';
