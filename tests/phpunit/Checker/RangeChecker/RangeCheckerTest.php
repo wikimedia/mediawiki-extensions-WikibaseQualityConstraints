@@ -102,7 +102,6 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testRangeConstraintTimeWithinRange() {
-		$this->markTestSkipped( 'RangeChecker does not correctly parse the parameters to compare – see T164279.' );
 		$min = '+00000001960-01-01T00:00:00Z';
 		$max = '+00000001980-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
@@ -115,8 +114,32 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testRangeConstraintTimeWithinRangeToNow() {
-		$min = '+1960-01-01T00:00:00Z'; // TODO add leading zeroes as in testRangeConstraintTimeWithinRange
+		$min = '+00000001960-01-01T00:00:00Z';
 		$max = 'now';
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$constraintParameters = array(
+			'minimum_date' => $min,
+			'maximum_date' => $max
+		);
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+	}
+
+	public function testRangeConstraintTimeWithinYearRange() {
+		$min = '1960';
+		$max = '1980';
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$constraintParameters = array(
+			'minimum_date' => $min,
+			'maximum_date' => $max
+		);
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+	}
+
+	public function testRangeConstraintTimeWithinYearMonthDayRange() {
+		$min = '1969-12-31';
+		$max = '1970-01-02';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
 		$constraintParameters = array(
 			'minimum_date' => $min,
