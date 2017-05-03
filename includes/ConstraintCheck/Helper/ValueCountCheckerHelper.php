@@ -15,7 +15,7 @@ use Wikibase\DataModel\Statement\StatementList;
 class ValueCountCheckerHelper {
 
 	/**
-	 * @var int[] $propertyCount
+	 * @var int[]
 	 */
 	private $propertyCount;
 

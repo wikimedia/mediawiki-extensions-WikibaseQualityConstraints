@@ -25,7 +25,7 @@ class TypeCheckerHelper {
 	const MAX_DEPTH = 20;
 
 	/**
-	 * @var EntityLookup $entityLookup
+	 * @var EntityLookup
 	 */
 	private $entityLookup;
 
