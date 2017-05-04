@@ -45,12 +45,13 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 		parent::tearDown();
 	}
 
-	// todo: it is currently only testing that 'todo' comes back
 	public function testCheckUniqueValueConstraint() {
 		$itemId = new ItemId( 'Q404' );
 		$entity = new Item( $itemId );
 		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( $itemId ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( array() ), $entity );
+
+		// TODO: It is currently only testing that 'todo' comes back.
 		$this->assertEquals( 'todo', $checkResult->getStatus(), 'check should point out that it should be implemented soon' );
 	}
 

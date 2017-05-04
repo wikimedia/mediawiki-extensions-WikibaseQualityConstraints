@@ -26,9 +26,10 @@ class UniqueValueChecker implements ConstraintChecker {
 		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 	}
 
-	// todo: implement when index exists that makes it possible in reasonable time
 	/**
 	 * Checks 'Unique value' constraint.
+	 *
+	 * @todo Implement when index exists that makes it possible in reasonable time.
 	 *
 	 * @param Statement $statement
 	 * @param Constraint $constraint
