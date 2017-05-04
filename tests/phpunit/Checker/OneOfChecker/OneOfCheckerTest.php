@@ -58,34 +58,69 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 
 		$values = 'Q1,Q2,Q3';
 
-		$this->assertEquals( 'compliance', $this->oneOfChecker->checkConstraint( $statementIn, $this->getConstraintMock( array( 'item' => $values ) ), $this->getEntity() )->getStatus(), 'check should comply' );
-		$this->assertEquals( 'violation', $this->oneOfChecker->checkConstraint( $statementNotIn, $this->getConstraintMock( array( 'item' => $values ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
+		$result = $this->oneOfChecker->checkConstraint(
+			$statementIn,
+			$this->getConstraintMock( [ 'item' => $values ] ),
+			$this->getEntity()
+		);
+		$this->assertEquals( 'compliance', $result->getStatus(), 'check should comply' );
+
+		$result = $this->oneOfChecker->checkConstraint(
+			$statementNotIn,
+			$this->getConstraintMock( [ 'item' => $values ] ),
+			$this->getEntity()
+		);
+		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
 	}
 
 	public function testOneOfConstraintWrongType() {
 		$value = new StringValue( 'Q1' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) );
 		$values = 'Q1,Q2,Q3';
-		$this->assertEquals( 'violation', $this->oneOfChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'item' => $values ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
+
+		$result = $this->oneOfChecker->checkConstraint(
+			$statement,
+			$this->getConstraintMock( [ 'item' => $values ] ),
+			$this->getEntity()
+		);
+		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
 	}
 
 	public function testOneOfConstraintEmptyArray() {
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) );
-		$this->assertEquals( 'violation', $this->oneOfChecker->checkConstraint( $statement, $this->getConstraintMock( array() ), $this->getEntity() )->getStatus(), 'check should not comply' );
+
+		$result = $this->oneOfChecker->checkConstraint(
+			$statement,
+			$this->getConstraintMock( [] ),
+			$this->getEntity()
+		);
+		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
 	}
 
 	public function testOneOfConstraintArrayWithSomevalue() {
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) );
 		$values = 'Q1,Q2,Q3,somevalue';
-		$this->assertEquals( 'compliance', $this->oneOfChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'item' => $values ) ), $this->getEntity() )->getStatus(), 'check should comply' );
+
+		$result = $this->oneOfChecker->checkConstraint(
+			$statement,
+			$this->getConstraintMock( [ 'item' => $values ] ),
+			$this->getEntity()
+		);
+		$this->assertEquals( 'compliance', $result->getStatus(), 'check should comply' );
 	}
 
 	public function testOneOfConstraintNoValueSnak() {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 		$values = 'Q1,Q2,Q3,somevalue';
-		$this->assertEquals( 'violation', $this->oneOfChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'item' => $values ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
+
+		$result = $this->oneOfChecker->checkConstraint(
+			$statement,
+			$this->getConstraintMock( [ 'item' => $values ] ),
+			$this->getEntity()
+		);
+		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
 	}
 
 	/**
