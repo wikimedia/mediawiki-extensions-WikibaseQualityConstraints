@@ -4,7 +4,6 @@
 		<exclude name="Generic.Arrays.DisallowLongArraySyntax" />
 
 		<!-- FIXME: The following should all be fixed. -->
-		<exclude name="MediaWiki.WhiteSpace.SpaceAfterControlStructure" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis" />
 		<exclude name="PSR1.Classes.ClassDeclaration" />
 		<exclude name="Squiz.ControlStructures.ControlSignature" />

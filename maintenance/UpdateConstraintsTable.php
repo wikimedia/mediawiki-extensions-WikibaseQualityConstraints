@@ -39,7 +39,7 @@ class UpdateConstraintsTable extends \Maintenance {
 
 	public function execute() {
 		$csvFile = fopen( $this->getOption( 'csv-file' ), 'rb' );
-		if( !$csvFile ) {
+		if ( !$csvFile ) {
 			$this->error( "Error while opening csv-file", 1 );
 		}
 

@@ -43,7 +43,7 @@ class FormatChecker implements ConstraintChecker {
 		$parameters = array ();
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		if( array_key_exists( 'pattern', $constraintParameters ) ) {
+		if ( array_key_exists( 'pattern', $constraintParameters ) ) {
 			$pattern = $constraintParameters['pattern'];
 			$parameters['pattern'] = $this->helper->parseSingleParameter( $pattern, true );
 		} else {

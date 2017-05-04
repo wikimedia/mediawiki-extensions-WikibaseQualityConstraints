@@ -71,7 +71,7 @@ class TypeCheckerHelper {
 			$dataValue = $mainSnak->getDataValue();
 			$comparativeClass = $dataValue->getEntityId();
 
-			if( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
+			if ( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
 				return true;
 			}
 
@@ -113,7 +113,7 @@ class TypeCheckerHelper {
 			$dataValue = $mainSnak->getDataValue();
 			$comparativeClass = $dataValue->getEntityId();
 
-			if( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
+			if ( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
 				return true;
 			}
 

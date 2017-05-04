@@ -219,7 +219,7 @@ class DelegatingConstraintChecker {
 	 * @return CheckResult
 	 */
 	private function getCheckResultFor( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if( array_key_exists( $constraint->getConstraintTypeQid(), $this->checkerMap ) ) {
+		if ( array_key_exists( $constraint->getConstraintTypeQid(), $this->checkerMap ) ) {
 			$checker = $this->checkerMap[$constraint->getConstraintTypeQid()];
 			$statsd = MediaWikiServices::getInstance()->getStatsdDataFactory();
 
