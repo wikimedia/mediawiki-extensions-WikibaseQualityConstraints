@@ -115,7 +115,7 @@ class ConstraintRepository implements ConstraintLookup {
 	 */
 	private function convertToConstraints( ResultWrapper $results ) {
 		$constraints = array();
-		foreach( $results as $result ) {
+		foreach ( $results as $result ) {
 			$constraintTypeQid = $result->constraint_type_qid;
 			$constraintParameters = (array) json_decode( $result->constraint_parameters );
 
