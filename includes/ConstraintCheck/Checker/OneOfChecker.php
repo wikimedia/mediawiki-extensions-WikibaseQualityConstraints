@@ -45,7 +45,7 @@ class OneOfChecker implements ConstraintChecker {
 		$constraintParameters = $constraint->getConstraintParameters();
 
 		$items = false;
-		if ( array_key_exists( 'item', $constraintParameters ) ){
+		if ( array_key_exists( 'item', $constraintParameters ) ) {
 			$items = explode( ',', $constraintParameters['item'] );
 			$parameters['item'] = $this->helper->parseParameterArray( $items );
 		}

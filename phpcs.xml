@@ -6,7 +6,6 @@
 		<!-- FIXME: The following should all be fixed. -->
 		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis" />
 		<exclude name="PSR1.Classes.ClassDeclaration" />
-		<exclude name="Squiz.ControlStructures.ControlSignature" />
 	</rule>
 
 	<!-- Exceptions -->
