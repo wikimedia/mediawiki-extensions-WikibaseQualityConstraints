@@ -113,7 +113,11 @@ class CheckConstraints extends ApiBase {
 		$factoryFunctions = [];
 		Assert::parameterElementType( 'callable', $factoryFunctions, '$factoryFunctions' );
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-		$valueFormatterFactory = new OutputFormatValueFormatterFactory( $factoryFunctions, $language,$languageFallbackChainFactory );
+		$valueFormatterFactory = new OutputFormatValueFormatterFactory(
+			$factoryFunctions,
+			$language,
+			$languageFallbackChainFactory
+		);
 		$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
 		return new CheckConstraints( $main, $name, $prefix, $repo->getEntityIdParser(),
@@ -176,7 +180,6 @@ class CheckConstraints extends ApiBase {
 		$this->getResult()->addValue( null, $this->getModuleName(), $this->buildResult( $output, $params[self::PARAM_ID] ) );
 		$this->resultBuilder->markSuccess( 1 );
 	}
-
 
 	private function checkItems( array $entityIds, $constraintIds ) {
 		$checkResults = [];
@@ -294,7 +297,7 @@ class CheckConstraints extends ApiBase {
 			$claimId = $statement->getGuid();
 
 			$result = [
-				'status' =>  $checkResult->getStatus(),
+				'status' => $checkResult->getStatus(),
 				'property' => $checkResult->getPropertyId()->getSerialization(),
 				'claim' => $checkResult->getStatement()->getGuid(),
 				'constraint' => array(

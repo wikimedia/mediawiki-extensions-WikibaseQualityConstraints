@@ -113,7 +113,7 @@ class ConstraintReportFactory {
 	/**
 	 * @return ConstraintChecker[]
 	 */
-	private function getConstraintCheckerMap(){
+	private function getConstraintCheckerMap() {
 		if ( $this->constraintCheckerMap === null ) {
 			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();

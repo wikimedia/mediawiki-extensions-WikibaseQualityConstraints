@@ -86,8 +86,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 					$message = wfMessage( "wbqc-violation-message-commons-link-non-existent" )->escaped();
 					$status = CheckResult::STATUS_VIOLATION;
 				}
-			}
-			else {
+			} else {
 				$message = wfMessage( "wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented" )->params( strtolower( $namespace ) )->escaped();
 				$status = CheckResult::STATUS_TODO;
 			}
