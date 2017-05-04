@@ -64,7 +64,7 @@
 
 	function addReportsToStatement( entityData, $statement ) {
 		var match = $statement.parents( '.wikibase-statementview' )[ 0 ].className.match(
-				/\bwikibase-statement-[^\s$]+\$[\dA-F-]+\b/i
+				/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
 			),
 			statementId = match && match[ 1 ],
 			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
