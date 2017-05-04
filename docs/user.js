@@ -92,8 +92,8 @@
 		}
 	}
 
-	if ( 'mobileFrontend' in mw ) {
-		// mobile view, skip
+	if ( mw.config.get( 'wbMFMode' ) ) {
+		// mobile frontend, skip
 		return;
 	}
 
