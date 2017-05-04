@@ -92,6 +92,11 @@
 		}
 	}
 
+	if ( 'mobileFrontend' in mw ) {
+		// mobile view, skip
+		return;
+	}
+
 	entityJson = mw.config.get( 'wbEntity' );
 
 	if ( entityJson !== null ) {
