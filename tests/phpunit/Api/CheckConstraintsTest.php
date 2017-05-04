@@ -221,4 +221,5 @@ class CheckConstraintsTest extends ApiTestCase {
 		);
 		self::$entityLookup->addEntity( $item );
 	}
+
 }

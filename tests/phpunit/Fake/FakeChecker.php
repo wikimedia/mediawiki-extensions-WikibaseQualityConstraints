@@ -9,6 +9,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 class FakeChecker implements ConstraintChecker {
+
 	/**
 	 * @var string
 	 */
@@ -33,4 +34,5 @@ class FakeChecker implements ConstraintChecker {
 			$entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), [], $this->status
 		);
 	}
+
 }
