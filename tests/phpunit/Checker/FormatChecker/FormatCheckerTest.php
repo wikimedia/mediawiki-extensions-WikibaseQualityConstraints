@@ -88,7 +88,14 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatConstraintTaxonName() {
-		$pattern = "(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+(( [A-Z]?[a-z]+)|( ([a-z]+-)?([a-z]+-)?[a-z]+)|( ×([a-z]+-)?([a-z]+-)?([a-z]+-)?([a-z]+-)?[a-z]+)|( \([A-Z][a-z]+\) [a-z]+)|( (‘|')[A-Z][a-z]+(('|’)s)?( de)?( [A-Z][a-z]+(-([A-Z])?[a-z]+)*)*('|’)*)|( ×| Group| (sub)?sp\.| (con)?(sub)?(notho)?var\.| (sub)?ser\.| (sub)?sect\.| subg\.| (sub)?f\.))*))";
+		$pattern = '(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+('
+			. '( [A-Z]?[a-z]+)|'
+			. '( ([a-z]+-)?([a-z]+-)?[a-z]+)|'
+			. '( ×([a-z]+-)?([a-z]+-)?([a-z]+-)?([a-z]+-)?[a-z]+)|'
+			. '( \([A-Z][a-z]+\) [a-z]+)|'
+			. "( (‘|')[A-Z][a-z]+(('|’)s)?( de)?( [A-Z][a-z]+(-([A-Z])?[a-z]+)*)*('|’)*)|"
+			. '( ×| Group| (sub)?sp\.| (con)?(sub)?(notho)?var\.| (sub)?ser\.| (sub)?sect\.|'
+			. ' subg\.| (sub)?f\.))*))';
 
 		$value1 = new StringValue( 'Populus × canescens' );
 		$value2 = new StringValue( 'Encephalartos friderici-guilielmi' );
@@ -132,7 +139,15 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatConstraintNoStringValue() {
-		$pattern = "(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+(( [A-Z]?[a-z]+)|( ([a-z]+-)?([a-z]+-)?[a-z]+)|( ×([a-z]+-)?([a-z]+-)?([a-z]+-)?([a-z]+-)?[a-z]+)|( \([A-Z][a-z]+\) [a-z]+)|( (‘|')[A-Z][a-z]+(('|’)s)?( de)?( [A-Z][a-z]+(-([A-Z])?[a-z]+)*)*('|’)*)|( ×| Group| (sub)?sp\.| (con)?(sub)?(notho)?var\.| (sub)?ser\.| (sub)?sect\.| subg\.| (sub)?f\.))*))";
+		$pattern = '(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+('
+			. '( [A-Z]?[a-z]+)|'
+			. '( ([a-z]+-)?([a-z]+-)?[a-z]+)|'
+			. '( ×([a-z]+-)?([a-z]+-)?([a-z]+-)?([a-z]+-)?[a-z]+)|'
+			. '( \([A-Z][a-z]+\) [a-z]+)|'
+			. "( (‘|')[A-Z][a-z]+(('|’)s)?( de)?( [A-Z][a-z]+(-([A-Z])?[a-z]+)*)*('|’)*)|"
+			. '( ×| Group| (sub)?sp\.| (con)?(sub)?(notho)?var\.| (sub)?ser\.| (sub)?sect\.|'
+			. ' subg\.| (sub)?f\.))*))';
+
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) );
 		$this->assertEquals( 'violation', $this->formatChecker->checkConstraint( $statement, $this->getConstraintMock( array( 'pattern' => $pattern ) ), $this->getEntity() )->getStatus(), 'check should not comply' );
