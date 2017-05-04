@@ -37,7 +37,7 @@ class UpdateConstraintsTable extends \Maintenance {
 		$this->setBatchSize( 1000 );
 	}
 
-	public function execute(){
+	public function execute() {
 		$csvFile = fopen( $this->getOption( 'csv-file' ), 'rb' );
 		if( !$csvFile ) {
 			$this->error( "Error while opening csv-file", 1 );

@@ -93,7 +93,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private $constraintParameterRenderer;
 
-	public static function newFromGlobalState()	{
+	public static function newFromGlobalState() {
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 
@@ -173,7 +173,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	function getGroupName() {
+	protected function getGroupName() {
 		return 'wikibasequality';
 	}
 
@@ -453,7 +453,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$statuses = array ();
 		foreach ( $results as $result ) {
 			$status = strtolower( $result->getStatus() );
-			$statuses[$status] = isset( $statuses[$status] ) ? $statuses[$status] +1 : 1;
+			$statuses[$status] = isset( $statuses[$status] ) ? $statuses[$status] + 1 : 1;
 		}
 
 		$statusElements = array ();

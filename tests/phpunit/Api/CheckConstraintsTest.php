@@ -89,7 +89,11 @@ class CheckConstraintsTest extends ApiTestCase {
 			$factoryFunctions = [];
 			Assert::parameterElementType( 'callable', $factoryFunctions, '$factoryFunctions' );
 			$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-			$valueFormatterFactory = new OutputFormatValueFormatterFactory( $factoryFunctions, $language,$languageFallbackChainFactory );
+			$valueFormatterFactory = new OutputFormatValueFormatterFactory(
+				$factoryFunctions,
+				$language,
+				$languageFallbackChainFactory
+			);
 			$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
 			$entityIdParser = new ItemIdParser();

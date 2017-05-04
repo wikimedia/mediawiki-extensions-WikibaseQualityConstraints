@@ -167,7 +167,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
-			 ->will( $this->returnValue( 'Conflicts with' ) ) ;
+			 ->will( $this->returnValue( 'Conflicts with' ) );
 
 		return $mock;
 	}
