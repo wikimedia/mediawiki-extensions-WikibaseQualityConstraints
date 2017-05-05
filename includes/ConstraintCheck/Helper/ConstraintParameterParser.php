@@ -14,31 +14,6 @@ use InvalidArgumentException;
 class ConstraintParameterParser {
 
 	/**
-	 * @param string $templateString
-	 *
-	 * @return string
-	 */
-	public function removeBrackets( $templateString ) {
-		$toReplace = array ( '{', '}', '|', '[', ']' );
-		return str_replace( $toReplace, '', $templateString );
-	}
-
-	/**
-	 * Used to convert a string containing a comma-separated list (as one gets out of the constraints table) to an array.
-	 *
-	 * @param string $templateString
-	 *
-	 * @return array
-	 */
-	public function stringToArray( $templateString ) {
-		if ( $templateString === null || $templateString === '' ) {
-			return array ( '' );
-		} else {
-			return explode( ',', $this->removeBrackets( str_replace( ' ', '', $templateString ) ) );
-		}
-	}
-
-	/**
 	 * @param mixed $parameter
 	 * @param bool $asString
 	 *
@@ -98,16 +73,6 @@ class ConstraintParameterParser {
 			}
 			return $array;
 		}
-	}
-
-	/**
-	 * @param mixed $json
-	 * @param string $parameter
-	 *
-	 * @return null|string
-	 */
-	public function getParameterFromJson( $json, $parameter ) {
-		return isset( $json->$parameter ) ? $json->$parameter : null;
 	}
 
 }

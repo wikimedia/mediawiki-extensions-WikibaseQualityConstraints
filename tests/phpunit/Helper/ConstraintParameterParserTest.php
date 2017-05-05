@@ -31,30 +31,6 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		unset( $this->helper );
 	}
 
-	public function testRemoveBrackets() {
-		$templateString = '{{Q|1234}}, {{Q|42}}';
-		$expected = 'Q1234, Q42';
-		$this->assertEquals( $expected, $this->helper->removeBrackets( $templateString ) );
-	}
-
-	public function testStringToArray() {
-		$templateString = '{{Q|1234}}, {{Q|42}}';
-		$expected = array ( 'Q1234', 'Q42' );
-		$this->assertEquals( $expected, $this->helper->stringToArray( $templateString ) );
-	}
-
-	public function testEmptyStringToArray() {
-		$templateString = '';
-		$expected = array ( '' );
-		$this->assertEquals( $expected, $this->helper->stringToArray( $templateString ) );
-	}
-
-	public function testGetPropertyOfJson() {
-		$json = json_decode( json_encode( array ( 'namespace' => 'File' ) ) );
-		$this->assertEquals( 'File', $this->helper->getParameterFromJson( $json, 'namespace' ) );
-		$this->assertEquals( null, $this->helper->getParameterFromJson( $json, 'Does not exist' ) );
-	}
-
 	public function testParseSingleParameter() {
 		$parameter = 'P1';
 		$this->assertEquals( array( new PropertyId( $parameter ) ), $this->helper->parseSingleParameter( $parameter ) );
