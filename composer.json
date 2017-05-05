@@ -23,7 +23,8 @@
 		"phpunit/phpunit": "^3.7.37|~4.5",
 		"satooshi/php-coveralls": "master-dev",
 		"jakub-onderka/php-parallel-lint": "0.9.2",
-		"wikibase/wikibase-codesniffer": "^0.1.0"
+		"wikibase/wikibase-codesniffer": "^0.1.0",
+		"jakub-onderka/php-console-highlighter": "0.3.2"
 	},
 	"autoload": {
 		"psr-4": {
