@@ -15,12 +15,13 @@ class CachingConstraintLookupTest extends \PHPUnit_Framework_TestCase {
 		$mock = $this->getMockBuilder( ConstraintLookup::class )->getMock();
 		$mock->expects( $this->exactly( 2 ) )
 			->method( 'queryConstraintsForProperty' )
-			->willReturn( [] )
+			->will( $this->returnValue( [] ) )
 			->withConsecutive(
 				[ $this->equalTo( $p2 ) ],
 				[ $this->equalTo( $p3 ) ]
 			);
 
+		/** @var ConstraintLookup $mock */
 		$lookup = new CachingConstraintLookup( $mock );
 
 		$this->assertSame( [], $lookup->queryConstraintsForProperty( $p2 ) );

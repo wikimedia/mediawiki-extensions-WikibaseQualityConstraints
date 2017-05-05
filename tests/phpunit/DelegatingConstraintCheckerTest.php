@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
@@ -85,7 +86,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	/**
 	 * Adds temporary test data to database.
 	 *
-	 * @throws \DBUnexpectedError
+	 * @throws DBUnexpectedError
 	 */
 	public function addDBData() {
 		$this->db->delete(
