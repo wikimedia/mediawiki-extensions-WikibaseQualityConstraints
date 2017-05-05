@@ -94,8 +94,6 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$thisValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
-
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		/** @var Statement $statement */
 		foreach ( $entity->getStatements() as $statement ) {
@@ -112,10 +110,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				}
 
 				if ( $mainSnak->getDataValue()->getType() === $dataValue->getType() && $mainSnak->getType() === 'value' ) {
-					$thatValue = $this->rangeCheckerHelper->getComparativeValue( $mainSnak->getDataValue() );
-
-					// negative difference is possible
-					$diff = $thisValue - $thatValue;
+					$diff = $this->rangeCheckerHelper->getDifference( $dataValue, $mainSnak->getDataValue() );
 
 					if ( $diff < $min || $diff > $max ) {
 						$message = wfMessage( "wbqc-violation-message-diff-within-range" )->escaped();

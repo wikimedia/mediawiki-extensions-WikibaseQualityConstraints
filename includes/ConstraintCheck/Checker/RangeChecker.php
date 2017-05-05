@@ -83,6 +83,8 @@ class RangeChecker implements ConstraintChecker {
 				$max = $constraintParameters['maximum_quantity'];
 				$parameters['minimum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $min, true );
 				$parameters['maximum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $max, true );
+				$min = $this->rangeCheckerHelper->parseQuantity( $min );
+				$max = $this->rangeCheckerHelper->parseQuantity( $max );
 			} else {
 				$message = wfMessage( 'wbqc-violation-message-range-parameters-needed' )
 					->params( 'quantity', 'minimum_quantity', 'maximum_quantity' )->escaped();
@@ -122,6 +124,8 @@ class RangeChecker implements ConstraintChecker {
 				if ( $max === 'now' ) {
 					$max = $now;
 				}
+				$min = $this->rangeCheckerHelper->parseTime( $min );
+				$max = $this->rangeCheckerHelper->parseTime( $max );
 			}
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-value-needed-of-types-2' )
@@ -140,9 +144,8 @@ class RangeChecker implements ConstraintChecker {
 			);
 		}
 
-		$comparativeValue = $this->rangeCheckerHelper->getComparativeValue( $dataValue );
-
-		if ( $comparativeValue < $min || $comparativeValue > $max ) {
+		if ( $this->rangeCheckerHelper->getComparison( $min, $dataValue ) > 0 ||
+			 $this->rangeCheckerHelper->getComparison( $dataValue, $max ) > 0 ) {
 			$message = wfMessage( "wbqc-violation-message-range" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {

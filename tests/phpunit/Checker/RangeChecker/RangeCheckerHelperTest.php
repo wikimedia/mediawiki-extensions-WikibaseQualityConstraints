@@ -26,20 +26,62 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * @dataProvider getComparativeValueProvider
+	 * @dataProvider getComparisonProvider
 	 */
-	public function testGetComparativeValue( $expected, DataValue $dataValue ) {
+	public function testGetComparison( $expected, DataValue $lhs, DataValue $rhs ) {
+		$this->assertContains( $expected, [ -1, 0, 1 ], '$expected must be -1, 0, or 1' );
 		$rangeCheckHelper = new RangeCheckerHelper();
-		$comparativeValue = $rangeCheckHelper->getComparativeValue( $dataValue );
-
-		$this->assertSame( $expected, $comparativeValue );
+		$actual = $rangeCheckHelper->getComparison( $lhs, $rhs );
+		switch ( $expected ) {
+			case -1:
+				$this->assertLessThan( 0, $actual );
+				break;
+			case 0:
+				$this->assertSame( 0, $actual );
+				break;
+			case 1:
+				$this->assertGreaterThan( 0, $actual );
+				break;
+		}
 	}
 
-	public function getComparativeValueProvider() {
+	public function getComparisonProvider() {
 		$cases = [
-			[ '+1970-01-01T00:00:00Z', $this->getTimeValue() ],
-			[ '+42', $this->getQuantityValue() ],
-			[ '+9000', UnboundedQuantityValue::newFromNumber( '+9000' ) ]
+			[ -1, $this->getTimeValue( 1970 ), $this->getTimeValue( 1971 ) ],
+			[ 0, $this->getTimeValue( 1970 ), $this->getTimeValue( 1970 ) ],
+			[ 1, $this->getTimeValue( 1971 ), $this->getTimeValue( 1970 ) ],
+			[ -1, $this->getQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 ) ],
+			[ 0, $this->getQuantityValue( 42.0 ), $this->getQuantityValue( 42.0 ) ],
+			[ 1, $this->getQuantityValue( 1337.0 ), $this->getQuantityValue( 42.0 ) ],
+			[ -1, $this->getUnboundedQuantityValue( 42.0 ), $this->getUnboundedQuantityValue( 1337.0 ) ],
+			[ 0, $this->getUnboundedQuantityValue( 42.0 ), $this->getUnboundedQuantityValue( 42.0 ) ],
+			[ 1, $this->getUnboundedQuantityValue( 1337.0 ), $this->getUnboundedQuantityValue( 42.0 ) ],
+		];
+
+		return $cases;
+	}
+
+	/**
+	 * @dataProvider getDifferenceProvider
+	 */
+	public function testGetDifference( $expected, DataValue $minuend, DataValue $subtrahend ) {
+		$rangeCheckHelper = new RangeCheckerHelper();
+		$actual = $rangeCheckHelper->getDifference( $minuend, $subtrahend );
+		$this->assertSame( $expected, $actual );
+	}
+
+	public function getDifferenceProvider() {
+		$cases = [
+			[ -1.0, $this->getTimeValue( 1970 ), $this->getTimeValue( 1971 ) ],
+			[ 1.0, $this->getTimeValue( 1971 ), $this->getTimeValue( 1970 ) ],
+			[ -1.0, $this->getTimeValue( -1 ), $this->getTimeValue( 1 ) ],
+			[ 1.0, $this->getTimeValue( 1 ), $this->getTimeValue( -1 ) ],
+			[ -1.0, $this->getTimeValue( -1971 ), $this->getTimeValue( -1970 ) ],
+			[ 1.0, $this->getTimeValue( -1970 ), $this->getTimeValue( -1971 ) ],
+			[ -1295.0, $this->getQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 ) ],
+			[ 1295.0, $this->getQuantityValue( 1337.0 ), $this->getQuantityValue( 42.0 ) ],
+			[ -1295.0, $this->getQuantityValue( 42.0 ), $this->getUnboundedQuantityValue( 1337.0 ) ],
+			[ -1295.0, $this->getUnboundedQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 ) ]
 		];
 
 		return $cases;
@@ -48,14 +90,38 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException InvalidArgumentException
 	 */
-	public function testGetComparativeValue_unsupportedDataValueTypeThrowsException() {
+	public function testGetComparison_unsupportedDataValueTypeThrowsException() {
 		$rangeCheckHelper = new RangeCheckerHelper();
-		$rangeCheckHelper->getComparativeValue( new StringValue( 'kittens' ) );
+		$rangeCheckHelper->getComparison( new StringValue( 'kittens' ), new StringValue( 'puppies' ) );
 	}
 
-	private function getTimeValue() {
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testGetComparison_differingDataValueTypeThrowsException() {
+		$rangeCheckHelper = new RangeCheckerHelper();
+		$rangeCheckHelper->getComparison( $this->getQuantityValue( 42.0 ), $this->getTimeValue( 1970 ) );
+	}
+
+	public function testParseTime_year() {
+		$rangeCheckHelper = new RangeCheckerHelper();
+		$this->assertSame( '+1970-00-00T00:00:00Z', $rangeCheckHelper->parseTime( '1970' )->getTime() );
+	}
+
+	public function testParseTime_yearMonthDay() {
+		$rangeCheckHelper = new RangeCheckerHelper();
+		$this->assertSame( '+1970-01-01T00:00:00Z', $rangeCheckHelper->parseTime( '1970-01-01' )->getTime() );
+	}
+
+	/**
+	 * @param integer $year
+	 *
+	 * @return TimeValue
+	 */
+	private function getTimeValue( $year ) {
+		$yearString = $year > 0 ? "+$year" : "$year";
 		return new TimeValue(
-			'+00000001970-01-01T00:00:00Z',
+			"$yearString-01-01T00:00:00Z",
 			0,
 			0,
 			0,
@@ -64,10 +130,24 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	private function getQuantityValue() {
-		$decimalValue = new DecimalValue( 42 );
+	/**
+	 * @param float $amount
+	 *
+	 * @return QuantityValue
+	 */
+	private function getQuantityValue( $amount ) {
+		$decimalValue = new DecimalValue( $amount );
 
 		return new QuantityValue( $decimalValue, '1', $decimalValue, $decimalValue );
+	}
+
+	/**
+	 * @param float $amount
+	 *
+	 * @return UnboundedQuantityValue
+	 */
+	private function getUnboundedQuantityValue( $amount ) {
+		return UnboundedQuantityValue::newFromNumber( $amount );
 	}
 
 }
