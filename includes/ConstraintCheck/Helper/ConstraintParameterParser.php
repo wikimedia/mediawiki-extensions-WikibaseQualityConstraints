@@ -52,7 +52,7 @@ class ConstraintParameterParser {
 	 * @return array
 	 */
 	public function parseSingleParameter( $parameter, $asString = false ) {
-		return array ( $this->parseParameter( $parameter, $asString ) );
+		return [ $this->parseParameter( $parameter, $asString ) ];
 	}
 
 	/**
@@ -65,9 +65,9 @@ class ConstraintParameterParser {
 	 */
 	public function parseParameterArray( $parameterArray, $asString = false ) {
 		if ( $parameterArray[ 0 ] === '' ) { // parameter not given
-			return array ( wfMessage( "wbqc-constraintreport-no-parameter" )->escaped() );
+			return [ wfMessage( "wbqc-constraintreport-no-parameter" )->escaped() ];
 		} else {
-			$array = array ();
+			$array = [];
 			foreach ( $parameterArray as $parameter ) {
 				$array[] = $this->parseParameter( $parameter, $asString );
 			}

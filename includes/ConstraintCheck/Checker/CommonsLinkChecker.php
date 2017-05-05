@@ -40,7 +40,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		$parameters = array ();
+		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 		$namespace = '';
 		if ( array_key_exists( 'namespace', $constraintParameters ) ) {
@@ -114,7 +114,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		$dbConnection = $dbLoadBalancer->getConnection(
 			DB_REPLICA, false, $commonsWikiId );
 		$row = $dbConnection->selectRow(
-			'image', '*', array( 'img_name' => $commonsLink ) );
+			'image', '*', [ 'img_name' => $commonsLink ] );
 
 		return $row ? true : false;
 	}
@@ -125,7 +125,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * @return bool
 	 */
 	private function commonsLinkIsWellFormed( $commonsLink ) {
-		$toReplace = array ( "_", ":", "%20" );
+		$toReplace = [ "_", ":", "%20" ];
 		$compareString = trim( str_replace( $toReplace, '', $commonsLink ) );
 		return $commonsLink === $compareString;
 	}

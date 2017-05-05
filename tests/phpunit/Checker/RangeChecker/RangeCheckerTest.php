@@ -71,10 +71,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	public function testRangeConstraintWithinRange() {
 		$value = new DecimalValue( 3.1415926536 );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_quantity' => 0,
 			'maximum_quantity' => 10
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -82,10 +82,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	public function testRangeConstraintTooSmall() {
 		$value = new DecimalValue( 42 );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_quantity' => 100,
 			'maximum_quantity' => 1000
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -93,10 +93,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	public function testRangeConstraintTooBig() {
 		$value = new DecimalValue( 3.141592 );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_quantity' => 0,
 			'maximum_quantity' => 1
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -105,10 +105,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$min = '+00000001960-01-01T00:00:00Z';
 		$max = '+00000001980-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_date' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -117,10 +117,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$min = '+00000001960-01-01T00:00:00Z';
 		$max = 'now';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_date' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -129,10 +129,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$min = '1960';
 		$max = '1980';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_date' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -141,10 +141,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$min = '1969-12-31';
 		$max = '1970-01-02';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_date' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -153,10 +153,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$min = '+00000001975-01-01T00:00:00Z';
 		$max = '+00000001980-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_date' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -165,10 +165,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$min = '+00000001960-01-01T00:00:00Z';
 		$max = '+00000001965-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_date' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -178,10 +178,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$max = 42;
 		$value = new DecimalValue( 42 );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_quantity' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -190,10 +190,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$min = '+00000001970-01-01T00:00:00Z';
 		$max = 42;
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_quantity' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -202,17 +202,17 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$min = '+00000001960-01-01T00:00:00Z';
 		$max = '+00000001965-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new StringValue( '1.1.1970' ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'minimum_date' => $min,
 			'maximum_date' => $max
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testRangeConstraintNoValueSnak() {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
-		$constraintParameters = array();
+		$constraintParameters = [];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}

@@ -56,7 +56,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	public function addDBData() {
 		$this->db->delete('image', '*');
 
-		$this->db->insert('image', array(
+		$this->db->insert('image', [
 				'img_name' => 'test_image.jpg',
 				'img_size' => '42',
 				'img_width' => '7',
@@ -70,7 +70,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 				'img_user_text' => 'yomamma',
 				'img_timestamp' => '201501010000',
 				'img_sha1' => '8843d7f92416211de9ebb963ff4ce28125932878'
-			)
+			]
 		);
 	}
 

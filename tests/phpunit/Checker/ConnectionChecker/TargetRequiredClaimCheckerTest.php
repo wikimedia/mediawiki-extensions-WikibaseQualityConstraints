@@ -70,10 +70,10 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P2',
 			'item' => 'Q42'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -82,10 +82,10 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P2',
 			'item' => 'Q2'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -94,9 +94,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P2'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -105,9 +105,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P3'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -116,7 +116,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array();
+		$constraintParameters = [];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -125,9 +125,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$value = new StringValue( 'Q5' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P2'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -136,9 +136,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P2'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -146,9 +146,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 	public function testTargetRequiredClaimConstraintNoValueSnak() {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P2'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}

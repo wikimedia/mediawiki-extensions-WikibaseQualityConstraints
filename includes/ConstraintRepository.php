@@ -26,7 +26,7 @@ class ConstraintRepository implements ConstraintLookup {
 		$results = $db->select(
 			CONSTRAINT_TABLE,
 			'*',
-			array( 'pid' => $propertyId->getNumericId() )
+			[ 'pid' => $propertyId->getNumericId() ]
 		);
 
 		return $this->convertToConstraints( $results );
@@ -41,12 +41,12 @@ class ConstraintRepository implements ConstraintLookup {
 	public function insertBatch( array $constraints ) {
 		$accumulator = array_map(
 			function ( Constraint $constraint ) {
-				return array(
+				return [
 					'constraint_guid' => $constraint->getConstraintId(),
 					'pid' => $constraint->getPropertyId()->getNumericId(),
 					'constraint_type_qid' => $constraint->getConstraintTypeQid(),
 					'constraint_parameters' => json_encode( $constraint->getConstraintParameters(), JSON_FORCE_OBJECT )
-				);
+				];
 			},
 			$constraints
 		);
@@ -114,7 +114,7 @@ class ConstraintRepository implements ConstraintLookup {
 	 * @return Constraint[]
 	 */
 	private function convertToConstraints( ResultWrapper $results ) {
-		$constraints = array();
+		$constraints = [];
 		foreach ( $results as $result ) {
 			$constraintTypeQid = $result->constraint_type_qid;
 			$constraintParameters = (array) json_decode( $result->constraint_parameters );

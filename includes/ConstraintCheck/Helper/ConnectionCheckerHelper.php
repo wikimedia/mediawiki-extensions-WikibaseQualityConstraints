@@ -52,7 +52,7 @@ class ConnectionCheckerHelper {
 		foreach ( $statementList as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
 				if ( is_string( $itemIdSerializationOrArray ) ) { // string
-					$itemIdSerializationArray = array ( $itemIdSerializationOrArray );
+					$itemIdSerializationArray = [ $itemIdSerializationOrArray ];
 				} else { // array
 					$itemIdSerializationArray = $itemIdSerializationOrArray;
 				}

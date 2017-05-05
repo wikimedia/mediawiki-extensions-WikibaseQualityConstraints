@@ -69,7 +69,7 @@ class CheckResult {
 	 * @param string $status
 	 * @param string $message (sanitized HTML)
 	 */
-	public function __construct( EntityId $entityId, Statement $statement, $constraintName, $constraintId,  $parameters = array (), $status = self::STATUS_TODO, $message = '' ) {
+	public function __construct( EntityId $entityId, Statement $statement, $constraintName, $constraintId,  $parameters = [], $status = self::STATUS_TODO, $message = '' ) {
 		$this->entityId = $entityId;
 		$this->statement = $statement;
 		$this->constraintName = $constraintName;

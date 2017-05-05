@@ -120,7 +120,7 @@ class ConstraintReportFactory {
 			$rangeCheckerHelper = new RangeCheckerHelper();
 			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config );
 
-			$this->constraintCheckerMap = array(
+			$this->constraintCheckerMap = [
 				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
 				'Item' => new ItemChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
 				'Target required claim' => new TargetRequiredClaimChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
@@ -139,7 +139,7 @@ class ConstraintReportFactory {
 				'Format' => new FormatChecker( $constraintParameterParser ),
 				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
 				'One of' => new OneOfChecker( $constraintParameterParser ),
-			);
+			];
 		}
 
 		return $this->constraintCheckerMap;
@@ -150,26 +150,26 @@ class ConstraintReportFactory {
 	 */
 	public function getConstraintParameterMap() {
 		if ( $this->constraintParameterMap === null ) {
-			$this->constraintParameterMap = array(
-				'Commons link' => array( 'namespace' ),
-				'Conflicts with' => array( 'property', 'item' ),
-				'Diff within range' => array( 'property', 'minimum_quantity', 'maximum_quantity' ),
-				'Format' => array( 'pattern' ),
-				'Inverse' => array( 'property' ),
-				'Item' => array( 'property', 'item' ),
-				'Mandatory qualifiers' => array( 'property' ),
-				'Multi value' => array(),
-				'One of' => array( 'item' ),
-				'Qualifier' => array(),
-				'Qualifiers' => array( 'property' ),
-				'Range' => array( 'minimum_quantity', 'maximum_quantity', 'minimum_date', 'maximum_date' ),
-				'Single value' => array(),
-				'Symmetric' => array(),
-				'Target required claim' => array( 'property', 'item' ),
-				'Type' => array( 'class', 'relation' ),
-				'Unique value' => array(),
-				'Value type' => array( 'class', 'relation' )
-			);
+			$this->constraintParameterMap = [
+				'Commons link' => [ 'namespace' ],
+				'Conflicts with' => [ 'property', 'item' ],
+				'Diff within range' => [ 'property', 'minimum_quantity', 'maximum_quantity' ],
+				'Format' => [ 'pattern' ],
+				'Inverse' => [ 'property' ],
+				'Item' => [ 'property', 'item' ],
+				'Mandatory qualifiers' => [ 'property' ],
+				'Multi value' => [],
+				'One of' => [ 'item' ],
+				'Qualifier' => [],
+				'Qualifiers' => [ 'property' ],
+				'Range' => [ 'minimum_quantity', 'maximum_quantity', 'minimum_date', 'maximum_date' ],
+				'Single value' => [],
+				'Symmetric' => [],
+				'Target required claim' => [ 'property', 'item' ],
+				'Type' => [ 'class', 'relation' ],
+				'Unique value' => [],
+				'Value type' => [ 'class', 'relation' ]
+			];
 		}
 
 		return $this->constraintParameterMap;

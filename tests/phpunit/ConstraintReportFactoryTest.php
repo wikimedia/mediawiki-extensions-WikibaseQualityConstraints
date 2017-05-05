@@ -18,7 +18,7 @@ class ConstraintReportFactoryTest extends \MediaWikiTestCase {
 
 	public function testGetMap() {
 		$map = ConstraintReportFactory::getDefaultInstance()->getConstraintParameterMap();
-		$this->assertEquals( array( 'pattern' ), $map['Format'] );
+		$this->assertEquals( [ 'pattern' ], $map['Format'] );
 	}
 
 	public function testGetDefaultInstance() {

@@ -52,7 +52,7 @@ class UpdateConstraintsTable extends \Maintenance {
 	private function insertValues( ConstraintRepository $constraintRepo, $csvFile ) {
 		$i = 0;
 		$db = wfGetDB( DB_MASTER );
-		$accumulator = array();
+		$accumulator = [];
 
 		while ( true ) {
 			$data = fgetcsv( $csvFile );
@@ -67,7 +67,7 @@ class UpdateConstraintsTable extends \Maintenance {
 					$this->output( "$i rows inserted" );
 				}
 
-				$accumulator = array();
+				$accumulator = [];
 
 				if ( $data === false ) {
 					if ( !$this->isQuiet() ) {

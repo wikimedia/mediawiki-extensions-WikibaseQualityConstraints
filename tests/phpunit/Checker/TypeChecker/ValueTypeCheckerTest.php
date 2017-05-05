@@ -69,168 +69,168 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	public function testValueTypeConstraintInstanceValid() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testValueTypeConstraintInstanceValidWithIndirection() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testValueTypeConstraintInstanceValidWithMoreIndirection() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testValueTypeConstraintSubclassValid() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testValueTypeConstraintSubclassValidWithIndirection() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testValueTypeConstraintSubclassValidWithMoreIndirection() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testValueTypeConstraintInstanceInvalid() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintInstanceInvalidWithIndirection() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintInstanceInvalidWithMoreIndirection() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q200,Q201'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalid() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalidWithIndirection() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalidWithMoreIndirection() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'subclass',
 			'class' => 'Q200,Q201'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintMissingRelation() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintMissingClass() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintWrongType() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new StringValue( 'foo bar baz' ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintNonExistingValue() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q100' ) ) ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testValueTypeConstraintNoValueSnak() {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}

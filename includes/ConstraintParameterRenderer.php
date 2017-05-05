@@ -87,7 +87,7 @@ class ConstraintParameterRenderer{
 			return $this->formatValue( $value );
 		};
 
-		$formattedParameters = array();
+		$formattedParameters = [];
 		foreach ( $parameters as $parameterName => $parameterValue ) {
 			$formattedParameterValues = implode( ', ',
 				$this->limitArrayLength( array_map( $valueFormatter, $parameterValue ) ) );

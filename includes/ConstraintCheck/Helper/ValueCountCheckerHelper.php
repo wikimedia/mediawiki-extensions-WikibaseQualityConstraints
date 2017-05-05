@@ -26,7 +26,7 @@ class ValueCountCheckerHelper {
 	 */
 	public function getPropertyCount( StatementList $statements ) {
 		if ( !isset( $this->propertyCount ) ) {
-			$this->propertyCount = array ();
+			$this->propertyCount = [];
 
 			/** @var Statement $statement */
 			foreach ( $statements as $statement ) {

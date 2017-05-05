@@ -39,7 +39,7 @@ class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		parent::setUp();
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) );
-		$this->statementList = new StatementList( array( $statement1, $statement2 ) );
+		$this->statementList = new StatementList( [ $statement1, $statement2 ] );
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 	}
 
@@ -69,12 +69,12 @@ class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasClaimValidArray() {
-		$this->assertEquals( true, $this->connectionCheckerHelper->hasClaim( $this->statementList, 'P1', array( 'Q1', 'Q2' ) ) );
+		$this->assertEquals( true, $this->connectionCheckerHelper->hasClaim( $this->statementList, 'P1', [ 'Q1', 'Q2' ] ) );
 	}
 
 	public function testHasClaimNoValueSnak() {
 		$statementList = new StatementList( new Statement( new PropertyNoValueSnak( 1 ) ) );
-		$this->assertEquals( false, $this->connectionCheckerHelper->hasClaim( $statementList, 'P1', array( 'Q1', 'Q2' ) ) );
+		$this->assertEquals( false, $this->connectionCheckerHelper->hasClaim( $statementList, 'P1', [ 'Q1', 'Q2' ] ) );
 	}
 
 }

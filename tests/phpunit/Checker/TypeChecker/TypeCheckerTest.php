@@ -64,148 +64,148 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 
 	public function testTypeConstraintInstanceValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101',
 			'relation' => 'instance'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testTypeConstraintInstanceValidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101',
 			'relation' => 'instance'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testTypeConstraintInstanceValidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101',
 			'relation' => 'instance'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testTypeConstraintSubclassValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101',
 			'relation' => 'subclass'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testTypeConstraintSubclassValidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101',
 			'relation' => 'subclass'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testTypeConstraintSubclassValidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101',
 			'relation' => 'subclass'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
 	public function testTypeConstraintInstanceInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q200,Q201',
 			'relation' => 'instance'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testTypeConstraintInstanceInvalidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q200,Q201',
 			'relation' => 'instance'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testTypeConstraintInstanceInvalidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q200,Q201',
 			'relation' => 'instance'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testTypeConstraintSubclassInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q200,Q201',
 			'relation' => 'subclass'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testTypeConstraintSubclassInvalidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q200,Q201' ,
 			'relation' => 'subclass'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testTypeConstraintSubclassInvalidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q200,Q201',
 			'relation' => 'subclass'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testTypeConstraintMissingRelation() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testTypeConstraintMissingClass() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'relation' => 'subclass'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
 	public function testTypeConstraintSubclassCycle() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q7' ) );
-		$constraintParameters = array(
+		$constraintParameters = [
 			'class' => 'Q100,Q101',
 			'relation' => 'instance'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
