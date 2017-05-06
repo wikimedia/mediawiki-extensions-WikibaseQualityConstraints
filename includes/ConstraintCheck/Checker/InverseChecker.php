@@ -57,7 +57,7 @@ class InverseChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		$parameters = array ();
+		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
 		if ( array_key_exists( 'property', $constraintParameters ) ) {

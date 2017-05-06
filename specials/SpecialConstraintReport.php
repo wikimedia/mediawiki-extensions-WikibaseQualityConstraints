@@ -165,7 +165,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return array
 	 */
 	private function getModules() {
-		return array ( 'SpecialConstraintReportPage' );
+		return [ 'SpecialConstraintReportPage' ];
 	}
 
 	/**
@@ -256,16 +256,16 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Builds html form for entity id input
 	 */
 	private function buildEntityIdForm() {
-		$formDescriptor = array(
-			'entityid' => array(
+		$formDescriptor = [
+			'entityid' => [
 				'class' => 'HTMLTextField',
 				'section' => 'section',
 				'name' => 'entityid',
 				'label-message' => 'wbqc-constraintreport-form-entityid-label',
 				'cssclass' => 'wbqc-constraintreport-form-entity-id',
 				'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped()
-			)
-		);
+			]
+		];
 		$htmlForm = new HTMLForm( $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
 		$htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
 		$htmlForm->setSubmitCallback( function() {
@@ -301,9 +301,9 @@ class SpecialConstraintReport extends SpecialPage {
 		return
 			Html::element(
 				'p',
-				array (
+				[
 					'class' => $cssClasses
-				),
+				],
 				$this->msg( $messageKey )->escaped()
 			);
 	}
@@ -313,11 +313,11 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private function getExplanationText() {
 		return
-			Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
+			Html::openElement( 'div', [ 'class' => 'wbqc-explanation' ] )
 			. $this->msg( 'wbqc-constraintreport-explanation-part-one' )->escaped()
 			. Html::closeElement( 'div' )
 			. Html::element( 'br' )
-			. Html::openElement( 'div', array( 'class' => 'wbqc-explanation') )
+			. Html::openElement( 'div', [ 'class' => 'wbqc-explanation' ] )
 			. $this->msg( 'wbqc-constraintreport-explanation-part-two' )->escaped()
 			. Html::closeElement( 'div' );
 	}
@@ -343,7 +343,7 @@ class SpecialConstraintReport extends SpecialPage {
 	private function buildResultTable( EntityId $entityId, array $results ) {
 		// Set table headers
 		$table = new HtmlTableBuilder(
-			array (
+			[
 				new HtmlTableHeaderBuilder(
 					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->escaped(),
 					true
@@ -356,7 +356,7 @@ class SpecialConstraintReport extends SpecialPage {
 					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->escaped(),
 					true
 				)
-			)
+			]
 		);
 
 		foreach ( $results as $result ) {
@@ -402,23 +402,23 @@ class SpecialConstraintReport extends SpecialPage {
 
 		// Append cells
 		$table->appendRow(
-			array (
+			[
 				new HtmlTableCellBuilder(
 					$statusColumn,
-					array(),
+					[],
 					true
 				),
 				new HtmlTableCellBuilder(
 					$claimColumn,
-					array(),
+					[],
 					true
 				),
 				new HtmlTableCellBuilder(
 					$constraintColumn,
-					array(),
+					[],
 					true
 				)
-			)
+			]
 		);
 
 		return $table;
@@ -450,13 +450,13 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return string HTML
 	 */
 	protected function buildSummary( array $results ) {
-		$statuses = array ();
+		$statuses = [];
 		foreach ( $results as $result ) {
 			$status = strtolower( $result->getStatus() );
 			$statuses[$status] = isset( $statuses[$status] ) ? $statuses[$status] + 1 : 1;
 		}
 
-		$statusElements = array ();
+		$statusElements = [];
 		foreach ( $statuses as $status => $count ) {
 			if ( $count > 0 ) {
 				$statusElements[] =
@@ -499,17 +499,17 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$tooltipIndicator = Html::element(
 			'span',
-			array (
+			[
 				'class' => 'wbqc-indicator'
-			),
+			],
 			$indicator
 		);
 
 		$tooltip = Html::rawElement(
 			'div',
-			array (
+			[
 				'class' => 'wbqc-tooltip'
-			),
+			],
 			$tooltipContent
 		);
 
@@ -547,17 +547,17 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$tooltipIndicator = Html::element(
 			'span',
-			array (
+			[
 				'class' => 'wbqc-expandable-content-indicator wbqc-indicator'
-			),
+			],
 			$indicator
 		);
 
 		$expandableContent = Html::element(
 			'div',
-			array(
+			[
 				'class' => 'wbqc-expandable-content'
-			),
+			],
 			$expandableContent
 		);
 
@@ -580,9 +580,9 @@ class SpecialConstraintReport extends SpecialPage {
 		$formattedStatus =
 			Html::element(
 				'span',
-				array (
+				[
 					'class' => 'wbqc-status wbqc-status-' . $status
-				),
+				],
 				$this->msg( $messageName )->text()
 			);
 
@@ -601,12 +601,12 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	protected function formatDataValues( $dataValues, $separator = ', ' ) {
 		if ( $dataValues instanceof DataValue ) {
-			$dataValues = array ( $dataValues );
+			$dataValues = [ $dataValues ];
 		} elseif ( !is_array( $dataValues ) ) {
 			throw new InvalidArgumentException( '$dataValues has to be instance of DataValue or an array of DataValues.' );
 		}
 
-		$formattedDataValues = array ();
+		$formattedDataValues = [];
 		foreach ( $dataValues as $dataValue ) {
 			if ( !( $dataValue instanceof DataValue ) ) {
 				throw new InvalidArgumentException( '$dataValues has to be instance of DataValue or an array of DataValues.' );
@@ -634,10 +634,10 @@ class SpecialConstraintReport extends SpecialPage {
 		return
 			Html::rawElement(
 				'a',
-				array (
+				[
 					'href' => $this->getClaimUrl( $entityId, $propertyId ),
 					'target' => '_blank'
-				),
+				],
 				$text
 			);
 	}

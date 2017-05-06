@@ -68,9 +68,9 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P2'
-		);
+		];
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -83,9 +83,9 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P2'
-		);
+		];
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -98,10 +98,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'item' => 'Q1',
 			'property' => 'P2'
-		);
+		];
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
@@ -114,10 +114,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'item' => 'Q42',
 			'property' => 'P2'
-		);
+		];
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -130,7 +130,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement(new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array();
+		$constraintParameters = [];
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
@@ -143,10 +143,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'item' => 'Q42',
 			'property' => 'P2'
-		);
+		];
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );

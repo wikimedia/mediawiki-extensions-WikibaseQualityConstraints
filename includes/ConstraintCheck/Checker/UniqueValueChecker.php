@@ -38,7 +38,7 @@ class UniqueValueChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		$parameters = array ();
+		$parameters = [];
 
 		$message = wfMessage( "wbqc-violation-message-not-yet-implemented" )->params( $constraint->getConstraintTypeName() )->escaped();
 		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_TODO, $message );

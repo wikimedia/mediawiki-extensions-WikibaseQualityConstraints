@@ -138,7 +138,7 @@ class DelegatingConstraintChecker {
 	 * @return CheckResult[]
 	 */
 	private function checkEveryStatement( EntityDocument $entity, $constraintIds = null ) {
-		$result = array ();
+		$result = [];
 
 		/** @var Statement $statement */
 		foreach ( $this->statements as $statement ) {
@@ -158,7 +158,7 @@ class DelegatingConstraintChecker {
 	 * @return CheckResult[]
 	 */
 	private function checkStatement( EntityDocument $entity, Statement $statement, $constraintIds = null ) {
-		$result = array();
+		$result = [];
 
 		if ( $statement->getMainSnak()->getType() !== 'value' ) {
 			// skip 'somevalue' and 'novalue' cases, todo: handle in a better way
@@ -260,7 +260,7 @@ class DelegatingConstraintChecker {
 		}
 
 		$sortFunction = function ( CheckResult $a, CheckResult $b ) {
-			$order = array ( 'other' => 4, 'compliance' => 3, 'exception' => 2, 'violation' => 1 );
+			$order = [ 'other' => 4, 'compliance' => 3, 'exception' => 2, 'violation' => 1 ];
 
 			$statusA = $a->getStatus();
 			$statusB = $b->getStatus();

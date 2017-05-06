@@ -115,7 +115,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 			->getMock();
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( array() ) );
+			 ->will( $this->returnValue( [] ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
 			 ->will( $this->returnValue( 'Symmetric' ) );

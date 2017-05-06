@@ -48,7 +48,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		$parameters = array ();
+		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 		$property = false;
 		if ( array_key_exists( 'property', $constraintParameters ) ) {

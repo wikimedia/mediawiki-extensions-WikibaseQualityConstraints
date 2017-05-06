@@ -33,35 +33,35 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 	public function testParseSingleParameter() {
 		$parameter = 'P1';
-		$this->assertEquals( array( new PropertyId( $parameter ) ), $this->helper->parseSingleParameter( $parameter ) );
+		$this->assertEquals( [ new PropertyId( $parameter ) ], $this->helper->parseSingleParameter( $parameter ) );
 	}
 
 	public function testParseNullParameter() {
 		$parameter = null;
-		$this->assertEquals( array( 'none' ), $this->helper->parseSingleParameter( $parameter ) );
+		$this->assertEquals( [ 'none' ], $this->helper->parseSingleParameter( $parameter ) );
 	}
 
 	public function testParseNullParameterArray() {
-		$parameter = array( '' );
-		$this->assertEquals( array( 'none' ), $this->helper->parseParameterArray( $parameter ) );
+		$parameter = [ '' ];
+		$this->assertEquals( [ 'none' ], $this->helper->parseParameterArray( $parameter ) );
 	}
 
 	public function testParseParameterArray() {
-		$parameter = array ( 'Q1', 'Q2' );
-		$this->assertEquals( array (
-								 new ItemId( 'Q1' ),
-								 new ItemId( 'Q2' )
-							 ), $this->helper->parseParameterArray( $parameter ) );
+		$parameter = [ 'Q1', 'Q2' ];
+		$this->assertEquals( [
+			new ItemId( 'Q1' ),
+			new ItemId( 'Q2' )
+		], $this->helper->parseParameterArray( $parameter ) );
 	}
 
 	public function testParseParameterString() {
 		$parameter = 'instance';
-		$this->assertEquals( array ( 'instance' ), $this->helper->parseSingleParameter( $parameter, true ) );
+		$this->assertEquals( [ 'instance' ], $this->helper->parseSingleParameter( $parameter, true ) );
 	}
 
 	public function testParseParameterUnknownParameter() {
 		$parameter = 'R1';
-		$this->assertEquals( array ( '' ), $this->helper->parseSingleParameter( $parameter ) );
+		$this->assertEquals( [ '' ], $this->helper->parseSingleParameter( $parameter ) );
 	}
 
 }

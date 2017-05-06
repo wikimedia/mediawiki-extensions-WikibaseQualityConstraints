@@ -70,9 +70,9 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q7' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P1'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -83,9 +83,9 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q8' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P1'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -96,7 +96,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q7' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array();
+		$constraintParameters = [];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -107,9 +107,9 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new StringValue( 'Q7' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P1'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -120,9 +120,9 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P1'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -132,9 +132,9 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 
-		$constraintParameters = array(
+		$constraintParameters = [
 			'property' => 'P1'
-		);
+		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}

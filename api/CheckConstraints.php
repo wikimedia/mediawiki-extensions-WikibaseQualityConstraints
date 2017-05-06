@@ -278,7 +278,7 @@ class CheckConstraints extends ApiBase {
 	 * @return array
 	 */
 	private function buildResult( array $checkResults, $entityIds = null ) {
-		$constraintReport = array();
+		$constraintReport = [];
 		ApiResult::setArrayType( $constraintReport, 'assoc' );
 
 		// ensure that the report contains the given IDs even if there are no results for them
@@ -300,12 +300,12 @@ class CheckConstraints extends ApiBase {
 				'status' => $checkResult->getStatus(),
 				'property' => $checkResult->getPropertyId()->getSerialization(),
 				'claim' => $checkResult->getStatement()->getGuid(),
-				'constraint' => array(
+				'constraint' => [
 					'id' => $checkResult->getConstraintId(),
 					'type' => $checkResult->getConstraintName(),
 					'detail' => $checkResult->getParameters(),
 					'detailHTML' => $this->constraintParameterRenderer->formatParameters( $checkResult->getParameters() )
-				)
+				]
 			];
 			if ( $checkResult->getMessage() ) {
 				$result['message-html'] = $checkResult->getMessage();

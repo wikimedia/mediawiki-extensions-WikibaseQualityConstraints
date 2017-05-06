@@ -52,45 +52,45 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 
 		$this->assertSelect(
 			CONSTRAINT_TABLE,
-			array(
+			[
 				'constraint_guid',
 				'pid',
 				'constraint_type_qid',
 				'constraint_parameters'
-			),
-			array(),
-			array(
-				array (
+			],
+			[],
+			[
+				[
 					'1',
 					1,
 					'Multi value',
 					'{}'
-				),
-				array (
+				],
+				[
 					'3',
 					1,
 					'Single value',
 					'{}'
-				),
-				array (
+				],
+				[
 					'bar',
 					'42',
 					'TestConstraint',
 					'{"bar":"baz"}'
-				),
-				array (
+				],
+				[
 					'baz',
 					'42',
 					'TestConstraint',
 					'{}'
-				),
-				array (
+				],
+				[
 					'foo',
 					'42',
 					'TestConstraint',
 					'{"foo":"bar"}'
-				)
-			)
+				]
+			]
 		);
 	}
 
@@ -103,10 +103,10 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$this->assertSelect(
 			CONSTRAINT_TABLE,
 			'COUNT(constraint_guid)',
-			array(),
-			array(
-				array( 0 )
-			)
+			[],
+			[
+				[ 0 ]
+			]
 		);
 	}
 

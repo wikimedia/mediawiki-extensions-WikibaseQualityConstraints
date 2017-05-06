@@ -38,7 +38,7 @@ class MultiValueChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$propertyId = $statement->getPropertyId();
 
-		$parameters = array ();
+		$parameters = [];
 
 		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $entity->getStatements() );
 

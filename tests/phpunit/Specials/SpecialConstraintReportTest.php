@@ -49,7 +49,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	/**
 	 * @var array
 	 */
-	private static $claimGuids = array ();
+	private static $claimGuids = [];
 
 	/**
 	 * @var bool
@@ -121,20 +121,20 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 		$this->db->insert(
 			CONSTRAINT_TABLE,
-			array (
-				array (
+			[
+				[
 					'constraint_guid' => '1',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
 					'constraint_type_qid' => 'Multi value',
 					'constraint_parameters' => '{}'
-				),
-				array (
+				],
+				[
 					'constraint_guid' => '3',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
 					'constraint_type_qid' => 'Single value',
 					'constraint_parameters' => '{}'
-				)
-			)
+				]
+			]
 		);
 	}
 
@@ -162,8 +162,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 	public function executeProvider() {
 		$userLanguage = 'qqx';
-		$cases = array ();
-		$matchers = array ();
+		$cases = [];
+		$matchers = [];
 
 		// Empty input
 		$matchers['explanationOne'] = both( withTagName( 'div' ) )
@@ -185,7 +185,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 				value="(wbqc-constraintreport-form-submit-label)"/>'
 		);
 
-		$cases[ 'empty' ] = array ( '', array (), $userLanguage, $matchers );
+		$cases[ 'empty' ] = [ '', [], $userLanguage, $matchers ];
 
 		// Invalid input
 		$matchers['error'] = both(
@@ -194,8 +194,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			)
 		)->andAlso( havingTextContents( '(wbqc-constraintreport-invalid-entity-id)' ) );
 
-		$cases[ 'invalid input 1' ] = array ( 'Qwertz', array (), $userLanguage, $matchers );
-		$cases[ 'invalid input 2' ] = array ( '300', array (), $userLanguage, $matchers );
+		$cases[ 'invalid input 1' ] = [ 'Qwertz', [], $userLanguage, $matchers ];
+		$cases[ 'invalid input 2' ] = [ '300', [], $userLanguage, $matchers ];
 
 		// Valid input but entity does not exist
 		unset( $matchers[ 'error' ] );
@@ -206,19 +206,19 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			)
 		)->andAlso( havingTextContents( '(wbqc-constraintreport-not-existent-entity)' ) );
 
-		$cases[ 'valid input - not existing item' ] = array (
+		$cases[ 'valid input - not existing item' ] = [
 			self::NOT_EXISTENT_ITEM_ID,
-			array (),
+			[],
 			$userLanguage,
 			$matchers
-		);
+		];
 
 		// Valid input and entity exists
 		unset( $matchers[ 'error' ] );
-		$matchers[ 'result for' ] = array (
+		$matchers[ 'result for' ] = [
 			'tag' => 'h3',
 			'content' => '(wbqc-constraintreport-result-headline) '
-		);
+		];
 
 		$matchers['result for'] = both(
 			withTagName( 'h3' )
@@ -260,7 +260,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			havingTextContents( '(wbqc-constraintreport-status-compliance)' )
 		);
 
-		$cases[ 'valid input - existing item' ] = array ( '$id', array (), $userLanguage, $matchers );
+		$cases[ 'valid input - existing item' ] = [ '$id', [], $userLanguage, $matchers ];
 
 		return $cases;
 	}

@@ -42,7 +42,7 @@ class QualifiersChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		$parameters = array ();
+		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
 		$parameters['property'] = $this->helper->parseParameterArray( explode( ',', $constraintParameters['property'] ) );

@@ -60,7 +60,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$qualifierChecker = new QualifierChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array() ), $entity );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [] ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 

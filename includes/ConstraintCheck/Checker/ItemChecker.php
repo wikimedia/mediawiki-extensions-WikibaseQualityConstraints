@@ -55,7 +55,7 @@ class ItemChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		$parameters = array ();
+		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
 		$property = false;

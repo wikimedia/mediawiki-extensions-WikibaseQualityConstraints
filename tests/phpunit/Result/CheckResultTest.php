@@ -63,7 +63,7 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 		$this->statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( 'Foo' ) ) );
 		$this->constraintName = 'Range';
 		$this->constraintId = '1';
-		$this->parameters = array ();
+		$this->parameters = [];
 		$this->status = 'compliance';
 		$this->message = 'All right';
 	}

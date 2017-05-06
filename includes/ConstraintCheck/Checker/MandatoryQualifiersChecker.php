@@ -40,16 +40,16 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		$parameters = array ();
+		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$properties = array();
+		$properties = [];
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
 			$properties = explode( ',', $constraintParameters['property'] );
 		}
 		$parameters['property'] = $this->helper->parseParameterArray( $properties );
 		$qualifiersList = $statement->getQualifiers();
-		$qualifiers = array ();
+		$qualifiers = [];
 
 		/** @var Snak $qualifier */
 		foreach ( $qualifiersList as $qualifier ) {

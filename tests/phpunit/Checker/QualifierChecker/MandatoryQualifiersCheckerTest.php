@@ -60,7 +60,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$qualifierChecker = new MandatoryQualifiersChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => 'P2' ) ), $entity );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => 'P2' ] ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
 
@@ -68,7 +68,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$qualifierChecker = new MandatoryQualifiersChecker( $this->helper );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( array( 'property' => 'P2,P3' ) ), $entity );
+		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => 'P2,P3' ] ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
 
