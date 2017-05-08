@@ -31,20 +31,20 @@
 	}
 
 	function buildReport( result ) {
-		var report;
+		var $report;
 
 		if ( result.status === 'violation' ) {
-			report = $( '<div>' );
-			report.append(
+			$report = $( '<div>' ).addClass( 'wbqc-report' );
+			$report.append(
 				$( '<h5>' ).text( result.constraint.type )
 			);
 			if ( result[ 'message-html' ] ) {
-				report.append(
+				$report.append(
 					$( '<p>' ).html( result[ 'message-html' ] )
 				);
 			}
 			if ( result.constraint.detailHTML ) {
-				report.append( $( '<p>' ).append(
+				$report.append( $( '<p>' ).append(
 					$( '<small>' ).html( result.constraint.detailHTML )
 				) );
 			}
@@ -53,9 +53,7 @@
 				expanded: false,
 				framed: true,
 				padded: true,
-				$content: $( '<div>' )
-					.addClass( 'wbqc-report' )
-					.append( report )
+				$content: $report
 			} ).$element;
 		} else {
 			return null;
