@@ -51,8 +51,6 @@
 
 			return new OO.ui.PanelLayout( {
 				expanded: false,
-				framed: true,
-				padded: true,
 				$content: $report
 			} ).$element;
 		} else {
