@@ -35,6 +35,7 @@
 
 		if ( result.status === 'violation' ) {
 			$report = $( '<div>' ).addClass( 'wbqc-report' );
+			$report.css( 'border-top', '1px solid #eaecf0' ); // TODO move to CSS on .wbqc-report class
 			$report.append(
 				$( '<h5>' ).text( result.constraint.type )
 			);
