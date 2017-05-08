@@ -9,7 +9,7 @@
 	function buildWidget( $reports ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: 'alert',
-			iconTitle: 'This statement violates some constraints.',
+			iconTitle: 'This statement has some potential issues.',
 			label: $reports.children().length.toString(),
 			framed: false,
 			popup: {
@@ -17,7 +17,7 @@
 				width: 400,
 				padded: true,
 				head: true,
-				label: $( '<h4>' ).text( 'Constraint report' )
+				label: $( '<h4>' ).text( 'Potential issues' )
 			}
 		} );
 
