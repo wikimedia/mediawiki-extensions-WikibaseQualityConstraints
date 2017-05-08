@@ -52,7 +52,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$constraintParameters = $constraint->getConstraintParameters();
 		$property = false;
 		if ( array_key_exists( 'property', $constraintParameters ) ) {
-			$property = $constraintParameters['property'];
+			$property = strtoupper( $constraintParameters['property'] ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
 			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $property );
 		}
 

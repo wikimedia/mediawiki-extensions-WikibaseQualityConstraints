@@ -47,6 +47,7 @@ class OneOfChecker implements ConstraintChecker {
 		$items = false;
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
 			$items = explode( ',', $constraintParameters['item'] );
+			$items = array_map( 'strtoupper', $items ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
 			$parameters['item'] = $this->helper->parseParameterArray( $items );
 		}
 
