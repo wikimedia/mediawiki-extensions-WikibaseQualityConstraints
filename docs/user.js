@@ -6,14 +6,19 @@
 	var entityJson,
 		entityId;
 
-	function buildWidget( $reports ) {
+	function buildWidget( reports ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: 'alert',
 			iconTitle: 'This statement has some potential issues.',
-			label: $reports.children().length.toString(),
+			label: reports.length.toString(),
 			framed: false,
 			popup: {
-				$content: $reports,
+				$content: new OO.ui.StackLayout( {
+					items: reports,
+					continuous: true,
+					expanded: false, // expanded: true does not work within a popup
+					classes: 'wbqc-reports'
+				} ).$element,
 				width: 400,
 				padded: true,
 				head: true,
@@ -53,7 +58,7 @@
 			return new OO.ui.PanelLayout( {
 				expanded: false,
 				$content: $report
-			} ).$element;
+			} );
 		} else {
 			return null;
 		}
@@ -66,26 +71,26 @@
 			statementId = match && match[ 1 ],
 			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
 			results,
-			$reports,
+			reports,
 			i,
-			$report;
+			report;
 
 		if ( !( propertyId in entityData && statementId in entityData[ propertyId ] ) ) {
 			return;
 		}
 
 		results = entityData[ propertyId ][ statementId ];
-		$reports = $( '<div>' ).addClass( 'wbqc-reports' );
+		reports = [];
 
 		for( i = 0; i < results.length; i++ ) {
-			$report = buildReport( results[ i ] );
-			if ( $report !== null ) {
-				$reports.append( $report );
+			report = buildReport( results[ i ] );
+			if ( report !== null ) {
+				reports.push( report );
 			}
 		}
 
-		if ( $reports.children().length > 0 ) {
-			$statement.append( buildWidget( $reports ).$element );
+		if ( reports.length > 0 ) {
+			$statement.append( buildWidget( reports ).$element );
 		}
 	}
 
