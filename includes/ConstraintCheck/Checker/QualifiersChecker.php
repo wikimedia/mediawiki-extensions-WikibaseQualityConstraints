@@ -52,13 +52,19 @@ class QualifiersChecker implements ConstraintChecker {
 		 *  $constraintParameters['property'] can be array( '' ), meaning that there are explicitly no qualifiers allowed
 		 */
 
+		$properties = [];
+		if ( array_key_exists( 'property', $constraintParameters ) ) {
+			$properties = explode( ',', $constraintParameters['property'] );
+			$properties = array_map( 'strtoupper', $properties ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
+		}
+
 		$message = '';
 		$status = CheckResult::STATUS_COMPLIANCE;
 
 		/** @var Snak $qualifier */
 		foreach ( $statement->getQualifiers() as $qualifier ) {
 			$pid = $qualifier->getPropertyId()->getSerialization();
-			if ( !in_array( $pid, explode( ',', $constraintParameters['property'] ) ) ) {
+			if ( !in_array( $pid, $properties ) ) {
 				$message = wfMessage( "wbqc-violation-message-qualifiers" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 				break;

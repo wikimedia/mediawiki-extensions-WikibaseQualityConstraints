@@ -60,6 +60,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		$status = CheckResult::STATUS_COMPLIANCE;
 
 		foreach ( $properties as $property ) {
+			$property = strtoupper( $property ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
 			if ( !array_key_exists( $property, $qualifiers ) ) {
 				$message = wfMessage( "wbqc-violation-message-mandatory-qualifiers" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;

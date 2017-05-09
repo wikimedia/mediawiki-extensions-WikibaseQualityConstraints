@@ -25,6 +25,7 @@ class ConnectionCheckerHelper {
 	 * @return boolean
 	 */
 	public function hasProperty( StatementList $statementList, $propertyIdSerialization ) {
+		$propertyIdSerialization = strtoupper( $propertyIdSerialization ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
 		/** @var Statement $statement */
 		foreach ( $statementList as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
@@ -48,6 +49,7 @@ class ConnectionCheckerHelper {
 		$propertyIdSerialization,
 		$itemIdSerializationOrArray
 	) {
+		$propertyIdSerialization = strtoupper( $propertyIdSerialization ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
 		/** @var Statement $statement */
 		foreach ( $statementList as $statement ) {
 			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
@@ -72,6 +74,8 @@ class ConnectionCheckerHelper {
 	 */
 	private function arrayHasClaim( Statement $statement, array $itemIdSerializationArray ) {
 		$mainSnak = $statement->getMainSnak();
+
+		$itemIdSerializationArray = array_map( "strtoupper", $itemIdSerializationArray ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
 
 		if ( $mainSnak instanceof PropertyValueSnak ) {
 			$dataValue = $mainSnak->getDataValue();
