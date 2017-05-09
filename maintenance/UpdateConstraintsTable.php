@@ -78,7 +78,7 @@ class UpdateConstraintsTable extends \Maintenance {
 			}
 
 			list( $constraintId, $numericPropertyId, $constraintTypeQid, $params ) = $data;
-			$constraintParameters = (array) json_decode( $params );
+			$constraintParameters = json_decode( $params, true );
 
 			$accumulator[] = new Constraint(
 				$constraintId,
