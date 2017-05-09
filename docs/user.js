@@ -11,7 +11,7 @@
 			icon: 'alert',
 			iconTitle: 'This statement has some potential issues.',
 			label: reports.length > 1 ? reports.length.toString() : '',
-			framed: false,
+			framed: true,
 			popup: {
 				$content: new OO.ui.StackLayout( {
 					items: reports,
