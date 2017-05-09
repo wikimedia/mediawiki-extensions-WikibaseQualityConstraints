@@ -10,7 +10,7 @@
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: 'alert',
 			iconTitle: 'This statement has some potential issues.',
-			label: reports.length.toString(),
+			label: reports.length > 1 ? reports.length.toString() : '',
 			framed: false,
 			popup: {
 				$content: new OO.ui.StackLayout( {
