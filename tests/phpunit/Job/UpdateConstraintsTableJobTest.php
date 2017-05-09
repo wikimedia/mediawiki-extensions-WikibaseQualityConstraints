@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
+use DataValues\TimeValue;
+use DataValues\UnboundedQuantityValue;
 use HashConfig;
 use MediaWikiTestCase;
 use Title;
@@ -9,13 +11,17 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use Wikibase\Repo\WikibaseRepo;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob
@@ -64,6 +70,45 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 				'constraint_parameters' => '{}'
 			],
 		] );
+	}
+
+	public function testExtractParametersFromQualifiers() {
+		$job = UpdateConstraintsTableJob::newFromGlobalState( Title::newFromText( 'constraintsTableUpdate' ), [ 'propertyId' => 'P2' ] );
+		$class1 = new EntityIdValue( new ItemId( 'Q5' ) );
+		$class2 = new EntityIdValue( new ItemId( 'Q15632617' ) );
+		$quantity = UnboundedQuantityValue::newFromNumber( 50, 'kg' );
+		$date = new TimeValue( '+2000-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, 'Q1985727' );
+		$snakP2308A = new PropertyValueSnak(
+			new PropertyId( 'P2308' ),
+			$class1
+		);
+		$snakP1646 = new PropertyNoValueSnak(
+			new PropertyId( 'P1646' )
+		);
+		$snakP2308B = new PropertyValueSnak(
+			new PropertyId( 'P2308' ),
+			$class2
+		);
+		$snakP2313 = new PropertyValueSnak(
+			new PropertyId( 'P2313' ),
+			$quantity
+		);
+		$snakP2310 = new PropertyValueSnak(
+			new PropertyId( 'P2310' ),
+			$date
+		);
+		$snakP2305 = new PropertySomeValueSnak(
+			new PropertyId( 'P2305' )
+		);
+		$qualifiers = new SnakList( [ $snakP2308A, $snakP1646, $snakP2308B, $snakP2313, $snakP2310, $snakP2305 ] );
+		$parameters = $job->extractParametersFromQualifiers( $qualifiers );
+		$deserializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory()->newSnakDeserializer();
+		$this->assertEquals( $snakP2308A, $deserializer->deserialize( $parameters['P2308'][0] ), 'P2308 (1)' );
+		$this->assertEquals( $snakP1646, $deserializer->deserialize( $parameters['P1646'][0] ), 'P1646' );
+		$this->assertEquals( $snakP2308B, $deserializer->deserialize( $parameters['P2308'][1] ), 'P2308 (2)' );
+		$this->assertEquals( $snakP2313, $deserializer->deserialize( $parameters['P2313'][0] ), 'P2313' );
+		$this->assertEquals( $snakP2310, $deserializer->deserialize( $parameters['P2310'][0] ), 'P2310' );
+		$this->assertEquals( $snakP2305, $deserializer->deserialize( $parameters['P2305'][0] ), 'P2305' );
 	}
 
 	public function testExtractConstraintFromStatement_NoParameters() {
@@ -163,7 +208,8 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 			'P2',
 			$this->getDefaultConfig(),
 			new ConstraintRepository(),
-			new JsonFileEntityLookup( __DIR__ )
+			new JsonFileEntityLookup( __DIR__ ),
+			WikibaseRepo::getDefaultInstance()->getSerializerFactory()
 		);
 
 		$job->run();
