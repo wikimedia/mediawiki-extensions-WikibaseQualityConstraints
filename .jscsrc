@@ -5,16 +5,20 @@
 	// ----
 	// Own rules
 
-	"disallowSpaceAfterKeywords": [
-		"catch",
-		"for",
-//		"if",
-		"switch",
-		"while"
-	],
 	"requireSpaceAfterKeywords": [
-		"else"
-	],
-
-	"excludeFiles": [ "node_modules/**", "vendor/**" ]
+		"do",
+		// TODO: Enable for "for".
+		// TODO: Enable for "if".
+		"else",
+		"switch",
+		"case",
+		"try",
+		"catch",
+		"void",
+		"while",
+		"with",
+		"return",
+		"typeof"
+		// TODO: Enable for "function".
+	]
 }
