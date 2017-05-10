@@ -22,7 +22,7 @@ use Wikibase\DataModel\Statement\StatementListProvider;
  */
 class TypeCheckerHelper {
 
-	const MAX_DEPTH = 20;
+	const MAX_ENTITIES = 50;
 
 	/**
 	 * @var EntityLookup
@@ -40,18 +40,22 @@ class TypeCheckerHelper {
 	}
 
 	/**
-	 * Checks if one of the itemId serializations in $classesToCheck
-	 * is subclass of $comparativeClass
-	 * Due to cyclic dependencies, the checks stops after a certain
-	 * depth is reached
+	 * Checks if $comparativeClass is a subclass
+	 * of one of the item ID serializations in $classesToCheck.
+	 * If the class hierarchy is not exhausted after checking MAX_ENTITIES entities,
+	 * the check aborts and returns false.
 	 *
 	 * @param EntityId $comparativeClass
 	 * @param string[] $classesToCheck
-	 * @param int $depth
+	 * @param int &$entitiesChecked
 	 *
 	 * @return bool
 	 */
-	public function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, $depth ) {
+	public function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, &$entitiesChecked = 0 ) {
+		if ( $entitiesChecked++ > self::MAX_ENTITIES ) {
+			return false;
+		}
+
 		$item = $this->entityLookup->getEntity( $comparativeClass );
 		if ( !( $item instanceof StatementListProvider ) ) {
 			return false; // lookup failed, probably because item doesn't exist
@@ -75,11 +79,7 @@ class TypeCheckerHelper {
 				return true;
 			}
 
-			if ( $depth > self::MAX_DEPTH ) {
-				return false;
-			}
-
-			if ( $this->isSubclassOf( $comparativeClass, $classesToCheck, $depth + 1 ) ) {
+			if ( $this->isSubclassOf( $comparativeClass, $classesToCheck, $entitiesChecked ) ) {
 				return true;
 			}
 		}
@@ -117,7 +117,7 @@ class TypeCheckerHelper {
 				return true;
 			}
 
-			if ( $this->isSubclassOf( $comparativeClass, $classesToCheck, 1 ) ) {
+			if ( $this->isSubclassOf( $comparativeClass, $classesToCheck ) ) {
 				return true;
 			}
 		}

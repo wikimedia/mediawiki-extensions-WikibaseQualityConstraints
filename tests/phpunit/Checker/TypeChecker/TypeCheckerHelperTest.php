@@ -65,15 +65,15 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckIsSubclassOfValidWithIndirection() {
-		$this->assertEquals( true, $this->helper->isSubclassOf( new ItemId( 'Q6' ), [ 'Q100', 'Q101' ], 1) );
+		$this->assertEquals( true, $this->helper->isSubclassOf( new ItemId( 'Q6' ), [ 'Q100', 'Q101' ] ) );
 	}
 
 	public function testCheckIsSubclassOfInvalid() {
-		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q6' ), [ 'Q200', 'Q201' ], 1) );
+		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q6' ), [ 'Q200', 'Q201' ] ) );
 	}
 
 	public function testCheckIsSubclassCyclic() {
-		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ], 1) );
+		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ] ) );
 	}
 
 }
