@@ -9,7 +9,7 @@
 	function buildWidget( reports ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: 'alert',
-			iconTitle: 'This statement has some potential issues.',
+			iconTitle: mw.message( 'wbqc-potentialissues-long' ).text(),
 			label: reports.length > 1 ? reports.length.toString() : '',
 			framed: true,
 			popup: {
@@ -22,7 +22,7 @@
 				width: 400,
 				padded: true,
 				head: true,
-				label: $( '<h4>' ).text( 'Potential issues' )
+				label: $( '<h4>' ).text( mw.message( 'wbqc-potentialissues-short' ).text() )
 			}
 		} );
 
@@ -103,7 +103,7 @@
 
 	if ( entityJson !== null ) {
 		entityId = JSON.parse( entityJson ).id;
-		mw.loader.using( [ 'oojs-ui-core', 'oojs-ui-widgets' ] ).done( function () {
+		mw.loader.using( [ 'oojs-ui-core', 'oojs-ui-widgets', 'wikibase.quality.constraints.ui' ] ).done( function () {
 			var api = new mw.Api();
 			api.get( {
 				action: 'wbcheckconstraints',

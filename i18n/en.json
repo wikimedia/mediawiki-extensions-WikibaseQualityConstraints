@@ -28,6 +28,9 @@
 	"wbqc-constraintreport-result-link-to-constraint": "go to constraint",
 	"wbqc-constraintreport-no-parameter": "none",
 
+	"wbqc-potentialissues-short": "Potential issues",
+	"wbqc-potentialissues-long": "This statement has some potential issues.",
+
 	"apihelp-wbcheckconstraints-description": "Performs constraint checks on any entity you want and returns the result.",
 	"apihelp-wbcheckconstraints-param-id": "ID list of the entities to get the data from. Separate values with '|' or alternative.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID list identifying a claim to check a constraint report.  Separate values with '|'.",
