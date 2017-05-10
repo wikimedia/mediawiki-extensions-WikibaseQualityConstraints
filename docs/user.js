@@ -10,8 +10,7 @@
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: 'alert',
 			iconTitle: mw.message( 'wbqc-potentialissues-long' ).text(),
-			label: reports.length > 1 ? reports.length.toString() : '',
-			framed: true,
+			framed: false,
 			popup: {
 				$content: new OO.ui.StackLayout( {
 					items: reports,
