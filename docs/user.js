@@ -21,7 +21,7 @@
 				width: 400,
 				padded: true,
 				head: true,
-				label: $( '<h4>' ).text( mw.message( 'wbqc-potentialissues-short' ).text() )
+				label: $( '<strong>' ).text( mw.message( 'wbqc-potentialissues-short' ).text() )
 			}
 		} );
 
@@ -41,7 +41,7 @@
 			$report = $( '<div>' ).addClass( 'wbqc-report' );
 			$report.css( 'border-top', '1px solid #eaecf0' ); // TODO move to CSS on .wbqc-report class
 			$report.append(
-				$( '<h5>' ).text( result.constraint.type )
+				$( '<h4>' ).text( result.constraint.type )
 			);
 			if ( result[ 'message-html' ] ) {
 				$report.append(
