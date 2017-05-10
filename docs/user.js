@@ -102,7 +102,7 @@
 
 	if ( entityJson !== null ) {
 		entityId = JSON.parse( entityJson ).id;
-		mw.loader.using( [ 'oojs-ui-core', 'oojs-ui-widgets', 'wikibase.quality.constraints.ui' ] ).done( function () {
+		mw.loader.using( [ 'mediawiki.api', 'oojs-ui-core', 'oojs-ui-widgets', 'wikibase.quality.constraints.ui' ] ).done( function () {
 			var api = new mw.Api();
 			api.get( {
 				action: 'wbcheckconstraints',
