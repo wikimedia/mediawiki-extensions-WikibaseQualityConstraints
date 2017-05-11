@@ -29,6 +29,8 @@
 	"wbqc-constraintreport-result-link-to-claim": "aller à la déclaration",
 	"wbqc-constraintreport-result-link-to-constraint": "aller à la contrainte",
 	"wbqc-constraintreport-no-parameter": "aucune",
+	"wbqc-potentialissues-short": "Problèmes potentiels",
+	"wbqc-potentialissues-long": "Cette instruction présente quelques problèmes potentiels.",
 	"apihelp-wbcheckconstraints-description": "Réalise les contrôles de contraintes sur n'importe quelle entité que vous désirez et retourne les résultats.",
 	"apihelp-wbcheckconstraints-param-id": "Liste d'ID des entités pour lesquelles ont veux les informations. Séparez les valeurs avec  '|' ou similaire.",
 	"apihelp-wbcheckconstraints-param-claimid": "Liste de GUID identifiant une demande de vérification d'un rapport de contraintes. Valeurs séparées par '|'.",
@@ -72,7 +74,10 @@
 	"wbqc-violation-message-symmetric": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété dont la valeur est cet élément.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Le paramètre « relation » doit être soit « instance », soit « sous-classe ».",
 	"wbqc-violation-message-type": "Cette propriété doit être utilisée uniquement sur les éléments qui ont une relation avec l’élément (ou une sous-classe de l’élément) définie dans les paramètres.",
+	"wbqc-violation-message-type-entity-type": "Entités utilisant la propriété $1",
+	"wbqc-violation-message-type-entity-valueType": "Valeurs des $1 instructions",
+	"wbqc-violation-message-type-relation-instance": "instances",
+	"wbqc-violation-message-type-relation-subclass": "sous-classes",
 	"wbqc-violation-message-target-required-claim-property": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété définie dans les paramètres.",
-	"wbqc-violation-message-target-required-claim-claim": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété avec l’une des valeurs définies en paramètres.",
-	"wbqc-violation-message-value-type": "L’entité définie en valeur pour cette propriété doit avoir une relation avec l’élément (ou une sous-classe de l’élément) définie dans les paramètres."
+	"wbqc-violation-message-target-required-claim-claim": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété avec l’une des valeurs définies en paramètres."
 }

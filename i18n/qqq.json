@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Liuxinyu970226",
-			"Raymond"
+			"Raymond",
+			"Metalhead64"
 		]
 	},
 	"wbqc-constraintreport": "{{doc-special|ConstraintReport}}",
@@ -27,7 +28,7 @@
 	"wbqc-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
 	"wbqc-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page.",
 	"wbqc-constraintreport-no-parameter": "Text that is displayed when there was no value for a parameter given.\n{{Identical|None}}",
-	"wbqc-potentialissues-short": "Headline of the constraint report popup shown on statements with constraint violations. Should be easy to understand for users, and convey that the reported violations are not always errors, but should be thought of as hints to the user that something might be wrong.{{Related|wbqc-constraintreport}",
+	"wbqc-potentialissues-short": "Headline of the constraint report popup shown on statements with constraint violations. Should be easy to understand for users, and convey that the reported violations are not always errors, but should be thought of as hints to the user that something might be wrong.\n\n{{Related|wbqc-constraintreport}}",
 	"wbqc-potentialissues-long": "Title for the icon shown on statements with constraint violations, usually displayed by the browser when the user hovers over the icon with the mouse cursor.{{Related|wbqc-potentialissues-short}}",
 	"apihelp-wbcheckconstraints-description": "{{doc-apihelp-description|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",

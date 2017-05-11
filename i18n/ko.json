@@ -4,7 +4,8 @@
 			"LiteHell",
 			"Alex00728",
 			"Kwj2772",
-			"아라"
+			"아라",
+			"Ykhwong"
 		]
 	},
 	"wbqc-constraintreport": "제약 보고서",
@@ -21,6 +22,7 @@
 	"wbqc-constraintreport-status-exception": "예외",
 	"wbqc-constraintreport-status-todo": "검사 불가",
 	"wbqc-constraintreport-result-table-header-status": "상태",
+	"wbqc-potentialissues-short": "잠재적인 문제",
 	"wbqc-violation-header-parameters": "변수:",
 	"wbqc-violation-message-not-yet-implemented": "기술적 이유로, \"$1\" 제약에 대한 검사는 도입되지 않았습니다.",
 	"wbqc-violation-message-security-reason": "보안상의 이유로, \"$1\" 제약에 대한 검사는 현재 불가능합니다. 개발자들이 해결책을 찾기 위해 작업 중입니다."

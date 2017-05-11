@@ -25,6 +25,8 @@
 	"wbqc-constraintreport-result-link-to-claim": "转到声称",
 	"wbqc-constraintreport-result-link-to-constraint": "转到约束条件",
 	"wbqc-constraintreport-no-parameter": "无",
+	"wbqc-potentialissues-short": "潜在问题",
+	"wbqc-potentialissues-long": "此声明有一些潜在问题。",
 	"apihelp-wbcheckconstraints-description": "在任何您希望执行检查的实体上，执行约束检查并返回结果。",
 	"apihelp-wbcheckconstraints-param-id": "要获取数据的实体ID列表。使用“|”或替代字符分隔值。",
 	"apihelp-wbcheckconstraints-param-claimid": "识别要检查约束报告的声称的GUID列表。使用“|”分隔值。",
@@ -69,6 +71,5 @@
 	"wbqc-violation-message-type-relation-instance-or-subclass": "参数“relation”必须是“instance”或“subclass”两者之一。",
 	"wbqc-violation-message-type": "此属性必须只在与测试定义的项（或项的子集）有关系的项中使用。",
 	"wbqc-violation-message-target-required-claim-property": "此属性必须只在有一个声明在使用参数定义的属性的值实体上时才能使用。",
-	"wbqc-violation-message-target-required-claim-claim": "此属性必须只在有一个声明在它的值实体上，并使用带有参数定义的值之一的属性时才能使用。",
-	"wbqc-violation-message-value-type": "此属性的值实体必须与参数中定义的项（或项的子集）存在关系。"
+	"wbqc-violation-message-target-required-claim-claim": "此属性必须只在有一个声明在它的值实体上，并使用带有参数定义的值之一的属性时才能使用。"
 }

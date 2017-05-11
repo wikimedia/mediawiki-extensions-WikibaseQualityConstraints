@@ -27,6 +27,8 @@
 	"wbqc-constraintreport-result-link-to-claim": "gehe zu Behauptung",
 	"wbqc-constraintreport-result-link-to-constraint": "gehe zu Beschränkung",
 	"wbqc-constraintreport-no-parameter": "keine",
+	"wbqc-potentialissues-short": "Potenzielle Probleme",
+	"wbqc-potentialissues-long": "Diese Aussage hat einige potenzielle Probleme.",
 	"apihelp-wbcheckconstraints-description": "Führt Beschränkungsprüfungen zu jedem gewünschten Objekt aus und gibt das Ergebnis zurück.",
 	"apihelp-wbcheckconstraints-param-id": "Kennung der Objektliste, von der die Daten abgerufen werden sollen. Mehrere Werte mit „|“ oder Ähnlichem trennen.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID-Liste, die eine Behauptung erkennt, um einen Beschränkungsbericht zu prüfen. Mehrere Werte mit „|“ trennen.",
@@ -69,8 +71,11 @@
 	"wbqc-violation-message-single-value": "Diese Eigenschaft darf nur einen einzelnen Wert haben. Also darf nur eine Behauptung mithilfe dieser Eigenschaft vorhanden sein.",
 	"wbqc-violation-message-symmetric": "Diese Eigenschaft darf nur verwendet werden, wenn es eine Aussage zu ihrem Wertelement mit der gleichen Eigenschaft gibt und dieses Element als ihrem Wert.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Der Parameter „Relation“ muss entweder „Instanz“ oder „Unterklasse“ sein.",
-	"wbqc-violation-message-type": "Diese Eigenschaft darf nur zu Objekten verwendet werden, die in Relation zum Objekt sind (oder eine Unterklasse des Objekts), die in den Parametern definiert wurden.",
+	"wbqc-violation-message-type": "$1 sollten $2 von {{PLURAL:$4|1=$6|2=$6 oder $7|einer der folgenden Klassen}} sein (oder von {{PLURAL:$4|1=einer ihrer Unterklasse|2=einer ihrer Unterklassen|einer ihrer Unterklassen}}), aber $3 hat sie derzeit {{PLURAL:$4|1=nicht.|2=nicht.|nicht: $5}}",
+	"wbqc-violation-message-type-entity-type": "Objekte, die die Eigenschaft „$1“ verwenden",
+	"wbqc-violation-message-type-entity-valueType": "Werte der Aussagen „$1“",
+	"wbqc-violation-message-type-relation-instance": "Instanzen",
+	"wbqc-violation-message-type-relation-subclass": "Unterklassen",
 	"wbqc-violation-message-target-required-claim-property": "Diese Eigenschaft darf nur verwendet werden, wenn es eine Aussage zu ihrem Wertobjekt mithilfe der Eigenschaft gibt, die in den Parametern definiert wurde.",
-	"wbqc-violation-message-target-required-claim-claim": "Diese Eigenschaft darf nur verwendet werden, wenn es eine Aussage zu ihrem Wertobjekt mithilfe der Eigenschaft mit einem der Werte gibt, der in den Parametern definiert wurde.",
-	"wbqc-violation-message-value-type": "Dieser Eigenschaftswert muss in Relation zum Objekt stehen (oder eine Unterklasse des Objekts sein), der in den Parametern definiert wurde."
+	"wbqc-violation-message-target-required-claim-claim": "Diese Eigenschaft darf nur verwendet werden, wenn es eine Aussage zu ihrem Wertobjekt mithilfe der Eigenschaft mit einem der Werte gibt, der in den Parametern definiert wurde."
 }

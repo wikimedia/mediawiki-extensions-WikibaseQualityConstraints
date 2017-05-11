@@ -25,6 +25,8 @@
 	"wbqc-constraintreport-result-link-to-claim": "ללכת אל טענה",
 	"wbqc-constraintreport-result-link-to-constraint": "ללכת על אילוץ",
 	"wbqc-constraintreport-no-parameter": "אין",
+	"wbqc-potentialissues-short": "בעיות אפשריות",
+	"wbqc-potentialissues-long": "בקביעה הזאת יש בעיות אפשריות.",
 	"apihelp-wbcheckconstraints-description": "ביצוע בדיקות אילוצים על ישות כלשהי והחזרת התוצאה.",
 	"apihelp-wbcheckconstraints-param-id": "רשימת מזהי ישויות שמהן צריך לקבל נתונים. יש להפריד את הערכים בתו '|' או חלופות.",
 	"apihelp-wbcheckconstraints-param-claimid": "רשימת GUID־ים שמזהים טענה שצריך לבדוק אל מול דו\"ח אילוצים. יש להפריד ערכים בתו '|'.",
@@ -68,7 +70,10 @@
 	"wbqc-violation-message-symmetric": "המאפיין הזה יכול לשמש רק אם יש קביעה על ישות הערך שלו עם אותו מאפיין ואם הפריט הזה בתור ערך.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "הפרמטר \"relation\" צריך להיות או \"instance\" או \"subclass\".",
 	"wbqc-violation-message-type": "המאפיין הזה יכול לשמש רק בפריטים שיש להם יחס לפריט (או תת־מחלקה של הפריט) שמוגדר בפרמטרים.",
+	"wbqc-violation-message-type-entity-type": "ישויות שמשתמשות במאפיין $1",
+	"wbqc-violation-message-type-entity-valueType": "ערכים של טענות $1",
+	"wbqc-violation-message-type-relation-instance": "מופעים",
+	"wbqc-violation-message-type-relation-subclass": "תת־מחלקות",
 	"wbqc-violation-message-target-required-claim-property": "המאפיין הזה יכול לשמש רק כאשר יש קביעה על ישות הערך שלו באמצעות המפאיין שמוגדר בפרמטרים.",
-	"wbqc-violation-message-target-required-claim-claim": "המאפיין הזה יכול לשמש רק כאשר יש קביעה על הערך שלו באמצעות המאפיין אם אותו הערך שמוגדר בפרמטרים.",
-	"wbqc-violation-message-value-type": "הערך של ישות הערך צריך להיות ביחס לפריט (או תת־מחלקה של פריט) שמוגדר בפרמטרים."
+	"wbqc-violation-message-target-required-claim-claim": "המאפיין הזה יכול לשמש רק כאשר יש קביעה על הערך שלו באמצעות המאפיין אם אותו הערך שמוגדר בפרמטרים."
 }
