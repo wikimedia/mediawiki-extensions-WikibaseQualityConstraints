@@ -2,8 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -37,14 +40,26 @@ class InverseChecker implements ConstraintChecker {
 	private $connectionCheckerHelper;
 
 	/**
+	 * @var EntityIdFormatter
+	 */
+	private $entityIdFormatter;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
+	 * @param EntityIdFormatter $entityIdFormatter should return HTML
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct(
+		EntityLookup $lookup,
+		ConstraintParameterParser $helper,
+		ConnectionCheckerHelper $connectionCheckerHelper,
+		EntityIdFormatter $entityIdFormatter
+	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
+		$this->entityIdFormatter = $entityIdFormatter;
 	}
 
 	/**
@@ -109,7 +124,18 @@ class InverseChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = wfMessage( "wbqc-violation-message-inverse" )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
+			try {
+				$inverseProperty = $this->entityIdFormatter->formatEntityId( new PropertyId( $property ) );
+			} catch ( InvalidArgumentException $e ) {
+				$inverseProperty = htmlspecialchars( $property );
+			}
+			$message = wfMessage( 'wbqc-violation-message-inverse' )
+					 ->rawParams(
+						 $this->entityIdFormatter->formatEntityId( $targetItem->getId() ),
+						 $inverseProperty,
+						 $this->entityIdFormatter->formatEntityId( $entity->getId() )
+					 )
+					 ->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
