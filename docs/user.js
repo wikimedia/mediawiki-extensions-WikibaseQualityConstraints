@@ -93,7 +93,7 @@
 		}
 	}
 
-	if ( mw.config.get( 'wbMFMode' ) ) {
+	if ( mw.config.get( 'wgMFMode' ) ) {
 		// mobile frontend, skip
 		return;
 	}
