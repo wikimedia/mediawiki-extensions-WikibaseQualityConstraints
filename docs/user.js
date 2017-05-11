@@ -3,8 +3,7 @@
 ( function( mw, $, OO ) {
 	'use strict';
 
-	var entityJson,
-		entityId;
+	var entityId;
 
 	function buildWidget( reports ) {
 		var widget = new OO.ui.PopupButtonWidget( {
@@ -98,10 +97,9 @@
 		return;
 	}
 
-	entityJson = mw.config.get( 'wbEntity' );
+	entityId = mw.config.get( 'wbEntityId' );
 
-	if ( entityJson !== null ) {
-		entityId = JSON.parse( entityJson ).id;
+	if ( entityId !== null ) {
 		mw.loader.using( [ 'mediawiki.api', 'oojs-ui-core', 'oojs-ui-widgets', 'wikibase.quality.constraints.ui' ] ).done( function () {
 			var api = new mw.Api();
 			api.get( {
