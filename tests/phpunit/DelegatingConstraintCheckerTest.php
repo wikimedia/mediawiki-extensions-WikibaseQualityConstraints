@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
@@ -66,7 +67,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
 			$this->statementGuidParser,
-			$this->getDefaultConfig()
+			$this->getDefaultConfig(),
+			new PlainEntityIdFormatter()
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 
@@ -294,7 +296,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
 			$this->statementGuidParser,
-			$this->getDefaultConfig()
+			$this->getDefaultConfig(),
+			new PlainEntityIdFormatter()
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 
@@ -308,7 +311,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
 			$this->statementGuidParser,
-			$this->getDefaultConfig()
+			$this->getDefaultConfig(),
+			new PlainEntityIdFormatter()
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 
@@ -322,7 +326,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$factory = new ConstraintReportFactory(
 			$this->createEntityLookup(),
 			$this->statementGuidParser,
-			$this->getDefaultConfig()
+			$this->getDefaultConfig(),
+			new PlainEntityIdFormatter()
 		);
 		$constraintChecker = $factory->getConstraintChecker();
 

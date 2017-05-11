@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use PHPUnit_Framework_TestCase;
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -34,7 +35,8 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		parent::setUp();
 		$this->helper = new TypeCheckerHelper(
 			new JsonFileEntityLookup( __DIR__ ),
-			$this->getDefaultConfig()
+			$this->getDefaultConfig(),
+			new PlainEntityIdFormatter()
 		);
 	}
 

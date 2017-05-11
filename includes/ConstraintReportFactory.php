@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use MediaWiki\MediaWikiServices;
+use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -70,6 +71,11 @@ class ConstraintReportFactory {
 	private $config;
 
 	/**
+	 * @var EntityIdFormatter
+	 */
+	private $entityIdFormatter;
+
+	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -79,20 +85,33 @@ class ConstraintReportFactory {
 		static $instance = null;
 
 		if ( $instance === null ) {
+			$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 			$instance = new self(
-				WikibaseRepo::getDefaultInstance()->getEntityLookup(),
-				WikibaseRepo::getDefaultInstance()->getStatementGuidParser(),
-				MediaWikiServices::getInstance()->getMainConfig()
+				$wikibaseRepo->getEntityLookup(),
+				$wikibaseRepo->getStatementGuidParser(),
+				MediaWikiServices::getInstance()->getMainConfig(),
+				$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory()->getEntityIdFormatter(
+					$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup(
+						$wikibaseRepo->getUserLanguage()
+					)
+				)
 			);
 		}
 
 		return $instance;
 	}
 
-	public function __construct( EntityLookup $lookup, StatementGuidParser $statementGuidParser, Config $config ) {
+	public function __construct(
+		EntityLookup $lookup,
+		StatementGuidParser
+		$statementGuidParser,
+		Config $config,
+		EntityIdFormatter $entityIdFormatter
+	) {
 		$this->lookup = $lookup;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
+		$this->entityIdFormatter = $entityIdFormatter;
 	}
 
 	/**
@@ -118,7 +137,7 @@ class ConstraintReportFactory {
 			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
 			$rangeCheckerHelper = new RangeCheckerHelper();
-			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config );
+			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config, $this->entityIdFormatter );
 
 			$this->constraintCheckerMap = [
 				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),

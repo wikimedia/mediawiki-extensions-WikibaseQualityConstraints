@@ -3,9 +3,12 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
@@ -34,9 +37,24 @@ class TypeCheckerHelper {
 	 */
 	private $config;
 
-	public function __construct( EntityLookup $lookup, Config $config ) {
+	/**
+	 * @var EntityIdFormatter
+	 */
+	private $entityIdFormatter;
+
+	/**
+	 * @param EntityLookup $lookup
+	 * @param Config $config
+	 * @param EntityIdFormatter $entityIdFormatter should return HTML
+	 */
+	public function __construct(
+		EntityLookup $lookup,
+		Config $config,
+		EntityIdFormatter $entityIdFormatter
+	) {
 		$this->entityLookup = $lookup;
 		$this->config = $config;
+		$this->entityIdFormatter = $entityIdFormatter;
 	}
 
 	/**
@@ -128,6 +146,54 @@ class TypeCheckerHelper {
 	private function hasCorrectType( Snak $mainSnak ) {
 		return $mainSnak instanceof PropertyValueSnak
 			&& $mainSnak->getDataValue()->getType() === 'wikibase-entityid';
+	}
+
+	/**
+	 * @param string $class item ID serialization (any other string is HTML-escaped and returned without formatting)
+	 * @return string HTML
+	 */
+	private function formatClass( $classId ) {
+		try {
+			return $this->entityIdFormatter->formatEntityId( new ItemId( $classId ) );
+		} catch ( InvalidArgumentException $e ) {
+			return htmlspecialchars( $classId );
+		}
+	}
+
+	/**
+	 * @param PropertyId $propertyId ID of the property that introduced the constraint
+	 * @param EntityId $entityId ID of the entity that does not have the required type
+	 * @param string[] $classes item ID serializations of the classes that $entityId should have
+	 * @param string $checker "type" or "valueType" (for message key)
+	 * @param string $relation "instance" or "subclass" (for message key)
+	 *
+	 * @return string Localized HTML message
+	 */
+	public function getViolationMessage( PropertyId $propertyId, EntityId $entityId, array $classes, $checker, $relation ) {
+		$message = wfMessage( 'wbqc-violation-message-type' );
+
+		$message->rawParams(
+			wfMessage( 'wbqc-violation-message-type-entity-' . $checker )
+				->rawParams( $this->entityIdFormatter->formatEntityId( $propertyId ) )
+				->escaped(),
+			wfMessage( 'wbqc-violation-message-type-relation-' . $relation )
+				->escaped(),
+			$this->entityIdFormatter->formatEntityId( $entityId )
+		);
+		$message->numParams( (string) count( $classes ) );
+		$message->rawParams(
+			'<ul>'
+			. implode( array_map(
+				function ( $class ) {
+					return '<li>' . $this->formatClass( $class ) . '</li>';
+				},
+				$classes
+			) )
+			. '</ul>'
+		);
+		$message->rawParams( array_map( [ $this, "formatClass" ], $classes ) );
+
+		return $message->escaped();
 	}
 
 }

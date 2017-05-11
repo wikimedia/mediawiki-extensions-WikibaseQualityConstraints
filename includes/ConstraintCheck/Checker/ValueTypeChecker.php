@@ -139,7 +139,13 @@ class ValueTypeChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = wfMessage( "wbqc-violation-message-value-type" )->escaped();
+			$message = $this->typeCheckerHelper->getViolationMessage(
+				$statement->getPropertyId(),
+				$item->getId(),
+				$classes,
+				'valueType',
+				$relation
+			);
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
