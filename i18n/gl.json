@@ -27,6 +27,8 @@
 	"wbqc-constraintreport-result-link-to-claim": "ir a afirmación",
 	"wbqc-constraintreport-result-link-to-constraint": "ir a restrición",
 	"wbqc-constraintreport-no-parameter": "ningún",
+	"wbqc-potentialissues-short": "Problemas potenciais",
+	"wbqc-potentialissues-long": "Esta instrucciónten problemas potenciais.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Filtro opcional para devolver só as constantes que teñen o ID de constante especificado",
 	"apihelp-wbcheckconstraints-example-1": "Verificar tódalas constantes sobre os elementos Q5 e Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Verificar tódalas constantes nunha soa instrucción.",
@@ -67,6 +69,9 @@
 	"wbqc-violation-message-symmetric": "Esta propiedade só debe ser usada cando hai unha declaración no seu valor entidade coa mesma propiedade e este obxecto co seu valor.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "O parámetro \"relation\" (relación) debe ser \"instance\" (caso) ou \"subclass\" (subclase).",
 	"wbqc-violation-message-type": "Esta propiedade só debe ser usada en obxectos que están en relación co obxecto (ou unha subclase do obxecto) definida nos parámetros.",
+	"wbqc-violation-message-type-entity-type": "Entidades usando a propiedade $1",
+	"wbqc-violation-message-type-relation-instance": "instancias",
+	"wbqc-violation-message-type-relation-subclass": "subclases",
 	"wbqc-violation-message-target-required-claim-property": "Esta propiedade só debe usarse cando hai unha declaración no seu valor entidade usando a propiedade definida nos parámetros.",
 	"wbqc-violation-message-target-required-claim-claim": "Esta propiedade só debe usarse cando hai unha declaración no seu valor entidade usando a propiedade cun dos valores definidos nos parámetros."
 }

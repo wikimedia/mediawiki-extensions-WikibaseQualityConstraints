@@ -63,8 +63,10 @@
 	"wbqc-violation-message-single-value": "Questa proprietà deve avere un singolo valore. Cioè, ci deve essere solo un'asserzione che utilizza questa proprietà.",
 	"wbqc-violation-message-symmetric": "Questa proprietà deve essere utilizzata solo quando c'è una dichiarazione sull'entità che ha come valore che usa la stessa proprietà e questo elemento come valore.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Il parametro \"relazione\" deve essere \"istanza\" o \"sottoclasse\".",
-	"wbqc-violation-message-type": "Questa proprietà deve essere utilizzata solo su elementi che sono in relazione con l'elemento (o di una sottoclasse dell'elemento) definito nei parametri.",
+	"wbqc-violation-message-type": "$1 dovrebbe essere $2 di {{PLURAL:$4|1=$6|2=$6 o $7|una delle seguenti classi}} (o di {{PLURAL:$4|1=una sua sottoclasse|2=una loro sottoclasse|una delle loro sottoclassi}}), ma $3 attualmente non {{PLURAL:$4|1=lo è.|2=lo è.|è: $5}}",
+	"wbqc-violation-message-type-entity-valueType": "Valori della dichiarazione $1",
+	"wbqc-violation-message-type-relation-instance": "istanze",
+	"wbqc-violation-message-type-relation-subclass": "sottoclassi",
 	"wbqc-violation-message-target-required-claim-property": "Questa proprietà deve essere utilizzata solo quando c'è una dichiarazione sull'entità che ha come valore che usa la proprietà definita nei parametri.",
-	"wbqc-violation-message-target-required-claim-claim": "Questa proprietà deve essere utilizzata solo quando c'è una dichiarazione sull'entità che ha come valore che usa la proprietà con uno dei valori definiti nei parametri.",
-	"wbqc-violation-message-value-type": "L'entità che ha come valore questa proprietà deve essere in relazione con l'elemento (o di una sottoclasse dell'elemento) definito nei parametri."
+	"wbqc-violation-message-target-required-claim-claim": "Questa proprietà deve essere utilizzata solo quando c'è una dichiarazione sull'entità che ha come valore che usa la proprietà con uno dei valori definiti nei parametri."
 }

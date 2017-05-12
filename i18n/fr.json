@@ -5,7 +5,8 @@
 			"Ayack",
 			"Yzelf",
 			"Gomoko",
-			"Wladek92"
+			"Wladek92",
+			"Thibaut120094"
 		]
 	},
 	"wbqc-constraintreport": "Rapport de contrainte",
@@ -73,7 +74,7 @@
 	"wbqc-violation-message-single-value": "Cette propriété doit avoir une valeur unique. C’est-à-dire qu’il doit y avoir une seule déclaration utilisant cette propriété.",
 	"wbqc-violation-message-symmetric": "Cette propriété doit être utilisée uniquement lorsque l’entité définie en valeur possède une déclaration utilisant la propriété dont la valeur est cet élément.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Le paramètre « relation » doit être soit « instance », soit « sous-classe ».",
-	"wbqc-violation-message-type": "Cette propriété doit être utilisée uniquement sur les éléments qui ont une relation avec l’élément (ou une sous-classe de l’élément) définie dans les paramètres.",
+	"wbqc-violation-message-type": "$1 devrait être $2 parmi {{PLURAL:$4|1=$6|2=$6 ou $7|l'une des classes suivantes}} \n(ou parmi l'{{PLURAL:$4|1=une de ses sous-classes|2=une de leurs sous-classes|une de leurs sous-classes}}), mais actuellement $3 {{PLURAL:$4|1=ne l'est pas.|2=ne le sont pas.|ne le sont pas : $5}}",
 	"wbqc-violation-message-type-entity-type": "Entités utilisant la propriété $1",
 	"wbqc-violation-message-type-entity-valueType": "Valeurs des $1 instructions",
 	"wbqc-violation-message-type-relation-instance": "instances",

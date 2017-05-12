@@ -69,7 +69,11 @@
 	"wbqc-violation-message-single-value": "此属性必须只有一个值。换言之，这里必须只有一个声称使用此属性。",
 	"wbqc-violation-message-symmetric": "此属性必须只在当这里有一个声明在它的值实体，并且值为相同属性及其项时才能使用。",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "参数“relation”必须是“instance”或“subclass”两者之一。",
-	"wbqc-violation-message-type": "此属性必须只在与测试定义的项（或项的子集）有关系的项中使用。",
+	"wbqc-violation-message-type": "$1应为{{PLURAL:$4|1=$6|2=$6或$7|以下类之一}}的$2（或为{{PLURAL:$4|其子类之一}}），但$3当前{{PLURAL:$4|1=并非如此。|2=并非如此。|并非如此：$5}}",
+	"wbqc-violation-message-type-entity-type": "使用$1属性的实体",
+	"wbqc-violation-message-type-entity-valueType": "$1声明的值",
+	"wbqc-violation-message-type-relation-instance": "实例",
+	"wbqc-violation-message-type-relation-subclass": "子类",
 	"wbqc-violation-message-target-required-claim-property": "此属性必须只在有一个声明在使用参数定义的属性的值实体上时才能使用。",
 	"wbqc-violation-message-target-required-claim-claim": "此属性必须只在有一个声明在它的值实体上，并使用带有参数定义的值之一的属性时才能使用。"
 }

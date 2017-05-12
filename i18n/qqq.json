@@ -3,7 +3,8 @@
 		"authors": [
 			"Liuxinyu970226",
 			"Raymond",
-			"Metalhead64"
+			"Metalhead64",
+			"Amire80"
 		]
 	},
 	"wbqc-constraintreport": "{{doc-special|ConstraintReport}}",
@@ -72,7 +73,7 @@
 	"wbqc-violation-message-single-value": "Message for violation of Single value constraint. When more than one value exists.",
 	"wbqc-violation-message-symmetric": "Message for a violation of the “Symmetric” constraint, when the symmetric statement of a statement does not exist. $1, $2 and $3 contain the expected subject entity, property, and target entity of the missing symmetric statement.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Message for violation of Type/Value type constraint. When relation is neither instance nor subclass.",
-	"wbqc-violation-message-type": "Message for a violation of the “Type” or “Value type” constraint, when an entity (either the subject or the object of a statement) should have a certain type but doesn't. $1 is {{msg-mw|wbqc-violation-message-type-subject-type}} or {{msg-mw|wbqc-violation-message-type-subject-valueType}}; $2 is {{msg-mw|wbqc-violation-message-type-relation-instance}} or {{msg-mw|wbqc-violation-message-type-relation-subclass}}; $3 is the entity that doesn't have the required type; $4 is the number of classes; $5 is an HTML list of all classes; and $6, $7 etc. are the individual classes.",
+	"wbqc-violation-message-type": "Message for a violation of the “Type” or “Value type” constraint, when an entity (either the subject or the object of a statement) should have a certain type but doesn't. Parameters:\n* $1 is {{msg-mw|Wbqc-violation-message-type-entity-type}} or {{msg-mw|Wbqc-violation-message-type-entity-valueType}};\n* $2 is {{msg-mw|wbqc-violation-message-type-relation-instance}} or {{msg-mw|wbqc-violation-message-type-relation-subclass}};\n* $3 is the entity that doesn't have the required type;\n* $4 is the number of classes;\n* $5 is an HTML list of all classes;\n* and $6, $7 etc. are the individual classes.",
 	"wbqc-violation-message-type-entity-type": "Fragment of {{msg-mw|wbqc-violation-message-type}} when the constraint is a “Type” constraint, and the entity that doesn't have the required type is the subject of the statement (the entity the statement is placed on). $1 is the property of the statement.",
 	"wbqc-violation-message-type-entity-valueType": "Fragment of {{msg-mw|wbqc-violation-message-type}} when the constraint is a “Value type” constraint, and the entity that doesn't have the required type is the object (value) of the statement. $1 is the property of the statement.",
 	"wbqc-violation-message-type-relation-instance": "Fragment of {{msg-mw|wbqc-violation-message-type}} when the relation is “instance”, and the entity should be an instance of one of the classes.",
