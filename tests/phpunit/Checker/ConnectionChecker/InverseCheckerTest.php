@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -53,7 +54,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
-		$this->checker = new InverseChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
+		$this->checker = new InverseChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, new PlainEntityIdFormatter() );
 	}
 
 	protected function tearDown() {
