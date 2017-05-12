@@ -2,7 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
@@ -36,59 +38,59 @@ class ConnectionCheckerHelper {
 	}
 
 	/**
-	 * Checks if there is a statement with a claim using the given property and having one of the given items as its value.
+	 * Checks if there is a statement with a claim using the given property and having one of the given entities as its value.
 	 *
 	 * @param StatementList $statementList
 	 * @param string $propertyIdSerialization
-	 * @param string|string[] $itemIdSerializationOrArray
+	 * @param string|string[] $entityIdSerializationOrArray
 	 *
-	 * @return boolean
+	 * @return EntityId|null the entity ID from $entityIdSerializationOrArray that was found, or null if no entity was found
 	 */
 	public function hasClaim(
 		StatementList $statementList,
 		$propertyIdSerialization,
-		$itemIdSerializationOrArray
+		$entityIdSerializationOrArray
 	) {
-		$propertyIdSerialization = strtoupper( $propertyIdSerialization ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
+		$entityIdSerializations = (array) $entityIdSerializationOrArray;
+		try {
+			$propertyId = new PropertyId( $propertyIdSerialization );
+		} catch ( InvalidArgumentException $e ) {
+			return null;
+		}
 		/** @var Statement $statement */
-		foreach ( $statementList as $statement ) {
-			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
-				if ( is_string( $itemIdSerializationOrArray ) ) { // string
-					$itemIdSerializationArray = [ $itemIdSerializationOrArray ];
-				} else { // array
-					$itemIdSerializationArray = $itemIdSerializationOrArray;
-				}
-				if ( $this->arrayHasClaim( $statement, $itemIdSerializationArray ) ) {
-					return true;
-				}
+		foreach ( $statementList->getByPropertyId( $propertyId ) as $statement ) {
+			$result = $this->arrayHasClaim( $statement, $entityIdSerializations );
+			if ( $result !== null ) {
+				return $result;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	/**
 	 * @param Statement $statement
-	 * @param string[] $itemIdSerializationArray
+	 * @param string[] $entityIdSerializationArray
 	 *
-	 * @return bool
+	 * @return EntityId|null the entity ID from $entityIdSerializationArray that was found, or null if no entity was found
 	 */
-	private function arrayHasClaim( Statement $statement, array $itemIdSerializationArray ) {
+	private function arrayHasClaim( Statement $statement, array $entityIdSerializationArray ) {
 		$mainSnak = $statement->getMainSnak();
 
-		$itemIdSerializationArray = array_map( "strtoupper", $itemIdSerializationArray ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
+		// FIXME strtoupper should not be necessary, remove once constraints are imported from statements
+		$entityIdSerializationArray = array_map( "strtoupper", $entityIdSerializationArray );
 
 		if ( $mainSnak instanceof PropertyValueSnak ) {
 			$dataValue = $mainSnak->getDataValue();
 
-			return $dataValue instanceof EntityIdValue
-				&& in_array(
-					$dataValue->getEntityId()->getSerialization(),
-					$itemIdSerializationArray,
-					true
-				);
+			if ( $dataValue instanceof EntityIdValue ) {
+				$entityId = $dataValue->getEntityId();
+				if ( in_array( $entityId->getSerialization(), $entityIdSerializationArray, true ) ) {
+					return $entityId;
+				}
+			}
 		}
 
-		return false;
+		return null;
 	}
 
 }
