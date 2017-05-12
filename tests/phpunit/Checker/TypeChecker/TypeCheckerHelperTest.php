@@ -78,4 +78,8 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ] ) );
 	}
 
+	public function testCheckIsSubclassCyclicWide() {
+		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] ) );
+	}
+
 }
