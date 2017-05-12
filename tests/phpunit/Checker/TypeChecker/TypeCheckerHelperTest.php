@@ -28,26 +28,30 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	use DefaultConfig;
 
 	/**
+	 * @param EntityLookup|null $entityLookup
+	 *
 	 * @return TypeCheckerHelper
 	 */
-	private function getHelper() {
+	private function getHelper( EntityLookup $entityLookup = null ) {
 		return new TypeCheckerHelper(
-			new JsonFileEntityLookup( __DIR__ ),
+			$entityLookup ?: new JsonFileEntityLookup( __DIR__ ),
 			$this->getDefaultConfig(),
 			new PlainEntityIdFormatter()
 		);
 	}
 
 	/**
-	 * @return TypeCheckerHelper asserts that the helper calls getEntity exactly MAX_ENTITIES times
+	 * @return EntityLookup Expects that getEntity is called exactly MAX_ENTITIES times.
 	 */
-	private function getMaxEntitiesHelper() {
-		$realLookup = new JsonFileEntityLookup( __DIR__ );
-		$lookup = $this->getMockBuilder( EntityLookup::class )->getMock();
-		$lookup->expects( $this->exactly( TypeCheckerHelper::MAX_ENTITIES ) )
+	private function getMaxEntitiesLookup() {
+		$lookup = new JsonFileEntityLookup( __DIR__ );
+
+		$spy = $this->getMock( EntityLookup::class );
+		$spy->expects( $this->exactly( TypeCheckerHelper::MAX_ENTITIES ) )
 			->method( 'getEntity' )
-			->will( $this->returnCallback( [ $realLookup, 'getEntity' ] ) );
-		return new TypeCheckerHelper( $lookup, $this->getDefaultConfig(), new PlainEntityIdFormatter() );
+			->will( $this->returnCallback( [ $lookup, 'getEntity' ] ) );
+
+		return $spy;
 	}
 
 	public function testCheckHasClassInRelationValid() {
@@ -80,11 +84,13 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckIsSubclassCyclic() {
-		$this->assertFalse( $this->getMaxEntitiesHelper()->isSubclassOf( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ] ) );
+		$helper = $this->getHelper( $this->getMaxEntitiesLookup() );
+		$this->assertFalse( $helper->isSubclassOf( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ] ) );
 	}
 
 	public function testCheckIsSubclassCyclicWide() {
-		$this->assertFalse( $this->getMaxEntitiesHelper()->isSubclassOf( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] ) );
+		$helper = $this->getHelper( $this->getMaxEntitiesLookup() );
+		$this->assertFalse( $helper->isSubclassOf( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] ) );
 	}
 
 }
