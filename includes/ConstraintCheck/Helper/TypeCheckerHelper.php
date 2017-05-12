@@ -180,7 +180,7 @@ class TypeCheckerHelper {
 				->escaped(),
 			$this->entityIdFormatter->formatEntityId( $entityId )
 		);
-		$message->numParams( (string) count( $classes ) );
+		$message->numParams( count( $classes ) );
 		$message->rawParams(
 			'<ul>'
 			. implode( array_map(
