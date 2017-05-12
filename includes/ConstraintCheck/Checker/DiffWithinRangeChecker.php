@@ -85,7 +85,9 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				$parameters['minimum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_quantity'], true );
 				$parameters['maximum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_quantity'], true );
 			} else {
-				$message = wfMessage( "wbqc-violation-message-parameters-needed-3" )->params( $constraint->getConstraintTypeName(), 'property', 'minimum_quantity', 'maximum_quantity' )->escaped();
+				$message = wfMessage( 'wbqc-violation-message-parameters-needed-3' )
+					->params( $constraint->getConstraintTypeName(), 'property', 'minimum_quantity', 'maximum_quantity' )
+					->escaped();
 			}
 		} else {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-types-2" )->params( $constraint->getConstraintTypeName(), 'quantity', 'time' )->escaped();
@@ -106,7 +108,15 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				 */
 				if ( !$mainSnak instanceof PropertyValueSnak ) {
 					$message = wfMessage( "wbqc-violation-message-diff-within-range-property-needs value" )->escaped();
-					return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
+					return new CheckResult(
+						$entity->getId(),
+						$statement,
+						$constraint->getConstraintTypeQid(),
+						$constraint->getConstraintId(),
+						$parameters,
+						CheckResult::STATUS_VIOLATION,
+						$message
+					);
 				}
 
 				if ( $mainSnak->getDataValue()->getType() === $dataValue->getType() && $mainSnak->getType() === 'value' ) {

@@ -24,7 +24,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$repo = new ConstraintRepository();
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
 
-		$this->assertEquals( true, is_array( $constraints) );
+		$this->assertInternalType( 'array', $constraints );
 		$this->assertEquals( 2, count( $constraints ) );
 		$this->assertInstanceOf( Constraint::class, $constraints[0] );
 	}
@@ -35,8 +35,8 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$repo = new ConstraintRepository();
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P2' ) );
 
-		$this->assertEquals( true, is_array( $constraints ) );
-		$this->assertEquals( 0, count( $constraints ) );
+		$this->assertInternalType( 'array', $constraints );
+		$this->assertEmpty( $constraints );
 	}
 
 	public function testInsertBatch() {

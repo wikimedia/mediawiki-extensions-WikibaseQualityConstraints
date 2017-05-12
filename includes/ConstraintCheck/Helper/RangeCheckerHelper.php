@@ -102,7 +102,7 @@ class RangeCheckerHelper {
 			$diff = $minuendYear - $subtrahendYear;
 			if ( $minuendYear > 0.0 && $subtrahendYear < 0.0 ) {
 				$diff -= 1.0; // there is no year 0, remove it from difference
-			} elseif ( $minuendYear < 0.0 && $subtrahendYear > 0.0) {
+			} elseif ( $minuendYear < 0.0 && $subtrahendYear > 0.0 ) {
 				$diff += 1.0; // there is no year 0, remove it from negative difference
 			}
 			return $diff;

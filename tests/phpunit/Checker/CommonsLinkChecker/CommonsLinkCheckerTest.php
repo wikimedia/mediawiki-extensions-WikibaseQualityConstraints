@@ -54,9 +54,10 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function addDBData() {
-		$this->db->delete('image', '*');
-
-		$this->db->insert('image', [
+		$this->db->delete( 'image', '*' );
+		$this->db->insert(
+			'image',
+			[
 				'img_name' => 'test_image.jpg',
 				'img_size' => '42',
 				'img_width' => '7',

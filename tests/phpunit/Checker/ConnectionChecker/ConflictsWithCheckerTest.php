@@ -128,7 +128,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement(new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$constraintParameters = [];
 

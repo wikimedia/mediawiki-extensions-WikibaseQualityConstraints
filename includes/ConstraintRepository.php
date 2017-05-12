@@ -103,7 +103,7 @@ class ConstraintRepository implements ConstraintLookup {
 				$db->commit( __METHOD__, 'flush' );
 				wfGetLBFactory()->waitForReplication();
 				$table = $db->tableName( CONSTRAINT_TABLE );
-				$db->query( sprintf('DELETE FROM %s LIMIT %s', $table, $batchSize ) );
+				$db->query( sprintf( 'DELETE FROM %s LIMIT %d', $table, $batchSize ) );
 			} while ( $db->affectedRows() > 0 );
 		}
 	}

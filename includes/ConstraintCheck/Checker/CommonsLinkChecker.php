@@ -107,7 +107,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		$commonsLink = str_replace( ' ', '_', $commonsLink );
 		$commonsWikiId = 'commonswiki';
 
-		if ( defined( 'MW_PHPUNIT_TEST' )) {
+		if ( defined( 'MW_PHPUNIT_TEST' ) ) {
 			$commonsWikiId = false;
 		}
 		$dbLoadBalancer = wfGetLB( $commonsWikiId );

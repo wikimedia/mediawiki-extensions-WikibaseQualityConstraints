@@ -18,7 +18,7 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
  * @license GNU GPL v2+
  */
 
-class ConstraintParameterRenderer{
+class ConstraintParameterRenderer {
 
 	/**
 	 * Maximum number of displayed values for parameters with multiple ones.
@@ -42,12 +42,12 @@ class ConstraintParameterRenderer{
 	 * @param EntityIdFormatter $entityIdFormatter
 	 * @param ValueFormatter $dataValueFormatter
 	 */
-	public function __construct( EntityIdFormatter $entityIdFormatter,
-								 ValueFormatter $dataValueFormatter ) {
-
+	public function __construct(
+		EntityIdFormatter $entityIdFormatter,
+		ValueFormatter $dataValueFormatter
+	) {
 		$this->entityIdLabelFormatter = $entityIdFormatter;
 		$this->dataValueFormatter = $dataValueFormatter;
-
 	}
 
 	/**
@@ -61,7 +61,7 @@ class ConstraintParameterRenderer{
 		if ( is_string( $value ) ) {
 			// Cases like 'Format' 'pattern' or 'minimum'/'maximum' values, which we have stored as
 			// strings
-			return (htmlspecialchars( $value ));
+			return htmlspecialchars( $value );
 		} elseif ( $value instanceof EntityId ) {
 			// Cases like 'Conflicts with' 'property', to which we can link
 			return $this->entityIdLabelFormatter->formatEntityId( $value );
