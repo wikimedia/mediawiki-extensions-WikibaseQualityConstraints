@@ -31,7 +31,7 @@ class RangeCheckerHelper {
 	private $timeCalculator;
 
 	public function __construct() {
-		$this->timeParser = (new TimeParserFactory())->getTimeParser();
+		$this->timeParser = ( new TimeParserFactory() )->getTimeParser();
 		$this->timeCalculator = new TimeValueCalculator();
 	}
 
@@ -45,31 +45,37 @@ class RangeCheckerHelper {
 	 *                 (In other words, just like the “spaceship” operator <=>.)
 	 */
 	public function getComparison( DataValue $lhs, DataValue $rhs ) {
-		if ( $lhs->getType() === 'time' && $rhs->getType() === 'time' ) {
-			$lhsTimestamp = $this->timeCalculator->getTimestamp( $lhs );
-			$rhsTimestamp = $this->timeCalculator->getTimestamp( $rhs );
-			if ( $lhsTimestamp < $rhsTimestamp ) {
-				return -1;
-			} elseif ( $lhsTimestamp > $rhsTimestamp ) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-		if ( $lhs->getType() === 'quantity' && $rhs->getType() === 'quantity' ) {
-			// TODO normalize values: T164371
-			$lhsValue = $lhs->getAmount()->getValue();
-			$rhsValue = $rhs->getAmount()->getValue();
-			if ( $lhsValue < $rhsValue ) {
-				return -1;
-			} elseif ( $lhsValue > $rhsValue ) {
-				return 1;
-			} else {
-				return 0;
-			}
+		if ( $lhs->getType() !== $rhs->getType() ) {
+			throw new InvalidArgumentException( 'Different data value types' );
 		}
 
-		throw new InvalidArgumentException( 'Unsupported or different data value types' );
+		switch ( $lhs->getType() ) {
+			case 'time':
+				/** @var TimeValue $lhs */
+				/** @var TimeValue $rhs */
+				$lhsTimestamp = $this->timeCalculator->getTimestamp( $lhs );
+				$rhsTimestamp = $this->timeCalculator->getTimestamp( $rhs );
+
+				if ( $lhsTimestamp === $rhsTimestamp ) {
+					return 0;
+				}
+
+				return $lhsTimestamp < $rhsTimestamp ? -1 : 1;
+			case 'quantity':
+				/** @var QuantityValue|UnboundedQuantityValue $lhs */
+				/** @var QuantityValue|UnboundedQuantityValue $rhs */
+				// TODO normalize values: T164371
+				$lhsValue = $lhs->getAmount()->getValue();
+				$rhsValue = $rhs->getAmount()->getValue();
+
+				if ( $lhsValue === $rhsValue ) {
+					return 0;
+				}
+
+				return $lhsValue < $rhsValue ? -1 : 1;
+		}
+
+		throw new InvalidArgumentException( 'Unsupported data value type' );
 	}
 
 	/**

@@ -14,6 +14,7 @@ use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
+use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
@@ -84,7 +85,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	/**
 	 * Adds temporary test data to database
 	 *
-	 * @throws \DBUnexpectedError
+	 * @throws DBUnexpectedError
 	 */
 	public function addDBData() {
 		if ( !self::$hasSetup ) {

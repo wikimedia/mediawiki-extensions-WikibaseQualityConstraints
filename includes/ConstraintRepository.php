@@ -2,11 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
-use DBUnexpectedError;
 use InvalidArgumentException;
+use Wikimedia\Rdbms\DBUnexpectedError;
 use Wikimedia\Rdbms\LikeMatch;
-use ResultWrapper;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @package WikibaseQuality\ConstraintReport
