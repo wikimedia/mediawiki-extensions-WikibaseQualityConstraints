@@ -70,7 +70,7 @@ class TypeCheckerHelper {
 	 * @return bool
 	 */
 	public function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, &$entitiesChecked = 0 ) {
-		if ( $entitiesChecked++ > self::MAX_ENTITIES ) {
+		if ( ++$entitiesChecked > self::MAX_ENTITIES ) {
 			return false;
 		}
 
