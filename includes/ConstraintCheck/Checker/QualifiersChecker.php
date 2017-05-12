@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -9,6 +10,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -26,10 +28,20 @@ class QualifiersChecker implements ConstraintChecker {
 	private $helper;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @var ConstraintParameterRenderer
 	 */
-	public function __construct( ConstraintParameterParser $helper ) {
+	private $constraintParameterRenderer;
+
+	/**
+	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer should return HTML
+	 */
+	public function __construct(
+		ConstraintParameterParser $helper,
+		ConstraintParameterRenderer $constraintParameterRenderer
+	) {
 		$this->helper = $helper;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -65,7 +77,21 @@ class QualifiersChecker implements ConstraintChecker {
 		foreach ( $statement->getQualifiers() as $qualifier ) {
 			$pid = $qualifier->getPropertyId()->getSerialization();
 			if ( !in_array( $pid, $properties ) ) {
-				$message = wfMessage( "wbqc-violation-message-qualifiers" )->escaped();
+				if ( empty( $properties ) || $properties === [ '' ] ) {
+					$message = wfMessage( 'wbqc-violation-message-no-qualifiers' );
+					$message->rawParams(
+						$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() )
+					);
+				} else {
+					$message = wfMessage( "wbqc-violation-message-qualifiers" );
+					$message->rawParams(
+						$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+						$this->constraintParameterRenderer->formatPropertyId( $pid )
+					);
+					$message->numParams( count( $properties ) );
+					$message->rawParams( $this->constraintParameterRenderer->formatPropertyIdList( $properties ) );
+				}
+				$message = $message->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 				break;
 			}

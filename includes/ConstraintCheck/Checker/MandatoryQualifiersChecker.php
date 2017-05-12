@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -9,6 +10,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -24,10 +26,20 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	private $helper;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @var ConstraintParameterRenderer
 	 */
-	public function __construct( ConstraintParameterParser $helper ) {
+	private $constraintParameterRenderer;
+
+	/**
+	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer should return HTML
+	 */
+	public function __construct(
+		ConstraintParameterParser $helper,
+		ConstraintParameterRenderer $constraintParameterRenderer
+	) {
 		$this->helper = $helper;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -59,13 +71,23 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		$message = '';
 		$status = CheckResult::STATUS_COMPLIANCE;
 
+		$missingQualifiers = [];
 		foreach ( $properties as $property ) {
 			$property = strtoupper( $property ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
 			if ( !array_key_exists( $property, $qualifiers ) ) {
-				$message = wfMessage( "wbqc-violation-message-mandatory-qualifiers" )->escaped();
-				$status = CheckResult::STATUS_VIOLATION;
-				break;
+				$missingQualifiers[] = $property;
 			}
+		}
+
+		if ( $missingQualifiers ) {
+			$message = wfMessage( "wbqc-violation-message-mandatory-qualifiers" );
+			$message->rawParams(
+				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() )
+			);
+			$message->numParams( count( $missingQualifiers ) );
+			$message->rawParams( $this->constraintParameterRenderer->formatPropertyIdList( $missingQualifiers ) );
+			$message = $message->escaped();
+			$status = CheckResult::STATUS_VIOLATION;
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );

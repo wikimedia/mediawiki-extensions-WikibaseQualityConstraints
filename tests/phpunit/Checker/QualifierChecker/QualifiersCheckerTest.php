@@ -2,13 +2,16 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -39,17 +42,29 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $lookup;
 
+	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
+
 	protected function setUp() {
 		parent::setUp();
 		$this->helper = new ConstraintParameterParser();
 		$this->qualifiersList = 'P580,P582,P1365,P1366,P642,P805';
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
+		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter->method( 'format' )->willReturn( '' );
+		$this->constraintParameterRenderer = new ConstraintParameterRenderer(
+			new PlainEntityIdFormatter(),
+			$valueFormatter
+		);
 	}
 
 	protected function tearDown() {
 		unset( $this->helper );
 		unset( $this->qualifiersList );
 		unset( $this->lookup );
+		unset( $this->constraintParameterRenderer );
 		parent::tearDown();
 	}
 
@@ -66,7 +81,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	public function testQualifiersConstraint() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->helper );
+		$qualifiersChecker = new QualifiersChecker( $this->helper, $this->constraintParameterRenderer );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
@@ -74,7 +89,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	public function testQualifiersConstraintToManyQualifiers() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->helper );
+		$qualifiersChecker = new QualifiersChecker( $this->helper, $this->constraintParameterRenderer );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
 		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
 	}
@@ -82,7 +97,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	public function testQualifiersConstraintNoQualifiers() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->helper );
+		$qualifiersChecker = new QualifiersChecker( $this->helper, $this->constraintParameterRenderer );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
 		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
 	}
