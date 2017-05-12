@@ -70,7 +70,7 @@
 	"wbqc-violation-message-item-claim": "This property must only be used when there is another statement using the property with one of the values defined in the parameters.",
 	"wbqc-violation-message-mandatory-qualifiers": "All of the properties defined in the parameters have to be used as qualifiers on this statement.",
 	"wbqc-violation-message-multi-value": "This property must have multiple values. That is, there must be more than one claim using this property.",
-	"wbqc-violation-message-one-of": "The property's value must be one of the items defined in the parameters.",
+	"wbqc-violation-message-one-of": "The value for $1 should be {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following:$3}}",
 	"wbqc-violation-message-qualifier": "The property must only be used as a qualifier.",
 	"wbqc-violation-message-qualifiers": "The property must only be used with (no other than) the qualifiers defined in the parameters.",
 	"wbqc-violation-message-range-parameters-needed": "Properties with values of type \"$1\" with constraint \"Range\" need the parameters \"$2\" and \"$3\".",
