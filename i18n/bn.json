@@ -11,5 +11,8 @@
 	"wbqc-constraintreport-no-parameter": "কিছু নয়",
 	"wbqc-potentialissues-short": "সম্ভাব্য সমস্যা",
 	"wbqc-potentialissues-long": "এই বিবৃতির কিছু সম্ভাব্য সমস্যা রয়েছে।",
-	"wbqc-violation-message-type-entity-type": "$1 বৈশিষ্ট্য ব্যবহার করা সত্তাসমূহ"
+	"wbqc-violation-message-type-entity-type": "$1 বৈশিষ্ট্য ব্যবহার করা সত্তাসমূহ",
+	"wbqc-violation-message-type-entity-valueType": "$1 বিবৃতির মান",
+	"wbqc-violation-message-type-relation-instance": "নিদর্শন",
+	"wbqc-violation-message-type-relation-subclass": "উপক্লাস"
 }
