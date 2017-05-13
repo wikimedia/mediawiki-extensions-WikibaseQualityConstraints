@@ -49,37 +49,37 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
-		$this->assertEquals( true, $this->helper->hasClassInRelation( $statements, 'P31', [ 'Q1' ] ) );
+		$this->assertTrue( $this->helper->hasClassInRelation( $statements, 'P31', [ 'Q1' ] ) );
 	}
 
 	public function testCheckHasClassInRelationInvalid() {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q100' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
-		$this->assertEquals( false, $this->helper->hasClassInRelation( $statements, 'P31', [ 'Q1' ] ) );
+		$this->assertFalse( $this->helper->hasClassInRelation( $statements, 'P31', [ 'Q1' ] ) );
 	}
 
 	public function testCheckHasClassInRelationValidWithIndirection() {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q5' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
-		$this->assertEquals( true, $this->helper->hasClassInRelation( $statements, 'P31', [ 'Q4' ] ) );
+		$this->assertTrue( $this->helper->hasClassInRelation( $statements, 'P31', [ 'Q4' ] ) );
 	}
 
 	public function testCheckIsSubclassOfValidWithIndirection() {
-		$this->assertEquals( true, $this->helper->isSubclassOf( new ItemId( 'Q6' ), [ 'Q100', 'Q101' ] ) );
+		$this->assertTrue( $this->helper->isSubclassOf( new ItemId( 'Q6' ), [ 'Q100', 'Q101' ] ) );
 	}
 
 	public function testCheckIsSubclassOfInvalid() {
-		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q6' ), [ 'Q200', 'Q201' ] ) );
+		$this->assertFalse( $this->helper->isSubclassOf( new ItemId( 'Q6' ), [ 'Q200', 'Q201' ] ) );
 	}
 
 	public function testCheckIsSubclassCyclic() {
-		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ] ) );
+		$this->assertFalse( $this->helper->isSubclassOf( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ] ) );
 	}
 
 	public function testCheckIsSubclassCyclicWide() {
-		$this->assertEquals( false, $this->helper->isSubclassOf( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] ) );
+		$this->assertFalse( $this->helper->isSubclassOf( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] ) );
 	}
 
 }
