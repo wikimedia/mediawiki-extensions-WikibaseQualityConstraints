@@ -126,7 +126,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
-			if ( $this->connectionCheckerHelper->hasClaim( $targetEntityStatementList, $property, $items ) ) {
+			if ( $this->connectionCheckerHelper->findStatement( $targetEntityStatementList, $property, $items ) !== null ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {

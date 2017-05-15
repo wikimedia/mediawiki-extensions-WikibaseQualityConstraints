@@ -93,7 +93,7 @@ class ItemChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
-			if ( $this->connectionCheckerHelper->hasClaim( $entity->getStatements(), $property, $items ) ) {
+			if ( $this->connectionCheckerHelper->findStatement( $entity->getStatements(), $property, $items ) !== null ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {

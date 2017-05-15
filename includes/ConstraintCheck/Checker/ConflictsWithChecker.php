@@ -112,7 +112,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_COMPLIANCE;
 			}
 		} else {
-			$result = $this->connectionCheckerHelper->hasClaim( $entity->getStatements(), $constraintParameters['property'], explode( ',', $constraintParameters['item'] ) );
+			$result = $this->connectionCheckerHelper->findStatement( $entity->getStatements(), $constraintParameters['property'], explode( ',', $constraintParameters['item'] ) );
 			if ( $result !== null ) {
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )
 						 ->rawParams(
