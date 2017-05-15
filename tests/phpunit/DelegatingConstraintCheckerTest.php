@@ -2,11 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
@@ -65,11 +67,18 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->lookup = $this->createEntityLookup();
 		$this->statementGuidParser = new StatementGuidParser( new ItemIdParser() );
+		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter->method( 'format' )->willReturn( '' );
+		$entityIdFormatter = new PlainEntityIdFormatter();
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
 			$this->statementGuidParser,
 			$this->getDefaultConfig(),
-			new PlainEntityIdFormatter()
+			$entityIdFormatter,
+			new ConstraintParameterRenderer(
+				$entityIdFormatter,
+				$valueFormatter
+			)
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 
@@ -294,45 +303,21 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testCheckAgainstConstraints_ByClaims() {
-		$factory = new ConstraintReportFactory(
-			$this->createEntityLookup(),
-			$this->statementGuidParser,
-			$this->getDefaultConfig(),
-			new PlainEntityIdFormatter()
-		);
-		$constraintChecker = $factory->getConstraintChecker();
-
-		$result = $constraintChecker->checkAgainstConstraintsOnClaimId(
+		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
 			$this->statementGuidParser->parse( 'Q1$c0f25a6f-9e33-41c8-be34-c86a730ff30b' ) );
 
 		$this->assertCount( 18, $result, 'Every constraint should be represented by one result' );
 	}
 
 	public function testCheckAgainstConstraintsDoesNotCrashWhenResultIsEmpty_ByClaims() {
-		$factory = new ConstraintReportFactory(
-			$this->createEntityLookup(),
-			$this->statementGuidParser,
-			$this->getDefaultConfig(),
-			new PlainEntityIdFormatter()
-		);
-		$constraintChecker = $factory->getConstraintChecker();
-
-		$result = $constraintChecker->checkAgainstConstraintsOnClaimId(
+		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
 			$this->statementGuidParser->parse( 'Q2$c0f25a6f-9e33-41c8-be34-c86a730ff30b' ) );
 
 		$this->assertCount( 0, $result, 'Should be empty' );
 	}
 
 	public function testCheckAgainstConstraintsDoesNotCrashWhenClaimDoesNotExist() {
-		$factory = new ConstraintReportFactory(
-			$this->createEntityLookup(),
-			$this->statementGuidParser,
-			$this->getDefaultConfig(),
-			new PlainEntityIdFormatter()
-		);
-		$constraintChecker = $factory->getConstraintChecker();
-
-		$result = $constraintChecker->checkAgainstConstraintsOnClaimId(
+		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
 			$this->statementGuidParser->parse( 'Q99$does-not-exist' ) );
 
 		$this->assertCount( 0, $result, 'Should be empty' );
