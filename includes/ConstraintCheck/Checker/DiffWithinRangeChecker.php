@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -30,12 +31,23 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	private $rangeCheckerHelper;
 
 	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
+
+	/**
 	 * @param ConstraintParameterParser $helper
 	 * @param RangeCheckerHelper $rangeCheckerHelper
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
-	public function __construct( ConstraintParameterParser $helper, RangeCheckerHelper $rangeCheckerHelper ) {
+	public function __construct(
+		ConstraintParameterParser $helper,
+		RangeCheckerHelper $rangeCheckerHelper,
+		ConstraintParameterRenderer $constraintParameterRenderer
+	) {
 		$this->constraintParameterParser = $helper;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -97,20 +109,20 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		}
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
-		/** @var Statement $statement */
-		foreach ( $entity->getStatements() as $statement ) {
-			if ( $property === $statement->getPropertyId()->getSerialization() ) {
-				$mainSnak = $statement->getMainSnak();
+		/** @var Statement $otherStatement */
+		foreach ( $entity->getStatements() as $otherStatement ) {
+			if ( $property === $otherStatement->getPropertyId()->getSerialization() ) {
+				$otherMainSnak = $otherStatement->getMainSnak();
 
 				/*
 				 * error handling:
 				 *   types of this and the other value have to be equal, both must contain actual values
 				 */
-				if ( !$mainSnak instanceof PropertyValueSnak ) {
+				if ( !$otherMainSnak instanceof PropertyValueSnak ) {
 					$message = wfMessage( "wbqc-violation-message-diff-within-range-property-needs value" )->escaped();
 					return new CheckResult(
 						$entity->getId(),
-						$statement,
+						$otherStatement,
 						$constraint->getConstraintTypeQid(),
 						$constraint->getConstraintId(),
 						$parameters,
@@ -119,11 +131,20 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					);
 				}
 
-				if ( $mainSnak->getDataValue()->getType() === $dataValue->getType() && $mainSnak->getType() === 'value' ) {
-					$diff = $this->rangeCheckerHelper->getDifference( $dataValue, $mainSnak->getDataValue() );
+				if ( $otherMainSnak->getDataValue()->getType() === $dataValue->getType() && $otherMainSnak->getType() === 'value' ) {
+					$diff = $this->rangeCheckerHelper->getDifference( $dataValue, $otherMainSnak->getDataValue() );
 
 					if ( $diff < $min || $diff > $max ) {
-						$message = wfMessage( "wbqc-violation-message-diff-within-range" )->escaped();
+						$message = wfMessage( 'wbqc-violation-message-diff-within-range' );
+						$message->rawParams(
+							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+							$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue() ),
+							$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId() ),
+							$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue() )
+						);
+						// TODO once we import constraints from statements, $min and $max here will also be DataValues
+						$message->numParams( $min, $max );
+						$message = $message->escaped();
 						$status = CheckResult::STATUS_VIOLATION;
 					} else {
 						$message = '';

@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -30,12 +31,23 @@ class RangeChecker implements ConstraintChecker {
 	private $rangeCheckerHelper;
 
 	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
+
+	/**
 	 * @param ConstraintParameterParser $helper
 	 * @param RangeCheckerHelper $rangeCheckerHelper
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
-	public function __construct( ConstraintParameterParser $helper, RangeCheckerHelper $rangeCheckerHelper ) {
+	public function __construct(
+		ConstraintParameterParser $helper,
+		RangeCheckerHelper $rangeCheckerHelper,
+		ConstraintParameterRenderer $constraintParameterRenderer
+	) {
 		$this->constraintParameterParser = $helper;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -146,7 +158,14 @@ class RangeChecker implements ConstraintChecker {
 
 		if ( $this->rangeCheckerHelper->getComparison( $min, $dataValue ) > 0 ||
 			 $this->rangeCheckerHelper->getComparison( $dataValue, $max ) > 0 ) {
-			$message = wfMessage( "wbqc-violation-message-range" )->escaped();
+			$message = wfMessage( 'wbqc-violation-message-range' );
+			$message->rawParams(
+				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+				$this->constraintParameterRenderer->formatDataValue( $dataValue ),
+				$this->constraintParameterRenderer->formatDataValue( $min ),
+				$this->constraintParameterRenderer->formatDataValue( $max )
+			);
+			$message = $message->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = '';
