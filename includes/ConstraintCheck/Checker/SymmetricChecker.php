@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -13,6 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -38,26 +38,26 @@ class SymmetricChecker implements ConstraintChecker {
 	private $connectionCheckerHelper;
 
 	/**
-	 * @var EntityIdFormatter
+	 * @var ConstraintParameterRenderer
 	 */
-	private $entityIdFormatter;
+	private $constraintParameterRenderer;
 
 	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
-	 * @param EntityIdFormatter $entityIdFormatter should return HTML
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		ConstraintParameterParser $helper,
 		ConnectionCheckerHelper $connectionCheckerHelper,
-		EntityIdFormatter $entityIdFormatter
+		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
-		$this->entityIdFormatter = $entityIdFormatter;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -114,9 +114,9 @@ class SymmetricChecker implements ConstraintChecker {
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-symmetric' )
 					 ->rawParams(
-						 $this->entityIdFormatter->formatEntityId( $targetItem->getId() ),
-						 $this->entityIdFormatter->formatEntityId( $propertyId ),
-						 $this->entityIdFormatter->formatEntityId( $entity->getId() )
+						 $this->constraintParameterRenderer->formatEntityId( $targetItem->getId() ),
+						 $this->constraintParameterRenderer->formatEntityId( $propertyId ),
+						 $this->constraintParameterRenderer->formatEntityId( $entity->getId() )
 					 )
 					 ->escaped();
 			$status = CheckResult::STATUS_VIOLATION;

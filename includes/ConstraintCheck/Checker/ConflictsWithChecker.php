@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -13,6 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -38,26 +38,26 @@ class ConflictsWithChecker implements ConstraintChecker {
 	private $connectionCheckerHelper;
 
 	/**
-	 * @var EntityIdFormatter
+	 * @var ConstraintParameterRenderer
 	 */
-	private $entityIdFormatter;
+	private $constraintParameterRenderer;
 
 	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
-	 * @param EntityIdFormatter $entityIdFormatter
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		ConstraintParameterParser $helper,
 		ConnectionCheckerHelper $connectionCheckerHelper,
-		EntityIdFormatter $entityIdFormatter
+		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
-		$this->entityIdFormatter = $entityIdFormatter;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -87,12 +87,6 @@ class ConflictsWithChecker implements ConstraintChecker {
 			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( explode( ',', $constraintParameters[ 'item' ] ) );
 		};
 
-		try {
-			$conflictingProperty = $this->entityIdFormatter->formatEntityId( new PropertyId( $constraintParameters['property'] ) );
-		} catch ( InvalidArgumentException $e ) {
-			$conflictingProperty = htmlspecialchars( $constraintParameters['property'] );
-		}
-
 		/*
 		 * 'Conflicts with' can be defined with
 		 *   a) a property only
@@ -102,8 +96,8 @@ class ConflictsWithChecker implements ConstraintChecker {
 			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $constraintParameters['property'] ) ) {
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )
 						 ->rawParams(
-							 $this->entityIdFormatter->formatEntityId( $statement->getPropertyId() ),
-							 $conflictingProperty
+							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+							 $this->constraintParameterRenderer->formatPropertyId( $constraintParameters['property'] )
 						 )
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
@@ -116,9 +110,9 @@ class ConflictsWithChecker implements ConstraintChecker {
 			if ( $result !== null ) {
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )
 						 ->rawParams(
-							 $this->entityIdFormatter->formatEntityId( $statement->getPropertyId() ),
-							 $conflictingProperty,
-							 $this->entityIdFormatter->formatEntityId( $result )
+							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+							 $this->constraintParameterRenderer->formatPropertyId( $constraintParameters['property'] ),
+							 $this->constraintParameterRenderer->formatEntityId( $result )
 						 )
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;

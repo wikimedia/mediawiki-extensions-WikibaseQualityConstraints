@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\OneOfChecker;
 
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -15,6 +16,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
@@ -42,7 +44,15 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->helper = new ConstraintParameterParser();
-		$this->oneOfChecker = new OneOfChecker( $this->helper, new PlainEntityIdFormatter() );
+		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter->method( 'format' )->willReturn( '' );
+		$this->oneOfChecker = new OneOfChecker(
+			$this->helper,
+			new ConstraintParameterRenderer(
+				new PlainEntityIdFormatter(),
+				$valueFormatter
+			)
+		);
 	}
 
 	protected function tearDown() {

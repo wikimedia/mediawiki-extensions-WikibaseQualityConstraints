@@ -3,18 +3,16 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
-use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
  * Class for helper functions for range checkers.
@@ -38,23 +36,23 @@ class TypeCheckerHelper {
 	private $config;
 
 	/**
-	 * @var EntityIdFormatter
+	 * @var ConstraintParameterRenderer
 	 */
-	private $entityIdFormatter;
+	private $constraintParameterRenderer;
 
 	/**
 	 * @param EntityLookup $lookup
 	 * @param Config $config
-	 * @param EntityIdFormatter $entityIdFormatter should return HTML
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		Config $config,
-		EntityIdFormatter $entityIdFormatter
+		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->entityLookup = $lookup;
 		$this->config = $config;
-		$this->entityIdFormatter = $entityIdFormatter;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -149,18 +147,6 @@ class TypeCheckerHelper {
 	}
 
 	/**
-	 * @param string $class item ID serialization (any other string is HTML-escaped and returned without formatting)
-	 * @return string HTML
-	 */
-	private function formatClass( $classId ) {
-		try {
-			return $this->entityIdFormatter->formatEntityId( new ItemId( $classId ) );
-		} catch ( InvalidArgumentException $e ) {
-			return htmlspecialchars( $classId );
-		}
-	}
-
-	/**
 	 * @param PropertyId $propertyId ID of the property that introduced the constraint
 	 * @param EntityId $entityId ID of the entity that does not have the required type
 	 * @param string[] $classes item ID serializations of the classes that $entityId should have
@@ -178,21 +164,11 @@ class TypeCheckerHelper {
 		$message = wfMessage( 'wbqc-violation-message-' . $checker . '-' . $relation );
 
 		$message->rawParams(
-			$this->entityIdFormatter->formatEntityId( $propertyId ),
-			$this->entityIdFormatter->formatEntityId( $entityId )
+			$this->constraintParameterRenderer->formatPropertyId( $propertyId ),
+			$this->constraintParameterRenderer->formatEntityId( $entityId )
 		);
 		$message->numParams( count( $classes ) );
-		$message->rawParams(
-			'<ul>'
-			. implode( array_map(
-				function ( $class ) {
-					return '<li>' . $this->formatClass( $class ) . '</li>';
-				},
-				$classes
-			) )
-			. '</ul>'
-		);
-		$message->rawParams( array_map( [ $this, "formatClass" ], $classes ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $classes ) );
 
 		return $message->escaped();
 	}

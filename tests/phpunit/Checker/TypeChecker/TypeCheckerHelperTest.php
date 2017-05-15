@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use PHPUnit_Framework_TestCase;
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\Statement;
@@ -12,6 +13,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -33,10 +35,15 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	 * @return TypeCheckerHelper
 	 */
 	private function getHelper( EntityLookup $entityLookup = null ) {
+		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter->method( 'format' )->willReturn( '' );
 		return new TypeCheckerHelper(
 			$entityLookup ?: new JsonFileEntityLookup( __DIR__ ),
 			$this->getDefaultConfig(),
-			new PlainEntityIdFormatter()
+			new ConstraintParameterRenderer(
+				new PlainEntityIdFormatter(),
+				$valueFormatter
+			)
 		);
 	}
 
