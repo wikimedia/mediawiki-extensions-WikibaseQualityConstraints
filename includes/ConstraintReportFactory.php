@@ -157,7 +157,7 @@ class ConstraintReportFactory {
 				'Unique value' => new UniqueValueChecker(),
 				'Format' => new FormatChecker( $constraintParameterParser ),
 				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
-				'One of' => new OneOfChecker( $constraintParameterParser ),
+				'One of' => new OneOfChecker( $constraintParameterParser, $this->entityIdFormatter ),
 			];
 		}
 

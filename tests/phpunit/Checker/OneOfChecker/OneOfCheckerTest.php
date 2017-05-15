@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Test\OneOfChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -41,7 +42,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->helper = new ConstraintParameterParser();
-		$this->oneOfChecker = new OneOfChecker( $this->helper );
+		$this->oneOfChecker = new OneOfChecker( $this->helper, new PlainEntityIdFormatter() );
 	}
 
 	protected function tearDown() {

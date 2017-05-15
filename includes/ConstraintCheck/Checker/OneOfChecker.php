@@ -2,8 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -25,10 +28,32 @@ class OneOfChecker implements ConstraintChecker {
 	private $helper;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @var EntityIdFormatter
 	 */
-	public function __construct( ConstraintParameterParser $helper ) {
+	private $entityIdFormatter;
+
+	/**
+	 * @param ConstraintParameterParser $helper
+	 * @param EntityIdFormatter $entityIdFormatter should return HTML
+	 */
+	public function __construct(
+		ConstraintParameterParser $helper,
+		EntityIdFormatter $entityIdFormatter
+	) {
 		$this->helper = $helper;
+		$this->entityIdFormatter = $entityIdFormatter;
+	}
+
+	/**
+	 * @var string $item
+	 * @return string HTML
+	 */
+	private function formatValue( $item ) {
+		try {
+			return $this->entityIdFormatter->formatEntityId( new ItemId( $item ) );
+		} catch ( InvalidArgumentException $e ) {
+			return htmlspecialchars( $item );
+		}
 	}
 
 	/**
@@ -88,7 +113,23 @@ class OneOfChecker implements ConstraintChecker {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = wfMessage( "wbqc-violation-message-one-of" )->escaped();
+			$message = wfMessage( "wbqc-violation-message-one-of" );
+			$message->rawParams(
+				$this->entityIdFormatter->formatEntityId( $statement->getPropertyId() )
+			);
+			$message->numParams( count( $items ) );
+			$message->rawParams(
+				'<ul>'
+				. implode( array_map(
+					function ( $item ) {
+						return '<li>' . $this->formatValue( $item ) . '</li>';
+					},
+					$items
+				) )
+				. '</ul>'
+			);
+			$message->rawParams( array_map( [ $this, 'formatValue' ], $items ) );
+			$message = $message->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
