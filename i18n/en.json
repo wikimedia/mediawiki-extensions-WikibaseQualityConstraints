@@ -66,8 +66,7 @@
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "The property defined in the parameters must have a value of the same type as this property.",
 	"wbqc-violation-message-format": "The property's value must match the pattern defined in the parameters.",
 	"wbqc-violation-message-inverse": "$1 should also have the inverse statement $2 $3.",
-	"wbqc-violation-message-item-property": "This property must only be used when there is another statement using the property defined in the parameters.",
-	"wbqc-violation-message-item-claim": "This property must only be used when there is another statement using the property with one of the values defined in the parameters.",
+	"wbqc-violation-message-item": "An entity with $1 should also have {{PLURAL:$3|0=a statement $2.|1=a statement $2 $5.|a statement for $2 with one of the following values:$4}}",
 	"wbqc-violation-message-mandatory-qualifiers": "All of the properties defined in the parameters have to be used as qualifiers on this statement.",
 	"wbqc-violation-message-multi-value": "This property must have multiple values. That is, there must be more than one claim using this property.",
 	"wbqc-violation-message-one-of": "The value for $1 should be {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following:$3}}",
@@ -82,6 +81,5 @@
 	"wbqc-violation-message-type-subclass": "Entities using the $1 property should be subclasses of {{PLURAL:$3|1=$5|2=$5 or $6|one of the following classes}} (or of {{PLURAL:$3|1=a subclass of it|2=a subclass of them|one of their subclasses}}), but $2 currently {{PLURAL:$3|1=isn't.|2=isn't.|isn't: $4}}",
 	"wbqc-violation-message-valueType-instance": "Values of $1 statements should be instances of {{PLURAL:$3|1=$5|2=$5 or $6|one of the following classes}} (or of {{PLURAL:$3|1=a subclass of it|2=a subclass of them|one of their subclasses}}), but $2 currently {{PLURAL:$3|1=isn't.|2=isn't.|isn't: $4}}",
 	"wbqc-violation-message-valueType-subclass": "Values of $1 statements should be subclasses of {{PLURAL:$3|1=$5|2=$5 or $6|one of the following classes}} (or of {{PLURAL:$3|1=a subclass of it|2=a subclass of them|one of their subclasses}}), but $2 currently {{PLURAL:$3|1=isn't.|2=isn't.|isn't: $4}}",
-	"wbqc-violation-message-target-required-claim-property": "This property must only be used when there is a statement on its value entity using the property defined in the parameters.",
-	"wbqc-violation-message-target-required-claim-claim": "This property must only be used when there is a statement on its value entity using the property with one of the values defined in the parameters."
+	"wbqc-violation-message-target-required-claim": "$1 should have {{PLURAL:$3|0=a statement $2.|1=a statement $2 $5.|a statement for $2 with one of the following values:$4}}"
 }

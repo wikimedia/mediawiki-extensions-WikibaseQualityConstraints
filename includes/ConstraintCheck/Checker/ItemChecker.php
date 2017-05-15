@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -35,14 +36,26 @@ class ItemChecker implements ConstraintChecker {
 	private $connectionCheckerHelper;
 
 	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct(
+		EntityLookup $lookup,
+		ConstraintParameterParser $helper,
+		ConnectionCheckerHelper $connectionCheckerHelper,
+		ConstraintParameterRenderer $constraintParameterRenderer
+	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -64,7 +77,7 @@ class ItemChecker implements ConstraintChecker {
 			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $property );
 		}
 
-		$items = false;
+		$items = [];
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
 			$items = explode( ',', $constraintParameters['item'] );
 			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( $items );
@@ -86,20 +99,29 @@ class ItemChecker implements ConstraintChecker {
 		 */
 		if ( !$items ) {
 			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $property ) ) {
-				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = wfMessage( "wbqc-violation-message-item-property" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
 			if ( $this->connectionCheckerHelper->findStatement( $entity->getStatements(), $property, $items ) !== null ) {
-				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = wfMessage( "wbqc-violation-message-item-claim" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
+		}
+
+		if ( $status == CheckResult::STATUS_COMPLIANCE ) {
+			$message = '';
+		} else {
+			$message = wfMessage( 'wbqc-violation-message-item' );
+			$message->rawParams(
+				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+				$this->constraintParameterRenderer->formatPropertyId( $property )
+			);
+			$message->numParams( count( $items ) );
+			$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $items ) );
+			$message = $message->escaped();
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
