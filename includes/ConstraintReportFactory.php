@@ -140,7 +140,7 @@ class ConstraintReportFactory {
 			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config, $this->entityIdFormatter );
 
 			$this->constraintCheckerMap = [
-				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
+				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->entityIdFormatter ),
 				'Item' => new ItemChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
 				'Target required claim' => new TargetRequiredClaimChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
 				'Symmetric' => new SymmetricChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->entityIdFormatter ),

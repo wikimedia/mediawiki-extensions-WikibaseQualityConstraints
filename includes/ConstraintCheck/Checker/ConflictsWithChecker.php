@@ -2,7 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -35,14 +38,26 @@ class ConflictsWithChecker implements ConstraintChecker {
 	private $connectionCheckerHelper;
 
 	/**
+	 * @var EntityIdFormatter
+	 */
+	private $entityIdFormatter;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
+	 * @param EntityIdFormatter $entityIdFormatter
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct(
+		EntityLookup $lookup,
+		ConstraintParameterParser $helper,
+		ConnectionCheckerHelper $connectionCheckerHelper,
+		EntityIdFormatter $entityIdFormatter
+	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
+		$this->entityIdFormatter = $entityIdFormatter;
 	}
 
 	/**
@@ -72,6 +87,12 @@ class ConflictsWithChecker implements ConstraintChecker {
 			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( explode( ',', $constraintParameters[ 'item' ] ) );
 		};
 
+		try {
+			$conflictingProperty = $this->entityIdFormatter->formatEntityId( new PropertyId( $constraintParameters['property'] ) );
+		} catch ( InvalidArgumentException $e ) {
+			$conflictingProperty = htmlspecialchars( $constraintParameters['property'] );
+		}
+
 		/*
 		 * 'Conflicts with' can be defined with
 		 *   a) a property only
@@ -79,15 +100,27 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 */
 		if ( !array_key_exists( 'item', $constraintParameters ) ) {
 			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $constraintParameters['property'] ) ) {
-				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )->params( $constraint->getConstraintTypeName() )->escaped();
+				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )
+						 ->rawParams(
+							 $this->entityIdFormatter->formatEntityId( $statement->getPropertyId() ),
+							 $conflictingProperty
+						 )
+						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			}
 		} else {
-			if ( $this->connectionCheckerHelper->hasClaim( $entity->getStatements(), $constraintParameters['property'], explode( ',', $constraintParameters['item'] ) ) ) {
-				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )->params( $constraint->getConstraintTypeName() )->escaped();
+			$result = $this->connectionCheckerHelper->hasClaim( $entity->getStatements(), $constraintParameters['property'], explode( ',', $constraintParameters['item'] ) );
+			if ( $result !== null ) {
+				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )
+						 ->rawParams(
+							 $this->entityIdFormatter->formatEntityId( $statement->getPropertyId() ),
+							 $conflictingProperty,
+							 $this->entityIdFormatter->formatEntityId( $result )
+						 )
+						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
 				$message = '';
