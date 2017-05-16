@@ -57,24 +57,24 @@ class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasClaimValid() {
-		$this->assertNotNull( $this->connectionCheckerHelper->hasClaim( $this->statementList, 'P1', 'Q1' ) );
+		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', 'Q1' ) );
 	}
 
 	public function testHasClaimWrongItem() {
-		$this->assertNull( $this->connectionCheckerHelper->hasClaim( $this->statementList, 'P1', 'Q100' ) );
+		$this->assertNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', 'Q100' ) );
 	}
 
 	public function testHasClaimWrongProperty() {
-		$this->assertNull( $this->connectionCheckerHelper->hasClaim( $this->statementList, 'P100', 'Q1' ) );
+		$this->assertNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P100', 'Q1' ) );
 	}
 
 	public function testHasClaimValidArray() {
-		$this->assertNotNull( $this->connectionCheckerHelper->hasClaim( $this->statementList, 'P1', [ 'Q1', 'Q2' ] ) );
+		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', [ 'Q1', 'Q2' ] ) );
 	}
 
 	public function testHasClaimNoValueSnak() {
 		$statementList = new StatementList( new Statement( new PropertyNoValueSnak( 1 ) ) );
-		$this->assertNull( $this->connectionCheckerHelper->hasClaim( $statementList, 'P1', [ 'Q1', 'Q2' ] ) );
+		$this->assertNull( $this->connectionCheckerHelper->findStatement( $statementList, 'P1', [ 'Q1', 'Q2' ] ) );
 	}
 
 }

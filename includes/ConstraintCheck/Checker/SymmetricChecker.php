@@ -108,7 +108,7 @@ class SymmetricChecker implements ConstraintChecker {
 		}
 		$targetItemStatementList = $targetItem->getStatements();
 
-		if ( $this->connectionCheckerHelper->hasClaim( $targetItemStatementList, $propertyId->getSerialization(), $entity->getId()->getSerialization() ) ) {
+		if ( $this->connectionCheckerHelper->findStatement( $targetItemStatementList, $propertyId->getSerialization(), $entity->getId()->getSerialization() ) !== null ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

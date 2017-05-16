@@ -120,7 +120,7 @@ class InverseChecker implements ConstraintChecker {
 		}
 		$targetItemStatementList = $targetItem->getStatements();
 
-		if ( $this->connectionCheckerHelper->hasClaim( $targetItemStatementList, $property, $entity->getId()->getSerialization() ) ) {
+		if ( $this->connectionCheckerHelper->findStatement( $targetItemStatementList, $property, $entity->getId()->getSerialization() ) !== null ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

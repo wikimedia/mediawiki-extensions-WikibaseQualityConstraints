@@ -46,7 +46,7 @@ class ConnectionCheckerHelper {
 	 *
 	 * @return EntityId|null the entity ID from $entityIdSerializationOrArray that was found, or null if no entity was found
 	 */
-	public function hasClaim(
+	public function findStatement(
 		StatementList $statementList,
 		$propertyIdSerialization,
 		$entityIdSerializationOrArray
