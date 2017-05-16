@@ -117,7 +117,7 @@ class RangeChecker implements ConstraintChecker {
 					->params( 'time', 'minimum_date', 'maximum_date' )->escaped();
 			}
 			if ( isset( $min ) && isset( $max ) ) {
-				$now = gmdate( '+Y-m-d\TH:i:s\Z' );
+				$now = gmdate( '+Y-m-d\T00:00:00\Z' );
 				if ( $min === 'now' ) {
 					$min = $now;
 				}
