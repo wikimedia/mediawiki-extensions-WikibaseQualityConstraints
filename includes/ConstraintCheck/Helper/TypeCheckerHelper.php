@@ -170,6 +170,11 @@ class TypeCheckerHelper {
 	 * @return string Localized HTML message
 	 */
 	public function getViolationMessage( PropertyId $propertyId, EntityId $entityId, array $classes, $checker, $relation ) {
+		// Possible messages:
+		// wbqc-violation-message-type-instance
+		// wbqc-violation-message-type-subclass
+		// wbqc-violation-message-valueType-instance
+		// wbqc-violation-message-valueType-subclass
 		$message = wfMessage( 'wbqc-violation-message-' . $checker . '-' . $relation );
 
 		$message->rawParams(
