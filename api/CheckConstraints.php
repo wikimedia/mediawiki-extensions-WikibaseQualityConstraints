@@ -99,30 +99,30 @@ class CheckConstraints extends ApiBase {
 	 */
 	public static function newFromGlobalState( ApiMain $main, $name, $prefix = '' ) {
 		$repo = WikibaseRepo::getDefaultInstance();
-		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
-		$termLookup = $repo->getTermLookup();
-		$termBuffer = $repo->getTermBuffer();
-		$languageFallbackChainFactory = new LanguageFallbackChainFactory();
-		$fallbackLabelDescLookupFactory = new LanguageFallbackLabelDescriptionLookupFactory( $languageFallbackChainFactory, $termLookup, $termBuffer );
-		$factory = new EntityIdLabelFormatterFactory();
 
-		$language = new Language();
-		$labelLookup = $fallbackLabelDescLookupFactory->newLabelDescriptionLookup( $language );
-
+		$language = $repo->getUserLanguage();
 		$formatterOptions = new FormatterOptions();
-		$factoryFunctions = [];
-		Assert::parameterElementType( 'callable', $factoryFunctions, '$factoryFunctions' );
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-		$valueFormatterFactory = new OutputFormatValueFormatterFactory(
-			$factoryFunctions,
-			$language,
-			$languageFallbackChainFactory
-		);
+		$valueFormatterFactory = $repo->getValueFormatterFactory();
 		$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
+		$languageFallbackLabelDescriptionLookupFactory = $repo->getLanguageFallbackLabelDescriptionLookupFactory();
+		$labelDescriptionLookup = $languageFallbackLabelDescriptionLookupFactory->newLabelDescriptionLookup( $language );
+		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
+		$entityIdFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
+		$statementGuidParser = $repo->getStatementGuidParser();
+		$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
+		$constraintReportFactory = new ConstraintReportFactory(
+			$repo->getEntityLookup(),
+			$statementGuidParser,
+			MediaWikiServices::getInstance()->getMainConfig(),
+			$entityIdFormatter,
+			$constraintParameterRenderer
+		);
+
 		return new CheckConstraints( $main, $name, $prefix, $repo->getEntityIdParser(),
-			$repo->getStatementGuidValidator(), $repo->getStatementGuidParser(), $constraintReportFactory->getConstraintChecker(),
-			new ConstraintParameterRenderer( $factory->getEntityIdFormatter( $labelLookup ), $valueFormatter ),
+			$repo->getStatementGuidValidator(), $statementGuidParser, $constraintReportFactory->getConstraintChecker(),
+			$constraintParameterRenderer,
 			$repo->getApiHelperFactory( RequestContext::getMain() ) );
 	}
 

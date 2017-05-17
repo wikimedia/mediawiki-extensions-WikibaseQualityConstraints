@@ -4,8 +4,10 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use MediaWiki\MediaWikiServices;
+use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\Lib\SnakFormatter;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -76,6 +78,11 @@ class ConstraintReportFactory {
 	private $entityIdFormatter;
 
 	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
+
+	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -86,13 +93,21 @@ class ConstraintReportFactory {
 
 		if ( $instance === null ) {
 			$wikibaseRepo = WikibaseRepo::getDefaultInstance();
+			$entityIdFormatter = $wikibaseRepo->getEntityIdHtmlLinkFormatterFactory()->getEntityIdFormatter(
+				$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup(
+					$wikibaseRepo->getUserLanguage()
+				)
+			);
 			$instance = new self(
 				$wikibaseRepo->getEntityLookup(),
 				$wikibaseRepo->getStatementGuidParser(),
 				MediaWikiServices::getInstance()->getMainConfig(),
-				$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory()->getEntityIdFormatter(
-					$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup(
-						$wikibaseRepo->getUserLanguage()
+				$entityIdFormatter,
+				new ConstraintParameterRenderer(
+					$entityIdFormatter,
+					$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
+						SnakFormatter::FORMAT_HTML,
+						new FormatterOptions()
 					)
 				)
 			);
@@ -103,15 +118,16 @@ class ConstraintReportFactory {
 
 	public function __construct(
 		EntityLookup $lookup,
-		StatementGuidParser
-		$statementGuidParser,
+		StatementGuidParser $statementGuidParser,
 		Config $config,
-		EntityIdFormatter $entityIdFormatter
+		EntityIdFormatter $entityIdFormatter,
+		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->lookup = $lookup;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
 		$this->entityIdFormatter = $entityIdFormatter;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
