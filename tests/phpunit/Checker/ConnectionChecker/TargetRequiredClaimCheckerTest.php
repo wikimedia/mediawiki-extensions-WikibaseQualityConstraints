@@ -2,7 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -15,6 +17,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -55,7 +58,13 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
-		$this->checker = new TargetRequiredClaimChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper );
+		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter->method( 'format' )->willReturn( '' );
+		$constraintParameterRenderer = new ConstraintParameterRenderer(
+			new PlainEntityIdFormatter(),
+			$valueFormatter
+		);
+		$this->checker = new TargetRequiredClaimChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $constraintParameterRenderer );
 	}
 
 	protected function tearDown() {

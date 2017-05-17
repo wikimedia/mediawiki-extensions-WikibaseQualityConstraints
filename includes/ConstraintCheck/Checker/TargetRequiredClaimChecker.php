@@ -12,6 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -37,14 +38,26 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 	private $connectionCheckerHelper;
 
 	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, ConnectionCheckerHelper $connectionCheckerHelper ) {
+	public function __construct(
+		EntityLookup $lookup,
+		ConstraintParameterParser $helper,
+		ConnectionCheckerHelper $connectionCheckerHelper,
+		ConstraintParameterRenderer $constraintParameterRenderer
+	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $helper;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -66,7 +79,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $property );
 		}
 
-		$items = false;
+		$items = [];
 		if ( array_key_exists( 'item', $constraintParameters ) ) {
 			$items = explode( ',', $constraintParameters['item'] );
 			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( $items );
@@ -105,7 +118,8 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$targetEntity = $this->entityLookup->getEntity( $dataValue->getEntityId() );
+		$targetEntityId = $dataValue->getEntityId();
+		$targetEntity = $this->entityLookup->getEntity( $targetEntityId );
 		if ( $targetEntity === null ) {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
@@ -119,20 +133,29 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 */
 		if ( !$items ) {
 			if ( $this->connectionCheckerHelper->hasProperty( $targetEntityStatementList, $property ) ) {
-				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = wfMessage( "wbqc-violation-message-target-required-claim-property" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
 			if ( $this->connectionCheckerHelper->findStatement( $targetEntityStatementList, $property, $items ) !== null ) {
-				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = wfMessage( "wbqc-violation-message-target-required-claim-claim" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
+		}
+
+		if ( $status == CheckResult::STATUS_COMPLIANCE ) {
+			$message = '';
+		} else {
+			$message = wfMessage( 'wbqc-violation-message-target-required-claim' );
+			$message->rawParams(
+				$this->constraintParameterRenderer->formatItemId( $targetEntityId ),
+				$this->constraintParameterRenderer->formatPropertyId( $property )
+			);
+			$message->numParams( count( $items ) );
+			$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $items ) );
+			$message = $message->escaped();
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
