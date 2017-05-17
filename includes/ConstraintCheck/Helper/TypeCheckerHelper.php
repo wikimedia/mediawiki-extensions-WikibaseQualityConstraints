@@ -23,8 +23,6 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
  */
 class TypeCheckerHelper {
 
-	const MAX_ENTITIES = 50;
-
 	/**
 	 * @var EntityLookup
 	 */
@@ -58,7 +56,8 @@ class TypeCheckerHelper {
 	/**
 	 * Checks if $comparativeClass is a subclass
 	 * of one of the item ID serializations in $classesToCheck.
-	 * If the class hierarchy is not exhausted after checking MAX_ENTITIES entities,
+	 * If the class hierarchy is not exhausted before
+	 * the configured limit (WBQualityConstraintsTypeCheckMaxEntities) is reached,
 	 * the check aborts and returns false.
 	 *
 	 * @param EntityId $comparativeClass
@@ -68,7 +67,7 @@ class TypeCheckerHelper {
 	 * @return bool
 	 */
 	public function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, &$entitiesChecked = 0 ) {
-		if ( ++$entitiesChecked > self::MAX_ENTITIES ) {
+		if ( ++$entitiesChecked > $this->config->get( 'WBQualityConstraintsTypeCheckMaxEntities' ) ) {
 			return false;
 		}
 

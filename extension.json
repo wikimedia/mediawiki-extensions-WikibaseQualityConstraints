@@ -50,6 +50,11 @@
 		}
 	},
 	"config": {
+		"WBQualityConstraintsTypeCheckMaxEntities": {
+			"value": 1000,
+			"description": "The maximum number of entities that are accessed when checking type or subtype relations.",
+			"public": true
+		},
 		"WBQualityConstraintsInstanceOfId": {
 			"value": "P31",
 			"description": "The property ID of the 'instance of' property, which specifies the class(es) of an item.",

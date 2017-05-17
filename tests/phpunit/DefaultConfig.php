@@ -24,6 +24,8 @@ trait DefaultConfig {
 			foreach ( $extensionJson['config'] as $key => $value ) {
 				$this->defaultConfig->set( $key, $value['value'] );
 			}
+			// reduce some limits to make tests run faster
+			$this->defaultConfig->set( 'WBQualityConstraintsTypeCheckMaxEntities', 10 );
 		}
 
 		return $this->defaultConfig;

@@ -48,13 +48,15 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @return EntityLookup Expects that getEntity is called exactly MAX_ENTITIES times.
+	 * @return EntityLookup Expects that getEntity is called
+	 * exactly WBQualityConstraintsTypeCheckMaxEntities times.
 	 */
 	private function getMaxEntitiesLookup() {
 		$lookup = new JsonFileEntityLookup( __DIR__ );
+		$maxEntities = $this->getDefaultConfig()->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
 
 		$spy = $this->getMock( EntityLookup::class );
-		$spy->expects( $this->exactly( TypeCheckerHelper::MAX_ENTITIES ) )
+		$spy->expects( $this->exactly( $maxEntities ) )
 			->method( 'getEntity' )
 			->will( $this->returnCallback( [ $lookup, 'getEntity' ] ) );
 
