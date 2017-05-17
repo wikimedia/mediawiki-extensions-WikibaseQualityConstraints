@@ -105,6 +105,7 @@
 			api.get( {
 				action: 'wbcheckconstraints',
 				format: 'json',
+				uselang: mw.config.get( 'wgUserLanguage' ),
 				id: entityId
 			} ).done( function( data ) {
 				$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak .wikibase-snakview-value' )
