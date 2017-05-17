@@ -1,14 +1,18 @@
 # Wikibase Quality Constraints
-[![Build Status](https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints.svg?branch=master)]
-(https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints)
-[![Coverage Status](https://coveralls.io/repos/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badge.svg)]
-(https://coveralls.io/r/wikimedia/mediawiki-extensions-WikibaseQualityConstraints)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badges/quality-score.png?b=master)]
-(https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/?branch=master)
+[![Build Status][travis-badge]][travis]
+[![Coverage Status][coveralls-badge]][coveralls]
+[![Scrutinizer Code Quality][scrutinizer-badge]][scrutinizer]
 
-This is a complementary extension for the [Wikibase Quality base extension]
-(https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality.git).
+This is a complementary extension for the [Wikibase Quality base extension][wbq].
 It performs constraint checks in Wikibase.
+
+[travis-badge]: https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints.svg?branch=master
+[travis]: https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints
+[coveralls-badge]: https://coveralls.io/repos/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badge.svg
+[coveralls]: https://coveralls.io/r/wikimedia/mediawiki-extensions-WikibaseQualityConstraints
+[scrutinizer-badge]: https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badges/quality-score.png?b=master
+[scrutinizer]: https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/?branch=master
+[wbq]: https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality.git
 
 ## Installation
 
