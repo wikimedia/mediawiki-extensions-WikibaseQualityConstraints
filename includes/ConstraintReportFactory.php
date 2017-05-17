@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport;
 use Config;
 use MediaWiki\MediaWikiServices;
 use ValueFormatters\FormatterOptions;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Repo\WikibaseRepo;
@@ -73,11 +72,6 @@ class ConstraintReportFactory {
 	private $config;
 
 	/**
-	 * @var EntityIdFormatter
-	 */
-	private $entityIdFormatter;
-
-	/**
 	 * @var ConstraintParameterRenderer
 	 */
 	private $constraintParameterRenderer;
@@ -102,7 +96,6 @@ class ConstraintReportFactory {
 				$wikibaseRepo->getEntityLookup(),
 				$wikibaseRepo->getStatementGuidParser(),
 				MediaWikiServices::getInstance()->getMainConfig(),
-				$entityIdFormatter,
 				new ConstraintParameterRenderer(
 					$entityIdFormatter,
 					$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
@@ -120,13 +113,11 @@ class ConstraintReportFactory {
 		EntityLookup $lookup,
 		StatementGuidParser $statementGuidParser,
 		Config $config,
-		EntityIdFormatter $entityIdFormatter,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->lookup = $lookup;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
-		$this->entityIdFormatter = $entityIdFormatter;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
@@ -153,14 +144,14 @@ class ConstraintReportFactory {
 			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
 			$rangeCheckerHelper = new RangeCheckerHelper();
-			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config, $this->entityIdFormatter );
+			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config, $this->constraintParameterRenderer );
 
 			$this->constraintCheckerMap = [
-				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->entityIdFormatter ),
+				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Item' => new ItemChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
 				'Target required claim' => new TargetRequiredClaimChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper ),
-				'Symmetric' => new SymmetricChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->entityIdFormatter ),
-				'Inverse' => new InverseChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->entityIdFormatter ),
+				'Symmetric' => new SymmetricChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
+				'Inverse' => new InverseChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Qualifier' => new QualifierChecker( $constraintParameterParser ),
 				'Qualifiers' => new QualifiersChecker( $constraintParameterParser ),
 				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $constraintParameterParser ),
@@ -173,7 +164,7 @@ class ConstraintReportFactory {
 				'Unique value' => new UniqueValueChecker(),
 				'Format' => new FormatChecker( $constraintParameterParser ),
 				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
-				'One of' => new OneOfChecker( $constraintParameterParser, $this->entityIdFormatter ),
+				'One of' => new OneOfChecker( $constraintParameterParser, $this->constraintParameterRenderer ),
 			];
 		}
 

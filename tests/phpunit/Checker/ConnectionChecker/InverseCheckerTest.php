@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -14,6 +15,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -54,7 +56,17 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
-		$this->checker = new InverseChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, new PlainEntityIdFormatter() );
+		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter->method( 'format' )->willReturn( '' );
+		$this->checker = new InverseChecker(
+			$this->lookup,
+			$this->helper,
+			$this->connectionCheckerHelper,
+			new ConstraintParameterRenderer(
+				new PlainEntityIdFormatter(),
+				$valueFormatter
+			)
+		);
 	}
 
 	protected function tearDown() {

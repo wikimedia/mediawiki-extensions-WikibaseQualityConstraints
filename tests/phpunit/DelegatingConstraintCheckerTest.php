@@ -74,7 +74,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$this->lookup,
 			$this->statementGuidParser,
 			$this->getDefaultConfig(),
-			$entityIdFormatter,
 			new ConstraintParameterRenderer(
 				$entityIdFormatter,
 				$valueFormatter

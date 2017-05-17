@@ -116,7 +116,6 @@ class CheckConstraints extends ApiBase {
 			$repo->getEntityLookup(),
 			$statementGuidParser,
 			MediaWikiServices::getInstance()->getMainConfig(),
-			$entityIdFormatter,
 			$constraintParameterRenderer
 		);
 

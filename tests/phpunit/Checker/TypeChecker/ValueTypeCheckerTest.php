@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Statement\Statement;
@@ -16,6 +17,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -53,13 +55,18 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
+		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter->method( 'format' )->willReturn( '' );
 		$this->checker = new ValueTypeChecker(
 			$this->lookup,
 			new ConstraintParameterParser(),
 			new TypeCheckerHelper(
 				$this->lookup,
 				$this->getDefaultConfig(),
-				new PlainEntityIdFormatter()
+				new ConstraintParameterRenderer(
+					new PlainEntityIdFormatter(),
+					$valueFormatter
+				)
 			),
 			$this->getDefaultConfig()
 		);
