@@ -298,8 +298,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$cssClasses .= ' wbqc-constraintreport-notice-error';
 		}
 
-		return
-			Html::element(
+		return Html::rawElement(
 				'p',
 				[
 					'class' => $cssClasses
@@ -312,14 +311,17 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return string HTML
 	 */
 	private function getExplanationText() {
-		return
-			Html::openElement( 'div', [ 'class' => 'wbqc-explanation' ] )
-			. $this->msg( 'wbqc-constraintreport-explanation-part-one' )->escaped()
-			. Html::closeElement( 'div' )
+		return Html::rawElement(
+				'div',
+				[ 'class' => 'wbqc-explanation' ],
+				$this->msg( 'wbqc-constraintreport-explanation-part-one' )->escaped()
+			)
 			. Html::element( 'br' )
-			. Html::openElement( 'div', [ 'class' => 'wbqc-explanation' ] )
-			. $this->msg( 'wbqc-constraintreport-explanation-part-two' )->escaped()
-			. Html::closeElement( 'div' );
+			. Html::rawElement(
+				'div',
+				[ 'class' => 'wbqc-explanation' ],
+				$this->msg( 'wbqc-constraintreport-explanation-part-two' )->escaped()
+			);
 	}
 
 	/**
@@ -436,10 +438,11 @@ class SpecialConstraintReport extends SpecialPage {
 							   $this->entityIdLinkFormatter->formatEntityId( $entityId ),
 							   htmlspecialchars( $entityId->getSerialization() ) );
 
-		return
-			Html::openElement( 'h3' )
-			. sprintf( '%s %s', $this->msg( 'wbqc-constraintreport-result-headline' )->escaped(), $entityLink )
-			. Html::closeElement( 'h3' );
+		return Html::rawElement(
+			'h3',
+			[],
+			sprintf( '%s %s', $this->msg( 'wbqc-constraintreport-result-headline' )->escaped(), $entityLink )
+		);
 	}
 
 	/**
@@ -465,12 +468,8 @@ class SpecialConstraintReport extends SpecialPage {
 					. $count;
 			}
 		}
-		$summary =
-			Html::openElement( 'p' )
-			. implode( ', ', $statusElements )
-			. Html::closeElement( 'p' );
 
-		return $summary;
+		return Html::rawElement( 'p', [], implode( ', ', $statusElements ) );
 	}
 
 	/**
@@ -513,12 +512,11 @@ class SpecialConstraintReport extends SpecialPage {
 			$tooltipContent
 		);
 
-		return
-			Html::openElement(
-				'span'
-			)
-			. sprintf( '%s %s %s', $content, $tooltipIndicator, $tooltip )
-			. Html::closeElement( 'span' );
+		return Html::rawElement(
+			'span',
+			[],
+			sprintf( '%s %s %s', $content, $tooltipIndicator, $tooltip )
+		);
 	}
 
 	/**
