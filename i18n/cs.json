@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Cvanca",
-			"Mormegil"
+			"Mormegil",
+			"Matěj Suchánek"
 		]
 	},
 	"wbqc-constraintreport": "Zpráva o omezeních",
@@ -26,6 +27,8 @@
 	"wbqc-constraintreport-result-link-to-claim": "přejít na tvrzení",
 	"wbqc-constraintreport-result-link-to-constraint": "přejít na omezení",
 	"wbqc-constraintreport-no-parameter": "není",
+	"wbqc-potentialissues-short": "Možné problémy",
+	"wbqc-potentialissues-long": "Toto tvrzení může mít určité problémy.",
 	"wbq-subextension-name-wbqc": "Omezení",
 	"wbqc-violation-header-parameters": "Parametry:",
 	"wbqc-violations-group": "Omezení",
@@ -34,7 +37,9 @@
 	"wbqc-violation-message-security-reason": "Omezení „$1“ momentálně z bezpečnostních důvodů nelze kontrolovat. Pracujeme na řešení.",
 	"wbqc-violation-message-value-needed": "Vlastnosti s omezením „$1“ musí mít hodnotu.",
 	"wbqc-violation-message-value-needed-of-type": "Vlastnosti s omezením „$1“ musí mít hodnoty typu „$2“.",
+	"wbqc-violation-message-value-needed-of-types-2": "Vlastnosti s omezením „$1“ potřebují hodnoty typu „$2“ nebo „$3“.",
 	"wbqc-violation-message-parameter-needed": "Vlastnosti s omezením „$1“ potřebují parametr „$2“.",
+	"wbqc-violation-message-parameters-needed-3": "Vlastnosti s omezením „$1“ potřebují parametry „$2“, „$3“ a „$4“.",
 	"wbqc-violation-message-target-entity-must-exist": "Cílová entita musí existovat.",
 	"wbqc-violation-message-value-entity-must-exist": "Entita v hodnotě musí existovat.",
 	"wbqc-violation-message-commons-link-no-existent": "Cíl odkazu na Commons musí existovat.",
@@ -42,6 +47,7 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Kontrola pro jmenný prostor „$1“ dosud nebyla implementována.",
 	"wbqc-violation-message-conflicts-with-property": "Tato vlastnost se nesmí používat, pokud existuje jiný výrok používající vlastnost definovanou v parametrech.",
 	"wbqc-violation-message-conflicts-with-claim": "Tato vlastnost se nesmí používat, pokud existuje jiný výrok používající vlastnost s jednou z hodnot definovaných v parametrech.",
+	"wbqc-violation-message-diff-within-range": "Rozdíl mezi hodnotou této vlastnosti a vlastnosti určené parametry nesmí být ani menší než minimum a ani větší než maximum určené parametry.",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "Vlastnost definovaná v parametrech musí existovat.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "Vlastnost definovaná v parametrech musí mít hodnotu.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Vlastnost definovaná v parametrech musí mít hodnotu stejného typu jako tato vlastnost.",

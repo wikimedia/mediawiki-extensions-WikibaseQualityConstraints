@@ -26,6 +26,8 @@
 	"wbqc-constraintreport-result-link-to-claim": "naar verklaring gaan",
 	"wbqc-constraintreport-result-link-to-constraint": "naar beperking gaan",
 	"wbqc-constraintreport-no-parameter": "geen",
+	"wbqc-potentialissues-short": "Mogelijke problemen",
+	"wbqc-potentialissues-long": "Deze verklaring heeft mogelijke problemen.",
 	"wbq-subextension-name-wbqc": "Beperkingen",
 	"wbqc-violation-header-parameters": "Parameters:",
 	"wbqc-violations-group": "Beperkingen",

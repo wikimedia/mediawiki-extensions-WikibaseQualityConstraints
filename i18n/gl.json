@@ -56,8 +56,6 @@
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "A propiedade definida nos parámetros debe ter un valor do mesmo tipo que esta propiedade.",
 	"wbqc-violation-message-format": "O valor da propiedade debe coincidir co patrón definido nos parámetros.",
 	"wbqc-violation-message-inverse": "Esta propiedade só debe usarse cando hai unha declaración no seu valor entidade usando a propiedade definida nos parámetros e este obxecto como o seu valor.",
-	"wbqc-violation-message-item-property": "Esta propiedade só debe usarse cando hai outra instrución usando a propiedade definida nos parámetros.",
-	"wbqc-violation-message-item-claim": "Esta propiedade só debe usarse cando hai outra instrución usando a propiedade cun dos valores definidos nos parámetros.",
 	"wbqc-violation-message-mandatory-qualifiers": "Todas as propiedades definidas nos parámetros teñen que ser usados como cualificadores nesta sentencia.",
 	"wbqc-violation-message-multi-value": "Esta propiedade debe ter valores múltiples. Isto é, debe haber máis dunha afirmación usando esta propiedade.",
 	"wbqc-violation-message-one-of": "O valor da propiedade debe ser un dos elementos definidos nos parámetros.",
@@ -67,11 +65,5 @@
 	"wbqc-violation-message-range": "O valor da propiedade non debe ser menor que o mínimo, nin maior que o máximo definido nos parámetros.",
 	"wbqc-violation-message-single-value": "Esta propiedade só debe ter un único valor. Isto é, debe haber só unha afirmación usando esta propiedade.",
 	"wbqc-violation-message-symmetric": "Esta propiedade só debe ser usada cando hai unha declaración no seu valor entidade coa mesma propiedade e este obxecto co seu valor.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "O parámetro \"relation\" (relación) debe ser \"instance\" (caso) ou \"subclass\" (subclase).",
-	"wbqc-violation-message-type": "Esta propiedade só debe ser usada en obxectos que están en relación co obxecto (ou unha subclase do obxecto) definida nos parámetros.",
-	"wbqc-violation-message-type-entity-type": "Entidades usando a propiedade $1",
-	"wbqc-violation-message-type-relation-instance": "instancias",
-	"wbqc-violation-message-type-relation-subclass": "subclases",
-	"wbqc-violation-message-target-required-claim-property": "Esta propiedade só debe usarse cando hai unha declaración no seu valor entidade usando a propiedade definida nos parámetros.",
-	"wbqc-violation-message-target-required-claim-claim": "Esta propiedade só debe usarse cando hai unha declaración no seu valor entidade usando a propiedade cun dos valores definidos nos parámetros."
+	"wbqc-violation-message-type-relation-instance-or-subclass": "O parámetro \"relation\" (relación) debe ser \"instance\" (caso) ou \"subclass\" (subclase)."
 }

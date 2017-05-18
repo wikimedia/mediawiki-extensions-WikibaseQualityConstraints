@@ -38,8 +38,6 @@
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propiedad definida en los parámetros debe tener un valor del mismo tipo que esta propiedad.",
 	"wbqc-violation-message-format": "El valor de la propiedad debe coincidir con el patrón definido en los parámetros.",
 	"wbqc-violation-message-inverse": "$1 también debería tener la declaración inversa $2 $3.",
-	"wbqc-violation-message-item-property": "Esta propiedad solo debe usarse cuando haya otra declaración usando la propiedad definida en los parámetros.",
-	"wbqc-violation-message-item-claim": "Esta propiedad solo debe usarse cuando haya otra declaración usando la propiedad con uno de los valores definidos en los parámetros.",
 	"wbqc-violation-message-mandatory-qualifiers": "Todas las propiedades definidas en los parámetros tienen que usarse como calificadores de esta declaración.",
 	"wbqc-violation-message-multi-value": "Esta propiedad debe tener varios valores. Es decir, debe haber más de una solicitud utilizando esta propiedad.",
 	"wbqc-violation-message-one-of": "El valor de la propiedad debe ser uno de los elementos definidos en los parámetros.",
@@ -47,8 +45,5 @@
 	"wbqc-violation-message-qualifiers": "La propiedad solo debe usarse con los calificadores definidos en los parámetros.",
 	"wbqc-violation-message-range": "El valor de la propiedad no debe ser menor que el mínimo, ni mayor que el máximo definido en los parámetros.",
 	"wbqc-violation-message-symmetric": "$1 también debería tener la declaración simétrica $2 $3.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "El parámetro \"relation\" debe ser \"instance\" o \"subclass\".",
-	"wbqc-violation-message-type-entity-type": "Entidades que usan la propiedad $1",
-	"wbqc-violation-message-type-relation-instance": "instancias",
-	"wbqc-violation-message-type-relation-subclass": "subclases"
+	"wbqc-violation-message-type-relation-instance-or-subclass": "El parámetro \"relation\" debe ser \"instance\" o \"subclass\"."
 }

@@ -57,8 +57,6 @@
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Својството определено во параметрите мора да има вредност од ист тип како својството.",
 	"wbqc-violation-message-format": "Вредноста на својството мора да одговара на шемата определена во параметрите.",
 	"wbqc-violation-message-inverse": "$1 треба да го има и обратниот исказ $2 $3.",
-	"wbqc-violation-message-item-property": "Ова својство мора да се користи само кога има друг исказ што го користи својството определено во параметрите.",
-	"wbqc-violation-message-item-claim": "Ова својство мора да се користи само кога има друг што го користи својството со една од вредностите определени во параметрите.",
 	"wbqc-violation-message-mandatory-qualifiers": "Сите својства определени во параметрите мора да се користат како определници на овој исказ.",
 	"wbqc-violation-message-multi-value": "Ова својство мора да има повеќе вредности. Ова значи дека мора да постои повеќе од едно тврдење што го користи својствово.",
 	"wbqc-violation-message-one-of": "Вредноста на својството мора да биде еден од предметите определен во параметрите.",
@@ -68,12 +66,5 @@
 	"wbqc-violation-message-range": "Вредноста на својството мора да не е помала од минимот, ниту поголема од максимумот определен во параметрите.",
 	"wbqc-violation-message-single-value": "Ова својство мора да има само една вредност. Ова значи дека мора да има само едно тврдење што го користи својствово.",
 	"wbqc-violation-message-symmetric": "$1 треба да го има и симетричниот исказ $2 $3.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "Параметарот „однос“ мора да биде или „примерок“ или „поткласа“.",
-	"wbqc-violation-message-type": "$1 треба да биде $2 од {{PLURAL:$4|1=$6|2=$6 или $7|една од следниве класи}} (или од {{PLURAL:$4|1=нејзина поткласа|2=нивна поткласа|една од нивните поткласи}}), но $3 засега {{PLURAL:$4|1=не е.|2=не е.|не е: $5}}",
-	"wbqc-violation-message-type-entity-type": "Единици со својството $1",
-	"wbqc-violation-message-type-entity-valueType": "Вредности со искази „$1“",
-	"wbqc-violation-message-type-relation-instance": "примероци",
-	"wbqc-violation-message-type-relation-subclass": "поткласи",
-	"wbqc-violation-message-target-required-claim-property": "Ова својство мора да се користи само кога има исказ за неговата вредносна единица користејќи го својството определено во параметрите.",
-	"wbqc-violation-message-target-required-claim-claim": "Ова својство мора да се користи само кога има исказ за неговата вредност што го користи својството со една од вредностите определени во параметрите."
+	"wbqc-violation-message-type-relation-instance-or-subclass": "Параметарот „однос“ мора да биде или „примерок“ или „поткласа“."
 }
