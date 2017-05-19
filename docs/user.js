@@ -15,7 +15,7 @@
 					items: reports,
 					continuous: true,
 					expanded: false, // expanded: true does not work within a popup
-					classes: 'wbqc-reports'
+					classes: [ 'wbqc-reports' ]
 				} ).$element,
 				width: 400,
 				padded: true,
