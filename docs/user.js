@@ -34,14 +34,22 @@
 	}
 
 	function buildReport( result ) {
-		var $report;
+		var $report, $heading, $helpButton;
 
 		if ( result.status === 'violation' ) {
 			$report = $( '<div>' ).addClass( 'wbqc-report' );
 			$report.css( 'border-top', '1px solid #eaecf0' ); // TODO move to CSS on .wbqc-report class
-			$report.append(
-				$( '<h4>' ).text( result.constraint.type )
-			);
+			$heading = $( '<h4>' ).text( result.constraint.type );
+			$helpButton = new OO.ui.ButtonWidget( {
+				icon: 'help',
+				framed: false,
+				classes: [ 'wbqc-constraint-type-help' ],
+				href: 'https://www.wikidata.org/wiki/Help:Property_constraints_portal/' + result.constraint.type,
+				target: '_blank'
+			} ).$element;
+			$helpButton.css( 'transform', 'scale(0.75)' ); // TODO move to CSS on .wbqc-constraint-type-help class
+			$heading.append( $helpButton );
+			$report.append( $heading );
 			if ( result[ 'message-html' ] ) {
 				$report.append(
 					$( '<p>' ).html( result[ 'message-html' ] )
