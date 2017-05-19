@@ -47,11 +47,6 @@
 					$( '<p>' ).html( result[ 'message-html' ] )
 				);
 			}
-			if ( result.constraint.detailHTML ) {
-				$report.append( $( '<p>' ).append(
-					$( '<small>' ).html( result.constraint.detailHTML )
-				) );
-			}
 
 			return new OO.ui.PanelLayout( {
 				expanded: false,
