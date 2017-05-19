@@ -277,7 +277,14 @@ class DelegatingConstraintChecker {
 					$hashB = $b->getStatement()->getHash();
 
 					if ( $hashA === $hashB ) {
-						return 0;
+						$nameA = $a->getConstraintName();
+						$nameB = $b->getConstraintName();
+
+						if ( $nameA == $nameB ) {
+							return 0;
+						} else {
+							return ( $nameA > $nameB ) ? 1 : -1;
+						}
 					} else {
 						return ( $hashA > $hashB ) ? 1 : -1;
 					}
