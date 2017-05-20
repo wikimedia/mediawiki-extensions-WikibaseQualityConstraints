@@ -10,8 +10,11 @@
 	"wbqc-constraintreport-empty-result": "Et gëtt keng Limitatiounen déi fir dësen Objet definéiert sinn.",
 	"wbqc-constraintreport-status-exception": "Ausnahm",
 	"wbqc-constraintreport-no-parameter": "keng",
+	"wbqc-potentialissues-short": "Potenziell Problemer",
 	"wbqc-violation-header-parameters": "Parameteren:",
 	"wbqc-violations-group": "Limitatiounen",
+	"wbqc-violation-message-commons-link-no-existent": "De Commons Link sollt et ginn.",
+	"wbqc-violation-message-commons-link-not-well-formed": "De Commons Link soll gutt forméiert sinn.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "D'Nokucke fir den Nummraum \"$1\" ass nach net implementéiert.",
-	"wbqc-violation-message-qualifier": "D'Eegenschaft däerf nëmme fir d'Bestëmmung gebraucht ginn"
+	"wbqc-violation-message-qualifier": "D'Eegenschaft däerf nëmmen als Qualificateur benotzt ginn."
 }

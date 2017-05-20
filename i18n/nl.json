@@ -41,5 +41,11 @@
 	"wbqc-violation-message-value-entity-must-exist": "De entiteit die opgegeven is als waarde moet bestaan.",
 	"wbqc-violation-message-commons-link-no-existent": "Het bestand op Commons moet bestaan.",
 	"wbqc-violation-message-commons-link-not-well-formed": "De koppeling naar Commons mag geen ongeldige tekens bevatten.",
-	"wbqc-violation-message-qualifier": "De eigenschap mag alleen als kwalificatie worden gebruikt."
+	"wbqc-violation-message-diff-within-range": "Het verschil tussen $3 ($4) en $1 ($2) zou tussen $5 en $6 ([$5; $6]) moeten liggen.",
+	"wbqc-violation-message-item": "Een entiteit met $1 zou ook een {{PLURAL:$3|0=een verklaring $2 moeten bevatten.|1=een verklaring $2 $5 moeten bevatten.|een verklaring voor $2 met een van de volgende waarden bevatten:$4}}",
+	"wbqc-violation-message-mandatory-qualifiers": "Deze $1-verklaring mist {{PLURAL:$2|1=een kwalificatie: $4.|2=$4 en $5 als kwalificaties.|de volgende kwalificaties:$3}}.",
+	"wbqc-violation-message-qualifier": "De eigenschap mag alleen als kwalificatie worden gebruikt.",
+	"wbqc-violation-message-no-qualifiers": "$1-verklaringen zouden geen kwalificaties moeten hebben.",
+	"wbqc-violation-message-qualifiers": "$2 is geen geldige verklaring voor $1 – geldige {{PLURAL:$3|1=kwalificatie is $5.|2=kwalificaties zijn $5 en $6.|kwalificaties zijn:$4}}",
+	"wbqc-violation-message-range": "De waarde voor $1 ($2) zou tussen $3 en $4 ([$3, $4]) moeten zitten."
 }
