@@ -1,0 +1,12 @@
+{
+	"extends": "wikimedia",
+	"env": {
+		"browser": true,
+		"jquery": true
+	},
+	"rules": {
+		"keyword-spacing": "off",
+		"space-before-function-paren": "off",
+		"wrap-iife": "off"
+	}
+}
