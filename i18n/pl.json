@@ -15,12 +15,10 @@
 	"wbqc-violation-message-diff-within-range-property-must-exist": "Właściwość określona w parametrach musi istnieć.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Właściwość określona w parametrach musi mieć wartość tego samego typu jak ta właściwość.",
 	"wbqc-violation-message-format": "Wartości właściwości musi pasować do wzorca określonego w parametrach.",
-	"wbqc-violation-message-item-property": "Ta właściwość może stosowana tylko wtedy, gdy nie ma innej deklaracji używającej właściwości określonej w parametrach.",
 	"wbqc-violation-message-multi-value": "Ta właściwość musi mieć wiele wartości. Oznacza to, że musi być więcej niż jedno stwierdzenie używające tej właściwości.",
 	"wbqc-violation-message-one-of": "Wartości właściwości musi być jednym z elementów określonych w parametrach.",
 	"wbqc-violation-message-qualifier": "Ta właściwość może być stosowana tylko jako kwalifikator.",
 	"wbqc-violation-message-range": "Wartość właściwość nie może być mniejsza niż minimalna ani większy niż maksymalna w określonych parametrach.",
 	"wbqc-violation-message-single-value": "Ta właściwość może mieć tylko jedną wartość. Oznacza to, że może być tylko jedno stwierdzenie używające tej właściwości.",
-	"wbqc-violation-message-type-relation-instance": "instancje",
-	"wbqc-violation-message-type-relation-subclass": "podklasy"
+	"wbqc-violation-message-target-required-claim": "$1 powinno mieć {{PLURAL:$3|0=deklarację $2.|1=deklarację $2 $5.|deklarację dla $2 z jedną z następujących wartości: $4}}"
 }
