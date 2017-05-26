@@ -4,5 +4,10 @@
 			"WikiPhoenix"
 		]
 	},
-	"wbqc-constraintreport-status-exception": "Undantag"
+	"wbqc-constraintreport-status-exception": "Undantag",
+	"wbqc-violation-message-commons-link-no-existent": "Commons-länk bör finnas.",
+	"wbqc-violation-message-mandatory-qualifiers": "Detta $1-uttalande saknar {{PLURAL:$2|1=ett bestämningsord $4.|2=bestämningsorden $4 och $5.|följande bestämningsord:$3}}",
+	"wbqc-violation-message-no-qualifiers": "$1-uttalanden bör inte har några bestämningsord.",
+	"wbqc-violation-message-qualifiers": "$2 är inte ett giltigt bestämningsord för $1 – {{PLURAL:$3|1=det enda giltiga bestämningsordet är $5.|2=de enda giltiga bestämningsorden är $5 och $6.|de enda giltiga bestämningsorden är:$4}}",
+	"wbqc-violation-message-range": "Värdet för $1 ($2) bör vara mellan $3 och $4 ([$3, $4])."
 }
