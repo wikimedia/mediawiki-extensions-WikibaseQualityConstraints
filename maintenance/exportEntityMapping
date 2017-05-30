@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# After the required entities for the script ("instance of" property, "single value constraint" item, etc.)
+# have been imported with the WikibaseImport extension,
+# this script extracts their IDs from WikibaseImport's mapping table in the database
+# and writes them to the LocalConfig.php file
+# so that the WikibaseQualityConstraints extension can use them.
+
+if [[ -f LocalSettings.php && -f extensions/WikibaseQualityConstraints/extension.json ]]; then
+    localSettings=LocalSettings.php
+    extensionJson=extensions/WikibaseQualityConstraints/extension.json
+elif [[ -f ../../LocalSettings.php && -f extension.json ]]; then
+    localSettings=../../LocalSettings.php
+    extensionJson=extension.json
+else
+    printf >&2 '%s: LocalSettings.php or extension.json not found.\n' "$0"
+    printf >&2 'Please run this command from the MediaWiki base directory\n'
+    printf >&2 'or from the WikibaseQualityConstraints extension directory.\n'
+    exit 1
+fi
+
+database=wikidb
+
+while getopts d: opt; do
+    case $opt in
+        d) database=$OPTARG;;
+        :|\?) exit 2;;
+    esac
+done
+
+if ! mysql -- "$database" &>/dev/null <<< 'SELECT 1 FROM wbs_entity_mapping'; then
+    printf >&2 '%s: database "%s" not found, inaccessible, or has no wbs_entity_mapping table.\n' "$0" "$database"
+    if [[ $database = wikidb ]]; then
+        printf >&2 '(You can specify the database with the -d option: %s -d DATABASE.)\n' "$0"
+    elif ! [[ -f ~/.my.cnf ]]; then
+        printf >&2 '(Please store your login credentials in ~/.my.cnf so that command line access without -u or -p is possible.)\n'
+    fi
+    exit 1
+fi
+
+# disable existing configuration
+sed -i '
+  # delete existing lines added by this script
+  /# exported from wbs_entity_mapping$/d
+  # comment out existing lines overridden by this script ("&" in replacement refers to matched string, i.e. existing line)
+  s/^\$wgWBQualityConstraints.*Id =.*$/# & # overridden by wbs_entity_mapping export/
+' -- "$localSettings"
+
+{
+    printf '\n'
+    jq -r '
+      # select configuration section of extension.json
+      .config |
+      # map key: value to { "key": key, "value": value } so that we can filter on the key
+      to_entries |
+      # flatten (turn array of entries into stream of entries)
+      .[] |
+      # ignore non-ID configuration
+      select(.key | endswith("Id")) |
+      # output the two variables processed by the "read" below
+      (.key + " " + .value.value)' \
+       -- "$extensionJson" |
+        while read -r confName originalId; do
+            localId=$(mysql --column-names=false -- "$database" <<< "SELECT wbs_local_id FROM wbs_entity_mapping WHERE wbs_original_id = '$originalId'")
+            if ! [[ $localId =~ [PQ][0-9]* ]]; then
+                printf >&2 '%s: invalid local ID(s) for original ID %q: %q\n' "$0" "$originalId" "$localId"
+                exit 1
+            fi
+            printf '$wg%s = "%s"; # exported from wbs_entity_mapping\n' "$confName" "$localId"
+        done
+} >> "$localSettings"
