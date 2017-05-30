@@ -2,15 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
-use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
-use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
-use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
@@ -46,7 +43,7 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  */
 class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
-	use DefaultConfig;
+	use ConstraintParameters;
 
 	/**
 	 * @var DelegatingConstraintChecker
@@ -67,17 +64,12 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->lookup = $this->createEntityLookup();
 		$this->statementGuidParser = new StatementGuidParser( new ItemIdParser() );
-		$valueFormatter = $this->getMock( ValueFormatter::class );
-		$valueFormatter->method( 'format' )->willReturn( '' );
-		$entityIdFormatter = new PlainEntityIdFormatter();
+		$config = $this->getDefaultConfig();
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
 			$this->statementGuidParser,
-			$this->getDefaultConfig(),
-			new ConstraintParameterRenderer(
-				$entityIdFormatter,
-				$valueFormatter
-			)
+			$config,
+			$this->getConstraintParameterRenderer()
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 

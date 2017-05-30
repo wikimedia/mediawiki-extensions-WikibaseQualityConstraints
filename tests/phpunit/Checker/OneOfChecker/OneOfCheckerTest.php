@@ -2,9 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\OneOfChecker;
 
-use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -16,7 +14,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
@@ -31,6 +29,8 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
  */
 class OneOfCheckerTest extends \MediaWikiTestCase {
 
+	use ConstraintParameters;
+
 	/**
 	 * @var ConstraintParameterParser
 	 */
@@ -44,14 +44,9 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->helper = new ConstraintParameterParser();
-		$valueFormatter = $this->getMock( ValueFormatter::class );
-		$valueFormatter->method( 'format' )->willReturn( '' );
 		$this->oneOfChecker = new OneOfChecker(
 			$this->helper,
-			new ConstraintParameterRenderer(
-				new PlainEntityIdFormatter(),
-				$valueFormatter
-			)
+			$this->getConstraintParameterRenderer()
 		);
 	}
 

@@ -2,8 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
-use ValueFormatters\ValueFormatter;
-use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -15,7 +13,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -30,6 +28,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @license GNU GPL v2+
  */
 class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
+
+	use ConstraintParameters;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -56,15 +56,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$this->helper = new ConstraintParameterParser();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
-		$valueFormatter = $this->getMock( ValueFormatter::class );
-		$valueFormatter->method( 'format' )->willReturn( '' );
 		$this->checker = new DiffWithinRangeChecker(
 			$this->helper,
 			new RangeCheckerHelper(),
-			new ConstraintParameterRenderer(
-				new PlainEntityIdFormatter(),
-				$valueFormatter
-			)
+			$this->getConstraintParameterRenderer()
 		);
 	}
 
