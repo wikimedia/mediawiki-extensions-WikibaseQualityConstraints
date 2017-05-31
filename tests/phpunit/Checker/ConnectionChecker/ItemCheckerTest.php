@@ -2,9 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
-use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -13,7 +11,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -28,6 +26,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @license GNU GPL v2+
  */
 class ItemCheckerTest extends \MediaWikiTestCase {
+
+	use ConstraintParameters;
 
 	/**
 	 * @var JsonFileEntityLookup
@@ -54,13 +54,12 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
-		$valueFormatter = $this->getMock( ValueFormatter::class );
-		$valueFormatter->method( 'format' )->willReturn( '' );
-		$constraintParameterRenderer = new ConstraintParameterRenderer(
-			new PlainEntityIdFormatter(),
-			$valueFormatter
+		$this->checker = new ItemChecker(
+			$this->lookup,
+			$this->helper,
+			$this->connectionCheckerHelper,
+			$this->getConstraintParameterRenderer()
 		);
-		$this->checker = new ItemChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $constraintParameterRenderer );
 	}
 
 	protected function tearDown() {

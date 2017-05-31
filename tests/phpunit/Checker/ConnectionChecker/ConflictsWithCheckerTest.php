@@ -2,18 +2,16 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
-use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -28,6 +26,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @license GNU GPL v2+
  */
 class ConflictsWithCheckerTest extends \MediaWikiTestCase {
+
+	use ConstraintParameters;
 
 	/**
 	 * @var JsonFileEntityLookup
@@ -45,11 +45,6 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 	private $connectionCheckerHelper;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @var ConflictsWithChecker
 	 */
 	private $checker;
@@ -59,17 +54,11 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
-		$valueFormatter = $this->getMock( ValueFormatter::class );
-		$valueFormatter->method( 'format' )->willReturn( '' );
-		$this->constraintParameterRenderer = new ConstraintParameterRenderer(
-			new PlainEntityIdFormatter(),
-			$valueFormatter
-		);
 		$this->checker = new ConflictsWithChecker(
 			$this->lookup,
 			$this->helper,
 			$this->connectionCheckerHelper,
-			$this->constraintParameterRenderer
+			$this->getConstraintParameterRenderer()
 		);
 	}
 
@@ -77,7 +66,6 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		unset( $this->lookup );
 		unset( $this->helper );
 		unset( $this->connectionCheckerHelper );
-		unset( $this->constraintParameterRenderer );
 		unset( $this->checker );
 		parent::tearDown();
 	}
@@ -98,7 +86,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 	public function testConflictsWithConstraintProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->constraintParameterRenderer );
+		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->getConstraintParameterRenderer() );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
@@ -113,7 +101,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 	public function testConflictsWithConstraintPropertyButNotItem() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->constraintParameterRenderer );
+		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->getConstraintParameterRenderer() );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
@@ -129,7 +117,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 	public function testConflictsWithConstraintPropertyAndItem() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->constraintParameterRenderer );
+		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->getConstraintParameterRenderer() );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
@@ -145,7 +133,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 	public function testConflictsWithConstraintWithoutProperty() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->constraintParameterRenderer );
+		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->getConstraintParameterRenderer() );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
@@ -158,7 +146,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 	public function testConflictsWithConstraintPropertyAndNoValue() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
-		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->constraintParameterRenderer );
+		$this->checker = new ConflictsWithChecker( $this->lookup, $this->helper, $this->connectionCheckerHelper, $this->getConstraintParameterRenderer() );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
