@@ -96,7 +96,7 @@ class SymmetricChecker implements ConstraintChecker {
 		 *   type of $dataValue for properties with 'Symmetric' constraint has to be 'wikibase-entityid'
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
