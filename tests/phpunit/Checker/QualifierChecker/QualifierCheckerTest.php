@@ -9,6 +9,7 @@ use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -23,6 +24,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @license GNU GPL v2+
  */
 class QualifierCheckerTest extends \MediaWikiTestCase {
+
+	use ResultAssertions;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -61,7 +64,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$qualifierChecker = new QualifierChecker( $this->helper );
 		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [] ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifier' );
 	}
 
 	/**

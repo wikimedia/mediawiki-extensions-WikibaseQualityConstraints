@@ -10,6 +10,7 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -23,6 +24,8 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @license GNU GPL v2+
  */
 class MultiValueCheckerTest extends \MediaWikiTestCase {
+
+	use ResultAssertions;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -65,21 +68,21 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$statement = new Statement( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q207' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-multi-value' );
 	}
 
 	public function testMultiValueConstraintTwo() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q207' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testMultiValueConstraintTwoButOneDeprecated() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 		$statement = new Statement( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q409' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-multi-value' );
 	}
 
 	/**

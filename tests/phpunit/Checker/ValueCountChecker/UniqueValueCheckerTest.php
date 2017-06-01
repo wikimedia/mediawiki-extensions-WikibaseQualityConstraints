@@ -10,6 +10,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
@@ -22,6 +23,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
  * @license GNU GPL v2+
  */
 class UniqueValueCheckerTest extends \MediaWikiTestCase {
+
+	use ResultAssertions;
 
 	/**
 	 * @var PropertyId
@@ -51,8 +54,7 @@ class UniqueValueCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( $itemId ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
 
-		// TODO: It is currently only testing that 'todo' comes back.
-		$this->assertEquals( 'todo', $checkResult->getStatus(), 'check should point out that it should be implemented soon' );
+		$this->assertTodo( $checkResult );
 	}
 
 	/**

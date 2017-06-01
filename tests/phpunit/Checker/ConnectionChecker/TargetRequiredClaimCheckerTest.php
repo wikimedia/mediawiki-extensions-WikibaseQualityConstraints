@@ -16,6 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaim
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -31,7 +32,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var JsonFileEntityLookup
@@ -83,7 +84,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			'item' => 'Q42'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTargetRequiredClaimConstraintWrongItem() {
@@ -95,7 +96,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			'item' => 'Q2'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
 
 	public function testTargetRequiredClaimConstraintOnlyProperty() {
@@ -106,7 +107,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P2'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTargetRequiredClaimConstraintOnlyPropertyButDoesNotExist() {
@@ -117,7 +118,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P3'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
 
 	public function testTargetRequiredClaimConstraintWithoutProperty() {
@@ -126,7 +127,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		$constraintParameters = [];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-parameter-needed' );
 	}
 
 	public function testTargetRequiredClaimConstraintWrongDataTypeForItem() {
@@ -137,7 +138,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P2'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testTargetRequiredClaimConstraintItemDoesNotExist() {
@@ -148,7 +149,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P2'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
 
 	public function testTargetRequiredClaimConstraintNoValueSnak() {
@@ -158,7 +159,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P2'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
 	/**
@@ -176,6 +177,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
+			 ->will( $this->returnValue( 'Target required claim' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeName' )
 			 ->will( $this->returnValue( 'Target required claim' ) );
 
 		return $mock;

@@ -14,6 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -29,7 +30,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class InverseCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var JsonFileEntityLookup
@@ -82,7 +83,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P1'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testInverseConstraintWrongItem() {
@@ -95,7 +96,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P1'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-inverse' );
 	}
 
 	public function testInverseConstraintWithoutProperty() {
@@ -106,7 +107,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 
 		$constraintParameters = [];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-parameter-needed' );
 	}
 
 	public function testInverseConstraintWrongDataTypeForItem() {
@@ -119,7 +120,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P1'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testInverseConstraintItemDoesNotExist() {
@@ -132,7 +133,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P1'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
 
 	public function testInverseConstraintNoValueSnak() {
@@ -144,7 +145,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P1'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
 	/**
@@ -162,6 +163,9 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
+			 ->will( $this->returnValue( 'Inverse' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeName' )
 			 ->will( $this->returnValue( 'Inverse' ) );
 
 		return $mock;

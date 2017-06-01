@@ -14,6 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChec
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -29,7 +30,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -81,7 +82,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testDiffWithinRangeConstraintTooSmall() {
@@ -94,7 +95,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
 
 	public function testDiffWithinRangeConstraintTooBig() {
@@ -107,7 +108,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
 
 	public function testDiffWithinRangeConstraintWithoutProperty() {
@@ -116,7 +117,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-parameters-needed-3' );
 	}
 
 	public function testDiffWithinRangeConstraintWrongType() {
@@ -127,7 +128,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new StringValue( '1.1.1970' ) ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testDiffWithinRangeConstraintWrongTypeOfProperty() {
@@ -140,7 +141,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-must-have-equal-types' );
 	}
 
 	public function testDiffWithinRangeConstraintWithoutBaseProperty() {
@@ -153,7 +154,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
 	}
 
 	public function testDiffWithinRangeConstraintNoValueSnak() {
@@ -165,7 +166,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_quantity' => 150
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
 	/**
@@ -183,6 +184,9 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
+			 ->will( $this->returnValue( 'Diff within range' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeName' )
 			 ->will( $this->returnValue( 'Diff within range' ) );
 
 		return $mock;
