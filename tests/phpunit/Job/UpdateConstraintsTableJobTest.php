@@ -133,7 +133,59 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 		// TODO is there a good way to assert that this function did not touch the database?
 	}
 
-	// TODO add test for extractConstraintFromStatement with parameters once that’s implemented
+	public function testExtractConstraintFromStatement_Parameters() {
+		$job = UpdateConstraintsTableJob::newFromGlobalState( Title::newFromText( 'constraintsTableUpdate' ), [ 'propertyId' => 'P2' ] );
+
+		$config = $this->getDefaultConfig();
+		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
+		$typeId = $config->get( 'WBQualityConstraintsTypeConstraintId' );
+		$classId = $config->get( 'WBQualityConstraintsClassId' );
+		$relationId = $config->get( 'WBQualityConstraintsRelationId' );
+		$instanceOfRelationId = $config->get( 'WBQualityConstraintsInstanceOfRelationId' );
+
+		$classHumanSnak = new PropertyValueSnak(
+			new PropertyId( $classId ),
+			new EntityIdValue( new ItemId( 'Q5' ) )
+		);
+		$classFictionalHumanSnak = new PropertyValueSnak(
+			new PropertyId( $classId ),
+			new EntityIdValue( new ItemId( 'Q15632617' ) )
+		);
+		$relationInstanceOfSnak = new PropertyValueSnak(
+			new PropertyId( $relationId ),
+			new EntityIdValue( new ItemId( $instanceOfRelationId ) )
+		);
+
+		$statementGuid = 'P2$e95e1eb9-eaa5-48d1-a3d6-0b34fc5d3cd0';
+		$statement = new Statement(
+			new PropertyValueSnak(
+				new PropertyId( $propertyConstraintId ),
+				new EntityIdValue( new ItemId( $typeId ) )
+			),
+			new SnakList( [ $classHumanSnak, $classFictionalHumanSnak, $relationInstanceOfSnak ] ),
+			null,
+			$statementGuid
+		);
+
+		$constraint = $job->extractConstraintFromStatement( new PropertyId( 'P2' ), $statement );
+
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$this->assertEquals( $typeId, $constraint->getConstraintTypeQid() );
+		$this->assertEquals( new PropertyId( 'P2' ), $constraint->getPropertyId() );
+		$this->assertEquals( $statementGuid, $constraint->getConstraintId() );
+		$this->assertEquals(
+			[
+				$classId => [
+					$snakSerializer->serialize( $classHumanSnak ),
+					$snakSerializer->serialize( $classFictionalHumanSnak )
+				],
+				$relationId => [
+					$snakSerializer->serialize( $relationInstanceOfSnak )
+				]
+			],
+			$constraint->getConstraintParameters()
+		);
+	}
 
 	public function testImportConstraintsForProperty() {
 		$job = UpdateConstraintsTableJob::newFromGlobalState( Title::newFromText( 'constraintsTableUpdate' ), [ 'propertyId' => 'P2' ] );
@@ -169,7 +221,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 			],
 			[],
 			[
-				// constraint previously imported from the statement under test is still there
+				// constraint previously imported from the property under test is still there
 				[
 					'P2$2892c48c-53e5-40ef-94a2-274ebf35075c',
 					'2',
@@ -183,7 +235,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 					$singleValueId->getSerialization(),
 					'{}'
 				],
-				// constraint imported from a different statement is still there
+				// constraint imported from a different property is still there
 				[
 					'P3$1926459f-a4d6-42f5-a46e-e1866a2499ed',
 					'3',
@@ -224,7 +276,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 			],
 			[],
 			[
-				// constraint previously imported from the statement under test was removed
+				// constraint previously imported from the property under test was removed
 				// new constraint imported from the statement under test is there
 				[
 					'P2$484b7eaf-e86c-4f25-91dc-7ae19f8be8de',
@@ -232,7 +284,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 					'Q19474404',
 					'{}'
 				],
-				// constraint imported from a different statement is still there
+				// constraint imported from a different property is still there
 				[
 					'P3$1926459f-a4d6-42f5-a46e-e1866a2499ed',
 					'3',
