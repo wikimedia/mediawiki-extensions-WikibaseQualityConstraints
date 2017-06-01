@@ -6,7 +6,8 @@
 			"Yzelf",
 			"Gomoko",
 			"Wladek92",
-			"Thibaut120094"
+			"Thibaut120094",
+			"Urhixidur"
 		]
 	},
 	"wbqc-constraintreport": "Rapport de contrainte",
@@ -51,8 +52,8 @@
 	"wbqc-violation-message-parameters-needed-3": "Les propriétés avec une contrainte « $1 » doivent avoir les paramètres « $2 », « $3 » et « $4 ».",
 	"wbqc-violation-message-target-entity-must-exist": "L'entité cible doit exister.",
 	"wbqc-violation-message-value-entity-must-exist": "L’entité définie en valeur doit exister.",
-	"wbqc-violation-message-commons-link-no-existent": "Le lien vers Commons devrait exister.",
-	"wbqc-violation-message-commons-link-not-well-formed": "Le lien vers Commons devrait être bien formaté.",
+	"wbqc-violation-message-commons-link-no-existent": "Le lien vers Communs devrait exister.",
+	"wbqc-violation-message-commons-link-not-well-formed": "Le lien vers Communs devrait être bien formaté.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La vérification pour l’espace de noms « $1 » n’est pas encore implémentée.",
 	"wbqc-violation-message-conflicts-with-property": "Un entité ne doit pas avoir de déclarations à la fois pour $1 et $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Une entité ne doit pas avoir une déclaration pour $1 si elle en a une pour $2 avec la valeur $3.",

@@ -60,6 +60,7 @@
 	"wbqc-violation-message-multi-value": "Esta propiedade debe ter valores múltiples. Isto é, debe haber máis dunha afirmación usando esta propiedade.",
 	"wbqc-violation-message-one-of": "O valor da propiedade debe ser un dos elementos definidos nos parámetros.",
 	"wbqc-violation-message-qualifier": "A propiedade só debe ser usada como cualificador.",
+	"wbqc-violation-message-no-qualifiers": "As declaracións para $1 non deberían conter ningún calificador.",
 	"wbqc-violation-message-qualifiers": "A propiedade só debe usarse cos (non outras que) cualificadores definidos nos parámetros.",
 	"wbqc-violation-message-range-parameters-needed": "As propiedades con valores de tipo \"$1\" con constante \"Range\" precisan os parámetros \"$2\" e \"$3\".",
 	"wbqc-violation-message-range": "O valor da propiedade non debe ser menor que o mínimo, nin maior que o máximo definido nos parámetros.",
