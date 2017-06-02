@@ -136,6 +136,11 @@
 			"description": "The item ID of the 'value requires claim constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the target/value entity of a given statement should have certain statements.",
 			"public": true
 		},
+		"WBQualityConstraintsConflictsWithConstraintId": {
+			"value": "Q21502838",
+			"description": "The item ID of the 'conflicts-with constraint' item, which, when used in a 'property constraint' statement on a property, indicates that an entity with a given statement should not have certain other statements.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",
