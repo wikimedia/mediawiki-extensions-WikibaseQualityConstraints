@@ -4,8 +4,9 @@ namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
-use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Statement\Statement;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
@@ -18,6 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use Wikibase\Repo\WikibaseRepo;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
@@ -40,11 +42,6 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 	private $lookup;
 
 	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
-
-	/**
 	 * @var ConnectionCheckerHelper
 	 */
 	private $connectionCheckerHelper;
@@ -57,11 +54,10 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new TargetRequiredClaimChecker(
 			$this->lookup,
-			$this->helper,
+			$this->getConstraintParameterParser(),
 			$this->connectionCheckerHelper,
 			$this->getConstraintParameterRenderer()
 		);
@@ -69,7 +65,6 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 	protected function tearDown() {
 		unset( $this->lookup );
-		unset( $this->helper );
 		unset( $this->connectionCheckerHelper );
 		unset( $this->checker );
 		parent::tearDown();
@@ -121,15 +116,6 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
 
-	public function testTargetRequiredClaimConstraintWithoutProperty() {
-		$value = new EntityIdValue( new ItemId( 'Q5' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-
-		$constraintParameters = [];
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-parameter-needed' );
-	}
-
 	public function testTargetRequiredClaimConstraintWrongDataTypeForItem() {
 		$value = new StringValue( 'Q5' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
@@ -160,6 +146,23 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+	}
+
+	public function testTargetRequiredClaimConstraintWithStatement() {
+		$value = new EntityIdValue( new ItemId( 'Q5' ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$config = $this->getDefaultConfig();
+		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
+		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$constraintParameters = [
+			$propertyId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( 'P2' ) ) ) ) ],
+			$qualifierId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $qualifierId ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) ]
+		];
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$this->assertCompliance( $checkResult );
 	}
 
 	/**
