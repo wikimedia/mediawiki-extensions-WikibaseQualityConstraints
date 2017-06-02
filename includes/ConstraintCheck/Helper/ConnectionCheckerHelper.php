@@ -4,10 +4,14 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
  * Class for helper functions for the connection checkers.
@@ -38,28 +42,31 @@ class ConnectionCheckerHelper {
 	}
 
 	/**
-	 * Checks if there is a statement with a claim using the given property and having one of the given entities as its value.
+	 * Checks if there is a statement with a claim using the given property and having one of the given values.
 	 *
 	 * @param StatementList $statementList
 	 * @param string $propertyIdSerialization
-	 * @param string|string[] $entityIdSerializationOrArray
+	 * @param ItemIdSnakValue[]|string[]|string $values
 	 *
-	 * @return EntityId|null the entity ID from $entityIdSerializationOrArray that was found, or null if no entity was found
+	 * @return ItemIdSnakValue|null the value from $values that was found, or null if no statement was found
 	 */
 	public function findStatement(
 		StatementList $statementList,
 		$propertyIdSerialization,
-		$entityIdSerializationOrArray
+		$values
 	) {
-		$entityIdSerializations = (array) $entityIdSerializationOrArray;
+		$values = (array) $values;
 		try {
 			$propertyId = new PropertyId( $propertyIdSerialization );
 		} catch ( InvalidArgumentException $e ) {
 			return null;
 		}
+		if ( is_string( $values[0] ) ) {
+			$values = $this->parseItemIdSnakValues( $values );
+		}
 		/** @var Statement $statement */
 		foreach ( $statementList->getByPropertyId( $propertyId ) as $statement ) {
-			$result = $this->arrayHasClaim( $statement, $entityIdSerializations );
+			$result = $this->arrayHasClaim( $statement, $values );
 			if ( $result !== null ) {
 				return $result;
 			}
@@ -69,28 +76,42 @@ class ConnectionCheckerHelper {
 
 	/**
 	 * @param Statement $statement
-	 * @param string[] $entityIdSerializationArray
+	 * @param ItemIdSnakValue[] $values
 	 *
-	 * @return EntityId|null the entity ID from $entityIdSerializationArray that was found, or null if no entity was found
+	 * @return ItemIdSnakValue|null the value from $values that was found, or null if no statement was found
 	 */
-	private function arrayHasClaim( Statement $statement, array $entityIdSerializationArray ) {
+	private function arrayHasClaim( Statement $statement, array $values ) {
 		$mainSnak = $statement->getMainSnak();
 
-		// FIXME strtoupper should not be necessary, remove once constraints are imported from statements
-		$entityIdSerializationArray = array_map( "strtoupper", $entityIdSerializationArray );
-
-		if ( $mainSnak instanceof PropertyValueSnak ) {
-			$dataValue = $mainSnak->getDataValue();
-
-			if ( $dataValue instanceof EntityIdValue ) {
-				$entityId = $dataValue->getEntityId();
-				if ( in_array( $entityId->getSerialization(), $entityIdSerializationArray, true ) ) {
-					return $entityId;
-				}
+		foreach ( $values as $value ) {
+			if ( $value->matchesSnak( $mainSnak ) ) {
+				return $value;
 			}
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param string[] $values
+	 * @return ItemIdSnakValue[]
+	 */
+	private function parseItemIdSnakValues( array $values ) {
+		$ret = [];
+		foreach ( $values as $value ) {
+			switch ( $value ) {
+				case 'somevalue':
+					$ret[] = ItemIdSnakValue::someValue();
+					break;
+				case 'novalue':
+					$ret[] = ItemIdSnakValue::noValue();
+					break;
+				default:
+					$ret[] = ItemIdSnakValue::fromItemId( new ItemId( strtoupper( $value ) ) );
+					break;
+			}
+		}
+		return $ret;
 	}
 
 }

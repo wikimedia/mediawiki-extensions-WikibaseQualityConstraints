@@ -8,6 +8,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
  * Class ConstraintParameterRenderer
@@ -66,6 +67,9 @@ class ConstraintParameterRenderer {
 		} elseif ( $value instanceof EntityId ) {
 			// Cases like 'Conflicts with' 'property', to which we can link
 			return $this->formatEntityId( $value );
+		} elseif ( $value instanceof ItemIdSnakValue ) {
+			// Cases like EntityId but can also be somevalue or novalue
+			return $this->formatItemIdSnakValue( $value );
 		} else {
 			// Cases where we format a DataValue
 			return $this->formatDataValue( $value );
@@ -175,6 +179,26 @@ class ConstraintParameterRenderer {
 	}
 
 	/**
+	 * Format an {@link ItemIdSnakValue} (known value, unknown value, or no value).
+	 *
+	 * @return string HTML
+	 */
+	public function formatItemIdSnakValue( ItemIdSnakValue $value ) {
+		switch ( true ) {
+			case $value->isValue():
+				return $this->formatEntityId( $value->getItemId() );
+			case $value->isSomeValue():
+				return '<span class="wikibase-snakview-variation-somevaluesnak">'
+					. wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped()
+					. '</span>';
+			case $value->isNoValue():
+				return '<span class="wikibase-snakview-variation-novaluesnak">'
+					. wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped()
+					. '</span>';
+		}
+	}
+
+	/**
 	 * Format a list of (potentially unparsed) property IDs.
 	 *
 	 * The returned array begins with an HTML list of the formatted property IDs
@@ -216,6 +240,37 @@ class ConstraintParameterRenderer {
 			'<ul><li>' . implode( '</li><li>', $formattedItemIds ) . '</li></ul>'
 		);
 		return $formattedItemIds;
+	}
+
+	/**
+	 * Format a list of {@link ItemIdSnakValue}s (containing known values, unknown values, and/or no values).
+	 *
+	 * The returned array begins with an HTML list of the formatted values
+	 * and then contains all the individual formatted values.
+	 *
+	 * @param ItemIdSnakValue[] $values
+	 * @return string[] HTML
+	 */
+	public function formatItemIdSnakValueList( array $values ) {
+		if ( empty( $values ) ) {
+			return [ '<ul></ul>' ];
+		}
+		$values = $this->limitArrayLength( $values );
+		$formattedValues = array_map(
+			function( $value ) {
+				if ( $value === '...' ) {
+					return '...';
+				} else {
+					return $this->formatItemIdSnakValue( $value );
+				}
+			},
+			$values
+		);
+		array_unshift(
+			$formattedValues,
+			'<ul><li>' . implode( '</li><li>', $formattedValues ) . '</li></ul>'
+		);
+		return $formattedValues;
 	}
 
 }

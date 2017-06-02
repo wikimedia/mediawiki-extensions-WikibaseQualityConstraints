@@ -4,13 +4,15 @@ namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
-use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper
@@ -37,9 +39,12 @@ class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
-		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) );
-		$this->statementList = new StatementList( [ $statement1, $statement2 ] );
+		$this->statementList = new StatementList( [
+			new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) ),
+			new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) ),
+			new Statement( new PropertySomeValueSnak( new PropertyId( 'P1' ) ) ),
+			new Statement( new PropertyNoValueSnak( new PropertyId( 'P2' ) ) )
+		] );
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 	}
 
@@ -75,6 +80,14 @@ class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	public function testHasClaimNoValueSnak() {
 		$statementList = new StatementList( new Statement( new PropertyNoValueSnak( 1 ) ) );
 		$this->assertNull( $this->connectionCheckerHelper->findStatement( $statementList, 'P1', [ 'Q1', 'Q2' ] ) );
+	}
+
+	public function testHasClaimValidUnknownValue() {
+		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', 'somevalue' ) );
+	}
+
+	public function testHasClaimValidNoValue() {
+		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P2', 'novalue' ) );
 	}
 
 }
