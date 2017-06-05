@@ -103,7 +103,14 @@
 	entityId = mw.config.get( 'wbEntityId' );
 
 	if ( entityId !== null ) {
-		mw.loader.using( [ 'mediawiki.api', 'oojs-ui-core', 'oojs-ui-widgets', 'wikibase.quality.constraints.ui' ] ).done( function () {
+		mw.loader.using( [
+			'mediawiki.api',
+			'oojs-ui-core',
+			'oojs-ui-widgets',
+			'oojs-ui.styles.icons-alerts',
+			'oojs-ui.styles.icons-interactions',
+			'wikibase.quality.constraints.ui'
+		] ).done( function () {
 			var api = new mw.Api();
 			api.get( {
 				action: 'wbcheckconstraints',
