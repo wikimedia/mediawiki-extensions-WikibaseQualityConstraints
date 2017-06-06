@@ -23,7 +23,7 @@ trait ConstraintParameters {
 	public function getConstraintParameterRenderer() {
 		if ( $this->renderer === null ) {
 			$valueFormatter = $this->getMock( ValueFormatter::class );
-			$valueFormatter->method( 'format' )->willReturn( '' );
+			$valueFormatter->method( 'format' )->willReturn( '?' );
 			$entityIdFormatter = new PlainEntityIdFormatter();
 			$this->renderer = new ConstraintParameterRenderer(
 				$entityIdFormatter,

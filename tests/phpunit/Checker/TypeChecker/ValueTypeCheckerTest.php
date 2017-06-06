@@ -17,6 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -32,7 +33,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var JsonFileEntityLookup
@@ -80,7 +81,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintInstanceValidWithIndirection() {
@@ -90,7 +91,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintInstanceValidWithMoreIndirection() {
@@ -100,7 +101,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintSubclassValid() {
@@ -110,7 +111,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintSubclassValidWithIndirection() {
@@ -120,7 +121,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintSubclassValidWithMoreIndirection() {
@@ -130,7 +131,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintInstanceInvalid() {
@@ -140,7 +141,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q200,Q201'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-instance' );
 	}
 
 	public function testValueTypeConstraintInstanceInvalidWithIndirection() {
@@ -150,7 +151,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q200,Q201'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-instance' );
 	}
 
 	public function testValueTypeConstraintInstanceInvalidWithMoreIndirection() {
@@ -160,7 +161,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q200,Q201'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-instance' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalid() {
@@ -170,7 +171,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q200,Q201'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-subclass' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalidWithIndirection() {
@@ -180,7 +181,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q200,Q201'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-subclass' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalidWithMoreIndirection() {
@@ -190,7 +191,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q200,Q201'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-subclass' );
 	}
 
 	public function testValueTypeConstraintMissingRelation() {
@@ -199,7 +200,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-relation-instance-or-subclass' );
 	}
 
 	public function testValueTypeConstraintMissingClass() {
@@ -208,7 +209,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'relation' => 'instance'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-parameter-needed' );
 	}
 
 	public function testValueTypeConstraintWrongType() {
@@ -218,7 +219,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testValueTypeConstraintNonExistingValue() {
@@ -228,7 +229,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-entity-must-exist' );
 	}
 
 	public function testValueTypeConstraintNoValueSnak() {
@@ -238,7 +239,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
 	/**
@@ -256,6 +257,9 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
+			 ->will( $this->returnValue( 'Value type' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeName' )
 			 ->will( $this->returnValue( 'Value type' ) );
 
 		return $mock;

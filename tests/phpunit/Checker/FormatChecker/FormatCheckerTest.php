@@ -14,6 +14,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
@@ -27,6 +28,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
  * @license GNU GPL v2+
  */
 class FormatCheckerTest extends \MediaWikiTestCase {
+
+	use ResultAssertions;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -80,70 +83,70 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should comply' );
+		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement2,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should comply' );
+		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement3,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should comply' );
+		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement4,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should comply' );
+		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement5,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement6,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement7,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement8,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement9,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement10,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 	}
 
 	public function testFormatConstraintTaxonName() {
@@ -183,70 +186,70 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should comply' );
+		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement2,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should comply' );
+		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement3,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should comply' );
+		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement4,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should comply' );
+		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement5,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement6,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement7,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement8,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement9,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement10,
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 	}
 
 	public function testFormatConstraintEmptyPattern() {
@@ -259,7 +262,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check should not comply' );
+		$this->assertTodoViolation( $result );
 	}
 
 	public function testFormatConstraintNoStringValue() {

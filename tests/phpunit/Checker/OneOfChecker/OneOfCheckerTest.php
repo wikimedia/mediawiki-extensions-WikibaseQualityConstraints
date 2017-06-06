@@ -15,6 +15,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
@@ -29,7 +30,7 @@ use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
  */
 class OneOfCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -69,14 +70,14 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'item' => $values ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'compliance', $result->getStatus(), 'check should comply' );
+		$this->assertCompliance( $result );
 
 		$result = $this->oneOfChecker->checkConstraint(
 			$statementNotIn,
 			$this->getConstraintMock( [ 'item' => $values ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-one-of' );
 	}
 
 	public function testOneOfConstraintWrongType() {
@@ -89,7 +90,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'item' => $values ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testOneOfConstraintEmptyArray() {
@@ -101,7 +102,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-parameter-needed' );
 	}
 
 	public function testOneOfConstraintArrayWithSomevalue() {
@@ -114,7 +115,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'item' => $values ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'compliance', $result->getStatus(), 'check should comply' );
+		$this->assertCompliance( $result );
 	}
 
 	public function testOneOfConstraintNoValueSnak() {
@@ -126,7 +127,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'item' => $values ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-value-needed' );
 	}
 
 	/**
@@ -144,6 +145,9 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
+			 ->will( $this->returnValue( 'One of' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeName' )
 			 ->will( $this->returnValue( 'One of' ) );
 
 		return $mock;

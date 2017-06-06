@@ -14,6 +14,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
@@ -29,6 +30,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
  * @license GNU GPL v2+
  */
 class CommonsLinkCheckerTest extends \MediaWikiTestCase {
+
+	use ResultAssertions;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -84,7 +87,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'namespace' => 'File' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'compliance', $result->getStatus(), 'check should comply' );
+		$this->assertCompliance( $result );
 	}
 
 	public function testCommonsLinkConstraintInvalid() {
@@ -100,21 +103,21 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'namespace' => 'File' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			$statement2,
 			$this->getConstraintMock( [ 'namespace' => 'File' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			$statement3,
 			$this->getConstraintMock( [ 'namespace' => 'File' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
 	}
 
 	public function testNotImplementedNamespaces() {
@@ -126,35 +129,35 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check is not implemented' );
+		$this->assertTodo( $result );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			$statement,
 			$this->getConstraintMock( [ 'namespace' => 'Gallery' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check is not implemented' );
+		$this->assertTodo( $result );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			$statement,
 			$this->getConstraintMock( [ 'namespace' => 'Institution' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check is not implemented' );
+		$this->assertTodo( $result );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			$statement,
 			$this->getConstraintMock( [ 'namespace' => 'Museum' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check is not implemented' );
+		$this->assertTodo( $result );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			$statement,
 			$this->getConstraintMock( [ 'namespace' => 'Creator' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'todo', $result->getStatus(), 'check is not implemented' );
+		$this->assertTodo( $result );
 	}
 
 	public function testCommonsLinkConstraintNotExistent() {
@@ -166,7 +169,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'namespace' => 'File' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-no-existent' );
 	}
 
 	public function testCommonsLinkConstraintNoStringValue() {
@@ -178,7 +181,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'namespace' => 'File' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testCommonsLinkConstraintNoValueSnak() {
@@ -189,7 +192,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'namespace' => 'File' ] ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result, 'wbqc-violation-message-value-needed' );
 	}
 
 	/**
@@ -207,6 +210,9 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
+			 ->will( $this->returnValue( 'Commons link' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeName' )
 			 ->will( $this->returnValue( 'Commons link' ) );
 
 		return $mock;

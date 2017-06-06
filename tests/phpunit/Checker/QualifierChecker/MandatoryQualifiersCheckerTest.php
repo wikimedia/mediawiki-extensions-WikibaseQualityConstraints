@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -25,7 +26,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -64,7 +65,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$qualifierChecker = new MandatoryQualifiersChecker( $this->helper, $this->getConstraintParameterRenderer() );
 		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => 'P2' ] ), $entity );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testMandatoryQualifiersConstraintInvalid() {
@@ -72,7 +73,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$qualifierChecker = new MandatoryQualifiersChecker( $this->helper, $this->getConstraintParameterRenderer() );
 		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => 'P2,P3' ] ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-mandatory-qualifiers' );
 	}
 
 	/**

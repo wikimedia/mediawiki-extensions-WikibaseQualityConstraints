@@ -18,6 +18,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -33,7 +34,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class RangeCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -83,7 +84,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_quantity' => 10
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTooSmall() {
@@ -94,7 +95,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_quantity' => 1000
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
 	}
 
 	public function testRangeConstraintTooBig() {
@@ -105,7 +106,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_quantity' => 1
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
 	}
 
 	public function testRangeConstraintTimeWithinRange() {
@@ -117,7 +118,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinRangeToNow() {
@@ -129,7 +130,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinYearRange() {
@@ -141,7 +142,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinYearMonthDayRange() {
@@ -153,7 +154,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeTooSmall() {
@@ -165,7 +166,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
 	}
 
 	public function testRangeConstraintTimeTooBig() {
@@ -177,7 +178,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
 	}
 
 	public function testRangeConstraintQuantityWrongParameter() {
@@ -190,7 +191,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-parameters-needed' );
 	}
 
 	public function testRangeConstraintTimeWrongParameter() {
@@ -202,7 +203,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-parameters-needed' );
 	}
 
 	public function testRangeConstraintWrongType() {
@@ -214,14 +215,14 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_date' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-types-2' );
 	}
 
 	public function testRangeConstraintNoValueSnak() {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 		$constraintParameters = [];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
 	/**
@@ -239,6 +240,9 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeQid' )
+			 ->will( $this->returnValue( 'Range' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeName' )
 			 ->will( $this->returnValue( 'Range' ) );
 
 		return $mock;
