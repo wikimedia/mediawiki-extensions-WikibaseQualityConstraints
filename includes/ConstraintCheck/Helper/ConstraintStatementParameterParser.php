@@ -4,13 +4,18 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use DataValues\StringValue;
+use InvalidArgumentException;
 use Wikibase\DataModel\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
@@ -284,6 +289,95 @@ class ConstraintStatementParameterParser {
 					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $propertyId ) )
 					->escaped()
 			);
+		}
+	}
+
+	private function parseItemIdParameter( PropertyValueSnak $snak, $parameterId ) {
+		if ( $snak->getDataValue() instanceof EntityIdValue &&
+			$snak->getDataValue()->getEntityId() instanceof ItemId ) {
+			return ItemIdSnakValue::fromItemId( $snak->getDataValue()->getEntityId() );
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-item' )
+					->rawParams(
+						$this->constraintParameterRenderer->formatPropertyId( $parameterId ),
+						$this->constraintParameterRenderer->formatDataValue( $snak->getDataValue() )
+					)
+					->escaped()
+			);
+		}
+	}
+
+	private function parseItemsParameterFromStatement( array $constraintParameters ) {
+		$qualifierId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$values = [];
+		foreach ( $constraintParameters[$qualifierId] as $parameter ) {
+			$snak = $this->snakDeserializer->deserialize( $parameter );
+			switch ( true ) {
+				case $snak instanceof PropertyValueSnak:
+					$values[] = $this->parseItemIdParameter( $snak, $qualifierId );
+					break;
+				case $snak instanceof PropertySomeValueSnak:
+					$values[] = ItemIdSnakValue::someValue();
+					break;
+				case $snak instanceof PropertyNoValueSnak:
+					$values[] = ItemIdSnakValue::noValue();
+					break;
+			}
+		}
+		return $values;
+	}
+
+	private function parseItemsParameterFromTemplate( array $constraintParameters ) {
+		$values = [];
+		foreach ( explode( ',', $constraintParameters['item'] ) as $value ) {
+			switch ( $value ) {
+				case 'somevalue':
+					$values[] = ItemIdSnakValue::someValue();
+					break;
+				case 'novalue':
+					$values[] = ItemIdSnakValue::noValue();
+					break;
+				default:
+					try {
+						$values[] = ItemIdSnakValue::fromItemId( new ItemId( strtoupper( $value ) ) );
+						break;
+					} catch ( InvalidArgumentException $e ) {
+						throw new ConstraintParameterException(
+							wfMessage( 'wbqc-violation-message-parameter-item' )
+								->params( 'item', $value )
+								->escaped()
+						);
+					}
+			}
+		}
+		return $values;
+	}
+
+	/**
+	 * @param array $constraintParameters
+	 * @param string $constraintTypeName used in error messages
+	 * @param bool $required whether the parameter is required (error if absent) or not ([] if absent)
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return ItemIdSnakValue[] array of values
+	 */
+	public function parseItemsParameter( array $constraintParameters, $constraintTypeName, $required ) {
+		$qualifierId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		if ( array_key_exists( $qualifierId, $constraintParameters ) ) {
+			return $this->parseItemsParameterFromStatement( $constraintParameters );
+		} elseif ( array_key_exists( 'item', $constraintParameters ) ) {
+			return $this->parseItemsParameterFromTemplate( $constraintParameters );
+		} else {
+			if ( $required ) {
+				throw new ConstraintParameterException(
+					wfMessage( 'wbqc-violation-message-parameter-needed' )
+						->params( $constraintTypeName )
+						->rawParams( $this->constraintParameterRenderer->formatPropertyId( $qualifierId ) )
+						->escaped()
+				);
+			} else {
+				return [];
+			}
 		}
 	}
 

@@ -8,14 +8,16 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Serializers\SnakSerializer;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use Wikibase\DataModel\Statement\Statement;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
@@ -347,6 +349,102 @@ class ConstraintStatementParameterParserTest extends \MediaWikiLangTestCase {
 				'constraint'
 			],
 			'wbqc-violation-message-parameter-single'
+		);
+	}
+
+	public function testParseItemsParameter() {
+		$config = $this->getDefaultConfig();
+		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$parsed = $this->getConstraintParameterParser()->parseItemsParameter(
+			[
+				$qualifierId => [
+					$this->serializeItemId( 'Q100' ),
+					$this->serializeItemId( 'Q101' ),
+					$this->snakSerializer->serialize( new PropertySomeValueSnak( new PropertyId( 'P1' ) ) ),
+					$this->snakSerializer->serialize( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+				]
+			],
+			'',
+			false
+		);
+		$expected = [
+			ItemIdSnakValue::fromItemId( new ItemId( 'Q100' ) ),
+			ItemIdSnakValue::fromItemId( new ItemId( 'Q101' ) ),
+			ItemIdSnakValue::someValue(),
+			ItemIdSnakValue::noValue()
+		];
+		$this->assertEquals( $expected, $parsed );
+	}
+
+	public function testParseItemsParameterRequired() {
+		$this->assertThrowsConstraintParameterException(
+			'parseItemsParameter',
+			[
+				[], 'constraint', true
+			],
+			'wbqc-violation-message-parameter-needed'
+		);
+	}
+
+	public function testParseItemsParameterNotRequired() {
+		$parsed = $this->getConstraintParameterParser()->parseItemsParameter( [], 'constraint', false );
+		$this->assertEquals( [], $parsed );
+	}
+
+	public function testParseItemsParameterFromTemplate() {
+		$parsed = $this->getConstraintParameterParser()->parseItemsParameter(
+			[ 'item' => 'Q100,Q101,somevalue,novalue' ],
+			'',
+			false
+		);
+		$expected = [
+			ItemIdSnakValue::fromItemId( new ItemId( 'Q100' ) ),
+			ItemIdSnakValue::fromItemId( new ItemId( 'Q101' ) ),
+			ItemIdSnakValue::someValue(),
+			ItemIdSnakValue::noValue()
+		];
+		$this->assertEquals( $expected, $parsed );
+	}
+
+	public function testParseItemsParameterStringValue() {
+		$config = $this->getDefaultConfig();
+		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$this->assertThrowsConstraintParameterException(
+			'parseItemsParameter',
+			[
+				[
+					$qualifierId => [
+						$this->snakSerializer->serialize( new PropertyValueSnak(
+							new PropertyId( 'P1' ),
+							new StringValue( 'Q100' )
+						) )
+					]
+				],
+				'constraint',
+				true
+			],
+			'wbqc-violation-message-parameter-item'
+		);
+	}
+
+	public function testParseItemsParameterPropertyId() {
+		$config = $this->getDefaultConfig();
+		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$this->assertThrowsConstraintParameterException(
+			'parseItemsParameter',
+			[
+				[
+					$qualifierId => [
+						$this->snakSerializer->serialize( new PropertyValueSnak(
+							new PropertyId( 'P1' ),
+							new EntityIdValue( new PropertyId( 'P100' ) )
+						) )
+					]
+				],
+				'constraint',
+				true
+			],
+			'wbqc-violation-message-parameter-item'
 		);
 	}
 
