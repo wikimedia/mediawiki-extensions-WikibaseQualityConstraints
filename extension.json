@@ -105,6 +105,26 @@
 			"value": "Q21510862",
 			"description": "The item ID of the 'symmetric constraint' item, which, when used in a 'property constraint' statement on a property, indicates that a referenced entity should refer back to the original entity.",
 			"public": true
+		},
+		"WBQualityConstraintsClassId": {
+			"value": "P2308",
+			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",
+			"public": true
+		},
+		"WBQualityConstraintsRelationId": {
+			"value": "P2309",
+			"description": "The property ID of the 'relation' property, which specifies the relation ('instance of' or 'subclass of') of a 'type' or 'value type' constraint.",
+			"public": true
+		},
+		"WBQualityConstraintsInstanceOfRelationId": {
+			"value": "Q21503252",
+			"description": "The item ID of the 'instance of' item, which, when used in a 'relation' qualifier of a 'property constraint' statement on a property, indicates that the 'type' or 'value type' constraint defined in this statement demands an 'instance' relation.",
+			"public": true
+		},
+		"WBQualityConstraintsSubclassOfRelationId": {
+			"value": "Q21514624",
+			"description": "The item ID of the 'subclass of' item, which, when used in a 'relation' qualifier of a 'property constraint' statement on a property, indicates that the 'type' or 'value type' constraint defined in this statement demands a 'subclass' relation.",
+			"public": true
 		}
 	},
 	"manifest_version": 2

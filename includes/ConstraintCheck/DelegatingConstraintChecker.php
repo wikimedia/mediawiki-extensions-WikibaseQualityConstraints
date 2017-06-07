@@ -10,6 +10,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementGuid;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -236,7 +237,19 @@ class DelegatingConstraintChecker {
 			$statsd = MediaWikiServices::getInstance()->getStatsdDataFactory();
 
 			$startTime = microtime( true );
-			$result = $checker->checkConstraint( $statement, $constraint, $entity );
+			try {
+				$result = $checker->checkConstraint( $statement, $constraint, $entity );
+			} catch ( ConstraintParameterException $e ) {
+				$result = new CheckResult(
+					$entity->getId(),
+					$statement,
+					$constraint->getConstraintTypeQid(),
+					$constraint->getConstraintId(),
+					[],
+					CheckResult::STATUS_VIOLATION,
+					$e->getMessage()
+				);
+			}
 			$statsd->timing(
 				'wikibase.quality.constraints.check.timing.' . $constraint->getConstraintTypeQid(),
 				( microtime( true ) - $startTime ) * 1000

@@ -54,6 +54,10 @@
 	"wbqc-violation-message-parameters-needed-3": "Properties with constraint \"$1\" need parameters \"$2\",  \"$3\", and  \"$4\".",
 	"wbqc-violation-message-target-entity-must-exist": "The target entity must exist.",
 	"wbqc-violation-message-value-entity-must-exist": "The value entity must exist.",
+	"wbqc-violation-message-parameter-value": "The parameter \"$1\" must have a real value, not \"no value\" or \"unknown value\".",
+	"wbqc-violation-message-parameter-entity": "The value for the parameter \"$1\" must be an entity, not \"$2\".",
+	"wbqc-violation-message-parameter-single": "The parameter \"$1\" must only have a single value.",
+	"wbqc-violation-message-parameter-oneof": "The parameter \"$1\" must be {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following:$3}}",
 
 	"wbqc-violation-message-commons-link-no-existent": "Commons link should exist.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Commons link should be well-formed.",
