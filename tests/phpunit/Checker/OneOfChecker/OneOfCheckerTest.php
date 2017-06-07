@@ -4,16 +4,17 @@ namespace WikibaseQuality\ConstraintReport\Test\OneOfChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
-use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Statement\Statement;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
@@ -33,26 +34,20 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
-
-	/**
 	 * @var OneOfChecker
 	 */
 	private $oneOfChecker;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintParameterParser();
 		$this->oneOfChecker = new OneOfChecker(
-			$this->helper,
+			$this->getConstraintParameterParser(),
 			$this->getConstraintParameterRenderer()
 		);
 	}
 
 	protected function tearDown() {
-		unset( $this->helper, $this->oneOfChecker );
+		unset( $this->oneOfChecker );
 		parent::tearDown();
 	}
 
@@ -90,44 +85,36 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( [ 'item' => $values ] ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-value-needed-of-type' );
+		$this->assertViolation( $result, 'wbqc-violation-message-one-of' );
 	}
 
-	public function testOneOfConstraintEmptyArray() {
-		$value = new EntityIdValue( new ItemId( 'Q1' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) );
+	public function testOneOfConstraintArraySomevalueNovalue() {
+		$somevalueSnak = new PropertySomeValueSnak( new PropertyId( 'P123' ) );
+		$novalueSnak = new PropertyNoValueSnak( new PropertyId( 'P123' ) );
 
-		$result = $this->oneOfChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( [] ),
-			$this->getEntity()
-		);
-		$this->assertViolation( $result, 'wbqc-violation-message-parameter-needed' );
-	}
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 
-	public function testOneOfConstraintArrayWithSomevalue() {
-		$value = new EntityIdValue( new ItemId( 'Q1' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) );
-		$values = 'Q1,Q2,Q3,somevalue';
+		foreach ( [ $somevalueSnak, $novalueSnak ] as $allowed ) {
+			foreach ( [ $somevalueSnak, $novalueSnak ] as $present ) {
+				$statement = new Statement( $present );
 
-		$result = $this->oneOfChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( [ 'item' => $values ] ),
-			$this->getEntity()
-		);
-		$this->assertCompliance( $result );
-	}
+				$constraintParameters = [
+					$qualifierId => [ $snakSerializer->serialize( $allowed ) ]
+				];
 
-	public function testOneOfConstraintNoValueSnak() {
-		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
-		$values = 'Q1,Q2,Q3,somevalue';
-
-		$result = $this->oneOfChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( [ 'item' => $values ] ),
-			$this->getEntity()
-		);
-		$this->assertViolation( $result, 'wbqc-violation-message-value-needed' );
+				$result = $this->oneOfChecker->checkConstraint(
+					$statement,
+					$this->getConstraintMock( $constraintParameters ),
+					$this->getEntity()
+				);
+				if ( $allowed === $present ) {
+					$this->assertCompliance( $result );
+				} else {
+					$this->assertViolation( $result, 'wbqc-violation-message-one-of' );
+				}
+			}
+		}
 	}
 
 	/**

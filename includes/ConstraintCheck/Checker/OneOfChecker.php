@@ -8,7 +8,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
@@ -21,9 +21,9 @@ use Wikibase\DataModel\Statement\Statement;
 class OneOfChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
-	private $helper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var ConstraintParameterRenderer
@@ -31,14 +31,14 @@ class OneOfChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
-		ConstraintParameterParser $helper,
+		ConstraintStatementParameterParser $constraintParameterParser,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
-		$this->helper = $helper;
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
@@ -55,12 +55,8 @@ class OneOfChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$items = false;
-		if ( array_key_exists( 'item', $constraintParameters ) ) {
-			$items = explode( ',', $constraintParameters['item'] );
-			$items = array_map( 'strtoupper', $items ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
-			$parameters['item'] = $this->helper->parseParameterArray( $items );
-		}
+		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeName(), true );
+		$parameters['item'] = $items;
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
 			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
@@ -68,43 +64,19 @@ class OneOfChecker implements ConstraintChecker {
 
 		$mainSnak = $statement->getMainSnak();
 
-		/*
-		 * error handling:
-		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
-		 */
-		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $entity->getId(), $statement, 'One of', $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
+		$message = wfMessage( 'wbqc-violation-message-one-of' );
+		$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ) );
+		$message->numParams( count( $items ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items ) );
+		$message = $message->escaped();
+		$status = CheckResult::STATUS_VIOLATION;
 
-		$dataValue = $mainSnak->getDataValue();
-
-		/*
-		 * error handling:
-		 *   type of $dataValue for properties with 'One of' constraint has to be 'wikibase-entityid'
-		 *   parameter $itemArray must not be null
-		 */
-		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-		/** @var EntityIdValue $dataValue */
-
-		if ( !$items ) {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'item' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-
-		if ( in_array( $dataValue->getEntityId()->getSerialization(), $items ) ) {
-			$message = '';
-			$status = CheckResult::STATUS_COMPLIANCE;
-		} else {
-			$message = wfMessage( "wbqc-violation-message-one-of" );
-			$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ) );
-			$message->numParams( count( $items ) );
-			$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $items ) );
-			$message = $message->escaped();
-			$status = CheckResult::STATUS_VIOLATION;
+		foreach ( $items as $item ) {
+			if ( $item->matchesSnak( $mainSnak ) ) {
+				$message = '';
+				$status = CheckResult::STATUS_COMPLIANCE;
+				break;
+			}
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
