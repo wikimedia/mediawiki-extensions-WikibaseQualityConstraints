@@ -76,6 +76,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$this->statementGuidParser,
 			$config,
 			$this->getConstraintParameterRenderer(),
+			$this->getConstraintParameterParser(),
 			$rdfVocabulary,
 			$itemIdParser
 		);

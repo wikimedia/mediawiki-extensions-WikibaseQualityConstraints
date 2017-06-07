@@ -13,12 +13,12 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use Wikibase\Repo\WikibaseRepo;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
@@ -26,7 +26,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -56,7 +56,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->checker = new ValueTypeChecker(
 			$this->lookup,
-			new ConstraintParameterParser(),
+			$this->getConstraintParameterParser(),
 			new TypeCheckerHelper(
 				$this->lookup,
 				$this->getDefaultConfig(),
@@ -104,6 +104,27 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
+	public function testTypeConstraintInstanceValidWithStatement() {
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) );
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$classId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
+		$relationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
+		$constraintParameters = [
+			$classId => [
+				$snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $classId ), new EntityIdValue( new ItemId( 'Q100' ) ) ) ),
+				$snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $classId ), new EntityIdValue( new ItemId( 'Q101' ) ) ) )
+			],
+			$relationId => [
+				$snakSerializer->serialize( new PropertyValueSnak(
+					new PropertyId( $relationId ),
+					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfRelationId' ) ) )
+				) )
+			]
+		];
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$this->assertCompliance( $checkResult );
+	}
+
 	public function testValueTypeConstraintSubclassValid() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
 		$constraintParameters = [
@@ -129,6 +150,27 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$constraintParameters = [
 			'relation' => 'subclass',
 			'class' => 'Q100,Q101'
+		];
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testTypeConstraintSubclassValidWithStatement() {
+		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$classId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
+		$relationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
+		$constraintParameters = [
+			$classId => [
+				$snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $classId ), new EntityIdValue( new ItemId( 'Q100' ) ) ) ),
+				$snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $classId ), new EntityIdValue( new ItemId( 'Q101' ) ) ) )
+			],
+			$relationId => [
+				$snakSerializer->serialize( new PropertyValueSnak(
+					new PropertyId( $relationId ),
+					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfRelationId' ) ) )
+				) )
+			]
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertCompliance( $checkResult );
@@ -192,24 +234,6 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-subclass' );
-	}
-
-	public function testValueTypeConstraintMissingRelation() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
-		$constraintParameters = [
-			'class' => 'Q100,Q101'
-		];
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-relation-instance-or-subclass' );
-	}
-
-	public function testValueTypeConstraintMissingClass() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
-		$constraintParameters = [
-			'relation' => 'instance'
-		];
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-parameter-needed' );
 	}
 
 	public function testValueTypeConstraintWrongType() {
