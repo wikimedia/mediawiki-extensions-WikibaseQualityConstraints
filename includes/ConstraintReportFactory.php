@@ -198,7 +198,7 @@ class ConstraintReportFactory {
 
 			$this->constraintCheckerMap = [
 				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Item' => new ItemChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
+				'Item' => new ItemChecker( $this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Target required claim' => new TargetRequiredClaimChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Symmetric' => new SymmetricChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Inverse' => new InverseChecker( $this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
@@ -227,6 +227,7 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsTypeConstraintId' ) => $this->constraintCheckerMap['Type'],
 				$this->config->get( 'WBQualityConstraintsValueTypeConstraintId' ) => $this->constraintCheckerMap['Value type'],
 				$this->config->get( 'WBQualityConstraintsInverseConstraintId' ) => $this->constraintCheckerMap['Inverse'],
+				$this->config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' ) => $this->constraintCheckerMap['Item'],
 			];
 		}
 
