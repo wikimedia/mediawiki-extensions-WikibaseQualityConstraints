@@ -121,6 +121,11 @@
 			"description": "The item ID of the 'value type constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the referenced entity should have a certain type, with the class and relation given in the parameters.",
 			"public": true
 		},
+		"WBQualityConstraintsInverseConstraintId": {
+			"value": "Q21510855",
+			"description": "The item ID of the 'inverse constraint' item, which, when used in a 'property constraint' statement on a property, indicates that a referenced entity should refer back to the original entity with the property given in the parameters.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",

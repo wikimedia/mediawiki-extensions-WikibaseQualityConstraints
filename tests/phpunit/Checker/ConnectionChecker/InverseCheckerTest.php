@@ -9,10 +9,10 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
@@ -23,7 +23,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -38,11 +38,6 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	private $lookup;
 
 	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
-
-	/**
 	 * @var ConnectionCheckerHelper
 	 */
 	private $connectionCheckerHelper;
@@ -55,11 +50,10 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new InverseChecker(
 			$this->lookup,
-			$this->helper,
+			$this->getConstraintParameterParser(),
 			$this->connectionCheckerHelper,
 			$this->getConstraintParameterRenderer()
 		);
@@ -67,7 +61,6 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 
 	protected function tearDown() {
 		unset( $this->lookup );
-		unset( $this->helper );
 		unset( $this->connectionCheckerHelper );
 		unset( $this->checker );
 		parent::tearDown();
@@ -86,6 +79,21 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
+	public function testInverseConstraintValidWithStatement() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+
+		$value = new EntityIdValue( new ItemId( 'Q7' ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$propertyId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
+		$constraintParameters = [
+			$propertyId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( 'P1' ) ) ) ) ]
+		];
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$this->assertCompliance( $checkResult );
+	}
+
 	public function testInverseConstraintWrongItem() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
@@ -97,17 +105,6 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-inverse' );
-	}
-
-	public function testInverseConstraintWithoutProperty() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-
-		$value = new EntityIdValue( new ItemId( 'Q7' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-
-		$constraintParameters = [];
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-parameter-needed' );
 	}
 
 	public function testInverseConstraintWrongDataTypeForItem() {
