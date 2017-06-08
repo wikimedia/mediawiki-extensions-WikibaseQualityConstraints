@@ -8,7 +8,6 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -18,7 +17,6 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -28,23 +26,16 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	use ResultAssertions;
 
 	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
-
-	/**
 	 * @var JsonFileEntityLookup
 	 */
 	private $lookup;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintParameterParser();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 
 	protected function tearDown() {
-		unset( $this->helper );
 		unset( $this->lookup );
 		parent::tearDown();
 	}
@@ -62,7 +53,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	public function testQualifierConstraintQualifierProperty() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$qualifierChecker = new QualifierChecker( $this->helper );
+		$qualifierChecker = new QualifierChecker();
 		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [] ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifier' );
 	}

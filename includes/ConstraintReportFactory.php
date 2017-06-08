@@ -204,7 +204,7 @@ class ConstraintReportFactory {
 					$this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Symmetric' => new SymmetricChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Inverse' => new InverseChecker( $this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Qualifier' => new QualifierChecker( $constraintParameterParser ),
+				'Qualifier' => new QualifierChecker(),
 				'Qualifiers' => new QualifiersChecker( $constraintParameterParser, $this->constraintParameterRenderer ),
 				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $constraintParameterParser, $this->constraintParameterRenderer ),
 				'Range' => new RangeChecker( $constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
