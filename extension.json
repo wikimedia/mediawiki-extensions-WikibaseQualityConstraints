@@ -146,6 +146,11 @@
 			"description": "The item ID of the 'one-of constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should be one of a given set of values.",
 			"public": true
 		},
+		"WBQualityConstraintsMandatoryQualifierConstraintId": {
+			"value": "Q21510856",
+			"description": "The item ID of the 'mandatory qualifier' item, which, when used in a 'property constraint' statement on a property, indicates a given statement should have the given qualifier.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",

@@ -257,7 +257,9 @@ class ConstraintStatementParameterParser {
 
 	private function parsePropertyParameterFromTemplate( array $constraintParameters ) {
 		try {
-			return new PropertyId( $constraintParameters['property'] );
+			$properties = explode( ',', $constraintParameters['property'] );
+			array_map( 'strtoupper', $properties );
+			return new PropertyId( $properties[0] ); // silently ignore extra properties (Mandatory Qualifiers used to allow several properties)
 		} catch ( InvalidArgumentException $e ) {
 			throw new ConstraintParameterException(
 				wfMessage( 'wbqc-violation-message-parameter-property' )
