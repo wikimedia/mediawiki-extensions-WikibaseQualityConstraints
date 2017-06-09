@@ -52,6 +52,7 @@
 	"wbqc-violation-message-parameter-entity": "Der Wert für den Parameter „$1“ muss ein Objekt sein, nicht „$2“.",
 	"wbqc-violation-message-parameter-single": "Der Parameter „$1“ darf nur einen einzigen Wert haben.",
 	"wbqc-violation-message-parameter-oneof": "Der Parameter „$1“ muss {{PLURAL:$2|1=$4 sein.|2=entweder $4 oder $5 sein.|eines der folgenden Werte sein: $3.}}",
+	"wbqc-violation-message-sparql-error": "Die SPARQL-Abfrage hat einen Fehler ausgegeben.",
 	"wbqc-violation-message-commons-link-no-existent": "Der Commons-Link sollte vorhanden sein.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Der Commons-Link sollte wohlgeformt sein.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Die Prüfung für den Namensraum „$1“ ist noch nicht implementiert.",
@@ -79,5 +80,8 @@
 	"wbqc-violation-message-type-subclass": "Objekte, die die Eigenschaft $1 verwenden, sollten Unterklassen von {{PLURAL:$3|1=$5|2=$5 oder $6|einer der folgenden Klassen}} sein (oder von {{PLURAL:$3|1=einer ihrer Unterklasse|2=einer ihrer Unterklasse|einer ihrer Unterklassen}}), aber $2 ist sie derzeit {{PLURAL:$3|1=nicht.|2=nicht.|nicht: $4.}}",
 	"wbqc-violation-message-valueType-instance": "Werte der Aussagen $1 sollten Instanzen von {{PLURAL:$3|1=$5|2=$5 oder $6|einer der folgenden Klassen}} sein (oder von {{PLURAL:$3|1=einer ihrer Unterklasse|2=einer ihrer Unterklasse|einer ihrer Unterklassen}}), aber $2 hat sie derzeit {{PLURAL:$3|1=nicht.|2=nicht.|nicht: $4.}}",
 	"wbqc-violation-message-valueType-subclass": "Werte der Aussagen $1 sollten Unterklassen von {{PLURAL:$3|1=$5|2=$5 oder $6|einer der folgenden Klassen}} sein (oder von {{PLURAL:$3|1=einer ihrer Unterklassen|2=einer ihrer Unterklasse|einer ihrer Unterklassen}}), aber $2 hat sie derzeit {{PLURAL:$3|1=nicht.|2=nicht.|nicht: $4.}}",
-	"wbqc-violation-message-target-required-claim": "$1 sollte {{PLURAL:$3|0=eine Aussage $2 haben.|1=eine Aussage $2 $5 haben.|eine Aussage für $2 mit einem der folgenden Werte haben: $4}}"
+	"wbqc-violation-message-target-required-claim": "$1 sollte {{PLURAL:$3|0=eine Aussage $2 haben.|1=eine Aussage $2 $5 haben.|eine Aussage für $2 mit einem der folgenden Werte haben: $4}}",
+	"wbqc-violation-message-unique-value": "Der Wert dieser Eigenschaft darf nicht in einem anderen Objekt vorhanden sein.",
+	"wbqc-violation-message-sparql-type": "Diese Eigenschaft darf nur in Objekten verwendet werden, die in Relation zum Objekt stehen (oder eine Unterklasse des Objektes), das in den Parametern definiert ist.",
+	"wbqc-violation-message-sparql-value-type": "Das Wertobjekt dieser Eigenschaft muss in Relation zum Objekt sein (oder eine Unterklasse des Objektes), das in den Parametern definiert ist."
 }

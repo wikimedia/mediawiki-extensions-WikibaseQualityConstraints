@@ -47,12 +47,12 @@
 	"wbqc-violation-message-conflicts-with-property": "Een entiteit hoort verklaringen te hebben voor $1 en $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Een entiteit hoort een verklaring te hebben voor $1, maar ook een verklaring voor $2 met als waarde $3.",
 	"wbqc-violation-message-diff-within-range": "Het verschil tussen $3 ($4) en $1 ($2) zou tussen $5 en $6 ([$5; $6]) moeten liggen.",
-	"wbqc-violation-message-item": "Een entiteit met $1 zou ook een {{PLURAL:$3|0=een verklaring $2 moeten bevatten.|1=een verklaring $2 $5 moeten bevatten.|een verklaring voor $2 met een van de volgende waarden bevatten:$4}}",
+	"wbqc-violation-message-item": "Een entiteit met $1 zou ook {{PLURAL:$3|0=een verklaring $2 moeten bevatten.|1=een verklaring $2 $5 moeten bevatten.|een verklaring voor $2 met een van de volgende waarden bevatten:$4}}",
 	"wbqc-violation-message-mandatory-qualifiers": "Deze $1-verklaring mist {{PLURAL:$2|1=een kwalificatie: $4.|2=$4 en $5 als kwalificaties.|de volgende kwalificaties:$3}}.",
 	"wbqc-violation-message-one-of": "De waarde voor $1 zou {{PLURAL:$2|1=$4 moeten zijn.|2=$4 of $5 moeten zijn.|een van de volgende waarden moeten zijn:$3}}",
 	"wbqc-violation-message-qualifier": "De eigenschap mag alleen als kwalificatie worden gebruikt.",
 	"wbqc-violation-message-no-qualifiers": "$1-verklaringen zouden geen kwalificaties moeten hebben.",
-	"wbqc-violation-message-qualifiers": "$2 is geen geldige verklaring voor $1 – geldige {{PLURAL:$3|1=kwalificatie is $5.|2=kwalificaties zijn $5 en $6.|kwalificaties zijn:$4}}",
+	"wbqc-violation-message-qualifiers": "$2 is geen geldige kwalificatie voor $1 – geldige {{PLURAL:$3|1=kwalificatie is $5.|2=kwalificaties zijn $5 en $6.|kwalificaties zijn:$4}}",
 	"wbqc-violation-message-range": "De waarde voor $1 ($2) zou tussen $3 en $4 ([$3, $4]) moeten zitten.",
 	"wbqc-violation-message-symmetric": "$1 zou een symmetrische verklaring $2 $3 moeten hebben."
 }
