@@ -39,18 +39,26 @@ class TypeCheckerHelper {
 	private $constraintParameterRenderer;
 
 	/**
+	 * @var SparqlHelper
+	 */
+	private $sparqlHelper;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param Config $config
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
+	 * @param SparqlHelper|null $sparqlHelper
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		Config $config,
-		ConstraintParameterRenderer $constraintParameterRenderer
+		ConstraintParameterRenderer $constraintParameterRenderer,
+		SparqlHelper $sparqlHelper = null
 	) {
 		$this->entityLookup = $lookup;
 		$this->config = $config;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
+		$this->sparqlHelper = $sparqlHelper;
 	}
 
 	/**
@@ -58,7 +66,8 @@ class TypeCheckerHelper {
 	 * of one of the item ID serializations in $classesToCheck.
 	 * If the class hierarchy is not exhausted before
 	 * the configured limit (WBQualityConstraintsTypeCheckMaxEntities) is reached,
-	 * the check aborts and returns false.
+	 * the injected {@link SparqlHelper} is consulted if present,
+	 * otherwise the check aborts and returns false.
 	 *
 	 * @param EntityId $comparativeClass
 	 * @param string[] $classesToCheck
@@ -67,8 +76,17 @@ class TypeCheckerHelper {
 	 * @return bool
 	 */
 	public function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, &$entitiesChecked = 0 ) {
-		if ( ++$entitiesChecked > $this->config->get( 'WBQualityConstraintsTypeCheckMaxEntities' ) ) {
-			return false;
+		$maxEntities = $this->config->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
+		if ( ++$entitiesChecked > $maxEntities ) {
+			if ( $entitiesChecked === $maxEntities + 1 && $this->sparqlHelper !== null ) {
+				return $this->sparqlHelper->hasType(
+					$comparativeClass->getSerialization(),
+					$classesToCheck,
+					/* withInstance = */ false
+				);
+			} else {
+				return false;
+			}
 		}
 
 		$item = $this->entityLookup->getEntity( $comparativeClass );

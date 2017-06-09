@@ -10,6 +10,7 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\StatementList;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -29,14 +30,19 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @param EntityLookup|null $entityLookup
+	 * @param SparqlHelper|null $sparqlHelper
 	 *
 	 * @return TypeCheckerHelper
 	 */
-	private function getHelper( EntityLookup $entityLookup = null ) {
+	private function getHelper(
+		EntityLookup $entityLookup = null,
+		SparqlHelper $sparqlHelper = null
+	) {
 		return new TypeCheckerHelper(
 			$entityLookup ?: new JsonFileEntityLookup( __DIR__ ),
 			$this->getDefaultConfig(),
-			$this->getConstraintParameterRenderer()
+			$this->getConstraintParameterRenderer(),
+			$sparqlHelper
 		);
 	}
 
@@ -54,6 +60,21 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( [ $lookup, 'getEntity' ] ) );
 
 		return $spy;
+	}
+
+	/**
+	 * @param boolean $return
+	 * @return SparqlHelper expects that {@link SparqlHelper::hasType}
+	 * is called exactly once and returns $return.
+	 */
+	private function getSparqlHelper( $return ) {
+		$mock = $this->getMockBuilder( SparqlHelper::class )
+			  ->disableOriginalConstructor()
+			  ->getMock();
+		$mock->expects( $this->once() )
+			->method( 'hasType' )
+			->willReturn( $return );
+		return $mock;
 	}
 
 	public function testCheckHasClassInRelationValid() {
@@ -92,6 +113,16 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
 	public function testCheckIsSubclassCyclicWide() {
 		$helper = $this->getHelper( $this->getMaxEntitiesLookup() );
+		$this->assertFalse( $helper->isSubclassOf( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] ) );
+	}
+
+	public function testCheckIsSubclassCyclicWideWithSparqlTrue() {
+		$helper = $this->getHelper( $this->getMaxEntitiesLookup(), $this->getSparqlHelper( true ) );
+		$this->assertTrue( $helper->isSubclassOf( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] ) );
+	}
+
+	public function testCheckIsSubclassCyclicWideWithSparqlFalse() {
+		$helper = $this->getHelper( $this->getMaxEntitiesLookup(), $this->getSparqlHelper( false ) );
 		$this->assertFalse( $helper->isSubclassOf( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] ) );
 	}
 
