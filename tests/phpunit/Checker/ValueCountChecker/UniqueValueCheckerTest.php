@@ -89,6 +89,18 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 		$this->assertCompliance( $checkResult );
 	}
 
+	public function testCheckUniqueValueWithoutSparql() {
+		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
+		$statement->setGuid( "Q1$56e6a474-4431-fb24-cc15-1d580e467559" );
+
+		$this->checker = new UniqueValueChecker( null );
+
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$this->assertTodo( $checkResult );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

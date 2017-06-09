@@ -105,6 +105,26 @@ class TypeSparqlCheckerTest extends \PHPUnit_Framework_TestCase  {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-sparql-type' );
 	}
 
+	// no SPARQL available
+
+	public function testTypeConstraintWithoutSparql() {
+		$this->checker = new TypeSparqlChecker(
+			$this->lookup,
+			new ConstraintParameterParser(),
+			null
+		);
+
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+
+		$constraintParameters = [
+			'class' => 'Q200,Q201',
+			'relation' => 'subclass'
+		];
+
+		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$this->assertTodo( $checkResult );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

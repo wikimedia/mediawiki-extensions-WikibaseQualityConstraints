@@ -68,7 +68,7 @@
 		},
 		"WBQualityConstraintsSparqlEndpoint": {
 			"value": "https://query.wikidata.org/bigdata/namespace/wdq/sparql",
-			"description": "The URL of the SPARQL endpoint. Should accept the URL parameters 'query' and 'format'.",
+			"description": "The URL of the SPARQL endpoint. Should accept the URL parameters 'query' and 'format'. Set to '' (empty string) to disable SPARQL functionality.",
 			"public": true
 		},
 		"WBQualityConstraintsInstanceOfId": {

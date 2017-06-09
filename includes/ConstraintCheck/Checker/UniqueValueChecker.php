@@ -19,11 +19,14 @@ use Wikibase\DataModel\Statement\Statement;
 class UniqueValueChecker implements ConstraintChecker {
 
 	/**
-	 * @var SparqlHelper
+	 * @var SparqlHelper|null
 	 */
 	private $sparqlHelper;
 
-	public function __construct( SparqlHelper $sparqlHelper ) {
+	/**
+	 * @param SparqlHelper|null $sparqlHelper Helper to run SPARQL queries, or null if SPARQL is not available.
+	 */
+	public function __construct( SparqlHelper $sparqlHelper = null ) {
 		$this->sparqlHelper = $sparqlHelper;
 	}
 
@@ -39,20 +42,27 @@ class UniqueValueChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = [];
 
-		try {
-			$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement( $statement );
+		if ( $this->sparqlHelper !== null ) {
+			try {
+				$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement( $statement );
 
-			if ( $otherEntities === [] ) {
-				$status = CheckResult::STATUS_COMPLIANCE;
-				$message = '';
-			} else {
+				if ( $otherEntities === [] ) {
+					$status = CheckResult::STATUS_COMPLIANCE;
+					$message = '';
+				} else {
+					$status = CheckResult::STATUS_VIOLATION;
+					// TODO include the other entities in the message
+					$message = wfMessage( 'wbqc-violation-message-unique-value' )->escaped();
+				}
+			} catch ( SparqlHelperException $e ) {
 				$status = CheckResult::STATUS_VIOLATION;
-				// TODO include the other entities in the message
-				$message = wfMessage( 'wbqc-violation-message-unique-value' )->escaped();
+				$message = wfMessage( 'wbqc-violation-message-sparql-error' )->escaped();
 			}
-		} catch ( SparqlHelperException $e ) {
-			$status = CheckResult::STATUS_VIOLATION;
-			$message = wfMessage( 'wbqc-violation-message-sparql-error' )->escaped();
+		} else {
+			$status = CheckResult::STATUS_TODO;
+			$message = wfMessage( 'wbqc-violation-message-not-yet-implemented' )
+					 ->params( $constraint->getConstraintTypeName() )
+					 ->escaped();
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
