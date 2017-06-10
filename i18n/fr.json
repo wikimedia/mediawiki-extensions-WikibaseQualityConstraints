@@ -56,6 +56,7 @@
 	"wbqc-violation-message-parameter-entity": "La valeur pour le paramètre « $1 » doit être une entité, et pas « $2 ».",
 	"wbqc-violation-message-parameter-single": "Le paramètre « $1 » ne doit avoir qu’une valeur simple.",
 	"wbqc-violation-message-parameter-oneof": "Le paramètre « $1 » doit être {{PLURAL:$2|1=$4.|2=$4 ou $5.|un des suivants :$3}}",
+	"wbqc-violation-message-sparql-error": "La requête SPARQL a retourné une erreur.",
 	"wbqc-violation-message-commons-link-no-existent": "Le lien vers Communs devrait exister.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Le lien vers Communs doit être bien formaté.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La vérification pour l’espace de noms « $1 » n’est pas encore implémentée.",
@@ -83,5 +84,8 @@
 	"wbqc-violation-message-type-subclass": "Les entités utilsiant la propriété $1 doivent être des sous-classes de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas actuellement : $4}}",
 	"wbqc-violation-message-valueType-instance": "Les valeurs des déclarations $1 devraient être des instances de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas : $4}}",
 	"wbqc-violation-message-valueType-subclass": "Les valeurs des déclarations $1 doivent être des sous-classes de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas : $4}}",
-	"wbqc-violation-message-target-required-claim": "$1 doit avoir {{PLURAL:$3|0=une déclaration $2.|1=une déclaration $2 $5.|une déclaration pour $2 avec une des valeurs suivantes : $4}}"
+	"wbqc-violation-message-target-required-claim": "$1 doit avoir {{PLURAL:$3|0=une déclaration $2.|1=une déclaration $2 $5.|une déclaration pour $2 avec une des valeurs suivantes : $4}}",
+	"wbqc-violation-message-unique-value": "Cette valeur de propriété ne doit être associée à aucun autre élément.",
+	"wbqc-violation-message-sparql-type": "Cette propriété doit être utilisée uniquement sur des éléments qui sont relatifs à l'élément défini dans les paramètres (ou une sous-classe de celui-ci).",
+	"wbqc-violation-message-sparql-value-type": "La valeur de l'entité associée à la propriété doit être relative à l'élément défini dans les paramètres (ou une sous-classe de celui-ci)."
 }

@@ -83,5 +83,5 @@
 	"wbqc-violation-message-target-required-claim": "$1 sollte {{PLURAL:$3|0=eine Aussage $2 haben.|1=eine Aussage $2 $5 haben.|eine Aussage für $2 mit einem der folgenden Werte haben: $4}}",
 	"wbqc-violation-message-unique-value": "Der Wert dieser Eigenschaft darf nicht in einem anderen Objekt vorhanden sein.",
 	"wbqc-violation-message-sparql-type": "Diese Eigenschaft darf nur in Objekten verwendet werden, die in Relation zum Objekt stehen (oder eine Unterklasse des Objektes), das in den Parametern definiert ist.",
-	"wbqc-violation-message-sparql-value-type": "Das Wertobjekt dieser Eigenschaft muss in Relation zum Objekt sein (oder eine Unterklasse des Objektes), das in den Parametern definiert ist."
+	"wbqc-violation-message-sparql-value-type": "Das Wertobjekt dieser Eigenschaft muss in Relation zum Objekt stehen (oder eine Unterklasse des Objektes), das in den Parametern definiert ist."
 }

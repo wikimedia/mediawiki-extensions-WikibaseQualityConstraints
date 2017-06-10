@@ -50,6 +50,7 @@
 	"wbqc-violation-message-parameter-entity": "参数“$1”的值必须是实体，而不是“$2”。",
 	"wbqc-violation-message-parameter-single": "参数“$1”必须只有一个值。",
 	"wbqc-violation-message-parameter-oneof": "参数“$1”必须为{{PLURAL:$2|1=$4。|2=$4或$5。|以下值之一：$3}}",
+	"wbqc-violation-message-sparql-error": "SPARQL查询导致了问题。",
 	"wbqc-violation-message-commons-link-no-existent": "共享资源链接应存在。",
 	"wbqc-violation-message-commons-link-not-well-formed": "共享资源链接应符合语法规则。",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "对名字空间“$1”的检查尚未执行。",
@@ -77,5 +78,6 @@
 	"wbqc-violation-message-type-subclass": "使用$1属性的实体的上级分类应为{{PLURAL:$3|1=$5|2=$5或$6|以下类之一}}（或为{{PLURAL:$3|其子类之一}}），但$2当前{{PLURAL:$3|1=并非如此。|2=并非如此。|并非如此：$4}}",
 	"wbqc-violation-message-valueType-instance": "$1声明的值性质应为{{PLURAL:$3|1=$5|2=$5或$6|以下类之一}}（或为{{PLURAL:$3|其子类之一}}），但$2当前{{PLURAL:$3|1=并非如此。|2=并非如此。|并非如此：$4}}",
 	"wbqc-violation-message-valueType-subclass": "$1声明的值的上级分类应为{{PLURAL:$3|1=$5|2=$5或$6|以下类之一}}（或为{{PLURAL:$3|其子类之一}}），但$2当前{{PLURAL:$3|1=并非如此。|2=并非如此。|并非如此：$4}}",
-	"wbqc-violation-message-target-required-claim": "$1应拥有{{PLURAL:$3|0=声明$2。|1=声明$2 $5。|声明$2，并使用以下值之一：$4}}"
+	"wbqc-violation-message-target-required-claim": "$1应拥有{{PLURAL:$3|0=声明$2。|1=声明$2 $5。|声明$2，并使用以下值之一：$4}}",
+	"wbqc-violation-message-unique-value": "属性值不得存在于其他任何项中。"
 }
