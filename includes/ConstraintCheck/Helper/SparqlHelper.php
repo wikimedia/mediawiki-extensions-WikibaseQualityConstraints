@@ -97,7 +97,7 @@ EOF;
 
 	/**
 	 * @param Statement $statement
-	 * @return EntityId?[]
+	 * @return (EntityId|null)[]
 	 */
 	public function findEntitiesWithSameStatement( Statement $statement ) {
 		$pid = $statement->getPropertyId()->serialize();

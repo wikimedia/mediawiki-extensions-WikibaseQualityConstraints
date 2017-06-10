@@ -35,7 +35,7 @@ trait ResultAssertions {
 	 * Assert that $result indicates violation of a constraint.
 	 *
 	 * @param CheckResult $result
-	 * @param string? $messageKey If present, additionally assert that the violation message
+	 * @param string|null $messageKey If present, additionally assert that the violation message
 	 *                            matches the message given by this key.
 	 */
 	public function assertViolation( CheckResult $result, $messageKey = null ) {
@@ -96,7 +96,7 @@ trait ResultAssertions {
 	 * and also record that $result should indicate violation once the constraint is implemented.
 	 *
 	 * @param CheckResult $result
-	 * @param string? $messageKey
+	 * @param string|null $messageKey
 	 * @see assertTodo
 	 * @see assertViolation
 	 */

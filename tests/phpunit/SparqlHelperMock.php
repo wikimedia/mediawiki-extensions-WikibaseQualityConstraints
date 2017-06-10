@@ -41,7 +41,7 @@ trait SparqlHelperMock {
 
 	/**
 	 * @param Statement $expectedStatement
-	 * @param EntityId?[] $result
+	 * @param (EntityId|null)[] $result
 	 * @return SparqlHelper
 	 */
 	private function getSparqlHelperMockFindEntities(
