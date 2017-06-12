@@ -11,7 +11,6 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;

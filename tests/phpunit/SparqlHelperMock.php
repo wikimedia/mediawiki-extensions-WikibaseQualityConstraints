@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use HashConfig;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 

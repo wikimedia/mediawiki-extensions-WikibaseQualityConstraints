@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
-use Message;
 use Wikibase\DataModel\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;

@@ -4,15 +4,11 @@ namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\SparqlHelperMock;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
