@@ -260,7 +260,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 			$this->getDefaultConfig(),
 			new ConstraintRepository(),
 			new JsonFileEntityLookup( __DIR__ ),
-			WikibaseRepo::getDefaultInstance()->getSerializerFactory()
+			WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer()
 		);
 
 		$job->run();
