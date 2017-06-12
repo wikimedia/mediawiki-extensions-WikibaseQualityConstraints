@@ -54,6 +54,8 @@ class TypeSparqlChecker implements ConstraintChecker {
 	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
+	 *
+	 * @throws SparqlHelperException if the checker uses SPARQL and the query times out or some other error occurs
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity = null ) {
 		$parameters = [];
