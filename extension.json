@@ -111,6 +111,16 @@
 			"description": "The item ID of the 'symmetric constraint' item, which, when used in a 'property constraint' statement on a property, indicates that a referenced entity should refer back to the original entity.",
 			"public": true
 		},
+		"WBQualityConstraintsTypeConstraintId": {
+			"value": "Q21503250",
+			"description": "The item ID of the 'type constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the subject entity should have a certain type, with the relation and type given in the parameters.",
+			"public": true
+		},
+		"WBQualityConstraintsValueTypeConstraintId": {
+			"value": "Q21510865",
+			"description": "The item ID of the 'value type constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the referenced entity should have a certain type, with the class and relation given in the parameters.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",

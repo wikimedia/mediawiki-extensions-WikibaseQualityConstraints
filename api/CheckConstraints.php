@@ -19,6 +19,7 @@ use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
@@ -106,11 +107,17 @@ class CheckConstraints extends ApiBase {
 		$entityIdFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
 		$statementGuidParser = $repo->getStatementGuidParser();
 		$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
+		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$constraintReportFactory = new ConstraintReportFactory(
 			$repo->getEntityLookup(),
 			$statementGuidParser,
-			MediaWikiServices::getInstance()->getMainConfig(),
+			$config,
 			$constraintParameterRenderer,
+			new ConstraintStatementParameterParser(
+				$config,
+				$repo->getBaseDataModelDeserializerFactory(),
+				$constraintParameterRenderer
+			),
 			$repo->getRdfVocabulary(),
 			$repo->getEntityIdParser()
 		);

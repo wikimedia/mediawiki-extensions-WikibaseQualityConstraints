@@ -12,6 +12,7 @@ use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
@@ -82,6 +83,11 @@ class ConstraintReportFactory {
 	private $constraintParameterRenderer;
 
 	/**
+	 * @var ConstraintStatementParameterParser
+	 */
+	private $constraintStatementParameterParser;
+
+	/**
 	 * @var RdfVocabulary
 	 */
 	private $rdfVocabulary;
@@ -107,16 +113,23 @@ class ConstraintReportFactory {
 					$wikibaseRepo->getUserLanguage()
 				)
 			);
+			$config = MediaWikiServices::getInstance()->getMainConfig();
+			$constraintParameterRenderer = new ConstraintParameterRenderer(
+				$entityIdFormatter,
+				$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
+					SnakFormatter::FORMAT_HTML,
+					new FormatterOptions()
+				)
+			);
 			$instance = new self(
 				$wikibaseRepo->getEntityLookup(),
 				$wikibaseRepo->getStatementGuidParser(),
-				MediaWikiServices::getInstance()->getMainConfig(),
-				new ConstraintParameterRenderer(
-					$entityIdFormatter,
-					$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
-						SnakFormatter::FORMAT_HTML,
-						new FormatterOptions()
-					)
+				$config,
+				$constraintParameterRenderer,
+				new ConstraintStatementParameterParser(
+					$config,
+					$wikibaseRepo->getBaseDataModelDeserializerFactory(),
+					$constraintParameterRenderer
 				),
 				$wikibaseRepo->getRdfVocabulary(),
 				$wikibaseRepo->getEntityIdParser()
@@ -131,6 +144,7 @@ class ConstraintReportFactory {
 		StatementGuidParser $statementGuidParser,
 		Config $config,
 		ConstraintParameterRenderer $constraintParameterRenderer,
+		ConstraintStatementParameterParser $constraintStatementParameterParser,
 		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser
 	) {
@@ -138,6 +152,7 @@ class ConstraintReportFactory {
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
+		$this->constraintStatementParameterParser = $constraintStatementParameterParser;
 		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
 	}
@@ -192,8 +207,8 @@ class ConstraintReportFactory {
 				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $constraintParameterParser, $this->constraintParameterRenderer ),
 				'Range' => new RangeChecker( $constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Diff within range' => new DiffWithinRangeChecker( $constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
-				'Type' => new TypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper, $this->config ),
-				'Value type' => new ValueTypeChecker( $this->lookup, $constraintParameterParser, $typeCheckerHelper, $this->config ),
+				'Type' => new TypeChecker( $this->lookup, $this->constraintStatementParameterParser, $typeCheckerHelper, $this->config ),
+				'Value type' => new ValueTypeChecker( $this->lookup, $this->constraintStatementParameterParser, $typeCheckerHelper, $this->config ),
 				'Single value' => new SingleValueChecker(),
 				'Multi value' => new MultiValueChecker(),
 				'Unique value' => new UniqueValueChecker( $sparqlHelper ),
@@ -209,6 +224,8 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' ) => $this->constraintCheckerMap['Qualifier'],
 				$this->config->get( 'WBQualityConstraintsSingleValueConstraintId' ) => $this->constraintCheckerMap['Single value'],
 				$this->config->get( 'WBQualityConstraintsSymmetricConstraintId' ) => $this->constraintCheckerMap['Symmetric'],
+				$this->config->get( 'WBQualityConstraintsTypeConstraintId' ) => $this->constraintCheckerMap['Type'],
+				$this->config->get( 'WBQualityConstraintsValueTypeConstraintId' ) => $this->constraintCheckerMap['Value type'],
 			];
 		}
 

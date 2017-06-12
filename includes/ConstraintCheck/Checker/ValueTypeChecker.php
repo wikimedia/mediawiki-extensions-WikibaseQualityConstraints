@@ -5,12 +5,13 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use Config;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Statement\Statement;
@@ -23,9 +24,9 @@ use Wikibase\DataModel\Statement\Statement;
 class ValueTypeChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
-	private $helper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var EntityLookup
@@ -44,13 +45,18 @@ class ValueTypeChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 * @param TypeCheckerHelper $typeCheckerHelper
 	 * @param Config $config
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, TypeCheckerHelper $typeCheckerHelper, Config $config ) {
+	public function __construct(
+		EntityLookup $lookup,
+		ConstraintStatementParameterParser $constraintParameterParser,
+		TypeCheckerHelper $typeCheckerHelper,
+		Config $config
+	) {
 		$this->entityLookup = $lookup;
-		$this->helper = $helper;
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->typeCheckerHelper = $typeCheckerHelper;
 		$this->config = $config;
 	}
@@ -68,20 +74,24 @@ class ValueTypeChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$classes = false;
-		if ( array_key_exists( 'class', $constraintParameters ) ) {
-			$classes = explode( ',', $constraintParameters['class'] );
-			$parameters['class'] = $this->helper->parseParameterArray( $classes );
-		}
+		$classes = $this->constraintParameterParser->parseClassParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$parameters['class'] = array_map(
+			function( $id ) {
+				return new ItemId( $id );
+			},
+			$classes
+		);
 
-		$relation = false;
-		if ( array_key_exists( 'relation', $constraintParameters ) ) {
-			$relation = $constraintParameters['relation'];
-			$parameters['relation'] = $this->helper->parseSingleParameter( $relation, true );
+		$relation = $this->constraintParameterParser->parseRelationParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		if ( $relation === 'instance' ) {
+			$relationId = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
+		} elseif ( $relation === 'subclass' ) {
+			$relationId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 		}
+		$parameters['relation'] = [ $relation ];
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
+			$parameters['constraint_status'] = strval( $constraintParameters['constraint_status'] );
 		}
 
 		$mainSnak = $statement->getMainSnak();
@@ -100,31 +110,12 @@ class ValueTypeChecker implements ConstraintChecker {
 		/*
 		 * error handling:
 		 *   type of $dataValue for properties with 'Value type' constraint has to be 'wikibase-entityid'
-		 *   parameter $constraintParameters['class']  must not be null
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeQid(), 'wikibase-entityid' )->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
-
-		if ( !$classes ) {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeQid(), 'class' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-
-		/*
-		 * error handling:
-		 *   parameter $constraintParameters['relation'] must be either 'instance' or 'subclass'
-		 */
-		if ( $relation === 'instance' ) {
-			$relationId = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
-		} elseif ( $relation === 'subclass' ) {
-			$relationId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
-		} else {
-			$message = wfMessage( "wbqc-violation-message-type-relation-instance-or-subclass" )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
 
 		$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 
