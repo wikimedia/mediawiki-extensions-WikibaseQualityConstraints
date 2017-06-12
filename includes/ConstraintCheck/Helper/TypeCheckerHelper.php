@@ -74,6 +74,8 @@ class TypeCheckerHelper {
 	 * @param int &$entitiesChecked
 	 *
 	 * @return bool
+	 *
+	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, &$entitiesChecked = 0 ) {
 		$maxEntities = $this->config->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
@@ -131,6 +133,8 @@ class TypeCheckerHelper {
 	 * @param string[] $classesToCheck
 	 *
 	 * @return bool
+	 *
+	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function hasClassInRelation( StatementList $statements, $relationId, array $classesToCheck ) {
 		/** @var Statement $statement */

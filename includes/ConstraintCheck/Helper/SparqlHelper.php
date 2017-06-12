@@ -62,6 +62,7 @@ EOT;
 	 * @param string[] $classes entity ID serializations of the expected types
 	 * @param boolean $withInstance true for “instance” relation, false for “subclass” relation
 	 * @return boolean
+	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function hasType( $id, array $classes, $withInstance ) {
 		$instanceOfId = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
@@ -97,6 +98,7 @@ EOF;
 	/**
 	 * @param Statement $statement
 	 * @return (EntityId|null)[]
+	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function findEntitiesWithSameStatement( Statement $statement ) {
 		$pid = $statement->getPropertyId()->serialize();
@@ -141,6 +143,8 @@ EOF;
 	 * @param string $query The query, unencoded (plain string).
 	 *
 	 * @return array The returned JSON data (you typically iterate over ["results"]["bindings"]).
+	 *
+	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function runQuery( $query ) {
 

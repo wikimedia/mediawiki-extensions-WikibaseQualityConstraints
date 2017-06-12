@@ -94,17 +94,12 @@ class TypeSparqlChecker implements ConstraintChecker {
 		}
 
 		if ( $this->sparqlHelper !== null ) {
-			try {
-				if ( $this->sparqlHelper->hasType( $entity->getId()->getSerialization(), $classes, $withInstance ) ) {
-					$message = '';
-					$status = CheckResult::STATUS_COMPLIANCE;
-				} else {
-					$message = wfMessage( "wbqc-violation-message-sparql-type" )->escaped();
-					$status = CheckResult::STATUS_VIOLATION;
-				}
-			} catch ( SparqlHelperException $e ) {
+			if ( $this->sparqlHelper->hasType( $entity->getId()->getSerialization(), $classes, $withInstance ) ) {
+				$message = '';
+				$status = CheckResult::STATUS_COMPLIANCE;
+			} else {
+				$message = wfMessage( "wbqc-violation-message-sparql-type" )->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
-				$message = wfMessage( 'wbqc-violation-message-sparql-error' )->escaped();
 			}
 		} else {
 			$status = CheckResult::STATUS_TODO;

@@ -249,6 +249,16 @@ class DelegatingConstraintChecker {
 					CheckResult::STATUS_VIOLATION,
 					$e->getMessage()
 				);
+			} catch ( SparqlHelperException $e ) {
+				$result = new CheckResult(
+					$entity->getId(),
+					$statement,
+					$constraint->getConstraintTypeQid(),
+					$constraint->getConstraintId(),
+					[],
+					CheckResult::STATUS_VIOLATION,
+					wfMessage( 'wbqc-violation-message-sparql-error' )->escaped()
+				);
 			}
 			$statsd->timing(
 				'wikibase.quality.constraints.check.timing.' . $constraint->getConstraintTypeQid(),
