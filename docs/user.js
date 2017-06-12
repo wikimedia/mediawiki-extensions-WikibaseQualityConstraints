@@ -1,5 +1,3 @@
-/* globals mw, $, OO */
-
 ( function( mw, $, OO ) {
 	'use strict';
 
@@ -123,4 +121,4 @@
 			} );
 		} );
 	}
-} )( mw, $, OO );
+} )( mediaWiki, jQuery, OO );

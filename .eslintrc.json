@@ -4,6 +4,10 @@
 		"browser": true,
 		"jquery": true
 	},
+	"globals": {
+		"mediaWiki": false,
+		"OO": false
+	},
 	"rules": {
 		"keyword-spacing": "off",
 		"space-before-function-paren": "off",
