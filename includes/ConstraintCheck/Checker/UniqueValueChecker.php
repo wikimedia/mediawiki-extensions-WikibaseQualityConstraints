@@ -38,25 +38,22 @@ class UniqueValueChecker implements ConstraintChecker {
 	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
+	 *
+	 * @throws SparqlHelperException if the checker uses SPARQL and the query times out or some other error occurs
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = [];
 
 		if ( $this->sparqlHelper !== null ) {
-			try {
-				$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement( $statement );
+			$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement( $statement );
 
-				if ( $otherEntities === [] ) {
-					$status = CheckResult::STATUS_COMPLIANCE;
-					$message = '';
-				} else {
-					$status = CheckResult::STATUS_VIOLATION;
-					// TODO include the other entities in the message
-					$message = wfMessage( 'wbqc-violation-message-unique-value' )->escaped();
-				}
-			} catch ( SparqlHelperException $e ) {
+			if ( $otherEntities === [] ) {
+				$status = CheckResult::STATUS_COMPLIANCE;
+				$message = '';
+			} else {
 				$status = CheckResult::STATUS_VIOLATION;
-				$message = wfMessage( 'wbqc-violation-message-sparql-error' )->escaped();
+				// TODO include the other entities in the message
+				$message = wfMessage( 'wbqc-violation-message-unique-value' )->escaped();
 			}
 		} else {
 			$status = CheckResult::STATUS_TODO;
