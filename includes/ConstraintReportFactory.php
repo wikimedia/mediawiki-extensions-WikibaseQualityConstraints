@@ -165,7 +165,6 @@ class ConstraintReportFactory {
 			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
 			$rangeCheckerHelper = new RangeCheckerHelper();
-			$typeCheckerHelper = new TypeCheckerHelper( $this->lookup, $this->config, $this->constraintParameterRenderer );
 			if ( $this->config->get( 'WBQualityConstraintsSparqlEndpoint' ) !== '' ) {
 				$sparqlHelper = new SparqlHelper(
 					$this->config,
@@ -175,6 +174,12 @@ class ConstraintReportFactory {
 			} else {
 				$sparqlHelper = null;
 			}
+			$typeCheckerHelper = new TypeCheckerHelper(
+				$this->lookup,
+				$this->config,
+				$this->constraintParameterRenderer,
+				$sparqlHelper
+			);
 
 			$this->constraintCheckerMap = [
 				'Conflicts with' => new ConflictsWithChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
