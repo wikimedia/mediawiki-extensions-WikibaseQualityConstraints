@@ -31,16 +31,16 @@ class TypeSparqlChecker implements ConstraintChecker {
 	private $entityLookup;
 
 	/**
-	 * @var SparqlHelper
+	 * @var SparqlHelper|null
 	 */
 	private $sparqlHelper;
 
 	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $helper
-	 * @param SparqlHelper $sparqlHelper
+	 * @param SparqlHelper|null $sparqlHelper
 	 */
-	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, SparqlHelper $sparqlHelper ) {
+	public function __construct( EntityLookup $lookup, ConstraintParameterParser $helper, SparqlHelper $sparqlHelper = null ) {
 		$this->entityLookup = $lookup;
 		$this->helper = $helper;
 		$this->sparqlHelper = $sparqlHelper;
@@ -93,17 +93,24 @@ class TypeSparqlChecker implements ConstraintChecker {
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		try {
-			if ( $this->sparqlHelper->hasType( $entity->getId()->getSerialization(), $classes, $withInstance ) ) {
-				$message = '';
-				$status = CheckResult::STATUS_COMPLIANCE;
-			} else {
-				$message = wfMessage( "wbqc-violation-message-sparql-type" )->escaped();
+		if ( $this->sparqlHelper !== null ) {
+			try {
+				if ( $this->sparqlHelper->hasType( $entity->getId()->getSerialization(), $classes, $withInstance ) ) {
+					$message = '';
+					$status = CheckResult::STATUS_COMPLIANCE;
+				} else {
+					$message = wfMessage( "wbqc-violation-message-sparql-type" )->escaped();
+					$status = CheckResult::STATUS_VIOLATION;
+				}
+			} catch ( SparqlHelperException $e ) {
 				$status = CheckResult::STATUS_VIOLATION;
+				$message = wfMessage( 'wbqc-violation-message-sparql-error' )->escaped();
 			}
-		} catch ( SparqlHelperException $e ) {
-			$status = CheckResult::STATUS_VIOLATION;
-			$message = wfMessage( 'wbqc-violation-message-sparql-error' )->escaped();
+		} else {
+			$status = CheckResult::STATUS_TODO;
+			$message = wfMessage( 'wbqc-violation-message-not-yet-implemented' )
+					 ->params( $constraint->getConstraintTypeName() )
+					 ->escaped();
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );

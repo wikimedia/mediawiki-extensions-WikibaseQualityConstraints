@@ -155,6 +155,26 @@ class ValueTypeCheckerSparqlTest extends \PHPUnit_Framework_TestCase  {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-sparql-value-type' );
 	}
 
+	// no SPARQL available
+
+	public function testValueTypeConstraintWithoutSparql() {
+		$this->checker = new ValueTypeSparqlChecker(
+			$this->lookup,
+			new ConstraintParameterParser(),
+			null
+		);
+
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+
+		$constraintParameters = [
+			'relation' => 'instance',
+			'class' => 'Q200,Q201'
+		];
+
+		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$this->assertTodo( $checkResult );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *
