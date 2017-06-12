@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
-use HashConfig;
 use MediaWikiTestCase;
 use Title;
 use Wikibase\DataModel\Entity\EntityIdValue;

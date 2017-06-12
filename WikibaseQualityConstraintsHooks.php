@@ -5,7 +5,6 @@ use Wikibase\Change;
 use Wikibase\EntityChange;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Diff\EntityDiff;
-use WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob;
 
 final class WikibaseQualityConstraintsHooks {
 

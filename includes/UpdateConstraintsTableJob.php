@@ -17,8 +17,6 @@ use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\WikibaseRepo;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
-use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use Wikimedia\Assert\Assert;
 
 /**
