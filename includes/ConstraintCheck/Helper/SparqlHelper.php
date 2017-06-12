@@ -4,6 +4,8 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use Http;
+use MediawikiStatsdDataFactory;
+use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
@@ -39,6 +41,11 @@ class SparqlHelper {
 	 */
 	private $entityIdParser;
 
+	/**
+	 * @var MediawikiStatsdDataFactory
+	 */
+	private $dataFactory;
+
 	public function __construct(
 		Config $config,
 		RdfVocabulary $rdfVocabulary,
@@ -55,6 +62,8 @@ PREFIX wdt: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_DIRECT_CLAIM )
 PREFIX p: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_CLAIM )}>
 PREFIX ps: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_CLAIM_STATEMENT )}>
 EOT;
+
+		$this->dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 	}
 
 	/**
@@ -160,14 +169,21 @@ EOF;
 			PHP_QUERY_RFC3986
 		);
 
+		$startTime = microtime( true );
 		$json = Http::get(
 			$url,
 			[
 				'timeout' => self::MAX_QUERY_SECONDS + 1,
 			]
 		);
+		$endTime = microtime( true );
+		$this->dataFactory->timing(
+			'wikibase.quality.constraints.sparql.timing',
+			( $endTime - $startTime ) * 1000
+		);
 
 		if ( $json === false ) {
+			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.error' );
 			throw new SparqlHelperException();
 		}
 		$arr = json_decode( $json, true );
