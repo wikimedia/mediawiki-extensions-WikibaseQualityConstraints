@@ -17,8 +17,6 @@ use Wikibase\Rdf\RdfVocabulary;
  */
 class SparqlHelper {
 
-	const MAX_QUERY_SECONDS = 10;
-
 	/**
 	 * @var Config
 	 */
@@ -145,11 +143,12 @@ EOF;
 	public function runQuery( $query ) {
 
 		$endpoint = $this->config->get( 'WBQualityConstraintsSparqlEndpoint' );
+		$maxQueryTimeMillis = $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' );
 		$url = $endpoint . '?' . http_build_query(
 			[
 				'query' => "#wbqc\n" . $this->prefixes . $query,
 				'format' => 'json',
-				'maxQueryTimeMillis' => self::MAX_QUERY_SECONDS * 1000,
+				'maxQueryTimeMillis' => $maxQueryTimeMillis,
 			],
 			null, ini_get( 'arg_separator.output' ),
 			// encode spaces with %20, not +
@@ -159,7 +158,7 @@ EOF;
 		$json = Http::get(
 			$url,
 			[
-				'timeout' => self::MAX_QUERY_SECONDS + 1,
+				'timeout' => (int)round( ( $maxQueryTimeMillis + 1000 ) / 1000 ),
 			]
 		);
 
