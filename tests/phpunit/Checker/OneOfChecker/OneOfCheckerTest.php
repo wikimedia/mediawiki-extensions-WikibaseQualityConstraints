@@ -87,7 +87,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 		$somevalueSnak = new PropertySomeValueSnak( new PropertyId( 'P123' ) );
 		$novalueSnak = new PropertyNoValueSnak( new PropertyId( 'P123' ) );
 
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
 		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 
 		foreach ( [ $somevalueSnak, $novalueSnak ] as $allowed ) {

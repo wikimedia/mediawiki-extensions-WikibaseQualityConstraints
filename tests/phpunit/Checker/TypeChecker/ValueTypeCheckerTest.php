@@ -98,7 +98,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	public function testTypeConstraintInstanceValidWithStatement() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) );
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
 		$classId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
 		$relationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
 		$constraintParameters = [
@@ -149,7 +149,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 
 	public function testTypeConstraintSubclassValidWithStatement() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
 		$classId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
 		$relationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
 		$constraintParameters = [

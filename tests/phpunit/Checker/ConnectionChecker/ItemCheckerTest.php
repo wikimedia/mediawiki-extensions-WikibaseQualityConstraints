@@ -112,7 +112,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	public function testItemConstraintPropertyAndItemWithStatement() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
 		$config = $this->getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );

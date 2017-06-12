@@ -37,7 +37,7 @@ class UpdateConstraintsTableJob extends Job {
 			MediaWikiServices::getInstance()->getMainConfig(),
 			ConstraintReportFactory::getDefaultInstance()->getConstraintRepository(),
 			$repo->getEntityLookup(),
-			$repo->getSerializerFactory()->newSnakSerializer()
+			$repo->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 	}
 

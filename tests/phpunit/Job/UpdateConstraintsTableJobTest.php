@@ -168,7 +168,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 
 		$constraint = $job->extractConstraintFromStatement( new PropertyId( 'P2' ), $statement );
 
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
 		$this->assertEquals( $typeId, $constraint->getConstraintTypeQid() );
 		$this->assertEquals( new PropertyId( 'P2' ), $constraint->getPropertyId() );
 		$this->assertEquals( $statementGuid, $constraint->getConstraintId() );
@@ -260,7 +260,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 			$this->getDefaultConfig(),
 			new ConstraintRepository(),
 			new JsonFileEntityLookup( __DIR__ ),
-			WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer()
+			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 
 		$job->run();

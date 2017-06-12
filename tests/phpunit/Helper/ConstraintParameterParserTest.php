@@ -40,7 +40,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$this->snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
 	}
 
 	/**
