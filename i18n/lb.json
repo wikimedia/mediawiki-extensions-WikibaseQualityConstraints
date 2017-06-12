@@ -13,6 +13,8 @@
 	"wbqc-potentialissues-short": "Potenziell Problemer",
 	"wbqc-violation-header-parameters": "Parameteren:",
 	"wbqc-violations-group": "Limitatiounen",
+	"wbqc-violation-message-parameter-value": "De Parameter \"$1\" muss e richtege Wäert hunn an net \"kee Wäert\" oder \"onbekannte Wäert\".",
+	"wbqc-violation-message-parameter-single": "De Parameter \"$1\" muss een eenzelne Wäert hunn.",
 	"wbqc-violation-message-commons-link-no-existent": "De Commons Link sollt et ginn.",
 	"wbqc-violation-message-commons-link-not-well-formed": "De Commons Link soll gutt forméiert sinn.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "D'Nokucke fir den Nummraum \"$1\" ass nach net implementéiert.",
