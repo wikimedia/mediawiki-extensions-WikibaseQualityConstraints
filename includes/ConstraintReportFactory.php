@@ -37,7 +37,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHel
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerSparqlHelper;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 
 class ConstraintReportFactory {

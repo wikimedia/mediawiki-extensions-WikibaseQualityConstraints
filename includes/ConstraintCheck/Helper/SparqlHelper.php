@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use Http;
-use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
