@@ -4,12 +4,11 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use Job;
+use Serializers\Serializer;
 use Title;
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\SerializerFactory;
-use Wikibase\DataModel\Serializers\SnakSerializer;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
@@ -38,7 +37,7 @@ class UpdateConstraintsTableJob extends Job {
 			MediaWikiServices::getInstance()->getMainConfig(),
 			ConstraintReportFactory::getDefaultInstance()->getConstraintRepository(),
 			$repo->getEntityLookup(),
-			$repo->getSerializerFactory()
+			$repo->getSerializerFactory()->newSnakSerializer()
 		);
 	}
 
@@ -63,7 +62,7 @@ class UpdateConstraintsTableJob extends Job {
 	private $entityLookup;
 
 	/**
-	 * @var SnakSerializer
+	 * @var Serializer
 	 */
 	private $snakSerializer;
 
@@ -74,7 +73,7 @@ class UpdateConstraintsTableJob extends Job {
 	 * @param Config $config
 	 * @param ConstraintRepository $constraintRepo
 	 * @param EntityLookup $entityLookup
-	 * @param SerializerFactory $serializerFactory
+	 * @param Serializer $snakSerializer
 	 */
 	public function __construct(
 		Title $title,
@@ -83,14 +82,15 @@ class UpdateConstraintsTableJob extends Job {
 		Config $config,
 		ConstraintRepository $constraintRepo,
 		EntityLookup $entityLookup,
-		SerializerFactory $serializerFactory
+		Serializer $snakSerializer
 	) {
 		parent::__construct( 'constraintsTableUpdate', $title, $params );
+
 		$this->propertyId = $propertyId;
 		$this->config = $config;
 		$this->constraintRepo = $constraintRepo;
 		$this->entityLookup = $entityLookup;
-		$this->snakSerializer = $serializerFactory->newSnakSerializer();
+		$this->snakSerializer = $snakSerializer;
 	}
 
 	public function extractParametersFromQualifiers( SnakList $qualifiers ) {
