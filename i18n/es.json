@@ -27,6 +27,7 @@
 	"wbqc-violation-message": "La verificación de restricciones ha señalado una violación. Pulsa el icono para obtener más información.",
 	"wbqc-violation-message-target-entity-must-exist": "La entidad de destino debe existir.",
 	"wbqc-violation-message-value-entity-must-exist": "La entidad de valor debe existir.",
+	"wbqc-violation-message-sparql-error": "La consulta SPARQL produjo un error.",
 	"wbqc-violation-message-commons-link-no-existent": "El enlace a Commons debería existir.",
 	"wbqc-violation-message-commons-link-not-well-formed": "El enlace a Commons debería estar bien formado.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La verificación para el espacio de nombres \"$1\" todavía no está implementada.",

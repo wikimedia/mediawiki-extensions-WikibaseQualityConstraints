@@ -50,6 +50,7 @@
 	"wbqc-violation-message-value-entity-must-exist": "Das Werteobjekt muss vorhanden sein.",
 	"wbqc-violation-message-parameter-value": "Der Parameter „$1“ muss einen realen Wert haben, nicht „kein Wert“ oder „unbekannter Wert“.",
 	"wbqc-violation-message-parameter-entity": "Der Wert für den Parameter „$1“ muss ein Objekt sein, nicht „$2“.",
+	"wbqc-violation-message-parameter-property": "Der Wert für den Parameter „$1“ muss eine Eigenschaft sein, nicht „$2“.",
 	"wbqc-violation-message-parameter-single": "Der Parameter „$1“ darf nur einen einzigen Wert haben.",
 	"wbqc-violation-message-parameter-oneof": "Der Parameter „$1“ muss {{PLURAL:$2|1=$4 sein.|2=entweder $4 oder $5 sein.|eines der folgenden Werte sein: $3.}}",
 	"wbqc-violation-message-sparql-error": "Die SPARQL-Abfrage hat einen Fehler ausgegeben.",

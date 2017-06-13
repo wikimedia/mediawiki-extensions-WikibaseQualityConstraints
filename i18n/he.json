@@ -46,6 +46,11 @@
 	"wbqc-violation-message-parameters-needed-3": "למאפיינים עם האילוץ \"$1\" צריכים להיות הפרמטרים \"$2\", \"$3\", ו־\"$4\".",
 	"wbqc-violation-message-target-entity-must-exist": "ישות יעד צריכה להתקיים.",
 	"wbqc-violation-message-value-entity-must-exist": "ישות הערך צריכה להתקיים.",
+	"wbqc-violation-message-parameter-value": "לפרמטר \"$1\" צריך להיות ערך אמתי, לא \"no value\" או \"unknown value\".",
+	"wbqc-violation-message-parameter-entity": "הערך עבור הפרמטר \"$1\" צריך להיות ישות, לא \"$2\".",
+	"wbqc-violation-message-parameter-single": "לפרמטר \"$1\" צריך להיות ערך יחיד.",
+	"wbqc-violation-message-parameter-oneof": "הפרמטר \"$1\" צריך להיות {{PLURAL:$2|1=$4.|2=$4 או $5.|אחד מהבאים: $3}}",
+	"wbqc-violation-message-sparql-error": "שאילתת ה־SPARQL הסתיימה בשגיאה.",
 	"wbqc-violation-message-commons-link-no-existent": "קישור לוויקישיתוף אמור להתקיים.",
 	"wbqc-violation-message-commons-link-not-well-formed": "קישור לוויקישיתוף אמור להיות תקני",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "בדיקה למרחב השם \"$1\" עדיין אינה ממומשת.",
@@ -73,5 +78,8 @@
 	"wbqc-violation-message-type-subclass": "ישויות שמשתמשות במאפיין $1 אמורות להיות תת־מחלקות של {{PLURAL:$3|1=$5|2=$5 או $6|אחת מהמחלקות הבאות}} (או של {{PLURAL:$3|1=תת־מחלקה שלה|2=תת־מחלקה שלהן|אחת מהתת־מחלקות שלהן}}), אבל כעת {{PLURAL:$3|$2 1=אינה כזאת.|2=אינה כזאת.|אינה כזאת: $4}}",
 	"wbqc-violation-message-valueType-instance": "ערכים של קביעות $1 אמורים להיות מופעים של {{PLURAL:$3|1=$5|2=$5 או $6|אחת מהמחלקות הבאות}} (או של {{PLURAL:$3|1=תת־מחלקה שלה|2=תת־מחלקה שלהן|אחת מהתת־מחלקות שלהן}}), אבל כעת {{PLURAL:$3|$2 1=אינה כזאת.|2=אינה כזאת.|אינה כזאת: $4}}",
 	"wbqc-violation-message-valueType-subclass": "ערכים של קביעות $1 אמורים להיות תת־מחלקות של {{PLURAL:$3|1=$5|2=$5 או $6|אחת מהמחלקות הבאות}} (או של {{PLURAL:$3|1=תת־מחלקה שלה|2=תת־מחלקה שלהן|אחת מהתת־מחלקות שלהן}}), אבל כעת {{PLURAL:$3|$2 1=אינה כזאת.|2=אינה כזאת.|אינה כזאת: $4}}",
-	"wbqc-violation-message-target-required-claim": "ל{{GRAMMAR:תחילית|$1}} אמורה להיות {{PLURAL:$3|0=קביעה $2.|1=קביעה $2 $5.הקביעה עבור $2 עם אחד מהערכים הבאים: $4}}"
+	"wbqc-violation-message-target-required-claim": "ל{{GRAMMAR:תחילית|$1}} אמורה להיות {{PLURAL:$3|0=קביעה $2.|1=קביעה $2 $5.הקביעה עבור $2 עם אחד מהערכים הבאים: $4}}",
+	"wbqc-violation-message-unique-value": "ערך המאפיין הזה צריך לא להיות נוכח בשום פריט אחר.",
+	"wbqc-violation-message-sparql-type": "המאפיין הזה צריך לשמש רק בפריטים שיש להם יחס לפריט (או לתת־מחלקה של פריט) שמוגדר בפרמטרים.",
+	"wbqc-violation-message-sparql-value-type": "ישות ערך המאפיין הזה צריכה לשמש רק בפריטים שיש להם יחס לפריט (או לתת־מחלקה של פריט) שמוגדר בפרמטרים."
 }

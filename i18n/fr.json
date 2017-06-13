@@ -7,7 +7,8 @@
 			"Gomoko",
 			"Wladek92",
 			"Thibaut120094",
-			"Urhixidur"
+			"Urhixidur",
+			"Envlh"
 		]
 	},
 	"wbqc-constraintreport": "Rapport de contrainte",
@@ -60,7 +61,7 @@
 	"wbqc-violation-message-commons-link-no-existent": "Le lien vers Communs devrait exister.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Le lien vers Communs doit être bien formaté.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La vérification pour l’espace de noms « $1 » n’est pas encore implémentée.",
-	"wbqc-violation-message-conflicts-with-property": "Un entité ne doit pas avoir de déclarations à la fois pour $1 et $2.",
+	"wbqc-violation-message-conflicts-with-property": "Une entité ne doit pas avoir de déclaration à la fois pour $1 et $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Une entité ne doit pas avoir une déclaration pour $1 si elle en a une pour $2 avec la valeur $3.",
 	"wbqc-violation-message-diff-within-range": "La différence entre $3 ($4) et $1 ($2) devrait être comprise entre $5 et $6 ([$5; $6]).",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "La propriété définie dans les paramètres doit exister.",
