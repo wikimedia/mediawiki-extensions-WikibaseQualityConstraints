@@ -9,7 +9,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -28,7 +28,7 @@ class InverseChecker implements ConstraintChecker {
 	private $entityLookup;
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
 	private $constraintParameterParser;
 
@@ -44,18 +44,18 @@ class InverseChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
 		EntityLookup $lookup,
-		ConstraintParameterParser $helper,
+		ConstraintStatementParameterParser $constraintParameterParser,
 		ConnectionCheckerHelper $connectionCheckerHelper,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->entityLookup = $lookup;
-		$this->constraintParameterParser = $helper;
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
@@ -73,9 +73,8 @@ class InverseChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		if ( array_key_exists( 'property', $constraintParameters ) ) {
-			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['property'] );
-		};
+		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$parameters['property'] = [ $propertyId ];
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
 			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
@@ -97,7 +96,6 @@ class InverseChecker implements ConstraintChecker {
 		/*
 		 * error handling:
 		 *   type of $dataValue for properties with 'Inverse' constraint has to be 'wikibase-entityid'
-		 *   parameter $property must not be null
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
@@ -105,12 +103,6 @@ class InverseChecker implements ConstraintChecker {
 		}
 		/** @var EntityIdValue $dataValue */
 
-		if ( !array_key_exists( 'property', $constraintParameters ) ) {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
-
-		$property = $constraintParameters['property'];
 		$targetItem = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetItem === null ) {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
@@ -118,14 +110,14 @@ class InverseChecker implements ConstraintChecker {
 		}
 		$targetItemStatementList = $targetItem->getStatements();
 
-		if ( $this->connectionCheckerHelper->findStatement( $targetItemStatementList, $property, $entity->getId()->getSerialization() ) !== null ) {
+		if ( $this->connectionCheckerHelper->findStatement( $targetItemStatementList, $propertyId->getSerialization(), $entity->getId()->getSerialization() ) !== null ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-inverse' )
 					 ->rawParams(
 						 $this->constraintParameterRenderer->formatEntityId( $targetItem->getId() ),
-						 $this->constraintParameterRenderer->formatPropertyId( $property ),
+						 $this->constraintParameterRenderer->formatEntityId( $propertyId ),
 						 $this->constraintParameterRenderer->formatEntityId( $entity->getId() )
 					 )
 					 ->escaped();
