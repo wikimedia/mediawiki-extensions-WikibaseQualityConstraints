@@ -3,10 +3,12 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
+use DataValues\StringValue;
 use Wikibase\DataModel\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -210,6 +212,76 @@ class ConstraintStatementParameterParser {
 				wfMessage( 'wbqc-violation-message-parameter-needed' )
 					->params( $constraintTypeName )
 					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $relationId ) )
+					->escaped()
+			);
+		}
+	}
+
+	/**
+	 * Parse a single property ID parameter.
+	 * @param array $snakSerialization
+	 * @param string $parameterId used in error messages
+	 * @throws ConstraintParameterException
+	 * @return PropertyId
+	 */
+	private function parsePropertyIdParameter( array $snakSerialization, $parameterId ) {
+		$snak = $this->snakDeserializer->deserialize( $snakSerialization );
+		$this->requireValueParameter( $snak, $parameterId );
+		$value = $snak->getDataValue();
+		if ( $value instanceof EntityIdValue ) {
+			$id = $value->getEntityId();
+			if ( $id instanceof PropertyId ) {
+				return $id;
+			}
+		}
+		throw new ConstraintParameterException(
+			wfMessage( 'wbqc-violation-message-parameter-property' )
+				->rawParams(
+					$this->constraintParameterRenderer->formatPropertyId( $parameterId ),
+					$this->constraintParameterRenderer->formatDataValue( $value )
+				)
+				->escaped()
+		);
+	}
+
+	private function parsePropertyParameterFromStatement( array $constraintParameters ) {
+		$propertyIdString = $this->config->get( 'WBQualityConstraintsPropertyId' );
+		$this->requireSingleParameter( $constraintParameters, $propertyIdString );
+		return $this->parsePropertyIdParameter( $constraintParameters[$propertyIdString][0], $propertyIdString );
+	}
+
+	private function parsePropertyParameterFromTemplate( array $constraintParameters ) {
+		try {
+			return new PropertyId( $constraintParameters['property'] );
+		} catch ( InvalidArgumentException $e ) {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-property' )
+					->rawParams(
+						$this->constraintParameterRenderer->formatPropertyId( 'property' ),
+						$this->constraintParameterRenderer->formatDataValue( new StringValue( $constraintParameters['property'] ) )
+					)
+					->escaped()
+			);
+		}
+	}
+
+	/**
+	 * @param array $constraintParameters
+	 * @param string $constraintTypeName used in error messages
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return PropertyId
+	 */
+	public function parsePropertyParameter( array $constraintParameters, $constraintTypeName ) {
+		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
+		if ( array_key_exists( $propertyId, $constraintParameters ) ) {
+			return $this->parsePropertyParameterFromStatement( $constraintParameters );
+		} elseif ( array_key_exists( 'property', $constraintParameters ) ) {
+			return $this->parsePropertyParameterFromTemplate( $constraintParameters );
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-needed' )
+					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $propertyId ) )
 					->escaped()
 			);
 		}

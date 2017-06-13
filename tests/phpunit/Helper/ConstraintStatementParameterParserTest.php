@@ -53,6 +53,19 @@ class ConstraintStatementParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	/**
+	 * @param string $propertyId
+	 * @return array
+	 */
+	private function serializePropertyId( $propertyId ) {
+		return $this->snakSerializer->serialize(
+			new PropertyValueSnak(
+				new PropertyId( 'P1' ),
+				new EntityIdValue( new PropertyId( $propertyId ) )
+			)
+		);
+	}
+
+	/**
 	 * @param string $method
 	 * @param array $arguments
 	 * @param string $messageKey
@@ -236,6 +249,104 @@ class ConstraintStatementParameterParserTest extends \MediaWikiLangTestCase {
 				'constraint'
 			],
 			'wbqc-violation-message-parameter-oneof'
+		);
+	}
+
+	public function testParsePropertyParameter() {
+		$config = $this->getDefaultConfig();
+		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
+		$parsed = $this->getConstraintParameterParser()->parsePropertyParameter(
+			[ $propertyId => [ $this->serializePropertyId( 'P100' ) ] ],
+			''
+		);
+		$this->assertEquals( new PropertyId( 'P100' ), $parsed );
+	}
+
+	public function testParsePropertyParameterFromTemplate() {
+		$parsed = $this->getConstraintParameterParser()->parsePropertyParameter(
+			[ 'property' => 'P100' ],
+			''
+		);
+		$this->assertEquals( new PropertyId( 'P100' ), $parsed );
+	}
+
+	public function testParsePropertyParameterMissing() {
+		$this->assertThrowsConstraintParameterException(
+			'parsePropertyParameter',
+			[ [], 'constraint' ],
+			'wbqc-violation-message-parameter-needed'
+		);
+	}
+
+	public function testParsePropertyParameterNoValue() {
+		$config = $this->getDefaultConfig();
+		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
+		$this->assertThrowsConstraintParameterException(
+			'parsePropertyParameter',
+			[
+				[
+					$propertyId => [
+						$this->snakSerializer->serialize( new PropertyNoValueSnak( new PropertyId( $propertyId ) ) )
+					]
+				],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-value'
+		);
+	}
+
+	public function testParsePropertyParameterStringValue() {
+		$config = $this->getDefaultConfig();
+		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
+		$this->assertThrowsConstraintParameterException(
+			'parsePropertyParameter',
+			[
+				[
+					$propertyId => [
+						$this->snakSerializer->serialize( new PropertyValueSnak(
+							new PropertyId( $propertyId ),
+							new StringValue( 'P1' )
+						) )
+					]
+				],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-property'
+		);
+	}
+
+	public function testParsePropertyParameterItemId() {
+		$config = $this->getDefaultConfig();
+		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
+		$this->assertThrowsConstraintParameterException(
+			'parsePropertyParameter',
+			[
+				[
+					$propertyId => [
+						$this->serializeItemId( 'Q100' )
+					]
+				],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-property'
+		);
+	}
+
+	public function testParsePropertyParameterMultiValue() {
+		$config = $this->getDefaultConfig();
+		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
+		$this->assertThrowsConstraintParameterException(
+			'parsePropertyParameter',
+			[
+				[
+					$propertyId => [
+						$this->serializePropertyId( 'P100' ),
+						$this->serializePropertyId( 'P101' )
+					]
+				],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-single'
 		);
 	}
 
