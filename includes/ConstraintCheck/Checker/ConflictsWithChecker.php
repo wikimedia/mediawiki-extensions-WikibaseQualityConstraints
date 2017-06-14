@@ -110,7 +110,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 						 ->rawParams(
 							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
 							 $this->constraintParameterRenderer->formatPropertyId( $constraintParameters['property'] ),
-							 $this->constraintParameterRenderer->formatEntityId( $result )
+							 $this->constraintParameterRenderer->formatItemIdSnakValue( $result )
 						 )
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
