@@ -258,7 +258,6 @@ class ConstraintStatementParameterParser {
 	private function parsePropertyParameterFromTemplate( array $constraintParameters ) {
 		try {
 			$properties = explode( ',', $constraintParameters['property'] );
-			array_map( 'strtoupper', $properties );
 			return new PropertyId( $properties[0] ); // silently ignore extra properties (Mandatory Qualifiers used to allow several properties)
 		} catch ( InvalidArgumentException $e ) {
 			throw new ConstraintParameterException(
@@ -342,7 +341,7 @@ class ConstraintStatementParameterParser {
 					break;
 				default:
 					try {
-						$values[] = ItemIdSnakValue::fromItemId( new ItemId( strtoupper( $value ) ) );
+						$values[] = ItemIdSnakValue::fromItemId( new ItemId( $value ) );
 						break;
 					} catch ( InvalidArgumentException $e ) {
 						throw new ConstraintParameterException(
