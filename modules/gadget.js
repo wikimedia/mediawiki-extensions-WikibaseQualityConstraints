@@ -66,7 +66,8 @@
 			results,
 			reports,
 			i,
-			report;
+			report,
+			$target;
 
 		if ( !( propertyId in entityData && statementId in entityData[ propertyId ] ) ) {
 			return;
@@ -83,7 +84,11 @@
 		}
 
 		if ( reports.length > 0 ) {
-			$statement.append( buildWidget( reports ).$element );
+			$target = $statement.find( '.valueview-instaticmode' );
+			if ( $target.length === 0 ) {
+				$target = $statement;
+			}
+			$target.append( buildWidget( reports ).$element );
 		}
 	}
 
@@ -102,15 +107,29 @@
 		'oojs-ui.styles.icons-interactions',
 		'wikibase.quality.constraints.ui'
 	] ).done( function () {
-		var api = new mw.Api();
+		var api = new mw.Api(),
+			lang = mw.config.get( 'wgUserLanguage' );
 		api.get( {
 			action: 'wbcheckconstraints',
 			format: 'json',
-			uselang: mw.config.get( 'wgUserLanguage' ),
+			uselang: lang,
 			id: entityId
 		} ).then( function( data ) {
 			$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak .wikibase-snakview-value' )
 				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
+		} );
+
+		mw.hook( 'wikibase.statement.saved' ).add( function( entityId, statementId ) {
+			api.get( {
+				action: 'wbcheckconstraints',
+				format: 'json',
+				uselang: lang,
+				claimid: statementId
+			} ).then( function( data ) {
+				var statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' );
+				$( '.wikibase-statementgroupview .' + statementClass + ' .wikibase-statementview-mainsnak .wikibase-snakview-value' )
+					.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
+			} );
 		} );
 	} );
 } )( mediaWiki, jQuery, OO );
