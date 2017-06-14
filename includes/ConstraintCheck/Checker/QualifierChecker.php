@@ -6,7 +6,6 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -17,16 +16,7 @@ use Wikibase\DataModel\Statement\Statement;
  */
 class QualifierChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
-
-	/**
-	 * @param ConstraintParameterParser $helper
-	 */
-	public function __construct( ConstraintParameterParser $helper ) {
-		$this->helper = $helper;
+	public function __construct() {
 	}
 
 	/**
