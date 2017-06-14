@@ -75,7 +75,7 @@
 	"wbqc-violation-message-format": "The property's value must match the pattern defined in the parameters.",
 	"wbqc-violation-message-inverse": "$1 should also have the inverse statement $2 $3.",
 	"wbqc-violation-message-item": "An entity with $1 should also have {{PLURAL:$3|0=a statement $2.|1=a statement $2 $5.|a statement for $2 with one of the following values:$4}}",
-	"wbqc-violation-message-mandatory-qualifiers": "This $1 statement is missing {{PLURAL:$2|1=a qualifier $4.|2=$4 and $5 qualifiers.|the following qualifiers:$3}}",
+	"wbqc-violation-message-mandatory-qualifier": "This $1 statement is missing a qualifier $2.",
 	"wbqc-violation-message-multi-value": "This property should contain multiple values. That is, there should be more than one statement using this property.",
 	"wbqc-violation-message-one-of": "The value for $1 should be {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following:$3}}",
 	"wbqc-violation-message-qualifier": "The property should only be used as a qualifier.",

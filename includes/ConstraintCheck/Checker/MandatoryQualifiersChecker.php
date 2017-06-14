@@ -7,7 +7,7 @@ use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
@@ -20,9 +20,9 @@ use Wikibase\DataModel\Statement\Statement;
 class MandatoryQualifiersChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
-	private $helper;
+	private $constraintParameterParser;
 
 	/**
 	 * @var ConstraintParameterRenderer
@@ -30,14 +30,14 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer should return HTML
 	 */
 	public function __construct(
-		ConstraintParameterParser $helper,
+		ConstraintStatementParameterParser $constraintParameterParser,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
-		$this->helper = $helper;
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
@@ -54,39 +54,24 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$properties = [];
-		if ( array_key_exists( 'property', $constraintParameters ) ) {
-			$properties = explode( ',', $constraintParameters['property'] );
-		}
-		$parameters['property'] = $this->helper->parseParameterArray( $properties );
-		$qualifiersList = $statement->getQualifiers();
-		$qualifiers = [];
+		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$parameters['property'] = [ $propertyId ];
+
+		$message = wfMessage( "wbqc-violation-message-mandatory-qualifier" )
+				 ->rawParams(
+					 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+					 $this->constraintParameterRenderer->formatEntityId( $propertyId )
+				 )
+				 ->escaped();
+		$status = CheckResult::STATUS_VIOLATION;
 
 		/** @var Snak $qualifier */
-		foreach ( $qualifiersList as $qualifier ) {
-			$qualifiers[ $qualifier->getPropertyId()->getSerialization() ] = true;
-		}
-
-		$message = '';
-		$status = CheckResult::STATUS_COMPLIANCE;
-
-		$missingQualifiers = [];
-		foreach ( $properties as $property ) {
-			$property = strtoupper( $property ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
-			if ( !array_key_exists( $property, $qualifiers ) ) {
-				$missingQualifiers[] = $property;
+		foreach ( $statement->getQualifiers() as $qualifier ) {
+			if ( $propertyId->equals( $qualifier->getPropertyId() ) ) {
+				$message = '';
+				$status = CheckResult::STATUS_COMPLIANCE;
+				break;
 			}
-		}
-
-		if ( $missingQualifiers ) {
-			$message = wfMessage( "wbqc-violation-message-mandatory-qualifiers" );
-			$message->rawParams(
-				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() )
-			);
-			$message->numParams( count( $missingQualifiers ) );
-			$message->rawParams( $this->constraintParameterRenderer->formatPropertyIdList( $missingQualifiers ) );
-			$message = $message->escaped();
-			$status = CheckResult::STATUS_VIOLATION;
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
