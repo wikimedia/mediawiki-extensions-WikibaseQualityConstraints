@@ -10,10 +10,10 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use Wikibase\Repo\WikibaseRepo;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
@@ -21,7 +21,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
@@ -36,11 +36,6 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	private $lookup;
 
 	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
-
-	/**
 	 * @var ConnectionCheckerHelper
 	 */
 	private $connectionCheckerHelper;
@@ -53,11 +48,10 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$this->helper = new ConstraintParameterParser();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new ItemChecker(
 			$this->lookup,
-			$this->helper,
+			$this->getConstraintParameterParser(),
 			$this->connectionCheckerHelper,
 			$this->getConstraintParameterRenderer()
 		);
@@ -65,7 +59,6 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 
 	protected function tearDown() {
 		unset( $this->lookup );
-		unset( $this->helper );
 		unset( $this->connectionCheckerHelper );
 		unset( $this->checker );
 		parent::tearDown();
@@ -123,15 +116,23 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
-	public function testItemConstraintWithoutProperty() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$constraintParameters = [];
+	public function testItemConstraintPropertyAndItemWithStatement() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
+
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$config = $this->getDefaultConfig();
+		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
+		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$constraintParameters = [
+			$propertyId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( 'P2' ) ) ) ) ],
+			$qualifierId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $qualifierId ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) ]
+		];
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-parameter-needed' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	/**

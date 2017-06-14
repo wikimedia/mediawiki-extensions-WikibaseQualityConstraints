@@ -8,7 +8,7 @@ use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
@@ -26,7 +26,7 @@ class ItemChecker implements ConstraintChecker {
 	private $entityLookup;
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
 	private $constraintParameterParser;
 
@@ -42,18 +42,18 @@ class ItemChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
 		EntityLookup $lookup,
-		ConstraintParameterParser $helper,
+		ConstraintStatementParameterParser $constraintParameterParser,
 		ConnectionCheckerHelper $connectionCheckerHelper,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->entityLookup = $lookup;
-		$this->constraintParameterParser = $helper;
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
@@ -71,40 +71,25 @@ class ItemChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$property = false;
-		if ( array_key_exists( 'property', $constraintParameters ) ) {
-			$property = $constraintParameters['property'];
-			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $property );
-		}
+		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$parameters['property'] = [ $propertyId ];
 
-		$items = [];
-		if ( array_key_exists( 'item', $constraintParameters ) ) {
-			$items = explode( ',', $constraintParameters['item'] );
-			$parameters['item'] = $this->constraintParameterParser->parseParameterArray( $items );
-		}
-
-		/*
-		 * error handling:
-		 *   parameter $property must not be null
-		 */
-		if ( !$property ) {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'property' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
+		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeName(), false );
+		$parameters['items'] = $items;
 
 		/*
 		 * 'Item' can be defined with
 		 *   a) a property only
 		 *   b) a property and a number of items (each combination of property and item forming an individual claim)
 		 */
-		if ( !$items ) {
-			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $property ) ) {
+		if ( $items === [] ) {
+			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $propertyId->getSerialization() ) ) {
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
-			if ( $this->connectionCheckerHelper->findStatement( $entity->getStatements(), $property, $items ) !== null ) {
+			if ( $this->connectionCheckerHelper->findStatement( $entity->getStatements(), $propertyId->getSerialization(), $items ) !== null ) {
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
 				$status = CheckResult::STATUS_VIOLATION;
@@ -117,10 +102,10 @@ class ItemChecker implements ConstraintChecker {
 			$message = wfMessage( 'wbqc-violation-message-item' );
 			$message->rawParams(
 				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-				$this->constraintParameterRenderer->formatPropertyId( $property )
+				$this->constraintParameterRenderer->formatEntityId( $propertyId )
 			);
 			$message->numParams( count( $items ) );
-			$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $items ) );
+			$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items ) );
 			$message = $message->escaped();
 		}
 

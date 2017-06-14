@@ -131,6 +131,11 @@
 			"description": "The item ID of the 'inverse constraint' item, which, when used in a 'property constraint' statement on a property, indicates that a referenced entity should refer back to the original entity with the property given in the parameters.",
 			"public": true
 		},
+		"WBQualityConstraintsItemRequiresClaimConstraintId": {
+			"value": "Q21503247",
+			"description": "The item ID of the 'item requires claim constraint' item, which, when used in a 'property constraint' statement on a property, indicates that an entity with a given statement should also have certain other statements.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",
