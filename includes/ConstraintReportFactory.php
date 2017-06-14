@@ -216,7 +216,7 @@ class ConstraintReportFactory {
 				'Unique value' => new UniqueValueChecker( $sparqlHelper ),
 				'Format' => new FormatChecker( $constraintParameterParser ),
 				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
-				'One of' => new OneOfChecker( $constraintParameterParser, $this->constraintParameterRenderer ),
+				'One of' => new OneOfChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
 				'Type (SPARQL)' => new TypeSparqlChecker( $this->lookup, $constraintParameterParser, $sparqlHelper ),
 				'Value type (SPARQL)' => new ValueTypeSparqlChecker( $this->lookup, $constraintParameterParser, $sparqlHelper ),
 			];
@@ -232,6 +232,7 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' ) => $this->constraintCheckerMap['Item'],
 				$this->config->get( 'WBQualityConstraintsValueRequiresClaimConstraintId' ) => $this->constraintCheckerMap['Target required claim'],
 				$this->config->get( 'WBQualityConstraintsConflictsWithConstraintId' ) => $this->constraintCheckerMap['Conflicts with'],
+				$this->config->get( 'WBQualityConstraintsOneOfConstraintId' ) => $this->constraintCheckerMap['One of'],
 			];
 		}
 
