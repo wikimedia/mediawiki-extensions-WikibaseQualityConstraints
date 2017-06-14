@@ -205,7 +205,7 @@ class ConstraintReportFactory {
 				'Symmetric' => new SymmetricChecker( $this->lookup, $constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Inverse' => new InverseChecker( $this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Qualifier' => new QualifierChecker(),
-				'Qualifiers' => new QualifiersChecker( $constraintParameterParser, $this->constraintParameterRenderer ),
+				'Qualifiers' => new QualifiersChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
 				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
 				'Range' => new RangeChecker( $constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Diff within range' => new DiffWithinRangeChecker( $constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
@@ -234,6 +234,7 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsConflictsWithConstraintId' ) => $this->constraintCheckerMap['Conflicts with'],
 				$this->config->get( 'WBQualityConstraintsOneOfConstraintId' ) => $this->constraintCheckerMap['One of'],
 				$this->config->get( 'WBQualityConstraintsMandatoryQualifierConstraintId' ) => $this->constraintCheckerMap['Mandatory qualifiers'],
+				$this->config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' ) => $this->constraintCheckerMap['Qualifiers'],
 			];
 		}
 

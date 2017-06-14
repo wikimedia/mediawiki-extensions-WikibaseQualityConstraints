@@ -2,14 +2,18 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
+use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
@@ -18,19 +22,14 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
  */
 class QualifiersCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
-
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var string
@@ -44,13 +43,11 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintParameterParser();
 		$this->qualifiersList = 'P580,P582,P1365,P1366,P642,P805';
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 
 	protected function tearDown() {
-		unset( $this->helper );
 		unset( $this->qualifiersList );
 		unset( $this->lookup );
 		parent::tearDown();
@@ -69,25 +66,49 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	public function testQualifiersConstraint() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->helper, $this->getConstraintParameterRenderer() );
+		$qualifiersChecker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
 	}
 
-	public function testQualifiersConstraintToManyQualifiers() {
+	public function testQualifiersConstraintTooManyQualifiers() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->helper, $this->getConstraintParameterRenderer() );
+		$qualifiersChecker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
-		$this->assertEquals( 'violation', $checkResult->getStatus(), 'check should not comply' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifiers' );
 	}
 
 	public function testQualifiersConstraintNoQualifiers() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->helper, $this->getConstraintParameterRenderer() );
+		$qualifiersChecker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
 		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
-		$this->assertEquals( 'compliance', $checkResult->getStatus(), 'check should comply' );
+		$this->assertCompliance( $checkResult );
+	}
+
+	/**
+	 * Logically identical to {@link testQualifiersConstraint},
+	 * but with statement parameters instead of template parameters.
+	 */
+	public function testQualifiersConstraintWithStatement() {
+		/** @var Item $entity */
+		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
+		$qualifiersChecker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
+
+		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
+		$config = $this->getDefaultConfig();
+		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
+		$parameters = [ $propertyId => array_map(
+			function( $id ) use ( $snakSerializer, $propertyId ) {
+				return $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( $id ) ) ) );
+			},
+			explode( ',', $this->qualifiersList )
+		) ];
+
+		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( $parameters ), $entity );
+
+		$this->assertCompliance( $checkResult );
 	}
 
 	/**
