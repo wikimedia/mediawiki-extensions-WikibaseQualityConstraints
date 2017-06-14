@@ -382,4 +382,63 @@ class ConstraintStatementParameterParser {
 		}
 	}
 
+	private function parsePropertiesParameterFromStatement( array $constraintParameters ) {
+		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
+		$parameters = $constraintParameters[$propertyId];
+		if ( count( $parameters ) === 1 &&
+			$this->snakDeserializer->deserialize( $parameters[0] ) instanceof PropertyNoValueSnak ) {
+			return [];
+		}
+		$properties = [];
+		foreach ( $parameters as $parameter ) {
+			$properties[] = $this->parsePropertyIdParameter( $parameter, $propertyId );
+		}
+		return $properties;
+	}
+
+	private function parsePropertiesParameterFromTemplate( array $constraintParameters ) {
+		if ( $constraintParameters['property'] === '' ) {
+			return [];
+		}
+		return array_map(
+			function( $property ) {
+				try {
+					return new PropertyId( $property );
+				} catch ( InvalidArgumentException $e ) {
+					throw new ConstraintParameterException(
+						wfMessage( 'wbqc-violation-message-parameter-property' )
+							->rawParams(
+								$this->constraintParameterRenderer->formatPropertyId( 'property' ),
+								$this->constraintParameterRenderer->formatDataValue( new StringValue( $property ) )
+							)
+							->escaped()
+					);
+				}
+			},
+			explode( ',', $constraintParameters['property'] )
+		);
+	}
+
+	/**
+	 * @param array $constraintParameters
+	 * @param string $constraintTypeName used in error messages
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return PropertyId[]
+	 */
+	public function parsePropertiesParameter( array $constraintParameters, $constraintTypeName ) {
+		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
+		if ( array_key_exists( $propertyId, $constraintParameters ) ) {
+			return $this->parsePropertiesParameterFromStatement( $constraintParameters );
+		} elseif ( array_key_exists( 'property', $constraintParameters ) ) {
+			return $this->parsePropertiesParameterFromTemplate( $constraintParameters );
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-needed' )
+					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $propertyId ) )
+					->escaped()
+			);
+		}
+	}
+
 }
