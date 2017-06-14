@@ -155,6 +155,11 @@
 			"value": "P2306",
 			"description": "The property ID of the 'property' property, which specifies the property parameter of an 'inverse', 'item requires claim', 'value requires claim', 'difference within range', 'mandatory qualifiers', or 'qualifiers' constraint.",
 			"public": true
+		},
+		"WBQualityConstraintsQualifierOfPropertyConstraintId": {
+			"value": "P2305",
+			"description": "The property ID of the 'qualifier of property constraint' property, which specifies the item parameter of an 'item requires claim', 'value requires claim', or 'one of' constraint.",
+			"public": true
 		}
 	},
 	"manifest_version": 2
