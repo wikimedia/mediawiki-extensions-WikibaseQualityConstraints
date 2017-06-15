@@ -32,7 +32,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var string
+	 * @var string[]
 	 */
 	private $qualifiersList;
 
@@ -41,10 +41,16 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $lookup;
 
+	/**
+	 * @var QualifiersChecker
+	 */
+	private $checker;
+
 	protected function setUp() {
 		parent::setUp();
-		$this->qualifiersList = 'P580,P582,P1365,P1366,P642,P805';
+		$this->qualifiersList = [ 'P580', 'P582', 'P1365', 'P1366', 'P642', 'P805' ];
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
+		$this->checker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
 	}
 
 	/**
@@ -60,47 +66,32 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	public function testQualifiersConstraint() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
+		$statement = $this->getFirstStatement( $entity );
+		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testQualifiersConstraintTooManyQualifiers() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
+		$statement = $this->getFirstStatement( $entity );
+		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifiers' );
 	}
 
 	public function testQualifiersConstraintNoQualifiers() {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => $this->qualifiersList ] ), $entity );
-		$this->assertCompliance( $checkResult );
-	}
+		$statement = $this->getFirstStatement( $entity );
+		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
 
-	/**
-	 * Logically identical to {@link testQualifiersConstraint},
-	 * but with statement parameters instead of template parameters.
-	 */
-	public function testQualifiersConstraintWithStatement() {
-		/** @var Item $entity */
-		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$qualifiersChecker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
-
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getSerializerFactory()->newSnakSerializer();
-		$config = $this->getDefaultConfig();
-		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
-		$parameters = [ $propertyId => array_map(
-			function( $id ) use ( $snakSerializer, $propertyId ) {
-				return $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( $id ) ) ) );
-			},
-			explode( ',', $this->qualifiersList )
-		) ];
-
-		$checkResult = $qualifiersChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( $parameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
 
 		$this->assertCompliance( $checkResult );
 	}
