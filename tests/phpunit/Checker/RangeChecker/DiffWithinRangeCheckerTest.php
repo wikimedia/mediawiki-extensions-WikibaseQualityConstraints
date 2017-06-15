@@ -64,14 +64,6 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	protected function tearDown() {
-		unset( $this->helper );
-		unset( $this->lookup );
-		unset( $this->timeValue );
-		unset( $this->checker );
-		parent::tearDown();
-	}
-
 	public function testDiffWithinRangeConstraintWithinRange() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = [

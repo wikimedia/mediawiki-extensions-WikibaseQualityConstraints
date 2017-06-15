@@ -60,13 +60,6 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->connectionCheckerHelper );
-		unset( $this->checker );
-		parent::tearDown();
-	}
-
 	public function testConflictsWithConstraintValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 

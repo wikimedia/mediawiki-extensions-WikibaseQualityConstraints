@@ -61,12 +61,6 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		$this->typeStatement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->typeStatement );
-		parent::tearDown();
-	}
-
 	public function testTypeConstraintInstanceValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$constraintParameters = [

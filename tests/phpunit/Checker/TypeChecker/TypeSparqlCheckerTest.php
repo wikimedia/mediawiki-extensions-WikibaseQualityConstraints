@@ -54,12 +54,6 @@ class TypeSparqlCheckerTest extends \PHPUnit_Framework_TestCase  {
 		$this->typeStatement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->typeStatement );
-		parent::tearDown();
-	}
-
 	// relation 'subclass'
 
 	public function testTypeConstraintSubclassValid() {

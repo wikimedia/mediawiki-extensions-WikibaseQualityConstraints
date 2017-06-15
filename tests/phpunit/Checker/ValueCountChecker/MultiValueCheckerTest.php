@@ -56,14 +56,6 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 
-	protected function tearDown() {
-		unset( $this->helper );
-		unset( $this->multiPropertyId );
-		unset( $this->checker );
-		unset( $this->lookup );
-		parent::tearDown();
-	}
-
 	public function testMultiValueConstraintOne() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$statement = new Statement( new PropertyValueSnak( $this->multiPropertyId, new EntityIdValue( new ItemId( 'Q207' ) ) ) );

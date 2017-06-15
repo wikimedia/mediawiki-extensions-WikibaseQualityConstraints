@@ -26,11 +26,6 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->helper = new ConstraintParameterParser();
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
-		unset( $this->helper );
-	}
-
 	public function testParseSingleParameter() {
 		$parameter = 'P1';
 		$this->assertEquals( [ new PropertyId( $parameter ) ], $this->helper->parseSingleParameter( $parameter ) );

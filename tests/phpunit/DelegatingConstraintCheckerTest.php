@@ -86,13 +86,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->constraintChecker );
-		unset( $this->statementGuidParser );
-		parent::tearDown();
-	}
-
 	/**
 	 * Adds temporary test data to database.
 	 *

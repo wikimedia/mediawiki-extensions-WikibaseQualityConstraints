@@ -48,11 +48,6 @@ class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 	}
 
-	protected function tearDown() {
-		unset( $this->statementList );
-		parent::tearDown();
-	}
-
 	public function testHasPropertyValid() {
 		$this->assertTrue( $this->connectionCheckerHelper->hasProperty( $this->statementList, 'P1' ) );
 	}

@@ -57,13 +57,6 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->connectionCheckerHelper );
-		unset( $this->checker );
-		parent::tearDown();
-	}
-
 	public function testItemConstraintInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = [
