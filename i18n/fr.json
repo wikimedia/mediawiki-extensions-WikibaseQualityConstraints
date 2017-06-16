@@ -70,7 +70,6 @@
 	"wbqc-violation-message-format": "La valeur de la propriété doit correspondre au modèle défini dans les paramètres.",
 	"wbqc-violation-message-inverse": "$1 doit avoir aussi la proposition inverse $2 $3.",
 	"wbqc-violation-message-item": "Une entité avec $1 devrait aussi avoir {{PLURAL:$3|0=une déclaration $2.|1=une déclaration $2 $5.|une déclaration pour $2 avec une des valeurs suivantes :$4}}",
-	"wbqc-violation-message-mandatory-qualifiers": "A la déclaration $1 il manque {{PLURAL:$2|1=un qualificatif $4.|2=les qualificatifs $4 et $5|les qualificatifs suivants : $3}}",
 	"wbqc-violation-message-multi-value": "Cette propriété devrait avoir plusieurs valeurs. C’est-à-dire qu’il devrait y avoir plus d’une déclaration utilisant cette propriété.",
 	"wbqc-violation-message-one-of": "La valeur de $1 devrait être {{PLURAL:$2|1=$4.|2=$4 ou $5.|une des suivantes :$3}}",
 	"wbqc-violation-message-qualifier": "La propriété devrait être utilisée uniquement comme qualificateur.",

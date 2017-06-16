@@ -42,6 +42,12 @@
 	"wbqc-violation-message-parameters-needed-3": "Vlastnosti s omezením „$1“ potřebují parametry „$2“, „$3“ a „$4“.",
 	"wbqc-violation-message-target-entity-must-exist": "Cílová entita musí existovat.",
 	"wbqc-violation-message-value-entity-must-exist": "Entita v hodnotě musí existovat.",
+	"wbqc-violation-message-parameter-value": "Parametr „$1“ musí mít skutečnou hodnotu, nikoliv „žádnou“ nebo „neznámou hodnotu“.",
+	"wbqc-violation-message-parameter-entity": "Hodnota parametru „$1“ musí být entita, nikoliv „$2“.",
+	"wbqc-violation-message-parameter-property": "Hodnota parametru „$1“ musí být vlastnost, nikoliv „$2“.",
+	"wbqc-violation-message-parameter-single": "Parametr „$1“ může mít pouze jednu hodnotu.",
+	"wbqc-violation-message-parameter-oneof": "Parametr „$1“ musí být {{PLURAL:$2|1=$4.|2=buď $4, nebo $5.|jedno z následujících:$3}}",
+	"wbqc-violation-message-sparql-error": "SPARQL dotaz ukončila chyba.",
 	"wbqc-violation-message-commons-link-no-existent": "Cíl odkazu na Commons by měl existovat.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Odkaz na Commons by měl být ve správném formátu.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Kontrola pro jmenný prostor „$1“ dosud nebyla implementována.",
@@ -54,7 +60,6 @@
 	"wbqc-violation-message-format": "Hodnota vlastnosti musí odpovídat vzoru definovanému v parametrech.",
 	"wbqc-violation-message-inverse": "$1 by také měla mít opačné tvrzení $2 $3.",
 	"wbqc-violation-message-item": "Entita s vlastností $1 by také měla mít {{PLURAL:$3|0=tvrzení vlastnosti $2.|1=tvrzení vlastnosti $2 s hodnotou $5.|tvrzení vlasnosti $2 s jednou z následujících hodnot:$4}}",
-	"wbqc-violation-message-mandatory-qualifiers": "Tvrzení vlastnosti $1 chybí {{PLURAL:$2|1=vymezení $4.|2=vymezení $4 a $5|následující vymezení:$3}}",
 	"wbqc-violation-message-multi-value": "Tato vlastnost by měla obsahovat víc hodnot. To znamená, že by zde mělo být více než jedno tvrzení používající tuto vlastnost.",
 	"wbqc-violation-message-one-of": "Hodnota vlastnosti $1 by měla být {{PLURAL:$2|1=$4.|2=buď $4, nebo $5.|jedna z následujících:$3}}",
 	"wbqc-violation-message-qualifier": "Tato vlastnost by měla být používána pouze jako vymezení.",
@@ -69,5 +74,8 @@
 	"wbqc-violation-message-type-subclass": "Entity s vlastností $1 by měly být podtřídami {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-valueType-instance": "Hodnoty tvrzení vlastnosti $1 by měly být instancemi {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-valueType-subclass": "Hodnoty tvrzení vlastnosti $1 by měly být podtřídami {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
-	"wbqc-violation-message-target-required-claim": "$1 by také měla mít {{PLURAL:$3|0=tvrzení vlastnosti $2.|1=tvrzení vlastnosti $2 s hodnotou $5.|tvrzení vlasnosti $2 s jednou z následujících hodnot:$4}}"
+	"wbqc-violation-message-target-required-claim": "$1 by také měla mít {{PLURAL:$3|0=tvrzení vlastnosti $2.|1=tvrzení vlastnosti $2 s hodnotou $5.|tvrzení vlasnosti $2 s jednou z následujících hodnot:$4}}",
+	"wbqc-violation-message-unique-value": "Hodnota této vlastnosti nesmí být použita v žádné jiné položce.",
+	"wbqc-violation-message-sparql-type": "Tuto vlastnost lze používat pouze v položkách, které jsou ve vztahu k položce (nebo její podtřídě) daném parametry.",
+	"wbqc-violation-message-sparql-value-type": "Entitu hodnoty této vlastnosti musí být ve vztahu k položce (nebo její podtřídě) daném parametry."
 }

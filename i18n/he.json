@@ -63,7 +63,6 @@
 	"wbqc-violation-message-format": "הערך של המאפיין צריך לתאום את התבנית שמוגדרת בפרמטרים.",
 	"wbqc-violation-message-inverse": "ל{{GRAMMAR:תחילית|$1}} אמורה להיות גם הקביעה ההפוכה $2 $3.",
 	"wbqc-violation-message-item": "לישות עם $1 אמורה להיות גם {{PLURAL:$3|0=הקביעה $2.|1=הקביעה $2 $5.|הקביעה עבור $2 עם אחד מהערכים הבאים: $4}}",
-	"wbqc-violation-message-mandatory-qualifiers": "בקביעת ה{{GRAMMAR:תחילית|$1}} {{PLURAL:$2|1=המבחין $4.|2=המבחינים $4 ו{{GRAMMAR:תחילית|$5}}|המבחינים הבאים: $3}}",
 	"wbqc-violation-message-multi-value": "המאפיין הזה אמור להכיל ערכים מרובים. כלומר, אמורה להיות יותר מקביעה אחת שמשתמשת במאפיין הזה.",
 	"wbqc-violation-message-one-of": "הערך של $1 אמור להיות {{PLURAL:$2|1=$4.|2=$4 או $5.|אחד מהבאים: $3}}",
 	"wbqc-violation-message-qualifier": "המאפיין הזה אמור לשמש רק כמבחין.",

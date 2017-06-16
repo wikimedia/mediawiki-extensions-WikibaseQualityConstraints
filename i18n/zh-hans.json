@@ -63,7 +63,6 @@
 	"wbqc-violation-message-format": "属性的值必须匹配参数中定义的模式。",
 	"wbqc-violation-message-inverse": "$1也应当拥有相反声明$2 $3。",
 	"wbqc-violation-message-item": "具有$1的实体也应拥有{{PLURAL:$3|0=声明$2。|1=声明$2 $5。|声明$2，并使用以下值之一：$4}}",
-	"wbqc-violation-message-mandatory-qualifiers": "此$1声明缺少{{PLURAL:$2|1=一个限定符$4。|2=$4和$5限定符。|以下限定符：$3}}",
 	"wbqc-violation-message-multi-value": "此属性应包含多个值。换言之，这里应有多于一个声明使用此属性。",
 	"wbqc-violation-message-one-of": "$1的值应为{{PLURAL:$2|1=$4。|2=$4或$5之一。|以下值之一：$3}}",
 	"wbqc-violation-message-qualifier": "属性应只用作限定符。",
