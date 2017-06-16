@@ -89,7 +89,16 @@ class Constraint {
 	}
 
 	/**
-	 * @return array (key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21'))
+	 * There are two formats of constraint parameters that this method can return:
+	 *
+	 * 1. Statement parameters were imported from constraint statements by {@link UpdateConstraintsTableJob}.
+	 *    They are lists of snak array serializations, indexed by property ID serialization.
+	 * 2. Template parameters were imported from constraint templates on property talk pages.
+	 *    They are plain strings (e. g. 'Q5,Q6,Q7') indexed by template parameters (e. g. 'item', 'property').
+	 *
+	 * Support for template parameters will soon be removed.
+	 *
+	 * @return array
 	 */
 	public function getConstraintParameters() {
 		return $this->constraintParameters;
