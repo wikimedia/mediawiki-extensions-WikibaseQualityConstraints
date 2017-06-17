@@ -5,11 +5,10 @@
  * @file
  * @ingroup Extensions
  */
-// @codingStandardsIgnoreFile
 
-$specialPageAliases = array();
+$specialPageAliases = [];
 
 /** English (English) */
-$specialPageAliases['en'] = array(
-	'ConstraintReport' => array( 'ConstraintReport', 'Constraint Report' ),
-);
+$specialPageAliases['en'] = [
+	'ConstraintReport' => [ 'ConstraintReport', 'Constraint Report' ],
+];
