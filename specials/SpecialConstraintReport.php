@@ -496,14 +496,6 @@ class SpecialConstraintReport extends SpecialPage {
 			return $content;
 		}
 
-		$tooltipIndicator = Html::element(
-			'span',
-			[
-				'class' => 'wbqc-indicator'
-			],
-			$indicator
-		);
-
 		$tooltip = Html::rawElement(
 			'div',
 			[
@@ -512,10 +504,18 @@ class SpecialConstraintReport extends SpecialPage {
 			$tooltipContent
 		);
 
+		$tooltipIndicator = Html::rawElement(
+			'span',
+			[
+				'class' => 'wbqc-indicator'
+			],
+			htmlspecialchars( $indicator ) . $tooltip
+		);
+
 		return Html::rawElement(
 			'span',
 			[],
-			sprintf( '%s %s %s', $content, $tooltipIndicator, $tooltip )
+			sprintf( '%s %s', $content, $tooltipIndicator )
 		);
 	}
 
