@@ -266,7 +266,7 @@ class SpecialConstraintReport extends SpecialPage {
 				'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped()
 			]
 		];
-		$htmlForm = new HTMLForm( $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
+		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
 		$htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
 		$htmlForm->setSubmitCallback( function() {
 			return false;
@@ -312,16 +312,19 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private function getExplanationText() {
 		return Html::rawElement(
-				'div',
-				[ 'class' => 'wbqc-explanation' ],
+			'div',
+			[ 'class' => 'wbqc-explanation' ],
+			Html::rawElement(
+				'p',
+				[],
 				$this->msg( 'wbqc-constraintreport-explanation-part-one' )->escaped()
 			)
-			. Html::element( 'br' )
 			. Html::rawElement(
-				'div',
-				[ 'class' => 'wbqc-explanation' ],
+				'p',
+				[],
 				$this->msg( 'wbqc-constraintreport-explanation-part-two' )->escaped()
-			);
+			)
+		);
 	}
 
 	/**

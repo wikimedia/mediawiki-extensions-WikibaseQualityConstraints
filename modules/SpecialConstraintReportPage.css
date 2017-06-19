@@ -1,11 +1,6 @@
 /* Entity id form */
 form {
 	margin-bottom: 20px;
-	width: 250px;
-}
-
-.wbqc-constraintreport-form-entity-id {
-	width: 120px;
 }
 
 /* Notices */
@@ -16,11 +11,6 @@ form {
 .wbqc-constraintreport-notice-error {
 	font-weight: bold;
 	color: #ba0000;
-}
-
-/* Explanation infobox */
-.wbqc-explanation {
-	width: 50%;
 }
 
 /* Statuses */
