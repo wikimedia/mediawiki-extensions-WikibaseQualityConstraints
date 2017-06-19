@@ -13,6 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHel
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\WikibaseRepo;
 
 /**
@@ -31,34 +32,23 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var JsonFileEntityLookup
-	 */
-	private $lookup;
-
-	/**
-	 * @var ConnectionCheckerHelper
-	 */
-	private $connectionCheckerHelper;
-
-	/**
 	 * @var ItemChecker
 	 */
 	private $checker;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new ItemChecker(
-			$this->lookup,
+			new JsonFileEntityLookup( __DIR__ ),
 			$this->getConstraintParameterParser(),
-			$this->connectionCheckerHelper,
+			new ConnectionCheckerHelper(),
 			$this->getConstraintParameterRenderer()
 		);
 	}
 
 	public function testItemConstraintInvalid() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$entity = NewItem::withId( 'Q4' )
+			->build();
 		$constraintParameters = [
 			'property' => 'P2'
 		];
@@ -70,7 +60,9 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testItemConstraintProperty() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
+		$entity = NewItem::withId( 'Q5' )
+			->andPropertyValueSnak( 'P2', new ItemId( 'Q42' ) )
+			->build();
 		$constraintParameters = [
 			'property' => 'P2'
 		];
@@ -83,7 +75,9 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testItemConstraintPropertyButNotItem() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
+		$entity = NewItem::withId( 'Q5' )
+			->andPropertyValueSnak( 'P2', new ItemId( 'Q42' ) )
+			->build();
 		$constraintParameters = [
 			'property' => 'P2',
 			'item' => 'Q1'
@@ -97,7 +91,9 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testItemConstraintPropertyAndItem() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
+		$entity = NewItem::withId( 'Q5' )
+			->andPropertyValueSnak( 'P2', new ItemId( 'Q42' ) )
+			->build();
 		$constraintParameters = [
 			'property' => 'P2',
 			'item' => 'Q42'
@@ -110,7 +106,9 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testItemConstraintPropertyAndItemWithStatement() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
+		$entity = NewItem::withId( 'Q5' )
+			->andPropertyValueSnak( 'P2', new ItemId( 'Q42' ) )
+			->build();
 
 		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
 		$config = $this->getDefaultConfig();

@@ -2,15 +2,16 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
-use Wikibase\DataModel\Entity\Item;
-use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use Wikibase\Repo\Tests\NewItem;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
@@ -28,38 +29,49 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var JsonFileEntityLookup
+	 * @var MandatoryQualifiersChecker
 	 */
-	private $lookup;
+	private $checker;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-	}
-
-	/**
-	 * @param StatementListProvider $entity
-	 *
-	 * @return Statement|false
-	 */
-	private function getFirstStatement( StatementListProvider $entity ) {
-		$statements = $entity->getStatements()->toArray();
-		return reset( $statements );
+		$this->checker = new MandatoryQualifiersChecker(
+			$this->getConstraintParameterParser(),
+			$this->getConstraintParameterRenderer()
+		);
 	}
 
 	public function testMandatoryQualifiersConstraintValid() {
-		/** @var Item $entity */
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$qualifierChecker = new MandatoryQualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => 'P2' ] ), $entity );
+		$statement = new Statement(
+			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+			new SnakList( [
+				new PropertyNoValueSnak( new PropertyId( 'P2' ) )
+			] )
+		);
+		$entity = NewItem::withId( 'Q5' )
+			->andStatement( $statement )
+			->build();
+		$parameters = [ 'property' => 'P2' ];
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $parameters ), $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testMandatoryQualifiersConstraintInvalid() {
-		/** @var Item $entity */
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$qualifierChecker = new MandatoryQualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [ 'property' => 'P3' ] ), $entity );
+		$statement = new Statement(
+			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+			new SnakList( [
+				new PropertyNoValueSnak( new PropertyId( 'P2' ) )
+			] )
+		);
+		$entity = NewItem::withId( 'Q5' )
+			->andStatement( $statement )
+			->build();
+		$parameters = [ 'property' => 'P3' ];
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $parameters ), $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-mandatory-qualifier' );
 	}
 
