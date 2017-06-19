@@ -161,6 +161,11 @@
 			"description": "The item ID of the 'allowed qualifiers constraint' item, which, when used in a 'property constraint' statement on a property, indicates a given statement should only have the given qualifiers.",
 			"public": true
 		},
+		"WBQualityConstraintsRangeConstraintId": {
+			"value": "Q21510860",
+			"description": "The item ID of the 'range constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should be within a given range.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",
