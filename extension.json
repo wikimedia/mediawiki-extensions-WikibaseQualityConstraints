@@ -190,6 +190,26 @@
 			"value": "P2305",
 			"description": "The property ID of the 'qualifier of property constraint' property, which specifies the item parameter of an 'item requires claim', 'value requires claim', or 'one of' constraint.",
 			"public": true
+		},
+		"WBQualityConstraintsMinimumQuantityId": {
+			"value": "P2313",
+			"description": "The property ID of the 'minimum quantity' property, which specifies the minimum quantity parameter of a 'range' or 'diff within range' constraint.",
+			"public": true
+		},
+		"WBQualityConstraintsMaximumQuantityId": {
+			"value": "P2312",
+			"description": "The property ID of the 'maximum quantity' property, which specifies the maximum quantity parameter of a 'range' or 'diff within range' constraint.",
+			"public": true
+		},
+		"WBQualityConstraintsMinimumDateId": {
+			"value": "P2310",
+			"description": "The property ID of the 'minimum date' property, which specifies the minimum date parameter of a 'range' or 'diff within range' constraint.",
+			"public": true
+		},
+		"WBQualityConstraintsMaximumDateId": {
+			"value": "P2311",
+			"description": "The property ID of the 'maximum date' property, which specifies the maximum date parameter of a 'range' or 'diff within range' constraint.",
+			"public": true
 		}
 	},
 	"manifest_version": 2

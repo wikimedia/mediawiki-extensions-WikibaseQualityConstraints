@@ -3,7 +3,9 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
+use DataValues\DataValue;
 use DataValues\StringValue;
+use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
@@ -15,6 +17,7 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
+use Wikibase\Repo\Parsers\TimeParserFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
@@ -433,6 +436,113 @@ class ConstraintStatementParameterParser {
 				wfMessage( 'wbqc-violation-message-parameter-needed' )
 					->params( $constraintTypeName )
 					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $propertyId ) )
+					->escaped()
+			);
+		}
+	}
+
+	/**
+	 * @param array $snakSerialization
+	 * @param string $parameterId
+	 * @throws ConstraintParameterException
+	 * @return DataValue|null
+	 */
+	private function parseValueOrNoValueParameter( array $snakSerialization, $parameterId ) {
+		$snak = $this->snakDeserializer->deserialize( $snakSerialization );
+		if ( $snak instanceof PropertyValueSnak ) {
+			return $snak->getDataValue();
+		} elseif ( $snak instanceof PropertyNoValueSnak ) {
+			return null;
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-value-or-novalue' )
+					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $parameterId ) )
+					->escaped()
+			);
+		}
+	}
+
+	private function parseRangeParameterFromStatement( array $constraintParameters, $configKey ) {
+		$minimumId = $this->config->get( 'WBQualityConstraintsMinimum' . $configKey . 'Id' );
+		$maximumId = $this->config->get( 'WBQualityConstraintsMaximum' . $configKey . 'Id' );
+		$this->requireSingleParameter( $constraintParameters, $minimumId );
+		$this->requireSingleParameter( $constraintParameters, $maximumId );
+		return [
+			$this->parseValueOrNoValueParameter( $constraintParameters[$minimumId][0], $minimumId ),
+			$this->parseValueOrNoValueParameter( $constraintParameters[$maximumId][0], $maximumId )
+		];
+	}
+
+	private function parseRangeParameterFromTemplate( array $constraintParameters, $type ) {
+		// the template parameters are always …_quantity, see T164087
+		$this->requireSingleParameter( $constraintParameters, 'minimum_quantity' );
+		$this->requireSingleParameter( $constraintParameters, 'maximum_quantity' );
+		if ( $type === 'quantity' ) {
+			$min = UnboundedQuantityValue::newFromNumber( $constraintParameters['minimum_quantity'] );
+			$max = UnboundedQuantityValue::newFromNumber( $constraintParameters['maximum_quantity'] );
+		} else {
+			$timeParser = ( new TimeParserFactory() )->getTimeParser();
+			$minStr = $constraintParameters['minimum_quantity'];
+			$maxStr = $constraintParameters['maximum_quantity'];
+			$now = gmdate( '+Y-m-d\T00:00:00\Z' );
+			if ( $minStr === 'now' ) {
+				$minStr = $now;
+			}
+			if ( $maxStr === 'now' ) {
+				$maxStr = $now;
+			}
+			$min = $timeParser->parse( $minStr );
+			$max = $timeParser->parse( $maxStr );
+		}
+		return [ $min, $max ];
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeName used in error messages
+	 * @param string $type 'quantity' or 'time'
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return DataValue[] a pair of two quantity-type data values, either of which may be null to signify an open range
+	 */
+	public function parseRangeParameter( array $constraintParameters, $constraintTypeName, $type ) {
+		switch ( $type ) {
+			case 'quantity':
+				$configKey = 'Quantity';
+				break;
+			case 'time':
+				$configKey = 'Date';
+				break;
+			default:
+				throw new ConstraintParameterException(
+					wfMessage( 'wbqc-violation-message-value-needed-of-types-2' )
+						->rawParams(
+							wfMessage( 'datatypes-type-quantity' )->escaped(),
+							wfMessage( 'datatypes-type-time' )->escaped()
+						)
+						->escaped()
+				);
+		}
+		$minimumId = $this->config->get( 'WBQualityConstraintsMinimum' . $configKey . 'Id' );
+		$maximumId = $this->config->get( 'WBQualityConstraintsMaximum' . $configKey . 'Id' );
+		if ( array_key_exists( $minimumId, $constraintParameters ) &&
+			array_key_exists( $maximumId, $constraintParameters )
+		) {
+			return $this->parseRangeParameterFromStatement( $constraintParameters, $configKey );
+		} elseif ( array_key_exists( 'minimum_quantity', $constraintParameters ) &&
+			array_key_exists( 'maximum_quantity', $constraintParameters )
+		) {
+			// the template parameters are always …_quantity, see T164087
+			return $this->parseRangeParameterFromTemplate( $constraintParameters, $type );
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-range-parameters-needed' )
+					->params( $constraintTypeName )
+					->rawParams(
+						wfMessage( 'datatypes-type-' . $type )->escaped(),
+						$this->constraintParameterRenderer->formatPropertyId( $minimumId ),
+						$this->constraintParameterRenderer->formatPropertyId( $maximumId )
+					)
+					->params( $constraintTypeName )
 					->escaped()
 			);
 		}
