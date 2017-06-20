@@ -67,14 +67,6 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->helper );
-		unset( $this->connectionCheckerHelper );
-		unset( $this->checker );
-		parent::tearDown();
-	}
-
 	public function testSymmetricConstraintWithCorrectSpouse() {
 		$value = new EntityIdValue( new ItemId( 'Q3' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );

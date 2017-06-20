@@ -68,17 +68,6 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 		$this->message = 'All right';
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
-		unset( $this->entityId );
-		unset( $this->statement );
-		unset( $this->constraintName );
-		unset( $this->constraintId );
-		unset( $this->parameters );
-		unset( $this->status );
-		unset( $this->message );
-	}
-
 	public function testConstructAndGetters() {
 		$checkResult = new CheckResult(
 			$this->entityId, $this->statement, $this->constraintName, $this->constraintId,

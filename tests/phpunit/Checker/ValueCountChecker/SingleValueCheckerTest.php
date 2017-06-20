@@ -56,14 +56,6 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 
-	protected function tearDown() {
-		unset( $this->helper );
-		unset( $this->singlePropertyId );
-		unset( $this->checker );
-		unset( $this->lookup );
-		parent::tearDown();
-	}
-
 	public function testSingleValueConstraintOne() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );

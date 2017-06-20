@@ -35,11 +35,6 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		parent::tearDown();
-	}
-
 	/**
 	 * @param StatementListProvider $entity
 	 *

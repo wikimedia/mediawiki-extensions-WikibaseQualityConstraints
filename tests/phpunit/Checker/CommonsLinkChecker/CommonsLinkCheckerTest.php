@@ -50,12 +50,6 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$this->tablesUsed[] = 'image';
 	}
 
-	protected function tearDown() {
-		unset( $this->helper );
-		unset( $this->commonsLinkChecker );
-		parent::tearDown();
-	}
-
 	public function addDBData() {
 		$this->db->delete( 'image', '*' );
 		$this->db->insert(

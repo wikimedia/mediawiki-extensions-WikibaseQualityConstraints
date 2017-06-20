@@ -36,11 +36,6 @@ class ValueCountCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$this->statementList = new StatementList( [ $statement1, $statement2, $statement3, $statement4 ] );
 	}
 
-	protected function tearDown() {
-		unset( $this->statementList );
-		parent::tearDown();
-	}
-
 	public function testGetPropertyCount() {
 		$checker = new ValueCountCheckerHelper();
 		$propertyCount = $checker->getPropertyCount( $this->statementList );

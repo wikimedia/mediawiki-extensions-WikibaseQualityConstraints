@@ -63,13 +63,6 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->connectionCheckerHelper );
-		unset( $this->checker );
-		parent::tearDown();
-	}
-
 	public function testTargetRequiredClaimConstraintValid() {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );

@@ -59,13 +59,6 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->connectionCheckerHelper );
-		unset( $this->checker );
-		parent::tearDown();
-	}
-
 	public function testInverseConstraintValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 

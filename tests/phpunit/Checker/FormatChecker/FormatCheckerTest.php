@@ -47,12 +47,6 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$this->formatChecker = new FormatChecker( $this->helper );
 	}
 
-	protected function tearDown() {
-		unset( $this->helper );
-		unset( $this->formatChecker );
-		parent::tearDown();
-	}
-
 	public function testFormatConstraintImdb() {
 		$pattern = '(tt|nm|ch|co|ev)\d{7}';
 

@@ -51,12 +51,6 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 	}
 
-	protected function tearDown() {
-		unset( $this->uniquePropertyId );
-		unset( $this->lookup );
-		parent::tearDown();
-	}
-
 	public function testCheckUniqueValueConstraintInvalid() {
 		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
 		$statement->setGuid( 'Q6$e35707be-4a84-61fe-9b52-623784a316a7' );

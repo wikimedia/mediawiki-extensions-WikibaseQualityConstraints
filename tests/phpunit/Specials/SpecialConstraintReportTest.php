@@ -62,10 +62,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$this->tablesUsed[ ] = CONSTRAINT_TABLE;
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
-	}
-
 	protected function newSpecialPage() {
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();

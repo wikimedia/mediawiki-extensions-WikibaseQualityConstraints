@@ -66,13 +66,6 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$this->valueTypePropertyId = new PropertyId( 'P1234' );
 	}
 
-	protected function tearDown() {
-		unset( $this->lookup );
-		unset( $this->valueTypePropertyId );
-		unset( $this->valueTypeTypeChecker );
-		parent::tearDown();
-	}
-
 	public function testValueTypeConstraintInstanceValid() {
 		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$constraintParameters = [

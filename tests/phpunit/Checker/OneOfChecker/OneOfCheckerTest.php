@@ -46,11 +46,6 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	protected function tearDown() {
-		unset( $this->oneOfChecker );
-		parent::tearDown();
-	}
-
 	public function testOneOfConstraint() {
 		$valueIn = new EntityIdValue( new ItemId( 'Q1' ) );
 		$valueNotIn = new EntityIdValue( new ItemId( 'Q9' ) );
