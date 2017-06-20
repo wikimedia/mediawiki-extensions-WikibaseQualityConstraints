@@ -78,17 +78,17 @@
 		},
 		"WBQualityConstraintsInstanceOfId": {
 			"value": "P31",
-			"description": "The property ID of the 'instance of' property, which specifies the class(es) of an item.",
+			"description": "The property ID of the 'instance of' property (data type: item), which specifies the class(es) of an item.",
 			"public": true
 		},
 		"WBQualityConstraintsSubclassOfId": {
 			"value": "P279",
-			"description": "The property ID of the 'subclass of' property, which specifies the superclass(es) of an item.",
+			"description": "The property ID of the 'subclass of' property (data type: item), which specifies the superclass(es) of an item.",
 			"public": true
 		},
 		"WBQualityConstraintsPropertyConstraintId": {
 			"value": "P2302",
-			"description": "The property ID of the 'property constraint' property, which specifies the various constraints of a property.",
+			"description": "The property ID of the 'property constraint' property (data type: item), which specifies the various constraints of a property.",
 			"public": true
 		},
 		"WBQualityConstraintsDistinctValuesConstraintId": {
@@ -168,12 +168,12 @@
 		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
-			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",
+			"description": "The property ID of the 'relation' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
 			"public": true
 		},
 		"WBQualityConstraintsRelationId": {
 			"value": "P2309",
-			"description": "The property ID of the 'relation' property, which specifies the relation ('instance of' or 'subclass of') of a 'type' or 'value type' constraint.",
+			"description": "The property ID of the 'relation' property (data type: item), which specifies the relation ('instance of' or 'subclass of') of a 'type' or 'value type' constraint.",
 			"public": true
 		},
 		"WBQualityConstraintsInstanceOfRelationId": {
@@ -188,32 +188,32 @@
 		},
 		"WBQualityConstraintsPropertyId": {
 			"value": "P2306",
-			"description": "The property ID of the 'property' property, which specifies the property parameter of an 'inverse', 'item requires claim', 'value requires claim', 'difference within range', 'mandatory qualifiers', or 'qualifiers' constraint.",
+			"description": "The property ID of the 'property' property (data type: property), which specifies the property parameter of an 'inverse', 'item requires claim', 'value requires claim', 'difference within range', 'mandatory qualifiers', or 'qualifiers' constraint.",
 			"public": true
 		},
 		"WBQualityConstraintsQualifierOfPropertyConstraintId": {
 			"value": "P2305",
-			"description": "The property ID of the 'qualifier of property constraint' property, which specifies the item parameter of an 'item requires claim', 'value requires claim', or 'one of' constraint.",
+			"description": "The property ID of the 'qualifier of property constraint' property (data type: item), which specifies the item parameter of an 'item requires claim', 'value requires claim', or 'one of' constraint.",
 			"public": true
 		},
 		"WBQualityConstraintsMinimumQuantityId": {
 			"value": "P2313",
-			"description": "The property ID of the 'minimum quantity' property, which specifies the minimum quantity parameter of a 'range' or 'diff within range' constraint.",
+			"description": "The property ID of the 'minimum quantity' property (data type: quantity), which specifies the minimum quantity parameter of a 'range' or 'diff within range' constraint.",
 			"public": true
 		},
 		"WBQualityConstraintsMaximumQuantityId": {
 			"value": "P2312",
-			"description": "The property ID of the 'maximum quantity' property, which specifies the maximum quantity parameter of a 'range' or 'diff within range' constraint.",
+			"description": "The property ID of the 'maximum quantity' property (data type: quantity), which specifies the maximum quantity parameter of a 'range' or 'diff within range' constraint.",
 			"public": true
 		},
 		"WBQualityConstraintsMinimumDateId": {
 			"value": "P2310",
-			"description": "The property ID of the 'minimum date' property, which specifies the minimum date parameter of a 'range' or 'diff within range' constraint.",
+			"description": "The property ID of the 'minimum date' property (data type: point in time), which specifies the minimum date parameter of a 'range' or 'diff within range' constraint.",
 			"public": true
 		},
 		"WBQualityConstraintsMaximumDateId": {
 			"value": "P2311",
-			"description": "The property ID of the 'maximum date' property, which specifies the maximum date parameter of a 'range' or 'diff within range' constraint.",
+			"description": "The property ID of the 'maximum date' property (data type: point in time), which specifies the maximum date parameter of a 'range' or 'diff within range' constraint.",
 			"public": true
 		}
 	},
