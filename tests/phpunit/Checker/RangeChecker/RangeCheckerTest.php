@@ -58,7 +58,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
 		$this->checker = new RangeChecker(
 			$this->getConstraintParameterParser(),
-			new RangeCheckerHelper(),
+			new RangeCheckerHelper( $this->getDefaultConfig() ),
 			$this->getConstraintParameterRenderer()
 		);
 	}

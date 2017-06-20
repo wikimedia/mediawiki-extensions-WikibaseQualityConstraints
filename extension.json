@@ -179,6 +179,11 @@
 			"description": "The item ID of the 'range constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should be within a given range.",
 			"public": true
 		},
+		"WBQualityConstraintsDifferenceWithinRangeConstraintId": {
+			"value": "Q21510854",
+			"description": "The item ID of the 'difference within range constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the difference value of a given statement and of another given statement should be within a given range.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
@@ -227,6 +232,11 @@
 		"WBQualityConstraintsMaximumDateId": {
 			"value": "P2311",
 			"description": "The property ID of the 'maximum date' property (data type: point in time), which specifies the maximum date parameter of a 'range' or 'diff within range' constraint.",
+			"public": true
+		},
+		"WBQualityConstraintsYearUnit": {
+			"value": "http://www.wikidata.org/entity/Q577",
+			"description": "The unit used for a quantity that represents a difference between two dates, in years.",
 			"public": true
 		}
 	},
