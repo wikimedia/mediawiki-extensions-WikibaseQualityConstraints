@@ -207,7 +207,7 @@ class ConstraintReportFactory {
 				'Qualifier' => new QualifierChecker(),
 				'Qualifiers' => new QualifiersChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
 				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
-				'Range' => new RangeChecker( $constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
+				'Range' => new RangeChecker( $this->constraintStatementParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Diff within range' => new DiffWithinRangeChecker( $constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Type' => new TypeChecker( $this->lookup, $this->constraintStatementParameterParser, $typeCheckerHelper, $this->config ),
 				'Value type' => new ValueTypeChecker( $this->lookup, $this->constraintStatementParameterParser, $typeCheckerHelper, $this->config ),
@@ -235,6 +235,7 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsOneOfConstraintId' ) => $this->constraintCheckerMap['One of'],
 				$this->config->get( 'WBQualityConstraintsMandatoryQualifierConstraintId' ) => $this->constraintCheckerMap['Mandatory qualifiers'],
 				$this->config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' ) => $this->constraintCheckerMap['Qualifiers'],
+				$this->config->get( 'WBQualityConstraintsRangeConstraintId' ) => $this->constraintCheckerMap['Range'],
 			];
 		}
 

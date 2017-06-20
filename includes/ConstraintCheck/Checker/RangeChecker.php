@@ -7,7 +7,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -21,7 +21,7 @@ use Wikibase\DataModel\Statement\Statement;
 class RangeChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
 	private $constraintParameterParser;
 
@@ -36,16 +36,16 @@ class RangeChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 * @param RangeCheckerHelper $rangeCheckerHelper
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
-		ConstraintParameterParser $helper,
+		ConstraintStatementParameterParser $constraintParameterParser,
 		RangeCheckerHelper $rangeCheckerHelper,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
-		$this->constraintParameterParser = $helper;
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
@@ -80,80 +80,17 @@ class RangeChecker implements ConstraintChecker {
 
 		$dataValue = $mainSnak->getDataValue();
 
-		/*
-		 * error handling:
-		 *   type of $dataValue for properties with 'Range' constraint has to be 'quantity' or 'time' (also 'number' and 'decimal' could work)
-		 *   parameters (minimum_quantity and maximum_quantity) or (minimum_date and maximum_date) must not be null
-		 */
-		if ( $dataValue->getType() === 'quantity' ) {
-			if ( array_key_exists( 'minimum_quantity', $constraintParameters )
-				&& array_key_exists( 'maximum_quantity', $constraintParameters )
-				&& !array_key_exists( 'minimum_date', $constraintParameters )
-				&& !array_key_exists( 'maximum_date', $constraintParameters )
-			) {
-				$min = $constraintParameters['minimum_quantity'];
-				$max = $constraintParameters['maximum_quantity'];
-				$parameters['minimum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $min, true );
-				$parameters['maximum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $max, true );
-				$min = $this->rangeCheckerHelper->parseQuantity( $min );
-				$max = $this->rangeCheckerHelper->parseQuantity( $max );
-			} else {
-				$message = wfMessage( 'wbqc-violation-message-range-parameters-needed' )
-					->params( 'quantity', 'minimum_quantity', 'maximum_quantity' )->escaped();
-			}
-		} elseif ( $dataValue->getType() === 'time' ) {
-			if ( !array_key_exists( 'minimum_quantity', $constraintParameters )
-				&& !array_key_exists( 'maximum_quantity', $constraintParameters )
-				&& array_key_exists( 'minimum_date', $constraintParameters )
-				&& array_key_exists( 'maximum_date', $constraintParameters )
-			) {
-				$min = $constraintParameters['minimum_date'];
-				$max = $constraintParameters['maximum_date'];
-				$parameters['minimum_date'] = $this->constraintParameterParser->parseSingleParameter( $min, true );
-				$parameters['maximum_date'] = $this->constraintParameterParser->parseSingleParameter( $max, true );
-			} elseif ( array_key_exists( 'minimum_quantity', $constraintParameters )
-				&& array_key_exists( 'maximum_quantity', $constraintParameters )
-				&& !array_key_exists( 'minimum_date', $constraintParameters )
-				&& !array_key_exists( 'maximum_date', $constraintParameters )
-			) {
-				// Temporary workaround for T164087: ConstraintsFromTemplates always calls the
-				// parameters …_quantity, even for time properties, so fall back to that.
-				// TODO: Remove this `elseif` once we only import constraints from statements and
-				// the other ones have been removed from the constraints table in the database.
-				$min = $constraintParameters['minimum_quantity'];
-				$max = $constraintParameters['maximum_quantity'];
-				$parameters['minimum_date'] = $this->constraintParameterParser->parseSingleParameter( $min, true );
-				$parameters['maximum_date'] = $this->constraintParameterParser->parseSingleParameter( $max, true );
-			} else {
-				$message = wfMessage( 'wbqc-violation-message-range-parameters-needed' )
-					->params( 'time', 'minimum_date', 'maximum_date' )->escaped();
-			}
-			if ( isset( $min ) && isset( $max ) ) {
-				$now = gmdate( '+Y-m-d\T00:00:00\Z' );
-				if ( $min === 'now' ) {
-					$min = $now;
-				}
-				if ( $max === 'now' ) {
-					$max = $now;
-				}
-				$min = $this->rangeCheckerHelper->parseTime( $min );
-				$max = $this->rangeCheckerHelper->parseTime( $max );
-			}
-		} else {
-			$message = wfMessage( 'wbqc-violation-message-value-needed-of-types-2' )
-				->params( $constraint->getConstraintTypeName(), 'quantity', 'time' )->escaped();
+		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
+			$constraintParameters,
+			$constraint->getConstraintTypeName(),
+			$dataValue->getType()
+		);
+		$parameterKey = $dataValue->getType() === 'quantity' ? 'quantity' : 'date';
+		if ( $min !== null ) {
+			$parameters['minimum_' . $parameterKey] = [ $min ];
 		}
-
-		if ( isset( $message ) ) {
-			return new CheckResult(
-				$entity->getId(),
-				$statement,
-				$constraint->getConstraintTypeQid(),
-				$constraint->getConstraintId(),
-				$parameters,
-				CheckResult::STATUS_VIOLATION,
-				$message
-			);
+		if ( $max !== null ) {
+			$parameters['maximum_' . $parameterKey] = [ $max ];
 		}
 
 		if ( $this->rangeCheckerHelper->getComparison( $min, $dataValue ) > 0 ||
@@ -162,8 +99,8 @@ class RangeChecker implements ConstraintChecker {
 			$message->rawParams(
 				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
 				$this->constraintParameterRenderer->formatDataValue( $dataValue ),
-				$this->constraintParameterRenderer->formatDataValue( $min ),
-				$this->constraintParameterRenderer->formatDataValue( $max )
+				$min !== null ? $this->constraintParameterRenderer->formatDataValue( $min ) : '−∞',
+				$max !== null ? $this->constraintParameterRenderer->formatDataValue( $max ) : '∞'
 			);
 			$message = $message->escaped();
 			$status = CheckResult::STATUS_VIOLATION;

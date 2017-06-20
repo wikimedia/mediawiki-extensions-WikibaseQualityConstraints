@@ -36,15 +36,22 @@ class RangeCheckerHelper {
 	}
 
 	/**
-	 * @param DataValue $lhs left-hand side
-	 * @param DataValue $rhs right-hand side
+	 * Compare two values.
+	 * If one of them is null, return 0 (equal).
+	 *
+	 * @param DataValue|null $lhs left-hand side
+	 * @param DataValue|null $rhs right-hand side
 	 *
 	 * @throws InvalidArgumentException if the values do not both have the same, supported data value type
-	 * @return integer An integer less then, equal to, or greater than zero
+	 * @return integer An integer less than, equal to, or greater than zero
 	 *                 when $lhs is respectively less than, equal to, or greater than $rhs.
 	 *                 (In other words, just like the “spaceship” operator <=>.)
 	 */
-	public function getComparison( DataValue $lhs, DataValue $rhs ) {
+	public function getComparison( DataValue $lhs = null, DataValue $rhs = null ) {
+		if ( $lhs === null || $rhs === null ) {
+			return 0;
+		}
+
 		if ( $lhs->getType() !== $rhs->getType() ) {
 			throw new InvalidArgumentException( 'Different data value types' );
 		}
