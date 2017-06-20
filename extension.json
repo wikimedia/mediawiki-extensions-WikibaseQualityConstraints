@@ -156,6 +156,11 @@
 			"description": "The item ID of the 'mandatory qualifier' item, which, when used in a 'property constraint' statement on a property, indicates a given statement should have the given qualifier.",
 			"public": true
 		},
+		"WBQualityConstraintsAllowedQualifiersConstraintId": {
+			"value": "Q21510851",
+			"description": "The item ID of the 'allowed qualifiers constraint' item, which, when used in a 'property constraint' statement on a property, indicates a given statement should only have the given qualifiers.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property, which specifies the class/type of a 'type' or 'value type' constraint.",
