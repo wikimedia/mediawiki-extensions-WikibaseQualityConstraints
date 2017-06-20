@@ -108,6 +108,7 @@ class CheckConstraints extends ApiBase {
 		$statementGuidParser = $repo->getStatementGuidParser();
 		$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
+		$titleParser = MediaWikiServices::getInstance()->getTitleParser();
 		$constraintReportFactory = new ConstraintReportFactory(
 			$repo->getEntityLookup(),
 			$statementGuidParser,
@@ -119,7 +120,8 @@ class CheckConstraints extends ApiBase {
 				$constraintParameterRenderer
 			),
 			$repo->getRdfVocabulary(),
-			$repo->getEntityIdParser()
+			$repo->getEntityIdParser(),
+			$titleParser
 		);
 
 		return new CheckConstraints( $main, $name, $prefix, $repo->getEntityIdParser(),

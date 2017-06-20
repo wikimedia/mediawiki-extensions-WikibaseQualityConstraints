@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use MediaWiki\MediaWikiServices;
+use TitleParser;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
@@ -95,6 +96,11 @@ class ConstraintReportFactory {
 	private $entityIdParser;
 
 	/**
+	 * @var TitleParser
+	 */
+	private $titleParser;
+
+	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -111,6 +117,7 @@ class ConstraintReportFactory {
 				)
 			);
 			$config = MediaWikiServices::getInstance()->getMainConfig();
+			$titleParser = MediaWikiServices::getInstance()->getTitleParser();
 			$constraintParameterRenderer = new ConstraintParameterRenderer(
 				$entityIdFormatter,
 				$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
@@ -129,7 +136,8 @@ class ConstraintReportFactory {
 					$constraintParameterRenderer
 				),
 				$wikibaseRepo->getRdfVocabulary(),
-				$wikibaseRepo->getEntityIdParser()
+				$wikibaseRepo->getEntityIdParser(),
+				$titleParser
 			);
 		}
 
@@ -143,7 +151,8 @@ class ConstraintReportFactory {
 		ConstraintParameterRenderer $constraintParameterRenderer,
 		ConstraintParameterParser $constraintParameterParser,
 		RdfVocabulary $rdfVocabulary,
-		EntityIdParser $entityIdParser
+		EntityIdParser $entityIdParser,
+		TitleParser $titleParser
 	) {
 		$this->lookup = $lookup;
 		$this->statementGuidParser = $statementGuidParser;
@@ -152,6 +161,7 @@ class ConstraintReportFactory {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
+		$this->titleParser = $titleParser;
 	}
 
 	/**
@@ -211,7 +221,7 @@ class ConstraintReportFactory {
 				'Multi value' => new MultiValueChecker(),
 				'Unique value' => new UniqueValueChecker( $sparqlHelper ),
 				'Format' => new FormatChecker( $this->constraintParameterParser ),
-				'Commons link' => new CommonsLinkChecker( $this->constraintParameterParser ),
+				'Commons link' => new CommonsLinkChecker( $this->constraintParameterParser, $this->titleParser ),
 				'One of' => new OneOfChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
 			];
 			$this->constraintCheckerMap += [

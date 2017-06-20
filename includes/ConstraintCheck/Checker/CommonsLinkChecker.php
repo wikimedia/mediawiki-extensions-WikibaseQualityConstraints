@@ -2,6 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use MalformedTitleException;
+use TitleParser;
+use TitleValue;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -24,10 +27,20 @@ class CommonsLinkChecker implements ConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
-	 * @param ConstraintParameterParser $constraintParameterParser
+	 * @var TitleParser
 	 */
-	public function __construct( ConstraintParameterParser $constraintParameterParser ) {
+	private $titleParser;
+
+	/**
+	 * @param ConstraintParameterParser $constraintParameterParser
+	 * @param TitleParser $titleParser
+	 */
+	public function __construct(
+		ConstraintParameterParser $constraintParameterParser,
+		TitleParser $titleParser
+	) {
 		$this->constraintParameterParser = $constraintParameterParser;
+		$this->titleParser = $titleParser;
 	}
 
 	/**
@@ -70,20 +83,24 @@ class CommonsLinkChecker implements ConstraintChecker {
 
 		$commonsLink = $dataValue->getValue();
 
-		if ( $this->commonsLinkIsWellFormed( $commonsLink ) ) {
-			if ( strtolower( $namespace ) === 'file' ) {
-				if ( $this->fileExists( $commonsLink ) ) {
-					$message = '';
-					$status = CheckResult::STATUS_COMPLIANCE;
+		try {
+			if ( !$this->commonsLinkIsWellFormed( $commonsLink ) ) {
+				throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
+			}
+			$prefix = $namespace === '' ? '' : $namespace . ':';
+			$title = $this->titleParser->parseTitle( $prefix . $commonsLink, NS_MAIN );
+			if ( $this->pageExists( $title ) ) {
+				$message = '';
+				$status = CheckResult::STATUS_COMPLIANCE;
+			} else {
+				if ( $this->valueIncludesNamespace( $commonsLink, $namespace ) ) {
+					throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
 				} else {
 					$message = wfMessage( "wbqc-violation-message-commons-link-no-existent" )->escaped();
 					$status = CheckResult::STATUS_VIOLATION;
 				}
-			} else {
-				$message = wfMessage( "wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented" )->params( strtolower( $namespace ) )->escaped();
-				$status = CheckResult::STATUS_TODO;
 			}
-		} else {
+		} catch ( MalformedTitleException $e ) {
 			$message = wfMessage( "wbqc-violation-message-commons-link-not-well-formed" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
@@ -92,24 +109,25 @@ class CommonsLinkChecker implements ConstraintChecker {
 	}
 
 	/**
-	 * @param string $commonsLink
+	 * @param TitleValue $title
 	 *
 	 * @return bool
 	 */
-	private function fileExists( $commonsLink ) {
-		$commonsLink = str_replace( ' ', '_', $commonsLink );
+	private function pageExists( TitleValue $title ) {
 		$commonsWikiId = 'commonswiki';
-
 		if ( defined( 'MW_PHPUNIT_TEST' ) ) {
 			$commonsWikiId = false;
 		}
+
 		$dbLoadBalancer = wfGetLB( $commonsWikiId );
 		$dbConnection = $dbLoadBalancer->getConnection(
 			DB_REPLICA, false, $commonsWikiId );
-		$row = $dbConnection->selectRow(
-			'image', '*', [ 'img_name' => $commonsLink ] );
+		$row = $dbConnection->selectRow( 'page', '*', [
+			'page_title' => $title->getDBKey(),
+			'page_namespace' => $title->getNamespace()
+		] );
 
-		return $row ? true : false;
+		return $row !== false;
 	}
 
 	/**
@@ -118,9 +136,22 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * @return bool
 	 */
 	private function commonsLinkIsWellFormed( $commonsLink ) {
-		$toReplace = [ "_", ":", "%20" ];
+		$toReplace = [ "_", "%20" ];
 		$compareString = trim( str_replace( $toReplace, '', $commonsLink ) );
 		return $commonsLink === $compareString;
+	}
+
+	/**
+	 * Checks whether the value of the statement already includes the namespace.
+	 * This special case should be reported as “malformed title” instead of “title does not exist”.
+	 *
+	 * @param string $value
+	 * @param string $namespace
+	 * @return bool
+	 */
+	private function valueIncludesNamespace( $value, $namespace ) {
+		return $namespace !== '' &&
+			strncasecmp( $value, $namespace . ':', strlen( $namespace ) + 1 ) === 0;
 	}
 
 }
