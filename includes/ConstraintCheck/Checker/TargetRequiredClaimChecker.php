@@ -134,11 +134,11 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-target-required-claim' );
 			$message->rawParams(
-				$this->constraintParameterRenderer->formatItemId( $targetEntityId ),
-				$this->constraintParameterRenderer->formatEntityId( $propertyId )
+				$this->constraintParameterRenderer->formatItemId( $targetEntityId, ConstraintParameterRenderer::ROLE_SUBJECT ),
+				$this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_PREDICATE )
 			);
 			$message->numParams( count( $items ) );
-			$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items ) );
+			$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, ConstraintParameterRenderer::ROLE_OBJECT ) );
 			$message = $message->escaped();
 		}
 

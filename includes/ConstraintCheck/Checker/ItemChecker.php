@@ -101,11 +101,11 @@ class ItemChecker implements ConstraintChecker {
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-item' );
 			$message->rawParams(
-				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-				$this->constraintParameterRenderer->formatEntityId( $propertyId )
+				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
+				$this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_PREDICATE )
 			);
 			$message->numParams( count( $items ) );
-			$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items ) );
+			$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, ConstraintParameterRenderer::ROLE_OBJECT ) );
 			$message = $message->escaped();
 		}
 
