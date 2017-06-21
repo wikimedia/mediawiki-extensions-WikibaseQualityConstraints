@@ -547,4 +547,56 @@ class ConstraintStatementParameterParser {
 		}
 	}
 
+	/**
+	 * Parse a single string parameter.
+	 * @param array $snakSerialization
+	 * @param string $parameterId
+	 * @throws ConstraintParameterException
+	 * @return string
+	 */
+	private function parseStringParameter( array $snakSerialization, $parameterId ) {
+		$snak = $this->snakDeserializer->deserialize( $snakSerialization );
+		$this->requireValueParameter( $snak, $parameterId );
+		$value = $snak->getDataValue();
+		if ( $value instanceof StringValue ) {
+			return $value->getValue();
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-string' )
+					->rawParams(
+						$this->constraintParameterRenderer->formatPropertyId( $parameterId ),
+						$this->constraintParameterRenderer->formatDataValue( $value )
+					)
+					->escaped()
+			);
+		}
+	}
+
+	private function parseNamespaceParameterFromStatement( array $constraintParameters ) {
+		$namespaceId = $this->config->get( 'WBQualityConstraintsNamespaceId' );
+		$this->requireSingleParameter( $constraintParameters, $namespaceId );
+		return $this->parseStringParameter( $constraintParameters[$namespaceId][0], $namespaceId );
+	}
+
+	private function parseNamespaceParameterFromTemplate( array $constraintParameters ) {
+		return $constraintParameters['namespace'];
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeName used in error messages
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return string
+	 */
+	public function parseNamespaceParameter( array $constraintParameters, $constraintTypeName ) {
+		$namespaceId = $this->config->get( 'WBQualityConstraintsNamespaceId' );
+		if ( array_key_exists( $namespaceId, $constraintParameters ) ) {
+			return $this->parseNamespaceParameterFromStatement( $constraintParameters );
+		} elseif ( array_key_exists( 'namespace', $constraintParameters ) ) {
+			return $this->parseNamespaceParameterFromTemplate( $constraintParameters );
+		} else {
+			return '';
+		}
+	}
+
 }

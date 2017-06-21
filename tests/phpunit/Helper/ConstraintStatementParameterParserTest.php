@@ -650,4 +650,70 @@ class ConstraintStatementParameterParserTest extends \MediaWikiLangTestCase {
 		}
 	}
 
+	public function testParseNamespaceParameter() {
+		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$value = new StringValue( 'File' );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+
+		$parsed = $this->getConstraintParameterParser()->parseNamespaceParameter(
+			[ $namespaceId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			''
+		);
+
+		$this->assertEquals( 'File', $parsed );
+	}
+
+	public function testParseNamespaceParameterMissing() {
+		$parsed = $this->getConstraintParameterParser()->parseNamespaceParameter(
+			[],
+			''
+		);
+
+		$this->assertEquals( '', $parsed );
+	}
+
+	public function testParseNamespaceParameterFromTemplate() {
+		$parsed = $this->getConstraintParameterParser()->parseNamespaceParameter(
+			[ 'namespace' => 'File' ],
+			''
+		);
+
+		$this->assertEquals( 'File', $parsed );
+	}
+
+	public function testParseNamespaceParameterItemId() {
+		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$value = new EntityIdValue( new ItemId( 'Q1' ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseNamespaceParameter',
+			[
+				[ $namespaceId => [ $this->snakSerializer->serialize( $snak ) ] ],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-string'
+		);
+	}
+
+	public function testParseNamespaceParameterMultiple() {
+		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$value1 = new StringValue( 'File' );
+		$snak1 = new PropertyValueSnak( new PropertyId( 'P1' ), $value1 );
+		$value2 = new StringValue( 'Category' );
+		$snak2 = new PropertyValueSnak( new PropertyId( 'P1' ), $value2 );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseNamespaceParameter',
+			[
+				[ $namespaceId => [
+					$this->snakSerializer->serialize( $snak1 ),
+					$this->snakSerializer->serialize( $snak2 )
+				] ],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-single'
+		);
+	}
+
 }

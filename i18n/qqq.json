@@ -56,6 +56,7 @@
 	"wbqc-violation-message-parameter-entity": "Message for when the value of a constraint parameter must be an entity, but is some other kind of data value. $1 contains the parameter, $2 the value.",
 	"wbqc-violation-message-parameter-item": "Message for when the value of a constraint parameter must be an item, but is some other kind of entity. $1 contains the parameter, $2 the value.{{Related|wbqc-violation-message-parameter-entity}}",
 	"wbqc-violation-message-parameter-property": "Message for when the value of a constraint parameter must be a property, but is some other kind of entity. $1 contains the parameter, $2 the value.{{Related|wbqc-violation-message-parameter-entity}}",
+	"wbqc-violation-message-parameter-string": "Message for when the value of a constraint parameter must be a string, but is some other value type. $1 contains the parameter, $2 the value.",
 	"wbqc-violation-message-parameter-single": "Message for when a constraint parameter has multiple values but only supports one. $1 contains the parameter.",
 	"wbqc-violation-message-parameter-oneof": "Message for when a constraint parameter must be one of several values, but is something different. $1 contains the parameter, $2 the number of allowed values (possibly 1), $3 an HTML list of all allowed values, and $4, $5 etc. are the individual allowed values.{{Related|wbqc-violation-message-one-of}}",
 	"wbqc-violation-message-sparql-error": "Message for when a constraint checker runs a SPARQL query but the SPARQL endpoint returns an error instead of query results.",
