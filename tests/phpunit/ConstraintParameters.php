@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\DataValue;
+use DataValues\StringValue;
 use Serializers\Serializer;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -137,6 +138,17 @@ trait ConstraintParameters {
 			$minimumId => [ $snakSerializer->serialize( $minimumSnak ) ],
 			$maximumId => [ $snakSerializer->serialize( $maximumSnak ) ]
 		];
+	}
+
+	/**
+	 * @param string $namespace
+	 * @return array
+	 */
+	public function namespaceParameter( $namespace ) {
+		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$value = new StringValue( $namespace );
+		$snak = new PropertyValueSnak( new PropertyId( $namespaceId ), $value );
+		return [ $namespaceId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
 	}
 
 }

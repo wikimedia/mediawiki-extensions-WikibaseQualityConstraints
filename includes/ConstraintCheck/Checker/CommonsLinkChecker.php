@@ -6,7 +6,7 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Constraint;
 use Wikibase\DataModel\Statement\Statement;
@@ -19,15 +19,15 @@ use Wikibase\DataModel\Statement\Statement;
 class CommonsLinkChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
-	private $helper;
+	private $constraintParameterParser;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 */
-	public function __construct( ConstraintParameterParser $helper ) {
-		$this->helper = $helper;
+	public function __construct( ConstraintStatementParameterParser $constraintParameterParser ) {
+		$this->constraintParameterParser = $constraintParameterParser;
 	}
 
 	/**
@@ -42,11 +42,8 @@ class CommonsLinkChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
-		$namespace = '';
-		if ( array_key_exists( 'namespace', $constraintParameters ) ) {
-			$namespace = $constraintParameters['namespace'];
-			$parameters['namespace'] = $this->helper->parseSingleParameter( $namespace, true );
-		}
+		$namespace = $this->constraintParameterParser->parseNamespaceParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$parameters['namespace'] = [ $namespace ];
 
 		$mainSnak = $statement->getMainSnak();
 

@@ -184,6 +184,11 @@
 			"description": "The item ID of the 'difference within range constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the difference value of a given statement and of another given statement should be within a given range.",
 			"public": true
 		},
+		"WBQualityConstraintsCommonsLinkConstraintId": {
+			"value": "Q21510852",
+			"description": "The item ID of the 'commons link constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should be a valid link to Wikimedia Commons.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
