@@ -8,6 +8,7 @@
 			icon: 'alert',
 			iconTitle: mw.message( 'wbqc-potentialissues-long' ).text(),
 			framed: false,
+			classes: [ 'wbqc-reports-button' ],
 			popup: {
 				$content: new OO.ui.StackLayout( {
 					items: reports,
@@ -21,12 +22,7 @@
 				label: $( '<strong>' ).text( mw.message( 'wbqc-potentialissues-short' ).text() )
 			}
 		} );
-
-		widget.$element.css( {
-			'margin-inline-start': '0.5em',
-			'margin-left': '0.5em' // margin-inline-start is not supported by all browsers, margin-left is equivalent in ltr languages
-		} );
-		widget.popup.$element.css( 'z-index', 2 ); // prevent collision with rank selector and property grey field; TODO better way to do this?
+		widget.popup.$element.css( 'z-index', 2 ); // prevent collision with rank selector and property grey field
 
 		return widget;
 	}
@@ -36,7 +32,6 @@
 
 		if ( result.status === 'violation' ) {
 			$report = $( '<div>' ).addClass( 'wbqc-report' );
-			$report.css( 'border-top', '1px solid #eaecf0' ); // TODO move to CSS on .wbqc-report class
 			$heading = $( '<h4>' ).text( result.constraint.type );
 			$helpButton = new OO.ui.ButtonWidget( {
 				icon: 'help',
@@ -45,7 +40,6 @@
 				href: 'https://www.wikidata.org/wiki/Help:Property_constraints_portal/' + result.constraint.type,
 				target: '_blank'
 			} ).$element;
-			$helpButton.css( 'transform', 'scale(0.75)' ); // TODO move to CSS on .wbqc-constraint-type-help class
 			$heading.append( $helpButton );
 			$report.append( $heading );
 			if ( result[ 'message-html' ] ) {
@@ -93,32 +87,30 @@
 		}
 	}
 
-	if ( mw.config.get( 'wgMFMode' ) ) {
-		// mobile frontend, skip
+	entityId = mw.config.get( 'wbEntityId' );
+
+	if ( entityId === null || mw.config.get( 'wgMFMode' ) ) {
+		// no entity or mobile frontend, skip
 		return;
 	}
 
-	entityId = mw.config.get( 'wbEntityId' );
-
-	if ( entityId !== null ) {
-		mw.loader.using( [
-			'mediawiki.api',
-			'oojs-ui-core',
-			'oojs-ui-widgets',
-			'oojs-ui.styles.icons-alerts',
-			'oojs-ui.styles.icons-interactions',
-			'wikibase.quality.constraints.ui'
-		] ).done( function () {
-			var api = new mw.Api();
-			api.get( {
-				action: 'wbcheckconstraints',
-				format: 'json',
-				uselang: mw.config.get( 'wgUserLanguage' ),
-				id: entityId
-			} ).done( function( data ) {
-				$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak .wikibase-snakview-value' )
-					.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
-			} );
+	mw.loader.using( [
+		'mediawiki.api',
+		'oojs-ui-core',
+		'oojs-ui-widgets',
+		'oojs-ui.styles.icons-alerts',
+		'oojs-ui.styles.icons-interactions',
+		'wikibase.quality.constraints.ui'
+	] ).done( function () {
+		var api = new mw.Api();
+		api.get( {
+			action: 'wbcheckconstraints',
+			format: 'json',
+			uselang: mw.config.get( 'wgUserLanguage' ),
+			id: entityId
+		} ).then( function( data ) {
+			$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak .wikibase-snakview-value' )
+				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 		} );
-	}
+	} );
 } )( mediaWiki, jQuery, OO );

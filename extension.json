@@ -50,6 +50,19 @@
 				"wbqc-potentialissues-short",
 				"wbqc-potentialissues-long"
 			]
+		},
+		"wikibase.quality.constraints.gadget": {
+			"scripts": "modules/gadget.js",
+			"styles": "modules/gadget.css",
+			"dependencies": [
+				"mediawiki.api",
+				"oojs-ui-core",
+				"oojs-ui-widgets",
+				"oojs-ui.styles.icons-alerts",
+				"oojs-ui.styles.icons-interactions",
+				"wikibase.quality.constraints.ui"
+			],
+			"skipFunction": "modules/gadget-skip.js"
 		}
 	},
 	"JobClasses": {

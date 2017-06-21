@@ -1,0 +1,9 @@
+.wbqc-reports-button {
+	margin-left: 0.5em;
+}
+.wbqc-report {
+	border-top: 1px solid #eaecf0;
+}
+.wbqc-constraint-type-help {
+	transform: scale( 0.75 );
+}
