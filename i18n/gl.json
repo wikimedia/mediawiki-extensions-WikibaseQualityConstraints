@@ -68,7 +68,5 @@
 	"wbqc-violation-message-single-value": "Esta propiedade só debe ter un único valor. Isto é, debe haber só unha afirmación usando esta propiedade.",
 	"wbqc-violation-message-symmetric": "Esta propiedade só debe ser usada cando hai unha declaración no seu valor entidade coa mesma propiedade e este obxecto co seu valor.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "O parámetro \"relation\" (relación) debe ser \"instance\" (caso) ou \"subclass\" (subclase).",
-	"wbqc-violation-message-unique-value": "Este valor de propiedade non debe estar presente en ningún outro elemento.",
-	"wbqc-violation-message-sparql-type": "Esta propiedade só debe ser usada en obxectos que están en relación co obxecto (ou unha subclase do obxecto) definida nos parámetros.",
-	"wbqc-violation-message-sparql-value-type": "O valor da entidade asociada á propiedade debe estar na relación co obxecto definido nos parámetros (ou unha subclase do obxecto)."
+	"wbqc-violation-message-unique-value": "Este valor de propiedade non debe estar presente en ningún outro elemento."
 }

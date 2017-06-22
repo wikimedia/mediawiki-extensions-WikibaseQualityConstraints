@@ -3,7 +3,8 @@
 		"authors": [
 			"Cvanca",
 			"Mormegil",
-			"Matěj Suchánek"
+			"Matěj Suchánek",
+			"Dvorapa"
 		]
 	},
 	"wbqc-constraintreport": "Zpráva o omezeních",
@@ -42,7 +43,7 @@
 	"wbqc-violation-message-parameters-needed-3": "Vlastnosti s omezením „$1“ potřebují parametry „$2“, „$3“ a „$4“.",
 	"wbqc-violation-message-target-entity-must-exist": "Cílová entita musí existovat.",
 	"wbqc-violation-message-value-entity-must-exist": "Entita v hodnotě musí existovat.",
-	"wbqc-violation-message-parameter-value": "Parametr „$1“ musí mít skutečnou hodnotu, nikoliv „žádnou“ nebo „neznámou hodnotu“.",
+	"wbqc-violation-message-parameter-value": "Parametr „$1“ musí mít nastavenou hodnotu, nikoliv „žádnou“ nebo „neznámou hodnotu“.",
 	"wbqc-violation-message-parameter-entity": "Hodnota parametru „$1“ musí být entita, nikoliv „$2“.",
 	"wbqc-violation-message-parameter-property": "Hodnota parametru „$1“ musí být vlastnost, nikoliv „$2“.",
 	"wbqc-violation-message-parameter-single": "Parametr „$1“ může mít pouze jednu hodnotu.",
@@ -65,7 +66,7 @@
 	"wbqc-violation-message-qualifier": "Tato vlastnost by měla být používána pouze jako vymezení.",
 	"wbqc-violation-message-no-qualifiers": "Tvrzení vlastnosti $1 by nemělo mít žádná vymezení.",
 	"wbqc-violation-message-qualifiers": "$2 není platné vymezení vlastnosti $1 – {{PLURAL:$3|1=jediné platné vymezení je $5.|2=jediná platná vymezení jsou $5 a $6.|jediná platná vymezení jsou:$4}}",
-	"wbqc-violation-message-range-parameters-needed": "Vlastnosti s hodnotami typu „$1“ a omezením „Rozdíl“ potřebují parametry „$2“ a „$3“.",
+	"wbqc-violation-message-range-parameters-needed": "Vlastnosti s hodnotami typu „$1“ a omezením „$4“ potřebují parametry „$2“ a „$3“.",
 	"wbqc-violation-message-range": "Hodnota vlastnosti $1 ($2) by měla být mezi $3 a $4 ([$3, $4]).",
 	"wbqc-violation-message-single-value": "Tato vlastnost by měla obsahovat pouze jednu hodnotu. To znamená, že by zde mělo být pouze jedno tvrzení používající tuto vlastnost.",
 	"wbqc-violation-message-symmetric": "$1 by také měla mít symetrické tvrzení $2 $3.",
@@ -75,7 +76,5 @@
 	"wbqc-violation-message-valueType-instance": "Hodnoty tvrzení vlastnosti $1 by měly být instancemi {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-valueType-subclass": "Hodnoty tvrzení vlastnosti $1 by měly být podtřídami {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 by také měla mít {{PLURAL:$3|0=tvrzení vlastnosti $2.|1=tvrzení vlastnosti $2 s hodnotou $5.|tvrzení vlasnosti $2 s jednou z následujících hodnot:$4}}",
-	"wbqc-violation-message-unique-value": "Hodnota této vlastnosti nesmí být použita v žádné jiné položce.",
-	"wbqc-violation-message-sparql-type": "Tuto vlastnost lze používat pouze v položkách, které jsou ve vztahu k položce (nebo její podtřídě) daném parametry.",
-	"wbqc-violation-message-sparql-value-type": "Entitu hodnoty této vlastnosti musí být ve vztahu k položce (nebo její podtřídě) daném parametry."
+	"wbqc-violation-message-unique-value": "Hodnota této vlastnosti nesmí být použita v žádné jiné položce."
 }
