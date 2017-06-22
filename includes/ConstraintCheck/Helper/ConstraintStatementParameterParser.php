@@ -536,7 +536,6 @@ class ConstraintStatementParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				wfMessage( 'wbqc-violation-message-range-parameters-needed' )
-					->params( $constraintTypeName )
 					->rawParams(
 						wfMessage( 'datatypes-type-' . $type )->escaped(),
 						$this->constraintParameterRenderer->formatPropertyId( $minimumId ),
