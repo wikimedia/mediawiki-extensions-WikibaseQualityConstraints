@@ -31,8 +31,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChec
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeSparqlChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeSparqlChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
@@ -217,8 +215,6 @@ class ConstraintReportFactory {
 				'Format' => new FormatChecker( $constraintParameterParser ),
 				'Commons link' => new CommonsLinkChecker( $constraintParameterParser ),
 				'One of' => new OneOfChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
-				'Type (SPARQL)' => new TypeSparqlChecker( $this->lookup, $constraintParameterParser, $sparqlHelper ),
-				'Value type (SPARQL)' => new ValueTypeSparqlChecker( $this->lookup, $constraintParameterParser, $sparqlHelper ),
 			];
 			$this->constraintCheckerMap += [
 				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ) => $this->constraintCheckerMap['Unique value'],
