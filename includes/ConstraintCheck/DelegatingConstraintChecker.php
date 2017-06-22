@@ -162,11 +162,6 @@ class DelegatingConstraintChecker {
 	private function checkStatement( EntityDocument $entity, Statement $statement, $constraintIds = null ) {
 		$result = [];
 
-		if ( $statement->getMainSnak()->getType() !== 'value' ) {
-			// skip 'somevalue' and 'novalue' cases, todo: handle in a better way
-			return [];
-		}
-
 		$constraints = $this->constraintLookup->queryConstraintsForProperty(
 			$statement->getPropertyId()
 		);
