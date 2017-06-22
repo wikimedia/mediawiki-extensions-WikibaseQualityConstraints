@@ -599,4 +599,40 @@ class ConstraintStatementParameterParser {
 		}
 	}
 
+	private function parseFormatParameterFromStatement( array $constraintParameters ) {
+		$formatId = $this->config->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$this->requireSingleParameter( $constraintParameters, $formatId );
+		return $this->parseStringParameter( $constraintParameters[$formatId][0], $formatId );
+	}
+
+	private function parseFormatParameterFromTemplate( array $constraintParameters ) {
+		$pattern = $constraintParameters['pattern'];
+		$pattern = htmlspecialchars_decode( $pattern );
+		$pattern = str_replace( '<code>', '', $pattern );
+		$pattern = str_replace( '</code>', '', $pattern );
+		return $pattern;
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeName used in error messages
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return string
+	 */
+	public function parseFormatParameter( array $constraintParameters, $constraintTypeName ) {
+		$formatId = $this->config->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		if ( array_key_exists( $formatId, $constraintParameters ) ) {
+			return $this->parseFormatParameterFromStatement( $constraintParameters );
+		} elseif ( array_key_exists( 'pattern', $constraintParameters ) ) {
+			return $this->parseFormatParameterFromTemplate( $constraintParameters );
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-needed' )
+					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $formatId ) )
+					->escaped()
+			);
+		}
+	}
+
 }

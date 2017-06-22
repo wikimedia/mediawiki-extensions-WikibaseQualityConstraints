@@ -244,6 +244,11 @@
 			"description": "The property ID of the 'namespace' property (data type: string), which specifies the namespace parameter of a 'commons link' constraint.",
 			"public": true
 		},
+		"WBQualityConstraintsFormatAsARegularExpressionId": {
+			"value": "P2307",
+			"description": "The property ID of the 'format as a regular expression' property (data type: string), which specifies the format parameter of a 'format' constraint.",
+			"public": true
+		},
 		"WBQualityConstraintsYearUnit": {
 			"value": "http://www.wikidata.org/entity/Q577",
 			"description": "The unit used for a quantity that represents a difference between two dates, in years.",

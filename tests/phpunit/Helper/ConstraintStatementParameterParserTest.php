@@ -716,4 +716,81 @@ class ConstraintStatementParameterParserTest extends \MediaWikiLangTestCase {
 		);
 	}
 
+	public function testParseFormatParameter() {
+		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$value = new StringValue( '\d\.(\d{1,2}|-{1})\.(\d{1,2}|-{1})\.(\d{1,3}|-{1})' );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+
+		$parsed = $this->getConstraintParameterParser()->parseFormatParameter(
+			[ $formatId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			''
+		);
+
+		$this->assertEquals( '\d\.(\d{1,2}|-{1})\.(\d{1,2}|-{1})\.(\d{1,3}|-{1})', $parsed );
+	}
+
+	public function testParseFormatParameterMissing() {
+		$this->assertThrowsConstraintParameterException(
+			'parseFormatParameter',
+			[
+				[],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-needed'
+		);
+	}
+
+	public function testParseFormatParameterFromTemplate() {
+		$parsed = $this->getConstraintParameterParser()->parseFormatParameter(
+			[ 'pattern' => '\d\.(\d{1,2}|-{1})\.(\d{1,2}|-{1})\.(\d{1,3}|-{1})' ],
+			''
+		);
+
+		$this->assertEquals( '\d\.(\d{1,2}|-{1})\.(\d{1,2}|-{1})\.(\d{1,3}|-{1})', $parsed );
+	}
+
+	public function testParseFormatParameterFromTemplateHtmlEscaped() {
+		$parsed = $this->getConstraintParameterParser()->parseFormatParameter(
+			[ 'pattern' => '&lt;code>[1-9]\d{0,6}&lt;/code>' ], // pattern from https://www.wikidata.org/wiki/Property_talk:P1553
+			''
+		);
+
+		$this->assertEquals( '[1-9]\d{0,6}', $parsed );
+	}
+
+	public function testParseFormatParameterItemId() {
+		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$value = new EntityIdValue( new ItemId( 'Q1' ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseFormatParameter',
+			[
+				[ $formatId => [ $this->snakSerializer->serialize( $snak ) ] ],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-string'
+		);
+	}
+
+	public function testParseFormatParameterMultiple() {
+		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$value1 = new StringValue( '\d\.(\d{1,2}|-{1})\.(\d{1,2}|-{1})\.(\d{1,3}|-{1})' );
+		$snak1 = new PropertyValueSnak( new PropertyId( 'P1' ), $value1 );
+		$value2 = new StringValue( '\d+' );
+		$snak2 = new PropertyValueSnak( new PropertyId( 'P1' ), $value2 );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseFormatParameter',
+			[
+				[ $formatId => [
+					$this->snakSerializer->serialize( $snak1 ),
+					$this->snakSerializer->serialize( $snak2 )
+				] ],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-single'
+		);
+	}
+
 }
