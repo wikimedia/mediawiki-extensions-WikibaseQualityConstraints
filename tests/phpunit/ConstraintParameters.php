@@ -78,6 +78,22 @@ trait ConstraintParameters {
 	}
 
 	/**
+	 * @param string $propertyId property ID serialization
+	 * @return array
+	 */
+	public function propertyParameter( $propertyId ) {
+		$propertyParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
+		return [
+			$propertyParameterId => [ $this->getSnakSerializer()->serialize(
+				new PropertyValueSnak(
+					new PropertyId( $propertyParameterId ),
+					new EntityIdValue( new PropertyId( $propertyId ) )
+				)
+			) ]
+		];
+	}
+
+	/**
 	 * @param string[] $properties property ID serializations
 	 * @return array
 	 */

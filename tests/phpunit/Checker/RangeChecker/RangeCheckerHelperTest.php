@@ -11,6 +11,7 @@ use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper
@@ -25,12 +26,14 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
  */
 class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
+	use DefaultConfig;
+
 	/**
 	 * @dataProvider getComparisonProvider
 	 */
 	public function testGetComparison( $expected, DataValue $lhs, DataValue $rhs ) {
 		$this->assertContains( $expected, [ -1, 0, 1 ], '$expected must be -1, 0, or 1' );
-		$rangeCheckHelper = new RangeCheckerHelper();
+		$rangeCheckHelper = new RangeCheckerHelper( $this->getDefaultConfig() );
 		$actual = $rangeCheckHelper->getComparison( $lhs, $rhs );
 		switch ( $expected ) {
 			case -1:
@@ -65,8 +68,8 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	 * @dataProvider getDifferenceProvider
 	 */
 	public function testGetDifference( $expected, DataValue $minuend, DataValue $subtrahend ) {
-		$rangeCheckHelper = new RangeCheckerHelper();
-		$actual = $rangeCheckHelper->getDifference( $minuend, $subtrahend );
+		$rangeCheckHelper = new RangeCheckerHelper( $this->getDefaultConfig() );
+		$actual = $rangeCheckHelper->getDifference( $minuend, $subtrahend )->getAmount()->getValueFloat();
 		$this->assertSame( $expected, $actual );
 	}
 
@@ -91,7 +94,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testGetComparison_unsupportedDataValueTypeThrowsException() {
-		$rangeCheckHelper = new RangeCheckerHelper();
+		$rangeCheckHelper = new RangeCheckerHelper( $this->getDefaultConfig() );
 		$rangeCheckHelper->getComparison( new StringValue( 'kittens' ), new StringValue( 'puppies' ) );
 	}
 
@@ -99,17 +102,17 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testGetComparison_differingDataValueTypeThrowsException() {
-		$rangeCheckHelper = new RangeCheckerHelper();
+		$rangeCheckHelper = new RangeCheckerHelper( $this->getDefaultConfig() );
 		$rangeCheckHelper->getComparison( $this->getQuantityValue( 42.0 ), $this->getTimeValue( 1970 ) );
 	}
 
 	public function testParseTime_year() {
-		$rangeCheckHelper = new RangeCheckerHelper();
+		$rangeCheckHelper = new RangeCheckerHelper( $this->getDefaultConfig() );
 		$this->assertSame( '+1970-00-00T00:00:00Z', $rangeCheckHelper->parseTime( '1970' )->getTime() );
 	}
 
 	public function testParseTime_yearMonthDay() {
-		$rangeCheckHelper = new RangeCheckerHelper();
+		$rangeCheckHelper = new RangeCheckerHelper( $this->getDefaultConfig() );
 		$this->assertSame( '+1970-01-01T00:00:00Z', $rangeCheckHelper->parseTime( '1970-01-01' )->getTime() );
 	}
 

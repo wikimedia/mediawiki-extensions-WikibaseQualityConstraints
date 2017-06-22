@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
+use Config;
 use DataValues\DataValue;
 use DataValues\QuantityValue;
 use DataValues\TimeValue;
@@ -21,6 +22,11 @@ use Wikibase\Repo\Parsers\TimeParserFactory;
 class RangeCheckerHelper {
 
 	/**
+	 * @var Config
+	 */
+	private $config;
+
+	/**
 	 * @var ValueParser
 	 */
 	private $timeParser;
@@ -30,7 +36,8 @@ class RangeCheckerHelper {
 	 */
 	private $timeCalculator;
 
-	public function __construct() {
+	public function __construct( Config $config ) {
+		$this->config = $config;
 		$this->timeParser = ( new TimeParserFactory() )->getTimeParser();
 		$this->timeCalculator = new TimeValueCalculator();
 	}
@@ -95,11 +102,13 @@ class RangeCheckerHelper {
 	 * @param TimeValue|QuantityValue|UnboundedQuantityValue $subtrahend
 	 *
 	 * @throws InvalidArgumentException if the values do not both have the same, supported data value type
-	 * @return float
+	 * @return UnboundedQuantityValue
 	 */
 	public function getDifference( DataValue $minuend, DataValue $subtrahend ) {
 		if ( $minuend->getType() === 'time' && $subtrahend->getType() === 'time' ) {
 			// difference in years
+			// TODO calculate difference in days once we no longer import constraints from statements
+			// (then the range for the endpoints will also have units and we can convert as needed)
 			if ( !preg_match( '/^([-+]\d{1,16})-/', $minuend->getTime(), $minuendMatches ) ||
 				 !preg_match( '/^([-+]\d{1,16})-/', $subtrahend->getTime(), $subtrahendMatches ) ) {
 				throw new InvalidArgumentException( 'TimeValue::getTime() did not match expected format' );
@@ -112,11 +121,13 @@ class RangeCheckerHelper {
 			} elseif ( $minuendYear < 0.0 && $subtrahendYear > 0.0 ) {
 				$diff += 1.0; // there is no year 0, remove it from negative difference
 			}
-			return $diff;
+			$unit = $this->config->get( 'WBQualityConstraintsYearUnit' ); // TODO unit for days
+			return UnboundedQuantityValue::newFromNumber( $diff, $unit );
 		}
 		if ( $minuend->getType() === 'quantity' && $subtrahend->getType() === 'quantity' ) {
 			// TODO normalize values: T164371
-			return (float)$minuend->getAmount()->getValue() - (float)$subtrahend->getAmount()->getValue();
+			$diff = (float)$minuend->getAmount()->getValue() - (float)$subtrahend->getAmount()->getValue();
+			return UnboundedQuantityValue::newFromNumber( $diff, $minuend->getUnit() );
 		}
 
 		throw new InvalidArgumentException( 'Unsupported or different data value types' );

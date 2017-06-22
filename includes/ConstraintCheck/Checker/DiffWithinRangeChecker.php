@@ -7,7 +7,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -21,7 +21,7 @@ use Wikibase\DataModel\Statement\Statement;
 class DiffWithinRangeChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
 	private $constraintParameterParser;
 
@@ -36,16 +36,16 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 * @param RangeCheckerHelper $rangeCheckerHelper
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
-		ConstraintParameterParser $helper,
+		ConstraintStatementParameterParser $constraintParameterParser,
 		RangeCheckerHelper $rangeCheckerHelper,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
-		$this->constraintParameterParser = $helper;
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
@@ -62,11 +62,6 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
-		$property = false;
-		if ( array_key_exists( 'property', $constraintParameters ) ) {
-			$property = strtoupper( $constraintParameters['property'] ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
-			$parameters['property'] = $this->constraintParameterParser->parseSingleParameter( $property );
-		}
 
 		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
 			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
@@ -85,33 +80,26 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 		$dataValue = $mainSnak->getDataValue();
 
-		/*
-		 * error handling:
-		 *   type of $dataValue for properties with 'Diff within range' constraint has to be 'quantity' or 'time' (also 'number' and 'decimal' could work)
-		 *   parameters $property, $minimum_quantity and $maximum_quantity must not be null
-		 */
-		if ( $dataValue->getType() === 'quantity' || $dataValue->getType() === 'time' ) {
-			if ( $property && array_key_exists( 'minimum_quantity', $constraintParameters ) && array_key_exists( 'maximum_quantity', $constraintParameters ) ) {
-				$min = $constraintParameters['minimum_quantity'];
-				$max = $constraintParameters['maximum_quantity'];
-				$parameters['minimum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['minimum_quantity'], true );
-				$parameters['maximum_quantity'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['maximum_quantity'], true );
-			} else {
-				$message = wfMessage( 'wbqc-violation-message-parameters-needed-3' )
-					->params( $constraint->getConstraintTypeName(), 'property', 'minimum_quantity', 'maximum_quantity' )
-					->escaped();
-			}
-		} else {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-types-2" )->params( $constraint->getConstraintTypeName(), 'quantity', 'time' )->escaped();
+		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
+			$constraintParameters,
+			$constraint->getConstraintTypeName(),
+			'quantity'
+		);
+		$property = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+
+		$parameterKey = $dataValue->getType() === 'quantity' ? 'quantity' : 'date';
+		if ( $min !== null ) {
+			$parameters['minimum_' . $parameterKey] = [ $min ];
 		}
-		if ( isset( $message ) ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
+		if ( $max !== null ) {
+			$parameters['maximum_' . $parameterKey] = [ $max ];
 		}
+		$parameter['property'] = [ $property ];
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		/** @var Statement $otherStatement */
 		foreach ( $entity->getStatements() as $otherStatement ) {
-			if ( $property === $otherStatement->getPropertyId()->getSerialization() ) {
+			if ( $property->equals( $otherStatement->getPropertyId() ) ) {
 				$otherMainSnak = $otherStatement->getMainSnak();
 
 				/*
@@ -134,17 +122,18 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				if ( $otherMainSnak->getDataValue()->getType() === $dataValue->getType() && $otherMainSnak->getType() === 'value' ) {
 					$diff = $this->rangeCheckerHelper->getDifference( $dataValue, $otherMainSnak->getDataValue() );
 
-					if ( $diff < $min || $diff > $max ) {
-						$message = wfMessage( 'wbqc-violation-message-diff-within-range' );
-						$message->rawParams(
-							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-							$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue() ),
-							$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId() ),
-							$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue() )
-						);
-						// TODO once we import constraints from statements, $min and $max here will also be DataValues
-						$message->numParams( $min, $max );
-						$message = $message->escaped();
+					if ( $this->rangeCheckerHelper->getComparison( $min, $diff ) > 0 ||
+						$this->rangeCheckerHelper->getComparison( $diff, $max ) > 0 ) {
+						$message = wfMessage( 'wbqc-violation-message-diff-within-range' )
+							->rawParams(
+								$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+								$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue() ),
+								$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId() ),
+								$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue() ),
+								$min !== null ? $this->constraintParameterRenderer->formatDataValue( $min ) : '−∞',
+								$max !== null ? $this->constraintParameterRenderer->formatDataValue( $max ) : '∞'
+							)
+							->escaped();
 						$status = CheckResult::STATUS_VIOLATION;
 					} else {
 						$message = '';

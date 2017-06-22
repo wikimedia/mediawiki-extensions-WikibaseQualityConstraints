@@ -177,7 +177,7 @@ class ConstraintReportFactory {
 		if ( $this->constraintCheckerMap === null ) {
 			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
-			$rangeCheckerHelper = new RangeCheckerHelper();
+			$rangeCheckerHelper = new RangeCheckerHelper( $this->config );
 			if ( $this->config->get( 'WBQualityConstraintsSparqlEndpoint' ) !== '' ) {
 				$sparqlHelper = new SparqlHelper(
 					$this->config,
@@ -206,7 +206,7 @@ class ConstraintReportFactory {
 				'Qualifiers' => new QualifiersChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
 				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
 				'Range' => new RangeChecker( $this->constraintStatementParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
-				'Diff within range' => new DiffWithinRangeChecker( $constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
+				'Diff within range' => new DiffWithinRangeChecker( $this->constraintStatementParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Type' => new TypeChecker( $this->lookup, $this->constraintStatementParameterParser, $typeCheckerHelper, $this->config ),
 				'Value type' => new ValueTypeChecker( $this->lookup, $this->constraintStatementParameterParser, $typeCheckerHelper, $this->config ),
 				'Single value' => new SingleValueChecker(),
@@ -232,6 +232,7 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsMandatoryQualifierConstraintId' ) => $this->constraintCheckerMap['Mandatory qualifiers'],
 				$this->config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' ) => $this->constraintCheckerMap['Qualifiers'],
 				$this->config->get( 'WBQualityConstraintsRangeConstraintId' ) => $this->constraintCheckerMap['Range'],
+				$this->config->get( 'WBQualityConstraintsDifferenceWithinRangeConstraintId' ) => $this->constraintCheckerMap['Diff within range'],
 			];
 		}
 
