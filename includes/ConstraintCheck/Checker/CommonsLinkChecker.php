@@ -48,10 +48,6 @@ class CommonsLinkChecker implements ConstraintChecker {
 			$parameters['namespace'] = $this->helper->parseSingleParameter( $namespace, true );
 		}
 
-		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
-		}
-
 		$mainSnak = $statement->getMainSnak();
 
 		/*

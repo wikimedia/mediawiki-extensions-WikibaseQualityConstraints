@@ -58,10 +58,6 @@ class OneOfChecker implements ConstraintChecker {
 		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeName(), true );
 		$parameters['item'] = $items;
 
-		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
-		}
-
 		$mainSnak = $statement->getMainSnak();
 
 		$message = wfMessage( 'wbqc-violation-message-one-of' );

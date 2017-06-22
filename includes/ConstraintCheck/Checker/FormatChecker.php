@@ -51,10 +51,6 @@ class FormatChecker implements ConstraintChecker {
 			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->helper->parseSingleParameter( $constraintParameters['constraint_status'], true );
-		}
-
 		$mainSnak = $statement->getMainSnak();
 
 		/*

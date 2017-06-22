@@ -93,10 +93,6 @@ class ValueTypeChecker implements ConstraintChecker {
 		}
 		$parameters['relation'] = [ $relation ];
 
-		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = strval( $constraintParameters['constraint_status'] );
-		}
-
 		$mainSnak = $statement->getMainSnak();
 
 		/*

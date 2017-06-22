@@ -76,10 +76,6 @@ class InverseChecker implements ConstraintChecker {
 		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeName() );
 		$parameters['property'] = [ $propertyId ];
 
-		if ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
-			$parameters['constraint_status'] = $this->constraintParameterParser->parseSingleParameter( $constraintParameters['constraint_status'], true );
-		}
-
 		$mainSnak = $statement->getMainSnak();
 
 		/*
