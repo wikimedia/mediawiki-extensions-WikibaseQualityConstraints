@@ -3,11 +3,13 @@
 		"authors": [
 			"Sjoerddebruin",
 			"Macofe",
-			"Siebrand"
+			"Siebrand",
+			"Mainframe98"
 		]
 	},
 	"wbqc-constraintreport": "Beperkingenrapportage",
-	"wbqc-constraintreport-explanation-part-one": "Via deze pagina kunt u een beperkingencontrole uitvoeren voor iedere entiteit. De entiteiten worden uit het productiesysteem opgehaald, dus iedere overtreding op de beperkingen die u hier oplost, wordt direct uit deze lijst verwijderd.",
+	"wbqc-desc": "Controleert beperkingen op zowel items als eigenschappen en toont de resultaten op een speciale pagina.",
+	"wbqc-constraintreport-explanation-part-one": "Via deze pagina kunt u een beperkingencontrole uitvoeren op de gewenste entiteit. De entiteiten worden uit het productiesysteem opgehaald, dus iedere overtreding op de beperkingen die u hier oplost, wordt direct uit deze lijst verwijderd.",
 	"wbqc-constraintreport-explanation-part-two": "De beperkingen worden eens per week verwerkt vanaf de overlegpagina van de eigenschap, dus als u een beperking toevoegt, verwijdert of aanpast, kan het tot een week duren voordat deze is opgenomen in deze rapportage. Er wordt momenteel gewerkt aan het migreren van beperkingen naar beweringen bij eigenschappen, zodat via deze pagina direct controles uitgevoerd kunnen worden.",
 	"wbqc-constraintreport-form-section": "Beperkingen voor entiteit controleren",
 	"wbqc-constraintreport-form-submit-label": "Controleren",
@@ -28,6 +30,8 @@
 	"wbqc-constraintreport-no-parameter": "geen",
 	"wbqc-potentialissues-short": "Mogelijke problemen",
 	"wbqc-potentialissues-long": "Deze verklaring heeft mogelijke problemen.",
+	"apihelp-wbcheckconstraints-description": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
+	"apihelp-wbcheckconstraints-summary": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
 	"apihelp-wbcheckconstraints-example-1": "Alle beperkingen voor de items Q5 en Q42 controleren.",
 	"apihelp-wbcheckconstraints-example-2": "Alle beperkingen voor een losse verklaring controleren.",
 	"wbq-subextension-name-wbqc": "Beperkingen",

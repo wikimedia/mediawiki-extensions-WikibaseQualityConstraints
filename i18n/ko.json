@@ -26,7 +26,7 @@
 	"wbqc-violation-header-parameters": "변수:",
 	"wbqc-violation-message-not-yet-implemented": "기술적 이유로, \"$1\" 제약에 대한 검사는 도입되지 않았습니다.",
 	"wbqc-violation-message-security-reason": "보안상의 이유로, \"$1\" 제약에 대한 검사는 현재 불가능합니다. 개발자들이 해결책을 찾기 위해 작업 중입니다.",
-	"wbqc-violation-message-parameter-value": "\"$1\" 변수는 없는 값이나 알 수 없는 값이 아닌 사용자 지정 값이 있어야 합니다.",
+	"wbqc-violation-message-parameter-value": "\"$1\" 변수는 \"없는 값\"이나 \"알 수 없는 값\"이 아닌 사용자 지정 값이 있어야 합니다.",
 	"wbqc-violation-message-parameter-value-or-novalue": "\"$1\" 변수는 \"알 수 없는 값\"이 아닌 사용자 지정 값이 있어야 합니다.",
 	"wbqc-violation-message-parameter-entity": "\"$1\" 변수의 값은 \"$2\"이(가) 아닌 엔티티여야 합니다.",
 	"wbqc-violation-message-parameter-item": "\"$1\" 변수의 값은 \"$2\"이(가) 아닌 항목이어야 합니다.",
