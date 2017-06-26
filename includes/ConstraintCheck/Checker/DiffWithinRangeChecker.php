@@ -120,16 +120,22 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 					if ( $this->rangeCheckerHelper->getComparison( $min, $diff ) > 0 ||
 						$this->rangeCheckerHelper->getComparison( $diff, $max ) > 0 ) {
-						$message = wfMessage( 'wbqc-violation-message-diff-within-range' )
-							->rawParams(
-								$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-								$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue() ),
-								$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId() ),
-								$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue() ),
-								$min !== null ? $this->constraintParameterRenderer->formatDataValue( $min ) : '−∞',
-								$max !== null ? $this->constraintParameterRenderer->formatDataValue( $max ) : '∞'
-							)
-							->escaped();
+						// at least one of $min, $max is set at this point, otherwise there could be no violation
+						$openness = $min !== null ? ( $max !== null ? '' : '-rightopen' ) : '-leftopen';
+						$message = wfMessage( "wbqc-violation-message-diff-within-range$openness" );
+						$message->rawParams(
+							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
+							$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue() ),
+							$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId() ),
+							$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue() )
+						);
+						if ( $min !== null ) {
+							$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min ) );
+						}
+						if ( $max !== null ) {
+							$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $max ) );
+						}
+						$message = $message->escaped();
 						$status = CheckResult::STATUS_VIOLATION;
 					} else {
 						$message = '';

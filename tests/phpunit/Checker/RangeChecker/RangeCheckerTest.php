@@ -82,7 +82,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_quantity' => 1000
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-closed' );
 	}
 
 	public function testRangeConstraintTooBig() {
@@ -93,7 +93,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_quantity' => 1
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-closed' );
 	}
 
 	public function testRangeConstraintTimeWithinRange() {
@@ -144,7 +144,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
-	public function testRangeConstraintTimeTooSmall() {
+	public function testRangeConstraintTimeTooEarly() {
 		$min = '+00000001975-01-01T00:00:00Z';
 		$max = '+00000001980-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
@@ -153,10 +153,10 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_quantity' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed' );
 	}
 
-	public function testRangeConstraintTimeTooBig() {
+	public function testRangeConstraintTimeTooLate() {
 		$min = '+00000001960-01-01T00:00:00Z';
 		$max = '+00000001965-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
@@ -165,7 +165,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'maximum_quantity' => $max
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed' );
 	}
 
 	public function testRangeConstraintNoValueSnak() {
@@ -175,7 +175,25 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
-	public function testRangeConstraintHalfOpenWithinRange() {
+	public function testRangeConstraintLeftOpenWithinRange() {
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( -10 ) ) );
+		$constraintParameters = $this->rangeParameter( 'quantity', null, UnboundedQuantityValue::newFromNumber( 0 ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testRangeConstraintLeftOpenTooSmall() {
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( 10 ) ) );
+		$constraintParameters = $this->rangeParameter( 'quantity', null, UnboundedQuantityValue::newFromNumber( 0 ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-leftopen' );
+	}
+
+	public function testRangeConstraintRightOpenWithinRange() {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( 10 ) ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', UnboundedQuantityValue::newFromNumber( 0 ), null );
 
@@ -184,16 +202,16 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
-	public function testRangeConstraintHalfOpenTooSmall() {
+	public function testRangeConstraintRightOpenTooSmall() {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( -10 ) ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', UnboundedQuantityValue::newFromNumber( 0 ), null );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-rightopen' );
 	}
 
-	public function testRangeConstraintHalfOpenTimeWithinRange() {
+	public function testRangeConstraintLeftOpenTimeWithinRange() {
 		$nineteenFourtyNine = new TimeValue(
 			'+00000001949-01-01T00:00:00Z',
 			0, 0, 0,
@@ -208,7 +226,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
-	public function testRangeConstraintHalfOpenTimeTooBig() {
+	public function testRangeConstraintLeftOpenTimeTooLate() {
 		$nineteenEightyFour = new TimeValue(
 			'+00000001984-01-01T00:00:00Z',
 			0, 0, 0,
@@ -220,7 +238,37 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-range' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-leftopen' );
+	}
+
+	public function testRangeConstraintRightOpenTimeWithinRange() {
+		$nineteenEightyFour = new TimeValue(
+			'+00000001984-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_YEAR,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour ) );
+		$constraintParameters = $this->rangeParameter( 'time', $this->timeValue, null );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testRangeConstraintRightOpenTimeTooEarly() {
+		$nineteenFourtyNine = new TimeValue(
+			'+00000001949-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_YEAR,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenFourtyNine ) );
+		$constraintParameters = $this->rangeParameter( 'time', $this->timeValue, null );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-rightopen' );
 	}
 
 	/**
