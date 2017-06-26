@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Sfic"
+			"Sfic",
+			"Vishwanath"
 		]
 	},
-	"wbqc-violation-message-type-relation-subclass": "उपकक्षा"
+	"wbqc-violation-message-parameter-string": "\"$1\" पैरामीटर का मान एक स्ट्रिंग होना चाहिए, \"$2\" नहीं होना चाहिए।"
 }

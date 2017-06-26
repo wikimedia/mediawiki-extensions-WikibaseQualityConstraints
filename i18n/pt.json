@@ -2,17 +2,34 @@
 	"@metadata": {
 		"authors": [
 			"Vitorvicentevalente",
-			"Macofe"
+			"Macofe",
+			"Hamilton Abreu"
 		]
 	},
+	"wbqc-constraintreport": "Relatório de restrições",
+	"wbqc-desc": "Verifica as restrições dos objetos e das propriedades e apresenta os resultados numa página especial",
+	"wbqc-constraintreport-explanation-part-one": "Esta página especial realiza a verificação das restrições de qualquer entidade que queira. As entidades são extraídas do sistema real, pelo que cada violação de restrição que resolva lá será eliminada instantaneamente desta lista.",
+	"wbqc-constraintreport-explanation-part-two": "A análise sintática das restrições é feita a partir das páginas de discussão das propriedades uma vez por semana, pelo que se adicionar, eliminar ou modificar uma restrição, pode demorar até uma semana para que a alteração seja refletida neste relatório de restrições. Está em progresso um processo para migrar as restrições para declarações sobre propriedades, permitindo que esta página especial faça revisões ao vivo.",
+	"wbqc-constraintreport-form-section": "Verificar as restrições da entidade",
 	"wbqc-constraintreport-form-submit-label": "Verificar",
-	"wbqc-constraintreport-form-entityid-label": "ID da entidade:",
+	"wbqc-constraintreport-form-entityid-label": "Identificador da entidade:",
 	"wbqc-constraintreport-result-headline": "Resultados para",
 	"wbqc-constraintreport-invalid-entity-id": "Identificador de entidade inválido.",
-	"wbqc-constraintreport-not-existent-entity": "Entidade inexistente!",
-	"wbqc-constraintreport-empty-result": "Não há restrições definidas nesta entidade.",
+	"wbqc-constraintreport-not-existent-entity": "A entidade não existe.",
+	"wbqc-constraintreport-empty-result": "Não há restrições definidas sobre esta entidade.",
+	"wbqc-constraintreport-status-violation": "Violação",
+	"wbqc-constraintreport-status-compliance": "Conformidade",
 	"wbqc-constraintreport-status-exception": "Exceção",
+	"wbqc-constraintreport-status-todo": "Pendente",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
+	"wbqc-constraintreport-result-table-header-claim": "Alegação",
+	"wbqc-constraintreport-result-table-header-constraint": "Restrição",
+	"wbqc-constraintreport-result-link-to-claim": "ir para a alegação",
+	"wbqc-constraintreport-result-link-to-constraint": "ir para a restrição",
 	"wbqc-constraintreport-no-parameter": "nenhum",
+	"wbqc-potentialissues-short": "Possíveis problemas",
+	"wbqc-potentialissues-long": "Esta declaração tem alguns possíveis problemas.",
+	"apihelp-wbcheckconstraints-description": "Realiza a verificação das restrições de qualquer entidade que queira e devolve o resultado.",
+	"apihelp-wbcheckconstraints-summary": "Realiza a verificação das restrições de qualquer entidade que queira e devolve o resultado.",
 	"wbqc-violation-header-parameters": "Parâmetros:"
 }
