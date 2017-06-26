@@ -7,6 +7,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\Constraint;
 use LogicException;
 
 /**
@@ -35,14 +36,9 @@ class CheckResult {
 	private $statement;
 
 	/**
-	 * @var string
+	 * @var Constraint
 	 */
-	private $constraintName;
-
-	/**
-	 * @var string
-	 */
-	private $constraintId;
+	private $constraint;
 
 	/**
 	 * @var array
@@ -63,17 +59,15 @@ class CheckResult {
 	/**
 	 * @param EntityId $entityId
 	 * @param Statement $statement
-	 * @param string $constraintName
-	 * @param string $constraintId
-	 * @param array $parameters (string => string[])
+	 * @param Constraint $constraint
+	 * @param array $parameters (string => string[]) parsed constraint parameters ($constraint->getParameters() contains the unparsed parameters)
 	 * @param string $status
 	 * @param string $message (sanitized HTML)
 	 */
-	public function __construct( EntityId $entityId, Statement $statement, $constraintName, $constraintId,  $parameters = [], $status = self::STATUS_TODO, $message = '' ) {
+	public function __construct( EntityId $entityId, Statement $statement, Constraint $constraint, array $parameters = [], $status = self::STATUS_TODO, $message = '' ) {
 		$this->entityId = $entityId;
 		$this->statement = $statement;
-		$this->constraintName = $constraintName;
-		$this->constraintId = $constraintId;
+		$this->constraint = $constraint;
 		$this->parameters = $parameters;
 		$this->status = $status;
 		$this->message = $message;
@@ -122,17 +116,24 @@ class CheckResult {
 	}
 
 	/**
+	 * @return Constraint
+	 */
+	public function getConstraint() {
+		return $this->constraint;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getConstraintName() {
-		return $this->constraintName;
+		return $this->constraint->getConstraintTypeName();
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getConstraintId() {
-		return $this->constraintId;
+		return $this->constraint->getConstraintId();
 	}
 
 	/**

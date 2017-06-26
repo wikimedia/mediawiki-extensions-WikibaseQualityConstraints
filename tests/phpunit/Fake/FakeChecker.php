@@ -31,7 +31,7 @@ class FakeChecker implements ConstraintChecker {
 		EntityDocument $entity
 	) {
 		return new CheckResult(
-			$entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), [], $this->status
+			$entity->getId(), $statement, $constraint, [], $this->status
 		);
 	}
 

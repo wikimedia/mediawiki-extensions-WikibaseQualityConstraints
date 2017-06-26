@@ -87,7 +87,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -98,7 +98,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
 
@@ -106,7 +106,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		$targetEntity = $this->entityLookup->getEntity( $targetEntityId );
 		if ( $targetEntity === null ) {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		$targetEntityStatementList = $targetEntity->getStatements();
 
@@ -142,7 +142,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			$message = $message->escaped();
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
 	}
 
 }

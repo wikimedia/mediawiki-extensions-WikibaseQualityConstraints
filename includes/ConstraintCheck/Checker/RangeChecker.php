@@ -71,7 +71,7 @@ class RangeChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -115,8 +115,7 @@ class RangeChecker implements ConstraintChecker {
 		return new CheckResult(
 			$entity->getId(),
 			$statement,
-			$constraint->getConstraintTypeQid(),
-			$constraint->getConstraintId(),
+			$constraint,
 			$parameters,
 			$status,
 			$message

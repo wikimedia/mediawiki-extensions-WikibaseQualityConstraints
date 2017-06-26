@@ -14,6 +14,7 @@ use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -38,9 +39,15 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	 */
 	private $snakSerializer;
 
+	/**
+	 * @var Constraint
+	 */
+	private $constraint;
+
 	protected function setUp() {
 		parent::setUp();
 		$this->snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
+		$this->constraint = new Constraint( 'constraint ID', new PropertyId( 'P1' ), 'constraint type Q-ID', [] );
 	}
 
 	/**
@@ -84,8 +91,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			$checkResult = new CheckResult(
 				new ItemId( 'Q1' ),
 				new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) ),
-				'constraint type Q-ID',
-				'constraint ID',
+				$this->constraint,
 				[],
 				CheckResult::STATUS_VIOLATION,
 				$exception->getMessage()

@@ -54,7 +54,7 @@ class FormatChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -66,11 +66,11 @@ class FormatChecker implements ConstraintChecker {
 		$type = $dataValue->getType();
 		if ( $type !== 'string' && $type !== 'monolingualtext' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-types-2" )->params( $constraint->getConstraintTypeName(), 'string', 'monolingualtext' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$message = wfMessage( 'wbqc-violation-message-security-reason' )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
-		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_TODO, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_TODO, $message );
 	}
 
 }

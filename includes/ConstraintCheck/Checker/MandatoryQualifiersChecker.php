@@ -74,7 +74,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
 	}
 
 }

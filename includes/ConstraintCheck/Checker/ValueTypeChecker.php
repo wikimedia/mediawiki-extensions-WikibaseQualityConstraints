@@ -101,7 +101,7 @@ class ValueTypeChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeQid() )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -112,7 +112,7 @@ class ValueTypeChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeQid(), 'wikibase-entityid' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
 
@@ -120,7 +120,7 @@ class ValueTypeChecker implements ConstraintChecker {
 
 		if ( !( $item instanceof StatementListProvider ) ) {
 			$message = wfMessage( "wbqc-violation-message-value-entity-must-exist" )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$statements = $item->getStatements();
@@ -139,7 +139,7 @@ class ValueTypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(), $parameters, $status, $message );
+		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
 	}
 
 }

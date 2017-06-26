@@ -203,8 +203,7 @@ class DelegatingConstraintChecker {
 				$result[] = new CheckResult(
 					$entityId,
 					$statement,
-					$constraint->getConstraintTypeQid(),
-					$constraint->getConstraintId(),
+					$constraint,
 					// TODO: Display parameters anyway.
 					[],
 					CheckResult::STATUS_EXCEPTION,
@@ -239,8 +238,7 @@ class DelegatingConstraintChecker {
 				$result = new CheckResult(
 					$entity->getId(),
 					$statement,
-					$constraint->getConstraintTypeQid(),
-					$constraint->getConstraintId(),
+					$constraint,
 					[],
 					CheckResult::STATUS_VIOLATION,
 					$e->getMessage()
@@ -249,8 +247,7 @@ class DelegatingConstraintChecker {
 				$result = new CheckResult(
 					$entity->getId(),
 					$statement,
-					$constraint->getConstraintTypeQid(),
-					$constraint->getConstraintId(),
+					$constraint,
 					[],
 					CheckResult::STATUS_VIOLATION,
 					wfMessage( 'wbqc-violation-message-sparql-error' )->escaped()
@@ -263,8 +260,7 @@ class DelegatingConstraintChecker {
 
 			return $result;
 		} else {
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(),
-				$constraint->getConstraintId(), null, CheckResult::STATUS_TODO, null );
+			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_TODO, null );
 		}
 	}
 
