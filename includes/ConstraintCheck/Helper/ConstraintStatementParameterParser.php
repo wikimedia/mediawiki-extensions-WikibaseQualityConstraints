@@ -31,9 +31,6 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
  * The results are used by the checkers,
  * which may include rendering them into violation messages.
  *
- * Not to be confused with {@link ConstraintParameterParser},
- * which parses constraint parameters from templates.
- *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author Lucas Werkmeister
  * @license GNU GPL v2+

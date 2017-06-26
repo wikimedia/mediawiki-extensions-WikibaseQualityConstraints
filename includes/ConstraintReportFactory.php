@@ -11,7 +11,6 @@ use Wikibase\Lib\SnakFormatter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
@@ -175,7 +174,6 @@ class ConstraintReportFactory {
 	 */
 	private function getConstraintCheckerMap() {
 		if ( $this->constraintCheckerMap === null ) {
-			$constraintParameterParser = new ConstraintParameterParser();
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
 			$rangeCheckerHelper = new RangeCheckerHelper( $this->config );
 			if ( $this->config->get( 'WBQualityConstraintsSparqlEndpoint' ) !== '' ) {

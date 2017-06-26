@@ -25,7 +25,7 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
  * @uses   \WikibaseQuality\Html\HtmlTableBuilder
