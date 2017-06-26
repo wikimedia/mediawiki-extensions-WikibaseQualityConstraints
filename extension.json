@@ -189,6 +189,11 @@
 			"description": "The item ID of the 'commons link constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should be a valid link to Wikimedia Commons.",
 			"public": true
 		},
+		"WBQualityConstraintsFormatConstraintId": {
+			"value": "Q21502404",
+			"description": "The item ID of the 'format constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should conform to a given pattern.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",

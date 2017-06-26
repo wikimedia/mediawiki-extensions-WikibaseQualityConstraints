@@ -7,7 +7,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -19,15 +19,15 @@ use Wikibase\DataModel\Statement\Statement;
 class FormatChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterParser
+	 * @var ConstraintStatementParameterParser
 	 */
-	private $helper;
+	private $constraintParameterParser;
 
 	/**
-	 * @param ConstraintParameterParser $helper
+	 * @param ConstraintStatementParameterParser $constraintParameterParser
 	 */
-	public function __construct( $helper ) {
-		$this->helper = $helper;
+	public function __construct( $constraintParameterParser ) {
+		$this->constraintParameterParser = $constraintParameterParser;
 	}
 
 	/**
@@ -43,13 +43,8 @@ class FormatChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		if ( array_key_exists( 'pattern', $constraintParameters ) ) {
-			$pattern = $constraintParameters['pattern'];
-			$parameters['pattern'] = $this->helper->parseSingleParameter( $pattern, true );
-		} else {
-			$message = wfMessage( "wbqc-violation-message-parameter-needed" )->params( $constraint->getConstraintTypeName(), 'pattern' )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint->getConstraintTypeQid(), $constraint->getConstraintId(),  $parameters, CheckResult::STATUS_VIOLATION, $message );
-		}
+		$format = $this->constraintParameterParser->parseFormatParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$parameters['pattern'] = [ $format ];
 
 		$mainSnak = $statement->getMainSnak();
 
@@ -67,7 +62,6 @@ class FormatChecker implements ConstraintChecker {
 		/*
 		 * error handling:
 		 *   type of $dataValue for properties with 'Format' constraint has to be 'string' or 'monolingualtext'
-		 *   parameter $pattern must not be null
 		 */
 		$type = $dataValue->getType();
 		if ( $type !== 'string' && $type !== 'monolingualtext' ) {

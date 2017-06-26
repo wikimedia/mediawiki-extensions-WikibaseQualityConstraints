@@ -13,7 +13,8 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -22,19 +23,14 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @group WikibaseQualityConstraints
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+
  */
 class FormatCheckerTest extends \MediaWikiTestCase {
 
-	use ResultAssertions;
-
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $helper;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var FormatChecker
@@ -43,8 +39,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->helper = new ConstraintParameterParser();
-		$this->formatChecker = new FormatChecker( $this->helper );
+		$this->formatChecker = new FormatChecker( $this->getConstraintParameterParser() );
 	}
 
 	public function testFormatConstraintImdb() {
@@ -74,70 +69,70 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement1,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement2,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement3,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement4,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement5,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement6,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement7,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement8,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement9,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement10,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
@@ -177,83 +172,70 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement1,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement2,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement3,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement4,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement5,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement6,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement7,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement8,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement9,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement10,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
-			$this->getEntity()
-		);
-		$this->assertTodoViolation( $result );
-	}
-
-	public function testFormatConstraintEmptyPattern() {
-		$pattern = null;
-		$value = new StringValue( 'Populus × canescens' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) );
-
-		$result = $this->formatChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertTodoViolation( $result );
@@ -274,7 +256,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
@@ -286,7 +268,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement,
-			$this->getConstraintMock( [ 'pattern' => $pattern ] ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
 		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );

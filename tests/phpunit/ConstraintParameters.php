@@ -151,4 +151,15 @@ trait ConstraintParameters {
 		return [ $namespaceId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
 	}
 
+	/**
+	 * @param string $format
+	 * @return array
+	 */
+	public function formatParameter( $format ) {
+		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$value = new StringValue( $format );
+		$snak = new PropertyValueSnak( new PropertyId( $formatId ), $value );
+		return [ $formatId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
+	}
+
 }

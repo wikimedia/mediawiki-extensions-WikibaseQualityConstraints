@@ -212,7 +212,7 @@ class ConstraintReportFactory {
 				'Single value' => new SingleValueChecker(),
 				'Multi value' => new MultiValueChecker(),
 				'Unique value' => new UniqueValueChecker( $sparqlHelper ),
-				'Format' => new FormatChecker( $constraintParameterParser ),
+				'Format' => new FormatChecker( $this->constraintStatementParameterParser ),
 				'Commons link' => new CommonsLinkChecker( $this->constraintStatementParameterParser ),
 				'One of' => new OneOfChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
 			];
@@ -234,6 +234,7 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsRangeConstraintId' ) => $this->constraintCheckerMap['Range'],
 				$this->config->get( 'WBQualityConstraintsDifferenceWithinRangeConstraintId' ) => $this->constraintCheckerMap['Diff within range'],
 				$this->config->get( 'WBQualityConstraintsCommonsLinkConstraintId' ) => $this->constraintCheckerMap['Commons link'],
+				$this->config->get( 'WBQualityConstraintsFormatConstraintId' ) => $this->constraintCheckerMap['Format'],
 			];
 		}
 
