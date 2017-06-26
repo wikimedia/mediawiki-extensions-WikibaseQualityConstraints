@@ -7,7 +7,7 @@ use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
@@ -20,7 +20,7 @@ use Wikibase\DataModel\Statement\Statement;
 class MandatoryQualifiersChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintStatementParameterParser
+	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
 
@@ -30,11 +30,11 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	/**
-	 * @param ConstraintStatementParameterParser $constraintParameterParser
+	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer should return HTML
 	 */
 	public function __construct(
-		ConstraintStatementParameterParser $constraintParameterParser,
+		ConstraintParameterParser $constraintParameterParser,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;

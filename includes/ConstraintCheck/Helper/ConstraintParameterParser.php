@@ -35,7 +35,7 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ConstraintStatementParameterParser {
+class ConstraintParameterParser {
 
 	/**
 	 * @var Config

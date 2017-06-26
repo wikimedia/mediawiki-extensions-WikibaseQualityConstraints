@@ -7,7 +7,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -21,7 +21,7 @@ use Wikibase\DataModel\Statement\Statement;
 class DiffWithinRangeChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintStatementParameterParser
+	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
 
@@ -36,12 +36,12 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	/**
-	 * @param ConstraintStatementParameterParser $constraintParameterParser
+	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param RangeCheckerHelper $rangeCheckerHelper
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
-		ConstraintStatementParameterParser $constraintParameterParser,
+		ConstraintParameterParser $constraintParameterParser,
 		RangeCheckerHelper $rangeCheckerHelper,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {

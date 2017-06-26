@@ -26,7 +26,7 @@ use Wikibase\Repo\WikibaseRepo;
  * @group WikibaseQualityConstraints
  *
  * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
+ * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @author BP2014N1
  * @license GNU GPL v2+

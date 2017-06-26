@@ -15,21 +15,21 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ConstraintStatementParameterParserTest extends \MediaWikiLangTestCase {
+class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 	use ConstraintParameters, ResultAssertions;
 

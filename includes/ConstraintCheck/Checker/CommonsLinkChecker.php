@@ -6,7 +6,7 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Constraint;
 use Wikibase\DataModel\Statement\Statement;
@@ -19,14 +19,14 @@ use Wikibase\DataModel\Statement\Statement;
 class CommonsLinkChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintStatementParameterParser
+	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
 
 	/**
-	 * @param ConstraintStatementParameterParser $constraintParameterParser
+	 * @param ConstraintParameterParser $constraintParameterParser
 	 */
-	public function __construct( ConstraintStatementParameterParser $constraintParameterParser ) {
+	public function __construct( ConstraintParameterParser $constraintParameterParser ) {
 		$this->constraintParameterParser = $constraintParameterParser;
 	}
 

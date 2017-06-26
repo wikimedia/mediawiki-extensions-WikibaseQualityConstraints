@@ -10,7 +10,7 @@ use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
@@ -28,7 +28,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 	private $entityLookup;
 
 	/**
-	 * @var ConstraintStatementParameterParser
+	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
 
@@ -44,13 +44,13 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 
 	/**
 	 * @param EntityLookup $lookup
-	 * @param ConstraintStatementParameterParser $constraintParameterParser
+	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param ConnectionCheckerHelper $connectionCheckerHelper
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
 		EntityLookup $lookup,
-		ConstraintStatementParameterParser $constraintParameterParser,
+		ConstraintParameterParser $constraintParameterParser,
 		ConnectionCheckerHelper $connectionCheckerHelper,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {

@@ -11,7 +11,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\Repo\WikibaseRepo;
 
@@ -24,7 +24,7 @@ trait ConstraintParameters {
 	use DefaultConfig;
 
 	/**
-	 * @var ConstraintStatementParameterParser
+	 * @var ConstraintParameterParser
 	 */
 	private $parser;
 
@@ -39,11 +39,11 @@ trait ConstraintParameters {
 	private $snakSerializer;
 
 	/**
-	 * @return ConstraintStatementParameterParser
+	 * @return ConstraintParameterParser
 	 */
 	public function getConstraintParameterParser() {
 		if ( $this->parser === null ) {
-			$this->parser = new ConstraintStatementParameterParser(
+			$this->parser = new ConstraintParameterParser(
 				$this->getDefaultConfig(),
 				WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory(),
 				$this->getConstraintParameterRenderer()

@@ -11,7 +11,7 @@ use Wikibase\Lib\SnakFormatter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintStatementParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
@@ -80,9 +80,9 @@ class ConstraintReportFactory {
 	private $constraintParameterRenderer;
 
 	/**
-	 * @var ConstraintStatementParameterParser
+	 * @var ConstraintParameterParser
 	 */
-	private $constraintStatementParameterParser;
+	private $constraintParameterParser;
 
 	/**
 	 * @var RdfVocabulary
@@ -123,7 +123,7 @@ class ConstraintReportFactory {
 				$wikibaseRepo->getStatementGuidParser(),
 				$config,
 				$constraintParameterRenderer,
-				new ConstraintStatementParameterParser(
+				new ConstraintParameterParser(
 					$config,
 					$wikibaseRepo->getBaseDataModelDeserializerFactory(),
 					$constraintParameterRenderer
@@ -141,7 +141,7 @@ class ConstraintReportFactory {
 		StatementGuidParser $statementGuidParser,
 		Config $config,
 		ConstraintParameterRenderer $constraintParameterRenderer,
-		ConstraintStatementParameterParser $constraintStatementParameterParser,
+		ConstraintParameterParser $constraintParameterParser,
 		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser
 	) {
@@ -149,7 +149,7 @@ class ConstraintReportFactory {
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
-		$this->constraintStatementParameterParser = $constraintStatementParameterParser;
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
 	}
@@ -194,25 +194,25 @@ class ConstraintReportFactory {
 
 			$this->constraintCheckerMap = [
 				'Conflicts with' => new ConflictsWithChecker(
-					$this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Item' => new ItemChecker( $this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
+					$this->lookup, $this->constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
+				'Item' => new ItemChecker( $this->lookup, $this->constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Target required claim' => new TargetRequiredClaimChecker(
-					$this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
+					$this->lookup, $this->constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Symmetric' => new SymmetricChecker( $this->lookup, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Inverse' => new InverseChecker( $this->lookup, $this->constraintStatementParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
+				'Inverse' => new InverseChecker( $this->lookup, $this->constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
 				'Qualifier' => new QualifierChecker(),
-				'Qualifiers' => new QualifiersChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
-				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
-				'Range' => new RangeChecker( $this->constraintStatementParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
-				'Diff within range' => new DiffWithinRangeChecker( $this->constraintStatementParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
-				'Type' => new TypeChecker( $this->lookup, $this->constraintStatementParameterParser, $typeCheckerHelper, $this->config ),
-				'Value type' => new ValueTypeChecker( $this->lookup, $this->constraintStatementParameterParser, $typeCheckerHelper, $this->config ),
+				'Qualifiers' => new QualifiersChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
+				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
+				'Range' => new RangeChecker( $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
+				'Diff within range' => new DiffWithinRangeChecker( $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
+				'Type' => new TypeChecker( $this->lookup, $this->constraintParameterParser, $typeCheckerHelper, $this->config ),
+				'Value type' => new ValueTypeChecker( $this->lookup, $this->constraintParameterParser, $typeCheckerHelper, $this->config ),
 				'Single value' => new SingleValueChecker(),
 				'Multi value' => new MultiValueChecker(),
 				'Unique value' => new UniqueValueChecker( $sparqlHelper ),
-				'Format' => new FormatChecker( $this->constraintStatementParameterParser ),
-				'Commons link' => new CommonsLinkChecker( $this->constraintStatementParameterParser ),
-				'One of' => new OneOfChecker( $this->constraintStatementParameterParser, $this->constraintParameterRenderer ),
+				'Format' => new FormatChecker( $this->constraintParameterParser ),
+				'Commons link' => new CommonsLinkChecker( $this->constraintParameterParser ),
+				'One of' => new OneOfChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
 			];
 			$this->constraintCheckerMap += [
 				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ) => $this->constraintCheckerMap['Unique value'],
