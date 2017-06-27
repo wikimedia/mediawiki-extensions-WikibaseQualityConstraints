@@ -91,13 +91,20 @@ class RangeChecker implements ConstraintChecker {
 
 		if ( $this->rangeCheckerHelper->getComparison( $min, $dataValue ) > 0 ||
 			 $this->rangeCheckerHelper->getComparison( $dataValue, $max ) > 0 ) {
-			$message = wfMessage( 'wbqc-violation-message-range' );
+			// at least one of $min, $max is set at this point, otherwise there could be no violation
+			$type = $dataValue->getType();
+			$openness = $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen';
+			$message = wfMessage( "wbqc-violation-message-range-$type-$openness" );
 			$message->rawParams(
 				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-				$this->constraintParameterRenderer->formatDataValue( $dataValue ),
-				$min !== null ? $this->constraintParameterRenderer->formatDataValue( $min ) : '−∞',
-				$max !== null ? $this->constraintParameterRenderer->formatDataValue( $max ) : '∞'
+				$this->constraintParameterRenderer->formatDataValue( $dataValue )
 			);
+			if ( $min !== null ) {
+				$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min ) );
+			}
+			if ( $max !== null ) {
+				$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $max ) );
+			}
 			$message = $message->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {

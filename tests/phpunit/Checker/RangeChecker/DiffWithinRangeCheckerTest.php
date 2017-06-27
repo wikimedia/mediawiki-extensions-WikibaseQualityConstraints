@@ -122,7 +122,31 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
-	public function testDiffWithinRangeConstraintHalfOpenWithinRange() {
+	public function testDiffWithinRangeConstraintLeftOpenWithinRange() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P569' ),
+			$this->rangeParameter( 'quantity', null, UnboundedQuantityValue::newFromNumber( 100 ) )
+		);
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testDiffWithinRangeConstraintLeftOpenTooBig() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P569' ),
+			$this->rangeParameter( 'quantity', null, UnboundedQuantityValue::newFromNumber( 0 ) )
+		);
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-leftopen' );
+	}
+
+	public function testDiffWithinRangeConstraintRightOpenWithinRange() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P569' ),
@@ -134,7 +158,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
-	public function testDiffWithinRangeConstraintHalfOpenTooSmall() {
+	public function testDiffWithinRangeConstraintRightOpenTooSmall() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P569' ),
@@ -143,7 +167,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-rightopen' );
 	}
 
 	/**
