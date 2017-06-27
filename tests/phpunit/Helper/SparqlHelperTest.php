@@ -41,7 +41,7 @@ class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 ASK {
   BIND(wd:Q1 AS ?item)
   VALUES ?class { wd:Q100 wd:Q101 }
-  ?item wdt:P31/wdt:P279* ?class.
+  ?item wdt:P31/wdt:P279* ?class. hint:Prior hint:gearing "forward".
 }
 EOF;
 
