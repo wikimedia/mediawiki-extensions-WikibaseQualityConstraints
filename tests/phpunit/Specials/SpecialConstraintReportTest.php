@@ -163,23 +163,29 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers = [];
 
 		// Empty input
-		$matchers['explanationOne'] = both( withTagName( 'div' ) )
+		$matchers['explanationOne'] = both( withTagName( 'p' ) )
 			->andAlso( havingTextContents( '(wbqc-constraintreport-explanation-part-one)' ) );
 
-		$matchers['explanationTwo'] = both( withTagName( 'div' ) )
+		$matchers['explanationTwo'] = both( withTagName( 'p' ) )
 			->andAlso( havingTextContents( '(wbqc-constraintreport-explanation-part-two)' ) );
 
-		$matchers['entityId'] = tagMatchingOutline(
-			'<input
-				placeholder="(wbqc-constraintreport-form-entityid-placeholder)"
-				name="entityid"
-				class="wbqc-constraintreport-form-entity-id"/>'
+		$matchers['entityId'] = both(
+			tagMatchingOutline( '<div class="wbqc-constraintreport-form-entity-id"/>' )
+		)->andAlso(
+			havingChild( tagMatchingOutline(
+				'<input
+					placeholder="(wbqc-constraintreport-form-entityid-placeholder)"
+					name="entityid"/>'
+			) )
 		);
 
-		$matchers['submit'] = tagMatchingOutline(
-			'<input
-				type="submit"
-				value="(wbqc-constraintreport-form-submit-label)"/>'
+		$matchers['submit'] = both(
+			tagMatchingOutline( '<button type="submit"/>' )
+		)->andAlso(
+			havingChild( allOf(
+				withTagName( 'span' ),
+				havingTextContents( '(wbqc-constraintreport-form-submit-label)' )
+			) )
 		);
 
 		$cases[ 'empty' ] = [ '', [], $userLanguage, $matchers ];
