@@ -44,6 +44,11 @@ trait ResultAssertions {
 			$result->getStatus(),
 			'Check should not comply'
 		);
+		$this->assertStringNotMatchesFormat(
+			"⧼%a⧽",
+			$result->getMessage(),
+			"Message should not refer to a non-existing message key ({$result->getMessage()})."
+		);
 		if ( $messageKey !== null ) {
 			$message = wfMessage( $messageKey );
 			$messagePlain = $message->plain();
