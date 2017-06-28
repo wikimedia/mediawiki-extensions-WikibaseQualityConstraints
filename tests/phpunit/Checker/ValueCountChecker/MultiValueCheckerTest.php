@@ -84,7 +84,7 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 			 ->method( 'getConstraintParameter' )
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeQid' )
+			 ->method( 'getConstraintTypeItemId' )
 			 ->will( $this->returnValue( 'Multi value' ) );
 
 		return $mock;

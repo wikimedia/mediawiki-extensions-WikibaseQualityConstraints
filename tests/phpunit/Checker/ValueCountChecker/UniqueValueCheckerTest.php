@@ -105,7 +105,7 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 			 ->method( 'getConstraintParameter' )
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeQid' )
+			 ->method( 'getConstraintTypeItemId' )
 			 ->will( $this->returnValue( 'Unique value' ) );
 
 		return $mock;

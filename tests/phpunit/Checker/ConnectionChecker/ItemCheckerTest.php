@@ -140,7 +140,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 			 ->method( 'getConstraintParameters' )
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeQid' )
+			 ->method( 'getConstraintTypeItemId' )
 			 ->will( $this->returnValue( 'Item' ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeName' )

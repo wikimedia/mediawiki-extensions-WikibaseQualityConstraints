@@ -29,7 +29,7 @@ class Constraint {
 	 * Currently contains the name since the constraints are
 	 * not migrated yet.
 	 */
-	private $constraintTypeQid;
+	private $constraintTypeItemId;
 
 	/**
 	 * @var array (key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21'))
@@ -39,18 +39,18 @@ class Constraint {
 	/**
 	 * @param string $constraintId
 	 * @param PropertyId $propertyId
-	 * @param string $constraintTypeQid
+	 * @param string $constraintTypeItemId
 	 * @param array $constraintParameters
 	 */
 	public function __construct(
 		$constraintId,
 		PropertyId $propertyId,
-		$constraintTypeQid,
+		$constraintTypeItemId,
 		array $constraintParameters
 	) {
 		$this->constraintId = $constraintId;
 		$this->propertyId = $propertyId;
-		$this->constraintTypeQid = $constraintTypeQid;
+		$this->constraintTypeItemId = $constraintTypeItemId;
 		$this->constraintParameters = $constraintParameters;
 	}
 
@@ -69,8 +69,8 @@ class Constraint {
 	 * Currently contains the name since the constraints are
 	 * not migrated yet.
 	 */
-	public function getConstraintTypeQid() {
-		return $this->constraintTypeQid;
+	public function getConstraintTypeItemId() {
+		return $this->constraintTypeItemId;
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Constraint {
 	 */
 	public function getConstraintTypeName() {
 		//TODO: use label lookup when constraints are migrated
-		return $this->constraintTypeQid;
+		return $this->constraintTypeItemId;
 	}
 
 	/**

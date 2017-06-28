@@ -44,7 +44,7 @@ class ConstraintRepository implements ConstraintLookup {
 				return [
 					'constraint_guid' => $constraint->getConstraintId(),
 					'pid' => $constraint->getPropertyId()->getNumericId(),
-					'constraint_type_qid' => $constraint->getConstraintTypeQid(),
+					'constraint_type_qid' => $constraint->getConstraintTypeItemId(),
 					'constraint_parameters' => json_encode( $constraint->getConstraintParameters(), JSON_FORCE_OBJECT )
 				];
 			},
@@ -134,13 +134,13 @@ class ConstraintRepository implements ConstraintLookup {
 	private function convertToConstraints( ResultWrapper $results ) {
 		$constraints = [];
 		foreach ( $results as $result ) {
-			$constraintTypeQid = $result->constraint_type_qid;
+			$constraintTypeItemId = $result->constraint_type_qid;
 			$constraintParameters = json_decode( $result->constraint_parameters, true );
 
 			$constraints[] = new Constraint(
 				$result->constraint_guid,
 				PropertyId::newFromNumber( $result->pid ),
-				$constraintTypeQid,
+				$constraintTypeItemId,
 				$constraintParameters
 			);
 		}

@@ -152,7 +152,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			 ->method( 'getConstraintParameters' )
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeQid' )
+			 ->method( 'getConstraintTypeItemId' )
 			 ->will( $this->returnValue( 'Inverse' ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeName' )

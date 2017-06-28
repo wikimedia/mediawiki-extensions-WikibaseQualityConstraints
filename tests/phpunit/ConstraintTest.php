@@ -21,7 +21,7 @@ class ConstraintTest extends \MediaWikiTestCase {
 		$repo = new ConstraintRepository();
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
 
-		$this->assertEquals( 'Item', $constraints[0]->getConstraintTypeQid() );
+		$this->assertEquals( 'Item', $constraints[0]->getConstraintTypeItemId() );
 		$this->assertEquals( new PropertyId( 'P1' ), $constraints[0]->getPropertyId() );
 		$this->assertEquals( '1', $constraints[0]->getConstraintId() );
 		$constraintParameters = $constraints[0]->getConstraintParameters();

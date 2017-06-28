@@ -227,8 +227,8 @@ class DelegatingConstraintChecker {
 	 * @return CheckResult
 	 */
 	private function getCheckResultFor( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( array_key_exists( $constraint->getConstraintTypeQid(), $this->checkerMap ) ) {
-			$checker = $this->checkerMap[$constraint->getConstraintTypeQid()];
+		if ( array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
+			$checker = $this->checkerMap[$constraint->getConstraintTypeItemId()];
 			$statsd = MediaWikiServices::getInstance()->getStatsdDataFactory();
 
 			$startTime = microtime( true );
@@ -254,7 +254,7 @@ class DelegatingConstraintChecker {
 				);
 			}
 			$statsd->timing(
-				'wikibase.quality.constraints.check.timing.' . $constraint->getConstraintTypeQid(),
+				'wikibase.quality.constraints.check.timing.' . $constraint->getConstraintTypeItemId(),
 				( microtime( true ) - $startTime ) * 1000
 			);
 

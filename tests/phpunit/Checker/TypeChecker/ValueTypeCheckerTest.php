@@ -272,11 +272,14 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			 ->method( 'getConstraintParameters' )
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeQid' )
+			 ->method( 'getConstraintTypeItemId' )
 			 ->will( $this->returnValue( 'Value type' ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeName' )
 			 ->will( $this->returnValue( 'Value type' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getConstraintTypeItemId' )
+			 ->will( $this->returnValue( 'Q1' ) );
 
 		return $mock;
 	}
