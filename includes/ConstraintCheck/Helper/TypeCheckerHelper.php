@@ -185,11 +185,11 @@ class TypeCheckerHelper {
 		$message = wfMessage( 'wbqc-violation-message-' . $checker . '-' . $relation );
 
 		$message->rawParams(
-			$this->constraintParameterRenderer->formatPropertyId( $propertyId ),
-			$this->constraintParameterRenderer->formatEntityId( $entityId )
+			$this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
+			$this->constraintParameterRenderer->formatEntityId( $entityId, ConstraintParameterRenderer::ROLE_SUBJECT )
 		);
 		$message->numParams( count( $classes ) );
-		$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $classes ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $classes, ConstraintParameterRenderer::ROLE_OBJECT ) );
 
 		return $message->escaped();
 	}

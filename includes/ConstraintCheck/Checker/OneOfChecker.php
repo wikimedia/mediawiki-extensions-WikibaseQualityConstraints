@@ -61,9 +61,9 @@ class OneOfChecker implements ConstraintChecker {
 		$mainSnak = $statement->getMainSnak();
 
 		$message = wfMessage( 'wbqc-violation-message-one-of' );
-		$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_PREDICATE ) );
 		$message->numParams( count( $items ) );
-		$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, ConstraintParameterRenderer::ROLE_OBJECT ) );
 		$message = $message->escaped();
 		$status = CheckResult::STATUS_VIOLATION;
 

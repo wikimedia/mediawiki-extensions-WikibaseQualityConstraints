@@ -86,8 +86,8 @@ class ConflictsWithChecker implements ConstraintChecker {
 			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $propertyId->getSerialization() ) ) {
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )
 						 ->rawParams(
-							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-							 $this->constraintParameterRenderer->formatEntityId( $propertyId )
+							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
+							 $this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_PREDICATE )
 						 )
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
@@ -100,9 +100,9 @@ class ConflictsWithChecker implements ConstraintChecker {
 			if ( $result !== null ) {
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )
 						 ->rawParams(
-							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-							 $this->constraintParameterRenderer->formatEntityId( $propertyId ),
-							 $this->constraintParameterRenderer->formatItemIdSnakValue( $result )
+							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
+							 $this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_PREDICATE ),
+							 $this->constraintParameterRenderer->formatItemIdSnakValue( $result, ConstraintParameterRenderer::ROLE_OBJECT )
 						 )
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;

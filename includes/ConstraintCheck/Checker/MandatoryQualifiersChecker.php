@@ -59,8 +59,8 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 
 		$message = wfMessage( "wbqc-violation-message-mandatory-qualifier" )
 				 ->rawParams(
-					 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-					 $this->constraintParameterRenderer->formatEntityId( $propertyId )
+					 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
+					 $this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_QUALIFIER_PREDICATE )
 				 )
 				 ->escaped();
 		$status = CheckResult::STATUS_VIOLATION;

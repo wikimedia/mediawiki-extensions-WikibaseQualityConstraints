@@ -73,16 +73,16 @@ class QualifiersChecker implements ConstraintChecker {
 				if ( empty( $properties ) || $properties === [ '' ] ) {
 					$message = wfMessage( 'wbqc-violation-message-no-qualifiers' );
 					$message->rawParams(
-						$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() )
+						$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY )
 					);
 				} else {
 					$message = wfMessage( "wbqc-violation-message-qualifiers" );
 					$message->rawParams(
-						$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId() ),
-						$this->constraintParameterRenderer->formatEntityId( $qualifier->getPropertyId() )
+						$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
+						$this->constraintParameterRenderer->formatEntityId( $qualifier->getPropertyId(), ConstraintParameterRenderer::ROLE_QUALIFIER_PREDICATE )
 					);
 					$message->numParams( count( $properties ) );
-					$message->rawParams( $this->constraintParameterRenderer->formatPropertyIdList( $properties ) );
+					$message->rawParams( $this->constraintParameterRenderer->formatPropertyIdList( $properties, ConstraintParameterRenderer::ROLE_QUALIFIER_PREDICATE ) );
 				}
 				$message = $message->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
