@@ -77,7 +77,7 @@ class ValueTypeChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$classes = $this->constraintParameterParser->parseClassParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$classes = $this->constraintParameterParser->parseClassParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['class'] = array_map(
 			function( $id ) {
 				return new ItemId( $id );
@@ -85,7 +85,7 @@ class ValueTypeChecker implements ConstraintChecker {
 			$classes
 		);
 
-		$relation = $this->constraintParameterParser->parseRelationParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$relation = $this->constraintParameterParser->parseRelationParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		if ( $relation === 'instance' ) {
 			$relationId = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
 		} elseif ( $relation === 'subclass' ) {

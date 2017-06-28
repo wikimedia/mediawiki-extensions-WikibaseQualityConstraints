@@ -78,7 +78,7 @@ class RangeChecker implements ConstraintChecker {
 
 		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
 			$constraintParameters,
-			$constraint->getConstraintTypeName(),
+			$constraint->getConstraintTypeItemId(),
 			$dataValue->getType()
 		);
 		$parameterKey = $dataValue->getType() === 'quantity' ? 'quantity' : 'date';

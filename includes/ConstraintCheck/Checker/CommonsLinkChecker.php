@@ -42,7 +42,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
-		$namespace = $this->constraintParameterParser->parseNamespaceParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$namespace = $this->constraintParameterParser->parseNamespaceParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['namespace'] = [ $namespace ];
 
 		$mainSnak = $statement->getMainSnak();

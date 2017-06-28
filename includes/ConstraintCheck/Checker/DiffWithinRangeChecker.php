@@ -78,10 +78,10 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
 			$constraintParameters,
-			$constraint->getConstraintTypeName(),
+			$constraint->getConstraintTypeItemId(),
 			'quantity'
 		);
-		$property = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$property = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 
 		$parameterKey = $dataValue->getType() === 'quantity' ? 'quantity' : 'date';
 		if ( $min !== null ) {

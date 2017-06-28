@@ -43,7 +43,7 @@ class FormatChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$format = $this->constraintParameterParser->parseFormatParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$format = $this->constraintParameterParser->parseFormatParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['pattern'] = [ $format ];
 
 		$mainSnak = $statement->getMainSnak();

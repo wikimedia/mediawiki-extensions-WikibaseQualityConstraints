@@ -55,7 +55,7 @@ class OneOfChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeName(), true );
+		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), true );
 		$parameters['item'] = $items;
 
 		$mainSnak = $statement->getMainSnak();

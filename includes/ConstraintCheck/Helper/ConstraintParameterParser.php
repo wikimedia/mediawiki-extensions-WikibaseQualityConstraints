@@ -143,11 +143,11 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param string $constraintTypeName used in error messages
+	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string[] class entity ID serializations
 	 */
-	public function parseClassParameter( array $constraintParameters, $constraintTypeName ) {
+	public function parseClassParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$classId = $this->config->get( 'WBQualityConstraintsClassId' );
 		if ( array_key_exists( $classId, $constraintParameters ) ) {
 			return $this->parseClassParameterFromStatement( $constraintParameters );
@@ -156,7 +156,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
 					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $classId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY ) )
 					->escaped()
 			);
@@ -199,11 +199,11 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param string $constraintTypeName used in error messages
+	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string 'instance' or 'subclass'
 	 */
-	public function parseRelationParameter( array $constraintParameters, $constraintTypeName ) {
+	public function parseRelationParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$relationId = $this->config->get( 'WBQualityConstraintsRelationId' );
 		if ( array_key_exists( $relationId, $constraintParameters ) ) {
 			return $this->parseRelationParameterFromStatement( $constraintParameters );
@@ -212,7 +212,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
 					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $relationId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY ) )
 					->escaped()
 			);
@@ -270,11 +270,11 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param string $constraintTypeName used in error messages
+	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return PropertyId
 	 */
-	public function parsePropertyParameter( array $constraintParameters, $constraintTypeName ) {
+	public function parsePropertyParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		if ( array_key_exists( $propertyId, $constraintParameters ) ) {
 			return $this->parsePropertyParameterFromStatement( $constraintParameters );
@@ -283,7 +283,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
 					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $propertyId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY ) )
 					->escaped()
 			);
@@ -354,12 +354,12 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param string $constraintTypeName used in error messages
+	 * @param string $constraintTypeItemId used in error messages
 	 * @param bool $required whether the parameter is required (error if absent) or not ([] if absent)
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return ItemIdSnakValue[] array of values
 	 */
-	public function parseItemsParameter( array $constraintParameters, $constraintTypeName, $required ) {
+	public function parseItemsParameter( array $constraintParameters, $constraintTypeItemId, $required ) {
 		$qualifierId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		if ( array_key_exists( $qualifierId, $constraintParameters ) ) {
 			return $this->parseItemsParameterFromStatement( $constraintParameters );
@@ -369,7 +369,7 @@ class ConstraintParameterParser {
 			if ( $required ) {
 				throw new ConstraintParameterException(
 					wfMessage( 'wbqc-violation-message-parameter-needed' )
-						->params( $constraintTypeName )
+						->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
 						->rawParams( $this->constraintParameterRenderer->formatPropertyId( $qualifierId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY ) )
 						->escaped()
 				);
@@ -418,11 +418,11 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param string $constraintTypeName used in error messages
+	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return PropertyId[]
 	 */
-	public function parsePropertiesParameter( array $constraintParameters, $constraintTypeName ) {
+	public function parsePropertiesParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		if ( array_key_exists( $propertyId, $constraintParameters ) ) {
 			return $this->parsePropertiesParameterFromStatement( $constraintParameters );
@@ -431,7 +431,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
 					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $propertyId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY ) )
 					->escaped()
 			);
@@ -496,12 +496,12 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param string $constraintTypeName used in error messages
+	 * @param string $constraintTypeItemId used in error messages
 	 * @param string $type 'quantity' or 'time'
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return DataValue[] a pair of two quantity-type data values, either of which may be null to signify an open range
 	 */
-	public function parseRangeParameter( array $constraintParameters, $constraintTypeName, $type ) {
+	public function parseRangeParameter( array $constraintParameters, $constraintTypeItemId, $type ) {
 		switch ( $type ) {
 			case 'quantity':
 				$configKey = 'Quantity';
@@ -538,7 +538,7 @@ class ConstraintParameterParser {
 						$this->constraintParameterRenderer->formatPropertyId( $minimumId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY ),
 						$this->constraintParameterRenderer->formatPropertyId( $maximumId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY )
 					)
-					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
 					->escaped()
 			);
 		}
@@ -581,11 +581,11 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param string $constraintTypeName used in error messages
+	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string
 	 */
-	public function parseNamespaceParameter( array $constraintParameters, $constraintTypeName ) {
+	public function parseNamespaceParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$namespaceId = $this->config->get( 'WBQualityConstraintsNamespaceId' );
 		if ( array_key_exists( $namespaceId, $constraintParameters ) ) {
 			return $this->parseNamespaceParameterFromStatement( $constraintParameters );
@@ -612,11 +612,11 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param string $constraintTypeName used in error messages
+	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string
 	 */
-	public function parseFormatParameter( array $constraintParameters, $constraintTypeName ) {
+	public function parseFormatParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$formatId = $this->config->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		if ( array_key_exists( $formatId, $constraintParameters ) ) {
 			return $this->parseFormatParameterFromStatement( $constraintParameters );
@@ -625,7 +625,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->params( $constraintTypeName )
+					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
 					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $formatId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY ) )
 					->escaped()
 			);

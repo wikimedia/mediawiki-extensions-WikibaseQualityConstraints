@@ -54,7 +54,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['property'] = [ $propertyId ];
 
 		$message = wfMessage( "wbqc-violation-message-mandatory-qualifier" )

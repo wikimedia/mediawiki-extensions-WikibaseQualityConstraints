@@ -79,6 +79,13 @@ class ConstraintParameterRenderer {
 	const ROLE_CONSTRAINT_PARAMETER_VALUE = 'constraint-parameter-value';
 
 	/**
+	 * Indicates that a formatted value is the item for a constraint type.
+	 *
+	 * @var string
+	 */
+	const ROLE_CONSTRAINT_TYPE_ITEM = 'constraint-type-item';
+
+	/**
 	 *
 	 * @var EntityIdFormatter
 	 */

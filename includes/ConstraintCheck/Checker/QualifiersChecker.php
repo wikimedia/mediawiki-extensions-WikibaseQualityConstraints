@@ -54,7 +54,7 @@ class QualifiersChecker implements ConstraintChecker {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$properties = $this->constraintParameterParser->parsePropertiesParameter( $constraintParameters, $constraint->getConstraintTypeName() );
+		$properties = $this->constraintParameterParser->parsePropertiesParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['property'] = $properties;
 
 		$message = '';
