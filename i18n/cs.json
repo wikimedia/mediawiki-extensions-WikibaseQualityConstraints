@@ -67,7 +67,6 @@
 	"wbqc-violation-message-no-qualifiers": "Tvrzení vlastnosti $1 by nemělo mít žádná vymezení.",
 	"wbqc-violation-message-qualifiers": "$2 není platné vymezení vlastnosti $1 – {{PLURAL:$3|1=jediné platné vymezení je $5.|2=jediná platná vymezení jsou $5 a $6.|jediná platná vymezení jsou:$4}}",
 	"wbqc-violation-message-range-parameters-needed": "Vlastnosti s hodnotami typu „$1“ a omezením „$4“ potřebují parametry „$2“ a „$3“.",
-	"wbqc-violation-message-range": "Hodnota vlastnosti $1 ($2) by měla být mezi $3 a $4 ([$3, $4]).",
 	"wbqc-violation-message-single-value": "Tato vlastnost by měla obsahovat pouze jednu hodnotu. To znamená, že by zde mělo být pouze jedno tvrzení používající tuto vlastnost.",
 	"wbqc-violation-message-symmetric": "$1 by také měla mít symetrické tvrzení $2 $3.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Parametr „relation“ musí být buď „instance“, nebo „subclass“.",

@@ -56,7 +56,6 @@
 	"wbqc-violation-message-no-qualifiers": "Les declaraciones $1 nun habríen de tener calificadores.",
 	"wbqc-violation-message-qualifiers": "$2 nun ye un calificador válidu pa $1 – {{PLURAL:$3|1=l'únicu calificador válidu ye $5|2=los únicos calificadores válidos son $5 y $6|los únicos calificadores válidos son:$4}}.",
 	"wbqc-violation-message-range-parameters-needed": "Les propiedaes con valores de tipu «$1» cola torga «$4» necesiten los parámetros «$2» y «$3».",
-	"wbqc-violation-message-range": "El valor de $1 ($2) habría de tar ente $3 y $4 ([$3, $4]).",
 	"wbqc-violation-message-single-value": "Esta propiedá sólo habría de contener un únicu valor. Esto ye, tendría d'haber sólo una declaración usando esta propiedá.",
 	"wbqc-violation-message-symmetric": "$1 habría de tener tamién la declaración simétrica $2 $3.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "El parámetru «relation» tien de ser «instance» o «subclass»."

@@ -56,6 +56,5 @@
 	"wbqc-violation-message-qualifier": "De eigenschap mag alleen als kwalificatie worden gebruikt.",
 	"wbqc-violation-message-no-qualifiers": "$1-verklaringen zouden geen kwalificaties moeten hebben.",
 	"wbqc-violation-message-qualifiers": "$2 is geen geldige kwalificatie voor $1 – geldige {{PLURAL:$3|1=kwalificatie is $5.|2=kwalificaties zijn $5 en $6.|kwalificaties zijn:$4}}",
-	"wbqc-violation-message-range": "De waarde voor $1 ($2) zou tussen $3 en $4 ([$3, $4]) moeten zitten.",
 	"wbqc-violation-message-symmetric": "$1 zou een symmetrische verklaring $2 $3 moeten hebben."
 }
