@@ -185,9 +185,6 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
 			 ->will( $this->returnValue( 'Diff within range' ) );
-		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeName' )
-			 ->will( $this->returnValue( 'Diff within range' ) );
 
 		return $mock;
 	}

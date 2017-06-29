@@ -36,11 +36,6 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @var string
 	 */
-	private $constraintName;
-
-	/**
-	 * @var string
-	 */
 	private $constraintId;
 
 	/**
@@ -67,10 +62,9 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 		parent::setUp();
 		$this->entityId = new ItemId( 'Q1' );
 		$this->statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( 'Foo' ) ) );
-		$this->constraintName = 'Range';
 		$this->constraintId = '1';
 		$this->parameters = [];
-		$this->constraint = new Constraint( $this->constraintId, new PropertyId( 'P1' ), $this->constraintName, $this->parameters );
+		$this->constraint = new Constraint( $this->constraintId, new PropertyId( 'P1' ), 'Q100', $this->parameters );
 		$this->status = 'compliance';
 		$this->message = 'All right';
 	}
@@ -85,7 +79,6 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( $this->statement->getPropertyId(), $checkResult->getPropertyId() );
 		$this->assertEquals( $this->statement->getMainSnak()->getDataValue(), $checkResult->getDataValue() );
 		$this->assertEquals( $this->constraint, $checkResult->getConstraint() );
-		$this->assertEquals( $this->constraintName, $checkResult->getConstraintName() );
 		$this->assertEquals( $this->constraintId, $checkResult->getConstraintId() );
 		$this->assertEquals( $this->parameters, $checkResult->getParameters() );
 		$this->assertEquals( $this->status, $checkResult->getStatus() );

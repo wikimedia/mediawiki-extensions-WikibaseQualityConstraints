@@ -74,14 +74,6 @@ class Constraint {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getConstraintTypeName() {
-		//TODO: use label lookup when constraints are migrated
-		return $this->constraintTypeItemId;
-	}
-
-	/**
 	 * @return PropertyId
 	 */
 	public function getPropertyId() {

@@ -23,17 +23,17 @@ class FakeCheckerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $statement, $result->getStatement() );
 	}
 
-	public function testCheckConstraint_ResultContainsNameOfPassedConstraint() {
+	public function testCheckConstraint_ResultContainsPassedConstraint() {
 		$checker = new FakeChecker();
+		$constraint = new Constraint( 'some guid', $this->dummy( PropertyId::class ), 'some constraint type item id', [] );
 
-		$constraintTypeId = 'constraint id';
 		$result = $checker->checkConstraint(
 			$this->dummy( Statement::class ),
-			new Constraint( 'some guid', $this->dummy( PropertyId::class ), $constraintTypeId, [] ),
+			$constraint,
 			new Item( new ItemId( 'Q1' ) )
 		);
 
-		$this->assertSame( $constraintTypeId, $result->getConstraintName() );
+		$this->assertSame( $constraint, $result->getConstraint() );
 	}
 
 	public function testCheckConstraint_CreatedWithSomeStatus_ReturnsThatStatusInResult() {

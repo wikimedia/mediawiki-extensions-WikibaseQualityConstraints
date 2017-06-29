@@ -125,13 +125,6 @@ class CheckResult {
 	/**
 	 * @return string
 	 */
-	public function getConstraintName() {
-		return $this->constraint->getConstraintTypeName();
-	}
-
-	/**
-	 * @return string
-	 */
 	public function getConstraintId() {
 		return $this->constraint->getConstraintId();
 	}
