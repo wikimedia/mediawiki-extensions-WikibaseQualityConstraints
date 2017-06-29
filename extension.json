@@ -250,7 +250,7 @@
 			"public": true
 		},
 		"WBQualityConstraintsFormatAsARegularExpressionId": {
-			"value": "P2307",
+			"value": "P1793",
 			"description": "The property ID of the 'format as a regular expression' property (data type: string), which specifies the format parameter of a 'format' constraint.",
 			"public": true
 		},
