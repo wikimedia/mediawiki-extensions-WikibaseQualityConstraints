@@ -89,9 +89,10 @@ EOT;
 ASK {
   BIND(wd:$id AS ?item)
   VALUES ?class { $classesValues }
-  ?item $path ?class.
+  ?item $path ?class. hint:Prior hint:gearing "forward".
 }
 EOF;
+			// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
 
 			$result = $this->runQuery( $query );
 			if ( $result['boolean'] ) {
