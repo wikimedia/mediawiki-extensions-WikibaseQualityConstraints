@@ -14,6 +14,7 @@ use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
+use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
@@ -36,6 +37,8 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  * @license GNU GPL v2+
  */
 class SpecialConstraintReportTest extends SpecialPageTestBase {
+
+	use DefaultConfig;
 
 	/**
 	 * Id of a item that (hopefully) does not exist.
@@ -74,7 +77,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
-			$constraintReportFactory->getConstraintChecker()
+			$constraintReportFactory->getConstraintChecker(),
+			$this->getDefaultConfig()
 		);
 	}
 

@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Specials;
 
+use Config;
 use DataValues\DataValue;
 use Html;
 use HTMLForm;
@@ -17,6 +18,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
@@ -43,15 +45,6 @@ use WikibaseQuality\Html\HtmlTableHeaderBuilder;
  * @license GNU GPL v2+
  */
 class SpecialConstraintReport extends SpecialPage {
-
-	/**
-	 * Id of the property, that is used to specify constraints on entities.
-	 *
-	 * TODO set, when properties are created
-	 *
-	 * @var int
-	 */
-	const CONSTRAINT_PROPERTY_ID = 'P1';
 
 	/**
 	 * @var EntityIdParser
@@ -93,9 +86,15 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private $constraintParameterRenderer;
 
+	/**
+	 * @var Config
+	 */
+	private $config;
+
 	public static function newFromGlobalState() {
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
+		$config = MediaWikiServices::getInstance()->getMainConfig();
 
 		return new self(
 			$wikibaseRepo->getEntityLookup(),
@@ -105,7 +104,8 @@ class SpecialConstraintReport extends SpecialPage {
 			$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
-			$constraintReportFactory->getConstraintChecker()
+			$constraintReportFactory->getConstraintChecker(),
+			$config
 		);
 	}
 
@@ -118,6 +118,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param EntityIdParser $entityIdParser
 	 * @param OutputFormatValueFormatterFactory $valueFormatterFactory
 	 * @param DelegatingConstraintChecker $constraintChecker
+	 * @param Config $config
 	 */
 	public function __construct(
 		EntityLookup $entityLookup,
@@ -127,7 +128,8 @@ class SpecialConstraintReport extends SpecialPage {
 		LanguageFallbackLabelDescriptionLookupFactory $fallbackLabelDescLookupFactory,
 		EntityIdParser $entityIdParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
-		DelegatingConstraintChecker $constraintChecker
+		DelegatingConstraintChecker $constraintChecker,
+		Config $config
 	) {
 		parent::__construct( 'ConstraintReport' );
 
@@ -157,6 +159,8 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->constraintChecker = $constraintChecker;
 
 		$this->constraintParameterRenderer = new ConstraintParameterRenderer( $this->entityIdLabelFormatter, $this->dataValueFormatter );
+
+		$this->config = $config;
 	}
 
 	/**
@@ -394,10 +398,16 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 
 		// Constraint column
+		$constraintTypeItemId = $result->getConstraint()->getConstraintTypeItemId();
+		try {
+			$constraintTypeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $constraintTypeItemId ) );
+		} catch ( InvalidArgumentException $e ) {
+			$constraintTypeLabel = htmlspecialchars( $constraintTypeItemId );
+		}
 		$constraintLink = $this->getClaimLink(
 			$result->getPropertyId(),
-			new PropertyId( self::CONSTRAINT_PROPERTY_ID ),
-			$result->getConstraintName()
+			new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
+			$constraintTypeLabel
 		);
 		$constraintColumn = $this->buildExpandableElement(
 			$constraintLink,
