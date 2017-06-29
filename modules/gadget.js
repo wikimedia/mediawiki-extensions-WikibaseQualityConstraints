@@ -32,7 +32,12 @@
 
 		if ( result.status === 'violation' ) {
 			$report = $( '<div>' ).addClass( 'wbqc-report' );
-			$heading = $( '<h4>' ).text( result.constraint.type );
+			$heading = $( '<h4>' ).append(
+				$( '<a>' )
+					.text( result.constraint.typeLabel )
+					.attr( 'href', result.constraint.link )
+					.attr( 'target', '_blank' )
+			);
 			$helpButton = new OO.ui.ButtonWidget( {
 				icon: 'help',
 				framed: false,

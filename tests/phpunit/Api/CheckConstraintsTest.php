@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use ApiTestCase;
 use DataValues\UnknownValue;
+use HashConfig;
 use RequestContext;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -84,6 +85,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			$fallbackLabelDescLookupFactory = new LanguageFallbackLabelDescriptionLookupFactory( $languageFallbackChainFactory, $termLookup, $termBuffer );
 			$language = new Language();
 			$labelLookup = $fallbackLabelDescLookupFactory->newLabelDescriptionLookup( $language );
+			$entityIdFormatter = $factory->getEntityIdFormatter( $labelLookup );
 
 			$formatterOptions = new FormatterOptions();
 			$factoryFunctions = [];
@@ -111,8 +113,11 @@ class CheckConstraintsTest extends ApiTestCase {
 				new StatementGuidValidator( $entityIdParser ),
 				new StatementGuidParser( $entityIdParser ),
 				$constraintChecker,
-				new ConstraintParameterRenderer( $factory->getEntityIdFormatter( $labelLookup ), $valueFormatter ),
-				$repo->getApiHelperFactory( RequestContext::getMain() )
+				new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter ),
+				$repo->getApiHelperFactory( RequestContext::getMain() ),
+				$repo->getEntityTitleLookup(),
+				$entityIdFormatter,
+				new HashConfig( [ 'WBQualityConstraintsPropertyConstraintId' => 'P1' ] )
 			);
 		};
 	}

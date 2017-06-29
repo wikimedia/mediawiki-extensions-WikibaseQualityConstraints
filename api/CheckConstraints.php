@@ -5,18 +5,24 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use ApiBase;
 use ApiMain;
 use ApiResult;
+use Config;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
 use Wikibase\ChangeOp\StatementChangeOpFactory;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
+use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
+use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
 use Wikibase\Lib\SnakFormatter;
+use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
+use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -84,6 +90,21 @@ class CheckConstraints extends ApiBase {
 	private $constraintParameterRenderer;
 
 	/**
+	 * @var EntityTitleLookup
+	 */
+	private $entityTitleLookup;
+
+	/**
+	 * @var EntityIdFormatter
+	 */
+	private $entityIdLabelFormatter;
+
+	/**
+	 * @var Config
+	 */
+	private $config;
+
+	/**
 	 * Creates new instance from global state.
 	 *
 	 * @param ApiMain $main
@@ -104,9 +125,11 @@ class CheckConstraints extends ApiBase {
 		$languageFallbackLabelDescriptionLookupFactory = $repo->getLanguageFallbackLabelDescriptionLookupFactory();
 		$labelDescriptionLookup = $languageFallbackLabelDescriptionLookupFactory->newLabelDescriptionLookup( $language );
 		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
-		$entityIdFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
+		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
+		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
+		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
 		$statementGuidParser = $repo->getStatementGuidParser();
-		$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
+		$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdHtmlLinkFormatter, $valueFormatter );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$titleParser = MediaWikiServices::getInstance()->getTitleParser();
 		$constraintReportFactory = new ConstraintReportFactory(
@@ -127,7 +150,10 @@ class CheckConstraints extends ApiBase {
 		return new CheckConstraints( $main, $name, $prefix, $repo->getEntityIdParser(),
 			$repo->getStatementGuidValidator(), $statementGuidParser, $constraintReportFactory->getConstraintChecker(),
 			$constraintParameterRenderer,
-			$repo->getApiHelperFactory( RequestContext::getMain() ) );
+			$repo->getApiHelperFactory( RequestContext::getMain() ),
+			$repo->getEntityTitleLookup(),
+			$entityIdLabelFormatter,
+			$config );
 	}
 
 	/**
@@ -140,13 +166,20 @@ class CheckConstraints extends ApiBase {
 	 * @param DelegatingConstraintChecker $delegatingConstraintChecker
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 * @param ApiHelperFactory $apiHelperFactory
+	 * @param EntityTitleLookup $entityTitleLookup
+	 * @param EntityIdFormatter $entityIdLabelFormatter
+	 * @param Config $config
 	 */
 	public function __construct( ApiMain $main, $name, $prefix = '', EntityIdParser $entityIdParser,
 		StatementGuidValidator $statementGuidValidator,
 		StatementGuidParser $statementGuidParser,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
 		ConstraintParameterRenderer $constraintParameterRenderer,
-		ApiHelperFactory $apiHelperFactory ) {
+		ApiHelperFactory $apiHelperFactory,
+		EntityTitleLookup $entityTitleLookup,
+		EntityIdFormatter $entityIdLabelFormatter,
+		Config $config
+	) {
 		parent::__construct( $main, $name, $prefix );
 
 		$repo = WikibaseRepo::getDefaultInstance();
@@ -162,6 +195,9 @@ class CheckConstraints extends ApiBase {
 		$this->errorReporter = $apiHelperFactory->getErrorReporter( $this );
 
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
+		$this->entityTitleLookup = $entityTitleLookup;
+		$this->entityIdLabelFormatter = $entityIdLabelFormatter;
+		$this->config = $config;
 	}
 
 	/**
@@ -299,6 +335,21 @@ class CheckConstraints extends ApiBase {
 			$entityId = $checkResult->getEntityId()->getSerialization();
 			$propertyId = $checkResult->getPropertyId()->getSerialization();
 			$claimId = $statement->getGuid();
+			$constraintId = $checkResult->getConstraint()->getConstraintId();
+			$typeItemId = $checkResult->getConstraint()->getConstraintTypeItemId();
+
+			$title = $this->entityTitleLookup->getTitleForId( $checkResult->getPropertyId() );
+			try {
+				$statementGuid = $this->statementGuidParser->parse( $constraintId );
+				// constraint statement
+				$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
+				// TODO link to the statement when possible (T169224)
+				$link = $title->getFullUrl() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );
+			} catch ( StatementGuidParsingException $e ) {
+				// constraint template on talk page
+				$typeLabel = htmlspecialchars( $typeItemId );
+				$link = $title->getTalkPage()->getFullUrl();
+			}
 
 			$result = [
 				'status' => $checkResult->getStatus(),
@@ -306,7 +357,9 @@ class CheckConstraints extends ApiBase {
 				'claim' => $checkResult->getStatement()->getGuid(),
 				'constraint' => [
 					'id' => $checkResult->getConstraintId(),
-					'type' => $checkResult->getConstraintName(),
+					'type' => $typeItemId,
+					'typeLabel' => $typeLabel,
+					'link' => $link,
 					'detail' => $checkResult->getParameters(),
 					'detailHTML' => $this->constraintParameterRenderer->formatParameters( $checkResult->getParameters() )
 				]
