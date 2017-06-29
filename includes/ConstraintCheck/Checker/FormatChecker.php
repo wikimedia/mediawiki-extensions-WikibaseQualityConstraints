@@ -9,6 +9,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -24,10 +25,20 @@ class FormatChecker implements ConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
-	 * @param ConstraintParameterParser $constraintParameterParser
+	 * @var ConstraintParameterRenderer
 	 */
-	public function __construct( $constraintParameterParser ) {
+	private $onstraintParameterRenderer;
+
+	/**
+	 * @param ConstraintParameterParser $constraintParameterParser
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
+	 */
+	public function __construct(
+		ConstraintParameterParser $constraintParameterParser,
+		ConstraintParameterRenderer $constraintParameterRenderer
+	) {
 		$this->constraintParameterParser = $constraintParameterParser;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
@@ -53,7 +64,9 @@ class FormatChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed" )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+					 ->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -65,11 +78,19 @@ class FormatChecker implements ConstraintChecker {
 		 */
 		$type = $dataValue->getType();
 		if ( $type !== 'string' && $type !== 'monolingualtext' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-types-2" )->params( $constraint->getConstraintTypeName(), 'string', 'monolingualtext' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )
+					 ->rawParams(
+						 $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ),
+						 wfMessage( 'datatypes-type-string' )->escaped(),
+						 wfMessage( 'datatypes-type-monolingualtext' )->escaped()
+					 )
+					 ->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		$message = wfMessage( 'wbqc-violation-message-security-reason' )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
+		$message = wfMessage( "wbqc-violation-message-security-reason" )
+				 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+				 ->escaped();
 		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_TODO, $message );
 	}
 

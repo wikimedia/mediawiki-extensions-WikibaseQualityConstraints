@@ -38,7 +38,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->formatChecker = new FormatChecker( $this->getConstraintParameterParser() );
+		$this->formatChecker = new FormatChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
 	}
 
 	public function testFormatConstraintImdb() {

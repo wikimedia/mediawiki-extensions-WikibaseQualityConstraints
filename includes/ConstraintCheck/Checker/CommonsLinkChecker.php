@@ -12,6 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -27,19 +28,27 @@ class CommonsLinkChecker implements ConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
+
+	/**
 	 * @var TitleParser
 	 */
 	private $titleParser;
 
 	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 * @param TitleParser $titleParser
 	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
+		ConstraintParameterRenderer $constraintParameterRenderer,
 		TitleParser $titleParser
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->titleParser = $titleParser;
 	}
 
@@ -65,7 +74,9 @@ class CommonsLinkChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed" )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+					 ->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -77,7 +88,12 @@ class CommonsLinkChecker implements ConstraintChecker {
 		 *   parameter $namespace can be null, works for commons galleries
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'string' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )
+					 ->rawParams(
+						 $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ),
+						 wfMessage( 'datatypes-type-string' )->escaped()
+					 )
+					 ->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 

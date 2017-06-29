@@ -219,9 +219,9 @@ class ConstraintReportFactory {
 				'Value type' => new ValueTypeChecker( $this->lookup, $this->constraintParameterParser, $typeCheckerHelper, $this->config ),
 				'Single value' => new SingleValueChecker(),
 				'Multi value' => new MultiValueChecker(),
-				'Unique value' => new UniqueValueChecker( $sparqlHelper ),
-				'Format' => new FormatChecker( $this->constraintParameterParser ),
-				'Commons link' => new CommonsLinkChecker( $this->constraintParameterParser, $this->titleParser ),
+				'Unique value' => new UniqueValueChecker( $this->constraintParameterRenderer, $sparqlHelper ),
+				'Format' => new FormatChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
+				'Commons link' => new CommonsLinkChecker( $this->constraintParameterParser, $this->constraintParameterRenderer, $this->titleParser ),
 				'One of' => new OneOfChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
 			];
 			$this->constraintCheckerMap += [

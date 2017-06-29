@@ -70,7 +70,9 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed" )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+					 ->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 

@@ -9,6 +9,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\SparqlHelperMock;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
@@ -25,7 +26,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  */
 class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
-	use SparqlHelperMock;
+	use ConstraintParameters, SparqlHelperMock;
 
 	/**
 	 * @var JsonFileEntityLookup
@@ -57,7 +58,7 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 		$mock = $this->getSparqlHelperMockFindEntities( $statement, [ new ItemId( 'Q42' ) ] );
 
-		$this->checker = new UniqueValueChecker( $mock );
+		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $mock );
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 
@@ -71,7 +72,7 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 		$mock = $this->getSparqlHelperMockFindEntities( $statement, [] );
 
-		$this->checker = new UniqueValueChecker( $mock );
+		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $mock );
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
@@ -83,7 +84,7 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statement->setGuid( "Q1$56e6a474-4431-fb24-cc15-1d580e467559" );
 
-		$this->checker = new UniqueValueChecker( null );
+		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), null );
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 

@@ -9,6 +9,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -19,14 +20,24 @@ use Wikibase\DataModel\Statement\Statement;
 class UniqueValueChecker implements ConstraintChecker {
 
 	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
+
+	/**
 	 * @var SparqlHelper|null
 	 */
 	private $sparqlHelper;
 
 	/**
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer used in error messages
 	 * @param SparqlHelper|null $sparqlHelper Helper to run SPARQL queries, or null if SPARQL is not available.
 	 */
-	public function __construct( SparqlHelper $sparqlHelper = null ) {
+	public function __construct(
+		ConstraintParameterRenderer $constraintParameterRenderer,
+		SparqlHelper $sparqlHelper = null
+	) {
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->sparqlHelper = $sparqlHelper;
 	}
 
@@ -57,8 +68,8 @@ class UniqueValueChecker implements ConstraintChecker {
 			}
 		} else {
 			$status = CheckResult::STATUS_TODO;
-			$message = wfMessage( 'wbqc-violation-message-not-yet-implemented' )
-					 ->params( $constraint->getConstraintTypeName() )
+			$message = wfMessage( "wbqc-violation-message-not-yet-implemented" )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
 					 ->escaped();
 		}
 

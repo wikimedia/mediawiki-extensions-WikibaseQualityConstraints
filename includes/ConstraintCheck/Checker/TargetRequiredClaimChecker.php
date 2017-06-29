@@ -86,7 +86,9 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeName() )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed" )
+				->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+				->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -97,7 +99,12 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 *   type of $dataValue for properties with 'Target required claim' constraint has to be 'wikibase-entityid'
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeName(), 'wikibase-entityid' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )
+				->rawParams(
+					$this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ),
+					'wikibase-entityid' // TODO is there a message for this type so we can localize it?
+				)
+				->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */

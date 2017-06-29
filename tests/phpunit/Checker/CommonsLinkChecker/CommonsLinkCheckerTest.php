@@ -41,7 +41,11 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->commonsLinkChecker = new CommonsLinkChecker( $this->getConstraintParameterParser(), $this->getTitleParserMock() );
+		$this->commonsLinkChecker = new CommonsLinkChecker(
+			$this->getConstraintParameterParser(),
+			$this->getConstraintParameterRenderer(),
+			$this->getTitleParserMock()
+		);
 		$this->tablesUsed[] = 'page';
 	}
 
