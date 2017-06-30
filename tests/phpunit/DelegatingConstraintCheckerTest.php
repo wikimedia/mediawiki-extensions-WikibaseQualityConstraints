@@ -9,6 +9,7 @@ use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
@@ -44,7 +45,7 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  */
 class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters;
+	use ConstraintParameters, TitleParserMock;
 
 	/**
 	 * @var DelegatingConstraintChecker
@@ -71,6 +72,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			'http://www.wikidata.org/entity/',
 			'http://www.wikidata.org/wiki/Special:EntityData/'
 		);
+		$titleParser = $this->getTitleParserMock();
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
 			$this->statementGuidParser,
@@ -78,7 +80,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintParameterRenderer(),
 			$this->getConstraintParameterParser(),
 			$rdfVocabulary,
-			$itemIdParser
+			$itemIdParser,
+			$titleParser
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 

@@ -15,6 +15,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
+use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
@@ -31,7 +32,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  */
 class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters, ResultAssertions;
+	use ConstraintParameters, ResultAssertions, TitleParserMock;
 
 	/**
 	 * @var CommonsLinkChecker
@@ -40,28 +41,34 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->commonsLinkChecker = new CommonsLinkChecker( $this->getConstraintParameterParser() );
-		$this->tablesUsed[] = 'image';
+		$this->commonsLinkChecker = new CommonsLinkChecker( $this->getConstraintParameterParser(), $this->getTitleParserMock() );
+		$this->tablesUsed[] = 'page';
 	}
 
 	public function addDBData() {
-		$this->db->delete( 'image', '*' );
+		$this->db->delete( 'page', '*' );
 		$this->db->insert(
-			'image',
+			'page',
 			[
-				'img_name' => 'test_image.jpg',
-				'img_size' => '42',
-				'img_width' => '7',
-				'img_height' => '6',
-				'img_metadata' => 'test_blob',
-				'img_bits' => '42',
-				'img_major_mime' => 'image',
-				'img_minor_mime' => 'unknown',
-				'img_description' => 'image entry for testing',
-				'img_user' => '1234',
-				'img_user_text' => 'yomamma',
-				'img_timestamp' => '201501010000',
-				'img_sha1' => '8843d7f92416211de9ebb963ff4ce28125932878'
+				'page_id' => '1',
+				'page_namespace' => NS_FILE,
+				'page_title' => 'Test_image.jpg'
+			]
+		);
+		$this->db->insert(
+			'page',
+			[
+				'page_id' => '2',
+				'page_namespace' => NS_CATEGORY,
+				'page_title' => 'Test_category'
+			]
+		);
+		$this->db->insert(
+			'page',
+			[
+				'page_id' => '3',
+				'page_namespace' => NS_MAIN,
+				'page_title' => 'Test_gallery'
 			]
 		);
 	}
@@ -108,44 +115,29 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
 	}
 
-	public function testNotImplementedNamespaces() {
-		$value = new StringValue( 'test image.jpg' );
+	public function testCommonsLinkConstraintValidCategory() {
+		$value = new StringValue( 'test category' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			$statement,
-			$this->getConstraintMock( [] ),
+			$this->getConstraintMock( $this->namespaceParameter( 'Category' ) ),
 			$this->getEntity()
 		);
-		$this->assertTodo( $result );
+		$this->assertCompliance( $result );
+	}
+
+	public function testCommonsLinkConstraintValidGallery() {
+		$value = new StringValue( 'test gallery' );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'Gallery' ) ),
+			$this->getConstraintMock( $this->namespaceParameter( '' ) ),
 			$this->getEntity()
 		);
-		$this->assertTodo( $result );
 
-		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'Institution' ) ),
-			$this->getEntity()
-		);
-		$this->assertTodo( $result );
-
-		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'Museum' ) ),
-			$this->getEntity()
-		);
-		$this->assertTodo( $result );
-
-		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'Creator' ) ),
-			$this->getEntity()
-		);
-		$this->assertTodo( $result );
+		$this->assertCompliance( $result );
 	}
 
 	public function testCommonsLinkConstraintNotExistent() {
