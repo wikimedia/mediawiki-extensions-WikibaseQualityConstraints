@@ -5,9 +5,11 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use DataValues\DataValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
+use InvalidArgumentException;
 use Serializers\Serializer;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -77,6 +79,53 @@ trait ConstraintParameters {
 		}
 
 		return $this->snakSerializer;
+	}
+
+	/**
+	 * @param string[] $classIds item ID serializations
+	 * @return array
+	 */
+	public function classParameter( array $classIds ) {
+		$classParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
+		return [
+			$classParameterId => array_map(
+				function( $classId ) use ( $classParameterId ) {
+					return $this->getSnakSerializer()->serialize(
+						new PropertyValueSnak(
+							new PropertyId( $classParameterId ),
+							new EntityIdValue( new ItemId( $classId ) )
+						)
+					);
+				},
+				$classIds
+			)
+		];
+	}
+
+	/**
+	 * @param string $relation 'instance' or 'subclass'
+	 * @return array
+	 */
+	public function relationParameter( $relation ) {
+		$relationParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
+		switch ( $relation ) {
+			case 'instance':
+				$configKey = 'WBQualityConstraintsInstanceOfRelationId';
+				break;
+			case 'subclass':
+				$configKey = 'WBQualityConstraintsSubclassOfRelationId';
+				break;
+			default:
+				throw new InvalidArgumentException( '$relation must be instance or subclass' );
+		}
+		return [
+			$relationParameterId => [ $this->getSnakSerializer()->serialize(
+				new PropertyValueSnak(
+					new PropertyId( $relationParameterId ),
+					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( $configKey ) ) )
+				)
+			) ]
+		];
 	}
 
 	/**
