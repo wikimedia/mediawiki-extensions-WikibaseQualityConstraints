@@ -8,7 +8,6 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
-use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\Item;

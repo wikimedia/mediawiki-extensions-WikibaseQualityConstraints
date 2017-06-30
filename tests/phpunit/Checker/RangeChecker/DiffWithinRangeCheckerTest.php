@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\ItemId;
