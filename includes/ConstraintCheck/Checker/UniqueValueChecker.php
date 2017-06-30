@@ -63,8 +63,10 @@ class UniqueValueChecker implements ConstraintChecker {
 				$message = '';
 			} else {
 				$status = CheckResult::STATUS_VIOLATION;
-				// TODO include the other entities in the message
-				$message = wfMessage( 'wbqc-violation-message-unique-value' )->escaped();
+				$message = wfMessage( 'wbqc-violation-message-unique-value' )
+						 ->numParams( count( $otherEntities ) )
+						 ->rawParams( $this->constraintParameterRenderer->formatItemIdList( $otherEntities, ConstraintParameterRenderer::ROLE_SUBJECT ) )
+						 ->escaped();
 			}
 		} else {
 			$status = CheckResult::STATUS_TODO;
