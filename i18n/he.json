@@ -61,6 +61,7 @@
 	"wbqc-violation-message-conflicts-with-property": "לישות לא אמורות להיות קביעות עבור $1 וגם $2.",
 	"wbqc-violation-message-conflicts-with-claim": "לישות לא אמורה להיות קביעה עבור $1 עם יש לה גם קביעה עבור $2 עם הערך $3.",
 	"wbqc-violation-message-diff-within-range": "ההבדל בין $3 (ערך: $4) ו{{GRAMMAR:תחילית|$1}} (ערך: $2) אמור להיות בין $5 לבין $6 ([$5; $6]).",
+	"wbqc-violation-message-diff-within-range-leftopen": "ההבדל בין $3 ($4) ו{{GRAMMAR:תחילית|$1}} ($2) אמור להיות לא יותר מ־$5 ((−∞; $5]).",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "המאפיין שמוגדר בפרמטרים צריך להתקיים.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "למאפיין שהוגדר בפרמטרים צריך להיות ערך.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "למאפיין שהוגדר בפרמטרים צריך להיות ערך מאותו הסוג כמו למאפיין הזה.",
