@@ -91,5 +91,5 @@
 	"wbqc-violation-message-valueType-instance": "$1声明的值性质应为{{PLURAL:$3|1=$5|2=$5或$6|以下类之一}}（或为{{PLURAL:$3|其子类之一}}），但$2当前{{PLURAL:$3|1=并非如此。|2=并非如此。|并非如此：$4}}",
 	"wbqc-violation-message-valueType-subclass": "$1声明的值的上级分类应为{{PLURAL:$3|1=$5|2=$5或$6|以下类之一}}（或为{{PLURAL:$3|其子类之一}}），但$2当前{{PLURAL:$3|1=并非如此。|2=并非如此。|并非如此：$4}}",
 	"wbqc-violation-message-target-required-claim": "$1应拥有{{PLURAL:$3|0=声明$2。|1=声明$2 $5。|声明$2，并使用以下值之一：$4}}",
-	"wbqc-violation-message-unique-value": "属性值不得存在于其他任何项中。"
+	"wbqc-violation-message-unique-value": "此属性的值不得出现在其他任何项中，但却也出现在了{{PLURAL:$1|1=$3上。|2=$3和$4上。|以下项中：$2}}"
 }
