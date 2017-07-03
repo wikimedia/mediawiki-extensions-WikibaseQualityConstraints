@@ -1,8 +1,10 @@
+/* named colors refer to the Wikimedia Style Guide, https://wikimedia.github.io/WikimediaUI-Style-Guide/visual-style_colors.html */
+
 .wbqc-reports-button {
 	margin-left: 0.5em;
 }
 .wbqc-report {
-	border-top: 1px solid #eaecf0;
+	border-top: 1px solid #eaecf0; /* Base80 */
 }
 .wbqc-constraint-type-help {
 	transform: scale( 0.75 );
