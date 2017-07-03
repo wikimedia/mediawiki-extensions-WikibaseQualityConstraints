@@ -240,7 +240,7 @@ class DelegatingConstraintChecker {
 					$statement,
 					$constraint,
 					[],
-					CheckResult::STATUS_VIOLATION,
+					CheckResult::STATUS_BAD_PARAMETERS,
 					$e->getMessage()
 				);
 			} catch ( SparqlHelperException $e ) {
@@ -275,7 +275,7 @@ class DelegatingConstraintChecker {
 		}
 
 		$sortFunction = function ( CheckResult $a, CheckResult $b ) {
-			$order = [ 'other' => 4, 'compliance' => 3, 'exception' => 2, 'violation' => 1 ];
+			$order = [ 'other' => 4, 'compliance' => 3, 'exception' => 2, 'violation' => 1, 'bad-parameters' => 0 ];
 
 			$statusA = $a->getStatus();
 			$statusB = $b->getStatus();

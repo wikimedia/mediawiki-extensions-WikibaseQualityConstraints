@@ -24,6 +24,7 @@ class CheckResult {
 	const STATUS_VIOLATION = 'violation';
 	const STATUS_EXCEPTION = 'exception';
 	const STATUS_TODO = 'todo';
+	const STATUS_BAD_PARAMETERS = 'bad-parameters';
 
 	/**
 	 * @var EntityId
