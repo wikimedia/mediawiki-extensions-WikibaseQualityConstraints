@@ -11,6 +11,7 @@ use Wikibase\DataModel\Statement\StatementGuid;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
@@ -52,18 +53,26 @@ class DelegatingConstraintChecker {
 	private $constraintLookup;
 
 	/**
+	 * @var ConstraintParameterParser
+	 */
+	private $constraintParameterParser;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintChecker[] $checkerMap
 	 * @param ConstraintLookup $constraintRepository
+	 * @param ConstraintParameterParser $constraintParameterParser
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		array $checkerMap,
-		ConstraintLookup $constraintRepository
+		ConstraintLookup $constraintRepository,
+		ConstraintParameterParser $constraintParameterParser
 	) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
 		$this->constraintLookup = $constraintRepository;
+		$this->constraintParameterParser = $constraintParameterParser;
 	}
 
 	/**
@@ -196,10 +205,9 @@ class DelegatingConstraintChecker {
 
 		foreach ( $constraints as $constraint ) {
 			$parameters = $constraint->getConstraintParameters();
+			$exceptions = $this->constraintParameterParser->parseExceptionParameter( $parameters );
 
-			if ( array_key_exists( 'known_exception', $parameters )
-				&& in_array( $entityId->getSerialization(), explode( ',', $parameters['known_exception'] ) )
-			) {
+			if ( in_array( $entityId, $exceptions ) ) {
 				$result[] = new CheckResult(
 					$entityId,
 					$statement,

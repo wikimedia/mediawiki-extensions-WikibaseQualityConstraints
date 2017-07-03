@@ -22,6 +22,7 @@ use WikibaseQuality\ConstraintReport\Api\CheckConstraints;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
@@ -98,11 +99,22 @@ class CheckConstraintsTest extends ApiTestCase {
 			);
 			$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
+			$config = new HashConfig( [
+				'WBQualityConstraintsPropertyConstraintId' => 'P1',
+				'WBQualityConstraintsExceptionToConstraintId' => 'P2',
+			] );
 			$entityIdParser = new ItemIdParser();
+			$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
+			$constraintParameterParser = new ConstraintParameterParser(
+				$config,
+				$repo->getBaseDataModelDeserializerFactory(),
+				$constraintParameterRenderer
+			);
 			$constraintChecker = new DelegatingConstraintChecker(
 				self::$entityLookup,
 				self::$checkerMap,
-				new InMemoryConstraintLookup( self::$constraintLookupContents )
+				new InMemoryConstraintLookup( self::$constraintLookupContents ),
+				$constraintParameterParser
 			);
 
 			return new CheckConstraints(
@@ -113,11 +125,11 @@ class CheckConstraintsTest extends ApiTestCase {
 				new StatementGuidValidator( $entityIdParser ),
 				new StatementGuidParser( $entityIdParser ),
 				$constraintChecker,
-				new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter ),
+				$constraintParameterRenderer,
 				$repo->getApiHelperFactory( RequestContext::getMain() ),
 				$repo->getEntityTitleLookup(),
 				$entityIdFormatter,
-				new HashConfig( [ 'WBQualityConstraintsPropertyConstraintId' => 'P1' ] )
+				$config
 			);
 		};
 	}

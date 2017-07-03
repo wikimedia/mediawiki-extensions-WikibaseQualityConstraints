@@ -798,4 +798,64 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		);
 	}
 
+	public function testParseExceptionParameter() {
+		$exceptionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
+		$entityId1 = new ItemId( 'Q100' );
+		$entityId2 = new PropertyId( 'P100' );
+		$snak1 = new PropertyValueSnak( new PropertyId( $exceptionId ), new EntityIdValue( $entityId1 ) );
+		$snak2 = new PropertyValueSnak( new PropertyId( $exceptionId ), new EntityIdValue( $entityId2 ) );
+
+		$parsed = $this->getConstraintParameterParser()->parseExceptionParameter(
+			[ $exceptionId => [
+				$this->snakSerializer->serialize( $snak1 ),
+				$this->snakSerializer->serialize( $snak2 ),
+			] ]
+		);
+
+		$this->assertEquals( [ $entityId1, $entityId2 ], $parsed );
+	}
+
+	public function testParseExceptionParameterMissing() {
+		$parsed = $this->getConstraintParameterParser()->parseExceptionParameter(
+			[]
+		);
+
+		$this->assertEquals( [], $parsed );
+	}
+
+	public function testParseExceptionParameterFromTemplate() {
+		$parsed = $this->getConstraintParameterParser()->parseExceptionParameter(
+			[ 'known_exception' => 'Q100,P100' ]
+		);
+
+		$this->assertEquals( [ new ItemId( 'Q100' ), new PropertyId( 'P100' ) ], $parsed );
+	}
+
+	public function testParseExceptionParameterFromTemplateLowercase() {
+		$parsed = $this->getConstraintParameterParser()->parseExceptionParameter(
+			[ 'known_exception' => 'q100,p100' ]
+		);
+
+		$this->assertEquals( [ new ItemId( 'Q100' ), new PropertyId( 'P100' ) ], $parsed );
+	}
+
+	public function testParseExceptionParameterString() {
+		$exceptionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
+		$snak = new PropertyValueSnak( new PropertyId( $exceptionId ), new StringValue( 'Q100' ) );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseExceptionParameter',
+			[ [ $exceptionId => [ $this->snakSerializer->serialize( $snak ) ] ] ],
+			'wbqc-violation-message-parameter-entity'
+		);
+	}
+
+	public function testParseExceptionParameterFromTemplateInvalid() {
+		$this->assertThrowsConstraintParameterException(
+			'parseExceptionParameter',
+			[ [ 'known_exception' => 'Douglas Adams' ] ],
+			'wbqc-violation-message-parameter-entity'
+		);
+	}
+
 }

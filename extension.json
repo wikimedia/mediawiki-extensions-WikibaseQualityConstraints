@@ -104,6 +104,11 @@
 			"description": "The property ID of the 'property constraint' property (data type: item), which specifies the various constraints of a property.",
 			"public": true
 		},
+		"WBQualityConstraintsExceptionToConstraintId": {
+			"value": "P2303",
+			"description": "The property ID of the 'exception to constraint' property (data type: item), which specifies the exceptions of a constraint.",
+			"public": true
+		},
 		"WBQualityConstraintsDistinctValuesConstraintId": {
 			"value": "Q21502410",
 			"description": "The item ID of the 'distinct values constraint' item, which, when used in a 'property constraint' statement on a property, indicates that all values for this property should differ from each other, or, equivalently, that each value for this property should be unique to one item.",

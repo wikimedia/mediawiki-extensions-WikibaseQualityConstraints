@@ -632,4 +632,60 @@ class ConstraintParameterParser {
 		}
 	}
 
+	private function parseExceptionParameterFromStatement( array $constraintParameters ) {
+		$exceptionId = $this->config->get( 'WBQualityConstraintsExceptionToConstraintId' );
+		return array_map(
+			function( $snakSerialization ) use ( $exceptionId ) {
+				return $this->parseEntityIdParameter( $snakSerialization, $exceptionId );
+			},
+			$constraintParameters[$exceptionId]
+		);
+	}
+
+	private function parseExceptionParameterFromTemplate( array $constraintParameters ) {
+		return array_map(
+			function( $entityIdSerialization ) {
+				$entityIdSerialization = strtoupper( $entityIdSerialization );
+				$firstLetter = substr( $entityIdSerialization, 0, 1 );
+				try {
+					switch ( $firstLetter ) {
+						case 'Q':
+							return new ItemId( $entityIdSerialization );
+						case 'P':
+							return new PropertyId( $entityIdSerialization );
+						default:
+							throw new InvalidArgumentException(); // caught below
+					}
+				} catch ( InvalidArgumentException $e ) {
+					$value = new StringValue( $entityIdSerialization );
+					throw new ConstraintParameterException(
+						wfMessage( 'wbqc-violation-message-parameter-entity' )
+							->rawParams(
+								$this->constraintParameterRenderer->formatPropertyId( 'known_exception', ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_PROPERTY ),
+								$this->constraintParameterRenderer->formatDataValue( $value, ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_VALUE )
+							)
+							->escaped()
+					);
+				}
+			},
+			explode( ',', $constraintParameters['known_exception'] )
+		);
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @throws ConstraintParameterException if the parameter is invalid
+	 * @return EntityId[]
+	 */
+	public function parseExceptionParameter( array $constraintParameters ) {
+		$exceptionId = $this->config->get( 'WBQualityConstraintsExceptionToConstraintId' );
+		if ( array_key_exists( $exceptionId, $constraintParameters ) ) {
+			return $this->parseExceptionParameterFromStatement( $constraintParameters );
+		} elseif ( array_key_exists( 'known_exception', $constraintParameters ) ) {
+			return $this->parseExceptionParameterFromTemplate( $constraintParameters );
+		} else {
+			return [];
+		}
+	}
+
 }
