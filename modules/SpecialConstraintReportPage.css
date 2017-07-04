@@ -36,6 +36,10 @@ form {
 	color: #54595d; /* Base20 */
 }
 
+.wbqc-status-bad-parameters {
+	color: #b32424; /* Red30 */
+}
+
 /* Tooltip */
 .wbqc-indicator {
 	color: #72777d; /* Base30 */

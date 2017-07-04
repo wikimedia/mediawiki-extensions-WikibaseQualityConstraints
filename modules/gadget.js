@@ -30,8 +30,10 @@
 	function buildReport( result ) {
 		var $report, $heading, $helpButton;
 
-		if ( result.status === 'violation' ) {
-			$report = $( '<div>' ).addClass( 'wbqc-report' );
+		if ( result.status === 'violation' || result.status === 'bad-parameters' ) {
+			$report = $( '<div>' )
+				.addClass( 'wbqc-report' )
+				.addClass( 'wbqc-report-status-' + result.status );
 			$heading = $( '<h4>' ).append(
 				$( '<a>' )
 					.text( result.constraint.typeLabel )
