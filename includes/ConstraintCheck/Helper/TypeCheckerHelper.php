@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
+use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -81,6 +82,8 @@ class TypeCheckerHelper {
 		$maxEntities = $this->config->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
 		if ( ++$entitiesChecked > $maxEntities ) {
 			if ( $entitiesChecked === $maxEntities + 1 && $this->sparqlHelper !== null ) {
+				MediaWikiServices::getInstance()->getStatsdDataFactory()
+					->increment( 'wikibase.quality.constraints.sparql.typeFallback' );
 				return $this->sparqlHelper->hasType(
 					$comparativeClass->getSerialization(),
 					$classesToCheck,
