@@ -132,6 +132,11 @@ class DelegatingConstraintChecker {
 		$entity = $this->entityLookup->getEntity( $entityId );
 		if ( $entity instanceof StatementListProvider ) {
 			$statement = $entity->getStatements()->getFirstStatementWithGuid( $guid->getSerialization() );
+			if ( $statement === null ) {
+				// try lowercasing the entity ID for legacy statement GUIDs
+				$guidSerialization = lcfirst( $guid->getSerialization() );
+				$statement = $entity->getStatements()->getFirstStatementWithGuid( $guidSerialization );
+			}
 			if ( $statement ) {
 				$result = $this->checkStatement( $entity, $statement, $constraintIds );
 				$output = $this->sortResult( $result );
