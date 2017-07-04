@@ -1,3 +1,5 @@
+/* named colors refer to the Wikimedia Style Guide, https://wikimedia.github.io/WikimediaUI-Style-Guide/visual-style_colors.html */
+
 /* Entity id form */
 form {
 	margin-bottom: 20px;
@@ -10,7 +12,7 @@ form {
 
 .wbqc-constraintreport-notice-error {
 	font-weight: bold;
-	color: #ba0000;
+	color: #d33; /* Red50 */
 }
 
 /* Statuses */
@@ -19,34 +21,34 @@ form {
 }
 
 .wbqc-status-compliance {
-	color: #008000;
+	color: #00af89; /* Green50 */
 }
 
 .wbqc-status-exception {
-	color: #e6b800;
+	color: #ac6600; /* Yellow30 */
 }
 
 .wbqc-status-violation {
-	color: #ba0000;
+	color: #d33; /* Red50 */
 }
 
 .wbqc-status-todo {
-	color: #404040;
+	color: #54595d; /* Base20 */
 }
 
 /* Tooltip */
 .wbqc-indicator {
-	color: #ccc;
+	color: #72777d; /* Base30 */
 	font-weight: 600;
 }
 
 .wbqc-tooltip {
 	margin-top: -40px;
 	margin-left: -5px;
-	background-color: #f2f2f2;
-	border: 1px solid #aaa;
+	background-color: #f8f9fa; /* Base90 */
+	border: 1px solid #a2a9b1; /* Base50 */
 	border-radius: 5px;
-	box-shadow: 2px 2px 1px #ccc;
+	box-shadow: 2px 2px 1px rgba( 0, 0, 0, 0.2 );
 	padding: 2px 5px 2px 5px;
 	position: absolute;
 	float: left;
@@ -69,6 +71,6 @@ form {
 }
 
 .wbqc-expandable-content {
-	color: #333;
+	color: #222; /* Base10 */
 	display: none;
 }
