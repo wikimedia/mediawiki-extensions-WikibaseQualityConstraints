@@ -19,6 +19,7 @@
 	"wbqc-constraintreport-status-compliance": "服从",
 	"wbqc-constraintreport-status-exception": "例外",
 	"wbqc-constraintreport-status-todo": "待办事项",
+	"wbqc-constraintreport-status-bad-parameters": "错误参数",
 	"wbqc-constraintreport-result-table-header-status": "状态",
 	"wbqc-constraintreport-result-table-header-claim": "声称",
 	"wbqc-constraintreport-result-table-header-constraint": "约束",

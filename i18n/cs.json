@@ -81,5 +81,5 @@
 	"wbqc-violation-message-valueType-instance": "Hodnoty tvrzení vlastnosti $1 by měly být instancemi {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-valueType-subclass": "Hodnoty tvrzení vlastnosti $1 by měly být podtřídami {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 by také měla mít {{PLURAL:$3|0=tvrzení vlastnosti $2.|1=tvrzení vlastnosti $2 s hodnotou $5.|tvrzení vlasnosti $2 s jednou z následujících hodnot:$4}}",
-	"wbqc-violation-message-unique-value": "Hodnota této vlastnosti nesmí být použita v žádné jiné položce."
+	"wbqc-violation-message-unique-value": "Hodnota této vlastnosti nesmí být použita v žádné jiné položce, použitá je ale i v {{PLURAL:$1|1=položce $3.|2=položkách $3 a $4.|následujících položkách: $2}}"
 }

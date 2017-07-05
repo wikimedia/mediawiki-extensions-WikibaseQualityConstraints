@@ -17,6 +17,7 @@
 	"wbqc-constraintreport-status-compliance": "Cumple",
 	"wbqc-constraintreport-status-exception": "Excepción",
 	"wbqc-constraintreport-status-todo": "Pendiente",
+	"wbqc-constraintreport-status-bad-parameters": "Parámetros incorrectos",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
 	"wbqc-constraintreport-result-link-to-claim": "ir a reclamar",
 	"wbqc-constraintreport-no-parameter": "ninguno",
@@ -45,7 +46,6 @@
 	"wbqc-violation-message-qualifier": "La propiedad solo debería usarse como un calificador.",
 	"wbqc-violation-message-no-qualifiers": "Las declaraciones $1 no deberían tener calificadores.",
 	"wbqc-violation-message-qualifiers": "La propiedad solo debe usarse con los calificadores definidos en los parámetros.",
-	"wbqc-violation-message-range": "El valor de la propiedad no debe ser menor que el mínimo, ni mayor que el máximo definido en los parámetros.",
 	"wbqc-violation-message-single-value": "Esta propiedad debería contener un único valor. Es decir, debería haber una declaración utilizando esta propiedad.",
 	"wbqc-violation-message-symmetric": "$1 también debería tener la declaración simétrica $2 $3.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "El parámetro \"relation\" debe ser \"instance\" o \"subclass\"."

@@ -21,6 +21,7 @@
 	"wbqc-constraintreport-status-violation": "위반",
 	"wbqc-constraintreport-status-exception": "예외",
 	"wbqc-constraintreport-status-todo": "검사 불가",
+	"wbqc-constraintreport-status-bad-parameters": "잘못된 변수",
 	"wbqc-constraintreport-result-table-header-status": "상태",
 	"wbqc-potentialissues-short": "잠재적인 문제",
 	"wbqc-violation-header-parameters": "변수:",
