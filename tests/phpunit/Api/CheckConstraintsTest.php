@@ -50,7 +50,7 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 class CheckConstraintsTest extends ApiTestCase {
 
 	const NONEXISTENT_ITEM = 'Q99';
-	const NONEXISTENT_CLAIM = 'Q99$does-not-exist';
+	const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
 
 	private static $oldModuleDeclaration;
 
@@ -114,7 +114,8 @@ class CheckConstraintsTest extends ApiTestCase {
 				self::$entityLookup,
 				self::$checkerMap,
 				new InMemoryConstraintLookup( self::$constraintLookupContents ),
-				$constraintParameterParser
+				$constraintParameterParser,
+				$repo->getStatementGuidParser()
 			);
 
 			return new CheckConstraints(
@@ -167,14 +168,14 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->givenItemWithPropertyExists(
 			new ItemId( 'Q1' ),
 			new PropertyId( 'P1' ),
-			'statement-id'
+			'46fc8ec9-4903-4592-9a0e-afdd1fa03183'
 		);
 		$this->givenPropertyHasViolation( new PropertyId( 'P1' ) );
 
 		$result = $this->doRequest( [ CheckConstraints::PARAM_ID => 'Q1' ] );
 
 		$this->assertCount( 1, $result['wbcheckconstraints'] );
-		$resultsForItem = $result['wbcheckconstraints']['Q1']['P1']['Q1$statement-id'];
+		$resultsForItem = $result['wbcheckconstraints']['Q1']['P1']['Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183'];
 		$this->assertCount( 1, $resultsForItem );
 		$this->assertEquals( CheckResult::STATUS_VIOLATION, $resultsForItem[0]['status'] );
 		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );
@@ -184,14 +185,14 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->givenItemWithPropertyExists(
 			new ItemId( 'Q1' ),
 			new PropertyId( 'P1' ),
-			'statement-id'
+			'46fc8ec9-4903-4592-9a0e-afdd1fa03183'
 		);
 		$this->givenPropertyHasViolation( new PropertyId( 'P1' ) );
 
-		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => 'Q1$statement-id' ] );
+		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => 'Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183' ] );
 
 		$this->assertCount( 1, $result['wbcheckconstraints'] );
-		$resultsForItem = $result['wbcheckconstraints']['Q1']['P1']['Q1$statement-id'];
+		$resultsForItem = $result['wbcheckconstraints']['Q1']['P1']['Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183'];
 		$this->assertCount( 1, $resultsForItem );
 		$this->assertEquals( CheckResult::STATUS_VIOLATION, $resultsForItem[0]['status'] );
 		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );

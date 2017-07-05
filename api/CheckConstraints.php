@@ -144,7 +144,8 @@ class CheckConstraints extends ApiBase {
 			),
 			$repo->getRdfVocabulary(),
 			$repo->getEntityIdParser(),
-			$titleParser
+			$titleParser,
+			$statementGuidParser
 		);
 
 		return new CheckConstraints( $main, $name, $prefix, $repo->getEntityIdParser(),
@@ -279,14 +280,14 @@ class CheckConstraints extends ApiBase {
 				'If ' . self::PARAM_CLAIM_ID . ' is specified, it must be nonempty.', 'no-data' );
 		}
 
-		return array_map( function ( $id ) {
-			try {
-				return $this->statementGuidParser->parse( $id );
-			} catch ( EntityIdParsingException $e ) {
+		foreach ( $ids as $id ) {
+			if ( !$this->statementGuidValidator->validate( $id ) ) {
 				$this->errorReporter->dieError(
 					"Invalid claim id: $id", 'invalid-guid', 0, [ self::PARAM_CLAIM_ID => $id ] );
 			}
-		}, $ids );
+		}
+
+		return $ids;
 	}
 
 	private function validateParameters( array $params ) {
