@@ -459,14 +459,30 @@ class ConstraintParameterParser {
 		}
 	}
 
+	/**
+	 * @param array $snakSerialization
+	 * @param string $parameterId
+	 * @return DataValue|null
+	 */
+	private function parseValueOrNoValueOrNowParameter( array $snakSerialization, $parameterId ) {
+		try {
+			return $this->parseValueOrNoValueParameter( $snakSerialization, $parameterId );
+		} catch ( ConstraintParameterException $e ) {
+			// unknown value means “now”
+			$timeParser = ( new TimeParserFactory() )->getTimeParser();
+			return $timeParser->parse( gmdate( '+Y-m-d\T00:00:00\Z' ) );
+		}
+	}
+
 	private function parseRangeParameterFromStatement( array $constraintParameters, $configKey ) {
 		$minimumId = $this->config->get( 'WBQualityConstraintsMinimum' . $configKey . 'Id' );
 		$maximumId = $this->config->get( 'WBQualityConstraintsMaximum' . $configKey . 'Id' );
 		$this->requireSingleParameter( $constraintParameters, $minimumId );
 		$this->requireSingleParameter( $constraintParameters, $maximumId );
+		$parseFunction = $configKey === 'Date' ? 'parseValueOrNoValueOrNowParameter' : 'parseValueOrNoValueParameter';
 		return [
-			$this->parseValueOrNoValueParameter( $constraintParameters[$minimumId][0], $minimumId ),
-			$this->parseValueOrNoValueParameter( $constraintParameters[$maximumId][0], $maximumId )
+			$this->$parseFunction( $constraintParameters[$minimumId][0], $minimumId ),
+			$this->$parseFunction( $constraintParameters[$maximumId][0], $maximumId )
 		];
 	}
 

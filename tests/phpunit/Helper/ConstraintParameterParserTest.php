@@ -641,6 +641,46 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertEquals( [ $min, $max ], $parsed );
 	}
 
+	public function testParseRangeParameterTimePast() {
+		$config = $this->getDefaultConfig();
+		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
+		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
+		$propertyId = new PropertyId( 'P1' );
+		$calendar = 'http://www.wikidata.org/entity/Q1985727';
+		$now = new TimeValue( gmdate( '+Y-m-d\T00:00:00\Z' ), 0, 0, 0, TimeValue::PRECISION_DAY, $calendar );
+
+		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+			[
+				$minimumId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
+				$maximumId => [ $this->snakSerializer->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
+			],
+			'',
+			'time'
+		);
+
+		$this->assertEquals( [ null, $now ], $parsed );
+	}
+
+	public function testParseRangeParameterTimeFuture() {
+		$config = $this->getDefaultConfig();
+		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
+		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
+		$propertyId = new PropertyId( 'P1' );
+		$calendar = 'http://www.wikidata.org/entity/Q1985727';
+		$now = new TimeValue( gmdate( '+Y-m-d\T00:00:00\Z' ), 0, 0, 0, TimeValue::PRECISION_DAY, $calendar );
+
+		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+			[
+				$minimumId => [ $this->snakSerializer->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
+				$maximumId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
+			],
+			'',
+			'time'
+		);
+
+		$this->assertEquals( [ $now, null ], $parsed );
+	}
+
 	public function testParseRangeParameterMissingParameters() {
 		foreach ( [ 'quantity', 'time' ] as $type ) {
 			$this->assertThrowsConstraintParameterException(
