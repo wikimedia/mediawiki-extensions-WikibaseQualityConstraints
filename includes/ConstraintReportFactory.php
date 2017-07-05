@@ -173,7 +173,8 @@ class ConstraintReportFactory {
 				$this->lookup,
 				$this->getConstraintCheckerMap(),
 				new CachingConstraintLookup( $this->getConstraintRepository() ),
-				$this->constraintParameterParser
+				$this->constraintParameterParser,
+				$this->statementGuidParser
 			);
 		}
 

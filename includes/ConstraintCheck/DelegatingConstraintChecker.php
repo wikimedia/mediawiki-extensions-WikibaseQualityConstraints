@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementGuid;
 use Wikibase\DataModel\Statement\StatementList;
@@ -58,21 +59,30 @@ class DelegatingConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
+	 *
+	 * @var StatementGuidParser
+	 */
+	private $statementGuidParser;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintChecker[] $checkerMap
 	 * @param ConstraintLookup $constraintRepository
 	 * @param ConstraintParameterParser $constraintParameterParser
+	 * @param StatementGuidParser $statementGuidParser
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		array $checkerMap,
 		ConstraintLookup $constraintRepository,
-		ConstraintParameterParser $constraintParameterParser
+		ConstraintParameterParser $constraintParameterParser,
+		StatementGuidParser $statementGuidParser
 	) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
 		$this->constraintLookup = $constraintRepository;
 		$this->constraintParameterParser = $constraintParameterParser;
+		$this->statementGuidParser = $statementGuidParser;
 	}
 
 	/**
@@ -122,21 +132,17 @@ class DelegatingConstraintChecker {
 	 * Starts the whole constraint-check process.
 	 * Statements of the entity will be checked against every constraint that is defined on the claim.
 	 *
-	 * @param StatementGuid $guid
+	 * @param string $guid
 	 * @param array $constraintIds
 	 * @return CheckResult[]
 	 */
-	public function checkAgainstConstraintsOnClaimId( StatementGuid $guid, $constraintIds = null ) {
+	public function checkAgainstConstraintsOnClaimId( $guid, $constraintIds = null ) {
 
-		$entityId = $guid->getEntityId();
+		$parsedGuid = $this->statementGuidParser->parse( $guid );
+		$entityId = $parsedGuid->getEntityId();
 		$entity = $this->entityLookup->getEntity( $entityId );
 		if ( $entity instanceof StatementListProvider ) {
-			$statement = $entity->getStatements()->getFirstStatementWithGuid( $guid->getSerialization() );
-			if ( $statement === null ) {
-				// try lowercasing the entity ID for legacy statement GUIDs
-				$guidSerialization = lcfirst( $guid->getSerialization() );
-				$statement = $entity->getStatements()->getFirstStatementWithGuid( $guidSerialization );
-			}
+			$statement = $entity->getStatements()->getFirstStatementWithGuid( $guid );
 			if ( $statement ) {
 				$result = $this->checkStatement( $entity, $statement, $constraintIds );
 				$output = $this->sortResult( $result );

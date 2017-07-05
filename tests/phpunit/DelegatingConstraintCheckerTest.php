@@ -57,16 +57,10 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $lookup;
 
-	/**
-	 * @var StatementGuidParser
-	 */
-	private $statementGuidParser;
-
 	protected function setUp() {
 		parent::setUp();
 		$this->lookup = $this->createEntityLookup();
 		$itemIdParser = new ItemIdParser();
-		$this->statementGuidParser = new StatementGuidParser( $itemIdParser );
 		$config = $this->getDefaultConfig();
 		$rdfVocabulary = new RdfVocabulary(
 			'http://www.wikidata.org/entity/',
@@ -75,7 +69,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$titleParser = $this->getTitleParserMock();
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
-			$this->statementGuidParser,
+			new StatementGuidParser( $itemIdParser ),
 			$config,
 			$this->getConstraintParameterRenderer(),
 			$this->getConstraintParameterParser(),
@@ -301,21 +295,21 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 	public function testCheckAgainstConstraints_ByClaims() {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
-			$this->statementGuidParser->parse( 'Q1$c0f25a6f-9e33-41c8-be34-c86a730ff30b' ) );
+			'Q1$c0f25a6f-9e33-41c8-be34-c86a730ff30b' );
 
 		$this->assertCount( 18, $result, 'Every constraint should be represented by one result' );
 	}
 
 	public function testCheckAgainstConstraintsDoesNotCrashWhenResultIsEmpty_ByClaims() {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
-			$this->statementGuidParser->parse( 'Q2$c0f25a6f-9e33-41c8-be34-c86a730ff30b' ) );
+			'Q2$c0f25a6f-9e33-41c8-be34-c86a730ff30b' );
 
 		$this->assertCount( 0, $result, 'Should be empty' );
 	}
 
 	public function testCheckAgainstConstraintsDoesNotCrashWhenClaimDoesNotExist() {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
-			$this->statementGuidParser->parse( 'Q99$does-not-exist' ) );
+			'Q99$does-not-exist' );
 
 		$this->assertCount( 0, $result, 'Should be empty' );
 	}
