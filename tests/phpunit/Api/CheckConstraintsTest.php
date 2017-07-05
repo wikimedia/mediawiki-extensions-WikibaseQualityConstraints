@@ -198,6 +198,26 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );
 	}
 
+	public function testItemWithAlternativeCaseClaimExistsAndHasViolation_WillGetOnlyThisViolationInTheResult() {
+		$itemId = 'Q1';
+		$propertyId = 'P1';
+		$guid = 'q1$46FC8EC9-4903-4592-9A0E-AFDD1FA03183';
+		$item = new Item( new ItemId( $itemId ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( $propertyId ), new UnknownValue( null ) ) );
+		$statement->setGuid( $guid );
+		$item->getStatements()->addStatement( $statement );
+		self::$entityLookup->addEntity( $item );
+		$this->givenPropertyHasViolation( new PropertyId( $propertyId ) );
+
+		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => $guid ] );
+
+		$this->assertCount( 1, $result['wbcheckconstraints'] );
+		$resultsForItem = $result['wbcheckconstraints'][$itemId][$propertyId][$guid];
+		$this->assertCount( 1, $resultsForItem );
+		$this->assertEquals( CheckResult::STATUS_VIOLATION, $resultsForItem[0]['status'] );
+		$this->assertEquals( $propertyId, $resultsForItem[0]['property'] );
+	}
+
 	/**
 	 * @param array $params
 	 * @return array Array of violations
