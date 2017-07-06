@@ -9,6 +9,7 @@
 	"wbqc-constraintreport-not-existent-entity": "Objet gëtt et net.",
 	"wbqc-constraintreport-empty-result": "Et gëtt keng Limitatiounen déi fir dësen Objet definéiert sinn.",
 	"wbqc-constraintreport-status-exception": "Ausnahm",
+	"wbqc-constraintreport-status-bad-parameters": "Falsch Parameteren",
 	"wbqc-constraintreport-no-parameter": "keng",
 	"wbqc-potentialissues-short": "Potenziell Problemer",
 	"wbqc-violation-header-parameters": "Parameteren:",

@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Subi"
+			"Subi",
+			"Mikel Ibaiba"
 		]
 	},
+	"wbqc-constraintreport-status-bad-parameters": "Parametro txarrak",
 	"wbqc-constraintreport-result-table-header-status": "Egoera",
 	"wbqc-violation-header-parameters": "Parametroak:"
 }

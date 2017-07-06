@@ -26,6 +26,7 @@
 	"wbqc-constraintreport-status-compliance": "Conforme",
 	"wbqc-constraintreport-status-exception": "Exception",
 	"wbqc-constraintreport-status-todo": "En attente",
+	"wbqc-constraintreport-status-bad-parameters": "Mauvais paramètres",
 	"wbqc-constraintreport-result-table-header-status": "État",
 	"wbqc-constraintreport-result-table-header-claim": "Déclaration",
 	"wbqc-constraintreport-result-table-header-constraint": "Contrainte",
