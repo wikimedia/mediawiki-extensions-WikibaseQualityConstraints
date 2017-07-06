@@ -27,7 +27,7 @@ class FormatChecker implements ConstraintChecker {
 	/**
 	 * @var ConstraintParameterRenderer
 	 */
-	private $onstraintParameterRenderer;
+	private $constraintParameterRenderer;
 
 	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
