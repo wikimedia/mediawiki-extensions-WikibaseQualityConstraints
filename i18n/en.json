@@ -64,6 +64,7 @@
 	"wbqc-violation-message-parameter-string": "The value for the parameter \"$1\" must be a string, not \"$2\".",
 	"wbqc-violation-message-parameter-single": "The parameter \"$1\" must only have a single value.",
 	"wbqc-violation-message-parameter-oneof": "The parameter \"$1\" must be {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following:$3}}",
+	"wbqc-violation-message-parameter-regex": "$1 is not a valid regular expression.",
 	"wbqc-violation-message-sparql-error": "The SPARQL query resulted in an error.",
 
 	"wbqc-violation-message-commons-link-no-existent": "Commons link should exist.",
@@ -77,7 +78,7 @@
 	"wbqc-violation-message-diff-within-range-property-must-exist": "The property defined in the parameters must exist.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "The property defined in the parameters needs to have a value.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "The property defined in the parameters must have a value of the same type as this property.",
-	"wbqc-violation-message-format": "The property's value must match the pattern defined in the parameters.",
+	"wbqc-violation-message-format": "The value for $1 ($2) should match the pattern $3.",
 	"wbqc-violation-message-inverse": "$1 should also have the inverse statement $2 $3.",
 	"wbqc-violation-message-item": "An entity with $1 should also have {{PLURAL:$3|0=a statement $2.|1=a statement $2 $5.|a statement for $2 with one of the following values:$4}}",
 	"wbqc-violation-message-mandatory-qualifier": "This $1 statement is missing a qualifier $2.",

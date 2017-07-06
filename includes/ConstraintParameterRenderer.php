@@ -181,7 +181,7 @@ class ConstraintParameterRenderer {
 	 * @param string $value HTML
 	 * @return string HTML
 	 */
-	private function formatByRole( $role, $value ) {
+	public static function formatByRole( $role, $value ) {
 		if ( $role === null ) {
 			return $value;
 		}
@@ -197,7 +197,7 @@ class ConstraintParameterRenderer {
 	 * @return string HTML
 	 */
 	public function formatDataValue( DataValue $value, $role = null ) {
-		return $this->formatByRole( $role,
+		return self::formatByRole( $role,
 			$this->dataValueFormatter->format( $value ) );
 	}
 
@@ -207,7 +207,7 @@ class ConstraintParameterRenderer {
 	 * @return string HTML
 	 */
 	public function formatEntityId( EntityId $entityId, $role = null ) {
-		return $this->formatByRole( $role,
+		return self::formatByRole( $role,
 			$this->entityIdLabelFormatter->formatEntityId( $entityId ) );
 	}
 
@@ -227,7 +227,7 @@ class ConstraintParameterRenderer {
 			try {
 				return $this->formatEntityId( new PropertyId( $propertyId ), $role );
 			} catch ( InvalidArgumentException $e ) {
-				return $this->formatByRole( $role,
+				return self::formatByRole( $role,
 					htmlspecialchars( $propertyId ) );
 			}
 		} else {
@@ -251,7 +251,7 @@ class ConstraintParameterRenderer {
 			try {
 				return $this->formatEntityId( new ItemId( $itemId ), $role );
 			} catch ( InvalidArgumentException $e ) {
-				return $this->formatByRole( $role,
+				return self::formatByRole( $role,
 					htmlspecialchars( $itemId ) );
 			}
 		} else {
@@ -271,12 +271,12 @@ class ConstraintParameterRenderer {
 			case $value->isValue():
 				return $this->formatEntityId( $value->getItemId(), $role );
 			case $value->isSomeValue():
-				return $this->formatByRole( $role,
+				return self::formatByRole( $role,
 					'<span class="wikibase-snakview-variation-somevaluesnak">'
 						. wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped()
 						. '</span>' );
 			case $value->isNoValue():
-				return $this->formatByRole( $role,
+				return self::formatByRole( $role,
 					'<span class="wikibase-snakview-variation-novaluesnak">'
 						. wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped()
 						. '</span>' );
