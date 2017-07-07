@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\FormatChecker;
 
+use HashConfig;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -52,6 +53,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$this->formatChecker = new FormatChecker(
 			$this->getConstraintParameterParser(),
 			$this->getConstraintParameterRenderer(),
+			$this->getDefaultConfig(),
 			$sparqlHelper
 		);
 	}
@@ -294,6 +296,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
 			$this->getConstraintParameterRenderer(),
+			$this->getDefaultConfig(),
 			null
 		);
 
@@ -304,6 +307,30 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		);
 
 		$this->assertTodoViolation( $result );
+	}
+
+	public function testFormatConstraintDisabled() {
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) ) );
+		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
+		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
+					  ->disableOriginalConstructor()
+					  ->setMethods( [ 'matchesRegularExpression' ] )
+					  ->getMock();
+		$sparqlHelper->expects( $this->never() )->method( 'matchesRegularExpression' );
+		$checker = new FormatChecker(
+			$this->getConstraintParameterParser(),
+			$this->getConstraintParameterRenderer(),
+			new HashConfig( [ 'WBQualityConstraintsCheckFormatConstraint' => false ] ),
+			$sparqlHelper
+		);
+
+		$result = $checker->checkConstraint(
+			$statement,
+			$constraint,
+			$this->getEntity()
+		);
+
+		$this->assertTodo( $result );
 	}
 
 	/**

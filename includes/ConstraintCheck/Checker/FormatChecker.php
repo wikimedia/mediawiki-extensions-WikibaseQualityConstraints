@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Config;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -37,17 +38,25 @@ class FormatChecker implements ConstraintChecker {
 	private $sparqlHelper;
 
 	/**
+	 * @var Config
+	 */
+	private $config;
+
+	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
+	 * @param Config $config
 	 * @param SparqlHelper|null $sparqlHelper
 	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
 		ConstraintParameterRenderer $constraintParameterRenderer,
+		Config $config,
 		SparqlHelper $sparqlHelper = null
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
+		$this->config = $config;
 		$this->sparqlHelper = $sparqlHelper;
 	}
 
@@ -104,7 +113,7 @@ class FormatChecker implements ConstraintChecker {
 				return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		if ( $this->sparqlHelper !== null ) {
+		if ( $this->sparqlHelper !== null && $this->config->get( 'WBQualityConstraintsCheckFormatConstraint' ) ) {
 			if ( $this->sparqlHelper->matchesRegularExpression( $text, $format ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;

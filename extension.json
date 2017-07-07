@@ -89,6 +89,11 @@
 			"description": "The maximum runtime for queries on the configured SPARQL endpoint, in milliseconds.",
 			"public": true
 		},
+		"WBQualityConstraintsCheckFormatConstraint": {
+			"value": true,
+			"description": "Whether or not to check the 'format' constraint. If this flag is set to false, any check of the 'format' constraint will return a 'todo' status with the 'wbqc-violation-message-security-reason' message.",
+			"public": true
+		},
 		"WBQualityConstraintsInstanceOfId": {
 			"value": "P31",
 			"description": "The property ID of the 'instance of' property (data type: item), which specifies the class(es) of an item.",
