@@ -513,7 +513,7 @@ class ConstraintParameterParser {
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
-	 * @param string $type 'quantity' or 'time'
+	 * @param string $type 'quantity' or 'time' (can be data type or data value type)
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return DataValue[] a pair of two quantity-type data values, either of which may be null to signify an open range
 	 */

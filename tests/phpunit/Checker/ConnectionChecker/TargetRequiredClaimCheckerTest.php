@@ -156,6 +156,14 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
+	public function testCheckConstraintParameters() {
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $this->checker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 1, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

@@ -118,4 +118,9 @@ class SymmetricChecker implements ConstraintChecker {
 		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
 	}
 
+	public function checkConstraintParameters( Constraint $constraint ) {
+		// no parameters
+		return [];
+	}
+
 }

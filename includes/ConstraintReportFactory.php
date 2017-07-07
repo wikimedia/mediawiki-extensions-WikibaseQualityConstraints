@@ -8,6 +8,7 @@ use TitleParser;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
@@ -59,6 +60,11 @@ class ConstraintReportFactory {
 	 * @var EntityLookup
 	 */
 	private $lookup;
+
+	/**
+	 * @var PropertyDataTypeLookup
+	 */
+	private $propertyDataTypeLookup;
 
 	/**
 	 * @var array[]|null
@@ -127,6 +133,7 @@ class ConstraintReportFactory {
 			);
 			$instance = new self(
 				$wikibaseRepo->getEntityLookup(),
+				$wikibaseRepo->getPropertyDataTypeLookup(),
 				$wikibaseRepo->getStatementGuidParser(),
 				$config,
 				$constraintParameterRenderer,
@@ -146,6 +153,7 @@ class ConstraintReportFactory {
 
 	public function __construct(
 		EntityLookup $lookup,
+		PropertyDataTypeLookup $propertyDataTypeLookup,
 		StatementGuidParser $statementGuidParser,
 		Config $config,
 		ConstraintParameterRenderer $constraintParameterRenderer,
@@ -155,6 +163,7 @@ class ConstraintReportFactory {
 		TitleParser $titleParser
 	) {
 		$this->lookup = $lookup;
+		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
@@ -215,7 +224,7 @@ class ConstraintReportFactory {
 				'Qualifier' => new QualifierChecker(),
 				'Qualifiers' => new QualifiersChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
 				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
-				'Range' => new RangeChecker( $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
+				'Range' => new RangeChecker( $this->propertyDataTypeLookup, $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Diff within range' => new DiffWithinRangeChecker( $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Type' => new TypeChecker( $this->lookup, $this->constraintParameterParser, $typeCheckerHelper, $this->config ),
 				'Value type' => new ValueTypeChecker( $this->lookup, $this->constraintParameterParser, $typeCheckerHelper, $this->config ),

@@ -11,6 +11,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
@@ -140,6 +141,22 @@ class ValueTypeChecker implements ConstraintChecker {
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+	}
+
+	public function checkConstraintParameters( Constraint $constraint ) {
+		$constraintParameters = $constraint->getConstraintParameters();
+		$exceptions = [];
+		try {
+			$this->constraintParameterParser->parseClassParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		try {
+			$this->constraintParameterParser->parseRelationParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		return $exceptions;
 	}
 
 }

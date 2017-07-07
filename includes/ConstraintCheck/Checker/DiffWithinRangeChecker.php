@@ -7,6 +7,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
@@ -154,6 +155,26 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$message = wfMessage( "wbqc-violation-message-diff-within-range-property-must-exist" )->escaped();
 		$status = CheckResult::STATUS_VIOLATION;
 		return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, $status, $message );
+	}
+
+	public function checkConstraintParameters( Constraint $constraint ) {
+		$constraintParameters = $constraint->getConstraintParameters();
+		$exceptions = [];
+		try {
+			$this->constraintParameterParser->parseRangeParameter(
+				$constraintParameters,
+				$constraint->getConstraintTypeItemId(),
+				'quantity'
+			);
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		try {
+			$this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		return $exceptions;
 	}
 
 }

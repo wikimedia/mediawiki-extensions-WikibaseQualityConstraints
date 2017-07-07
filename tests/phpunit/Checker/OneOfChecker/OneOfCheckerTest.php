@@ -112,6 +112,14 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 		}
 	}
 
+	public function testCheckConstraintParameters() {
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $this->oneOfChecker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 1, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

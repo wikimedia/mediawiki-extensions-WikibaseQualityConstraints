@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -55,6 +56,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
 		$this->checker = new RangeChecker(
+			new EntityRetrievingDataTypeLookup( $this->lookup ),
 			$this->getConstraintParameterParser(),
 			new RangeCheckerHelper( $this->getDefaultConfig() ),
 			$this->getConstraintParameterRenderer()
@@ -270,11 +272,27 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	/**
+	 * @dataProvider propertyIdProvider
+	 */
+	public function testCheckConstraintParameters( $propertyId ) {
+		$constraint = $this->getConstraintMock( [], $propertyId );
+
+		$result = $this->checker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 1, $result );
+	}
+
+	public function propertyIdProvider() {
+		return [ [ 'P1' ], [ 'P2' ] ];
+	}
+
+	/**
 	 * @param string[] $parameters
+	 * @param string $propertyId
 	 *
 	 * @return Constraint
 	 */
-	private function getConstraintMock( array $parameters ) {
+	private function getConstraintMock( array $parameters, $propertyId = 'P1' ) {
 		$mock = $this
 			->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
@@ -285,6 +303,9 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
 			 ->will( $this->returnValue( 'Range' ) );
+		$mock->expects( $this->any() )
+			 ->method( 'getPropertyId' )
+			 ->will( $this->returnValue( new PropertyId( $propertyId ) ) );
 
 		return $mock;
 	}

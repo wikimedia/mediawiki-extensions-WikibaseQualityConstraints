@@ -149,6 +149,14 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-conflicts-with-claim' );
 	}
 
+	public function testCheckConstraintParameters() {
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $this->checker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 1, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

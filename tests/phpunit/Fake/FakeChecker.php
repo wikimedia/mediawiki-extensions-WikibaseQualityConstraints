@@ -35,4 +35,7 @@ class FakeChecker implements ConstraintChecker {
 		);
 	}
 
+	public function checkConstraintParameters( Constraint $constraint ) {
+	}
+
 }

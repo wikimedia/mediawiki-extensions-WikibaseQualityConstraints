@@ -233,6 +233,14 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
 
+	public function testCheckConstraintParameters() {
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $this->checker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 2, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

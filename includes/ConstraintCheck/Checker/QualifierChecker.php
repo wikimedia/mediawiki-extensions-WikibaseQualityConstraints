@@ -34,4 +34,9 @@ class QualifierChecker implements ConstraintChecker {
 		return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
 	}
 
+	public function checkConstraintParameters( Constraint $constraint ) {
+		// no parameters
+		return [];
+	}
+
 }

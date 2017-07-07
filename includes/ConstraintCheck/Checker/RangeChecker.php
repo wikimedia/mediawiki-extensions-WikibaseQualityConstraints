@@ -3,10 +3,12 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -19,6 +21,11 @@ use Wikibase\DataModel\Statement\Statement;
  * @license GNU GPL v2+
  */
 class RangeChecker implements ConstraintChecker {
+
+	/**
+	 * @var PropertyDataTypeLookup
+	 */
+	private $propertyDataTypeLookup;
 
 	/**
 	 * @var ConstraintParameterParser
@@ -36,15 +43,18 @@ class RangeChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	/**
+	 * @param PropertyDataTypeLookup $propertyDataTypeLookup
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param RangeCheckerHelper $rangeCheckerHelper
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 */
 	public function __construct(
+		PropertyDataTypeLookup $propertyDataTypeLookup,
 		ConstraintParameterParser $constraintParameterParser,
 		RangeCheckerHelper $rangeCheckerHelper,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
+		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
@@ -122,6 +132,24 @@ class RangeChecker implements ConstraintChecker {
 			$status,
 			$message
 		);
+	}
+
+	public function checkConstraintParameters( Constraint $constraint ) {
+		$constraintParameters = $constraint->getConstraintParameters();
+		$exceptions = [];
+		try {
+			// we don’t have a data value here, so get the type from the property instead
+			// (the distinction between data type and data value type is irrelevant for 'quantity' and 'time')
+			$type = $this->propertyDataTypeLookup->getDataTypeIdForProperty( $constraint->getPropertyId() );
+			$this->constraintParameterParser->parseRangeParameter(
+				$constraintParameters,
+				$constraint->getConstraintTypeItemId(),
+				$type
+			);
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		return $exceptions;
 	}
 
 }

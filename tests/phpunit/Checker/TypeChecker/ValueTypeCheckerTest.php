@@ -258,6 +258,14 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
+	public function testCheckConstraintParameters() {
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $this->checker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 2, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

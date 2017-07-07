@@ -333,6 +333,14 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$this->assertTodo( $result );
 	}
 
+	public function testCheckConstraintParameters() {
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $this->formatChecker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 1, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

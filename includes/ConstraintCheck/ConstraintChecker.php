@@ -24,4 +24,15 @@ interface ConstraintChecker {
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity );
 
+	/**
+	 * Check if the constraint parameters of $constraint are valid.
+	 * Returns a list of ConstraintParameterExceptions, one for each problematic parameter;
+	 * if the list is empty, all constraint parameters are okay.
+	 *
+	 * @param Constraint $constraint
+	 *
+	 * @return ConstraintParameterException[]
+	 */
+	public function checkConstraintParameters( Constraint $constraint );
+
 }
