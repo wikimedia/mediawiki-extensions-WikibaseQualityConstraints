@@ -34,6 +34,10 @@
 		"wbcheckconstraints": {
 			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints",
 			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints::newFromGlobalState"
+		},
+		"wbcheckconstraintparameters": {
+			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters",
+			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters::newFromGlobalState"
 		}
 	},
 	"ResourceFileModulePaths": {

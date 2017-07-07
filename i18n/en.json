@@ -37,9 +37,15 @@
 	"apihelp-wbcheckconstraints-param-id": "ID list of the entities to get the data from. Separate values with '|' or alternative.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID list identifying a claim to check a constraint report.  Separate values with '|'.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Optional filter to return only the constraints that have the specified constraint ID",
+	"apihelp-wbcheckconstraintparameters-summary": "Checks the constraint parameters of constraint statements.",
+	"apihelp-wbcheckconstraintparameters-extended-description": "Either or both of the <var>property</var> and <var>constraintid</var> parameters may be specified; all constraints selected by either parameter will be checked.",
+	"apihelp-wbcheckconstraintparameters-param-propertyid": "List of property IDs to check. All constraint statements of these properties will be checked.\n\nIf this parameter is specified, it must be nonempty.",
+	"apihelp-wbcheckconstraintparameters-param-constraintid": "List of constraint IDs (constraint statement GUIDs) to check.\n\nIf this parameter is specified, it must be nonempty.",
 
 	"apihelp-wbcheckconstraints-example-1": "Check all constraints on the items Q5 and Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Check all constraints on a single statement.",
+	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Check constraint parameters of all constraints on a property.",
+	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Check constraint parameters of two particular constraints.",
 
 	"wbq-subextension-name-wbqc": "Constraints",
 	"wbqc-violation-header-parameters": "Parameters:",
