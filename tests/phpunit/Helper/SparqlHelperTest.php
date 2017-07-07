@@ -6,11 +6,16 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
+use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper
@@ -22,7 +27,7 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
  */
 class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 
-	use DefaultConfig;
+	use DefaultConfig, ResultAssertions;
 
 	public function testHasType() {
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
@@ -100,6 +105,57 @@ EOF;
 			$sparqlHelper->findEntitiesWithSameStatement( $statement ),
 			[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ]
 		);
+	}
+
+	public function testMatchesRegularExpression() {
+		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
+		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
+		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\"$") AS ?matches) {}';
+		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
+					  ->disableOriginalConstructor()
+					  ->setMethods( [ 'runQuery' ] )
+					  ->getMock();
+
+		$sparqlHelper->expects( $this->once() )
+			->method( 'runQuery' )
+			->with( $this->equalTo( $query ) )
+			->willReturn( [ 'results' => [ 'bindings' => [ [ 'matches' => [ 'value' => 'false' ] ] ] ] ] );
+
+		$result = $sparqlHelper->matchesRegularExpression( $text, $regex );
+
+		$this->assertFalse( $result );
+	}
+
+	public function testMatchesRegularExpressionBadRegex() {
+		$text = '';
+		$regex = '(.{2,5)?';
+		$query = 'SELECT (REGEX("", "^(.{2,5)?$") AS ?matches) {}';
+		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
+					  ->disableOriginalConstructor()
+					  ->setMethods( [ 'runQuery' ] )
+					  ->getMock();
+		$messageKey = 'wbqc-violation-message-parameter-regex';
+
+		$sparqlHelper->expects( $this->once() )
+			->method( 'runQuery' )
+			->with( $this->equalTo( $query ) )
+			->willReturn( [ 'results' => [ 'bindings' => [ [] ] ] ] );
+
+		try {
+			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpression' ], [ $text, $regex ] );
+			$this->assertTrue( false,
+				"matchesRegularExpression should have thrown a ConstraintParameterException with message ⧼$messageKey⧽." );
+		} catch ( ConstraintParameterException $exception ) {
+			$checkResult = new CheckResult(
+				new ItemId( 'Q1' ),
+				new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) ),
+				$this->getMockBuilder( Constraint::class )->disableOriginalConstructor()->getMock(),
+				[],
+				CheckResult::STATUS_VIOLATION,
+				$exception->getMessage()
+			);
+			$this->assertViolation( $checkResult, $messageKey );
+		}
 	}
 
 }

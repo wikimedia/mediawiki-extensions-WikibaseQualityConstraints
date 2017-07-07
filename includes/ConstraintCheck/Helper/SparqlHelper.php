@@ -10,6 +10,7 @@ use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
  * Class for running a SPARQL query on some endpoint and getting the results.
@@ -144,6 +145,47 @@ EOF;
 			},
 			$result['results']['bindings']
 		);
+	}
+
+	/**
+	 * Return SPARQL code for a string literal with $text as content.
+	 * @param string $text
+	 * @return string
+	 */
+	private function stringLiteral( $text ) {
+		return '"' . strtr( $text, [ '"' => '\\"', '\\' => '\\\\' ] ) . '"';
+	}
+
+	/**
+	 * @param string $text
+	 * @param string $regex
+	 * @return boolean
+	 * @throws SparqlHelperException if the query times out or some other error occurs
+	 * @throws ConstraintParameterException if the $regex is invalid
+	 */
+	public function matchesRegularExpression( $text, $regex ) {
+		$textStringLiteral = $this->stringLiteral( $text );
+		$regexStringLiteral = $this->stringLiteral( '^' . $regex . '$' );
+
+		$query = <<<EOF
+SELECT (REGEX($textStringLiteral, $regexStringLiteral) AS ?matches) {}
+EOF;
+
+		$result = $this->runQuery( $query );
+
+		$vars = $result['results']['bindings'][0];
+		if ( array_key_exists( 'matches', $vars ) ) {
+			// true or false ⇒ regex okay, text matches or not
+			return $vars['matches']['value'] === 'true';
+		} else {
+			// empty result: regex broken
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-regex' )
+					->rawParams( ConstraintParameterRenderer::formatByRole( ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_VALUE,
+						'<code><nowiki>' . htmlspecialchars( $regex ) . '</nowiki></code>' ) )
+					->escaped()
+			);
+		}
 	}
 
 	/**
