@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use Http;
-use MediawikiStatsdDataFactory;
+use IBufferingStatsdDataFactory;
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -42,7 +42,7 @@ class SparqlHelper {
 	private $entityIdParser;
 
 	/**
-	 * @var MediawikiStatsdDataFactory
+	 * @var IBufferingStatsdDataFactory
 	 */
 	private $dataFactory;
 
