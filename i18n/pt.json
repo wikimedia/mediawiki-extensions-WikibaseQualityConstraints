@@ -21,6 +21,7 @@
 	"wbqc-constraintreport-status-compliance": "Conformidade",
 	"wbqc-constraintreport-status-exception": "Exceção",
 	"wbqc-constraintreport-status-todo": "Pendente",
+	"wbqc-constraintreport-status-bad-parameters": "Parâmetros incorretos",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
 	"wbqc-constraintreport-result-table-header-claim": "Alegação",
 	"wbqc-constraintreport-result-table-header-constraint": "Restrição",
@@ -57,6 +58,7 @@
 	"wbqc-violation-message-parameter-string": "O valor do parâmetro \"$1\" tem de ser um texto, e não \"$2\".",
 	"wbqc-violation-message-parameter-single": "O parâmetro \"$1\" tem de ter um só valor.",
 	"wbqc-violation-message-parameter-oneof": "O parâmetro \"$1\" tem de ser {{PLURAL:$2|1=$4.|2=ou $4 ou $5.|um dos seguintes:$3}}",
+	"wbqc-violation-message-parameter-regex": "$1 não é uma expressão regular válida.",
 	"wbqc-violation-message-sparql-error": "A consulta SPARQL produziu um erro.",
 	"wbqc-violation-message-commons-link-no-existent": "O destino do link para a wiki Commons devia existir.",
 	"wbqc-violation-message-commons-link-not-well-formed": "O link para a wiki Commons não pode conter caracteres inválidos.",
@@ -69,7 +71,7 @@
 	"wbqc-violation-message-diff-within-range-property-must-exist": "A propriedade definida nos parâmetros tem de existir.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "A propriedade definida nos parâmetros necessita de ter um valor.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "A propriedade definida nos parâmetros tem de ter um valor do mesmo tipo que esta propriedade.",
-	"wbqc-violation-message-format": "O valor da propriedade tem de coincidir com o padrão definido nos parâmetros.",
+	"wbqc-violation-message-format": "O valor da propriedade $1 ($2) deveria coincidir com o padrão $3.",
 	"wbqc-violation-message-inverse": "$1 também deveria ter a declaração inversa $2 $3.",
 	"wbqc-violation-message-item": "Uma entidade com $1 também deveria ter {{PLURAL:$3|0=uma declaração $2.|1=uma declaração $2 $5.|uma declaração para $2 com um dos seguintes valores:$4}}",
 	"wbqc-violation-message-mandatory-qualifier": "Falta um qualificador $2 a esta declaração $1.",
@@ -93,5 +95,5 @@
 	"wbqc-violation-message-valueType-instance": "Os valores de declarações $1 deveriam ser instâncias de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-valueType-subclass": "Os valores de declarações $1 deveriam ser subclasses de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 deveria ter {{PLURAL:$3|0=uma declaração $2.|1=uma declaração $2 $5.|uma declaração para $2 com um dos seguintes valores:$4}}",
-	"wbqc-violation-message-unique-value": "O valor da propriedade não pode estar presente em nenhum outro objeto."
+	"wbqc-violation-message-unique-value": "O valor da propriedade não pode estar presente em nenhum outro objeto, mas também está presente {{PLURAL:$1|1=em $3.|2=em $3 e $4.|nos seguintes objetos: $2}}"
 }

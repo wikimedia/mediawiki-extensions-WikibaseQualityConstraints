@@ -5,6 +5,7 @@
 		]
 	},
 	"wbqc-constraintreport-status-exception": "Undantag",
+	"wbqc-constraintreport-status-bad-parameters": "Trasiga parametrar",
 	"wbqc-violation-message-parameter-string": "Värdet för parametern \"$1\" måste vara en sträng, inte \"$2\".",
 	"wbqc-violation-message-commons-link-no-existent": "Commons-länk bör finnas.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Skillnaden mellan $3 ($4) och $1 ($2) bör inte vara mer än $5 ((−∞; $5]).",

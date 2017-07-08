@@ -10,6 +10,7 @@
 	"wbqc-constraintreport-status-violation": "Naruszenie",
 	"wbqc-constraintreport-status-exception": "Wyjątek",
 	"wbqc-constraintreport-status-todo": "Do zrobienia",
+	"wbqc-constraintreport-status-bad-parameters": "Złe parametry",
 	"wbqc-constraintreport-result-table-header-status": "Status",
 	"wbqc-constraintreport-no-parameter": "brak",
 	"wbqc-violation-header-parameters": "Parametry:",
