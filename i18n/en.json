@@ -31,6 +31,8 @@
 
 	"wbqc-potentialissues-short": "Potential issues",
 	"wbqc-potentialissues-long": "This statement has some potential issues.",
+	"wbqc-badparameters-short": "Bad parameters",
+	"wbqc-badparameters-long": "This constraint statement has some invalid parameters.",
 
 	"apihelp-wbcheckconstraints-description": "Performs constraint checks on any entity you want and returns the result.",
 	"apihelp-wbcheckconstraints-summary": "Performs constraint checks on any entity you want and returns the result.",

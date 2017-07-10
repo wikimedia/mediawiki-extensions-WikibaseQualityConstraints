@@ -32,6 +32,8 @@
 	"wbqc-constraintreport-no-parameter": "Text that is displayed when there was no value for a parameter given.\n{{Identical|None}}",
 	"wbqc-potentialissues-short": "Headline of the constraint report popup shown on statements with constraint violations. Should be easy to understand for users, and convey that the reported violations are not always errors, but should be thought of as hints to the user that something might be wrong.\n\n{{Related|wbqc-constraintreport}}",
 	"wbqc-potentialissues-long": "Title for the icon shown on statements with constraint violations, usually displayed by the browser when the user hovers over the icon with the mouse cursor.{{Related|wbqc-potentialissues-short}}",
+	"wbqc-badparameters-short": "Headline of the constraint parameter report popup shown on constraint statements with invalid constraint parameters.",
+	"wbqc-badparameters-long": "Title for the icon shown on constraint statements with invalid constraint parameters, usually displayed by the browser when the user hovers over the icon with the mouse cursor.{{Related|wbqc-badparameters-short}}",
 	"apihelp-wbcheckconstraints-description": "{{doc-apihelp-description|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-summary": "{{doc-apihelp-summary|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",
