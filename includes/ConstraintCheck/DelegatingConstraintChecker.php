@@ -5,10 +5,10 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Statement\StatementGuid;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
@@ -151,6 +151,57 @@ class DelegatingConstraintChecker {
 		}
 
 		return [];
+	}
+
+	/**
+	 * Check the constraint parameters of all constraints for the given property ID.
+	 *
+	 * @param PropertyId $propertyId
+	 * @return ConstraintParameterException[][] first level indexed by constraint ID,
+	 * second level like checkConstraintParametersOnConstraintId (but without possibility of null)
+	 */
+	public function checkConstraintParametersOnPropertyId( PropertyId $propertyId ) {
+		$constraints = $this->constraintLookup->queryConstraintsForProperty( $propertyId );
+		$result = [];
+
+		foreach ( $constraints as $constraint ) {
+			if ( array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
+				$checker = $this->checkerMap[$constraint->getConstraintTypeItemId()];
+				$result[$constraint->getConstraintId()] = $checker->checkConstraintParameters( $constraint );
+			} else {
+				// unimplemented constraint
+				$result[$constraint->getConstraintId()] = [];
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Check the constraint parameters of the constraint with the given ID.
+	 *
+	 * @param string $constraintId
+	 *
+	 * @return ConstraintParameterException[]|null list of constraint parameter exceptions
+	 * (empty means all parameters okay), or null if constraint is not found
+	 */
+	public function checkConstraintParametersOnConstraintId( $constraintId ) {
+		$propertyId = $this->statementGuidParser->parse( $constraintId )->getEntityId();
+		$constraints = $this->constraintLookup->queryConstraintsForProperty( $propertyId );
+
+		foreach ( $constraints as $constraint ) {
+			if ( $constraint->getConstraintId() === $constraintId ) {
+				if ( array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
+					$checker = $this->checkerMap[$constraint->getConstraintTypeItemId()];
+					return $checker->checkConstraintParameters( $constraint );
+				} else {
+					// unimplemented constraint
+					return [];
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**
