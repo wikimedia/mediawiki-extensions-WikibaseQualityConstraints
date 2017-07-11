@@ -47,7 +47,7 @@
 	"wbqc-violation-message-diff-within-range-property-must-exist": "La propiedá definida nos parámetros tien d'esistir.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "La propiedá definida nos parámetros tien de tener un valor.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propiedá definida nos parámetros tien de tener un valor del mesmu tipu qu'esta propiedá.",
-	"wbqc-violation-message-format": "El valor de la propiedá tien de coincidir col patrón definíu nos parámetros.",
+	"wbqc-violation-message-format": "El valor de $1 ($2) tien de coincidir col patrón $3.",
 	"wbqc-violation-message-inverse": "$1 habría de tener tamién la declaración inversa $2 $3.",
 	"wbqc-violation-message-item": "Una entidá con $1 habría de tener tamién {{PLURAL:$3|0=una declaración $2|1=una declaración $2 $5|una declaración pa $2 con un valor de los siguientes:$4}}.",
 	"wbqc-violation-message-multi-value": "Esta propiedá tendría de contener valores múltiples. Esto ye, tendría d'haber más d'una declaración utilizando esta propiedá.",

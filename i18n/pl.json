@@ -16,7 +16,7 @@
 	"wbqc-violation-header-parameters": "Parametry:",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "Właściwość określona w parametrach musi istnieć.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Właściwość określona w parametrach musi mieć wartość tego samego typu jak ta właściwość.",
-	"wbqc-violation-message-format": "Wartości właściwości musi pasować do wzorca określonego w parametrach.",
+	"wbqc-violation-message-format": "Wartość dla $1 ($2) powinna pasować do wzorca $3.",
 	"wbqc-violation-message-multi-value": "Ta właściwość musi mieć wiele wartości. Oznacza to, że musi być więcej niż jedno stwierdzenie używające tej właściwości.",
 	"wbqc-violation-message-one-of": "Wartości właściwości musi być jednym z elementów określonych w parametrach.",
 	"wbqc-violation-message-qualifier": "Ta właściwość może być stosowana tylko jako kwalifikator.",

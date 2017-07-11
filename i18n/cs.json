@@ -4,7 +4,8 @@
 			"Cvanca",
 			"Mormegil",
 			"Matěj Suchánek",
-			"Dvorapa"
+			"Dvorapa",
+			"Meliganai"
 		]
 	},
 	"wbqc-constraintreport": "Zpráva o omezeních",
@@ -22,6 +23,7 @@
 	"wbqc-constraintreport-status-compliance": "Splnění",
 	"wbqc-constraintreport-status-exception": "Výjimka",
 	"wbqc-constraintreport-status-todo": "Chybí",
+	"wbqc-constraintreport-status-bad-parameters": "Nesprávné parametry",
 	"wbqc-constraintreport-result-table-header-status": "Stav",
 	"wbqc-constraintreport-result-table-header-claim": "Tvrzení",
 	"wbqc-constraintreport-result-table-header-constraint": "Omezení",
@@ -51,6 +53,7 @@
 	"wbqc-violation-message-parameter-string": "Hodnota parametru „$1“ musí být řetězec, ne „$2“.",
 	"wbqc-violation-message-parameter-single": "Parametr „$1“ může mít pouze jednu hodnotu.",
 	"wbqc-violation-message-parameter-oneof": "Parametr „$1“ musí být {{PLURAL:$2|1=$4.|2=buď $4, nebo $5.|jedno z následujících:$3}}",
+	"wbqc-violation-message-parameter-regex": "$1 není platný pravidelný výraz.",
 	"wbqc-violation-message-sparql-error": "SPARQL dotaz ukončila chyba.",
 	"wbqc-violation-message-commons-link-no-existent": "Cíl odkazu na Commons by měl existovat.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Odkaz na Commons by měl být ve správném formátu.",
@@ -63,7 +66,7 @@
 	"wbqc-violation-message-diff-within-range-property-must-exist": "Vlastnost definovaná v parametrech musí existovat.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "Vlastnost definovaná v parametrech musí mít hodnotu.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Vlastnost definovaná v parametrech musí mít hodnotu stejného typu jako tato vlastnost.",
-	"wbqc-violation-message-format": "Hodnota vlastnosti musí odpovídat vzoru definovanému v parametrech.",
+	"wbqc-violation-message-format": "Hodnota vlastnosti $1 ($2) musí odpovídat vzoru $3.",
 	"wbqc-violation-message-inverse": "$1 by také měla mít opačné tvrzení $2 $3.",
 	"wbqc-violation-message-item": "Entita s vlastností $1 by také měla mít {{PLURAL:$3|0=tvrzení vlastnosti $2.|1=tvrzení vlastnosti $2 s hodnotou $5.|tvrzení vlasnosti $2 s jednou z následujících hodnot:$4}}",
 	"wbqc-violation-message-mandatory-qualifier": "Tomuto tvrzení ($1) chybí vymezení $2.",
