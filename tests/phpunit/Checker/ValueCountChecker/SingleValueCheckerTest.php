@@ -7,6 +7,8 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -68,6 +70,19 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
 		$this->assertCompliance( $checkResult );
+	}
+
+	public function testSingleValueConstraintDeprecatedStatement() {
+		$statement = NewStatement::noValueFor( 'P1' )
+				   ->withDeprecatedRank()
+				   ->build();
+		$constraint = $this->getConstraintMock( [] );
+		$entity = NewItem::withId( 'Q1' )
+				->build();
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
+		$this->assertDeprecation( $checkResult );
 	}
 
 	public function testCheckConstraintParameters() {

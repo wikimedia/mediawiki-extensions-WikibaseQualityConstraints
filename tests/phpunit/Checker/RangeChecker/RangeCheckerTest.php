@@ -14,6 +14,8 @@ use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
@@ -269,6 +271,19 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-rightopen' );
+	}
+
+	public function testRangeConstraintDeprecatedStatement() {
+		$statement = NewStatement::noValueFor( 'P1' )
+				   ->withDeprecatedRank()
+				   ->build();
+		$constraint = $this->getConstraintMock( [] );
+		$entity = NewItem::withId( 'Q1' )
+				->build();
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
+		$this->assertDeprecation( $checkResult );
 	}
 
 	/**

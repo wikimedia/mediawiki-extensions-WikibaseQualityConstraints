@@ -109,4 +109,17 @@ trait ResultAssertions {
 		$this->assertTodo( $result );
 	}
 
+	/**
+	 * Assert that $result indicates a skipped constraint check due to deprecated statement rank.
+	 *
+	 * @param CheckResult $result
+	 */
+	public function assertDeprecation( CheckResult $result ) {
+		$this->assertEquals(
+			CheckResult::STATUS_DEPRECATED,
+			$result->getStatus(),
+			'Check should indicate deprecation; message: ' . $result->getMessage()
+		);
+	}
+
 }

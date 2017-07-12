@@ -13,6 +13,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHel
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
 
 /**
@@ -147,6 +149,19 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-conflicts-with-claim' );
+	}
+
+	public function testConflictsWithConstraintDeprecatedStatement() {
+		$statement = NewStatement::noValueFor( 'P1' )
+				   ->withDeprecatedRank()
+				   ->build();
+		$constraint = $this->getConstraintMock( [] );
+		$entity = NewItem::withId( 'Q1' )
+				->build();
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
+		$this->assertDeprecation( $checkResult );
 	}
 
 	public function testCheckConstraintParameters() {

@@ -7,6 +7,8 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -90,6 +92,20 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
 		$this->assertTodo( $checkResult );
+	}
+
+	public function testUniqueValueConstraintDeprecatedStatement() {
+		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), null );
+		$statement = NewStatement::noValueFor( 'P1' )
+				   ->withDeprecatedRank()
+				   ->build();
+		$constraint = $this->getConstraintMock( [] );
+		$entity = NewItem::withId( 'Q1' )
+				->build();
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
+		$this->assertDeprecation( $checkResult );
 	}
 
 	public function testCheckConstraintParameters() {

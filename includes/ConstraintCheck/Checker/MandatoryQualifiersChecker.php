@@ -52,6 +52,10 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
+		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+		}
+
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
