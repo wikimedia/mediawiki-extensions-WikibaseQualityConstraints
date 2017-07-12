@@ -7,6 +7,7 @@ use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -75,6 +76,17 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		}
 
 		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+	}
+
+	public function checkConstraintParameters( Constraint $constraint ) {
+		$constraintParameters = $constraint->getConstraintParameters();
+		$exceptions = [];
+		try {
+			$this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		return $exceptions;
 	}
 
 }

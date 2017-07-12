@@ -179,6 +179,15 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $result, 'wbqc-violation-message-value-needed' );
 	}
 
+	public function testCheckConstraintParameters() {
+		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$constraint = $this->getConstraintMock( [ $namespaceId => [] ] );
+
+		$result = $this->commonsLinkChecker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 1, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

@@ -53,6 +53,15 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifier' );
 	}
 
+	public function testCheckConstraintParameters() {
+		$checker = new QualifierChecker();
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $checker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 0, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *

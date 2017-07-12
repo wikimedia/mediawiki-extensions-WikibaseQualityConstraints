@@ -97,6 +97,14 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
+	public function testCheckConstraintParameters() {
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $this->checker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 0, $result );
+	}
+
 	/**
 	 * @return Constraint
 	 */

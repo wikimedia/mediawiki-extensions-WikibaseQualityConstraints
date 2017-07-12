@@ -134,6 +134,7 @@ class CheckConstraints extends ApiBase {
 		$titleParser = MediaWikiServices::getInstance()->getTitleParser();
 		$constraintReportFactory = new ConstraintReportFactory(
 			$repo->getEntityLookup(),
+			$repo->getPropertyDataTypeLookup(),
 			$statementGuidParser,
 			$config,
 			$constraintParameterRenderer,

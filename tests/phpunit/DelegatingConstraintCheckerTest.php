@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
+use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -69,6 +70,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$titleParser = $this->getTitleParserMock();
 		$factory = new ConstraintReportFactory(
 			$this->lookup,
+			new EntityRetrievingDataTypeLookup( $this->lookup ),
 			new StatementGuidParser( $itemIdParser ),
 			$config,
 			$this->getConstraintParameterRenderer(),

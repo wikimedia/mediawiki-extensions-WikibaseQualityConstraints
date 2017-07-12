@@ -92,6 +92,15 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 		$this->assertTodo( $checkResult );
 	}
 
+	public function testCheckConstraintParameters() {
+		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), null );
+		$constraint = $this->getConstraintMock( [] );
+
+		$result = $this->checker->checkConstraintParameters( $constraint );
+
+		$this->assertCount( 0, $result );
+	}
+
 	/**
 	 * @param string[] $parameters
 	 *
