@@ -92,7 +92,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		if ( $max !== null ) {
 			$parameters['maximum_' . $parameterKey] = [ $max ];
 		}
-		$parameter['property'] = [ $property ];
+		$parameters['property'] = [ $property ];
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		/** @var Statement $otherStatement */
