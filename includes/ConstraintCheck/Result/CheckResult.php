@@ -20,10 +20,25 @@ use LogicException;
 class CheckResult {
 
 	// Constants for statuses
+	/**
+	 * The statement satisfies the constraint.
+	 */
 	const STATUS_COMPLIANCE = 'compliance';
+	/**
+	 * The statement violates the constraint.
+	 */
 	const STATUS_VIOLATION = 'violation';
+	/**
+	 * The subject entity of the statement is a known exception to the constraint.
+	 */
 	const STATUS_EXCEPTION = 'exception';
+	/**
+	 * The constraint is not implemented.
+	 */
 	const STATUS_TODO = 'todo';
+	/**
+	 * The constraint parameters are broken.
+	 */
 	const STATUS_BAD_PARAMETERS = 'bad-parameters';
 
 	/**
