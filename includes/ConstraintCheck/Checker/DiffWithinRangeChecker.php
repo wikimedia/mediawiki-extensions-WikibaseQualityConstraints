@@ -103,6 +103,11 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		/** @var Statement $otherStatement */
 		foreach ( $entity->getStatements() as $otherStatement ) {
 			if ( $property->equals( $otherStatement->getPropertyId() ) ) {
+				// ignore deprecated statements of the referenced property
+				if ( $otherStatement->getRank() === Statement::RANK_DEPRECATED ) {
+					continue;
+				}
+
 				$otherMainSnak = $otherStatement->getMainSnak();
 
 				/*
