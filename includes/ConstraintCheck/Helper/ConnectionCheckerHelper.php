@@ -107,7 +107,11 @@ class ConnectionCheckerHelper {
 					$ret[] = ItemIdSnakValue::noValue();
 					break;
 				default:
-					$ret[] = ItemIdSnakValue::fromItemId( new ItemId( strtoupper( $value ) ) );
+					try {
+						$ret[] = ItemIdSnakValue::fromItemId( new ItemId( strtoupper( $value ) ) );
+					} catch ( InvalidArgumentException $e ) {
+						// ignore
+					}
 					break;
 			}
 		}

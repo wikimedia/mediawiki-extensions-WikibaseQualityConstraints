@@ -85,4 +85,8 @@ class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P2', 'novalue' ) );
 	}
 
+	public function testHasClaimInvalidValue() {
+		$this->assertNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', 'invalid' ) );
+	}
+
 }
