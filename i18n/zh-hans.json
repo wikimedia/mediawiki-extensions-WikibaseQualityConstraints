@@ -7,7 +7,7 @@
 	"wbqc-constraintreport": "约束报告",
 	"wbqc-desc": "检查项和属性两者上的约束，并在一个特殊页面显示结果",
 	"wbqc-constraintreport-explanation-part-one": "此特殊页面可在您希望的任何实体中执行约束检查。实体取自活动系统，这样您在这里修复的任何违反约束的东西将立刻从此列表中移除。",
-	"wbqc-constraintreport-explanation-part-two": "约束每周会从属性讨论页解析，所以如果您添加、删除或修改一条约束，这将需要一周直到它被此约束报告应用到账户中。这里是进行中的迁移约束至属性中的声明，启用此特殊页面以进行活性检查。",
+	"wbqc-constraintreport-explanation-part-two": "每当编辑属性声明时，约束都会从这些声明中解析，通常在几分钟内。",
 	"wbqc-constraintreport-form-section": "检查实体的违例",
 	"wbqc-constraintreport-form-submit-label": "检查",
 	"wbqc-constraintreport-form-entityid-label": "实体ID：",

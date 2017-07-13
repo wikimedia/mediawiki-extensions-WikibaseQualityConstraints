@@ -14,6 +14,7 @@
 	"wbqc-constraintreport-result-table-header-status": "Status",
 	"wbqc-constraintreport-no-parameter": "brak",
 	"wbqc-violation-header-parameters": "Parametry:",
+	"wbqc-violation-message-parameter-regex": "$1 nie jest prawidłowym wyrażeniem regularnym.",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "Właściwość określona w parametrach musi istnieć.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Właściwość określona w parametrach musi mieć wartość tego samego typu jak ta właściwość.",
 	"wbqc-violation-message-format": "Wartość dla $1 ($2) powinna pasować do wzorca $3.",

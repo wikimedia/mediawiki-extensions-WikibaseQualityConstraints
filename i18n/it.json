@@ -11,7 +11,7 @@
 	"wbqc-constraintreport": "Controllo vincoli",
 	"wbqc-desc": "Controlla i vincoli sia sugli elementi che sulle proprietà e visualizza i risultati in una pagina speciale",
 	"wbqc-constraintreport-explanation-part-one": "Questa pagina speciale esegue la verifica dei vincoli per qualsiasi entità che si desidera. Le entità sono recuperate dal sistema direttamente, in modo che ogni violazione del vincolo che risolvi sarà immediatamente rimossa da questa lista.",
-	"wbqc-constraintreport-explanation-part-two": "I vincoli sono analizzati dalle pagine di discussione delle proprietà una volta alla settimana, quindi se si aggiunge, cancella o modifica un vincolo, potrebbe richiedere fino a una settimana prima che venga preso in considerazione da questo controllo sui vincoli. Attualmente è in lavorazione la migrazione dei vincoli su dichiarazioni nelle proprietà, che consentirà di attivare questa pagina speciale per fare controlli in tempo reale.",
+	"wbqc-constraintreport-explanation-part-two": "I vincoli sono analizzati dalle dichiarazioni nelle proprietà ogni volta che queste sono modificate, solitamente nel giro di pochi minuti.",
 	"wbqc-constraintreport-form-section": "Controlla i vincoli per l'entità",
 	"wbqc-constraintreport-form-submit-label": "Controlla",
 	"wbqc-constraintreport-form-entityid-label": "ID entità:",

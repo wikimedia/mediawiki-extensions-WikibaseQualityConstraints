@@ -14,7 +14,7 @@
 	"wbqc-constraintreport": "Rapport de contrainte",
 	"wbqc-desc": "Vérifie les contraintes à la fois sur les éléments ainsi que les propriétés et affiche les résultats sur une page spéciale",
 	"wbqc-constraintreport-explanation-part-one": "Cette page spéciale effectue les vérifications de contraintes sur n’importe quelle entité de votre choix. Les entités sont extraites du système en direct, de sorte que chaque violation de contrainte que vous corrigez maintenant sera immédiatement retirée de cette liste.",
-	"wbqc-constraintreport-explanation-part-two": "Les contraintes sont analysées à partir des pages de discussion de la propriété une fois par semaine, donc si vous ajoutez, supprimez ou modifiez une contrainte, il peut falloir attendre jusqu’à une semaine pour que cette contrainte soit prise en compte dans ce rapport de contraintes. Il y a actuellement des travaux en cours pour migrer les contraintes de déclarations sur les propriétés, permettant ainsi à cette page spéciale d’effectuer des vérifications en direct.",
+	"wbqc-constraintreport-explanation-part-two": "Les contraintes sont analysées à partir des déclarations sur les propriétés chaque fois que ces déclarations sont modifiées, en général en quelques minutes.",
 	"wbqc-constraintreport-form-section": "Vérifier les contraintes pour l'entité",
 	"wbqc-constraintreport-form-submit-label": "Vérifier",
 	"wbqc-constraintreport-form-entityid-label": "Identifiant de l'entité :",

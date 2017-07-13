@@ -5,5 +5,6 @@
 		]
 	},
 	"wbqc-constraintreport-status-bad-parameters": "Nederīgi parametri",
-	"wbqc-constraintreport-result-table-header-status": "Statuss"
+	"wbqc-constraintreport-result-table-header-status": "Statuss",
+	"wbqc-violation-message-parameter-regex": "$1 nav derīga regulārā izteiksme."
 }

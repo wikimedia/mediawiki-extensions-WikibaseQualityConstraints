@@ -9,7 +9,7 @@
 	"wbqc-constraintreport": "Beschränkungsbericht",
 	"wbqc-desc": "Ermöglicht die Überprüfung von Beschränkungen bei Objekten und Eigenschaften und zeigt die Ergebnisse auf einer Spezialseite an",
 	"wbqc-constraintreport-explanation-part-one": "Diese Spezialseite führt Beschränkungsprüfungen zu einem beliebigen Objekt durch. Die vom Live-System abgerufenen Objekte und jede behobene Beschränkungsverletzung wird sofort von dieser Liste entfernt.",
-	"wbqc-constraintreport-explanation-part-two": "Die Beschränkungen werden von den Eigenschaftsdiskussionsseiten einmal pro Woche geparst. Falls du eine Beschränkung hinzufügst, löschst oder änderst, dauert es also bis zu einer Woche, bis dies vom Beschränkungsbericht in das Benutzerkonto übernommen wird. Es sind derzeit Migrationen der Beschränkungen zu den Aussagen der Eigenschaften in Bearbeitung. Das Aktivieren dieser Spezialseite führt Liveprüfungen aus.",
+	"wbqc-constraintreport-explanation-part-two": "Die Beschränkungen werden von den Aussagen der Eigenschaften jedes Mal geparst, wenn diese Aussagen bearbeitet werden, für gewöhnlich innerhalb weniger Minuten.",
 	"wbqc-constraintreport-form-section": "Beschränkungen für das Objekt überprüfen",
 	"wbqc-constraintreport-form-submit-label": "Überprüfen",
 	"wbqc-constraintreport-form-entityid-label": "Objektkennung:",
