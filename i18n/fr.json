@@ -63,7 +63,7 @@
 	"wbqc-violation-message-parameter-string": "La valeur pour le paramètre « $1 » doit être une chaîne de caractères et non pas « $2 ».",
 	"wbqc-violation-message-parameter-single": "Le paramètre « $1 » ne doit avoir qu’une valeur simple.",
 	"wbqc-violation-message-parameter-oneof": "Le paramètre « $1 » doit être {{PLURAL:$2|1=$4.|2=$4 ou $5.|un des suivants :$3}}",
-	"wbqc-violation-message-parameter-regex": "$1 n’est pas une expression régulière valide.",
+	"wbqc-violation-message-parameter-regex": "$1 n’est pas une expression rationnelle valide.",
 	"wbqc-violation-message-sparql-error": "La requête SPARQL a retourné une erreur.",
 	"wbqc-violation-message-commons-link-no-existent": "Le lien vers Communs devrait exister.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Le lien vers Communs doit être bien formaté.",
