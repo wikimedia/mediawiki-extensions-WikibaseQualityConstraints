@@ -3,9 +3,9 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
-use Http;
 use IBufferingStatsdDataFactory;
 use MediaWiki\MediaWikiServices;
+use MWHttpRequest;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Statement\Statement;
@@ -212,25 +212,32 @@ EOF;
 			PHP_QUERY_RFC3986
 		);
 
+		$options = [
+			'method' => 'GET',
+			'timeout' => (int)round( ( $maxQueryTimeMillis + 1000 ) / 1000 ),
+			'connectTimeout' => 'default',
+		];
+		$request = MWHttpRequest::factory( $url, $options );
 		$startTime = microtime( true );
-		$json = Http::get(
-			$url,
-			[
-				'timeout' => (int)round( ( $maxQueryTimeMillis + 1000 ) / 1000 ),
-			]
-		);
+		$status = $request->execute();
 		$endTime = microtime( true );
 		$this->dataFactory->timing(
 			'wikibase.quality.constraints.sparql.timing',
 			( $endTime - $startTime ) * 1000
 		);
 
-		if ( $json === false ) {
+		if ( $request->getResponseHeader( 'X-Cache-Status' ) === 'hit' ) {
+			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.cached' );
+		}
+
+		if ( $status->isOk() ) {
+			$json = $request->getContent();
+			$arr = json_decode( $json, true );
+			return $arr;
+		} else {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.error' );
 			throw new SparqlHelperException();
 		}
-		$arr = json_decode( $json, true );
-		return $arr;
 	}
 
 }
