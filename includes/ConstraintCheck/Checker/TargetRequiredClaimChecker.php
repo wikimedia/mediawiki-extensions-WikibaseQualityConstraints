@@ -120,7 +120,6 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		$targetEntityStatementList = $targetEntity->getStatements();
 
 		/*
 		 * 'Target required claim' can be defined with
@@ -128,22 +127,23 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 *   b) a property and a number of items (each combination forming an individual claim)
 		 */
 		if ( $items === [] ) {
-			if ( $this->connectionCheckerHelper->hasProperty( $targetEntityStatementList, $propertyId->getSerialization() ) ) {
-				$status = CheckResult::STATUS_COMPLIANCE;
-			} else {
-				$status = CheckResult::STATUS_VIOLATION;
-			}
+			$requiredStatement = $this->connectionCheckerHelper->findStatementWithProperty(
+				$targetEntity->getStatements(),
+				$propertyId
+			);
 		} else {
-			if ( $this->connectionCheckerHelper->findStatement( $targetEntityStatementList, $propertyId->getSerialization(), $items ) !== null ) {
-				$status = CheckResult::STATUS_COMPLIANCE;
-			} else {
-				$status = CheckResult::STATUS_VIOLATION;
-			}
+			$requiredStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+				$targetEntity->getStatements(),
+				$propertyId,
+				$items
+			);
 		}
 
-		if ( $status == CheckResult::STATUS_COMPLIANCE ) {
+		if ( $requiredStatement !== null ) {
+			$status = CheckResult::STATUS_COMPLIANCE;
 			$message = '';
 		} else {
+			$status = CheckResult::STATUS_VIOLATION;
 			$message = wfMessage( 'wbqc-violation-message-target-required-claim' );
 			$message->rawParams(
 				$this->constraintParameterRenderer->formatEntityId( $targetEntityId, ConstraintParameterRenderer::ROLE_SUBJECT ),

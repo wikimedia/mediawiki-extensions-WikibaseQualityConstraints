@@ -103,9 +103,13 @@ class SymmetricChecker implements ConstraintChecker {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		$targetItemStatementList = $targetItem->getStatements();
 
-		if ( $this->connectionCheckerHelper->findStatement( $targetItemStatementList, $propertyId->getSerialization(), $entity->getId()->getSerialization() ) !== null ) {
+		$symmetricStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndEntityIdValue(
+			$targetItem->getStatements(),
+			$propertyId,
+			$entity->getId()
+		);
+		if ( $symmetricStatement !== null ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

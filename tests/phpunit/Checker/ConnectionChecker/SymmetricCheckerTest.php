@@ -10,6 +10,7 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -65,6 +66,16 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testSymmetricConstraintOnProperty() {
+		$entity = new Property( new PropertyId( 'P1' ), null, 'wikibase-property' );
+		$value = new EntityIdValue( new PropertyId( 'P2' ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P3' ), $value ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 

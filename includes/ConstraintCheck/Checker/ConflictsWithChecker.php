@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Statement\Statement;
@@ -88,7 +89,11 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 *   b) a property and a number of items (each combination of property and item forming an individual claim)
 		 */
 		if ( $items === [] ) {
-			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $propertyId->getSerialization() ) ) {
+			$offendingStatement = $this->connectionCheckerHelper->findStatementWithProperty(
+				$entity->getStatements(),
+				$propertyId
+			);
+			if ( $offendingStatement !== null ) {
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )
 						 ->rawParams(
 							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
@@ -101,13 +106,18 @@ class ConflictsWithChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_COMPLIANCE;
 			}
 		} else {
-			$result = $this->connectionCheckerHelper->findStatement( $entity->getStatements(), $propertyId->getSerialization(), $items );
-			if ( $result !== null ) {
+			$offendingStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+				$entity->getStatements(),
+				$propertyId,
+				$items
+			);
+			if ( $offendingStatement !== null ) {
+				$offendingValue = ItemIdSnakValue::fromSnak( $offendingStatement->getMainSnak() );
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )
 						 ->rawParams(
 							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
 							 $this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_PREDICATE ),
-							 $this->constraintParameterRenderer->formatItemIdSnakValue( $result, ConstraintParameterRenderer::ROLE_OBJECT )
+							 $this->constraintParameterRenderer->formatItemIdSnakValue( $offendingValue, ConstraintParameterRenderer::ROLE_OBJECT )
 						 )
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;

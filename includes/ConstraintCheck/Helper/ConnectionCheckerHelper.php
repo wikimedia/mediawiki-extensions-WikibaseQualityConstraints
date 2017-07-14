@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use InvalidArgumentException;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\Statement;
@@ -19,99 +20,79 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 class ConnectionCheckerHelper {
 
 	/**
-	 * Checks if there is a statement with a claim using the given property.
+	 * Finds a statement with the given property ID.
 	 *
 	 * @param StatementList $statementList
-	 * @param string $propertyIdSerialization
+	 * @param PropertyId $propertyId
 	 *
-	 * @return boolean
+	 * @return Statement|null
 	 */
-	public function hasProperty( StatementList $statementList, $propertyIdSerialization ) {
-		$propertyIdSerialization = strtoupper( $propertyIdSerialization ); // FIXME strtoupper should not be necessary, remove once constraints are imported from statements
-		/** @var Statement $statement */
-		foreach ( $statementList as $statement ) {
-			if ( $statement->getPropertyId()->getSerialization() === $propertyIdSerialization ) {
-				return true;
-			}
+	public function findStatementWithProperty(
+		StatementList $statementList,
+		PropertyId $propertyId
+	) {
+		$statementListByPropertyId = $statementList->getByPropertyId( $propertyId );
+		if ( $statementListByPropertyId->isEmpty() ) {
+			return null;
+		} else {
+			return $statementListByPropertyId->toArray()[0];
 		}
-		return false;
 	}
 
 	/**
-	 * Checks if there is a statement with a claim using the given property and having one of the given values.
+	 * Finds a statement with the given property ID and entity ID value.
 	 *
 	 * @param StatementList $statementList
-	 * @param string $propertyIdSerialization
-	 * @param ItemIdSnakValue[]|string[]|string $values
+	 * @param PropertyId $propertyId
+	 * @param EntityId $value
 	 *
-	 * @return ItemIdSnakValue|null the value from $values that was found, or null if no statement was found
+	 * @return Statement|null
 	 */
-	public function findStatement(
+	public function findStatementWithPropertyAndEntityIdValue(
 		StatementList $statementList,
-		$propertyIdSerialization,
-		$values
+		PropertyId $propertyId,
+		EntityId $value
 	) {
-		$values = (array) $values;
-		try {
-			$propertyId = new PropertyId( $propertyIdSerialization );
-		} catch ( InvalidArgumentException $e ) {
-			return null;
-		}
-		if ( is_string( $values[0] ) ) {
-			$values = $this->parseItemIdSnakValues( $values );
-		}
-		/** @var Statement $statement */
-		foreach ( $statementList->getByPropertyId( $propertyId ) as $statement ) {
-			$result = $this->arrayHasClaim( $statement, $values );
-			if ( $result !== null ) {
-				return $result;
+		$statementListByPropertyId = $statementList->getByPropertyId( $propertyId );
+		foreach ( $statementListByPropertyId as $statement ) {
+			$snak = $statement->getMainSnak();
+			if ( $snak->getType() === 'value' ) {
+				$dataValue = $snak->getDataValue();
+				if (
+					$dataValue->getType() === 'wikibase-entityid' &&
+					$dataValue->getEntityId()->equals( $value )
+				) {
+					return $statement;
+				}
 			}
 		}
 		return null;
 	}
 
 	/**
-	 * @param Statement $statement
+	 * Finds a statement with the given property ID and one of the given item ID snak values.
+	 *
+	 * @param StatementList $statementList
+	 * @param PropertyId $propertyId
 	 * @param ItemIdSnakValue[] $values
 	 *
-	 * @return ItemIdSnakValue|null the value from $values that was found, or null if no statement was found
+	 * @return Statement|null
 	 */
-	private function arrayHasClaim( Statement $statement, array $values ) {
-		$mainSnak = $statement->getMainSnak();
-
-		foreach ( $values as $value ) {
-			if ( $value->matchesSnak( $mainSnak ) ) {
-				return $value;
+	public function findStatementWithPropertyAndItemIdSnakValues(
+		StatementList $statementList,
+		PropertyId $propertyId,
+		array $values
+	) {
+		$statementListByPropertyId = $statementList->getByPropertyId( $propertyId );
+		foreach ( $statementListByPropertyId as $statement ) {
+			$snak = $statement->getMainSnak();
+			foreach ( $values as $value ) {
+				if ( $value->matchesSnak( $snak ) ) {
+					return $statement;
+				}
 			}
 		}
-
 		return null;
-	}
-
-	/**
-	 * @param string[] $values
-	 * @return ItemIdSnakValue[]
-	 */
-	private function parseItemIdSnakValues( array $values ) {
-		$ret = [];
-		foreach ( $values as $value ) {
-			switch ( $value ) {
-				case 'somevalue':
-					$ret[] = ItemIdSnakValue::someValue();
-					break;
-				case 'novalue':
-					$ret[] = ItemIdSnakValue::noValue();
-					break;
-				default:
-					try {
-						$ret[] = ItemIdSnakValue::fromItemId( new ItemId( strtoupper( $value ) ) );
-					} catch ( InvalidArgumentException $e ) {
-						// ignore
-					}
-					break;
-			}
-		}
-		return $ret;
 	}
 
 }

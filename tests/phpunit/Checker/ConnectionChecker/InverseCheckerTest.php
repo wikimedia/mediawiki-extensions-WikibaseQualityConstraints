@@ -8,6 +8,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -86,6 +87,19 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			$propertyId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( 'P1' ) ) ) ) ]
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testInverseConstraintOnProperty() {
+		$entity = new Property( new PropertyId( 'P1' ), null, 'wikibase-property' );
+		$value = new EntityIdValue( new PropertyId( 'P2' ) );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P3' ), $value ) );
+		$constraintParameters = [
+			'property' => 'P3'
+		];
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 
