@@ -103,63 +103,63 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		/** @var Statement $otherStatement */
 		foreach ( $entity->getStatements() as $otherStatement ) {
-			if ( $property->equals( $otherStatement->getPropertyId() ) ) {
-				// ignore deprecated statements of the referenced property
-				if ( $otherStatement->getRank() === Statement::RANK_DEPRECATED ) {
-					continue;
-				}
-
-				$otherMainSnak = $otherStatement->getMainSnak();
-
-				/*
-				 * error handling:
-				 *   types of this and the other value have to be equal, both must contain actual values
-				 */
-				if ( !$otherMainSnak instanceof PropertyValueSnak ) {
-					$message = wfMessage( "wbqc-violation-message-diff-within-range-property-needs value" )->escaped();
-					return new CheckResult(
-						$entity->getId(),
-						$otherStatement,
-						$constraint,
-						$parameters,
-						CheckResult::STATUS_VIOLATION,
-						$message
-					);
-				}
-
-				if ( $otherMainSnak->getDataValue()->getType() === $dataValue->getType() && $otherMainSnak->getType() === 'value' ) {
-					$diff = $this->rangeCheckerHelper->getDifference( $dataValue, $otherMainSnak->getDataValue() );
-
-					if ( $this->rangeCheckerHelper->getComparison( $min, $diff ) > 0 ||
-						$this->rangeCheckerHelper->getComparison( $diff, $max ) > 0 ) {
-						// at least one of $min, $max is set at this point, otherwise there could be no violation
-						$openness = $min !== null ? ( $max !== null ? '' : '-rightopen' ) : '-leftopen';
-						$message = wfMessage( "wbqc-violation-message-diff-within-range$openness" );
-						$message->rawParams(
-							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::PREDICATE ),
-							$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue(), Role::OBJECT ),
-							$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId(), Role::PREDICATE ),
-							$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue(), Role::OBJECT )
-						);
-						if ( $min !== null ) {
-							$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min, Role::OBJECT ) );
-						}
-						if ( $max !== null ) {
-							$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $max, Role::OBJECT ) );
-						}
-						$message = $message->escaped();
-						$status = CheckResult::STATUS_VIOLATION;
-					} else {
-						$message = '';
-						$status = CheckResult::STATUS_COMPLIANCE;
-					}
-				} else {
-					$message = wfMessage( "wbqc-violation-message-diff-within-range-must-have-equal-types" )->escaped();
-					$status = CheckResult::STATUS_VIOLATION;
-				}
-
-				return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, $status, $message );
+			if ( $otherStatement->getRank() === Statement::RANK_DEPRECATED
+				|| !$property->equals( $otherStatement->getPropertyId() )
+			) {
+				continue;
 			}
+
+			$otherMainSnak = $otherStatement->getMainSnak();
+
+			/*
+			 * error handling:
+			 *   types of this and the other value have to be equal, both must contain actual values
+			 */
+			if ( !$otherMainSnak instanceof PropertyValueSnak ) {
+				$message = wfMessage( "wbqc-violation-message-diff-within-range-property-needs value" )->escaped();
+				return new CheckResult(
+					$entity->getId(),
+					$otherStatement,
+					$constraint,
+					$parameters,
+					CheckResult::STATUS_VIOLATION,
+					$message
+				);
+			}
+
+			if ( $otherMainSnak->getDataValue()->getType() === $dataValue->getType() ) {
+				$diff = $this->rangeCheckerHelper->getDifference( $dataValue, $otherMainSnak->getDataValue() );
+
+				if ( $this->rangeCheckerHelper->getComparison( $min, $diff ) > 0 ||
+					$this->rangeCheckerHelper->getComparison( $diff, $max ) > 0
+				) {
+					// at least one of $min, $max is set at this point, otherwise there could be no violation
+					$openness = $min !== null ? ( $max !== null ? '' : '-rightopen' ) : '-leftopen';
+					$message = wfMessage( "wbqc-violation-message-diff-within-range$openness" );
+					$message->rawParams(
+						$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::PREDICATE ),
+						$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue(), Role::OBJECT ),
+						$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId(), Role::PREDICATE ),
+						$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue(), Role::OBJECT )
+					);
+					if ( $min !== null ) {
+						$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min, Role::OBJECT ) );
+					}
+					if ( $max !== null ) {
+						$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $max, Role::OBJECT ) );
+					}
+					$message = $message->escaped();
+					$status = CheckResult::STATUS_VIOLATION;
+				} else {
+					$message = '';
+					$status = CheckResult::STATUS_COMPLIANCE;
+				}
+			} else {
+				$message = wfMessage( "wbqc-violation-message-diff-within-range-must-have-equal-types" )->escaped();
+				$status = CheckResult::STATUS_VIOLATION;
+			}
+
+			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, $status, $message );
 		}
 
 		$message = wfMessage( "wbqc-violation-message-diff-within-range-property-must-exist" )->escaped();

@@ -30,7 +30,8 @@ final class WikibaseQualityConstraintsHooks {
 
 	public static function onWikibaseChange( Change $change ) {
 		if ( MediaWikiServices::getInstance()->getMainConfig()->get( 'WBQualityConstraintsEnableConstraintsImportFromStatements' ) &&
-			self::isPropertyStatementsChange( $change ) ) {
+			self::isPropertyStatementsChange( $change )
+		) {
 			$title = Title::newMainPage();
 			$params = [ 'propertyId' => $change->getEntityId()->getSerialization() ];
 			JobQueueGroup::singleton()->push(
@@ -42,13 +43,16 @@ final class WikibaseQualityConstraintsHooks {
 	private static function isPropertyStatementsChange( Change $change ) {
 		if ( !( $change instanceof EntityChange ) ||
 			 $change->getAction() !== EntityChange::UPDATE ||
-			 !( $change->getEntityId() instanceof PropertyId ) ) {
+			 !( $change->getEntityId() instanceof PropertyId )
+		) {
 			return false;
 		}
+
 		$diff = $change->getDiff();
 		if ( !( $diff instanceof EntityDiff ) ) {
 			return false;
 		}
+
 		// TODO inspect the diff once T113468 or T163465 are resolved
 		return true;
 	}

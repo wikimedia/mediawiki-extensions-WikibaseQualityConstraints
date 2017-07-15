@@ -293,7 +293,8 @@ class ConstraintParameterParser {
 
 	private function parseItemIdParameter( PropertyValueSnak $snak, $parameterId ) {
 		if ( $snak->getDataValue() instanceof EntityIdValue &&
-			$snak->getDataValue()->getEntityId() instanceof ItemId ) {
+			$snak->getDataValue()->getEntityId() instanceof ItemId
+		) {
 			return ItemIdSnakValue::fromItemId( $snak->getDataValue()->getEntityId() );
 		} else {
 			throw new ConstraintParameterException(
@@ -384,9 +385,11 @@ class ConstraintParameterParser {
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		$parameters = $constraintParameters[$propertyId];
 		if ( count( $parameters ) === 1 &&
-			$this->snakDeserializer->deserialize( $parameters[0] ) instanceof PropertyNoValueSnak ) {
+			$this->snakDeserializer->deserialize( $parameters[0] ) instanceof PropertyNoValueSnak
+		) {
 			return [];
 		}
+
 		$properties = [];
 		foreach ( $parameters as $parameter ) {
 			$properties[] = $this->parsePropertyIdParameter( $parameter, $propertyId );

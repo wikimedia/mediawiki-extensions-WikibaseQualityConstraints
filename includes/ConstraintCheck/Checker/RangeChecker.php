@@ -107,7 +107,8 @@ class RangeChecker implements ConstraintChecker {
 		}
 
 		if ( $this->rangeCheckerHelper->getComparison( $min, $dataValue ) > 0 ||
-			 $this->rangeCheckerHelper->getComparison( $dataValue, $max ) > 0 ) {
+			 $this->rangeCheckerHelper->getComparison( $dataValue, $max ) > 0
+		) {
 			// at least one of $min, $max is set at this point, otherwise there could be no violation
 			$type = $dataValue->getType();
 			$openness = $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen';

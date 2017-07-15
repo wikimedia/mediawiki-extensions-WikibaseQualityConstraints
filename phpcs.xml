@@ -10,8 +10,8 @@
 	<rule ref="Generic.Files.LineLength">
 		<properties>
 			<!-- FIXME: Should be lowered to at least 140. -->
-			<property name="lineLimit" value="182" />
-			<property name="absoluteLineLimit" value="182" />
+			<property name="lineLimit" value="166" />
+			<property name="absoluteLineLimit" value="166" />
 		</properties>
 	</rule>
 
@@ -21,7 +21,7 @@
 	<rule ref="Generic.Metrics.CyclomaticComplexity">
 		<properties>
 			<!-- FIXME: Should be lowered to the standard of 10. -->
-			<property name="complexity" value="13" />
+			<property name="complexity" value="12" />
 		</properties>
 	</rule>
 	<rule ref="Generic.Metrics.NestingLevel" />

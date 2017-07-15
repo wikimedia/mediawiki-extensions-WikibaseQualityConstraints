@@ -293,7 +293,8 @@ class CheckConstraints extends ApiBase {
 
 	private function validateParameters( array $params ) {
 		if ( $params[self::PARAM_CONSTRAINT_ID] !== null
-			 && empty( $params[self::PARAM_CONSTRAINT_ID] ) ) {
+			 && empty( $params[self::PARAM_CONSTRAINT_ID] )
+		) {
 			$paramConstraintId = self::PARAM_CONSTRAINT_ID;
 			$this->errorReporter->dieError(
 				"If $paramConstraintId is specified, it must be nonempty.", 'no-data' );
