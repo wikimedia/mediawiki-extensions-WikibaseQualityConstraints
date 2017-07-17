@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\DataValue;
 use DataValues\StringValue;
+use DataValues\UnboundedQuantityValue;
 use Serializers\Serializer;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -114,11 +115,11 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string $type 'quantity' or 'time'
-	 * @param DataValue|null $min lower boundary, or null to signify no lower boundary
-	 * @param DataValue|null $max upper boundary, or null to signfiy no upper boundary
+	 * @param DataValue|int|float|null $min lower boundary, or null to signify no lower boundary
+	 * @param DataValue|int|float|null $max upper boundary, or null to signfiy no upper boundary
 	 * @return array
 	 */
-	public function rangeParameter( $type, DataValue $min = null, DataValue $max = null ) {
+	public function rangeParameter( $type, $min, $max ) {
 		$configKey = $type === 'quantity' ? 'Quantity' : 'Date';
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimum' . $configKey . 'Id' );
@@ -126,11 +127,17 @@ trait ConstraintParameters {
 		if ( $min === null ) {
 			$minimumSnak = new PropertyNoValueSnak( new PropertyId( $minimumId ) );
 		} else {
+			if ( is_numeric( $min ) ) {
+				$min = UnboundedQuantityValue::newFromNumber( $min );
+			}
 			$minimumSnak = new PropertyValueSnak( new PropertyId( $minimumId ), $min );
 		}
 		if ( $max === null ) {
 			$maximumSnak = new PropertyNoValueSnak( new PropertyId( $maximumId ) );
 		} else {
+			if ( is_numeric( $max ) ) {
+				$max = UnboundedQuantityValue::newFromNumber( $max );
+			}
 			$maximumSnak = new PropertyValueSnak( new PropertyId( $maximumId ), $max );
 		}
 		$snakSerializer = $this->getSnakSerializer();

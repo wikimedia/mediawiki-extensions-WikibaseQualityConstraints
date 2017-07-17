@@ -2,13 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
+use DataValues\TimeValue;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
-use DataValues\TimeValue;
-use DataValues\UnboundedQuantityValue;
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -16,7 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChec
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker
@@ -34,24 +29,83 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var JsonFileEntityLookup
-	 */
-	private $lookup;
-
-	/**
+	 * A TimeValue for the year 1.
+	 *
 	 * @var TimeValue
 	 */
-	private $timeValue;
+	private static $t0001;
+
+	/**
+	 * A TimeValue for the year 1800.
+	 *
+	 * @var TimeValue
+	 */
+	private static $t1800;
+
+	/**
+	 * A TimeValue for the year 1900.
+	 *
+	 * @var TimeValue
+	 */
+	private static $t1900;
+
+	/**
+	 * A TimeValue for the year 1970.
+	 *
+	 * @var TimeValue
+	 */
+	private static $t1970;
+
+	/**
+	 * A TimeValue for the year 2000.
+	 *
+	 * @var TimeValue
+	 */
+	private static $t2000;
+
+	/**
+	 * A Statement for a $t1970 date of death (P570).
+	 *
+	 * @var Statement
+	 */
+	private static $s1970;
+
+	/**
+	 * Builder for an item with date of death 1970 ($s1970).
+	 *
+	 * @var NewItem
+	 */
+	private static $i1970;
+
+	/**
+	 * Constraint parameters specifying a range of [0, 150] (years) for date of birth (P569).
+	 *
+	 * @var array
+	 */
+	private $dob0to150Parameters;
 
 	/**
 	 * @var DiffWithinRangeChecker
 	 */
 	private $checker;
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+		self::$t0001 = new TimeValue( '+00000000001-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		self::$t1800 = new TimeValue( '+00000001800-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		self::$t1900 = new TimeValue( '+00000001900-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		self::$t1970 = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		self::$t2000 = new TimeValue( '+00000002000-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		self::$s1970 = NewStatement::forProperty( 'P570' )->withValue( self::$t1970 )->build();
+		self::$i1970 = NewItem::withId( 'Q1' )->andStatement( self::$s1970 );
+	}
+
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		$this->dob0to150Parameters = array_merge(
+			$this->propertyParameter( 'P569' ),
+			$this->rangeParameter( 'quantity', 0, 150 )
+		);
 		$this->checker = new DiffWithinRangeChecker(
 			$this->getConstraintParameterParser(),
 			new RangeCheckerHelper( $this->getDefaultConfig() ),
@@ -60,114 +114,116 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testDiffWithinRangeConstraintWithinRange() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$constraintParameters = [
-			'property' => 'P569',
-			'minimum_quantity' => 0,
-			'maximum_quantity' => 150
-		];
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t1900 ) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testDiffWithinRangeConstraintTooSmall() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$constraintParameters = [
-			'property' => 'P569',
-			'minimum_quantity' => 50,
-			'maximum_quantity' => 150
-		];
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t2000 ) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
 
 	public function testDiffWithinRangeConstraintTooBig() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
-		$constraintParameters = [
-			'property' => 'P569',
-			'minimum_quantity' => 0,
-			'maximum_quantity' => 150
-		];
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t1800 ) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
 
 	public function testDiffWithinRangeConstraintWrongTypeOfProperty() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q7' ) );
-		$constraintParameters = [
-			'property' => 'P569',
-			'minimum_quantity' => 1,
-			'maximum_quantity' => 100
-		];
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( '1900' ) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-must-have-equal-types' );
 	}
 
 	public function testDiffWithinRangeConstraintNoValueSnak() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$entity = self::$i1970->build();
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
-		$constraintParameters = [
-			'property' => 'P1000',
-			'minimum_quantity' => 0,
-			'maximum_quantity' => 150
-		];
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
 	}
 
 	public function testDiffWithinRangeConstraintLeftOpenWithinRange() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t1970 ) )
+			->build();
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P569' ),
-			$this->rangeParameter( 'quantity', null, UnboundedQuantityValue::newFromNumber( 100 ) )
+			$this->rangeParameter( 'quantity', null, 150 )
 		);
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testDiffWithinRangeConstraintLeftOpenTooBig() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t0001 ) )
+			->build();
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P569' ),
-			$this->rangeParameter( 'quantity', null, UnboundedQuantityValue::newFromNumber( 0 ) )
+			$this->rangeParameter( 'quantity', null, 150 )
 		);
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-leftopen' );
 	}
 
 	public function testDiffWithinRangeConstraintRightOpenWithinRange() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t0001 ) )
+			->build();
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P569' ),
-			$this->rangeParameter( 'quantity', UnboundedQuantityValue::newFromNumber( 0 ), null )
+			$this->rangeParameter( 'quantity', 0, null )
 		);
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testDiffWithinRangeConstraintRightOpenTooSmall() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t2000 ) )
+			->build();
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P569' ),
-			$this->rangeParameter( 'quantity', UnboundedQuantityValue::newFromNumber( 100 ), null )
+			$this->rangeParameter( 'quantity', 0, null )
 		);
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P570' ), $this->timeValue ) );
+		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-rightopen' );
 	}
 
