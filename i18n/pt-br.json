@@ -5,9 +5,10 @@
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "Verificar",
-	"wbqc-constraintreport-form-entityid-label": "ID da entidade",
+	"wbqc-constraintreport-form-entityid-label": "ID da entidade:",
 	"wbqc-constraintreport-status-violation": "Violação",
 	"wbqc-constraintreport-status-exception": "Exceção",
+	"wbqc-constraintreport-status-todo": "Todo",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
 	"wbqc-constraintreport-result-table-header-claim": "Reivindicar",
 	"wbqc-constraintreport-result-table-header-constraint": "Limitação",

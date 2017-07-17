@@ -39,7 +39,7 @@
 	"wbqc-violation-message-diff-within-range-property-must-exist": "La propiedad definida en los parámetros debe existir.",
 	"wbqc-violation-message-diff-within-range-property-needs value": "La propiedad definida en los parámetros debe tener un valor.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propiedad definida en los parámetros debe tener un valor del mismo tipo que esta propiedad.",
-	"wbqc-violation-message-format": "El valor de la propiedad debe coincidir con el patrón definido en los parámetros.",
+	"wbqc-violation-message-format": "El valor de $1 ($2) debería coincidir con el patrón $3.",
 	"wbqc-violation-message-inverse": "$1 también debería tener la declaración inversa $2 $3.",
 	"wbqc-violation-message-item": "Las entidades que incluyan $1 deben contar también con {{PLURAL:$3|0=una declaración $2.|1=una declaración $2 $5.|una declaración para $2 con uno de los valores siguientes: $4}}",
 	"wbqc-violation-message-multi-value": "Esta propiedad debería contener varios valores. Es decir, deberían haber más de una declaración utilizando esta propiedad.",

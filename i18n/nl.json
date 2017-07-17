@@ -4,13 +4,14 @@
 			"Sjoerddebruin",
 			"Macofe",
 			"Siebrand",
-			"Mainframe98"
+			"Mainframe98",
+			"Festina90"
 		]
 	},
 	"wbqc-constraintreport": "Beperkingenrapportage",
 	"wbqc-desc": "Controleert beperkingen op zowel items als eigenschappen en toont de resultaten op een speciale pagina.",
 	"wbqc-constraintreport-explanation-part-one": "Via deze pagina kunt u een beperkingencontrole uitvoeren op de gewenste entiteit. De entiteiten worden uit het productiesysteem opgehaald, dus iedere overtreding op de beperkingen die u hier oplost, wordt direct uit deze lijst verwijderd.",
-	"wbqc-constraintreport-explanation-part-two": "De beperkingen worden eens per week verwerkt vanaf de overlegpagina van de eigenschap, dus als u een beperking toevoegt, verwijdert of aanpast, kan het tot een week duren voordat deze is opgenomen in deze rapportage. Er wordt momenteel gewerkt aan het migreren van beperkingen naar beweringen bij eigenschappen, zodat via deze pagina direct controles uitgevoerd kunnen worden.",
+	"wbqc-constraintreport-explanation-part-two": "De beperkingen worden ontleend aan verklaringen op eigenschappen elke keer dat deze uitspraken worden bewerkt, meestal binnen een paar minuten.",
 	"wbqc-constraintreport-form-section": "Beperkingen voor entiteit controleren",
 	"wbqc-constraintreport-form-submit-label": "Controleren",
 	"wbqc-constraintreport-form-entityid-label": "Entiteits-ID:",

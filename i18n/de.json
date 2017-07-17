@@ -30,6 +30,8 @@
 	"wbqc-constraintreport-no-parameter": "keine",
 	"wbqc-potentialissues-short": "Potenzielle Probleme",
 	"wbqc-potentialissues-long": "Diese Aussage hat einige potenzielle Probleme.",
+	"wbqc-badparameters-short": "Ungültige Parameter",
+	"wbqc-badparameters-long": "Diese Beschränkungsaussage hat einige ungültige Parameter.",
 	"apihelp-wbcheckconstraints-description": "Führt Beschränkungsprüfungen zu jedem gewünschten Objekt aus und gibt das Ergebnis zurück.",
 	"apihelp-wbcheckconstraints-param-id": "Kennung der Objektliste, von der die Daten abgerufen werden sollen. Mehrere Werte mit „|“ oder Ähnlichem trennen.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID-Liste, die eine Behauptung erkennt, um einen Beschränkungsbericht zu prüfen. Mehrere Werte mit „|“ trennen.",
