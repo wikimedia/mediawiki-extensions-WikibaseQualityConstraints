@@ -6,6 +6,8 @@ use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -50,6 +52,21 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$qualifierChecker = new QualifierChecker();
 		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [] ), $entity );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifier' );
+	}
+
+	public function testQualifierConstraintDeprecatedStatement() {
+		$checker = new QualifierChecker();
+		$statement = NewStatement::noValueFor( 'P1' )
+				   ->withDeprecatedRank()
+				   ->build();
+		$constraint = $this->getConstraintMock( [] );
+		$entity = NewItem::withId( 'Q1' )
+				->build();
+
+		$checkResult = $checker->checkConstraint( $statement, $constraint, $entity );
+
+		// this constraint is still checked on deprecated statements
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifier' );
 	}
 

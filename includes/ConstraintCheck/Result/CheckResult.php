@@ -40,6 +40,10 @@ class CheckResult {
 	 * The constraint parameters are broken.
 	 */
 	const STATUS_BAD_PARAMETERS = 'bad-parameters';
+	/**
+	 * The constraint has not been checked because the statement is deprecated.
+	 */
+	const STATUS_DEPRECATED = 'deprecated';
 
 	/**
 	 * @var EntityId

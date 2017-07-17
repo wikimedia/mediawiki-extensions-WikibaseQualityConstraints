@@ -11,6 +11,8 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
@@ -95,6 +97,19 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+	}
+
+	public function testSymmetricConstraintDeprecatedStatement() {
+		$statement = NewStatement::noValueFor( 'P1' )
+				   ->withDeprecatedRank()
+				   ->build();
+		$constraint = $this->getConstraintMock( [] );
+		$entity = NewItem::withId( 'Q1' )
+				->build();
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
+		$this->assertDeprecation( $checkResult );
 	}
 
 	public function testCheckConstraintParameters() {

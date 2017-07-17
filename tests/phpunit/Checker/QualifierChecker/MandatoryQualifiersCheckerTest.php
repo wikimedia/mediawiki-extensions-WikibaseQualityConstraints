@@ -11,6 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiers
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
@@ -72,6 +73,19 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $parameters ), $entity );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-mandatory-qualifier' );
+	}
+
+	public function testMandatoryQualifiersConstraintDeprecatedStatement() {
+		$statement = NewStatement::noValueFor( 'P1' )
+				   ->withDeprecatedRank()
+				   ->build();
+		$constraint = $this->getConstraintMock( [] );
+		$entity = NewItem::withId( 'Q1' )
+				->build();
+
+		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+
+		$this->assertDeprecation( $checkResult );
 	}
 
 	public function testCheckConstraintParameters() {
