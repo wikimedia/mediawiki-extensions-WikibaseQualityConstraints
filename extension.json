@@ -50,11 +50,20 @@
 			"scripts": "modules/SpecialConstraintReportPage.js"
 		},
 		"wikibase.quality.constraints.ui": {
+			"dependencies": [
+				"oojs-ui-core",
+				"oojs-ui-widgets",
+				"wikibase"
+			],
 			"messages": [
 				"wbqc-potentialissues-short",
 				"wbqc-potentialissues-long",
 				"wbqc-badparameters-short",
 				"wbqc-badparameters-long"
+			],
+			"scripts": [
+				"modules/ui/module.js",
+				"modules/ui/ConstraintReportPanel.js"
 			]
 		},
 		"wikibase.quality.constraints.gadget": {

@@ -1,4 +1,4 @@
-( function( mw, $, OO ) {
+( function( mw, wb, $, OO ) {
 	'use strict';
 
 	var entityId;
@@ -29,36 +29,11 @@
 	}
 
 	function buildReport( result ) {
-		var $report, $heading, $helpButton;
-
 		if ( result.status === 'violation' || result.status === 'bad-parameters' ) {
-			$report = $( '<div>' )
-				.addClass( 'wbqc-report' )
-				.addClass( 'wbqc-report-status-' + result.status );
-			$heading = $( '<h4>' ).append(
-				$( '<a>' )
-					.text( result.constraint.typeLabel )
-					.attr( 'href', result.constraint.link )
-					.attr( 'target', '_blank' )
-			);
-			$helpButton = new OO.ui.ButtonWidget( {
-				icon: 'help',
-				framed: false,
-				classes: [ 'wbqc-constraint-type-help' ],
-				href: 'https://www.wikidata.org/wiki/Help:Property_constraints_portal/' + result.constraint.type,
-				target: '_blank'
-			} ).$element;
-			$heading.append( $helpButton );
-			$report.append( $heading );
-			if ( result[ 'message-html' ] ) {
-				$report.append(
-					$( '<p>' ).html( result[ 'message-html' ] )
-				);
-			}
-
-			return new OO.ui.PanelLayout( {
-				expanded: false,
-				$content: $report
+			return new wb.quality.constraints.ui.ConstraintReportPanel( {
+				status: result.status,
+				constraint: result.constraint,
+				message: result[ 'message-html' ]
 			} );
 		} else {
 			return null;
@@ -203,4 +178,4 @@
 			} );
 		} );
 	} );
-} )( mediaWiki, jQuery, OO );
+} )( mediaWiki, wikibase, jQuery, OO );

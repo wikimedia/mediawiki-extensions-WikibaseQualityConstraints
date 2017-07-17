@@ -6,6 +6,7 @@
 	},
 	"globals": {
 		"mediaWiki": false,
+		"wikibase": false,
 		"OO": false
 	},
 	"rules": {
