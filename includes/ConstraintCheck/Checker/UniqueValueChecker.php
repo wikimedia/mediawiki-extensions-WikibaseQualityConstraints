@@ -60,7 +60,10 @@ class UniqueValueChecker implements ConstraintChecker {
 		$parameters = [];
 
 		if ( $this->sparqlHelper !== null ) {
-			$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement( $statement );
+			$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement(
+				$statement,
+				true // ignore deprecated statements
+			);
 
 			if ( $otherEntities === [] ) {
 				$status = CheckResult::STATUS_COMPLIANCE;

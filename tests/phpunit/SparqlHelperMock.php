@@ -54,7 +54,7 @@ trait SparqlHelperMock {
 		$mock->expects( $this->exactly( 1 ) )
 			->method( 'findEntitiesWithSameStatement' )
 			->willReturn( $result )
-			->withConsecutive( [ $this->equalTo( $expectedStatement ) ] );
+			->withConsecutive( [ $this->equalTo( $expectedStatement ), $this->equalTo( true ) ] );
 
 		return $mock;
 	}
