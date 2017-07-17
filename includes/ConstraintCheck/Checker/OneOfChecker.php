@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -64,9 +65,9 @@ class OneOfChecker implements ConstraintChecker {
 		$mainSnak = $statement->getMainSnak();
 
 		$message = wfMessage( 'wbqc-violation-message-one-of' );
-		$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_PREDICATE ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::PREDICATE ) );
 		$message->numParams( count( $items ) );
-		$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, ConstraintParameterRenderer::ROLE_OBJECT ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, Role::OBJECT ) );
 		$message = $message->escaped();
 		$status = CheckResult::STATUS_VIOLATION;
 

@@ -14,6 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -85,7 +86,7 @@ class FormatChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )
-					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
 					 ->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
@@ -106,7 +107,7 @@ class FormatChecker implements ConstraintChecker {
 			default:
 				$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )
 						 ->rawParams(
-							 $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ),
+							 $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ),
 							 wfMessage( 'datatypes-type-string' )->escaped(),
 							 wfMessage( 'datatypes-type-monolingualtext' )->escaped()
 						 )
@@ -121,9 +122,9 @@ class FormatChecker implements ConstraintChecker {
 			} else {
 				$message = wfMessage( 'wbqc-violation-message-format' )
 						 ->rawParams(
-							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
-							$this->constraintParameterRenderer->formatDataValue( new StringValue( $text ), ConstraintParameterRenderer::ROLE_OBJECT ),
-							$this->constraintParameterRenderer->formatByRole( ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_VALUE,
+							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+							$this->constraintParameterRenderer->formatDataValue( new StringValue( $text ), Role::OBJECT ),
+							$this->constraintParameterRenderer->formatByRole( Role::CONSTRAINT_PARAMETER_VALUE,
 								'<code><nowiki>' . htmlspecialchars( $format ) . '</nowiki></code>' )
 						 )
 						 ->escaped();
@@ -131,7 +132,7 @@ class FormatChecker implements ConstraintChecker {
 			}
 		} else {
 			$message = wfMessage( "wbqc-violation-message-security-reason" )
-					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
 					 ->escaped();
 			$status = CheckResult::STATUS_TODO;
 		}

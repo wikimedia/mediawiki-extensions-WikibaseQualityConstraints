@@ -11,6 +11,7 @@ use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 
 /**
  * Class for running a SPARQL query on some endpoint and getting the results.
@@ -195,7 +196,7 @@ EOF;
 			// empty result: regex broken
 			throw new ConstraintParameterException(
 				wfMessage( 'wbqc-violation-message-parameter-regex' )
-					->rawParams( ConstraintParameterRenderer::formatByRole( ConstraintParameterRenderer::ROLE_CONSTRAINT_PARAMETER_VALUE,
+					->rawParams( ConstraintParameterRenderer::formatByRole( Role::CONSTRAINT_PARAMETER_VALUE,
 						'<code><nowiki>' . htmlspecialchars( $regex ) . '</nowiki></code>' ) )
 					->escaped()
 			);

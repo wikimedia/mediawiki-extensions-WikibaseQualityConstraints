@@ -11,6 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -64,8 +65,8 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 
 		$message = wfMessage( "wbqc-violation-message-mandatory-qualifier" )
 				 ->rawParams(
-					 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
-					 $this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_QUALIFIER_PREDICATE )
+					 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+					 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::QUALIFIER_PREDICATE )
 				 )
 				 ->escaped();
 		$status = CheckResult::STATUS_VIOLATION;

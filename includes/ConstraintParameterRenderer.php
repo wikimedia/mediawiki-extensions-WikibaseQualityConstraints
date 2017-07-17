@@ -9,6 +9,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
+use WikibaseQuality\ConstraintReport\Role;
 
 /**
  * Class ConstraintParameterRenderer
@@ -28,62 +29,6 @@ class ConstraintParameterRenderer {
 	 * @var int
 	 */
 	const MAX_PARAMETER_ARRAY_LENGTH = 10;
-
-	/**
-	 * Indicates that a formatted value acts as the subject of a statement.
-	 *
-	 * @var string
-	 */
-	const ROLE_SUBJECT = 'subject';
-
-	/**
-	 * Indicates that a formatted value acts as the predicate of a statement.
-	 *
-	 * @var string
-	 */
-	const ROLE_PREDICATE = 'predicate';
-
-	/**
-	 * Indicates that a formatted value acts as the object of a statement.
-	 *
-	 * @var string
-	 */
-	const ROLE_OBJECT = 'object';
-
-	/**
-	 * Indicates that a formatted value is the property that introduced a constraint.
-	 *
-	 * @var string
-	 */
-	const ROLE_CONSTRAINT_PROPERTY = 'constraint-property';
-
-	/**
-	 * Indicates that a formatted value acts as the predicate of a qualifier.
-	 *
-	 * @var string
-	 */
-	const ROLE_QUALIFIER_PREDICATE = 'qualifier-predicate';
-
-	/**
-	 * Indicates that a formatted value is the property for a constraint parameter.
-	 *
-	 * @var string
-	 */
-	const ROLE_CONSTRAINT_PARAMETER_PROPERTY = 'constraint-parameter-property';
-
-	/**
-	 * Indicates that a formatted value is the value for a constraint parameter.
-	 *
-	 * @var string
-	 */
-	const ROLE_CONSTRAINT_PARAMETER_VALUE = 'constraint-parameter-value';
-
-	/**
-	 * Indicates that a formatted value is the item for a constraint type.
-	 *
-	 * @var string
-	 */
-	const ROLE_CONSTRAINT_TYPE_ITEM = 'constraint-type-item';
 
 	/**
 	 *
@@ -177,7 +122,7 @@ class ConstraintParameterRenderer {
 	/**
 	 * If $role is non-null, wrap $value in a span with the CSS classes wdqc-role and wdqc-role-$role.
 	 *
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @param string $value HTML
 	 * @return string HTML
 	 */
@@ -193,7 +138,7 @@ class ConstraintParameterRenderer {
 
 	/**
 	 * @param DataValue $value
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @return string HTML
 	 */
 	public function formatDataValue( DataValue $value, $role = null ) {
@@ -203,7 +148,7 @@ class ConstraintParameterRenderer {
 
 	/**
 	 * @param EntityId $entityId
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @return string HTML
 	 */
 	public function formatEntityId( EntityId $entityId, $role = null ) {
@@ -217,7 +162,7 @@ class ConstraintParameterRenderer {
 	 * If you know that your property ID is already parsed, use {@see formatEntityId}.
 	 *
 	 * @param PropertyId|string $propertyId
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @return string HTML
 	 */
 	public function formatPropertyId( $propertyId, $role = null ) {
@@ -241,7 +186,7 @@ class ConstraintParameterRenderer {
 	 * If you know that your item ID is already parsed, use {@see formatEntityId}.
 	 *
 	 * @param ItemId|string $itemId
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @return string HTML
 	 */
 	public function formatItemId( $itemId, $role = null ) {
@@ -263,7 +208,7 @@ class ConstraintParameterRenderer {
 	 * Format an {@link ItemIdSnakValue} (known value, unknown value, or no value).
 	 *
 	 * @param ItemIdSnakValue $value
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @return string HTML
 	 */
 	public function formatItemIdSnakValue( ItemIdSnakValue $value, $role = null ) {
@@ -290,7 +235,7 @@ class ConstraintParameterRenderer {
 	 * and then contains all the individual formatted property IDs.
 	 *
 	 * @param PropertyId[]|string[] $propertyIds
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @return string[] HTML
 	 */
 	public function formatPropertyIdList( array $propertyIds, $role = null ) {
@@ -313,7 +258,7 @@ class ConstraintParameterRenderer {
 	 * and then contains all the individual formatted item IDs.
 	 *
 	 * @param ItemId[]|string[] $itemIds
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @return string[] HTML
 	 */
 	public function formatItemIdList( array $itemIds, $role = null ) {
@@ -336,7 +281,7 @@ class ConstraintParameterRenderer {
 	 * and then contains all the individual formatted values.
 	 *
 	 * @param ItemIdSnakValue[] $values
-	 * @param string|null $role one of the self::ROLE_* constants or null
+	 * @param string|null $role one of the Role constants or null
 	 * @return string[] HTML
 	 */
 	public function formatItemIdSnakValueList( array $values, $role = null ) {

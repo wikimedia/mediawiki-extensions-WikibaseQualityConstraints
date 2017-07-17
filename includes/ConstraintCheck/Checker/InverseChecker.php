@@ -14,6 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -89,7 +90,7 @@ class InverseChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )
-					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
 					 ->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
@@ -103,7 +104,7 @@ class InverseChecker implements ConstraintChecker {
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )
 					 ->rawParams(
-						 $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ),
+						 $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ),
 						 'wikibase-entityid' // TODO is there a message for this type so we can localize it?
 					 )
 					 ->escaped();
@@ -128,9 +129,9 @@ class InverseChecker implements ConstraintChecker {
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-inverse' )
 					 ->rawParams(
-						 $this->constraintParameterRenderer->formatEntityId( $targetItem->getId(), ConstraintParameterRenderer::ROLE_SUBJECT ),
-						 $this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_PREDICATE ),
-						 $this->constraintParameterRenderer->formatEntityId( $entity->getId(), ConstraintParameterRenderer::ROLE_OBJECT )
+						 $this->constraintParameterRenderer->formatEntityId( $targetItem->getId(), Role::SUBJECT ),
+						 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE ),
+						 $this->constraintParameterRenderer->formatEntityId( $entity->getId(), Role::OBJECT )
 					 )
 					 ->escaped();
 			$status = CheckResult::STATUS_VIOLATION;

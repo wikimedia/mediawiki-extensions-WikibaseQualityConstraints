@@ -12,6 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -76,7 +77,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
 			$message = wfMessage( "wbqc-violation-message-value-needed" )
-					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
 					 ->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
@@ -135,16 +136,16 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 						$openness = $min !== null ? ( $max !== null ? '' : '-rightopen' ) : '-leftopen';
 						$message = wfMessage( "wbqc-violation-message-diff-within-range$openness" );
 						$message->rawParams(
-							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_PREDICATE ),
-							$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue(), ConstraintParameterRenderer::ROLE_OBJECT ),
-							$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId(), ConstraintParameterRenderer::ROLE_PREDICATE ),
-							$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue(), ConstraintParameterRenderer::ROLE_OBJECT )
+							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::PREDICATE ),
+							$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue(), Role::OBJECT ),
+							$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId(), Role::PREDICATE ),
+							$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue(), Role::OBJECT )
 						);
 						if ( $min !== null ) {
-							$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min, ConstraintParameterRenderer::ROLE_OBJECT ) );
+							$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min, Role::OBJECT ) );
 						}
 						if ( $max !== null ) {
-							$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $max, ConstraintParameterRenderer::ROLE_OBJECT ) );
+							$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $max, Role::OBJECT ) );
 						}
 						$message = $message->escaped();
 						$status = CheckResult::STATUS_VIOLATION;
