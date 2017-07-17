@@ -3,10 +3,11 @@
 
 	var entityId;
 
-	function buildWidget( reports ) {
+	function buildWidget( reports, messageKey, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: 'alert',
-			iconTitle: mw.message( 'wbqc-potentialissues-long' ).text(),
+			iconTitle: mw.message( 'wbqc-' + messageKey + '-long' ).text(),
+			flags: flags || '',
 			framed: false,
 			classes: [ 'wbqc-reports-button' ],
 			popup: {
@@ -19,7 +20,7 @@
 				width: 400,
 				padded: true,
 				head: true,
-				label: $( '<strong>' ).text( mw.message( 'wbqc-potentialissues-short' ).text() )
+				label: $( '<strong>' ).text( mw.message( 'wbqc-' + messageKey + '-short' ).text() )
 			}
 		} );
 		widget.popup.$element.css( 'z-index', 2 ); // prevent collision with rank selector and property grey field
@@ -64,6 +65,23 @@
 		}
 	}
 
+	function buildParameterReport( problem ) {
+		var $report, $heading, $body;
+
+		$report = $( '<div>' )
+			.addClass( 'wbqc-parameter-report' );
+		$heading = $( '<h4>' ); // empty for now
+		$report.append( $heading );
+		$body = $( '<p>' )
+			.html( problem[ 'message-html' ] );
+		$report.append( $body );
+
+		return new OO.ui.PanelLayout( {
+			expanded: false,
+			$content: $report
+		} );
+	}
+
 	function addReportsToStatement( entityData, $statement ) {
 		var match = $statement.parents( '.wikibase-statementview' )[ 0 ].className.match(
 				/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
@@ -95,7 +113,42 @@
 			if ( $target.length === 0 ) {
 				$target = $statement;
 			}
-			$target.append( buildWidget( reports ).$element );
+			$target.append( buildWidget( reports, 'potentialissues' ).$element );
+		}
+	}
+
+	function addParameterReports( parameterReports ) {
+		var constraintId,
+			status,
+			problems,
+			reports,
+			i,
+			report,
+			$statement,
+			$target;
+
+		for ( constraintId in parameterReports ) {
+			status = parameterReports[ constraintId ].status;
+			if ( status === 'okay' ) {
+				continue;
+			}
+
+			problems = parameterReports[ constraintId ].problems;
+			reports = [];
+			for ( i = 0; i < problems.length; i++ ) {
+				report = buildParameterReport( problems[ i ] );
+				if ( report !== null ) {
+					reports.push( report );
+				}
+			}
+
+			$statement = $( '.wikibase-statement-' + constraintId.replace( /\$/g, '\\$' ) +
+								' .wikibase-statementview-mainsnak .wikibase-snakview-value' );
+			$target = $statement.find( '.valueview-instaticmode' );
+			if ( $target.length === 0 ) {
+				$target = $statement;
+			}
+			$target.append( buildWidget( reports, 'badparameters', 'warning' ).$element );
 		}
 	}
 
@@ -125,6 +178,17 @@
 			$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak .wikibase-snakview-value' )
 				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 		} );
+
+		if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
+			api.get( {
+				action: 'wbcheckconstraintparameters',
+				format: 'json',
+				uselang: lang,
+				propertyid: entityId
+			} ).then( function( data ) {
+				addParameterReports( data.wbcheckconstraintparameters[ entityId ] );
+			} );
+		}
 
 		mw.hook( 'wikibase.statement.saved' ).add( function( entityId, statementId ) {
 			api.get( {

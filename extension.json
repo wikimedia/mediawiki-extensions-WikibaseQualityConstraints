@@ -52,7 +52,9 @@
 		"wikibase.quality.constraints.ui": {
 			"messages": [
 				"wbqc-potentialissues-short",
-				"wbqc-potentialissues-long"
+				"wbqc-potentialissues-long",
+				"wbqc-badparameters-short",
+				"wbqc-badparameters-long"
 			]
 		},
 		"wikibase.quality.constraints.gadget": {
