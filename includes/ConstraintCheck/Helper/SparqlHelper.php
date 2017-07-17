@@ -236,6 +236,18 @@ EOF;
 			return $arr;
 		} else {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.error' );
+
+			$this->dataFactory->increment(
+				"wikibase.quality.constraints.sparql.error.http.{$request->getStatus()}"
+			);
+
+			$timeoutExceptionClass = 'com.bigdata.bop.engine.QueryTimeoutException';
+			if ( strpos( $request->getContent(), " $timeoutExceptionClass:" ) !== false ) {
+				$this->dataFactory->increment(
+					'wikibase.quality.constraints.sparql.error.timeout'
+				);
+			}
+
 			throw new SparqlHelperException();
 		}
 	}
