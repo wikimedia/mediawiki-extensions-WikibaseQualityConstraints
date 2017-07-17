@@ -146,6 +146,44 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
 
+	public function testDiffWithinRangeConstraintWithinRangeWithDeprecatedStatement() {
+		$deprecatedStatement = NewStatement::forProperty( 'P569' )
+			->withValue( self::$t1800 )
+			->withRank( Statement::RANK_DEPRECATED );
+		$entity = self::$i1970
+			->andStatement( $deprecatedStatement ) // should be ignored
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t1900 ) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
+
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testDiffWithinRangeConstraintWithoutStatement() {
+		$entity = self::$i1970->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
+
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
+	}
+
+	public function testDiffWithinRangeConstraintWithOnlyDeprecatedStatement() {
+		$deprecatedStatement = NewStatement::forProperty( 'P569' )
+			->withValue( self::$t1900 )
+			->withRank( Statement::RANK_DEPRECATED );
+		$entity = self::$i1970
+			->andStatement( $deprecatedStatement ) // should be ignored
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
+
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
+	}
+
 	public function testDiffWithinRangeConstraintWrongTypeOfProperty() {
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue( '1900' ) )
