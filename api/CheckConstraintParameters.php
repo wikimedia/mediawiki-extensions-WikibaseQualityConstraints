@@ -103,8 +103,8 @@ class CheckConstraintParameters extends ApiBase {
 		$params = $this->extractRequestParams();
 		$result = $this->getResult();
 
-		$propertyIds = $this->parsePropertyIds( $params );
-		$constraintIds = $this->parseConstraintIds( $params );
+		$propertyIds = $this->parsePropertyIds( $params[self::PARAM_PROPERTY_ID] );
+		$constraintIds = $this->parseConstraintIds( $params[self::PARAM_CONSTRAINT_ID] );
 
 		$this->checkPropertyIds( $propertyIds, $result );
 		$this->checkConstraintIds( $constraintIds, $result );
@@ -113,12 +113,10 @@ class CheckConstraintParameters extends ApiBase {
 	}
 
 	/**
-	 * @param array $params
+	 * @param array|null $propertyIdSerializations
 	 * @return PropertyId[]
 	 */
-	private function parsePropertyIds( array $params ) {
-		$propertyIdSerializations = $params[self::PARAM_PROPERTY_ID];
-
+	private function parsePropertyIds( $propertyIdSerializations ) {
 		if ( $propertyIdSerializations === null ) {
 			return [];
 		} elseif ( empty( $propertyIdSerializations ) ) {
@@ -146,12 +144,10 @@ class CheckConstraintParameters extends ApiBase {
 	}
 
 	/**
-	 * @param array $params
+	 * @param array|null $constraintIds
 	 * @return string[]
 	 */
-	private function parseConstraintIds( array $params ) {
-		$constraintIds = $params[self::PARAM_CONSTRAINT_ID];
-
+	private function parseConstraintIds( $constraintIds ) {
 		if ( $constraintIds === null ) {
 			return [];
 		} elseif ( empty( $constraintIds ) ) {
