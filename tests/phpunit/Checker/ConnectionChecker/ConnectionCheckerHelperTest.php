@@ -12,6 +12,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper
@@ -41,51 +42,166 @@ class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$this->statementList = new StatementList( [
 			new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) ),
 			new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) ),
+			new Statement( new PropertyValueSnak( new PropertyId( 'P3' ), new EntityIdValue( new PropertyId( 'P10' ) ) ) ),
 			new Statement( new PropertySomeValueSnak( new PropertyId( 'P1' ) ) ),
 			new Statement( new PropertyNoValueSnak( new PropertyId( 'P2' ) ) )
 		] );
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 	}
 
-	public function testHasPropertyValid() {
-		$this->assertTrue( $this->connectionCheckerHelper->hasProperty( $this->statementList, 'P1' ) );
+	public function testWithPropertyValid() {
+		$statement = $this->connectionCheckerHelper->findStatementWithProperty(
+			$this->statementList,
+			new PropertyId( 'P1' )
+		);
+
+		$this->assertNotNull( $statement );
+		$this->assertEquals( new PropertyId( 'P1' ), $statement->getPropertyId() );
 	}
 
-	public function testHasPropertyInvalid() {
-		$this->assertFalse( $this->connectionCheckerHelper->hasProperty( $this->statementList, 'P100' ) );
+	public function testWithPropertyInvalid() {
+		$statement = $this->connectionCheckerHelper->findStatementWithProperty(
+			$this->statementList,
+			new PropertyId( 'P100' )
+		);
+
+		$this->assertNull( $statement );
 	}
 
-	public function testHasClaimValid() {
-		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', 'Q1' ) );
+	public function testWithPropertyAndEntityIdValueValidItemId() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndEntityIdValue(
+			$this->statementList,
+			new PropertyId( 'P1' ),
+			new ItemId( 'Q1' )
+		);
+
+		$this->assertNotNull( $statement );
+		$this->assertEquals( new PropertyId( 'P1' ), $statement->getPropertyId() );
+		$this->assertEquals( new ItemId( 'Q1' ), $statement->getMainSnak()->getDataValue()->getEntityId() );
 	}
 
-	public function testHasClaimWrongItem() {
-		$this->assertNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', 'Q100' ) );
+	public function testWithPropertyAndEntityIdValueValidPropertyId() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndEntityIdValue(
+			$this->statementList,
+			new PropertyId( 'P3' ),
+			new Propertyid( 'P10' )
+		);
+
+		$this->assertNotNull( $statement );
+		$this->assertEquals( new PropertyId( 'P3' ), $statement->getPropertyId() );
+		$this->assertEquals( new PropertyId( 'P10' ), $statement->getMainSnak()->getDataValue()->getEntityId() );
 	}
 
-	public function testHasClaimWrongProperty() {
-		$this->assertNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P100', 'Q1' ) );
+	public function testWithPropertyAndEntityIdValueInvalidEntityId() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndEntityIdValue(
+			$this->statementList,
+			new PropertyId( 'P1' ),
+			new ItemId( 'Q2' )
+		);
+
+		$this->assertNull( $statement );
 	}
 
-	public function testHasClaimValidArray() {
-		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', [ 'Q1', 'Q2' ] ) );
+	public function testWithPropertyAndEntityIdValueInvalidProperty() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndEntityIdValue(
+			$this->statementList,
+			new PropertyId( 'P100' ),
+			new ItemId( 'Q1' )
+		);
+
+		$this->assertNull( $statement );
 	}
 
-	public function testHasClaimNoValueSnak() {
-		$statementList = new StatementList( new Statement( new PropertyNoValueSnak( 1 ) ) );
-		$this->assertNull( $this->connectionCheckerHelper->findStatement( $statementList, 'P1', [ 'Q1', 'Q2' ] ) );
+	public function testWithPropertyAndItemIdSnakValuesValidItemId() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+			$this->statementList,
+			new PropertyId( 'P1' ),
+			[ ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ) ]
+		);
+
+		$this->assertNotNull( $statement );
+		$this->assertEquals( new PropertyId( 'P1' ), $statement->getPropertyId() );
+		$this->assertEquals( new ItemId( 'Q1' ), $statement->getMainSnak()->getDataValue()->getEntityId() );
 	}
 
-	public function testHasClaimValidUnknownValue() {
-		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', 'somevalue' ) );
+	public function testWithPropertyAndItemIdSnakValuesValidSomeValue() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+			$this->statementList,
+			new PropertyId( 'P1' ),
+			[ ItemIdSnakValue::someValue() ]
+		);
+
+		$this->assertNotNull( $statement );
+		$this->assertEquals( new PropertyId( 'P1' ), $statement->getPropertyId() );
+		$this->assertSame( 'somevalue', $statement->getMainSnak()->getType() );
 	}
 
-	public function testHasClaimValidNoValue() {
-		$this->assertNotNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P2', 'novalue' ) );
+	public function testWithPropertyAndItemIdSnakValuesValidNoValue() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+			$this->statementList,
+			new PropertyId( 'P2' ),
+			[ ItemIdSnakValue::noValue() ]
+		);
+
+		$this->assertNotNull( $statement );
+		$this->assertEquals( new PropertyId( 'P2' ), $statement->getPropertyId() );
+		$this->assertSame( 'novalue', $statement->getMainSnak()->getType() );
 	}
 
-	public function testHasClaimInvalidValue() {
-		$this->assertNull( $this->connectionCheckerHelper->findStatement( $this->statementList, 'P1', 'invalid' ) );
+	public function testWithPropertyAndItemIdSnakValuesValidMultiple() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+			$this->statementList,
+			new PropertyId( 'P1' ),
+			[
+				ItemIdSnakValue::noValue(),
+				ItemIdSnakValue::fromItemId( new ItemId( 'Q100' ) ),
+				ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) )
+			]
+		);
+
+		$this->assertNotNull( $statement );
+		$this->assertEquals( new PropertyId( 'P1' ), $statement->getPropertyId() );
+		$this->assertEquals( new ItemId( 'Q1' ), $statement->getMainSnak()->getDataValue()->getEntityId() );
+	}
+
+	public function testWithPropertyAndItemIdSnakValuesInvalidItemId() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+			$this->statementList,
+			new PropertyId( 'P1' ),
+			[ ItemIdSnakValue::fromItemId( new ItemId( 'Q2' ) ) ]
+		);
+
+		$this->assertNull( $statement );
+	}
+
+	public function testWithPropertyAndItemIdSnakValuesInvalidSomeValue() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+			$this->statementList,
+			new PropertyId( 'P2' ),
+			[ ItemIdSnakValue::someValue() ]
+		);
+
+		$this->assertNull( $statement );
+	}
+
+	public function testWithPropertyAndItemIdSnakValuesInvalidNoValue() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+			$this->statementList,
+			new PropertyId( 'P1' ),
+			[ ItemIdSnakValue::noValue() ]
+		);
+
+		$this->assertNull( $statement );
+	}
+
+	public function testWithPropertyAndItemIdSnakValuesInvalidProperty() {
+		$statement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+			$this->statementList,
+			new PropertyId( 'P100' ),
+			[ ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ) ]
+		);
+
+		$this->assertNull( $statement );
 	}
 
 }

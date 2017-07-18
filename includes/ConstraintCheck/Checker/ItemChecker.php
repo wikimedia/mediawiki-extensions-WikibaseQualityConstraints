@@ -88,22 +88,23 @@ class ItemChecker implements ConstraintChecker {
 		 *   b) a property and a number of items (each combination of property and item forming an individual claim)
 		 */
 		if ( $items === [] ) {
-			if ( $this->connectionCheckerHelper->hasProperty( $entity->getStatements(), $propertyId->getSerialization() ) ) {
-				$status = CheckResult::STATUS_COMPLIANCE;
-			} else {
-				$status = CheckResult::STATUS_VIOLATION;
-			}
+			$requiredStatement = $this->connectionCheckerHelper->findStatementWithProperty(
+				$entity->getStatements(),
+				$propertyId
+			);
 		} else {
-			if ( $this->connectionCheckerHelper->findStatement( $entity->getStatements(), $propertyId->getSerialization(), $items ) !== null ) {
-				$status = CheckResult::STATUS_COMPLIANCE;
-			} else {
-				$status = CheckResult::STATUS_VIOLATION;
-			}
+			$requiredStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
+				$entity->getStatements(),
+				$propertyId,
+				$items
+			);
 		}
 
-		if ( $status == CheckResult::STATUS_COMPLIANCE ) {
+		if ( $requiredStatement !== null ) {
+			$status = CheckResult::STATUS_COMPLIANCE;
 			$message = '';
 		} else {
+			$status = CheckResult::STATUS_VIOLATION;
 			$message = wfMessage( 'wbqc-violation-message-item' );
 			$message->rawParams(
 				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),

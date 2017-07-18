@@ -69,6 +69,29 @@ class ItemIdSnakValue {
 	}
 
 	/**
+	 * Get an {@link ItemIdSnakValue} that matches the given snak.
+	 *
+	 * @return self
+	 */
+	public static function fromSnak( Snak $snak ) {
+		switch ( true ) {
+			case $snak instanceof PropertyValueSnak:
+				if (
+					$snak->getDataValue() instanceof EntityIdValue &&
+					$snak->getDataValue()->getEntityId() instanceof ItemId
+				) {
+					return self::fromItemId( $snak->getDataValue()->getEntityId() );
+				} else {
+					throw new InvalidArgumentException( 'Snak must contain item ID value or be a somevalue / novalue snak' );
+				}
+			case $snak instanceof PropertySomeValueSnak:
+				return self::someValue();
+			case $snak instanceof PropertyNoValueSnak:
+				return self::noValue();
+		}
+	}
+
+	/**
 	 * Check whether this {@link ItemIdSnakValue} contains a known value or not.
 	 *
 	 * @return bool

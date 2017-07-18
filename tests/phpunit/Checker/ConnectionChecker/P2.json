@@ -1,0 +1,27 @@
+{
+  "id": "P2",
+  "type": "property",
+  "datatype": "wikibase-property",
+  "claims": {
+	"P3": [
+	  {
+		"id": "P2$bb958144-1810-4c19-9e9f-3e6ce91f0158",
+		"mainsnak": {
+		  "snaktype": "value",
+		  "property": "P3",
+		  "datatype": "wikibase-property",
+		  "datavalue": {
+			"type": "wikibase-entityid",
+			"value": {
+			  "entity-type": "property",
+			  "numeric-id": 1,
+			  "id": "P1"
+			}
+		  }
+		},
+		"type": "statement",
+		"rank": "normal"
+	  }
+	]
+  }
+}
