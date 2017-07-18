@@ -1,0 +1,4 @@
+.wikibase-toolbar-item .mw-collapsible-toggle * {
+	/* wikibase CSS adds an icon, so hide the normal [expand] link */
+	display: none;
+}

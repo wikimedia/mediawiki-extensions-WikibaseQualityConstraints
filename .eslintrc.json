@@ -10,6 +10,7 @@
 		"OO": false
 	},
 	"rules": {
+		"dot-notation": [ "error", { "allowKeywords": true } ],
 		"keyword-spacing": "off",
 		"space-before-function-paren": "off",
 		"wrap-iife": "off"
