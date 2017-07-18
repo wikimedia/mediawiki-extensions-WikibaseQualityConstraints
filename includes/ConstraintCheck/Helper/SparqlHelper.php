@@ -61,7 +61,10 @@ PREFIX wds: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NS_STATEMENT )}>
 PREFIX wdt: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_DIRECT_CLAIM )}>
 PREFIX p: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_CLAIM )}>
 PREFIX ps: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_CLAIM_STATEMENT )}>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX wikibase-beta: <http://wikiba.se/ontology-beta#>
 EOT;
+		// TODO get wikibase: prefix from vocabulary once -beta is dropped (T112127)
 
 		$this->dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 	}
@@ -107,12 +110,22 @@ EOF;
 
 	/**
 	 * @param Statement $statement
+	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
 	 * @return (EntityId|null)[]
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	public function findEntitiesWithSameStatement( Statement $statement ) {
+	public function findEntitiesWithSameStatement(
+		Statement $statement,
+		$ignoreDeprecatedStatements
+	) {
 		$pid = $statement->getPropertyId()->serialize();
 		$guid = str_replace( '$', '-', $statement->getGuid() );
+
+		$deprecatedFilter = '';
+		if ( $ignoreDeprecatedStatements ) {
+			$deprecatedFilter .= 'MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }';
+			$deprecatedFilter .= 'MINUS { ?otherStatement wikibase-beta:rank wikibase-beta:DeprecatedRank. }';
+		}
 
 		$query = <<<EOF
 SELECT ?otherEntity WHERE {
@@ -124,6 +137,7 @@ SELECT ?otherEntity WHERE {
   ?otherStatement ?ps ?value.
   ?otherEntity ?p ?otherStatement.
   FILTER(?otherEntity != ?entity)
+  $deprecatedFilter
 }
 LIMIT 10
 EOF;

@@ -89,6 +89,7 @@ SELECT ?otherEntity WHERE {
   ?otherStatement ?ps ?value.
   ?otherEntity ?p ?otherStatement.
   FILTER(?otherEntity != ?entity)
+  MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }MINUS { ?otherStatement wikibase-beta:rank wikibase-beta:DeprecatedRank. }
 }
 LIMIT 10
 EOF;
@@ -102,7 +103,7 @@ EOF;
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
 		$this->assertEquals(
-			$sparqlHelper->findEntitiesWithSameStatement( $statement ),
+			$sparqlHelper->findEntitiesWithSameStatement( $statement, true ),
 			[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ]
 		);
 	}
