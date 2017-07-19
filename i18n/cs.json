@@ -32,6 +32,8 @@
 	"wbqc-constraintreport-no-parameter": "není",
 	"wbqc-potentialissues-short": "Možné problémy",
 	"wbqc-potentialissues-long": "Toto tvrzení může mít určité problémy.",
+	"wbqc-badparameters-short": "Chybné parametry",
+	"wbqc-badparameters-long": "Některé parametry tohoto tvrzení o omezení jsou neplatné.",
 	"wbq-subextension-name-wbqc": "Omezení",
 	"wbqc-violation-header-parameters": "Parametry:",
 	"wbqc-violations-group": "Omezení",
