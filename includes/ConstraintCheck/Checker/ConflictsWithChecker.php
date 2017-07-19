@@ -13,6 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -96,8 +97,8 @@ class ConflictsWithChecker implements ConstraintChecker {
 			if ( $offendingStatement !== null ) {
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )
 						 ->rawParams(
-							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
-							 $this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_PREDICATE )
+							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+							 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE )
 						 )
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
@@ -115,9 +116,9 @@ class ConflictsWithChecker implements ConstraintChecker {
 				$offendingValue = ItemIdSnakValue::fromSnak( $offendingStatement->getMainSnak() );
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )
 						 ->rawParams(
-							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
-							 $this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_PREDICATE ),
-							 $this->constraintParameterRenderer->formatItemIdSnakValue( $offendingValue, ConstraintParameterRenderer::ROLE_OBJECT )
+							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+							 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE ),
+							 $this->constraintParameterRenderer->formatItemIdSnakValue( $offendingValue, Role::OBJECT )
 						 )
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;

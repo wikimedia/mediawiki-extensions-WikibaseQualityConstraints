@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -72,13 +73,13 @@ class UniqueValueChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_VIOLATION;
 				$message = wfMessage( 'wbqc-violation-message-unique-value' )
 						 ->numParams( count( $otherEntities ) )
-						 ->rawParams( $this->constraintParameterRenderer->formatItemIdList( $otherEntities, ConstraintParameterRenderer::ROLE_SUBJECT ) )
+						 ->rawParams( $this->constraintParameterRenderer->formatItemIdList( $otherEntities, Role::SUBJECT ) )
 						 ->escaped();
 			}
 		} else {
 			$status = CheckResult::STATUS_TODO;
 			$message = wfMessage( "wbqc-violation-message-not-yet-implemented" )
-					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), ConstraintParameterRenderer::ROLE_CONSTRAINT_TYPE_ITEM ) )
+					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
 					 ->escaped();
 		}
 

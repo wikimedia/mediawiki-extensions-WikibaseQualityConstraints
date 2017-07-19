@@ -14,6 +14,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 
 /**
  * Class for helper functions for range checkers.
@@ -188,11 +189,11 @@ class TypeCheckerHelper {
 		$message = wfMessage( 'wbqc-violation-message-' . $checker . '-' . $relation );
 
 		$message->rawParams(
-			$this->constraintParameterRenderer->formatEntityId( $propertyId, ConstraintParameterRenderer::ROLE_CONSTRAINT_PROPERTY ),
-			$this->constraintParameterRenderer->formatEntityId( $entityId, ConstraintParameterRenderer::ROLE_SUBJECT )
+			$this->constraintParameterRenderer->formatEntityId( $propertyId, Role::CONSTRAINT_PROPERTY ),
+			$this->constraintParameterRenderer->formatEntityId( $entityId, Role::SUBJECT )
 		);
 		$message->numParams( count( $classes ) );
-		$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $classes, ConstraintParameterRenderer::ROLE_OBJECT ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $classes, Role::OBJECT ) );
 
 		return $message->escaped();
 	}
