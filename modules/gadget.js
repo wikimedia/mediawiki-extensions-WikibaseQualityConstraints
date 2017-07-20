@@ -15,7 +15,7 @@
 				width: 400,
 				padded: true,
 				head: true,
-				label: $( '<strong>' ).text( mw.message( 'wbqc-' + messageKey + '-short' ).text() )
+				label: $content.find( '.wbqc-reports:first-child > .oo-ui-labelElement-label *' ).detach()
 			}
 		} );
 		widget.popup.$element.css( 'z-index', 2 ); // prevent collision with rank selector and property grey field
@@ -80,7 +80,8 @@
 			{
 				statuses: [
 					{
-						status: 'violation'
+						status: 'violation',
+						label: mw.message( 'wbqc-potentialissues-short' ).text()
 					},
 					{
 						status: 'bad-parameters',
@@ -113,7 +114,7 @@
 			reports,
 			i,
 			report,
-			stack,
+			list,
 			$statement,
 			$target;
 
@@ -132,11 +133,14 @@
 				}
 			}
 
-			stack = new OO.ui.StackLayout( {
-				items: reports,
-				continuous: true,
-				expanded: false,
-				classes: [ 'wbqc-reports' ]
+			list = new wikibase.quality.constraints.ui.ConstraintReportList( {
+				items: [
+					new wikibase.quality.constraints.ui.ConstraintReportGroup( {
+						items: reports,
+						label: mw.message( 'wbqc-badparameters-short' ).text()
+					} )
+				],
+				expanded: false // expanded: true does not work within a popup
 			} );
 
 			$statement = $( '.wikibase-statement-' + constraintId.replace( /\$/g, '\\$' ) +
@@ -145,7 +149,7 @@
 			if ( $target.length === 0 ) {
 				$target = $statement;
 			}
-			$target.append( buildPopup( stack.$element, 'badparameters', 'warning' ).$element );
+			$target.append( buildPopup( list.$element, 'badparameters', 'warning' ).$element );
 		}
 	}
 
