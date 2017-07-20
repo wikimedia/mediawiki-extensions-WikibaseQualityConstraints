@@ -8,6 +8,8 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\Rdf\RdfVocabulary;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -122,6 +124,15 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 						[
 							'namespace' => 'File',
 							'known_exception' => 'Q5'
+						] )
+				],
+				[
+					'constraint_guid' => 'P11$01c56d1f-b3ce-4a1a-bef7-8c652f395eb2',
+					'pid' => 11,
+					'constraint_type_qid' => 'Qualifier',
+					'constraint_parameters' => json_encode(
+						[
+							'known_exception' => 'rubbish'
 						] )
 				],
 				[
@@ -301,6 +312,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
 		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 'exception', $result[ 0 ]->getStatus(), 'Should be an exception' );
+	}
+
+	public function testCheckAgainstConstraintsWithBrokenException() {
+		$entity = NewItem::withId( 'Q5' )
+			->andStatement( NewStatement::noValueFor( 'P11' ) )
+			->build();
+		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
+		$this->assertEquals( 'bad-parameters', $result[ 0 ]->getStatus(), 'Should be a bad parameter but not throw an exception' );
 	}
 
 	public function testCheckAgainstConstraints_ByClaims() {
