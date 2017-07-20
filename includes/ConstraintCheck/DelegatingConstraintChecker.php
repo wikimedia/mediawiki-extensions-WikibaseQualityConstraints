@@ -357,7 +357,15 @@ class DelegatingConstraintChecker {
 		}
 
 		$sortFunction = function ( CheckResult $a, CheckResult $b ) {
-			$order = [ 'other' => 4, 'compliance' => 3, 'exception' => 2, 'violation' => 1, 'bad-parameters' => 0 ];
+			$orderNum = 0;
+			$order = [
+				'bad-parameters' => $orderNum++,
+				'violation' => $orderNum++,
+				'exception' => $orderNum++,
+				'compliance' => $orderNum++,
+				'deprecated' => $orderNum++,
+				'other' => $orderNum++,
+			];
 
 			$statusA = $a->getStatus();
 			$statusB = $b->getStatus();
