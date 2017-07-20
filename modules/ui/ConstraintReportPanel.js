@@ -12,7 +12,9 @@
 	 *             typeLabel: 'my constraint',
 	 *             link: 'http://example.com/my-constraint'
 	 *         },
-	 *         message: 'everything okay'
+	 *         message: 'everything okay',
+	 *         expanded: false,
+	 *         framed: true
 	 *     } );
 	 *     $( 'body' ).append( report.$element );
 	 *
