@@ -33,11 +33,11 @@
 	 *             statuses: [
 	 *                 {
 	 *                     status: 'violation',
-	 *                     heading: 'Violations'
+	 *                     label: 'Violations'
 	 *                 },
 	 *                 {
 	 *                     status: 'bad-parameters',
-	 *                     heading: 'Bad parameters',
+	 *                     label: 'Bad parameters',
 	 *                     collapsed: true
 	 *                 }
 	 *             ],
@@ -64,7 +64,7 @@
 	 *                         message: 'everything okay'
 	 *                     } )
 	 *                 ],
-	 *                 heading: 'Violations'
+	 *                 label: 'Violations'
 	 *             } ),
 	 *             new wikibase.quality.constraints.ui.ConstraintReportGroup( {
 	 *                 items: [
@@ -78,7 +78,7 @@
 	 *                         message: 'doing it wrong'
 	 *                     } )
 	 *                 ],
-	 *                 heading: 'Bad parameters',
+	 *                 label: 'Bad parameters',
 	 *                 collapsed: true
 	 *             } )
 	 *         ],

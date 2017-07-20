@@ -84,7 +84,7 @@
 					},
 					{
 						status: 'bad-parameters',
-						heading: mw.message( 'wbqc-parameterissues-short' ).text(),
+						label: mw.message( 'wbqc-parameterissues-short' ).text(),
 						subheading: mw.message( 'wbqc-parameterissues-long' ).text(),
 						collapsed: true
 					}

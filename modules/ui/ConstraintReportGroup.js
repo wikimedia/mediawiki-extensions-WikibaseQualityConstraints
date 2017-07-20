@@ -17,7 +17,7 @@
 	 *                 message: 'everything okay'
 	 *             } )
 	 *         ],
-	 *         heading: 'reports that are fine',
+	 *         label: 'reports that are fine',
 	 *         collapsed: true,
 	 *         expanded: false,
 	 *         framed: true
@@ -26,20 +26,19 @@
 	 *
 	 * @class
 	 * @extends OO.ui.StackLayout
+	 * @mixins OO.ui.mixin.LabelElement
 	 *
 	 * @constructor
 	 * @param {Object} config Configuration options
 	 * @cfg {wikibase.quality.constraints.ui.ConstraintReportPanel[]} items The individual constraint report results.
-	 * @cfg {string} [heading] The heading of the group.
-	 * @cfg {string} [subheading] The subheading of the group. Unlike the heading, it is part of the collapsed content if `collapsible` is `true`.
-	 * @cfg {boolean} [collapsible=false] Whether the group can be collapsed or not. If `true`, a `heading` is recommended.
+	 * @cfg {string} [subheading] The subheading of the group. Unlike the label, it is part of the collapsed content if `collapsible` is `true`.
+	 * @cfg {boolean} [collapsible=false] Whether the group can be collapsed or not. If `true`, a `label` is recommended.
 	 * @cfg {boolean} [collapsed=false] Whether the group is collapsed by default or not. (If `true`, implies `collapsible=true` as well.)
 	 * @cfg {string} [status] The status of all reports in this group. Unused by this class, but assigned by `ConstraintReportList.fromPanels`.
 	 */
 	wb.quality.constraints.ui.ConstraintReportGroup = function WBQCConstraintReportGroup( config ) {
 
-		var heading = config.heading || null,
-			collapsible = config.collapsible || config.collapsed || false,
+		var collapsible = config.collapsible || config.collapsed || false,
 			collapsed = config.collapsed || false,
 			subheading = config.subheading || null,
 			status = config.status || null,
@@ -51,15 +50,21 @@
 			config.classes || [],
 			[ 'wbqc-reports' ]
 		);
+		if ( typeof config.label === 'string' ) {
+			config.label = $( '<strong>' ).text( config.label );
+		}
+		if ( collapsible && config.label === undefined ) {
+			// blank, but nonempty label so the collapse toggler isn't hidden behind the items
+			config.label = ' ';
+		}
 
 		// Parent constructor
 		wb.quality.constraints.ui.ConstraintReportGroup.parent.call( this, config );
 
 		// Mixin constructors
-		// (none)
+		OO.ui.mixin.LabelElement.call( this, config );
 
 		// Properties
-		this.heading = heading;
 		this.collapsible = collapsible;
 		this.collapsed = collapsed;
 		this.status = status;
@@ -68,9 +73,7 @@
 		if ( collapsible ) {
 			this.$element.makeCollapsible( { collapsed: collapsed } );
 		}
-		if ( heading !== null ) {
-			this.$element.prepend( $( '<strong>' ).text( heading ) );
-		}
+		this.$element.prepend( this.$label );
 		if ( subheading !== null ) {
 			$subheadingContainer = collapsible ?
 				this.$element.find( '.mw-collapsible-content' ) :
@@ -79,16 +82,12 @@
 				$( '<p>' ).append( $( '<small>' ).text( subheading ) )
 			);
 		}
-		if ( collapsible && heading === null && subheading === null ) {
-			// we need a spacer before the toggler,
-			// otherwise it's not clickable because it's on the same height as the items and behind them
-			this.$element.prepend( $( '<span>&nbsp;</span>' ) );
-		}
 	};
 
 	/* Setup */
 
 	OO.inheritClass( wb.quality.constraints.ui.ConstraintReportGroup, OO.ui.StackLayout );
+	OO.mixinClass( wb.quality.constraints.ui.ConstraintReportGroup, OO.ui.mixin.LabelElement );
 
 	/* Methods */
 
