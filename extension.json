@@ -59,11 +59,18 @@
 				"wbqc-potentialissues-short",
 				"wbqc-potentialissues-long",
 				"wbqc-badparameters-short",
-				"wbqc-badparameters-long"
+				"wbqc-badparameters-long",
+				"wbqc-parameterissues-short",
+				"wbqc-parameterissues-long"
 			],
 			"scripts": [
 				"modules/ui/module.js",
-				"modules/ui/ConstraintReportPanel.js"
+				"modules/ui/ConstraintReportPanel.js",
+				"modules/ui/ConstraintReportGroup.js",
+				"modules/ui/ConstraintReportList.js"
+			],
+			"styles": [
+				"modules/ui/ConstraintReportGroup.css"
 			]
 		},
 		"wikibase.quality.constraints.gadget": {

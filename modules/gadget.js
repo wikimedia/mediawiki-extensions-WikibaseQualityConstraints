@@ -3,7 +3,7 @@
 
 	var entityId;
 
-	function buildWidget( reports, messageKey, flags /* = '' */ ) {
+	function buildPopup( $content, messageKey, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: 'alert',
 			iconTitle: mw.message( 'wbqc-' + messageKey + '-long' ).text(),
@@ -11,12 +11,7 @@
 			framed: false,
 			classes: [ 'wbqc-reports-button' ],
 			popup: {
-				$content: new OO.ui.StackLayout( {
-					items: reports,
-					continuous: true,
-					expanded: false, // expanded: true does not work within a popup
-					classes: [ 'wbqc-reports' ]
-				} ).$element,
+				$content: $content,
 				width: 400,
 				padded: true,
 				head: true,
@@ -29,15 +24,11 @@
 	}
 
 	function buildReport( result ) {
-		if ( result.status === 'violation' || result.status === 'bad-parameters' ) {
-			return new wb.quality.constraints.ui.ConstraintReportPanel( {
-				status: result.status,
-				constraint: result.constraint,
-				message: result[ 'message-html' ]
-			} );
-		} else {
-			return null;
-		}
+		return new wb.quality.constraints.ui.ConstraintReportPanel( {
+			status: result.status,
+			constraint: result.constraint,
+			message: result[ 'message-html' ]
+		} );
 	}
 
 	function buildParameterReport( problem ) {
@@ -67,6 +58,7 @@
 			reports,
 			i,
 			report,
+			list,
 			$target;
 
 		if ( !( propertyId in entityData && statementId in entityData[ propertyId ] ) ) {
@@ -83,12 +75,34 @@
 			}
 		}
 
-		if ( reports.length > 0 ) {
+		list = wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
+			reports,
+			{
+				statuses: [
+					{
+						status: 'violation'
+					},
+					{
+						status: 'bad-parameters',
+						heading: mw.message( 'wbqc-parameterissues-short' ).text(),
+						subheading: mw.message( 'wbqc-parameterissues-long' ).text(),
+						collapsed: true
+					}
+				],
+				expanded: false // expanded: true does not work within a popup
+			}
+		);
+		if (
+			// list isn't empty...
+			list.items.length > 0 &&
+			// ...and doesn't only contain collapsed items either
+			list.items[ 0 ].status !== 'bad-parameters'
+		) {
 			$target = $statement.find( '.valueview-instaticmode' );
 			if ( $target.length === 0 ) {
 				$target = $statement;
 			}
-			$target.append( buildWidget( reports, 'potentialissues' ).$element );
+			$target.append( buildPopup( list.$element, 'potentialissues' ).$element );
 		}
 	}
 
@@ -99,6 +113,7 @@
 			reports,
 			i,
 			report,
+			stack,
 			$statement,
 			$target;
 
@@ -117,13 +132,20 @@
 				}
 			}
 
+			stack = new OO.ui.StackLayout( {
+				items: reports,
+				continuous: true,
+				expanded: false,
+				classes: [ 'wbqc-reports' ]
+			} );
+
 			$statement = $( '.wikibase-statement-' + constraintId.replace( /\$/g, '\\$' ) +
 								' .wikibase-statementview-mainsnak .wikibase-snakview-value' );
 			$target = $statement.find( '.valueview-instaticmode' );
 			if ( $target.length === 0 ) {
 				$target = $statement;
 			}
-			$target.append( buildWidget( reports, 'badparameters', 'warning' ).$element );
+			$target.append( buildPopup( stack.$element, 'badparameters', 'warning' ).$element );
 		}
 	}
 
