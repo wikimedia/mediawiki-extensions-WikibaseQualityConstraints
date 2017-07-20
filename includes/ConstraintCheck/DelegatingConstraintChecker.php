@@ -267,7 +267,19 @@ class DelegatingConstraintChecker {
 
 		foreach ( $constraints as $constraint ) {
 			$parameters = $constraint->getConstraintParameters();
-			$exceptions = $this->constraintParameterParser->parseExceptionParameter( $parameters );
+			try {
+				$exceptions = $this->constraintParameterParser->parseExceptionParameter( $parameters );
+			} catch ( ConstraintParameterException $e ) {
+				$result[] = new CheckResult(
+					$entity->getId(),
+					$statement,
+					$constraint,
+					[],
+					CheckResult::STATUS_BAD_PARAMETERS,
+					$e->getMessage()
+				);
+				continue;
+			}
 
 			if ( in_array( $entityId, $exceptions ) ) {
 				$result[] = new CheckResult(
