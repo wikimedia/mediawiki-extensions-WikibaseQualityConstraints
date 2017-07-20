@@ -4,9 +4,12 @@
 			"Felipe L. Ewald"
 		]
 	},
+	"wbqc-constraintreport": "Relatório de restrição",
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-form-entityid-label": "ID da entidade:",
 	"wbqc-constraintreport-result-headline": "Resultado para",
+	"wbqc-constraintreport-invalid-entity-id": "ID da entidade inválido.",
+	"wbqc-constraintreport-not-existent-entity": "Entidade não existe.",
 	"wbqc-constraintreport-status-violation": "Violação",
 	"wbqc-constraintreport-status-compliance": "Conformidade",
 	"wbqc-constraintreport-status-exception": "Exceção",
@@ -16,7 +19,9 @@
 	"wbqc-constraintreport-result-table-header-claim": "Reivindicar",
 	"wbqc-constraintreport-result-table-header-constraint": "Limitação",
 	"wbqc-constraintreport-result-link-to-claim": "ir para a reinvindicação",
+	"wbqc-constraintreport-result-link-to-constraint": "ir para a restrição",
 	"wbqc-constraintreport-no-parameter": "nenhum",
+	"wbqc-potentialissues-short": "Problemas potenciais",
 	"wbqc-badparameters-short": "Parâmetros incorretos",
 	"wbq-subextension-name-wbqc": "Restrições",
 	"wbqc-violation-header-parameters": "Parâmetros:",

@@ -32,6 +32,7 @@
 	"wbqc-constraintreport-no-parameter": "nessuno",
 	"wbqc-potentialissues-short": "Problemi potenziali",
 	"wbqc-potentialissues-long": "Questa dichiarazione ha alcuni problemi potenziali",
+	"wbqc-badparameters-short": "Parametri incorretti",
 	"wbq-subextension-name-wbqc": "Vincoli",
 	"wbqc-violation-header-parameters": "Parametri:",
 	"wbqc-violations-group": "Vincoli",
