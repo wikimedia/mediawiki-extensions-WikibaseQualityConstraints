@@ -25,7 +25,7 @@ form {
 }
 
 .wbqc-status-exception {
-	color: #ac6600; /* Yellow30 */
+	color: #14866d; /* Green30 */
 }
 
 .wbqc-status-violation {
@@ -42,6 +42,10 @@ form {
 
 .wbqc-status-deprecated {
 	color: #72777d; /* Base30 */
+}
+
+.wbqc-status-warning {
+	color: #ac6600; /* Yellow30 */
 }
 
 /* Tooltip */

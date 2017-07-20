@@ -898,4 +898,51 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		);
 	}
 
+	public function testParseConstraintStatusParameter() {
+		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$mandatoryId = $this->getDefaultConfig()->get( 'WBQualityConstraintsMandatoryConstraintId' );
+		$snak = new PropertyValueSnak( new PropertyId( $constraintStatusId ), new EntityIdValue( new ItemId( $mandatoryId ) ) );
+
+		$parsed = $this->getConstraintParameterParser()->parseConstraintStatusParameter(
+			[ $constraintStatusId => [ $this->snakSerializer->serialize( $snak ) ] ]
+		);
+
+		$this->assertEquals( 'mandatory', $parsed );
+	}
+
+	public function testParseConstraintStatusParameterMissing() {
+		$parsed = $this->getConstraintParameterParser()->parseConstraintStatusParameter(
+			[]
+		);
+
+		$this->assertNull( $parsed );
+	}
+
+	public function testParseConstraintStatusParameterFromTemplate() {
+		$parsed = $this->getConstraintParameterParser()->parseConstraintStatusParameter(
+			[ 'constraint_status' => 'mandatory' ]
+		);
+
+		$this->assertEquals( 'mandatory', $parsed );
+	}
+
+	public function testParseConstraintStatusParameterInvalid() {
+		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$snak = new PropertyValueSnak( new PropertyId( $constraintStatusId ), new EntityIdValue( new ItemId( 'Q1' ) ) );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseConstraintStatusParameter',
+			[ [ $constraintStatusId => [ $this->snakSerializer->serialize( $snak ) ] ] ],
+			'wbqc-violation-message-parameter-oneof'
+		);
+	}
+
+	public function testParseConstraintStatusParameterFromTemplateInvalid() {
+		$this->assertThrowsConstraintParameterException(
+			'parseConstraintStatusParameter',
+			[ [ 'constraint_status' => 'other' ] ],
+			'wbqc-violation-message-parameter-oneof'
+		);
+	}
+
 }

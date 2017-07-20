@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use InvalidArgumentException;
+use LogicException;
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -340,6 +341,35 @@ class DelegatingConstraintChecker {
 				( microtime( true ) - $startTime ) * 1000
 			);
 
+			try {
+				$constraintStatus = $this->constraintParameterParser
+					->parseConstraintStatusParameter( $constraint->getConstraintParameters() );
+			} catch ( ConstraintParameterException $e ) {
+				$result = new CheckResult(
+					$entity->getId(),
+					$statement,
+					$constraint,
+					[],
+					CheckResult::STATUS_BAD_PARAMETERS,
+					$e->getMessage()
+				);
+				$constraintStatus = null;
+			}
+			if ( $constraintStatus === null ) {
+				// downgrade violation to warning
+				if ( $result->getStatus() === CheckResult::STATUS_VIOLATION ) {
+					$result->setStatus( CheckResult::STATUS_WARNING );
+				}
+			} else {
+				if ( $constraintStatus !== 'mandatory' ) {
+					throw new LogicException(
+						"Unknown constraint status '$constraintStatus', " .
+						"only known status is 'mandatory'"
+					);
+				}
+				$result->getParameters['constraint_status'] = $constraintStatus;
+			}
+
 			return $result;
 		} else {
 			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_TODO, null );
@@ -361,6 +391,7 @@ class DelegatingConstraintChecker {
 			$order = [
 				'bad-parameters' => $orderNum++,
 				'violation' => $orderNum++,
+				'warning' => $orderNum++,
 				'exception' => $orderNum++,
 				'compliance' => $orderNum++,
 				'deprecated' => $orderNum++,

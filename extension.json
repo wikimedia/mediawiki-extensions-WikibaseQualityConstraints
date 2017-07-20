@@ -136,6 +136,16 @@
 			"description": "The property ID of the 'exception to constraint' property (data type: item), which specifies the exceptions of a constraint.",
 			"public": true
 		},
+		"WBQualityConstraintsConstraintStatusId": {
+			"value": "P2316",
+			"description": "The property ID of the 'constraint status' property (data type: item), which specifies the constraint status of a constraint statement. Currently, only one constraint status is known (see WBQualityConstraintsMandatoryConstraintId), and the default status is signified by the absence of a 'constraint status' qualifier.",
+			"public": true
+		},
+		"WBQualityConstraintsMandatoryConstraintId": {
+			"value": "Q21502408",
+			"description": "The item ID of the 'mandatory constraint' item, which, when used in a 'constraint status' qualifier of a 'property constraint' statement on a property, indicates that the constraint is mandatory and should have no violations except for the known exceptions.",
+			"public": true
+		},
 		"WBQualityConstraintsDistinctValuesConstraintId": {
 			"value": "Q21502410",
 			"description": "The item ID of the 'distinct values constraint' item, which, when used in a 'property constraint' statement on a property, indicates that all values for this property should differ from each other, or, equivalently, that each value for this property should be unique to one item.",
