@@ -98,6 +98,16 @@
 			"description": "The maximum number of entities that are accessed when checking type or subtype relations.",
 			"public": true
 		},
+		"WBQualityConstraintsCheckDurationInfoSeconds": {
+			"value": 1.0,
+			"description": "The maximum time that a constraint check should usually take, in seconds. Any constraint check that takes longer than this time is logged at ‘info’ level. Specifying `null` disables this logging.",
+			"public": true
+		},
+		"WBQualityConstraintsCheckDurationWarningSeconds": {
+			"value": 10.0,
+			"description": "The maximum time that a constraint check should ever take, in seconds. Any constraint check that takes longer than this time is logged at ‘warning’ level. Specifying `null` disables this logging.",
+			"public": true
+		},
 		"WBQualityConstraintsEnableConstraintsImportFromStatements": {
 			"value": false,
 			"description": "Whether to import property constraint statements into the constraint database or not.",

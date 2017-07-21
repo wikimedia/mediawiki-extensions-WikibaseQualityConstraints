@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use Config;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use TitleParser;
 use ValueFormatters\FormatterOptions;
@@ -34,6 +35,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
@@ -183,7 +185,11 @@ class ConstraintReportFactory {
 				$this->getConstraintCheckerMap(),
 				new CachingConstraintLookup( $this->getConstraintRepository() ),
 				$this->constraintParameterParser,
-				$this->statementGuidParser
+				$this->statementGuidParser,
+				new LoggingHelper(
+					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
+					$this->config
+				)
 			);
 		}
 

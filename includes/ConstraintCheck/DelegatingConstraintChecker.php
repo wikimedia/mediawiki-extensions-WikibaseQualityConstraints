@@ -14,6 +14,7 @@ use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
@@ -59,24 +60,32 @@ class DelegatingConstraintChecker {
 	private $statementGuidParser;
 
 	/**
+	 * @var LoggingHelper
+	 */
+	private $loggingHelper;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintChecker[] $checkerMap
 	 * @param ConstraintLookup $constraintRepository
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param StatementGuidParser $statementGuidParser
+	 * @param LoggingHelper $loggingHelper
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		array $checkerMap,
 		ConstraintLookup $constraintRepository,
 		ConstraintParameterParser $constraintParameterParser,
-		StatementGuidParser $statementGuidParser
+		StatementGuidParser $statementGuidParser,
+		LoggingHelper $loggingHelper
 	) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
 		$this->constraintLookup = $constraintRepository;
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->statementGuidParser = $statementGuidParser;
+		$this->loggingHelper = $loggingHelper;
 	}
 
 	/**
@@ -358,9 +367,10 @@ class DelegatingConstraintChecker {
 					wfMessage( 'wbqc-violation-message-sparql-error' )->escaped()
 				);
 			}
+			$endTime = microtime( true );
 			$statsd->timing(
 				'wikibase.quality.constraints.check.timing.' . $constraint->getConstraintTypeItemId(),
-				( microtime( true ) - $startTime ) * 1000
+				( $endTime - $startTime ) * 1000
 			);
 
 			try {
@@ -391,6 +401,16 @@ class DelegatingConstraintChecker {
 				}
 				$result->getParameters['constraint_status'] = $constraintStatus;
 			}
+
+			$this->loggingHelper->logConstraintCheck(
+				$statement,
+				$constraint,
+				$entity,
+				$result,
+				get_class( $checker ),
+				$endTime - $startTime,
+				__METHOD__
+			);
 
 			return $result;
 		} else {
