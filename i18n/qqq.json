@@ -78,6 +78,8 @@
 	"wbqc-violation-message-parameter-oneof": "Message for when a constraint parameter must be one of several values, but is something different. $1 contains the parameter, $2 the number of allowed values (possibly 1), $3 an HTML list of all allowed values, and $4, $5 etc. are the individual allowed values.{{Related|wbqc-violation-message-one-of}}",
 	"wbqc-violation-message-parameter-regex": "Message for when a constraint parameter must be a valid regular expression, but has an error. $1 contains the parameter value.",
 	"wbqc-violation-message-sparql-error": "Message for when a constraint checker runs a SPARQL query but the SPARQL endpoint returns an error instead of query results.",
+	"wbqc-violation-message-parameters-error-unknown": "Message for when the constraint parameters of a constraint could not be imported, but the reason is unknown.n",
+	"wbqc-violation-message-parameters-error-toolong": "Message for when the constraint parameters of a constraint could not be imported because they were too long to be stored in the database.",
 	"wbqc-violation-message-commons-link-no-existent": "Message for violation of Commons link constraint. When linked commons page does not exist.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Message for violation of Commons link constraint. When link contains invalid characters.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Message for when the check for the Commons link constraint has not yet been implemented for a specific namespace.",

@@ -81,6 +81,8 @@
 	"wbqc-violation-message-parameter-oneof": "The parameter \"$1\" must be {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following:$3}}",
 	"wbqc-violation-message-parameter-regex": "$1 is not a valid regular expression.",
 	"wbqc-violation-message-sparql-error": "The SPARQL query resulted in an error.",
+	"wbqc-violation-message-parameters-error-unknown": "The parameters of this constraint could not be imported.",
+	"wbqc-violation-message-parameters-error-toolong": "The parameters of this constraint could not be imported because they were too long.",
 
 	"wbqc-violation-message-commons-link-no-existent": "Commons link should exist.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Commons link should be well-formed.",

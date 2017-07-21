@@ -10,6 +10,7 @@ use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -289,6 +290,12 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 					'constraint_type_qid' => 'Qualifier',
 					'constraint_parameters' => '{}'
 				],
+				[
+					'constraint_guid' => 'P8$34c8af8e-bb50-4458-994b-f355ff899fff',
+					'pid' => 8,
+					'constraint_type_qid' => 'Qualifier',
+					'constraint_parameters' => '{"@error":{"toolong":true}}'
+				],
 			]
 		);
 	}
@@ -383,6 +390,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		}
 	}
 
+	public function testCheckConstraintParametersOnPropertyIdWithError() {
+		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new PropertyId( 'P8' ) );
+
+		$this->assertCount( 1, $result, 'Every constraint should be represented by one result' );
+		$this->assertCount( 1, $result['P8$34c8af8e-bb50-4458-994b-f355ff899fff'], 'The constraint should have one exception' );
+		$this->assertInstanceOf( ConstraintParameterException::class, $result['P8$34c8af8e-bb50-4458-994b-f355ff899fff'][0] );
+	}
+
 	public function testCheckConstraintParametersOnConstraintId() {
 		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P1$ecb8f617-90f1-4ef3-afab-f4bf3881ec28' );
 
@@ -393,6 +408,13 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P1$1735c111-e88c-42f9-8b7a-0692c9c797a3' );
 
 		$this->assertNull( $result, 'Constraint should not exist' );
+	}
+
+	public function testCheckConstraintParametersOnConstraintIdWithError() {
+		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P8$34c8af8e-bb50-4458-994b-f355ff899fff' );
+
+		$this->assertCount( 1, $result, 'The constraint should have one exception' );
+		$this->assertInstanceOf( ConstraintParameterException::class, $result[0] );
 	}
 
 	/**

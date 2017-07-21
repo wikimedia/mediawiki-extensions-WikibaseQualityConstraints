@@ -906,6 +906,14 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		);
 	}
 
+	public function testParseExceptionParameterTooLong() {
+		$this->assertThrowsConstraintParameterException(
+			'parseExceptionParameter',
+			[ [ '@error' => [ 'toolong' => true ] ] ],
+			'wbqc-violation-message-parameters-error-toolong'
+		);
+	}
+
 	public function testParseConstraintStatusParameter() {
 		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
 		$mandatoryId = $this->getDefaultConfig()->get( 'WBQualityConstraintsMandatoryConstraintId' );
@@ -950,6 +958,14 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseConstraintStatusParameter',
 			[ [ 'constraint_status' => 'other' ] ],
 			'wbqc-violation-message-parameter-oneof'
+		);
+	}
+
+	public function testParseConstraintStatusParameterUnknownError() {
+		$this->assertThrowsConstraintParameterException(
+			'parseExceptionParameter',
+			[ [ '@error' => [] ] ],
+			'wbqc-violation-message-parameters-error-unknown'
 		);
 	}
 
