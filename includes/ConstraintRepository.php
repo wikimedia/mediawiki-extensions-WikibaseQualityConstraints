@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use InvalidArgumentException;
+use MediaWiki\Logger\LoggerFactory;
 use Wikimedia\Rdbms\DBUnexpectedError;
 use Wikimedia\Rdbms\LikeMatch;
 use Wikibase\DataModel\Entity\PropertyId;
