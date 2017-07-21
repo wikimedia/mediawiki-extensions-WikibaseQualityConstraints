@@ -37,6 +37,8 @@
 	"wbqc-badparameters-long": "This constraint statement has some invalid parameters.",
 	"wbqc-parameterissues-short": "Advanced issues",
 	"wbqc-parameterissues-long": "These issues are problems with the constraint definition on the property, not with this statement.",
+	"wbqc-problems-short": "Problems",
+	"wbqc-problems-long": "This statement has some problems.",
 
 	"apihelp-wbcheckconstraints-description": "Performs constraint checks on any entity you want and returns the result.",
 	"apihelp-wbcheckconstraints-summary": "Performs constraint checks on any entity you want and returns the result.",

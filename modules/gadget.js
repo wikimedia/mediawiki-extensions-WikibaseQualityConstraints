@@ -3,10 +3,10 @@
 
 	var entityId;
 
-	function buildPopup( $content, messageKey, flags /* = '' */ ) {
+	function buildPopup( $content, icon, iconTitleMessageKey, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
-			icon: 'alert',
-			iconTitle: mw.message( 'wbqc-' + messageKey + '-long' ).text(),
+			icon: icon,
+			iconTitle: mw.message( iconTitleMessageKey ).text(),
 			flags: flags || '',
 			framed: false,
 			classes: [ 'wbqc-reports-button' ],
@@ -59,7 +59,8 @@
 			i,
 			report,
 			list,
-			$target;
+			$target,
+			haveMandatoryViolations;
 
 		if ( !( propertyId in entityData && statementId in entityData[ propertyId ] ) ) {
 			return;
@@ -81,7 +82,7 @@
 				statuses: [
 					{
 						status: 'violation',
-						label: mw.message( 'wbqc-potentialissues-short' ).text()
+						label: mw.message( 'wbqc-problems-short' ).text()
 					},
 					{
 						status: 'warning',
@@ -103,11 +104,17 @@
 			// ...and doesn't only contain collapsed items either
 			list.items[ 0 ].status !== 'bad-parameters'
 		) {
+			haveMandatoryViolations = list.items[ 0 ].status === 'violation';
+
 			$target = $statement.find( '.valueview-instaticmode' );
 			if ( $target.length === 0 ) {
 				$target = $statement;
 			}
-			$target.append( buildPopup( list.$element, 'potentialissues' ).$element );
+			$target.append( buildPopup(
+				list.$element,
+				haveMandatoryViolations ? 'alert' : 'info',
+				haveMandatoryViolations ? 'wbqc-problems-long' : 'wbqc-potentialissues-long'
+			).$element );
 		}
 	}
 
@@ -153,7 +160,7 @@
 			if ( $target.length === 0 ) {
 				$target = $statement;
 			}
-			$target.append( buildPopup( list.$element, 'badparameters', 'warning' ).$element );
+			$target.append( buildPopup( list.$element, 'alert', 'wbqc-badparameters-long', 'warning' ).$element );
 		}
 	}
 
