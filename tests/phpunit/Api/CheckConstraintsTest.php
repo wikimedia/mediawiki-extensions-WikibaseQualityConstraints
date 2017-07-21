@@ -102,6 +102,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			$config = new HashConfig( [
 				'WBQualityConstraintsPropertyConstraintId' => 'P1',
 				'WBQualityConstraintsExceptionToConstraintId' => 'P2',
+				'WBQualityConstraintsConstraintStatusId' => 'P3',
 			] );
 			$entityIdParser = new ItemIdParser();
 			$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
@@ -233,7 +234,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			'some guid',
 			$propertyId,
 			'violationConstraint',
-			[]
+			[ 'constraint_status' => 'mandatory' ]
 		);
 	}
 

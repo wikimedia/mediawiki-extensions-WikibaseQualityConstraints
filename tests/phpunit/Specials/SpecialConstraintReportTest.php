@@ -127,13 +127,13 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 					'constraint_guid' => '1',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
 					'constraint_type_qid' => 'Multi value',
-					'constraint_parameters' => '{}'
+					'constraint_parameters' => '{"constraint_status":"mandatory"}'
 				],
 				[
 					'constraint_guid' => '3',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
 					'constraint_type_qid' => 'Single value',
-					'constraint_parameters' => '{}'
+					'constraint_parameters' => '{"constraint_status":"mandatory"}'
 				]
 			]
 		);

@@ -708,4 +708,55 @@ class ConstraintParameterParser {
 		}
 	}
 
+	private function parseConstraintStatusParameterFromStatement( array $constraintParameters ) {
+		$constraintStatusId = $this->config->get( 'WBQualityConstraintsConstraintStatusId' );
+		$mandatoryId = $this->config->get( 'WBQualityConstraintsMandatoryConstraintId' );
+		$this->requireSingleParameter( $constraintParameters, $constraintStatusId );
+		$snak = $this->snakDeserializer->deserialize( $constraintParameters[$constraintStatusId][0] );
+		$this->requireValueParameter( $snak, $constraintStatusId );
+		$statusId = $snak->getDataValue()->getEntityId()->getSerialization();
+
+		if ( $statusId === $mandatoryId ) {
+			return 'mandatory';
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-oneof' )
+					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $constraintStatusId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
+					->numParams( 1 )
+					->rawParams( $this->constraintParameterRenderer->formatItemIdList( [ $mandatoryId ], Role::CONSTRAINT_PARAMETER_VALUE ) )
+					->escaped()
+			);
+		}
+	}
+
+	private function parseConstraintStatusParameterFromTemplate( array $constraintParameters ) {
+		if ( $constraintParameters['constraint_status'] === 'mandatory' ) {
+			return 'mandatory';
+		} else {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-oneof' )
+					->rawParams( $this->constraintParameterRenderer->formatPropertyId( 'constraint_status', Role::CONSTRAINT_PARAMETER_PROPERTY ) )
+					->numParams( 1 )
+					->rawParams( $this->constraintParameterRenderer->formatItemIdList( [ 'mandatory' ], Role::CONSTRAINT_PARAMETER_VALUE ) )
+					->escaped()
+			);
+		}
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @throws ConstraintParameterException if the parameter is invalid
+	 * @return string|null 'mandatory' or null
+	 */
+	public function parseConstraintStatusParameter( array $constraintParameters ) {
+		$constraintStatusId = $this->config->get( 'WBQualityConstraintsConstraintStatusId' );
+		if ( array_key_exists( $constraintStatusId, $constraintParameters ) ) {
+			return $this->parseConstraintStatusParameterFromStatement( $constraintParameters );
+		} elseif ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
+			return $this->parseConstraintStatusParameterFromTemplate( $constraintParameters );
+		} else {
+			return null;
+		}
+	}
+
 }

@@ -273,7 +273,22 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 					'pid' => 3,
 					'constraint_type_qid' => 'Is not inside',
 					'constraint_parameters' => '{}'
-				]
+				],
+				[
+					'constraint_guid' => 'P6$ad792000-6a12-413d-9fe5-11d2467b7a92',
+					'pid' => 6,
+					'constraint_type_qid' => 'Qualifier',
+					'constraint_parameters' => json_encode(
+						[
+							'constraint_status' => 'mandatory'
+						] )
+				],
+				[
+					'constraint_guid' => 'P7$a3f746e7-66a0-46fd-96ab-6ff6638332a4',
+					'pid' => 7,
+					'constraint_type_qid' => 'Qualifier',
+					'constraint_parameters' => '{}'
+				],
 			]
 		);
 	}
@@ -320,6 +335,22 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 'bad-parameters', $result[ 0 ]->getStatus(), 'Should be a bad parameter but not throw an exception' );
+	}
+
+	public function testCheckAgainstConstraintsWithMandatoryConstraint() {
+		$entity = NewItem::withId( 'Q6' )
+			->andStatement( NewStatement::noValueFor( 'P6' ) )
+			->build();
+		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
+		$this->assertEquals( 'violation', $result[ 0 ]->getStatus(), 'Should be a violation' );
+	}
+
+	public function testCheckAgainstConstraintsWithNonMandatoryConstraint() {
+		$entity = NewItem::withId( 'Q7' )
+			->andStatement( NewStatement::noValueFor( 'P7' ) )
+			->build();
+		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
+		$this->assertEquals( 'warning', $result[ 0 ]->getStatus(), 'Should be a warning' );
 	}
 
 	public function testCheckAgainstConstraints_ByClaims() {

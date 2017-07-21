@@ -44,6 +44,13 @@ class CheckResult {
 	 * The constraint has not been checked because the statement is deprecated.
 	 */
 	const STATUS_DEPRECATED = 'deprecated';
+	/**
+	 * The statement violates the constraint, but the constraint is not mandatory.
+	 *
+	 * DelegatingConstraintChecker downgrades violations to warnings automatically based on the constraint parameters;
+	 * constraint checkers should not assign this status directly.
+	 */
+	const STATUS_WARNING = 'warning';
 
 	/**
 	 * @var EntityId
@@ -161,6 +168,13 @@ class CheckResult {
 	 */
 	public function getStatus() {
 		return $this->status;
+	}
+
+	/**
+	 * @param string $status
+	 */
+	public function setStatus( $status ) {
+		$this->status = $status;
 	}
 
 	/**

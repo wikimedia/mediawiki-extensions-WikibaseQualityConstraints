@@ -84,6 +84,10 @@
 						label: mw.message( 'wbqc-potentialissues-short' ).text()
 					},
 					{
+						status: 'warning',
+						label: mw.message( 'wbqc-potentialissues-short' ).text()
+					},
+					{
 						status: 'bad-parameters',
 						label: mw.message( 'wbqc-parameterissues-short' ).text(),
 						subheading: mw.message( 'wbqc-parameterissues-long' ).text(),
