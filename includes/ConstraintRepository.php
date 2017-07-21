@@ -137,6 +137,17 @@ class ConstraintRepository implements ConstraintLookup {
 			$constraintTypeItemId = $result->constraint_type_qid;
 			$constraintParameters = json_decode( $result->constraint_parameters, true );
 
+			if ( $constraintParameters === null ) {
+				// T171295
+				LoggerFactory::getInstance( 'WikibaseQualityConstraints' )
+					->warning( 'Constraint {constraintId} has invalid constraint parameters.', [
+						'method' => __METHOD__,
+						'constraintId' => $result->constraint_guid,
+						'constraintParameters' => $result->constraint_parameters,
+					] );
+				$constraintParameters = [];
+			}
+
 			$constraints[] = new Constraint(
 				$result->constraint_guid,
 				PropertyId::newFromNumber( $result->pid ),
