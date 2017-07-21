@@ -61,7 +61,9 @@
 				"wbqc-badparameters-short",
 				"wbqc-badparameters-long",
 				"wbqc-parameterissues-short",
-				"wbqc-parameterissues-long"
+				"wbqc-parameterissues-long",
+				"wbqc-problems-short",
+				"wbqc-problems-long"
 			],
 			"scripts": [
 				"modules/ui/module.js",
