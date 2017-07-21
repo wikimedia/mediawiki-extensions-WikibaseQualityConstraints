@@ -22,6 +22,7 @@
 	"wbqc-constraintreport-status-exception": "Exception",
 	"wbqc-constraintreport-status-todo": "Todo",
 	"wbqc-constraintreport-status-bad-parameters": "Bad parameters",
+	"wbqc-constraintreport-status-deprecated": "Deprecated",
 	"wbqc-constraintreport-result-table-header-status": "Status",
 	"wbqc-constraintreport-result-table-header-claim": "Claim",
 	"wbqc-constraintreport-result-table-header-constraint": "Constraint",

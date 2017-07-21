@@ -24,6 +24,7 @@
 	"wbqc-constraintreport-status-exception": "Status for claims that were marked as a exception",
 	"wbqc-constraintreport-status-todo": "Status for constraints which cannot be checked yet.\n{{Identical|Todo}}",
 	"wbqc-constraintreport-status-bad-parameters": "Status for constraints that have missing or invalid constraint parameters.",
+	"wbqc-constraintreport-status-deprecated": "Status for constraint checks that have been skipped because the statement is deprecated.",
 	"wbqc-constraintreport-result-table-header-status": "Header of the column that tells whether the check found a violation or something else.\n{{Identical|Status}}",
 	"wbqc-constraintreport-result-table-header-claim": "Header of the column that displays a link to the claim, the used property and its value.\n{{Identical|Claim}}",
 	"wbqc-constraintreport-result-table-header-constraint": "Header of the column that gives information about which constraint was checked.\n{{Identical|Constraint}}",

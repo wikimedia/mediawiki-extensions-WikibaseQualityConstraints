@@ -40,6 +40,10 @@ form {
 	color: #b32424; /* Red30 */
 }
 
+.wbqc-status-deprecated {
+	color: #72777d; /* Base30 */
+}
+
 /* Tooltip */
 .wbqc-indicator {
 	color: #72777d; /* Base30 */
