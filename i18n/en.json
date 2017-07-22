@@ -52,6 +52,7 @@
 
 	"apihelp-wbcheckconstraints-example-1": "Check all constraints on the items Q5 and Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Check all constraints on a single statement.",
+	"apihelp-wbcheckconstraints-example-3": "Check one particular constraint on the item Q2.",
 	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Check constraint parameters of all constraints on a property.",
 	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Check constraint parameters of two particular constraints.",
 
