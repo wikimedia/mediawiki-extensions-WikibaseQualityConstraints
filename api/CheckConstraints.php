@@ -408,7 +408,7 @@ class CheckConstraints extends ApiBase {
 		return [
 			'action=wbcheckconstraints&id=Q5|Q42'
 				=> 'apihelp-wbcheckconstraints-example-1',
-			'action=wbcheckconstraints&claimid=Q42%248419C20C-8EF8-4EC0-80D6-AF1CA55E7557'
+			'action=wbcheckconstraints&claimid=q42%248419C20C-8EF8-4EC0-80D6-AF1CA55E7557'
 				=> 'apihelp-wbcheckconstraints-example-2'
 			// TODO add more examples, at least one for the constraintid parameter
 		];
