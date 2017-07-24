@@ -879,6 +879,14 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertEquals( [ new ItemId( 'Q100' ), new PropertyId( 'P100' ) ], $parsed );
 	}
 
+	public function testParseExceptionParameterFromTemplateEmpty() {
+		$parsed = $this->getConstraintParameterParser()->parseExceptionParameter(
+			[ 'known_exception' => '' ]
+		);
+
+		$this->assertEquals( [], $parsed );
+	}
+
 	public function testParseExceptionParameterString() {
 		$exceptionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
 		$snak = new PropertyValueSnak( new PropertyId( $exceptionId ), new StringValue( 'Q100' ) );

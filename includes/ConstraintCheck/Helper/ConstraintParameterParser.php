@@ -663,6 +663,10 @@ class ConstraintParameterParser {
 	}
 
 	private function parseExceptionParameterFromTemplate( array $constraintParameters ) {
+		if ( $constraintParameters['known_exception'] === '' ) {
+			return [];
+		}
+
 		return array_map(
 			function( $entityIdSerialization ) {
 				$entityIdSerialization = strtoupper( $entityIdSerialization );
