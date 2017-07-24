@@ -1,6 +1,12 @@
 <?php
 
+namespace WikibaseQuality\ConstraintReport;
+
+use DatabaseUpdater;
+use JobQueueGroup;
+use JobSpecification;
 use MediaWiki\MediaWikiServices;
+use Title;
 use Wikibase\Change;
 use Wikibase\EntityChange;
 use Wikibase\DataModel\Entity\PropertyId;
