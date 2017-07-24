@@ -44,6 +44,7 @@
 	"apihelp-wbcheckconstraints-param-constraintid": "Optionaler Filter, um nur die Beschränkungen zurückzugeben, die die angegebenen Beschränkungskennungen haben.",
 	"apihelp-wbcheckconstraints-example-1": "Überprüft alle Beschränkungen der Objekte Q5 und Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Überprüft alle Beschränkungen einer einzelnen Aussage.",
+	"apihelp-wbcheckconstraints-example-3": "Überprüft eine bestimmte Beschränkung des Objekts Q2.",
 	"wbq-subextension-name-wbqc": "Beschränkungen",
 	"wbqc-violation-header-parameters": "Parameter:",
 	"wbqc-violations-group": "Beschränkungen",

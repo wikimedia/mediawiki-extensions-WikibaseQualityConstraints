@@ -4,7 +4,8 @@
 			"פוילישער"
 		]
 	},
+	"wbqc-constraintreport-status-deprecated": "פארעלטערט",
+	"wbqc-constraintreport-status-warning": "ווארענונג",
 	"wbqc-constraintreport-result-table-header-status": "סטאַטוס",
-	"wbqc-violation-message-type-relation-instance": "אינסטאנצן",
-	"wbqc-violation-message-type-relation-subclass": "אונטערקלאסן"
+	"wbqc-problems-short": "פראבלעמען"
 }

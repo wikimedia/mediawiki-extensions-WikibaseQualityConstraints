@@ -3,7 +3,8 @@
 		"authors": [
 			"Максим Підліснюк",
 			"Dars",
-			"Piramidion"
+			"Piramidion",
+			"SimondR"
 		]
 	},
 	"wbqc-constraintreport": "Звіт про обмеження",
@@ -21,12 +22,15 @@
 	"wbqc-constraintreport-status-compliance": "Відповідність",
 	"wbqc-constraintreport-status-exception": "Виняток",
 	"wbqc-constraintreport-status-todo": "Todo",
+	"wbqc-constraintreport-status-deprecated": "Застаріло",
+	"wbqc-constraintreport-status-warning": "Попередження",
 	"wbqc-constraintreport-result-table-header-status": "Статус",
 	"wbqc-constraintreport-result-table-header-claim": "Запис",
 	"wbqc-constraintreport-result-table-header-constraint": "Обмеження",
 	"wbqc-constraintreport-result-link-to-claim": "перейти до запису",
 	"wbqc-constraintreport-result-link-to-constraint": "перейти до обмеження",
 	"wbqc-constraintreport-no-parameter": "немає",
+	"wbqc-problems-short": "Проблеми",
 	"apihelp-wbcheckconstraints-description": "Виконує перевірки обмежень для будь-якої сутності за Вашим бажанням, і виводить результат.",
 	"apihelp-wbcheckconstraints-param-id": "Список ідентифікаторів сутностей, з яких слід отримати дані. Відокремлюйте значення за допомогою '|' чи чогось подібного.",
 	"apihelp-wbcheckconstraints-param-claimid": "Список GUID, який визначає запис, щодо якого слід виконати перевірку й отримати звіт щодо обмежень. Відокремлюйте значення за допомогою '|'.",
@@ -53,20 +57,11 @@
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Властивість, визначена в параметрах, повинна мати значення того ж типу, що й ця властивість.",
 	"wbqc-violation-message-format": "Значення властивості повинно збігатися із взірцем, визначеним у параметрах.",
 	"wbqc-violation-message-inverse": "Ця властивість має використовуватись тільки тоді, коли в сутності її значення є твердження, що використовує властивість, визначену в параметрах, і цей елемент як її значення.",
-	"wbqc-violation-message-item-property": "Ця властивість має використовуватись тільки тоді, коли є ще інше твердження, що використовує властивість, визначену у параметрах.",
-	"wbqc-violation-message-item-claim": "Ця властивість має використовуватись тільки тоді, коли є ще інше твердження, що використовує властивість із одним зі значень, визначених у параметрах.",
-	"wbqc-violation-message-mandatory-qualifiers": "Всі властивості, визначені в параметрах, повинні використовуватись як уточнення до цього твердження.",
 	"wbqc-violation-message-multi-value": "Це властивість повинна мати кілька значень. Тобто, там має бути більше, ніж одна заявка на використання цієї властивості.",
 	"wbqc-violation-message-one-of": "Значення властивості має бути одним з елементів, визначених у параметрах.",
 	"wbqc-violation-message-qualifier": "Ця властивість повинна використовуватись лише як уточнення.",
 	"wbqc-violation-message-qualifiers": "Ця властивість має використовуватись тільки з уточненнями, визначеними в параметрах (нічого іншого).",
-	"wbqc-violation-message-range-properties-needed": "Властивості зі значеннями типу «$1» з обмеженням «Range» потребують параметрів «$2».",
-	"wbqc-violation-message-range": "Значення властивості не повинно бути ані нижчим за мінімум, ані вищим за максимум, визначені в параметрах.",
 	"wbqc-violation-message-single-value": "Властивість повинна мати лише одне значення. Тобто має бути лише один запис, що використовує цю властивість.",
 	"wbqc-violation-message-symmetric": "Ця властивість має використовуватись тільки тоді, коли в сутності її значення є твердження з тією ж властивістю та цим елементом як її значенням.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "Параметр «relation» має бути або «instance», або «subclass».",
-	"wbqc-violation-message-type": "Ця властивість має використовуватись тільки в тих елементах, що мають відношення до елемента (чи підкласу елемента), визначеного в параметрах.",
-	"wbqc-violation-message-target-required-claim-property": "Ця властивість має використовуватись тільки тоді, коли в сутності її значення є твердження, що використовує властивість, визначену в параметрах.",
-	"wbqc-violation-message-target-required-claim-claim": "Ця властивість має використовуватись тільки тоді, коли в сутності її значення є твердження, що використовує властивість з одним зі значень, визначених у параметрах.",
-	"wbqc-violation-message-value-type": "Сутність значення цієї властивості повинна мати відношення до елемента (або підкласу елемента), визначеного в параметрах."
+	"wbqc-violation-message-type-relation-instance-or-subclass": "Параметр «relation» має бути або «instance», або «subclass»."
 }
