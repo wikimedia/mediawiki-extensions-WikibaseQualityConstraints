@@ -43,13 +43,6 @@ class DelegatingConstraintChecker {
 	private $checkerMap;
 
 	/**
-	 * List of all statements of given entity.
-	 *
-	 * @var StatementList
-	 */
-	private $statements;
-
-	/**
 	 * @var ConstraintLookup
 	 */
 	private $constraintLookup;
@@ -96,8 +89,6 @@ class DelegatingConstraintChecker {
 	 */
 	public function checkAgainstConstraints( EntityDocument $entity = null ) {
 		if ( $entity instanceof StatementListProvider ) {
-			$this->statements = $entity->getStatements();
-
 			$result = $this->checkEveryStatement( $entity );
 
 			return $this->sortResult( $result );
@@ -120,7 +111,6 @@ class DelegatingConstraintChecker {
 
 		$entity = $this->entityLookup->getEntity( $entityId );
 		if ( $entity instanceof StatementListProvider ) {
-			$this->statements = $entity->getStatements();
 			$result = $this->checkEveryStatement( $this->entityLookup->getEntity( $entityId ), $constraintIds );
 			$output = $this->sortResult( $result );
 			return $output;
@@ -215,7 +205,7 @@ class DelegatingConstraintChecker {
 		$result = [];
 
 		/** @var Statement $statement */
-		foreach ( $this->statements as $statement ) {
+		foreach ( $entity->getStatements() as $statement ) {
 			$result = array_merge( $result, $this->checkStatement( $entity, $statement, $constraintIds ) );
 		}
 
