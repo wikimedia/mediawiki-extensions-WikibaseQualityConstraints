@@ -18,12 +18,7 @@
 	<!-- Additions -->
 
 	<!-- Metrics are intentionally not part of the base Wikibase CodeSniffer rule set. -->
-	<rule ref="Generic.Metrics.CyclomaticComplexity">
-		<properties>
-			<!-- FIXME: Should be lowered to the standard of 10. -->
-			<property name="complexity" value="12" />
-		</properties>
-	</rule>
+	<rule ref="Generic.Metrics.CyclomaticComplexity" />
 	<rule ref="Generic.Metrics.NestingLevel" />
 
 	<!-- TODO: Move to the Wikibase CodeSniffer library. -->
