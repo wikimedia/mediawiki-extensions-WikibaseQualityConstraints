@@ -39,6 +39,23 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$this->assertEmpty( $constraints );
 	}
 
+	public function testQueryConstraintsForPropertyBrokenParameters() {
+		$this->db->delete( CONSTRAINT_TABLE, '*' );
+		$this->db->insert( CONSTRAINT_TABLE, [
+			[
+				'constraint_guid' => 'P3$514751bb-1656-4d2d-a386-b0f0a69e02ed',
+				'pid' => 3,
+				'constraint_type_qid' => 'Multi value',
+				'constraint_parameters' => 'this is not valid JSON'
+			]
+		] );
+
+		$repo = new ConstraintRepository();
+		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P3' ) );
+
+		$this->assertSame( [ '@error' => [] ], $constraints[0]->getConstraintParameters() );
+	}
+
 	public function testInsertBatch() {
 		$this->insertTestData();
 
@@ -89,6 +106,52 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 					'42',
 					'TestConstraint',
 					'{"foo":"bar"}'
+				]
+			]
+		);
+	}
+
+	public function testInsertBatchTooLongParameters() {
+		$this->db->delete( CONSTRAINT_TABLE, '*' );
+
+		$constraintParameters = [ 'known_exception' => [] ];
+		for ( $i = 0; $i < 10000; $i++ ) {
+			$constraintParameters['known_exception'][] = [
+				'snaktype' => 'value', 'property' => 'P2303',
+				'hash' => '1deb3a3ba50cbbf2672b0def6c9e96bcf3f533e5', 'datavalue' => [
+					'value' => [
+						'entity-type' => 'item', 'numeric-id' => 2961108, 'id' => 'Q2961108'
+					],
+					'type' => 'wikibase-entityid'
+				],
+			];
+		}
+
+		$repo = new ConstraintRepository();
+		$repo->insertBatch( [
+			new Constraint(
+				'P1$13510cdc-0f91-4ea3-b71d-db2a33c27dff',
+				new PropertyId( 'P1' ),
+				'Q1',
+				$constraintParameters
+			)
+		] );
+
+		$this->assertSelect(
+			CONSTRAINT_TABLE,
+			[
+				'constraint_guid',
+				'pid',
+				'constraint_type_qid',
+				'constraint_parameters'
+			],
+			[],
+			[
+				[
+					'P1$13510cdc-0f91-4ea3-b71d-db2a33c27dff',
+					'1',
+					'Q1',
+					'{"@error":{"toolong":true}}'
 				]
 			]
 		);

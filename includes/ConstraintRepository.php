@@ -33,6 +33,16 @@ class ConstraintRepository implements ConstraintLookup {
 		return $this->convertToConstraints( $results );
 	}
 
+	private function encodeConstraintParameters( array $constraintParameters ) {
+		$json = json_encode( $constraintParameters, JSON_FORCE_OBJECT );
+
+		if ( strlen( $json ) > 50000 ) {
+			$json = json_encode( [ '@error' => [ 'toolong' => true ] ] );
+		}
+
+		return $json;
+	}
+
 	/**
 	 * @param Constraint[] $constraints
 	 *
@@ -46,7 +56,7 @@ class ConstraintRepository implements ConstraintLookup {
 					'constraint_guid' => $constraint->getConstraintId(),
 					'pid' => $constraint->getPropertyId()->getNumericId(),
 					'constraint_type_qid' => $constraint->getConstraintTypeItemId(),
-					'constraint_parameters' => json_encode( $constraint->getConstraintParameters(), JSON_FORCE_OBJECT )
+					'constraint_parameters' => $this->encodeConstraintParameters( $constraint->getConstraintParameters() )
 				];
 			},
 			$constraints
@@ -146,7 +156,7 @@ class ConstraintRepository implements ConstraintLookup {
 						'constraintId' => $result->constraint_guid,
 						'constraintParameters' => $result->constraint_parameters,
 					] );
-				$constraintParameters = [];
+				$constraintParameters = [ '@error' => [ /* unknown */ ] ];
 			}
 
 			$constraints[] = new Constraint(
