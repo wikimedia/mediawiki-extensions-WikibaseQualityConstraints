@@ -68,6 +68,8 @@
 	"wbqc-violation-message-parameter-oneof": "Der Parameter „$1“ muss {{PLURAL:$2|1=$4 sein.|2=entweder $4 oder $5 sein.|eines der folgenden Werte sein: $3.}}",
 	"wbqc-violation-message-parameter-regex": "$1 ist kein gültiger regulärer Ausdruck.",
 	"wbqc-violation-message-sparql-error": "Die SPARQL-Abfrage hat einen Fehler ausgegeben.",
+	"wbqc-violation-message-parameters-error-unknown": "Die Parameter dieser Beschränkung konnten nicht importiert werden.",
+	"wbqc-violation-message-parameters-error-toolong": "Die Parameter dieser Beschränkung konnten nicht importiert werden, da sie zu lang waren.",
 	"wbqc-violation-message-commons-link-no-existent": "Der Commons-Link sollte vorhanden sein.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Der Commons-Link sollte wohlgeformt sein.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Die Prüfung für den Namensraum „$1“ ist noch nicht implementiert.",

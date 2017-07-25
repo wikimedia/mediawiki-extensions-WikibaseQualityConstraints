@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"MIKHEIL"
+		]
+	},
+	"wbqc-constraintreport-status-warning": "გაფრთხილება",
+	"wbqc-problems-short": "პრობლემები",
+	"wbqc-problems-long": "ამ ფორმულირებას გარკვეული პრობლემები აქვს"
+}

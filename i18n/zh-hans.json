@@ -47,6 +47,7 @@
 	"apihelp-wbcheckconstraintparameters-param-constraintid": "要检查的约束ID（约束声明GUID）列表。\n\n如果指定了该参数，它必须为非空值。",
 	"apihelp-wbcheckconstraints-example-1": "检查项Q5和Q42的所有约束。",
 	"apihelp-wbcheckconstraints-example-2": "检查单一声明上的所有约束。",
+	"apihelp-wbcheckconstraints-example-3": "在数据项Q2上检查某个特定约束。",
 	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "检查某一属性上所有约束的约束参数。",
 	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "检查两个特定约束的约束参数。",
 	"wbq-subextension-name-wbqc": "约束",
