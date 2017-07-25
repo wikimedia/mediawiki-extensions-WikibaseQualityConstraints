@@ -52,6 +52,28 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
+	private function parseConstraintParameters( Constraint $constraint ) {
+		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
+			$constraint->getConstraintParameters(),
+			$constraint->getConstraintTypeItemId(),
+			'quantity'
+		);
+		$property = $this->constraintParameterParser->parsePropertyParameter(
+			$constraint->getConstraintParameters(),
+			$constraint->getConstraintTypeItemId()
+		);
+
+		if ( $min !== null ) {
+			$parameters['minimum_quantity'] = [ $min ];
+		}
+		if ( $max !== null ) {
+			$parameters['maximum_quantity'] = [ $max ];
+		}
+		$parameters['property'] = [ $property ];
+
+		return [ $min, $max, $property, $parameters ];
+	}
+
 	/**
 	 * Checks 'Diff within range' constraint.
 	 *
@@ -84,21 +106,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 		$dataValue = $mainSnak->getDataValue();
 
-		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
-			$constraintParameters,
-			$constraint->getConstraintTypeItemId(),
-			'quantity'
-		);
-		$property = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
-
-		$parameterKey = $dataValue->getType() === 'quantity' ? 'quantity' : 'date';
-		if ( $min !== null ) {
-			$parameters['minimum_' . $parameterKey] = [ $min ];
-		}
-		if ( $max !== null ) {
-			$parameters['maximum_' . $parameterKey] = [ $max ];
-		}
-		$parameters['property'] = [ $property ];
+		list ( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		/** @var Statement $otherStatement */
