@@ -145,6 +145,26 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
+	 * Like ConstraintChecker::checkConstraintParameters,
+	 * but for meta-parameters common to all checkers.
+	 *
+	 * @param Constraint $constraint
+	 *
+	 * @return ConstraintParameterException[]
+	 */
+	private function checkCommonConstraintParameters( Constraint $constraint ) {
+		$constraintParameters = $constraint->getConstraintParameters();
+		try {
+			$this->constraintParameterParser->checkError( $constraintParameters );
+		} catch ( ConstraintParameterException $e ) {
+			return [ $e ];
+		}
+
+		// TODO implement T171198 here
+		return [];
+	}
+
+	/**
 	 * Check the constraint parameters of all constraints for the given property ID.
 	 *
 	 * @param PropertyId $propertyId
@@ -156,13 +176,14 @@ class DelegatingConstraintChecker {
 		$result = [];
 
 		foreach ( $constraints as $constraint ) {
+			$problems = $this->checkCommonConstraintParameters( $constraint );
+
 			if ( array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
 				$checker = $this->checkerMap[$constraint->getConstraintTypeItemId()];
-				$result[$constraint->getConstraintId()] = $checker->checkConstraintParameters( $constraint );
-			} else {
-				// unimplemented constraint
-				$result[$constraint->getConstraintId()] = [];
+				$problems = array_merge( $problems, $checker->checkConstraintParameters( $constraint ) );
 			}
+
+			$result[$constraint->getConstraintId()] = $problems;
 		}
 
 		return $result;
@@ -182,13 +203,14 @@ class DelegatingConstraintChecker {
 
 		foreach ( $constraints as $constraint ) {
 			if ( $constraint->getConstraintId() === $constraintId ) {
+				$problems = $this->checkCommonConstraintParameters( $constraint );
+
 				if ( array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
 					$checker = $this->checkerMap[$constraint->getConstraintTypeItemId()];
-					return $checker->checkConstraintParameters( $constraint );
-				} else {
-					// unimplemented constraint
-					return [];
+					$problems = array_merge( $problems, $checker->checkConstraintParameters( $constraint ) );
 				}
+
+				return $problems;
 			}
 		}
 

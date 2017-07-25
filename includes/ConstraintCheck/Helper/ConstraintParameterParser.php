@@ -72,6 +72,23 @@ class ConstraintParameterParser {
 	}
 
 	/**
+	 * Check if any errors are recorded in the constraint parameters.
+	 * @param array $parameters
+	 * @throws ConstraintParameterException
+	 */
+	public function checkError( array $parameters ) {
+		if ( array_key_exists( '@error', $parameters ) ) {
+			$error = $parameters['@error'];
+			if ( array_key_exists( 'toolong', $error ) && $error['toolong'] ) {
+				$msg = 'wbqc-violation-message-parameters-error-toolong';
+			} else {
+				$msg = 'wbqc-violation-message-parameters-error-unknown';
+			}
+			throw new ConstraintParameterException( wfMessage( $msg )->escaped() );
+		}
+	}
+
+	/**
 	 * Require that $parameters contains exactly one $parameterId parameter.
 	 * @param array $parameters
 	 * @param string $parameterId
@@ -149,6 +166,7 @@ class ConstraintParameterParser {
 	 * @return string[] class entity ID serializations
 	 */
 	public function parseClassParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$this->checkError( $constraintParameters );
 		$classId = $this->config->get( 'WBQualityConstraintsClassId' );
 		if ( array_key_exists( $classId, $constraintParameters ) ) {
 			return $this->parseClassParameterFromStatement( $constraintParameters );
@@ -205,6 +223,7 @@ class ConstraintParameterParser {
 	 * @return string 'instance' or 'subclass'
 	 */
 	public function parseRelationParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$this->checkError( $constraintParameters );
 		$relationId = $this->config->get( 'WBQualityConstraintsRelationId' );
 		if ( array_key_exists( $relationId, $constraintParameters ) ) {
 			return $this->parseRelationParameterFromStatement( $constraintParameters );
@@ -276,6 +295,7 @@ class ConstraintParameterParser {
 	 * @return PropertyId
 	 */
 	public function parsePropertyParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$this->checkError( $constraintParameters );
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		if ( array_key_exists( $propertyId, $constraintParameters ) ) {
 			return $this->parsePropertyParameterFromStatement( $constraintParameters );
@@ -362,6 +382,7 @@ class ConstraintParameterParser {
 	 * @return ItemIdSnakValue[] array of values
 	 */
 	public function parseItemsParameter( array $constraintParameters, $constraintTypeItemId, $required ) {
+		$this->checkError( $constraintParameters );
 		$qualifierId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		if ( array_key_exists( $qualifierId, $constraintParameters ) ) {
 			return $this->parseItemsParameterFromStatement( $constraintParameters );
@@ -427,6 +448,7 @@ class ConstraintParameterParser {
 	 * @return PropertyId[]
 	 */
 	public function parsePropertiesParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$this->checkError( $constraintParameters );
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		if ( array_key_exists( $propertyId, $constraintParameters ) ) {
 			return $this->parsePropertiesParameterFromStatement( $constraintParameters );
@@ -522,6 +544,7 @@ class ConstraintParameterParser {
 	 * @return DataValue[] a pair of two quantity-type data values, either of which may be null to signify an open range
 	 */
 	public function parseRangeParameter( array $constraintParameters, $constraintTypeItemId, $type ) {
+		$this->checkError( $constraintParameters );
 		switch ( $type ) {
 			case 'quantity':
 				$configKey = 'Quantity';
@@ -606,6 +629,7 @@ class ConstraintParameterParser {
 	 * @return string
 	 */
 	public function parseNamespaceParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$this->checkError( $constraintParameters );
 		$namespaceId = $this->config->get( 'WBQualityConstraintsNamespaceId' );
 		if ( array_key_exists( $namespaceId, $constraintParameters ) ) {
 			return $this->parseNamespaceParameterFromStatement( $constraintParameters );
@@ -637,6 +661,7 @@ class ConstraintParameterParser {
 	 * @return string
 	 */
 	public function parseFormatParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$this->checkError( $constraintParameters );
 		$formatId = $this->config->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		if ( array_key_exists( $formatId, $constraintParameters ) ) {
 			return $this->parseFormatParameterFromStatement( $constraintParameters );
@@ -702,6 +727,7 @@ class ConstraintParameterParser {
 	 * @return EntityId[]
 	 */
 	public function parseExceptionParameter( array $constraintParameters ) {
+		$this->checkError( $constraintParameters );
 		$exceptionId = $this->config->get( 'WBQualityConstraintsExceptionToConstraintId' );
 		if ( array_key_exists( $exceptionId, $constraintParameters ) ) {
 			return $this->parseExceptionParameterFromStatement( $constraintParameters );
@@ -753,6 +779,7 @@ class ConstraintParameterParser {
 	 * @return string|null 'mandatory' or null
 	 */
 	public function parseConstraintStatusParameter( array $constraintParameters ) {
+		$this->checkError( $constraintParameters );
 		$constraintStatusId = $this->config->get( 'WBQualityConstraintsConstraintStatusId' );
 		if ( array_key_exists( $constraintStatusId, $constraintParameters ) ) {
 			return $this->parseConstraintStatusParameterFromStatement( $constraintParameters );
