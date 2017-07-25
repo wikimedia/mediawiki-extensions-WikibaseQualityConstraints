@@ -296,6 +296,12 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 					'constraint_type_qid' => 'Qualifier',
 					'constraint_parameters' => '{"@error":{"toolong":true}}'
 				],
+				[
+					'constraint_guid' => 'P9$43053ee8-79da-4326-a2ac-f85098291db3',
+					'pid' => 9,
+					'constraint_type_qid' => 'Qualifier',
+					'constraint_parameters' => '{"P2316":[{"snaktype":"novalue","property":"P2316"}],"P2303":[{"snaktype":"novalue","property":"P2316"}]}'
+				],
 			]
 		);
 	}
@@ -398,6 +404,15 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->assertInstanceOf( ConstraintParameterException::class, $result['P8$34c8af8e-bb50-4458-994b-f355ff899fff'][0] );
 	}
 
+	public function testCheckConstraintParametersOnPropertyIdWithMetaErrors() {
+		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new PropertyId( 'P9' ) );
+
+		$this->assertCount( 1, $result, 'Every constraint should be represented by one result' );
+		$this->assertCount( 2, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'], 'The constraint should have two exceptions' );
+		$this->assertInstanceOf( ConstraintParameterException::class, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][0] );
+		$this->assertInstanceOf( ConstraintParameterException::class, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][1] );
+	}
+
 	public function testCheckConstraintParametersOnConstraintId() {
 		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P1$ecb8f617-90f1-4ef3-afab-f4bf3881ec28' );
 
@@ -415,6 +430,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$this->assertCount( 1, $result, 'The constraint should have one exception' );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[0] );
+	}
+
+	public function testCheckConstraintParametersOnConstraintIdWithMetaErrors() {
+		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P9$43053ee8-79da-4326-a2ac-f85098291db3' );
+
+		$this->assertCount( 2, $result, 'The constraint should have two exceptions' );
+		$this->assertInstanceOf( ConstraintParameterException::class, $result[0] );
+		$this->assertInstanceOf( ConstraintParameterException::class, $result[1] );
 	}
 
 	/**

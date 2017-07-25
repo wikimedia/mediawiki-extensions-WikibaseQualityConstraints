@@ -160,8 +160,18 @@ class DelegatingConstraintChecker {
 			return [ $e ];
 		}
 
-		// TODO implement T171198 here
-		return [];
+		$problems = [];
+		try {
+			$this->constraintParameterParser->parseExceptionParameter( $constraintParameters );
+		} catch ( ConstraintParameterException $e ) {
+			$problems[] = $e;
+		}
+		try {
+			$this->constraintParameterParser->parseConstraintStatusParameter( $constraintParameters );
+		} catch ( ConstraintParameterException $e ) {
+			$problems[] = $e;
+		}
+		return $problems;
 	}
 
 	/**
