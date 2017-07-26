@@ -7,7 +7,7 @@
 	"version": "1.0.0",
 	"license-name": "GPL-2.0+",
 	"type": "wikibase",
-	"callback": "WikibaseQualityConstraintsHooks::onExtensionRegistration",
+	"callback": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onExtensionRegistration",
 	"MessagesDirs": {
 		"WikibaseQualityConstraints": [
 			"i18n"
@@ -18,13 +18,13 @@
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": [
-			"WikibaseQualityConstraintsHooks::onCreateSchema"
+			"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema"
 		],
 		"UnitTestsList": [
-			"WikibaseQualityConstraintsHooks::onUnitTestsList"
+			"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onUnitTestsList"
 		],
 		"WikibaseChangeNotification": [
-			"WikibaseQualityConstraintsHooks::onWikibaseChange"
+			"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange"
 		]
 	},
 	"SpecialPages": {
