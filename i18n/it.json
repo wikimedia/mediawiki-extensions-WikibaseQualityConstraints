@@ -5,12 +5,13 @@
 			"Alexmar983",
 			"Beta16",
 			"ValterVB",
-			"Ontsed"
+			"Ontsed",
+			"Lucas2"
 		]
 	},
 	"wbqc-constraintreport": "Controllo vincoli",
 	"wbqc-desc": "Controlla i vincoli sia sugli elementi che sulle proprietà e visualizza i risultati in una pagina speciale",
-	"wbqc-constraintreport-explanation-part-one": "Questa pagina speciale esegue la verifica dei vincoli per qualsiasi entità che si desidera. Le entità sono recuperate dal sistema direttamente, in modo che ogni violazione del vincolo che risolvi sarà immediatamente rimossa da questa lista.",
+	"wbqc-constraintreport-explanation-part-one": "Questa pagina speciale esegue la verifica dei vincoli per qualsiasi entità desiderata. Le entità sono recuperate dal sistema in tempo reale, perciò ogni violazione del vincolo che risolvi sarà immediatamente rimossa da questa lista.",
 	"wbqc-constraintreport-explanation-part-two": "I vincoli sono analizzati dalle dichiarazioni nelle proprietà ogni volta che queste sono modificate, solitamente nel giro di pochi minuti.",
 	"wbqc-constraintreport-form-section": "Controlla i vincoli per l'entità",
 	"wbqc-constraintreport-form-submit-label": "Controlla",

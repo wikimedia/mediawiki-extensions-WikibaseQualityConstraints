@@ -73,6 +73,8 @@
 	"wbqc-violation-message-parameter-oneof": "参数“$1”必须为{{PLURAL:$2|1=$4。|2=$4或$5。|以下值之一：$3}}",
 	"wbqc-violation-message-parameter-regex": "$1不是有效的正则表达式。",
 	"wbqc-violation-message-sparql-error": "SPARQL查询导致了问题。",
+	"wbqc-violation-message-parameters-error-unknown": "此约束的参数不能导入。",
+	"wbqc-violation-message-parameters-error-toolong": "此约束的参数不能导入，因为其太长。",
 	"wbqc-violation-message-commons-link-no-existent": "共享资源链接应存在。",
 	"wbqc-violation-message-commons-link-not-well-formed": "共享资源链接应符合语法规则。",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "对名字空间“$1”的检查尚未执行。",

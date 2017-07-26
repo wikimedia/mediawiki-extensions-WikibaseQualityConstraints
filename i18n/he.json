@@ -66,6 +66,8 @@
 	"wbqc-violation-message-parameter-oneof": "הפרמטר \"$1\" צריך להיות {{PLURAL:$2|1=$4.|2=$4 או $5.|אחד מהבאים: $3}}",
 	"wbqc-violation-message-parameter-regex": "$1 הוא לא ביטוי רגולרי תקין.",
 	"wbqc-violation-message-sparql-error": "שאילתת ה־SPARQL הסתיימה בשגיאה.",
+	"wbqc-violation-message-parameters-error-unknown": "לא היה אפשר לייבא את הפרמטרים של האילוץ הזה.",
+	"wbqc-violation-message-parameters-error-toolong": "לא היה אפשר לייבא את הפרמטרים של האילוץ הזה כי הם ארוכים מדי.",
 	"wbqc-violation-message-commons-link-no-existent": "קישור לוויקישיתוף אמור להתקיים.",
 	"wbqc-violation-message-commons-link-not-well-formed": "קישור לוויקישיתוף אמור להיות תקני",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "בדיקה למרחב השם \"$1\" עדיין אינה ממומשת.",
