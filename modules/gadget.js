@@ -56,8 +56,6 @@
 			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
 			results,
 			reports,
-			i,
-			report,
 			list,
 			$target,
 			haveMandatoryViolations;
@@ -67,14 +65,7 @@
 		}
 
 		results = entityData[ propertyId ][ statementId ];
-		reports = [];
-
-		for( i = 0; i < results.length; i++ ) {
-			report = buildReport( results[ i ] );
-			if ( report !== null ) {
-				reports.push( report );
-			}
-		}
+		reports = results.map( buildReport );
 
 		list = wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
 			reports,
@@ -123,8 +114,6 @@
 			status,
 			problems,
 			reports,
-			i,
-			report,
 			list,
 			$statement,
 			$target;
@@ -136,13 +125,7 @@
 			}
 
 			problems = parameterReports[ constraintId ].problems;
-			reports = [];
-			for ( i = 0; i < problems.length; i++ ) {
-				report = buildParameterReport( problems[ i ] );
-				if ( report !== null ) {
-					reports.push( report );
-				}
-			}
+			reports = problems.map( buildParameterReport );
 
 			list = new wikibase.quality.constraints.ui.ConstraintReportList( {
 				items: [
