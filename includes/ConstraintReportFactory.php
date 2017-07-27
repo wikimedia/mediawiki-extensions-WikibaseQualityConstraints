@@ -187,6 +187,7 @@ class ConstraintReportFactory {
 				$this->constraintParameterParser,
 				$this->statementGuidParser,
 				new LoggingHelper(
+					MediaWikiServices::getInstance()->getStatsdDataFactory(),
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 					$this->config
 				)
