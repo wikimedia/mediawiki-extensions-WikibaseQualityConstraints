@@ -275,6 +275,37 @@ class ConstraintParameterRenderer {
 	}
 
 	/**
+	 * Format a list of entity IDs.
+	 *
+	 * The returned array begins with an HTML list of the formatted entity IDs
+	 * and then contains all the individual formatted entity IDs.
+	 *
+	 * @param (EntityId|null)[] $entityIds (null elements are skipped)
+	 * @param string|null $role one of the Role constants or null
+	 * @return string[] HTML
+	 */
+	public function formatEntityIdList( array $entityIds, $role = null ) {
+		if ( empty( $entityIds ) ) {
+			return [ '<ul></ul>' ];
+		}
+		$formattedEntityIds = [];
+		foreach ( $entityIds as $entityId ) {
+			if ( count( $formattedEntityIds ) >= self::MAX_PARAMETER_ARRAY_LENGTH ) {
+				$formattedEntityIds[] = '...';
+				break;
+			}
+			if ( $entityId !== null ) {
+				$formattedEntityIds[] = $this->formatEntityId( $entityId, $role );
+			}
+		}
+		array_unshift(
+			$formattedEntityIds,
+			'<ul><li>' . implode( '</li><li>', $formattedEntityIds ) . '</li></ul>'
+		);
+		return $formattedEntityIds;
+	}
+
+	/**
 	 * Format a list of {@link ItemIdSnakValue}s (containing known values, unknown values, and/or no values).
 	 *
 	 * The returned array begins with an HTML list of the formatted values

@@ -68,6 +68,20 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-unique-value' );
 	}
 
+	public function testCheckUniqueValueConstraintInvalidWithPropertyId() {
+		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
+		$statement->setGuid( 'Q6$e35707be-4a84-61fe-9b52-623784a316a7' );
+
+		$mock = $this->getSparqlHelperMockFindEntities( $statement, [ new PropertyId( 'P42' ) ] );
+
+		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $mock );
+
+		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
+
+		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-unique-value' );
+	}
+
 	public function testCheckUniqueValueConstraintValid() {
 		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statement->setGuid( "Q1$56e6a474-4431-fb24-cc15-1d580e467559" );
