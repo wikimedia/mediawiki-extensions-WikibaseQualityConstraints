@@ -41,6 +41,7 @@
 	"wbqc-parameterissues-long": "Longer explanation of the section of the constraint parameter report popup that contains problems about the constraint parameters.\n{{Related|wbqc-parameterissues-short}}",
 	"wbqc-problems-short": "Headline of the constraint report popup section for violations of mandatory constraints.{{Related|wbqc-potentialissues-short}}",
 	"wbqc-problems-long": "Title for the icon shown on statements with mandatory constraint violations, usually displayed by the browser when the user hovers over the icon with the mouse cursor.\n{{Related|wbqc-problems-short}}\n{{Related|wbqc-potentialissues-long}}",
+	"wbqc-constrainttypehelp-long": "Title for the help icon shown next to the constraint type in a constraint violation report. Clicking the icon leads to a help page on Wikidata about the constraint type.",
 	"apihelp-wbcheckconstraints-description": "{{doc-apihelp-description|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-summary": "{{doc-apihelp-summary|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",
