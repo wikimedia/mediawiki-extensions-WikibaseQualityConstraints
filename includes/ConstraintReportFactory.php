@@ -234,7 +234,8 @@ class ConstraintReportFactory {
 				'Range' => new RangeChecker( $this->propertyDataTypeLookup, $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Diff within range' => new DiffWithinRangeChecker( $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
 				'Type' => new TypeChecker( $this->lookup, $this->constraintParameterParser, $typeCheckerHelper, $this->config ),
-				'Value type' => new ValueTypeChecker( $this->lookup, $this->constraintParameterParser, $typeCheckerHelper, $this->config ),
+				'Value type' => new ValueTypeChecker(
+					$this->lookup, $this->constraintParameterParser, $this->constraintParameterRenderer, $typeCheckerHelper, $this->config ),
 				'Single value' => new SingleValueChecker(),
 				'Multi value' => new MultiValueChecker(),
 				'Unique value' => new UniqueValueChecker( $this->constraintParameterRenderer, $sparqlHelper ),

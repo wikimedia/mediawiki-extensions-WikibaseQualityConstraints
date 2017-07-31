@@ -16,6 +16,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
 /**
@@ -29,6 +31,11 @@ class ValueTypeChecker implements ConstraintChecker {
 	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
+
+	/**
+	 * @var ConstraintParameterRenderer
+	 */
+	private $constraintParameterRenderer;
 
 	/**
 	 * @var EntityLookup
@@ -48,17 +55,20 @@ class ValueTypeChecker implements ConstraintChecker {
 	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintParameterParser $constraintParameterParser
+	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 * @param TypeCheckerHelper $typeCheckerHelper
 	 * @param Config $config
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		ConstraintParameterParser $constraintParameterParser,
+		ConstraintParameterRenderer $constraintParameterRenderer,
 		TypeCheckerHelper $typeCheckerHelper,
 		Config $config
 	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $constraintParameterParser;
+		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->typeCheckerHelper = $typeCheckerHelper;
 		$this->config = $config;
 	}
@@ -105,7 +115,9 @@ class ValueTypeChecker implements ConstraintChecker {
 		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
 		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )->params( $constraint->getConstraintTypeItemId() )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed" )
+				->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
+				->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
@@ -116,7 +128,12 @@ class ValueTypeChecker implements ConstraintChecker {
 		 *   type of $dataValue for properties with 'Value type' constraint has to be 'wikibase-entityid'
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )->params( $constraint->getConstraintTypeItemId(), 'wikibase-entityid' )->escaped();
+			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )
+				->rawParams(
+					$this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ),
+					'wikibase-entityid' // TODO is there a message for this type so we can localize it?
+				)
+				->escaped();
 			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
