@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 use ApiTestCase;
 use DataValues\UnknownValue;
 use HashConfig;
+use MediaWiki\Logger\LoggerFactory;
 use RequestContext;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -23,6 +24,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
@@ -103,6 +105,8 @@ class CheckConstraintsTest extends ApiTestCase {
 				'WBQualityConstraintsPropertyConstraintId' => 'P1',
 				'WBQualityConstraintsExceptionToConstraintId' => 'P2',
 				'WBQualityConstraintsConstraintStatusId' => 'P3',
+				'WBQualityConstraintsCheckDurationInfoSeconds' => 1.0,
+				'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
 			] );
 			$entityIdParser = new ItemIdParser();
 			$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
@@ -116,7 +120,11 @@ class CheckConstraintsTest extends ApiTestCase {
 				self::$checkerMap,
 				new InMemoryConstraintLookup( self::$constraintLookupContents ),
 				$constraintParameterParser,
-				$repo->getStatementGuidParser()
+				$repo->getStatementGuidParser(),
+				new LoggingHelper(
+					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
+					$config
+				)
 			);
 
 			return new CheckConstraints(
