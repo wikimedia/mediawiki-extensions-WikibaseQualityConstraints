@@ -313,6 +313,7 @@ class DelegatingConstraintChecker {
 			}
 
 			if ( in_array( $entityId, $exceptions ) ) {
+				$message = wfMessage( 'wbqc-exception-message' )->escaped();
 				$result[] = new CheckResult(
 					$entityId,
 					$statement,
@@ -320,7 +321,7 @@ class DelegatingConstraintChecker {
 					// TODO: Display parameters anyway.
 					[],
 					CheckResult::STATUS_EXCEPTION,
-					'This entity is a known exception for this constraint and has been marked as such.'
+					$message
 				);
 				continue;
 			}
