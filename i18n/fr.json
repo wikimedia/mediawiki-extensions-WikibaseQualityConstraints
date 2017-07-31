@@ -43,6 +43,7 @@
 	"wbqc-parameterissues-long": "Ces problèmes sont relatifs à la définition de la contrainte sur la propriété, et non à cette déclaration.",
 	"wbqc-problems-short": "Problèmes",
 	"wbqc-problems-long": "Cette déclaration a quelques problèmes.",
+	"wbqc-constrainttypehelp-long": "Page d'aide pour ce type de contrainte",
 	"apihelp-wbcheckconstraints-description": "Réalise les contrôles de contraintes sur n'importe quelle entité que vous désirez et retourne les résultats.",
 	"apihelp-wbcheckconstraints-summary": "Réalise les contrôles de contraintes sur toute entité que vous désirez et retourne le résultat.",
 	"apihelp-wbcheckconstraints-param-id": "Liste d'ID des entités pour lesquelles ont veux les informations. Séparez les valeurs avec  '|' ou similaire.",
@@ -117,5 +118,6 @@
 	"wbqc-violation-message-valueType-instance": "Les valeurs des déclarations $1 devraient être des instances de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas : $4}}",
 	"wbqc-violation-message-valueType-subclass": "Les valeurs des déclarations $1 doivent être des sous-classes de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas : $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 doit avoir {{PLURAL:$3|0=une déclaration $2.|1=une déclaration $2 $5.|une déclaration pour $2 avec une des valeurs suivantes : $4}}",
-	"wbqc-violation-message-unique-value": "Cette valeur de propriété ne doit être associée à aucun autre élément, et figure également sur {{PLURAL:$1|1=$3.|2=$3 et $4.|les éléments suivants : $2}}"
+	"wbqc-violation-message-unique-value": "Cette valeur de propriété ne doit être associée à aucun autre élément, et figure également sur {{PLURAL:$1|1=$3.|2=$3 et $4.|les éléments suivants : $2}}",
+	"wbqc-exception-message": "Cette entrée est une exception connue pour cette contrainte et a été marquée comme telle."
 }

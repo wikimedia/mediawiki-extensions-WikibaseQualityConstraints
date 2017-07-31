@@ -4,5 +4,6 @@
 			"HairyFotr"
 		]
 	},
-	"wbqc-constraintreport-status-warning": "Opozorilo"
+	"wbqc-constraintreport-status-warning": "Opozorilo",
+	"wbqc-violation-message-parameter-regex": "$1 ni veljaven regularni izraz."
 }

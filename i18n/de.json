@@ -38,6 +38,7 @@
 	"wbqc-parameterissues-long": "Dies sind Probleme mit der Beschränkungsdefinition zu der Eigenschaft, nicht mit dieser Aussage.",
 	"wbqc-problems-short": "Probleme",
 	"wbqc-problems-long": "Diese Aussage hat einige Probleme.",
+	"wbqc-constrainttypehelp-long": "Hilfeseite für diesen Beschränkungstyp",
 	"apihelp-wbcheckconstraints-description": "Führt Beschränkungsprüfungen zu jedem gewünschten Objekt aus und gibt das Ergebnis zurück.",
 	"apihelp-wbcheckconstraints-param-id": "Kennung der Objektliste, von der die Daten abgerufen werden sollen. Mehrere Werte mit „|“ oder Ähnlichem trennen.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID-Liste, die eine Behauptung erkennt, um einen Beschränkungsbericht zu prüfen. Mehrere Werte mit „|“ trennen.",
@@ -105,5 +106,6 @@
 	"wbqc-violation-message-valueType-instance": "Werte der Aussagen $1 sollten Instanzen von {{PLURAL:$3|1=$5|2=$5 oder $6|einer der folgenden Klassen}} sein (oder von {{PLURAL:$3|1=einer ihrer Unterklasse|2=einer ihrer Unterklasse|einer ihrer Unterklassen}}), aber $2 hat sie derzeit {{PLURAL:$3|1=nicht.|2=nicht.|nicht: $4.}}",
 	"wbqc-violation-message-valueType-subclass": "Werte der Aussagen $1 sollten Unterklassen von {{PLURAL:$3|1=$5|2=$5 oder $6|einer der folgenden Klassen}} sein (oder von {{PLURAL:$3|1=einer ihrer Unterklassen|2=einer ihrer Unterklasse|einer ihrer Unterklassen}}), aber $2 hat sie derzeit {{PLURAL:$3|1=nicht.|2=nicht.|nicht: $4.}}",
 	"wbqc-violation-message-target-required-claim": "$1 sollte {{PLURAL:$3|0=eine Aussage $2 haben.|1=eine Aussage $2 $5 haben.|eine Aussage für $2 mit einem der folgenden Werte haben: $4}}",
-	"wbqc-violation-message-unique-value": "Der Wert dieser Eigenschaft darf nicht in einem anderen Objekt vorhanden sein, er ist aber auch auf {{PLURAL:$1|1=$3 vorhanden.|2=$3 und $4 vorhanden.|den folgenden Objekten vorhanden: $2.}}"
+	"wbqc-violation-message-unique-value": "Der Wert dieser Eigenschaft darf nicht in einem anderen Objekt vorhanden sein, er ist aber auch auf {{PLURAL:$1|1=$3 vorhanden.|2=$3 und $4 vorhanden.|den folgenden Objekten vorhanden: $2.}}",
+	"wbqc-exception-message": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert."
 }

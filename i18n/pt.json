@@ -38,6 +38,7 @@
 	"wbqc-parameterissues-long": "Estes problemas estão relacionados com a definição da restrição sobre a propriedade, não com esta declaração.",
 	"wbqc-problems-short": "Problemas",
 	"wbqc-problems-long": "Esta declaração tem alguns problemas.",
+	"wbqc-constrainttypehelp-long": "Página de ajuda para este tipo de restrição",
 	"apihelp-wbcheckconstraints-description": "Realiza a verificação das restrições de qualquer entidade que queira e devolve o resultado.",
 	"apihelp-wbcheckconstraints-summary": "Realiza a verificação das restrições de qualquer entidade que queira e devolve o resultado.",
 	"apihelp-wbcheckconstraints-param-id": "Lista de identificadores das entidades de que serão obtidos os dados. Separar os valores com '|' ou alternativa.",
@@ -112,5 +113,6 @@
 	"wbqc-violation-message-valueType-instance": "Os valores de declarações $1 deveriam ser instâncias de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-valueType-subclass": "Os valores de declarações $1 deveriam ser subclasses de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 deveria ter {{PLURAL:$3|0=uma declaração $2.|1=uma declaração $2 $5.|uma declaração para $2 com um dos seguintes valores:$4}}",
-	"wbqc-violation-message-unique-value": "O valor da propriedade não pode estar presente em nenhum outro objeto, mas também está presente {{PLURAL:$1|1=em $3.|2=em $3 e $4.|nos seguintes objetos: $2}}"
+	"wbqc-violation-message-unique-value": "O valor da propriedade não pode estar presente em nenhum outro objeto, mas também está presente {{PLURAL:$1|1=em $3.|2=em $3 e $4.|nos seguintes objetos: $2}}",
+	"wbqc-exception-message": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal."
 }
