@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
 use HashConfig;
+use IBufferingStatsdDataFactory;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\Tests\NewItem;
@@ -37,6 +38,14 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 			'test message'
 		);
 
+		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
+		$dataFactory->expects( $this->once() )
+			->method( 'timing' )
+			->with(
+				$this->identicalTo( 'wikibase.quality.constraints.check.timing.Q100-TestChecker' ),
+				$this->identicalTo( $durationSeconds * 1000 )
+			);
+
 		$logger = $this->getMock( LoggerInterface::class );
 		$logger->expects( $expectedLevel !== null ? $this->once() : $this->never() )
 			->method( 'log' )
@@ -68,7 +77,7 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 				)
 			);
 
-		$loggingHelper = new LoggingHelper( $logger, new HashConfig( [
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
 			'WBQualityConstraintsCheckDurationInfoSeconds' => 1.0,
 			'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
 		] ) );
@@ -102,10 +111,18 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 			'test message'
 		);
 
+		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
+		$dataFactory->expects( $this->once() )
+			->method( 'timing' )
+			->with(
+				$this->identicalTo( 'wikibase.quality.constraints.check.timing.Q100-TestChecker' ),
+				$this->identicalTo( 5000.0 )
+			);
+
 		$logger = $this->getMock( LoggerInterface::class );
 		$logger->expects( $this->never() )->method( 'log' );
 
-		$loggingHelper = new LoggingHelper( $logger, new HashConfig( [
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
 			'WBQualityConstraintsCheckDurationInfoSeconds' => null,
 			'WBQualityConstraintsCheckDurationWarningSeconds' => null,
 		] ) );

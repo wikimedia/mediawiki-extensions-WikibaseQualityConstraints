@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
+use IBufferingStatsdDataFactory;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\Statement;
@@ -10,13 +11,18 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
- * Helper class for logging messages if necessary.
+ * Helper class for tracking and logging messages.
  *
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
 class LoggingHelper {
+
+	/**
+	 * @var IBufferingStatsdDataFactory
+	 */
+	private $dataFactory;
 
 	/**
 	 * @type LoggerInterface
@@ -29,13 +35,16 @@ class LoggingHelper {
 	private $constraintCheckDurationLimits;
 
 	/**
+	 * @param IBufferingStatsdDataFactory $dataFactory,
 	 * @param LoggerInterface $logger
 	 * @param Config $config
 	 */
 	public function __construct(
+		IBufferingStatsdDataFactory $dataFactory,
 		LoggerInterface $logger,
 		Config $config
 	) {
+		$this->dataFactory = $dataFactory;
 		$this->logger = $logger;
 		$this->constraintCheckDurationLimits = [
 			'info' => $config->get( 'WBQualityConstraintsCheckDurationInfoSeconds' ),
@@ -44,7 +53,9 @@ class LoggingHelper {
 	}
 
 	/**
-	 * Log a constraint check if it took longer than a certain time.
+	 * Log a constraint check.
+	 * The constraint check is tracked on the statsd data factory,
+	 * and also logged with the logger interface if it took longer than a certain time.
 	 * Multiple limits corresponding to different log levels can be specified in the configuration;
 	 * checks that exceed a higher limit are logged at a more severe level.
 	 *
@@ -65,6 +76,16 @@ class LoggingHelper {
 		$durationSeconds,
 		$method
 	) {
+		$constraintCheckerClassShortName = substr( strrchr( $constraintCheckerClass, '\\' ), 1 );
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
+
+		$this->dataFactory->timing(
+			'wikibase.quality.constraints.check.timing.' .
+				$constraintTypeItemId . '-' .
+				$constraintCheckerClassShortName,
+			$durationSeconds * 1000
+		);
+
 		// find the longest limit (and associated log level) that the duration exceeds
 		foreach ( $this->constraintCheckDurationLimits as $level => $limit ) {
 			if (
@@ -82,8 +103,6 @@ class LoggingHelper {
 			return;
 		}
 
-		$constraintCheckerClassShortName = substr( strrchr( $constraintCheckerClass, '\\' ), 1 );
-
 		$this->logger->log(
 			$logLevel,
 			'Constraint check with {constraintCheckerClassShortName} ' .
@@ -96,7 +115,7 @@ class LoggingHelper {
 				'limitSeconds' => $limitSeconds,
 				'constraintId' => $constraint->getConstraintId(),
 				'constraintPropertyId' => $constraint->getPropertyId()->getSerialization(),
-				'constraintTypeItemId' => $constraint->getConstraintTypeItemId(),
+				'constraintTypeItemId' => $constraintTypeItemId,
 				'constraintParameters' => $constraint->getConstraintParameters(),
 				'constraintCheckerClass' => $constraintCheckerClass,
 				'constraintCheckerClassShortName' => $constraintCheckerClassShortName,
