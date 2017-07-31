@@ -1,4 +1,4 @@
-( function( wb ) {
+( function( mw, wb ) {
 	'use strict';
 
 	/**
@@ -54,6 +54,7 @@
 		);
 		this.helpButton = config.helpButton || new OO.ui.ButtonWidget( {
 			icon: 'help',
+			title: mw.message( 'wbqc-constrainttypehelp-long' ).text(),
 			framed: false,
 			classes: [ 'wbqc-constraint-type-help' ],
 			href: 'https://www.wikidata.org/wiki/Help:Property_constraints_portal/' + this.constraint.type,
@@ -82,4 +83,4 @@
 
 	// (none)
 
-}( wikibase ) );
+}( mediaWiki, wikibase ) );

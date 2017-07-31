@@ -63,7 +63,8 @@
 				"wbqc-parameterissues-short",
 				"wbqc-parameterissues-long",
 				"wbqc-problems-short",
-				"wbqc-problems-long"
+				"wbqc-problems-long",
+				"wbqc-constrainttypehelp-long"
 			],
 			"scripts": [
 				"modules/ui/module.js",
