@@ -351,7 +351,10 @@ class CheckConstraints extends ApiBase {
 			} catch ( StatementGuidParsingException $e ) {
 				// constraint template on talk page
 				$typeLabel = htmlspecialchars( $typeItemId );
-				$link = $title->getTalkPage()->getFullUrl();
+				if ( !$title->canHaveTalkPage() ) {
+					throw new MWException( 'Properties namespace must define a talk namespace' );
+				}
+				$link = $title->getTalkPageIfDefined()->getFullUrl();
 			}
 
 			$result = [
