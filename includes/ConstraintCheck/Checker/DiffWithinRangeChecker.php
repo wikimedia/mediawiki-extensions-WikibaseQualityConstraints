@@ -7,6 +7,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -77,34 +78,33 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Diff within range' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$mainSnak = $statement->getMainSnak();
+		$snak = $context->getSnak();
 
-		if ( !$mainSnak instanceof PropertyValueSnak ) {
+		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
 		}
 
-		$dataValue = $mainSnak->getDataValue();
+		$dataValue = $snak->getDataValue();
 
 		list ( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		/** @var Statement $otherStatement */
-		foreach ( $entity->getStatements() as $otherStatement ) {
+		foreach ( $context->getEntity()->getStatements() as $otherStatement ) {
 			$otherMainSnak = $otherStatement->getMainSnak();
 
 			if (
@@ -125,8 +125,8 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					$openness = $min !== null ? ( $max !== null ? '' : '-rightopen' ) : '-leftopen';
 					$message = wfMessage( "wbqc-violation-message-diff-within-range$openness" );
 					$message->rawParams(
-						$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::PREDICATE ),
-						$this->constraintParameterRenderer->formatDataValue( $mainSnak->getDataValue(), Role::OBJECT ),
+						$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE ),
+						$this->constraintParameterRenderer->formatDataValue( $snak->getDataValue(), Role::OBJECT ),
 						$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId(), Role::PREDICATE ),
 						$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue(), Role::OBJECT )
 					);
@@ -147,12 +147,12 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 
-			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, $status, $message );
+			return new CheckResult( $context, $constraint, $parameters, $status, $message );
 		}
 
 		$message = wfMessage( "wbqc-violation-message-diff-within-range-property-must-exist" )->escaped();
 		$status = CheckResult::STATUS_VIOLATION;
-		return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

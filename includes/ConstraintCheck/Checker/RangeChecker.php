@@ -8,6 +8,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
@@ -64,28 +65,27 @@ class RangeChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Range' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
-		$mainSnak = $statement->getMainSnak();
+		$snak = $context->getSnak();
 
-		if ( !$mainSnak instanceof PropertyValueSnak ) {
+		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
 		}
 
-		$dataValue = $mainSnak->getDataValue();
+		$dataValue = $snak->getDataValue();
 
 		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
 			$constraintParameters,
@@ -108,7 +108,7 @@ class RangeChecker implements ConstraintChecker {
 			$openness = $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen';
 			$message = wfMessage( "wbqc-violation-message-range-$type-$openness" );
 			$message->rawParams(
-				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::PREDICATE ),
+				$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE ),
 				$this->constraintParameterRenderer->formatDataValue( $dataValue, Role::OBJECT )
 			);
 			if ( $min !== null ) {
@@ -124,14 +124,7 @@ class RangeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
-		return new CheckResult(
-			$entity->getId(),
-			$statement,
-			$constraint,
-			$parameters,
-			$status,
-			$message
-		);
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

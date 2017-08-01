@@ -384,16 +384,16 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 
 		// Claim column
-		$property = $this->entityIdLabelFormatter->formatEntityId( $result->getPropertyId() );
-		if ( $result->getMainSnakType() === 'value' ) {
+		$property = $this->entityIdLabelFormatter->formatEntityId( $result->getContext()->getSnak()->getPropertyId() );
+		if ( $result->getSnakType() === 'value' ) {
 			$value = $this->constraintParameterRenderer->formatValue( $result->getDataValue() );
 		} else {
-			$value = htmlspecialchars( $result->getMainSnakType() );
+			$value = htmlspecialchars( $result->getSnakType() );
 		}
 
 		$claimColumn = $this->getClaimLink(
 			$entityId,
-			$result->getPropertyId(),
+			$result->getContext()->getSnak()->getPropertyId(),
 			$property . ': ' . $value
 		);
 
@@ -405,7 +405,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$constraintTypeLabel = htmlspecialchars( $constraintTypeItemId );
 		}
 		$constraintLink = $this->getClaimLink(
-			$result->getPropertyId(),
+			$result->getContext()->getSnak()->getPropertyId(),
 			new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
 			$constraintTypeLabel
 		);

@@ -12,6 +12,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -149,8 +150,7 @@ EOF;
 				"matchesRegularExpression should have thrown a ConstraintParameterException with message ⧼$messageKey⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
-				new ItemId( 'Q1' ),
-				new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) ),
+				$this->getMock( Context::class ),
 				$this->getMockBuilder( Constraint::class )->disableOriginalConstructor()->getMock(),
 				[],
 				CheckResult::STATUS_VIOLATION,

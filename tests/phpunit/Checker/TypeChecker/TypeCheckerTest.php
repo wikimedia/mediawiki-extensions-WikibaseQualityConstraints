@@ -2,15 +2,17 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
-use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikibase\Repo\Tests\NewItem;
@@ -43,9 +45,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	private $checker;
 
 	/**
-	 * @var Statement
+	 * @var Snak
 	 */
-	private $typeStatement;
+	private $typeSnak;
 
 	protected function setUp() {
 		parent::setUp();
@@ -60,7 +62,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			),
 			$this->getDefaultConfig()
 		);
-		$this->typeStatement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
+		$this->typeSnak = new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) );
 	}
 
 	public function testTypeConstraintInstanceValid() {
@@ -69,7 +71,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -79,7 +83,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -89,7 +95,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -99,7 +107,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -109,7 +119,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -119,7 +131,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -129,7 +143,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
 
@@ -139,7 +155,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
 
@@ -149,7 +167,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
 
@@ -159,7 +179,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-subclass' );
 	}
 
@@ -169,7 +191,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-subclass' );
 	}
 
@@ -179,7 +203,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-subclass' );
 	}
 
@@ -189,7 +215,9 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
 
@@ -201,7 +229,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

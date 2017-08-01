@@ -9,6 +9,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
@@ -65,15 +66,14 @@ class InverseChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Inverse' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
 		$parameters = [];
@@ -82,14 +82,14 @@ class InverseChecker implements ConstraintChecker {
 		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['property'] = [ $propertyId ];
 
-		$mainSnak = $statement->getMainSnak();
+		$snak = $context->getSnak();
 
-		if ( !$mainSnak instanceof PropertyValueSnak ) {
+		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
 		}
 
-		$dataValue = $mainSnak->getDataValue();
+		$dataValue = $snak->getDataValue();
 
 		/*
 		 * error handling:
@@ -102,20 +102,20 @@ class InverseChecker implements ConstraintChecker {
 						 'wikibase-entityid' // TODO is there a message for this type so we can localize it?
 					 )
 					 ->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
 
 		$targetItem = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 		if ( $targetItem === null ) {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$inverseStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndEntityIdValue(
 			$targetItem->getStatements(),
 			$propertyId,
-			$entity->getId()
+			$context->getEntity()->getId()
 		);
 		if ( $inverseStatement !== null ) {
 			$message = '';
@@ -125,13 +125,13 @@ class InverseChecker implements ConstraintChecker {
 					 ->rawParams(
 						 $this->constraintParameterRenderer->formatEntityId( $targetItem->getId(), Role::SUBJECT ),
 						 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE ),
-						 $this->constraintParameterRenderer->formatEntityId( $entity->getId(), Role::OBJECT )
+						 $this->constraintParameterRenderer->formatEntityId( $context->getEntity()->getId(), Role::OBJECT )
 					 )
 					 ->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

@@ -333,15 +333,11 @@ class CheckConstraints extends ApiBase {
 		}
 
 		foreach ( $checkResults as $checkResult ) {
-			$statement = $checkResult->getStatement();
-
 			$entityId = $checkResult->getEntityId()->getSerialization();
-			$propertyId = $checkResult->getPropertyId()->getSerialization();
-			$claimId = $statement->getGuid();
 			$constraintId = $checkResult->getConstraint()->getConstraintId();
 			$typeItemId = $checkResult->getConstraint()->getConstraintTypeItemId();
 
-			$title = $this->entityTitleLookup->getTitleForId( $checkResult->getPropertyId() );
+			$title = $this->entityTitleLookup->getTitleForId( $checkResult->getContext()->getSnak()->getPropertyId() );
 			$statementGuid = $this->statementGuidParser->parse( $constraintId );
 			$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
 			// TODO link to the statement when possible (T169224)
@@ -349,8 +345,7 @@ class CheckConstraints extends ApiBase {
 
 			$result = [
 				'status' => $checkResult->getStatus(),
-				'property' => $checkResult->getPropertyId()->getSerialization(),
-				'claim' => $checkResult->getStatement()->getGuid(),
+				'property' => $checkResult->getContext()->getSnak()->getPropertyId()->getSerialization(),
 				'constraint' => [
 					'id' => $checkResult->getConstraintId(),
 					'type' => $typeItemId,
@@ -363,8 +358,11 @@ class CheckConstraints extends ApiBase {
 			if ( $checkResult->getMessage() ) {
 				$result['message-html'] = $checkResult->getMessage();
 			}
+			if ( $checkResult->getContext()->getType() === 'statement' ) {
+				$result['claim'] = $checkResult->getContext()->getSnakStatement()->getGuid();
+			}
 
-			$constraintReport[$entityId][$propertyId][$claimId][] = $result;
+			$checkResult->getContext()->storeCheckResultInArray( $result, $constraintReport );
 		}
 		return $constraintReport;
 	}

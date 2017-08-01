@@ -11,6 +11,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -54,21 +55,30 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 	public function testSingleValueConstraintOne() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testSingleValueConstraintTwo() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
 		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-single-value' );
 	}
 
 	public function testSingleValueConstraintTwoButOneDeprecated() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
 		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -80,7 +90,7 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

@@ -4,10 +4,10 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 
 use DataValues\DataValue;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use LogicException;
 
 /**
@@ -53,19 +53,14 @@ class CheckResult {
 	const STATUS_WARNING = 'warning';
 
 	/**
-	 * @var EntityId
-	 */
-	private $entityId;
-
-	/**
-	 * @var Statement
-	 */
-	private $statement;
-
-	/**
 	 * @var Constraint
 	 */
 	private $constraint;
+
+	/**
+	 * @var Context
+	 */
+	private $context;
 
 	/**
 	 * @var array
@@ -84,16 +79,14 @@ class CheckResult {
 	private $message;
 
 	/**
-	 * @param EntityId $entityId
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
 	 * @param array $parameters (string => string[]) parsed constraint parameters ($constraint->getParameters() contains the unparsed parameters)
 	 * @param string $status
 	 * @param string $message (sanitized HTML)
 	 */
-	public function __construct( EntityId $entityId, Statement $statement, Constraint $constraint, array $parameters = [], $status = self::STATUS_TODO, $message = '' ) {
-		$this->entityId = $entityId;
-		$this->statement = $statement;
+	public function __construct( Context $context, Constraint $constraint, array $parameters = [], $status = self::STATUS_TODO, $message = '' ) {
+		$this->context = $context;
 		$this->constraint = $constraint;
 		$this->parameters = $parameters;
 		$this->status = $status;
@@ -101,31 +94,24 @@ class CheckResult {
 	}
 
 	/**
+	 * @return Context
+	 */
+	public function getContext() {
+		return $this->context;
+	}
+
+	/**
 	 * @return EntityId
 	 */
 	public function getEntityId() {
-		return $this->entityId;
-	}
-
-	/**
-	 * @return Statement
-	 */
-	public function getStatement() {
-		return $this->statement;
-	}
-
-	/**
-	 * @return PropertyId
-	 */
-	public function getPropertyId() {
-		return $this->statement->getPropertyId();
+		return $this->context->getEntity()->getId();
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getMainSnakType() {
-		return $this->statement->getMainSnak()->getType();
+	public function getSnakType() {
+		return $this->context->getSnak()->getType();
 	}
 
 	/**
@@ -133,13 +119,13 @@ class CheckResult {
 	 * @throws LogicException
 	 */
 	public function getDataValue() {
-		$mainSnak = $this->statement->getMainSnak();
+		$mainSnak = $this->context->getSnak();
 
 		if ( $mainSnak instanceof PropertyValueSnak ) {
 			return $mainSnak->getDataValue();
 		}
 
-		throw new LogicException( 'Cannot get DataValue, MainSnak is of type ' . $this->getMainSnakType() . '.' );
+		throw new LogicException( 'Cannot get DataValue, Snak is of type ' . $this->getSnakType() . '.' );
 	}
 
 	/**

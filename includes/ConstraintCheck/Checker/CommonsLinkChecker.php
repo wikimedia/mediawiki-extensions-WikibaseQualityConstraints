@@ -9,6 +9,7 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -57,26 +58,25 @@ class CommonsLinkChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Commons link' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
+	public function checkConstraint( Context $context, Constraint $constraint ) {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 		$namespace = $this->constraintParameterParser->parseNamespaceParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['namespace'] = [ $namespace ];
 
-		$mainSnak = $statement->getMainSnak();
+		$snak = $context->getSnak();
 
-		if ( !$mainSnak instanceof PropertyValueSnak ) {
+		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
 		}
 
-		$dataValue = $mainSnak->getDataValue();
+		$dataValue = $snak->getDataValue();
 
 		/*
 		 * error handling:
@@ -90,7 +90,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 						 wfMessage( 'datatypes-type-string' )->escaped()
 					 )
 					 ->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$commonsLink = $dataValue->getValue();
@@ -117,7 +117,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

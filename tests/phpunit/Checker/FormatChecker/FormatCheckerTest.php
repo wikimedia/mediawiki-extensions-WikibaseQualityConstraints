@@ -11,12 +11,15 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -73,84 +76,74 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$value9 = new StringValue( 'nm000139' );
 		$value10 = new StringValue( 'nmnm0001398' );
 
-		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value1 ) );
-		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value2 ) );
-		$statement3 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value3 ) );
-		$statement4 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value4 ) );
-		$statement5 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value5 ) );
-		$statement6 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value6 ) );
-		$statement7 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value7 ) );
-		$statement8 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value8 ) );
-		$statement9 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value9 ) );
-		$statement10 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value10 ) );
+		$snak1 = new PropertyValueSnak( new PropertyId( 'P345' ), $value1 );
+		$snak2 = new PropertyValueSnak( new PropertyId( 'P345' ), $value2 );
+		$snak3 = new PropertyValueSnak( new PropertyId( 'P345' ), $value3 );
+		$snak4 = new PropertyValueSnak( new PropertyId( 'P345' ), $value4 );
+		$snak5 = new PropertyValueSnak( new PropertyId( 'P345' ), $value5 );
+		$snak6 = new PropertyValueSnak( new PropertyId( 'P345' ), $value6 );
+		$snak7 = new PropertyValueSnak( new PropertyId( 'P345' ), $value7 );
+		$snak8 = new PropertyValueSnak( new PropertyId( 'P345' ), $value8 );
+		$snak9 = new PropertyValueSnak( new PropertyId( 'P345' ), $value9 );
+		$snak10 = new PropertyValueSnak( new PropertyId( 'P345' ), $value10 );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement1,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak1 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement2,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak2 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement3,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak3 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement4,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak4 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement5,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak5 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement6,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak6 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement7,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak7 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement8,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak8 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement9,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak9 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement10,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak10 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 	}
@@ -176,84 +169,74 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$value9 = new StringValue( 'Deinococcus-Thermus' );
 		$value10 = new StringValue( 'Escherichia coli O157:H7' );
 
-		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value1 ) );
-		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value2 ) );
-		$statement3 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value3 ) );
-		$statement4 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value4 ) );
-		$statement5 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value5 ) );
-		$statement6 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value6 ) );
-		$statement7 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value7 ) );
-		$statement8 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value8 ) );
-		$statement9 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value9 ) );
-		$statement10 = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value10 ) );
+		$snak1 = new PropertyValueSnak( new PropertyId( 'P345' ), $value1 );
+		$snak2 = new PropertyValueSnak( new PropertyId( 'P345' ), $value2 );
+		$snak3 = new PropertyValueSnak( new PropertyId( 'P345' ), $value3 );
+		$snak4 = new PropertyValueSnak( new PropertyId( 'P345' ), $value4 );
+		$snak5 = new PropertyValueSnak( new PropertyId( 'P345' ), $value5 );
+		$snak6 = new PropertyValueSnak( new PropertyId( 'P345' ), $value6 );
+		$snak7 = new PropertyValueSnak( new PropertyId( 'P345' ), $value7 );
+		$snak8 = new PropertyValueSnak( new PropertyId( 'P345' ), $value8 );
+		$snak9 = new PropertyValueSnak( new PropertyId( 'P345' ), $value9 );
+		$snak10 = new PropertyValueSnak( new PropertyId( 'P345' ), $value10 );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement1,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak1 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement2,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak2 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement3,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak3 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement4,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak4 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement5,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak5 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement6,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak6 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement7,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak7 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement8,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak8 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement9,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak9 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement10,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak10 ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 	}
@@ -265,9 +248,8 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			->build();
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( array_merge( $this->formatParameter( '.+' ), $this->syntaxClarificationParameter( 'en', 'nonempty' ) ) ),
-			$this->getEntity()
+			new FakeSnakContext( $statement->getMainSnak() ),
+			$this->getConstraintMock( array_merge( $this->formatParameter( '.+' ), $this->syntaxClarificationParameter( 'en', 'nonempty' ) ) )
 		);
 
 		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
@@ -284,30 +266,28 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			. ' subg\.| (sub)?f\.))*))';
 
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P345' ), $value ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P345' ), $value );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
 	}
 
 	public function testFormatConstraintNoValueSnak() {
 		$pattern = ".";
-		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
 
 		$result = $this->formatChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
 		$this->assertCompliance( $result );
 	}
 
 	public function testFormatConstraintWithoutSparql() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
@@ -317,16 +297,15 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		);
 
 		$result = $checker->checkConstraint(
-			$statement,
-			$constraint,
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$constraint
 		);
 
 		$this->assertTodoViolation( $result );
 	}
 
 	public function testFormatConstraintDisabled() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
 					  ->disableOriginalConstructor()
@@ -341,9 +320,8 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		);
 
 		$result = $checker->checkConstraint(
-			$statement,
-			$constraint,
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$constraint
 		);
 
 		$this->assertTodo( $result );
@@ -358,7 +336,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->formatChecker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->formatChecker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		// this constraint is still checked on deprecated statements
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-format' );

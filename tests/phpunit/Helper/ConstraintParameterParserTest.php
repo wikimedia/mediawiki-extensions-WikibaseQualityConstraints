@@ -8,6 +8,7 @@ use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use Language;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Serializers\SnakSerializer;
@@ -17,6 +18,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -84,8 +86,10 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				"$method should have thrown a ConstraintParameterException with message ⧼${messageKey}⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
-				new ItemId( 'Q1' ),
-				new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) ),
+				new StatementContext(
+					new Item( new ItemId( 'Q1' ) ),
+					new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+				),
 				$this->constraint,
 				[],
 				CheckResult::STATUS_VIOLATION,

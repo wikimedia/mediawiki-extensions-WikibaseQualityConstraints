@@ -10,11 +10,14 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
 
@@ -80,12 +83,11 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	public function testCommonsLinkConstraintValid() {
 		$value = new StringValue( 'test image.jpg' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'File' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
 		$this->assertCompliance( $result );
 	}
@@ -94,52 +96,47 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$value1 = new StringValue( 'test_image.jpg' );
 		$value2 = new StringValue( 'test%20image.jpg' );
 		$value3 = new StringValue( 'File:test image.jpg' );
-		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value1 ) );
-		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value2 ) );
-		$statement3 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value3 ) );
+		$snak1 = new PropertyValueSnak( new PropertyId( 'P1' ), $value1 );
+		$snak2 = new PropertyValueSnak( new PropertyId( 'P1' ), $value2 );
+		$snak3 = new PropertyValueSnak( new PropertyId( 'P1' ), $value3 );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement1,
-			$this->getConstraintMock( $this->namespaceParameter( 'File' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak1 ),
+			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement2,
-			$this->getConstraintMock( $this->namespaceParameter( 'File' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak2 ),
+			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement3,
-			$this->getConstraintMock( $this->namespaceParameter( 'File' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak3 ),
+			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
 	}
 
 	public function testCommonsLinkConstraintValidCategory() {
 		$value = new StringValue( 'test category' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'Category' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'Category' ) )
 		);
 		$this->assertCompliance( $result );
 	}
 
 	public function testCommonsLinkConstraintValidGallery() {
 		$value = new StringValue( 'test gallery' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( '' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( '' ) )
 		);
 
 		$this->assertCompliance( $result );
@@ -147,35 +144,32 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	public function testCommonsLinkConstraintNotExistent() {
 		$value = new StringValue( 'no image.jpg' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'File' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-no-existent' );
 	}
 
 	public function testCommonsLinkConstraintNoStringValue() {
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), $value ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'File' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
 		$this->assertViolation( $result, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testCommonsLinkConstraintNoValueSnak() {
-		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->namespaceParameter( 'File' ) ),
-			$this->getEntity()
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
 		$this->assertCompliance( $result );
 	}
@@ -189,7 +183,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->commonsLinkChecker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->commonsLinkChecker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		// this constraint is still checked on deprecated statements
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-commons-link-not-well-formed' );

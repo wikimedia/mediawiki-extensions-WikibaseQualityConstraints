@@ -17,7 +17,9 @@ use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -54,9 +56,8 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			->build();
 
 		$result = $this->oneOfChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) ),
-			$this->getEntity()
+			new FakeSnakContext( $statement->getMainSnak() ),
+			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) )
 		);
 
 		$this->assertCompliance( $result );
@@ -68,9 +69,8 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			->build();
 
 		$result = $this->oneOfChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) ),
-			$this->getEntity()
+			new FakeSnakContext( $statement->getMainSnak() ),
+			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) )
 		);
 
 		$this->assertViolation( $result, 'wbqc-violation-message-one-of' );
@@ -82,9 +82,8 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			->build();
 
 		$result = $this->oneOfChecker->checkConstraint(
-			$statement,
-			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) ),
-			$this->getEntity()
+			new FakeSnakContext( $statement->getMainSnak() ),
+			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) )
 		);
 
 		$this->assertViolation( $result, 'wbqc-violation-message-one-of' );
@@ -99,16 +98,14 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 
 		foreach ( [ $somevalueSnak, $novalueSnak ] as $allowed ) {
 			foreach ( [ $somevalueSnak, $novalueSnak ] as $present ) {
-				$statement = new Statement( $present );
 
 				$constraintParameters = [
 					$qualifierId => [ $snakSerializer->serialize( $allowed ) ]
 				];
 
 				$result = $this->oneOfChecker->checkConstraint(
-					$statement,
-					$this->getConstraintMock( $constraintParameters ),
-					$this->getEntity()
+					new FakeSnakContext( $present ),
+					$this->getConstraintMock( $constraintParameters )
 				);
 				if ( $allowed === $present ) {
 					$this->assertCompliance( $result );
@@ -127,7 +124,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 			->build();
 
-		$checkResult = $this->oneOfChecker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->oneOfChecker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

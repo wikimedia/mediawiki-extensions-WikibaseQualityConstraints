@@ -9,6 +9,7 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -64,17 +65,16 @@ class TypeChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Type' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 *
 	 * @throws SparqlHelperException if the checker uses SPARQL and the query times out or some other error occurs
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
 		$parameters = [];
@@ -96,13 +96,13 @@ class TypeChecker implements ConstraintChecker {
 		}
 		$parameters['relation'] = [ $relation ];
 
-		if ( $this->typeCheckerHelper->hasClassInRelation( $entity->getStatements(), $relationId, $classes ) ) {
+		if ( $this->typeCheckerHelper->hasClassInRelation( $context->getEntity()->getStatements(), $relationId, $classes ) ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
 			$message = $this->typeCheckerHelper->getViolationMessage(
-				$statement->getPropertyId(),
-				$entity->getId(),
+				$context->getSnak()->getPropertyId(),
+				$context->getEntity()->getId(),
 				$classes,
 				'type',
 				$relation
@@ -110,7 +110,7 @@ class TypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

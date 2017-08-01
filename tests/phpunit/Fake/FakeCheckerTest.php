@@ -7,30 +7,31 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 
 class FakeCheckerTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCheckConstraint_ResultContainsPassedStatement() {
+	public function testCheckConstraint_ResultContainsPassedContext() {
 		$checker = new FakeChecker();
+		$context = $this->getMock( Context::class );
+		$constraint = $this->dummy( Constraint::class );
 
-		$statement = $this->dummy( Statement::class );
 		$result = $checker->checkConstraint(
-			$statement,
-			$this->dummy( Constraint::class ),
-			new Item( new ItemId( 'Q1' ) )
+			$context,
+			$constraint
 		);
 
-		$this->assertSame( $statement, $result->getStatement() );
+		$this->assertSame( $context, $result->getContext() );
 	}
 
 	public function testCheckConstraint_ResultContainsPassedConstraint() {
 		$checker = new FakeChecker();
+		$context = $this->getMock( Context::class );
 		$constraint = new Constraint( 'some guid', $this->dummy( PropertyId::class ), 'some constraint type item id', [] );
 
 		$result = $checker->checkConstraint(
-			$this->dummy( Statement::class ),
-			$constraint,
-			new Item( new ItemId( 'Q1' ) )
+			$context,
+			$constraint
 		);
 
 		$this->assertSame( $constraint, $result->getConstraint() );
@@ -41,9 +42,8 @@ class FakeCheckerTest extends \PHPUnit_Framework_TestCase {
 
 		$checker = new FakeChecker( $expectedStatus );
 		$result = $checker->checkConstraint(
-			$this->dummy( Statement::class ),
-			$this->dummy( Constraint::class ),
-			new Item( new ItemId( 'Q1' ) )
+			$this->getMock( Context::class ),
+			$this->dummy( Constraint::class )
 		);
 
 		$this->assertSame( $expectedStatus, $result->getStatus() );

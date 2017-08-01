@@ -6,6 +6,7 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
@@ -29,22 +30,21 @@ class SingleValueChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Single value' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
-		$propertyId = $statement->getPropertyId();
+		$propertyId = $context->getSnak()->getPropertyId();
 
 		$parameters = [];
 
-		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $entity->getStatements() );
+		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $context->getEntity()->getStatements() );
 
 		if ( $propertyCountArray[$propertyId->getSerialization()] > 1 ) {
 			$message = wfMessage( "wbqc-violation-message-single-value" )->escaped();
@@ -54,7 +54,7 @@ class SingleValueChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

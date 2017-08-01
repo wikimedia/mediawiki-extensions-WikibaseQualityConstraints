@@ -7,6 +7,7 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -64,15 +65,14 @@ class ConflictsWithChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Conflicts with' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
 		$parameters = [];
@@ -91,13 +91,13 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 */
 		if ( $items === [] ) {
 			$offendingStatement = $this->connectionCheckerHelper->findStatementWithProperty(
-				$entity->getStatements(),
+				$context->getEntity()->getStatements(),
 				$propertyId
 			);
 			if ( $offendingStatement !== null ) {
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )
 						 ->rawParams(
-							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+							 $this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
 							 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE )
 						 )
 						 ->escaped();
@@ -108,7 +108,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 			}
 		} else {
 			$offendingStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
-				$entity->getStatements(),
+				$context->getEntity()->getStatements(),
 				$propertyId,
 				$items
 			);
@@ -116,7 +116,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 				$offendingValue = ItemIdSnakValue::fromSnak( $offendingStatement->getMainSnak() );
 				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )
 						 ->rawParams(
-							 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+							 $this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
 							 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE ),
 							 $this->constraintParameterRenderer->formatItemIdSnakValue( $offendingValue, Role::OBJECT )
 						 )
@@ -128,7 +128,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

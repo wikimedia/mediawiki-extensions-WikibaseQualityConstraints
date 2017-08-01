@@ -11,6 +11,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\SparqlHelperMock;
@@ -64,7 +65,10 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-unique-value' );
 	}
 
@@ -78,7 +82,10 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-unique-value' );
 	}
 
@@ -92,7 +99,10 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -104,7 +114,10 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( [] ), $entity );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertTodo( $checkResult );
 	}
 
@@ -117,7 +130,7 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

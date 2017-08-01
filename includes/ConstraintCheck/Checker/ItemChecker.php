@@ -7,6 +7,7 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -63,15 +64,14 @@ class ItemChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Item' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
 		$parameters = [];
@@ -90,12 +90,12 @@ class ItemChecker implements ConstraintChecker {
 		 */
 		if ( $items === [] ) {
 			$requiredStatement = $this->connectionCheckerHelper->findStatementWithProperty(
-				$entity->getStatements(),
+				$context->getEntity()->getStatements(),
 				$propertyId
 			);
 		} else {
 			$requiredStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
-				$entity->getStatements(),
+				$context->getEntity()->getStatements(),
 				$propertyId,
 				$items
 			);
@@ -108,7 +108,7 @@ class ItemChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 			$message = wfMessage( 'wbqc-violation-message-item' );
 			$message->rawParams(
-				$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+				$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
 				$this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE )
 			);
 			$message->numParams( count( $items ) );
@@ -116,7 +116,7 @@ class ItemChecker implements ConstraintChecker {
 			$message = $message->escaped();
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

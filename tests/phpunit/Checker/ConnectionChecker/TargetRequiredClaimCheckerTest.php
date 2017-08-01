@@ -12,6 +12,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -70,7 +71,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			$this->itemsParameter( [ 'Q42' ] )
 		);
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -83,7 +86,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			$this->itemsParameter( [ 'Q2' ] )
 		);
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
@@ -93,7 +98,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -103,7 +110,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 		$constraintParameters = $this->propertyParameter( 'P3' );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
@@ -113,7 +122,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
@@ -123,7 +134,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
@@ -132,7 +145,9 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -145,7 +160,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

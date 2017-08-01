@@ -9,6 +9,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
@@ -29,9 +30,9 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraint = new Constraint( 'test constraint id', new PropertyId( 'P1' ), 'Q100', [] );
 		$entity = NewItem::withId( 'Q1' )->build();
+		$context = new StatementContext( $entity, $statement );
 		$checkResult = new CheckResult(
-			$entity->getId(),
-			$statement,
+			$context,
 			$constraint,
 			[ 'test' => 'params' ],
 			CheckResult::STATUS_VIOLATION,
@@ -83,7 +84,7 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 		] ) );
 
 		$loggingHelper->logConstraintCheck(
-			$statement, $constraint, $entity,
+			$context, $constraint,
 			$checkResult,
 			'\Test\Namespace\TestChecker', $durationSeconds,
 			__METHOD__
@@ -102,9 +103,9 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraint = new Constraint( 'test constraint id', new PropertyId( 'P1' ), 'Q100', [] );
 		$entity = NewItem::withId( 'Q1' )->build();
+		$context = new StatementContext( $entity, $statement );
 		$checkResult = new CheckResult(
-			$entity->getId(),
-			$statement,
+			$context,
 			$constraint,
 			[ 'test' => 'params' ],
 			CheckResult::STATUS_VIOLATION,
@@ -128,7 +129,7 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 		] ) );
 
 		$loggingHelper->logConstraintCheck(
-			$statement, $constraint, $entity,
+			$context, $constraint,
 			$checkResult,
 			'\Test\Namespace\TestChecker', 5.0,
 			__METHOD__

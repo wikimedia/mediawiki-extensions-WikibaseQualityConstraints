@@ -6,6 +6,7 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -45,15 +46,14 @@ class OneOfChecker implements ConstraintChecker {
 	/**
 	 * Checks 'One of' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
 		$parameters = [];
@@ -62,24 +62,24 @@ class OneOfChecker implements ConstraintChecker {
 		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), true );
 		$parameters['item'] = $items;
 
-		$mainSnak = $statement->getMainSnak();
+		$snak = $context->getSnak();
 
 		$message = wfMessage( 'wbqc-violation-message-one-of' );
-		$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::PREDICATE ) );
+		$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE ) );
 		$message->numParams( count( $items ) );
 		$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, Role::OBJECT ) );
 		$message = $message->escaped();
 		$status = CheckResult::STATUS_VIOLATION;
 
 		foreach ( $items as $item ) {
-			if ( $item->matchesSnak( $mainSnak ) ) {
+			if ( $item->matchesSnak( $snak ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 				break;
 			}
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

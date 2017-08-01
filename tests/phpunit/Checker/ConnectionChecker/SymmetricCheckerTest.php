@@ -15,6 +15,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -64,7 +65,10 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q3' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
+		$constraint = $this->getConstraintMock();
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -73,7 +77,9 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new PropertyId( 'P2' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P3' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $entity );
+		$constraint = $this->getConstraintMock();
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -82,7 +88,10 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q2' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
+		$constraint = $this->getConstraintMock();
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-symmetric' );
 	}
 
@@ -90,7 +99,10 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new StringValue( 'Q3' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
+		$constraint = $this->getConstraintMock();
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
@@ -98,14 +110,20 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
+		$constraint = $this->getConstraintMock();
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
 
 	public function testSymmetricConstraintNoValueSnak() {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
+		$constraint = $this->getConstraintMock();
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -117,7 +135,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

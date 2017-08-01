@@ -9,6 +9,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -67,7 +68,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -79,7 +83,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 
 		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-conflicts-with-property' );
 	}
 
@@ -94,7 +101,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 			$this->itemsParameter( [ 'Q1' ] )
 		);
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -109,7 +119,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 			$this->itemsParameter( [ 'Q42' ] )
 		);
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-conflicts-with-claim' );
 	}
 
@@ -124,7 +137,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 			$this->itemsParameter( [ 'Q42' ] )
 		);
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -136,7 +152,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

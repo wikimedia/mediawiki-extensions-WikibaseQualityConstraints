@@ -9,11 +9,14 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikibase\Repo\Tests\NewItem;
@@ -69,152 +72,182 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintInstanceValid() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintInstanceValidWithIndirection() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintInstanceValidWithMoreIndirection() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintSubclassValid() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintSubclassValidWithIndirection() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintSubclassValidWithMoreIndirection() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testValueTypeConstraintInstanceInvalid() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-instance' );
 	}
 
 	public function testValueTypeConstraintInstanceInvalidWithIndirection() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q2' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-instance' );
 	}
 
 	public function testValueTypeConstraintInstanceInvalidWithMoreIndirection() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q3' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-instance' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalid() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-subclass' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalidWithIndirection() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q5' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-subclass' );
 	}
 
 	public function testValueTypeConstraintSubclassInvalidWithMoreIndirection() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'subclass' ),
 			$this->classParameter( [ 'Q200', 'Q201' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-valueType-subclass' );
 	}
 
 	public function testValueTypeConstraintWrongType() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new StringValue( 'foo bar baz' ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new StringValue( 'foo bar baz' ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testValueTypeConstraintNonExistingValue() {
-		$statement = new Statement( new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q100' ) ) ) );
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q100' ) ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-entity-must-exist' );
 	}
 
 	public function testValueTypeConstraintNoValueSnak() {
-		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )
 		);
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -226,7 +259,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

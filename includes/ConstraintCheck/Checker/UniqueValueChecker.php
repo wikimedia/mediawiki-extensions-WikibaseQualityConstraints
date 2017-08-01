@@ -6,6 +6,7 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -45,24 +46,26 @@ class UniqueValueChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Unique value' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 *
 	 * @throws SparqlHelperException if the checker uses SPARQL and the query times out or some other error occurs
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
+		}
+		if ( $context->getType() !== 'statement' ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO );
 		}
 
 		$parameters = [];
 
 		if ( $this->sparqlHelper !== null ) {
 			$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement(
-				$statement,
+				$context->getSnakStatement(),
 				true // ignore deprecated statements
 			);
 
@@ -83,7 +86,7 @@ class UniqueValueChecker implements ConstraintChecker {
 					 ->escaped();
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

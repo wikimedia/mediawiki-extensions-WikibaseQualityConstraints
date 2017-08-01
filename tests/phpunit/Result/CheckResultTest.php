@@ -7,12 +7,16 @@ use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use DataValues\StringValue;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
@@ -23,74 +27,39 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  */
 class CheckResultTest extends PHPUnit_Framework_TestCase {
 
-	/**
-	 * @var EntityId
-	 */
-	private $entityId;
-
-	/**
-	 * @var Statement
-	 */
-	private $statement;
-
-	/**
-	 * @var string
-	 */
-	private $constraintId;
-
-	/**
-	 * @var array
-	 */
-	private $parameters;
-
-	/**
-	 * @var Constraint
-	 */
-	private $constraint;
-
-	/**
-	 * @var string
-	 */
-	private $status;
-
-	/**
-	 * @var string
-	 */
-	private $message;
-
-	protected function setUp() {
-		parent::setUp();
-		$this->entityId = new ItemId( 'Q1' );
-		$this->statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( 'Foo' ) ) );
-		$this->constraintId = '1';
-		$this->parameters = [];
-		$this->constraint = new Constraint( $this->constraintId, new PropertyId( 'P1' ), 'Q100', $this->parameters );
-		$this->status = 'compliance';
-		$this->message = 'All right';
-	}
-
 	public function testConstructAndGetters() {
-		$checkResult = new CheckResult(
-			$this->entityId, $this->statement, $this->constraint,
-			$this->parameters, $this->status, $this->message
-		);
-		$this->assertEquals( $this->entityId, $checkResult->getEntityId() );
-		$this->assertEquals( $this->statement, $checkResult->getStatement() );
-		$this->assertEquals( $this->statement->getPropertyId(), $checkResult->getPropertyId() );
-		$this->assertEquals( $this->statement->getMainSnak()->getDataValue(), $checkResult->getDataValue() );
-		$this->assertEquals( $this->constraint, $checkResult->getConstraint() );
-		$this->assertEquals( $this->constraintId, $checkResult->getConstraintId() );
-		$this->assertEquals( $this->parameters, $checkResult->getParameters() );
-		$this->assertEquals( $this->status, $checkResult->getStatus() );
-		$this->assertEquals( $this->message, $checkResult->getMessage() );
-		$this->assertEquals( 'value', $checkResult->getMainSnakType() );
+		$propertyId = new PropertyId( 'P1' );
+		$entityId = new ItemId( 'Q1' );
+		$snak = new PropertyValueSnak( $propertyId, new StringValue( 'Foo' ) );
+		$constraintId = '1';
+		$parameters = [ 'test' => 'parameters' ];
+		$constraint = new Constraint( $constraintId, new PropertyId( 'P1' ), 'Q100', $parameters );
+		$status = CheckResult::STATUS_COMPLIANCE;
+		$message = 'All right';
+		$context = new FakeSnakContext( $snak, new Item( $entityId ) );
+
+		$checkResult = new CheckResult( $context, $constraint, $parameters, $status, $message );
+
+		$this->assertSame( $context, $checkResult->getContext() );
+		$this->assertSame( $entityId, $checkResult->getEntityId() );
+		$this->assertSame( $snak->getType(), $checkResult->getSnakType() );
+		$this->assertSame( $snak->getDataValue(), $checkResult->getDataValue() );
+		$this->assertSame( $constraint, $checkResult->getConstraint() );
+		$this->assertSame( $constraintId, $checkResult->getConstraintId() );
+		$this->assertSame( $parameters, $checkResult->getParameters() );
+		$this->assertSame( $status, $checkResult->getStatus() );
+		$this->assertSame( $message, $checkResult->getMessage() );
 	}
 
 	public function testWithWrongSnakType() {
+		$propertyId = new PropertyId( 'P1' );
+		$snak = new PropertyNoValueSnak( $propertyId );
+		$context = new FakeSnakContext( $snak );
 		$checkResult = new CheckResult(
-			$this->entityId, NewStatement::noValueFor( 'P1' )->build(), $this->constraint,
-			$this->parameters, $this->status, $this->message
+			$context,
+			new Constraint( '1', $propertyId, 'Q100', [] )
 		);
+
 		$this->setExpectedException( LogicException::class );
 		$checkResult->getDataValue();
 	}

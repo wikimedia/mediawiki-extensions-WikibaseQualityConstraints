@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -59,18 +60,16 @@ class LoggingHelper {
 	 * Multiple limits corresponding to different log levels can be specified in the configuration;
 	 * checks that exceed a higher limit are logged at a more severe level.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument $entity
 	 * @param CheckResult $result
 	 * @param string $constraintCheckerClass
 	 * @param float $durationSeconds
 	 * @param string $method Use __METHOD__.
 	 */
 	public function logConstraintCheck(
-		Statement $statement,
+		Context $context,
 		Constraint $constraint,
-		EntityDocument $entity,
 		CheckResult $result,
 		$constraintCheckerClass,
 		$durationSeconds,
@@ -102,6 +101,10 @@ class LoggingHelper {
 		if ( !isset( $limitSeconds ) ) {
 			return;
 		}
+		if ( $context->getType() !== 'statement' ) {
+			// TODO log less details but still log something
+			return;
+		}
 
 		$this->logger->log(
 			$logLevel,
@@ -119,8 +122,8 @@ class LoggingHelper {
 				'constraintParameters' => $constraint->getConstraintParameters(),
 				'constraintCheckerClass' => $constraintCheckerClass,
 				'constraintCheckerClassShortName' => $constraintCheckerClassShortName,
-				'entityId' => $entity->getId()->getSerialization(),
-				'statementGuid' => $statement->getGuid(),
+				'entityId' => $context->getEntity()->getId()->getSerialization(),
+				'statementGuid' => $context->getSnakStatement()->getGuid(),
 				'resultStatus' => $result->getStatus(),
 				'resultParameters' => $result->getParameters(),
 				'resultMessage' => $result->getMessage(),

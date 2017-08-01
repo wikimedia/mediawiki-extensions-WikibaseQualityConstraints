@@ -10,6 +10,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -51,7 +52,9 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		/** @var Item $entity */
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$qualifierChecker = new QualifierChecker();
-		$checkResult = $qualifierChecker->checkConstraint( $this->getFirstStatement( $entity ), $this->getConstraintMock( [] ), $entity );
+		$statement = $this->getFirstStatement( $entity );
+		$constraint = $this->getConstraintMock( [] );
+		$checkResult = $qualifierChecker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifier' );
 	}
 
@@ -64,7 +67,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		// this constraint is still checked on deprecated statements
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifier' );

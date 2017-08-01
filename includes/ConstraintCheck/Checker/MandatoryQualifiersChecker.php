@@ -7,6 +7,7 @@ use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -46,15 +47,17 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Mandatory qualifiers' constraint.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
-		if ( $statement->getRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_DEPRECATED );
+	public function checkConstraint( Context $context, Constraint $constraint ) {
+		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
+		}
+		if ( $context->getType() !== 'statement' ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO );
 		}
 
 		$parameters = [];
@@ -65,14 +68,14 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 
 		$message = wfMessage( "wbqc-violation-message-mandatory-qualifier" )
 				 ->rawParams(
-					 $this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+					 $this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
 					 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::QUALIFIER_PREDICATE )
 				 )
 				 ->escaped();
 		$status = CheckResult::STATUS_VIOLATION;
 
 		/** @var Snak $qualifier */
-		foreach ( $statement->getQualifiers() as $qualifier ) {
+		foreach ( $context->getSnakStatement()->getQualifiers() as $qualifier ) {
 			if ( $propertyId->equals( $qualifier->getPropertyId() ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
@@ -80,7 +83,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

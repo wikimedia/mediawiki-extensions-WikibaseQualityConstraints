@@ -13,12 +13,15 @@ use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -66,109 +69,137 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	public function testRangeConstraintWithinRange() {
 		$value = new DecimalValue( 3.1415926536 );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', 0, 10 );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTooSmall() {
 		$value = new DecimalValue( 42 );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', 100, 1000 );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-closed' );
 	}
 
 	public function testRangeConstraintTooBig() {
 		$value = new DecimalValue( 3.141592 );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', 0, 1 );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-closed' );
 	}
 
 	public function testRangeConstraintTimeWithinRange() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue );
 		$constraintParameters = $this->rangeParameter( 'date', '1960', '1980' );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinRangeToNow() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue );
 		$constraintParameters = $this->rangeParameter( 'date', '1960', 'now' );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinYearRange() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue );
 		$constraintParameters = $this->rangeParameter( 'date', '1960', '1980' );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinYearMonthDayRange() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue );
 		$constraintParameters = $this->rangeParameter( 'date', '1969-12-31', '1970-01-02' );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeTooEarly() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue );
 		$constraintParameters = $this->rangeParameter( 'date', '1975', '1980' );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed' );
 	}
 
 	public function testRangeConstraintTimeTooLate() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue );
 		$constraintParameters = $this->rangeParameter( 'date', '1960', '1965' );
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed' );
 	}
 
 	public function testRangeConstraintNoValueSnak() {
-		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
 		$constraintParameters = [];
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintLeftOpenWithinRange() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( -10 ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( -10 ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', null, 0 );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintLeftOpenTooSmall() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( 10 ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( 10 ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', null, 0 );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-leftopen' );
 	}
 
 	public function testRangeConstraintRightOpenWithinRange() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( 10 ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( 10 ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', 0, null );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintRightOpenTooSmall() {
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( -10 ) ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( -10 ) );
 		$constraintParameters = $this->rangeParameter( 'quantity', 0, null );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-rightopen' );
 	}
@@ -180,10 +211,12 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			TimeValue::PRECISION_YEAR,
 			'http://www.wikidata.org/entity/Q1985727'
 		);
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenFourtyNine ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenFourtyNine );
 		$constraintParameters = $this->rangeParameter( 'time', null, $this->timeValue );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -195,10 +228,12 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			TimeValue::PRECISION_YEAR,
 			'http://www.wikidata.org/entity/Q1985727'
 		);
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour );
 		$constraintParameters = $this->rangeParameter( 'time', null, $this->timeValue );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-leftopen' );
 	}
@@ -210,10 +245,12 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			TimeValue::PRECISION_YEAR,
 			'http://www.wikidata.org/entity/Q1985727'
 		);
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour );
 		$constraintParameters = $this->rangeParameter( 'time', $this->timeValue, null );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -225,10 +262,12 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			TimeValue::PRECISION_YEAR,
 			'http://www.wikidata.org/entity/Q1985727'
 		);
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenFourtyNine ) );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenFourtyNine );
 		$constraintParameters = $this->rangeParameter( 'time', $this->timeValue, null );
 
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-rightopen' );
 	}
@@ -241,7 +280,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

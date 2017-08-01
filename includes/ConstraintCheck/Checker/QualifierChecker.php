@@ -6,6 +6,7 @@ use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -23,15 +24,14 @@ class QualifierChecker implements ConstraintChecker {
 	 * If this method gets invoked, it is automatically a violation since this method only gets invoked
 	 * for properties used in statements.
 	 *
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
+	public function checkConstraint( Context $context, Constraint $constraint ) {
 		$message = wfMessage( "wbqc-violation-message-qualifier" )->escaped();
-		return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+		return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

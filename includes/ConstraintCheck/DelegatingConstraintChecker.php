@@ -11,6 +11,8 @@ use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
@@ -295,76 +297,47 @@ class DelegatingConstraintChecker {
 	private function checkConstraintsForStatementOnEntity( array $constraints, EntityDocument $entity, $statement ) {
 		$entityId = $entity->getId();
 		$result = [];
+		$context = new StatementContext( $entity, $statement );
 
 		foreach ( $constraints as $constraint ) {
 			$parameters = $constraint->getConstraintParameters();
 			try {
 				$exceptions = $this->constraintParameterParser->parseExceptionParameter( $parameters );
 			} catch ( ConstraintParameterException $e ) {
-				$result[] = new CheckResult(
-					$entity->getId(),
-					$statement,
-					$constraint,
-					[],
-					CheckResult::STATUS_BAD_PARAMETERS,
-					$e->getMessage()
-				);
+				$result[] = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
 				continue;
 			}
 
 			if ( in_array( $entityId, $exceptions ) ) {
 				$message = wfMessage( 'wbqc-exception-message' )->escaped();
-				$result[] = new CheckResult(
-					$entityId,
-					$statement,
-					$constraint,
-					// TODO: Display parameters anyway.
-					[],
-					CheckResult::STATUS_EXCEPTION,
-					$message
-				);
+				$result[] = new CheckResult( $context, $constraint, [], CheckResult::STATUS_EXCEPTION, $message );
 				continue;
 			}
 
-			$result[ ] = $this->getCheckResultFor( $statement, $constraint, $entity );
+			$result[ ] = $this->getCheckResultFor( $context, $constraint );
 		}
 
 		return $result;
 	}
 
 	/**
-	 * @param Statement $statement
+	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param EntityDocument|StatementListProvider $entity
 	 *
 	 * @throws InvalidArgumentException
 	 * @return CheckResult
 	 */
-	private function getCheckResultFor( Statement $statement, Constraint $constraint, EntityDocument $entity ) {
+	private function getCheckResultFor( Context $context, Constraint $constraint ) {
 		if ( array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
 			$checker = $this->checkerMap[$constraint->getConstraintTypeItemId()];
 
 			$startTime = microtime( true );
 			try {
-				$result = $checker->checkConstraint( $statement, $constraint, $entity );
+				$result = $checker->checkConstraint( $context, $constraint );
 			} catch ( ConstraintParameterException $e ) {
-				$result = new CheckResult(
-					$entity->getId(),
-					$statement,
-					$constraint,
-					[],
-					CheckResult::STATUS_BAD_PARAMETERS,
-					$e->getMessage()
-				);
+				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
 			} catch ( SparqlHelperException $e ) {
-				$result = new CheckResult(
-					$entity->getId(),
-					$statement,
-					$constraint,
-					[],
-					CheckResult::STATUS_VIOLATION,
-					wfMessage( 'wbqc-violation-message-sparql-error' )->escaped()
-				);
+				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, wfMessage( 'wbqc-violation-message-sparql-error' )->escaped() );
 			}
 			$endTime = microtime( true );
 
@@ -372,14 +345,7 @@ class DelegatingConstraintChecker {
 				$constraintStatus = $this->constraintParameterParser
 					->parseConstraintStatusParameter( $constraint->getConstraintParameters() );
 			} catch ( ConstraintParameterException $e ) {
-				$result = new CheckResult(
-					$entity->getId(),
-					$statement,
-					$constraint,
-					[],
-					CheckResult::STATUS_BAD_PARAMETERS,
-					$e->getMessage()
-				);
+				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
 				$constraintStatus = null;
 			}
 			if ( $constraintStatus === null ) {
@@ -398,9 +364,8 @@ class DelegatingConstraintChecker {
 			}
 
 			$this->loggingHelper->logConstraintCheck(
-				$statement,
+				$context,
 				$constraint,
-				$entity,
 				$result,
 				get_class( $checker ),
 				$endTime - $startTime,
@@ -409,7 +374,7 @@ class DelegatingConstraintChecker {
 
 			return $result;
 		} else {
-			return new CheckResult( $entity->getId(), $statement, $constraint, [], CheckResult::STATUS_TODO, null );
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
 		}
 	}
 
@@ -442,12 +407,12 @@ class DelegatingConstraintChecker {
 			$orderB = array_key_exists( $statusB, $order ) ? $order[ $statusB ] : $order[ 'other' ];
 
 			if ( $orderA === $orderB ) {
-				$pidA = $a->getPropertyId()->getSerialization();
-				$pidB = $b->getPropertyId()->getSerialization();
+				$pidA = $a->getContext()->getSnak()->getPropertyId()->getSerialization();
+				$pidB = $b->getContext()->getSnak()->getPropertyId()->getSerialization();
 
 				if ( $pidA === $pidB ) {
-					$hashA = $a->getStatement()->getHash();
-					$hashB = $b->getStatement()->getHash();
+					$hashA = $a->getContext()->getSnak()->getHash();
+					$hashB = $b->getContext()->getSnak()->getHash();
 
 					if ( $hashA === $hashB ) {
 						$typeA = $a->getConstraint()->getConstraintTypeItemId();
