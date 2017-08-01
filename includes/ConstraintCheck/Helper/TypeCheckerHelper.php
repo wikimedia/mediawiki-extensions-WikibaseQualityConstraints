@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use MediaWiki\MediaWikiServices;
+use OverflowException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -68,31 +69,19 @@ class TypeCheckerHelper {
 	 * of one of the item ID serializations in $classesToCheck.
 	 * If the class hierarchy is not exhausted before
 	 * the configured limit (WBQualityConstraintsTypeCheckMaxEntities) is reached,
-	 * the injected {@link SparqlHelper} is consulted if present,
-	 * otherwise the check aborts and returns false.
+	 * an OverflowException is thrown.
 	 *
 	 * @param EntityId $comparativeClass
 	 * @param string[] $classesToCheck
 	 * @param int &$entitiesChecked
 	 *
 	 * @return bool
-	 *
-	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
+	 * @throws OverflowException if $entitiesChecked exceeds the configured limit
 	 */
-	public function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, &$entitiesChecked = 0 ) {
+	private function isSubclassOf( EntityId $comparativeClass, array $classesToCheck, &$entitiesChecked = 0 ) {
 		$maxEntities = $this->config->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
 		if ( ++$entitiesChecked > $maxEntities ) {
-			if ( $entitiesChecked === $maxEntities + 1 && $this->sparqlHelper !== null ) {
-				MediaWikiServices::getInstance()->getStatsdDataFactory()
-					->increment( 'wikibase.quality.constraints.sparql.typeFallback' );
-				return $this->sparqlHelper->hasType(
-					$comparativeClass->getSerialization(),
-					$classesToCheck,
-					/* withInstance = */ false
-				);
-			} else {
-				return false;
-			}
+			throw new OverflowException( 'Too many entities to check' );
 		}
 
 		$item = $this->entityLookup->getEntity( $comparativeClass );
@@ -127,6 +116,39 @@ class TypeCheckerHelper {
 	}
 
 	/**
+	 * Checks if $comparativeClass is a subclass
+	 * of one of the item ID serializations in $classesToCheck.
+	 * If isSubclassOf() aborts due to hitting the configured limit,
+	 * the injected {@link SparqlHelper} is consulted if present,
+	 * otherwise the check returns false.
+	 *
+	 * @param EntityId $comparativeClass
+	 * @param string[] $classesToCheck
+	 * @param int &$entitiesChecked
+	 *
+	 * @return bool
+	 *
+	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
+	 */
+	public function isSubclassOfWithSparqlFallback( EntityId $comparativeClass, array $classesToCheck ) {
+		try {
+			return $this->isSubclassOf( $comparativeClass, $classesToCheck );
+		} catch ( OverflowException $e ) {
+			if ( $this->sparqlHelper !== null ) {
+				MediaWikiServices::getInstance()->getStatsdDataFactory()
+					->increment( 'wikibase.quality.constraints.sparql.typeFallback' );
+				return $this->sparqlHelper->hasType(
+					$comparativeClass->getSerialization(),
+					$classesToCheck,
+					/* withInstance = */ false
+				);
+			} else {
+				return false;
+			}
+		}
+	}
+
+	/**
 	 * Checks, if one of the itemId serializations in $classesToCheck
 	 * is contained in the list of $statements
 	 * via property $relationId or if it is a subclass of
@@ -158,7 +180,7 @@ class TypeCheckerHelper {
 				return true;
 			}
 
-			if ( $this->isSubclassOf( $comparativeClass, $classesToCheck ) ) {
+			if ( $this->isSubclassOfWithSparqlFallback( $comparativeClass, $classesToCheck ) ) {
 				return true;
 			}
 		}
