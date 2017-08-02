@@ -138,7 +138,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P2'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTargetRequiredClaimConstraintWithStatement() {

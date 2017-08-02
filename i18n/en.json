@@ -65,7 +65,6 @@
 
 	"wbqc-violation-message-not-yet-implemented": "For technical reasons, the check for the constraint \"$1\" has not yet been implemented.",
 	"wbqc-violation-message-security-reason": "For security reasons, it is not possible to check the \"$1\" constraint at the moment. We are working on a solution.",
-	"wbqc-violation-message-value-needed": "Properties with constraint \"$1\" need to have a value.",
 	"wbqc-violation-message-value-needed-of-type": "Properties with constraint \"$1\" need to have values of type \"$2\".",
 	"wbqc-violation-message-value-needed-of-types-2": "Properties with constraint \"$1\" need to have values of type \"$2\" or \"$3\".",
 	"wbqc-violation-message-parameter-needed": "Properties with constraint \"$1\" need a parameter \"$2\".",
@@ -94,7 +93,6 @@
 	"wbqc-violation-message-diff-within-range-leftopen": "The difference between $3 ($4) and $1 ($2) should be no more than $5 ((−∞; $5]).",
 	"wbqc-violation-message-diff-within-range-rightopen": "The difference between $3 ($4) and $1 ($2) should be no less than $5 ([$5; ∞)).",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "The property defined in the parameters must exist.",
-	"wbqc-violation-message-diff-within-range-property-needs value": "The property defined in the parameters needs to have a value.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "The property defined in the parameters must have a value of the same type as this property.",
 	"wbqc-violation-message-format": "The value for $1 ($2) should match the pattern $3.",
 	"wbqc-violation-message-inverse": "$1 should also have the inverse statement $2 $3.",

@@ -161,6 +161,21 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
+	public function testDiffWithinRangeConstraintWithinRangeWithOtherSnakTypes() {
+		$noValueStatement = NewStatement::noValueFor( 'P569' );
+		$someValueStatement = NewStatement::someValueFor( 'P569' );
+		$entity = self::$i1970
+			->andStatement( $noValueStatement ) // should be ignored
+			->andStatement( $someValueStatement ) // should be ignored
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue( self::$t1900 ) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
+
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
+		$this->assertCompliance( $checkResult );
+	}
+
 	public function testDiffWithinRangeConstraintWithoutStatement() {
 		$entity = self::$i1970->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
@@ -176,6 +191,20 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->withRank( Statement::RANK_DEPRECATED );
 		$entity = self::$i1970
 			->andStatement( $deprecatedStatement ) // should be ignored
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
+
+		$checkResult = $this->checker->checkConstraint( self::$s1970, $constraint, $entity );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
+	}
+
+	public function testDiffWithinRangeConstraintWithOnlyOtherSnakTypes() {
+		$noValueStatement = NewStatement::noValueFor( 'P569' );
+		$someValueStatement = NewStatement::someValueFor( 'P569' );
+		$entity = self::$i1970
+			->andStatement( $noValueStatement ) // should be ignored
+			->andStatement( $someValueStatement ) // should be ignored
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
@@ -202,7 +231,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
 
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testDiffWithinRangeConstraintLeftOpenWithinRange() {

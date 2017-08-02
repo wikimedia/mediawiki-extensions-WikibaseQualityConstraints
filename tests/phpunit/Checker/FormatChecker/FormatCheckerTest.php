@@ -289,7 +289,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertCompliance( $result );
 	}
 
 	public function testFormatConstraintWithoutSparql() {
@@ -336,17 +336,18 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatConstraintDeprecatedStatement() {
-		$statement = NewStatement::noValueFor( 'P1' )
+		$statement = NewStatement::forProperty( 'P1' )
+				   ->withValue( 'abc' )
 				   ->withDeprecatedRank()
 				   ->build();
-		$constraint = $this->getConstraintMock( $this->formatParameter( '' ) );
+		$constraint = $this->getConstraintMock( $this->formatParameter( 'a.b.' ) );
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
 		$checkResult = $this->formatChecker->checkConstraint( $statement, $constraint, $entity );
 
 		// this constraint is still checked on deprecated statements
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-format' );
 	}
 
 	public function testCheckConstraintParameters() {

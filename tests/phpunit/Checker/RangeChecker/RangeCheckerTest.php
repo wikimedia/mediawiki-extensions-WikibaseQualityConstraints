@@ -174,7 +174,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 		$constraintParameters = [];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintLeftOpenWithinRange() {

@@ -178,11 +178,12 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( $this->namespaceParameter( 'File' ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-value-needed' );
+		$this->assertCompliance( $result );
 	}
 
 	public function testCommonsLinkConstraintDeprecatedStatement() {
-		$statement = NewStatement::noValueFor( 'P1' )
+		$statement = NewStatement::forProperty( 'P1' )
+				   ->withValue( 'not_well formed' )
 				   ->withDeprecatedRank()
 				   ->build();
 		$constraint = $this->getConstraintMock( [] );
@@ -192,7 +193,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->commonsLinkChecker->checkConstraint( $statement, $constraint, $entity );
 
 		// this constraint is still checked on deprecated statements
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-commons-link-not-well-formed' );
 	}
 
 	public function testCheckConstraintParameters() {

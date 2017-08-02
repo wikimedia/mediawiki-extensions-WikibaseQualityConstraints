@@ -80,15 +80,9 @@ class FormatChecker implements ConstraintChecker {
 
 		$mainSnak = $statement->getMainSnak();
 
-		/*
-		 * error handling:
-		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
-		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )
-					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
-					 ->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
+			// nothing to check
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
 		}
 
 		$dataValue = $mainSnak->getDataValue();

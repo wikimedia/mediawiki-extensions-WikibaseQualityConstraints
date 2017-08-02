@@ -107,7 +107,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testSymmetricConstraintDeprecatedStatement() {

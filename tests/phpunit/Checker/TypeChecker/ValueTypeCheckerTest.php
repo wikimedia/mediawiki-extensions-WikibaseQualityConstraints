@@ -258,7 +258,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			'class' => 'Q100,Q101'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTypeConstraintDeprecatedStatement() {

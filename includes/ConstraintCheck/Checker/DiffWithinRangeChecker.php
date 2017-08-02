@@ -93,15 +93,9 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 		$mainSnak = $statement->getMainSnak();
 
-		/*
-		 * error handling:
-		 *   $mainSnak must be PropertyValueSnak, neither PropertySomeValueSnak nor PropertyNoValueSnak is allowed
-		 */
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed" )
-					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
-					 ->escaped();
-			return new CheckResult( $entity->getId(), $statement, $constraint,  $parameters, CheckResult::STATUS_VIOLATION, $message );
+			// nothing to check
+			return new CheckResult( $entity->getId(), $statement, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
 		}
 
 		$dataValue = $mainSnak->getDataValue();
@@ -111,28 +105,14 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		/** @var Statement $otherStatement */
 		foreach ( $entity->getStatements() as $otherStatement ) {
-			if ( $otherStatement->getRank() === Statement::RANK_DEPRECATED
-				|| !$property->equals( $otherStatement->getPropertyId() )
-			) {
-				continue;
-			}
-
 			$otherMainSnak = $otherStatement->getMainSnak();
 
-			/*
-			 * error handling:
-			 *   types of this and the other value have to be equal, both must contain actual values
-			 */
-			if ( !$otherMainSnak instanceof PropertyValueSnak ) {
-				$message = wfMessage( "wbqc-violation-message-diff-within-range-property-needs value" )->escaped();
-				return new CheckResult(
-					$entity->getId(),
-					$otherStatement,
-					$constraint,
-					$parameters,
-					CheckResult::STATUS_VIOLATION,
-					$message
-				);
+			if (
+				!$property->equals( $otherStatement->getPropertyId() ) ||
+				$otherStatement->getRank() === Statement::RANK_DEPRECATED ||
+				!$otherMainSnak instanceof PropertyValueSnak
+			) {
+				continue;
 			}
 
 			if ( $otherMainSnak->getDataValue()->getType() === $dataValue->getType() ) {

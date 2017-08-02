@@ -151,7 +151,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 			'property' => 'P1'
 		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testInverseConstraintDeprecatedStatement() {
