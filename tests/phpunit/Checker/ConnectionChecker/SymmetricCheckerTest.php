@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
@@ -104,7 +103,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSymmetricConstraintNoValueSnak() {
-		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
+		$statement = NewStatement::noValueFor( 'P1' )->build();
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock(), $this->getEntity() );
 		$this->assertCompliance( $checkResult );

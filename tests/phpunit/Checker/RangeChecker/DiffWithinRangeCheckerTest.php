@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
 use DataValues\TimeValue;
-use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -226,7 +225,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 	public function testDiffWithinRangeConstraintNoValueSnak() {
 		$entity = self::$i1970->build();
-		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
+		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $constraint, $entity );
