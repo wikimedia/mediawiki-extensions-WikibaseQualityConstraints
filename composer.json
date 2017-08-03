@@ -36,8 +36,7 @@
 			"WikibaseQuality\\ConstraintReport\\Maintenance\\": "maintenance/"
 		},
 		"classmap": [
-			"WikibaseQualityConstraintsHooks.php",
-			"maintenance/UpdateConstraintsTable.php"
+			"WikibaseQualityConstraintsHooks.php"
 		]
 	},
 	"scripts": {
