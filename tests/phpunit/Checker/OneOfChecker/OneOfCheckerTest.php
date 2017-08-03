@@ -48,23 +48,27 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	public function testOneOfConstraint() {
-		$valueIn = new EntityIdValue( new ItemId( 'Q1' ) );
-		$valueNotIn = new EntityIdValue( new ItemId( 'Q9' ) );
-
-		$statementIn = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $valueIn ) );
-		$statementNotIn = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $valueNotIn ) );
+	public function testOneOfConstraintValid() {
+		$statement = NewStatement::forProperty( 'P123' )
+			->withValue( new ItemId( 'Q1' ) )
+			->build();
 
 		$result = $this->oneOfChecker->checkConstraint(
-			$statementIn,
+			$statement,
 			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) ),
 			$this->getEntity()
 		);
 
 		$this->assertCompliance( $result );
+	}
+
+	public function testOneOfConstraintInvalid() {
+		$statement = NewStatement::forProperty( 'P123' )
+			->withValue( new ItemId( 'Q9' ) )
+			->build();
 
 		$result = $this->oneOfChecker->checkConstraint(
-			$statementNotIn,
+			$statement,
 			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) ),
 			$this->getEntity()
 		);
@@ -73,8 +77,9 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testOneOfConstraintWrongType() {
-		$value = new StringValue( 'Q1' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) );
+		$statement = NewStatement::forProperty( 'P123' )
+			->withValue( new StringValue( 'Q1' ) )
+			->build();
 
 		$result = $this->oneOfChecker->checkConstraint(
 			$statement,
@@ -116,11 +121,11 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 
 	public function testOneOfConstraintDeprecatedStatement() {
 		$statement = NewStatement::noValueFor( 'P1' )
-				   ->withDeprecatedRank()
-				   ->build();
+			->withDeprecatedRank()
+			->build();
 		$constraint = $this->getConstraintMock( [] );
 		$entity = NewItem::withId( 'Q1' )
-				->build();
+			->build();
 
 		$checkResult = $this->oneOfChecker->checkConstraint( $statement, $constraint, $entity );
 
