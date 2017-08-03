@@ -54,16 +54,17 @@ require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";
 
 * Run `php maintenance/update.php --quick`.
 
-* Last but not least, you need to fill the constraints table - for that you need the
-[constraints from templates script](https://github.com/WikidataQuality/ConstraintsFromTemplates).  
-Follow the instruction in the README to create a csv file.  
-Run `php maintenance/runScript.php extensions/Constraints/maintenance/UpdateConstraintsTable.php --csv-file <path_to_csv_file>`.
+* Configure the extension.
+  You can find the configuration settings with documentation in `extension.json`.
+  (Note that the variable name for `LocalSettings.php` always begins with `wg`,
+  e. g. `$wgWBQualityConstraintsClassId` for the `WBQualityConstraintsClassId` setting.)
 
-* Optional: to enable importing constraints from statements on properties,
-  add the following line to your `LocalSettings`.php:
-  ```php
-  $wgWBQualityConstraintsEnableConstraintsImportFromStatements = true;
-  ```
+  * Specify the entity IDs of entities that are used to define constraints.
+    See the “Data import” section for an automatic way to do this.
+
+  * If you have a SPARQL endpoint, configure it in `WBQualityConstraintsSparqlEndpoint`.
+
+* Run `php maintenance/runScript.php extensions/WikibaseQualityConstraints/maintenance/ImportConstraintStatements.php`.
 
 ### Gadget
 
