@@ -2,17 +2,28 @@
 	"@metadata": {
 		"authors": [
 			"Obsuser",
-			"Сербијана"
+			"Сербијана",
+			"Милан Јелисавчић"
 		]
 	},
+	"wbqc-desc": "Проверава ограничења на ставкама и својствима и приказује резултате на посебној страници",
+	"wbqc-constraintreport-explanation-part-two": "Ограничења се проверавају са тврдњи на страницама својства сваки пут када се те тврдње измене, обично у року од неколико минута.",
+	"wbqc-constraintreport-empty-result": "Не постоје ограничења дефинисана за овај ентитет.",
+	"wbqc-constraintreport-status-deprecated": "Застарело",
+	"wbqc-constraintreport-status-warning": "Упозорење",
 	"wbqc-potentialissues-short": "Могући проблеми",
 	"wbqc-potentialissues-long": "Ова изјава име неке могуће проблеме.",
+	"wbqc-problems-short": "Проблеми",
 	"apihelp-wbcheckconstraints-description": "Извођење провера забране на ентитету који одаберете и враћање резултата.",
 	"apihelp-wbcheckconstraints-param-id": "ID списак ентитета из којих ће се узимати подаци. Раздвојити вредности са '|' или др.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID списак за идентификацију тврдње за проверу извештаја забране. Раздвојити вредности са '|'.",
-	"apihelp-wbcheckconstraints-param-constraintid": "Опциони филтер за враћање само оних забрана које имају одређен constraint ID",
+	"apihelp-wbcheckconstraints-param-constraintid": "Опциони филтер за враћање само ограничења које имају одређени идентификатор ограничења",
+	"apihelp-wbcheckconstraintparameters-extended-description": "Могуће је навести било који или оба <var>property</var> и <var>constraintid</var>; сва одабрана ограничења по било ком параметру биће проверена.",
 	"apihelp-wbcheckconstraints-example-1": "Проверите сва ограничења за ставке Q5 и Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Проверите сва ограничења за једну изјаву.",
+	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Проверите параметре ограничења свих ограничења својства.",
+	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Проверите ограничења параметара два посебна ограничења.",
+	"wbqc-violations-group": "Ограничења",
 	"wbqc-violation-message-value-needed-of-types-2": "Својства са ограничењем „$1” морају имати вредности типа „$2” или „$3”.",
 	"wbqc-violation-message-parameters-needed-3": "Својства са ограничењем „$1” требају параметре „$2”, „$3” и „$4”.",
 	"wbqc-violation-message-commons-link-no-existent": "Веза до Оставе би требало да постоји.",
