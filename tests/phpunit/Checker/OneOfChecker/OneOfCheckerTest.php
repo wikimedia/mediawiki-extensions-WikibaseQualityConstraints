@@ -55,33 +55,33 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 		$statementIn = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $valueIn ) );
 		$statementNotIn = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $valueNotIn ) );
 
-		$values = 'Q1,Q2,Q3';
-
 		$result = $this->oneOfChecker->checkConstraint(
 			$statementIn,
-			$this->getConstraintMock( [ 'item' => $values ] ),
+			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) ),
 			$this->getEntity()
 		);
+
 		$this->assertCompliance( $result );
 
 		$result = $this->oneOfChecker->checkConstraint(
 			$statementNotIn,
-			$this->getConstraintMock( [ 'item' => $values ] ),
+			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) ),
 			$this->getEntity()
 		);
+
 		$this->assertViolation( $result, 'wbqc-violation-message-one-of' );
 	}
 
 	public function testOneOfConstraintWrongType() {
 		$value = new StringValue( 'Q1' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P123' ), $value ) );
-		$values = 'Q1,Q2,Q3';
 
 		$result = $this->oneOfChecker->checkConstraint(
 			$statement,
-			$this->getConstraintMock( [ 'item' => $values ] ),
+			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) ),
 			$this->getEntity()
 		);
+
 		$this->assertViolation( $result, 'wbqc-violation-message-one-of' );
 	}
 
