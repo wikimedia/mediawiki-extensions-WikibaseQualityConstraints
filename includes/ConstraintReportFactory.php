@@ -221,47 +221,107 @@ class ConstraintReportFactory {
 			);
 
 			$this->constraintCheckerMap = [
-				'Conflicts with' => new ConflictsWithChecker(
-					$this->lookup, $this->constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Item' => new ItemChecker( $this->lookup, $this->constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Target required claim' => new TargetRequiredClaimChecker(
-					$this->lookup, $this->constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Symmetric' => new SymmetricChecker( $this->lookup, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Inverse' => new InverseChecker( $this->lookup, $this->constraintParameterParser, $connectionCheckerHelper, $this->constraintParameterRenderer ),
-				'Qualifier' => new QualifierChecker(),
-				'Qualifiers' => new QualifiersChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
-				'Mandatory qualifiers' => new MandatoryQualifiersChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
-				'Range' => new RangeChecker( $this->propertyDataTypeLookup, $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
-				'Diff within range' => new DiffWithinRangeChecker( $this->constraintParameterParser, $rangeCheckerHelper, $this->constraintParameterRenderer ),
-				'Type' => new TypeChecker( $this->lookup, $this->constraintParameterParser, $typeCheckerHelper, $this->config ),
-				'Value type' => new ValueTypeChecker(
-					$this->lookup, $this->constraintParameterParser, $this->constraintParameterRenderer, $typeCheckerHelper, $this->config ),
-				'Single value' => new SingleValueChecker(),
-				'Multi value' => new MultiValueChecker(),
-				'Unique value' => new UniqueValueChecker( $this->constraintParameterRenderer, $sparqlHelper ),
-				'Format' => new FormatChecker( $this->constraintParameterParser, $this->constraintParameterRenderer, $this->config, $sparqlHelper ),
-				'Commons link' => new CommonsLinkChecker( $this->constraintParameterParser, $this->constraintParameterRenderer, $this->titleParser ),
-				'One of' => new OneOfChecker( $this->constraintParameterParser, $this->constraintParameterRenderer ),
-			];
-			$this->constraintCheckerMap += [
-				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ) => $this->constraintCheckerMap['Unique value'],
-				$this->config->get( 'WBQualityConstraintsMultiValueConstraintId' ) => $this->constraintCheckerMap['Multi value'],
-				$this->config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' ) => $this->constraintCheckerMap['Qualifier'],
-				$this->config->get( 'WBQualityConstraintsSingleValueConstraintId' ) => $this->constraintCheckerMap['Single value'],
-				$this->config->get( 'WBQualityConstraintsSymmetricConstraintId' ) => $this->constraintCheckerMap['Symmetric'],
-				$this->config->get( 'WBQualityConstraintsTypeConstraintId' ) => $this->constraintCheckerMap['Type'],
-				$this->config->get( 'WBQualityConstraintsValueTypeConstraintId' ) => $this->constraintCheckerMap['Value type'],
-				$this->config->get( 'WBQualityConstraintsInverseConstraintId' ) => $this->constraintCheckerMap['Inverse'],
-				$this->config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' ) => $this->constraintCheckerMap['Item'],
-				$this->config->get( 'WBQualityConstraintsValueRequiresClaimConstraintId' ) => $this->constraintCheckerMap['Target required claim'],
-				$this->config->get( 'WBQualityConstraintsConflictsWithConstraintId' ) => $this->constraintCheckerMap['Conflicts with'],
-				$this->config->get( 'WBQualityConstraintsOneOfConstraintId' ) => $this->constraintCheckerMap['One of'],
-				$this->config->get( 'WBQualityConstraintsMandatoryQualifierConstraintId' ) => $this->constraintCheckerMap['Mandatory qualifiers'],
-				$this->config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' ) => $this->constraintCheckerMap['Qualifiers'],
-				$this->config->get( 'WBQualityConstraintsRangeConstraintId' ) => $this->constraintCheckerMap['Range'],
-				$this->config->get( 'WBQualityConstraintsDifferenceWithinRangeConstraintId' ) => $this->constraintCheckerMap['Diff within range'],
-				$this->config->get( 'WBQualityConstraintsCommonsLinkConstraintId' ) => $this->constraintCheckerMap['Commons link'],
-				$this->config->get( 'WBQualityConstraintsFormatConstraintId' ) => $this->constraintCheckerMap['Format'],
+				$this->config->get( 'WBQualityConstraintsConflictsWithConstraintId' )
+					=> new ConflictsWithChecker(
+						$this->lookup,
+						$this->constraintParameterParser,
+						$connectionCheckerHelper,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' )
+					=> new ItemChecker(
+						$this->lookup,
+						$this->constraintParameterParser,
+						$connectionCheckerHelper,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsValueRequiresClaimConstraintId' )
+					=> new TargetRequiredClaimChecker(
+						$this->lookup,
+						$this->constraintParameterParser,
+						$connectionCheckerHelper,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsSymmetricConstraintId' )
+					=> new SymmetricChecker(
+						$this->lookup,
+						$connectionCheckerHelper,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsInverseConstraintId' )
+					=> new InverseChecker(
+						$this->lookup,
+						$this->constraintParameterParser,
+						$connectionCheckerHelper,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' )
+					=> new QualifierChecker(),
+				$this->config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' )
+					=> new QualifiersChecker(
+						$this->constraintParameterParser,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsMandatoryQualifierConstraintId' )
+					=> new MandatoryQualifiersChecker(
+						$this->constraintParameterParser,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsRangeConstraintId' )
+					=> new RangeChecker(
+						$this->propertyDataTypeLookup,
+						$this->constraintParameterParser,
+						$rangeCheckerHelper,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsDifferenceWithinRangeConstraintId' )
+					=> new DiffWithinRangeChecker(
+						$this->constraintParameterParser,
+						$rangeCheckerHelper,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsTypeConstraintId' )
+					=> new TypeChecker(
+						$this->lookup,
+						$this->constraintParameterParser,
+						$typeCheckerHelper,
+						$this->config
+					),
+				$this->config->get( 'WBQualityConstraintsValueTypeConstraintId' )
+					=> new ValueTypeChecker(
+						$this->lookup,
+						$this->constraintParameterParser,
+						$this->constraintParameterRenderer,
+						$typeCheckerHelper,
+						$this->config
+					),
+				$this->config->get( 'WBQualityConstraintsSingleValueConstraintId' )
+					=> new SingleValueChecker(),
+				$this->config->get( 'WBQualityConstraintsMultiValueConstraintId' )
+					=> new MultiValueChecker(),
+				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' )
+					=> new UniqueValueChecker(
+						$this->constraintParameterRenderer,
+						$sparqlHelper
+					),
+				$this->config->get( 'WBQualityConstraintsFormatConstraintId' )
+					=> new FormatChecker(
+						$this->constraintParameterParser,
+						$this->constraintParameterRenderer,
+						$this->config,
+						$sparqlHelper
+					),
+				$this->config->get( 'WBQualityConstraintsCommonsLinkConstraintId' )
+					=> new CommonsLinkChecker(
+						$this->constraintParameterParser,
+						$this->constraintParameterRenderer,
+						$this->titleParser
+					),
+				$this->config->get( 'WBQualityConstraintsOneOfConstraintId' )
+					=> new OneOfChecker(
+						$this->constraintParameterParser,
+						$this->constraintParameterRenderer
+					),
 			];
 		}
 
