@@ -110,7 +110,7 @@
 			"public": true
 		},
 		"WBQualityConstraintsEnableConstraintsImportFromStatements": {
-			"value": false,
+			"value": true,
 			"description": "Whether to import property constraint statements into the constraint database or not.",
 			"public": true
 		},
