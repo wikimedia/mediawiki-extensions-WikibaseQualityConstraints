@@ -51,7 +51,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q5' )
 			->andStatement( $statement )
 			->build();
-		$parameters = [ 'property' => 'P2' ];
+		$parameters = $this->propertyParameter( 'P2' );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $parameters ), $entity );
 
@@ -68,7 +68,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q5' )
 			->andStatement( $statement )
 			->build();
-		$parameters = [ 'property' => 'P3' ];
+		$parameters = $this->propertyParameter( 'P3' );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $parameters ), $entity );
 
