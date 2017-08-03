@@ -188,7 +188,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->assertCount( 1, $result['wbcheckconstraints'] );
 		$resultsForItem = $result['wbcheckconstraints']['Q1']['P1']['Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183'];
 		$this->assertCount( 1, $resultsForItem );
-		$this->assertEquals( CheckResult::STATUS_VIOLATION, $resultsForItem[0]['status'] );
+		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
 		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );
 	}
 
@@ -205,7 +205,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->assertCount( 1, $result['wbcheckconstraints'] );
 		$resultsForItem = $result['wbcheckconstraints']['Q1']['P1']['Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183'];
 		$this->assertCount( 1, $resultsForItem );
-		$this->assertEquals( CheckResult::STATUS_VIOLATION, $resultsForItem[0]['status'] );
+		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
 		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );
 	}
 
@@ -225,7 +225,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->assertCount( 1, $result['wbcheckconstraints'] );
 		$resultsForItem = $result['wbcheckconstraints'][$itemId][$propertyId][$guid];
 		$this->assertCount( 1, $resultsForItem );
-		$this->assertEquals( CheckResult::STATUS_VIOLATION, $resultsForItem[0]['status'] );
+		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
 		$this->assertEquals( $propertyId, $resultsForItem[0]['property'] );
 	}
 
@@ -244,7 +244,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			'some guid',
 			$propertyId,
 			'violationConstraint',
-			[ 'constraint_status' => 'mandatory' ]
+			[]
 		);
 	}
 
