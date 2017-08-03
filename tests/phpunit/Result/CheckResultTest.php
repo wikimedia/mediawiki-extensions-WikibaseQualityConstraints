@@ -5,12 +5,12 @@ namespace WikibaseQuality\ConstraintReport\Test\CheckResult;
 use LogicException;
 use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Entity\EntityId;
-use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use DataValues\StringValue;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
@@ -88,7 +88,7 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 
 	public function testWithWrongSnakType() {
 		$checkResult = new CheckResult(
-			$this->entityId, new Statement( new PropertyNoValueSnak( 1 ) ), $this->constraint,
+			$this->entityId, NewStatement::noValueFor( 'P1' )->build(), $this->constraint,
 			$this->parameters, $this->status, $this->message
 		);
 		$this->setExpectedException( LogicException::class );

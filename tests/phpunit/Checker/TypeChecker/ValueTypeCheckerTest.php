@@ -9,7 +9,6 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
@@ -252,7 +251,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintNoValueSnak() {
-		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
+		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraintParameters = [
 			'relation' => 'instance',
 			'class' => 'Q100,Q101'

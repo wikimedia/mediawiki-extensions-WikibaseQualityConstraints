@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConnectionChecker;
 
-use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
@@ -145,7 +144,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	public function testInverseConstraintNoValueSnak() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
-		$statement = new Statement( new PropertyNoValueSnak( 1 ) );
+		$statement = NewStatement::noValueFor( 'P1' )->build();
 
 		$constraintParameters = [
 			'property' => 'P1'
