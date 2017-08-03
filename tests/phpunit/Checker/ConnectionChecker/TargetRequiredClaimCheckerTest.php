@@ -65,95 +65,75 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 	public function testTargetRequiredClaimConstraintValid() {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P2' ),
+			$this->itemsParameter( [ 'Q42' ] )
+		);
 
-		$constraintParameters = [
-			'property' => 'P2',
-			'item' => 'Q42'
-		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTargetRequiredClaimConstraintWrongItem() {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P2' ),
+			$this->itemsParameter( [ 'Q2' ] )
+		);
 
-		$constraintParameters = [
-			'property' => 'P2',
-			'item' => 'Q2'
-		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
 
 	public function testTargetRequiredClaimConstraintOnlyProperty() {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$constraintParameters = [
-			'property' => 'P2'
-		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTargetRequiredClaimConstraintOnlyPropertyButDoesNotExist() {
 		$value = new EntityIdValue( new ItemId( 'Q5' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$constraintParameters = $this->propertyParameter( 'P3' );
 
-		$constraintParameters = [
-			'property' => 'P3'
-		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
 
 	public function testTargetRequiredClaimConstraintWrongDataTypeForItem() {
 		$value = new StringValue( 'Q5' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$constraintParameters = [
-			'property' => 'P2'
-		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testTargetRequiredClaimConstraintItemDoesNotExist() {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$constraintParameters = $this->propertyParameter( 'P2' );
 
-		$constraintParameters = [
-			'property' => 'P2'
-		];
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
 
 	public function testTargetRequiredClaimConstraintNoValueSnak() {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-
-		$constraintParameters = [
-			'property' => 'P2'
-		];
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
-		$this->assertCompliance( $checkResult );
-	}
-
-	public function testTargetRequiredClaimConstraintWithStatement() {
-		$value = new EntityIdValue( new ItemId( 'Q5' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
-		$config = $this->getDefaultConfig();
-		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
-		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-		$constraintParameters = [
-			$propertyId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( 'P2' ) ) ) ) ],
-			$qualifierId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $qualifierId ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) ]
-		];
+		$constraintParameters = $this->propertyParameter( 'P2' );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
+
 		$this->assertCompliance( $checkResult );
 	}
 

@@ -166,6 +166,24 @@ trait ConstraintParameters {
 	}
 
 	/**
+	 * @param string[] $items item ID serializations
+	 * @return array
+	 */
+	public function itemsParameter( array $items ) {
+		$qualifierParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		return [
+			$qualifierParameterId => array_map(
+				function( $item ) use ( $qualifierParameterId ) {
+					$value = new EntityIdValue( new ItemId( $item ) );
+					$snak = new PropertyValueSnak( new PropertyId( $qualifierParameterId ), $value );
+					return $this->getSnakSerializer()->serialize( $snak );
+				},
+				$items
+			)
+		];
+	}
+
+	/**
 	 * Convert an abbreviated value for a range endpoint
 	 * to a full snak for range constraint parameters.
 	 * A numeric argument means a numeric endpoint,
