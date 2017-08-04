@@ -269,4 +269,43 @@ trait ConstraintParameters {
 		return [ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
 	}
 
+	/**
+	 * @param string[] $exceptions item ID serializations (other entity types currently not supported)
+	 * @return array
+	 */
+	public function exceptionsParameter( $exceptions ) {
+		$exceptionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
+		return [ $exceptionId => array_map(
+			function ( $exception ) use ( $exceptionId ) {
+				$value = new EntityIdValue( new ItemId( $exception ) );
+				$snak = new PropertyValueSnak( new PropertyId( $exceptionId ), $value );
+				return $this->getSnakSerializer()->serialize( $snak );
+			},
+			$exceptions
+		) ];
+	}
+
+	/**
+	 * @param string $status (the only currently supported status is 'mandatory')
+	 * @return array
+	 */
+	public function statusParameter( $status ) {
+		$statusParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		switch ( $status ) {
+			case 'mandatory':
+				$configKey = 'WBQualityConstraintsMandatoryConstraintId';
+				break;
+			default:
+				throw new InvalidArgumentException( '$status must be mandatory' );
+		}
+		return [
+			$statusParameterId => [ $this->getSnakSerializer()->serialize(
+				new PropertyValueSnak(
+					new PropertyId( $statusParameterId ),
+					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( $configKey ) ) )
+				)
+			) ]
+		];
+	}
+
 }
