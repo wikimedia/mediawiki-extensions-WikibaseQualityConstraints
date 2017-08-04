@@ -310,6 +310,9 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
 		$this->assertEquals( 18, count( $result ), 'Every constraint should be represented by one result' );
+		foreach ( $result as $checkResult ) {
+			$this->assertNotSame( 'todo', $checkResult->getStatus(), 'Constraints should not be unimplemented' );
+		}
 	}
 
 	public function testCheckAgainstConstraintsWithoutEntity() {
