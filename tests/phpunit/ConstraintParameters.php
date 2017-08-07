@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\DataValue;
+use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
@@ -254,6 +255,18 @@ trait ConstraintParameters {
 		$value = new StringValue( $format );
 		$snak = new PropertyValueSnak( new PropertyId( $formatId ), $value );
 		return [ $formatId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
+	}
+
+	/**
+	 * @param string $languageCode
+	 * @param string $syntaxClarification
+	 * @return array
+	 */
+	public function syntaxClarificationParameter( $languageCode, $syntaxClarification ) {
+		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$value = new MonolingualTextValue( $languageCode, $syntaxClarificationId );
+		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
+		return [ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
 	}
 
 }

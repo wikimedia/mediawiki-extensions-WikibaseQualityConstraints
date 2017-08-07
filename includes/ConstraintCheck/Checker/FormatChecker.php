@@ -4,9 +4,11 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Config;
 use DataValues\StringValue;
+use Language;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
@@ -78,6 +80,14 @@ class FormatChecker implements ConstraintChecker {
 		$format = $this->constraintParameterParser->parseFormatParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['pattern'] = [ $format ];
 
+		$syntaxClarification = $this->constraintParameterParser->parseSyntaxClarificationParameter(
+			$constraintParameters,
+			WikibaseRepo::getDefaultInstance()->getUserLanguage() // TODO make this part of the Context?
+		);
+		if ( $syntaxClarification !== null ) {
+			$parameters['clarification'] = [ $syntaxClarification ];
+		}
+
 		$mainSnak = $statement->getMainSnak();
 
 		if ( !$mainSnak instanceof PropertyValueSnak ) {
@@ -114,14 +124,20 @@ class FormatChecker implements ConstraintChecker {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
-				$message = wfMessage( 'wbqc-violation-message-format' )
-						 ->rawParams(
-							$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
-							$this->constraintParameterRenderer->formatDataValue( new StringValue( $text ), Role::OBJECT ),
-							$this->constraintParameterRenderer->formatByRole( Role::CONSTRAINT_PARAMETER_VALUE,
-								'<code><nowiki>' . htmlspecialchars( $format ) . '</nowiki></code>' )
-						 )
-						 ->escaped();
+				$message = wfMessage(
+					$syntaxClarification !== null ?
+						'wbqc-violation-message-format-clarification' :
+						'wbqc-violation-message-format'
+				)->rawParams(
+					$this->constraintParameterRenderer->formatEntityId( $statement->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
+					$this->constraintParameterRenderer->formatDataValue( new StringValue( $text ), Role::OBJECT ),
+					$this->constraintParameterRenderer->formatByRole( Role::CONSTRAINT_PARAMETER_VALUE,
+						'<code><nowiki>' . htmlspecialchars( $format ) . '</nowiki></code>' )
+				);
+				if ( $syntaxClarification !== null ) {
+					$message->params( $syntaxClarification );
+				}
+				$message = $message->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
@@ -138,6 +154,14 @@ class FormatChecker implements ConstraintChecker {
 		$exceptions = [];
 		try {
 			$this->constraintParameterParser->parseFormatParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		try {
+			$this->constraintParameterParser->parseSyntaxClarificationParameter(
+				$constraintParameters,
+				Language::factory( 'en' ) // errors are reported independent of language requested
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}
