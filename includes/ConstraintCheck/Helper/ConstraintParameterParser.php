@@ -4,9 +4,11 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use DataValues\DataValue;
+use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
+use Language;
 use Wikibase\DataModel\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;
@@ -785,6 +787,95 @@ class ConstraintParameterParser {
 			return $this->parseConstraintStatusParameterFromStatement( $constraintParameters );
 		} elseif ( array_key_exists( 'constraint_status', $constraintParameters ) ) {
 			return $this->parseConstraintStatusParameterFromTemplate( $constraintParameters );
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Require that $dataValue is a {@link MonolingualTextValue}.
+	 * @param DataValue $dataValue
+	 * @param string $parameterId
+	 * @return void
+	 * @throws ConstraintParameterException
+	 */
+	private function requireMonolingualTextParameter( DataValue $dataValue, $parameterId ) {
+		if ( !( $dataValue instanceof MonolingualTextValue ) ) {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-parameter-monolingualtext' )
+					->rawParams(
+						$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
+						$this->constraintParameterRenderer->formatDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
+					)
+					->escaped()
+			);
+		}
+	}
+
+	/**
+	 * Parse a series of monolingual text snaks (serialized) into a map from language code to string.
+	 *
+	 * @param array $snakSerializations
+	 * @param string $parameterId
+	 * @throws ConstraintParameterException if invalid snaks are found or a language has multiple texts
+	 * @return string[]
+	 */
+	private function parseMultilingualTextParameter( array $snakSerializations, $parameterId ) {
+		$result = [];
+
+		foreach ( $snakSerializations as $snakSerialization ) {
+			$snak = $this->snakDeserializer->deserialize( $snakSerialization );
+			$this->requireValueParameter( $snak, $parameterId );
+
+			$value = $snak->getDataValue();
+			$this->requireMonolingualTextParameter( $value, $parameterId );
+
+			$code = $value->getLanguageCode();
+			if ( array_key_exists( $code, $result ) ) {
+				throw new ConstraintParameterException(
+					wfMessage( 'wbqc-violation-message-parameter-single-per-language' )
+						->rawParams(
+							$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY )
+						)
+						->params(
+							Language::fetchLanguageName( $code ),
+							$code
+						)
+						->escaped()
+				);
+			}
+
+			$result[$code] = $value->getText();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param Language $language
+	 * @throws ConstraintParameterException if the parameter is invalid
+	 * @return string|null
+	 */
+	public function parseSyntaxClarificationParameter( array $constraintParameters, Language $language ) {
+		$syntaxClarificationId = $this->config->get( 'WBQualityConstraintsSyntaxClarificationId' );
+
+		if ( array_key_exists( $syntaxClarificationId, $constraintParameters ) ) {
+			$languageCodes = $language->getFallbackLanguages();
+			array_unshift( $languageCodes, $language->getCode() );
+
+			$syntaxClarifications = $this->parseMultilingualTextParameter(
+				$constraintParameters[$syntaxClarificationId],
+				$syntaxClarificationId
+			);
+
+			foreach ( $languageCodes as $languageCode ) {
+				if ( array_key_exists( $languageCode, $syntaxClarifications ) ) {
+					return $syntaxClarifications[$languageCode];
+				}
+			}
+
+			return null;
 		} else {
 			return null;
 		}

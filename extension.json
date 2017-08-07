@@ -309,6 +309,11 @@
 			"description": "The property ID of the 'format as a regular expression' property (data type: string), which specifies the format parameter of a 'format' constraint.",
 			"public": true
 		},
+		"WBQualityConstraintsSyntaxClarificationId": {
+			"value": "P2916",
+			"description": "The property ID of the 'syntax clarification' property (data type: monolingual text), which specifies human-readable explanations of a 'format' constraint.",
+			"public": true
+		},
 		"WBQualityConstraintsYearUnit": {
 			"value": "http://www.wikidata.org/entity/Q577",
 			"description": "The unit used for a quantity that represents a difference between two dates, in years.",
