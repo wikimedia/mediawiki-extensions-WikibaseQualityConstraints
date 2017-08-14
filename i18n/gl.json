@@ -35,6 +35,7 @@
 	"wbqc-badparameters-short": "Parámetros incorrectos",
 	"wbqc-parameterissues-short": "Problemas complexos",
 	"wbqc-problems-short": "Problemas",
+	"wbqc-constrainttypehelp-long": "Páxina de axuda para este tipo de restrición",
 	"apihelp-wbcheckconstraints-param-constraintid": "Filtro opcional para devolver só as constantes que teñen o ID de constante especificado",
 	"apihelp-wbcheckconstraints-example-1": "Verificar tódalas constantes sobre os elementos Q5 e Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Verificar tódalas constantes nunha soa instrucción.",

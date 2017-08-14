@@ -98,7 +98,7 @@
 	"wbqc-violation-message-mandatory-qualifier": "Il manque un qualificateur « $2 » dans l'instruction « $1 ».",
 	"wbqc-violation-message-multi-value": "Cette propriété devrait avoir plusieurs valeurs. C’est-à-dire qu’il devrait y avoir plus d’une déclaration utilisant cette propriété.",
 	"wbqc-violation-message-one-of": "La valeur de $1 devrait être {{PLURAL:$2|1=$4.|2=$4 ou $5.|une des suivantes :$3}}",
-	"wbqc-violation-message-qualifier": "La propriété devrait être utilisée uniquement comme qualificateur.",
+	"wbqc-violation-message-qualifier": "La propriété devrait être utilisée uniquement comme qualificatif.",
 	"wbqc-violation-message-no-qualifiers": "Les déclarations pour $1 ne doivent comporter aucun qualificatif.",
 	"wbqc-violation-message-qualifiers": "$2 n’est pas un qualificatif valable pour $1 – {{PLURAL:$3|1=le seul qualificatif valide est $5.|2=les seuls qualificatifs valides sont $5 et $6.|les seuls qualificatifs valides sont :$4}}",
 	"wbqc-violation-message-range-parameters-needed": "Les propriétés avec des valeurs de type «  $1  » ayant une contrainte «  $4  » doivent avoir les paramètres «  $2  » et «  $3  ».",
