@@ -204,6 +204,22 @@ EOF;
 	}
 
 	/**
+	 * Check whether the text content of an error response indicates a query timeout.
+	 *
+	 * @param string $responseContent
+	 * @return boolean
+	 */
+	public function isTimeout( $responseContent ) {
+		$timeoutRegex = implode( '|', array_map(
+			function ( $fqn ) {
+				return preg_quote( $fqn, '/' );
+			},
+			$this->config->get( 'WBQualityConstraintsSparqlTimeoutExceptionClasses' )
+		) );
+		return (bool) preg_match( '/' . $timeoutRegex . '/', $responseContent );
+	}
+
+	/**
 	 * Runs a query against the configured endpoint and returns the results.
 	 *
 	 * @param string $query The query, unencoded (plain string).
@@ -256,8 +272,7 @@ EOF;
 				"wikibase.quality.constraints.sparql.error.http.{$request->getStatus()}"
 			);
 
-			$timeoutExceptionClass = 'com.bigdata.bop.engine.QueryTimeoutException';
-			if ( strpos( $request->getContent(), " $timeoutExceptionClass:" ) !== false ) {
+			if ( $this->isTimeout( $request->getContent() ) ) {
 				$this->dataFactory->increment(
 					'wikibase.quality.constraints.sparql.error.timeout'
 				);

@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\Helper;
 
+use HashConfig;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
@@ -157,6 +158,77 @@ EOF;
 			);
 			$this->assertViolation( $checkResult, $messageKey );
 		}
+	}
+
+	/**
+	 * @dataProvider isTimeoutProvider
+	 */
+	public function testIsTimeout( $content, $expected ) {
+		$sparqlHelper = new SparqlHelper(
+			$this->getDefaultConfig(),
+			new RdfVocabulary(
+				'http://www.wikidata.org/entity/',
+				'http://www.wikidata.org/wiki/Special:EntityData/'
+			),
+			new ItemIdParser()
+		);
+
+		$actual = $sparqlHelper->isTimeout( $content );
+
+		$this->assertSame( $expected, $actual );
+	}
+
+	public function testIsTimeoutRegex() {
+		$sparqlHelper = new SparqlHelper(
+			new HashConfig( [
+				'WBQualityConstraintsSparqlTimeoutExceptionClasses' => [
+					'(?!this may look like a regular expression)',
+					'/but should not be interpreted as one/',
+					'(x+x+)+y',
+				]
+			] ),
+			new RdfVocabulary(
+				'http://www.wikidata.org/entity/',
+				'http://www.wikidata.org/wiki/Special:EntityData/'
+			),
+			new ItemIdParser()
+		);
+		$content = '(x+x+)+y';
+
+		$actual = $sparqlHelper->isTimeout( $content );
+
+		$this->assertTrue( $actual );
+	}
+
+	public function isTimeoutProvider() {
+		return [
+			'empty' => [
+				'',
+				false
+			],
+			'syntax error' => [
+				'org.openrdf.query.MalformedQueryException: ' .
+					'Encountered "<EOF>" at line 1, column 6.',
+				false
+			],
+			'QueryTimeoutException' => [
+				'java.util.concurrent.ExecutionException: ' .
+					'java.util.concurrent.ExecutionException: ' .
+					'org.openrdf.query.QueryInterruptedException: ' .
+					'java.lang.RuntimeException: ' .
+					'java.util.concurrent.ExecutionException: ' .
+					'com.bigdata.bop.engine.QueryTimeoutException: ' .
+					'Query deadline is expired.',
+				true
+			],
+			'TimeoutException' => [
+				"java.util.concurrent.TimeoutException\n" .
+					"\tat java.util.concurrent.FutureTask.get(FutureTask.java:205)\n" .
+					"\tat com.bigdata.rdf.sail.webapp.BigdataServlet.submitApiTask(BigdataServlet.java:289)\n" .
+					"\tat com.bigdata.rdf.sail.webapp.QueryServlet.doSparqlQuery(QueryServlet.java:653)\n",
+				true
+			],
+		];
 	}
 
 }
