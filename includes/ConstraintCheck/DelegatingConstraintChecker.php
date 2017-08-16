@@ -394,7 +394,7 @@ class DelegatingConstraintChecker {
 						"only known status is 'mandatory'"
 					);
 				}
-				$result->getParameters['constraint_status'] = $constraintStatus;
+				$result->addParameter( 'constraint_status', $constraintStatus );
 			}
 
 			$this->loggingHelper->logConstraintCheck(

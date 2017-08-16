@@ -164,6 +164,14 @@ class CheckResult {
 	}
 
 	/**
+	 * @param string $key
+	 * @param $value
+	 */
+	public function addParameter( $key, $value ) {
+		$this->parameters[$key][] = $value;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getStatus() {

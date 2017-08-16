@@ -14,6 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikimedia\Rdbms\DBUnexpectedError;
@@ -50,7 +51,7 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  */
 class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters, TitleParserMock;
+	use ConstraintParameters, ResultAssertions, TitleParserMock;
 
 	/**
 	 * @var DelegatingConstraintChecker
@@ -357,8 +358,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q6' )
 			->andStatement( NewStatement::noValueFor( 'P6' ) )
 			->build();
-		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
-		$this->assertEquals( 'violation', $result[ 0 ]->getStatus(), 'Should be a violation' );
+
+		$results = $this->constraintChecker->checkAgainstConstraints( $entity );
+
+		$this->assertCount( 1, $results );
+		$result = $results[0];
+		$this->assertViolation( $result );
+		$this->assertArrayHasKey( 'constraint_status', $result->getParameters() );
+		$this->assertSame( [ 'mandatory' ], $result->getParameters()[ 'constraint_status' ] );
 	}
 
 	public function testCheckAgainstConstraintsWithNonMandatoryConstraint() {
