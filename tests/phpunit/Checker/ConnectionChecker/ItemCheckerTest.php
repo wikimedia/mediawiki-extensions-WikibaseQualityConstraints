@@ -50,13 +50,13 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	public function testItemConstraintInvalid() {
 		$entity = NewItem::withId( 'Q4' )
 			->build();
-		$constraintParameters = [
-			'property' => 'P2'
-		];
+		$constraintParameters = $this->propertyParameter( 'P2' );
+
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-item' );
 	}
 
@@ -64,14 +64,13 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q5' )
 			->andStatement( NewStatement::forProperty( 'P2' )->withValue( new ItemId( 'Q42' ) ) )
 			->build();
-		$constraintParameters = [
-			'property' => 'P2'
-		];
+		$constraintParameters = $this->propertyParameter( 'P2' );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -79,15 +78,16 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q5' )
 			->andStatement( NewStatement::forProperty( 'P2' )->withValue( new ItemId( 'Q42' ) ) )
 			->build();
-		$constraintParameters = [
-			'property' => 'P2',
-			'item' => 'Q1'
-		];
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P2' ),
+			$this->itemsParameter( [ 'Q1' ] )
+		);
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-item' );
 	}
 
@@ -95,35 +95,16 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q5' )
 			->andStatement( NewStatement::forProperty( 'P2' )->withValue( new ItemId( 'Q42' ) ) )
 			->build();
-		$constraintParameters = [
-			'property' => 'P2',
-			'item' => 'Q42'
-		];
-		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertCompliance( $checkResult );
-	}
-
-	public function testItemConstraintPropertyAndItemWithStatement() {
-		$entity = NewItem::withId( 'Q5' )
-			->andStatement( NewStatement::forProperty( 'P2' )->withValue( new ItemId( 'Q42' ) ) )
-			->build();
-
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
-		$config = $this->getDefaultConfig();
-		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
-		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-		$constraintParameters = [
-			$propertyId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( 'P2' ) ) ) ) ],
-			$qualifierId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $qualifierId ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) ]
-		];
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P2' ),
+			$this->itemsParameter( [ 'Q42' ] )
+		);
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 

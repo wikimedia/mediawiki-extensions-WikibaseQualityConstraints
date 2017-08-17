@@ -67,25 +67,10 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q7' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'property' => 'P1'
-		];
+		$constraintParameters = $this->propertyParameter( 'P1' );
+
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertCompliance( $checkResult );
-	}
 
-	public function testInverseConstraintValidWithStatement() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-
-		$value = new EntityIdValue( new ItemId( 'Q7' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
-		$propertyId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
-		$constraintParameters = [
-			$propertyId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( 'P1' ) ) ) ) ]
-		];
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
 	}
 
@@ -93,9 +78,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$entity = new Property( new PropertyId( 'P1' ), null, 'wikibase-property' );
 		$value = new EntityIdValue( new PropertyId( 'P2' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P3' ), $value ) );
-		$constraintParameters = [
-			'property' => 'P3'
-		];
+		$constraintParameters = $this->propertyParameter( 'P3' );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 
@@ -108,10 +91,10 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q8' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'property' => 'P1'
-		];
+		$constraintParameters = $this->propertyParameter( 'P1' );
+
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-inverse' );
 	}
 
@@ -121,10 +104,10 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new StringValue( 'Q7' );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'property' => 'P1'
-		];
+		$constraintParameters = $this->propertyParameter( 'P1' );
+
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
@@ -134,10 +117,10 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'property' => 'P1'
-		];
+		$constraintParameters = $this->propertyParameter( 'P1' );
+
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
 
@@ -146,10 +129,10 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 
-		$constraintParameters = [
-			'property' => 'P1'
-		];
+		$constraintParameters = $this->propertyParameter( 'P1' );
+
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
+
 		$this->assertCompliance( $checkResult );
 	}
 

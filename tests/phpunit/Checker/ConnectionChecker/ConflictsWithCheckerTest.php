@@ -65,9 +65,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'property' => 'P2'
-		];
+		$constraintParameters = $this->propertyParameter( 'P2' );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
@@ -79,9 +77,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'property' => 'P2'
-		];
+		$constraintParameters = $this->propertyParameter( 'P2' );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-conflicts-with-property' );
@@ -93,10 +89,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'item' => 'Q1',
-			'property' => 'P2'
-		];
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P2' ),
+			$this->itemsParameter( [ 'Q1' ] )
+		);
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
@@ -108,10 +104,10 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'item' => 'Q42',
-			'property' => 'P2'
-		];
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P2' ),
+			$this->itemsParameter( [ 'Q42' ] )
+		);
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-conflicts-with-claim' );
@@ -123,32 +119,13 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
 
-		$constraintParameters = [
-			'item' => 'Q42',
-			'property' => 'P2'
-		];
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P2' ),
+			$this->itemsParameter( [ 'Q42' ] )
+		);
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
-	}
-
-	public function testConflictsWithConstraintWithStatement() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-
-		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
-		$config = $this->getDefaultConfig();
-		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
-		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-		$constraintParameters = [
-			$propertyId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $propertyId ), new EntityIdValue( new PropertyId( 'P2' ) ) ) ) ],
-			$qualifierId => [ $snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $qualifierId ), new EntityIdValue( new ItemId( 'Q42' ) ) ) ) ]
-		];
-
-		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-conflicts-with-claim' );
 	}
 
 	public function testConflictsWithConstraintDeprecatedStatement() {
