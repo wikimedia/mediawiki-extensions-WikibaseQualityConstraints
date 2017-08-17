@@ -12,7 +12,7 @@
 	"wbqc-constraintreport-form-section": "Check constraints for entity",
 	"wbqc-constraintreport-form-submit-label": "Check",
 	"wbqc-constraintreport-form-entityid-label": "Entity ID:",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx or Pxx",
 	"wbqc-constraintreport-result-headline": "Result for",
 	"wbqc-constraintreport-invalid-entity-id": "Invalid entity ID.",
 	"wbqc-constraintreport-not-existent-entity": "Entity does not exist.",
