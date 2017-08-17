@@ -65,172 +65,130 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 
 	public function testTypeConstraintInstanceValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$constraintParameters = [
-			'class' => 'Q100,Q101',
-			'relation' => 'instance'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTypeConstraintInstanceValidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$constraintParameters = [
-			'class' => 'Q100,Q101',
-			'relation' => 'instance'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTypeConstraintInstanceValidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$constraintParameters = [
-			'class' => 'Q100,Q101',
-			'relation' => 'instance'
-		];
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertCompliance( $checkResult );
-	}
-
-	public function testTypeConstraintInstanceValidWithStatement() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
-		$classId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
-		$relationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
-		$constraintParameters = [
-			$classId => [
-				$snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $classId ), new EntityIdValue( new ItemId( 'Q100' ) ) ) ),
-				$snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $classId ), new EntityIdValue( new ItemId( 'Q101' ) ) ) )
-			],
-			$relationId => [
-				$snakSerializer->serialize( new PropertyValueSnak(
-					new PropertyId( $relationId ),
-					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfRelationId' ) ) )
-				) )
-			]
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTypeConstraintSubclassValid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$constraintParameters = [
-			'class' => 'Q100,Q101',
-			'relation' => 'subclass'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'subclass' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTypeConstraintSubclassValidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$constraintParameters = [
-			'class' => 'Q100,Q101',
-			'relation' => 'subclass'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'subclass' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTypeConstraintSubclassValidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
-		$constraintParameters = [
-			'class' => 'Q100,Q101',
-			'relation' => 'subclass'
-		];
-		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
-		$this->assertCompliance( $checkResult );
-	}
-
-	public function testTypeConstraintSubclassValidWithStatement() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
-		$classId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
-		$relationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
-		$constraintParameters = [
-			$classId => [
-				$snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $classId ), new EntityIdValue( new ItemId( 'Q100' ) ) ) ),
-				$snakSerializer->serialize( new PropertyValueSnak( new PropertyId( $classId ), new EntityIdValue( new ItemId( 'Q101' ) ) ) )
-			],
-			$relationId => [
-				$snakSerializer->serialize( new PropertyValueSnak(
-					new PropertyId( $relationId ),
-					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfRelationId' ) ) )
-				) )
-			]
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'subclass' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTypeConstraintInstanceInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$constraintParameters = [
-			'class' => 'Q200,Q201',
-			'relation' => 'instance'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q200', 'Q201' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
 
 	public function testTypeConstraintInstanceInvalidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$constraintParameters = [
-			'class' => 'Q200,Q201',
-			'relation' => 'instance'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q200', 'Q201' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
 
 	public function testTypeConstraintInstanceInvalidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$constraintParameters = [
-			'class' => 'Q200,Q201',
-			'relation' => 'instance'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q200', 'Q201' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
 
 	public function testTypeConstraintSubclassInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$constraintParameters = [
-			'class' => 'Q200,Q201',
-			'relation' => 'subclass'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'subclass' ),
+			$this->classParameter( [ 'Q200', 'Q201' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-subclass' );
 	}
 
 	public function testTypeConstraintSubclassInvalidWithIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$constraintParameters = [
-			'class' => 'Q200,Q201' ,
-			'relation' => 'subclass'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'subclass' ),
+			$this->classParameter( [ 'Q200', 'Q201' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-subclass' );
 	}
 
 	public function testTypeConstraintSubclassInvalidWithMoreIndirection() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
-		$constraintParameters = [
-			'class' => 'Q200,Q201',
-			'relation' => 'subclass'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'subclass' ),
+			$this->classParameter( [ 'Q200', 'Q201' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-subclass' );
 	}
 
 	public function testTypeConstraintSubclassCycle() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q7' ) );
-		$constraintParameters = [
-			'class' => 'Q100,Q101',
-			'relation' => 'instance'
-		];
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
 		$checkResult = $this->checker->checkConstraint( $this->typeStatement, $this->getConstraintMock( $constraintParameters ), $entity );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-type-instance' );
 	}
