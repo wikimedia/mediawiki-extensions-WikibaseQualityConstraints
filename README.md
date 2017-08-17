@@ -115,3 +115,28 @@ maintenance/exportEntityMapping
 ```
 
 [WikibaseImport]: https://github.com/filbertkm/WikibaseImport
+
+### Running the tests
+
+There are two ways to run the tests of this extension:
+
+- Using the included configuration file:
+
+  ```sh
+  # from the MediaWiki installation folder
+  php tests/phpunit/phpunit.php -c extensions/WikibaseQualityConstraints/phpunit.xml.dist
+  ```
+
+  This creates test coverage reports
+  (in `tests/coverage/` and `build/logs/clover.xml`)
+  and is therefore fairly slow.
+
+- Without the configuration file:
+
+  ```sh
+  # from the MediaWiki installation folder
+  php tests/phpunit/phpunit.php extensions/WikibaseQualityConstraints/tests/phpunit/
+  ```
+
+  This runs the tests without coverage report
+  and is therefore much faster.
