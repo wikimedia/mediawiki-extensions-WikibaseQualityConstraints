@@ -67,10 +67,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	public function testRangeConstraintWithinRange() {
 		$value = new DecimalValue( 3.1415926536 );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
-		$constraintParameters = [
-			'minimum_quantity' => 0,
-			'maximum_quantity' => 10
-		];
+		$constraintParameters = $this->rangeParameter( 'quantity', 0, 10 );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertCompliance( $checkResult );
 	}
@@ -78,10 +75,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	public function testRangeConstraintTooSmall() {
 		$value = new DecimalValue( 42 );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
-		$constraintParameters = [
-			'minimum_quantity' => 100,
-			'maximum_quantity' => 1000
-		];
+		$constraintParameters = $this->rangeParameter( 'quantity', 100, 1000 );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-closed' );
 	}
@@ -89,82 +83,49 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	public function testRangeConstraintTooBig() {
 		$value = new DecimalValue( 3.141592 );
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), new QuantityValue( $value, '1', $value, $value ) ) );
-		$constraintParameters = [
-			'minimum_quantity' => 0,
-			'maximum_quantity' => 1
-		];
+		$constraintParameters = $this->rangeParameter( 'quantity', 0, 1 );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-closed' );
 	}
 
 	public function testRangeConstraintTimeWithinRange() {
-		$min = '+00000001960-01-01T00:00:00Z';
-		$max = '+00000001980-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = [
-			'minimum_quantity' => $min,
-			'maximum_quantity' => $max
-		];
+		$constraintParameters = $this->rangeParameter( 'date', '1960', '1980' );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinRangeToNow() {
-		$min = '+00000001960-01-01T00:00:00Z';
-		$max = 'now';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = [
-			'minimum_quantity' => $min,
-			'maximum_quantity' => $max
-		];
+		$constraintParameters = $this->rangeParameter( 'date', '1960', 'now' );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinYearRange() {
-		$min = '1960';
-		$max = '1980';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = [
-			'minimum_quantity' => $min,
-			'maximum_quantity' => $max
-		];
+		$constraintParameters = $this->rangeParameter( 'date', '1960', '1980' );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeWithinYearMonthDayRange() {
-		$min = '1969-12-31';
-		$max = '1970-01-02';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = [
-			'minimum_quantity' => $min,
-			'maximum_quantity' => $max
-		];
+		$constraintParameters = $this->rangeParameter( 'date', '1969-12-31', '1970-01-02' );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testRangeConstraintTimeTooEarly() {
-		$min = '+00000001975-01-01T00:00:00Z';
-		$max = '+00000001980-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = [
-			'minimum_quantity' => $min,
-			'maximum_quantity' => $max
-		];
+		$constraintParameters = $this->rangeParameter( 'date', '1975', '1980' );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed' );
 	}
 
 	public function testRangeConstraintTimeTooLate() {
-		$min = '+00000001960-01-01T00:00:00Z';
-		$max = '+00000001965-01-01T00:00:00Z';
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), $this->timeValue ) );
-		$constraintParameters = [
-			'minimum_quantity' => $min,
-			'maximum_quantity' => $max
-		];
+		$constraintParameters = $this->rangeParameter( 'date', '1960', '1965' );
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed' );
 	}
@@ -178,7 +139,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	public function testRangeConstraintLeftOpenWithinRange() {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( -10 ) ) );
-		$constraintParameters = $this->rangeParameter( 'quantity', null, UnboundedQuantityValue::newFromNumber( 0 ) );
+		$constraintParameters = $this->rangeParameter( 'quantity', null, 0 );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 
@@ -187,7 +148,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	public function testRangeConstraintLeftOpenTooSmall() {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( 10 ) ) );
-		$constraintParameters = $this->rangeParameter( 'quantity', null, UnboundedQuantityValue::newFromNumber( 0 ) );
+		$constraintParameters = $this->rangeParameter( 'quantity', null, 0 );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 
@@ -196,7 +157,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	public function testRangeConstraintRightOpenWithinRange() {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( 10 ) ) );
-		$constraintParameters = $this->rangeParameter( 'quantity', UnboundedQuantityValue::newFromNumber( 0 ), null );
+		$constraintParameters = $this->rangeParameter( 'quantity', 0, null );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 
@@ -205,7 +166,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	public function testRangeConstraintRightOpenTooSmall() {
 		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P1457' ), UnboundedQuantityValue::newFromNumber( -10 ) ) );
-		$constraintParameters = $this->rangeParameter( 'quantity', UnboundedQuantityValue::newFromNumber( 0 ), null );
+		$constraintParameters = $this->rangeParameter( 'quantity', 0, null );
 
 		$checkResult = $this->checker->checkConstraint( $statement, $this->getConstraintMock( $constraintParameters ), $this->getEntity() );
 

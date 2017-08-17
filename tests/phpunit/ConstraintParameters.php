@@ -13,9 +13,12 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Snak\Snak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use Wikibase\Repo\Parsers\TimeParserFactory;
 use Wikibase\Repo\WikibaseRepo;
 
 /**
@@ -163,9 +166,40 @@ trait ConstraintParameters {
 	}
 
 	/**
+	 * Convert an abbreviated value for a range endpoint
+	 * to a full snak for range constraint parameters.
+	 * A numeric argument means a numeric endpoint,
+	 * 'now' corresponds to a somevalue snak,
+	 * any other string is parsed as a time value,
+	 * a DataValue is used directly,
+	 * and null corresponds to a novalue snak (open-ended range).
+	 *
+	 * @param DataValue|int|float|string|null $value
+	 * @param string $property property ID serialization
+	 * @return Snak
+	 */
+	private function rangeEndpoint( $value, $property ) {
+		$propertyId = new PropertyId( $property );
+		if ( $value === null ) {
+			return new PropertyNoValueSnak( $propertyId );
+		} else {
+			if ( is_string( $value ) ) {
+				if ( $value === 'now' ) {
+					return new PropertySomeValueSnak( $propertyId );
+				}
+				$timeParser = ( new TimeParserFactory() )->getTimeParser();
+				$value = $timeParser->parse( $value );
+			} elseif ( is_numeric( $value ) ) {
+				$value = UnboundedQuantityValue::newFromNumber( $value );
+			}
+			return new PropertyValueSnak( $propertyId, $value );
+		}
+	}
+
+	/**
 	 * @param string $type 'quantity' or 'time'
-	 * @param DataValue|int|float|null $min lower boundary, or null to signify no lower boundary
-	 * @param DataValue|int|float|null $max upper boundary, or null to signfiy no upper boundary
+	 * @param DataValue|int|float|string|null $min lower boundary, see rangeEndpoint() for details
+	 * @param DataValue|int|float|string|null $max upper boundary, see rangeEndpoint() for details
 	 * @return array
 	 */
 	public function rangeParameter( $type, $min, $max ) {
@@ -173,22 +207,8 @@ trait ConstraintParameters {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimum' . $configKey . 'Id' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximum' . $configKey . 'Id' );
-		if ( $min === null ) {
-			$minimumSnak = new PropertyNoValueSnak( new PropertyId( $minimumId ) );
-		} else {
-			if ( is_numeric( $min ) ) {
-				$min = UnboundedQuantityValue::newFromNumber( $min );
-			}
-			$minimumSnak = new PropertyValueSnak( new PropertyId( $minimumId ), $min );
-		}
-		if ( $max === null ) {
-			$maximumSnak = new PropertyNoValueSnak( new PropertyId( $maximumId ) );
-		} else {
-			if ( is_numeric( $max ) ) {
-				$max = UnboundedQuantityValue::newFromNumber( $max );
-			}
-			$maximumSnak = new PropertyValueSnak( new PropertyId( $maximumId ), $max );
-		}
+		$minimumSnak = $this->rangeEndpoint( $min, $minimumId );
+		$maximumSnak = $this->rangeEndpoint( $max, $maximumId );
 		$snakSerializer = $this->getSnakSerializer();
 		return [
 			$minimumId => [ $snakSerializer->serialize( $minimumSnak ) ],
