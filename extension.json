@@ -124,6 +124,14 @@
 			"description": "The maximum runtime for queries on the configured SPARQL endpoint, in milliseconds.",
 			"public": true
 		},
+		"WBQualityConstraintsSparqlTimeoutExceptionClasses": {
+			"value": [
+				"com.bigdata.bop.engine.QueryTimeoutException",
+				"java.util.concurrent.TimeoutException"
+			],
+			"description": "Strings that, when they occur inside an error response of the SPARQL endpoint, indicate that the error is a query timeout. On the Wikidata Query Service, these are fully qualified names of exception classes.",
+			"public": true
+		},
 		"WBQualityConstraintsCheckFormatConstraint": {
 			"value": true,
 			"description": "Whether or not to check the 'format' constraint. If this flag is set to false, any check of the 'format' constraint will return a 'todo' status with the 'wbqc-violation-message-security-reason' message.",
