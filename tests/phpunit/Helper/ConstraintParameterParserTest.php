@@ -36,18 +36,12 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var SnakSerializer
-	 */
-	private $snakSerializer;
-
-	/**
 	 * @var Constraint
 	 */
 	private $constraint;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
 		$this->constraint = new Constraint( 'constraint ID', new PropertyId( 'P1' ), 'constraint type Q-ID', [] );
 	}
 
@@ -56,7 +50,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	 * @return array
 	 */
 	private function serializeItemId( $itemId ) {
-		return $this->snakSerializer->serialize(
+		return $this->getSnakSerializer()->serialize(
 			new PropertyValueSnak(
 				new PropertyId( 'P1' ),
 				new EntityIdValue( new ItemId( $itemId ) )
@@ -69,7 +63,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	 * @return array
 	 */
 	private function serializePropertyId( $propertyId ) {
-		return $this->snakSerializer->serialize(
+		return $this->getSnakSerializer()->serialize(
 			new PropertyValueSnak(
 				new PropertyId( 'P1' ),
 				new EntityIdValue( new PropertyId( $propertyId ) )
@@ -135,7 +129,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[
 					$classId => [
-						$this->snakSerializer->serialize( new PropertyNoValueSnak( new PropertyId( $classId ) ) )
+						$this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( $classId ) ) )
 					]
 				],
 				'constraint'
@@ -152,7 +146,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[
 					$classId => [
-						$this->snakSerializer->serialize( new PropertyValueSnak(
+						$this->getSnakSerializer()->serialize( new PropertyValueSnak(
 							new PropertyId( $classId ),
 							new StringValue( 'Q100' )
 						) )
@@ -199,7 +193,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[
 					$relationId => [
-						$this->snakSerializer->serialize( new PropertyNoValueSnak( new PropertyId( $relationId ) ) )
+						$this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( $relationId ) ) )
 					]
 				],
 				'constraint'
@@ -216,7 +210,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[
 					$relationId => [
-						$this->snakSerializer->serialize( new PropertyValueSnak(
+						$this->getSnakSerializer()->serialize( new PropertyValueSnak(
 							new PropertyId( $relationId ),
 							new StringValue( 'instance' )
 						) )
@@ -297,7 +291,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[
 					$propertyId => [
-						$this->snakSerializer->serialize( new PropertyNoValueSnak( new PropertyId( $propertyId ) ) )
+						$this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( $propertyId ) ) )
 					]
 				],
 				'constraint'
@@ -314,7 +308,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[
 					$propertyId => [
-						$this->snakSerializer->serialize( new PropertyValueSnak(
+						$this->getSnakSerializer()->serialize( new PropertyValueSnak(
 							new PropertyId( $propertyId ),
 							new StringValue( 'P1' )
 						) )
@@ -369,8 +363,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$qualifierId => [
 					$this->serializeItemId( 'Q100' ),
 					$this->serializeItemId( 'Q101' ),
-					$this->snakSerializer->serialize( new PropertySomeValueSnak( new PropertyId( 'P1' ) ) ),
-					$this->snakSerializer->serialize( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+					$this->getSnakSerializer()->serialize( new PropertySomeValueSnak( new PropertyId( 'P1' ) ) ),
+					$this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
 				]
 			],
 			'',
@@ -423,7 +417,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[
 					$qualifierId => [
-						$this->snakSerializer->serialize( new PropertyValueSnak(
+						$this->getSnakSerializer()->serialize( new PropertyValueSnak(
 							new PropertyId( 'P1' ),
 							new StringValue( 'Q100' )
 						) )
@@ -444,7 +438,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[
 					$qualifierId => [
-						$this->snakSerializer->serialize( new PropertyValueSnak(
+						$this->getSnakSerializer()->serialize( new PropertyValueSnak(
 							new PropertyId( 'P1' ),
 							new EntityIdValue( new PropertyId( 'P100' ) )
 						) )
@@ -487,7 +481,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$config = $this->getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$parsed = $this->getConstraintParameterParser()->parsePropertiesParameter(
-			[ $propertyId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( new PropertyId( $propertyId ) ) ) ] ],
+			[ $propertyId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( $propertyId ) ) ) ] ],
 			''
 		);
 		$this->assertEquals( [], $parsed );
@@ -503,8 +497,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
-				$minimumId => [ $this->snakSerializer->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
-				$maximumId => [ $this->snakSerializer->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
+				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
 			'',
 			'quantity'
@@ -522,8 +516,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
-				$minimumId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
-				$maximumId => [ $this->snakSerializer->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
+				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
 			'',
 			'quantity'
@@ -541,8 +535,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
-				$minimumId => [ $this->snakSerializer->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
-				$maximumId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
+				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 			],
 			'',
 			'quantity'
@@ -559,8 +553,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
-				$minimumId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
-				$maximumId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
+				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 			],
 			'',
 			'quantity'
@@ -595,8 +589,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseRangeParameter',
 			[
 				[
-					$minimumId => [ $this->snakSerializer->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
-					$maximumId => [ $this->snakSerializer->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
+					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
+					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 				],
 				'constraint',
 				'quantity'
@@ -616,8 +610,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
-				$minimumId => [ $this->snakSerializer->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
-				$maximumId => [ $this->snakSerializer->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
+				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
 			'',
 			'time'
@@ -653,8 +647,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
-				$minimumId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
-				$maximumId => [ $this->snakSerializer->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
+				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 			],
 			'',
 			'time'
@@ -673,8 +667,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
-				$minimumId => [ $this->snakSerializer->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
-				$maximumId => [ $this->snakSerializer->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
+				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 			],
 			'',
 			'time'
@@ -703,7 +697,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
 
 		$parsed = $this->getConstraintParameterParser()->parseNamespaceParameter(
-			[ $namespaceId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			[ $namespaceId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 			''
 		);
 
@@ -736,7 +730,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertThrowsConstraintParameterException(
 			'parseNamespaceParameter',
 			[
-				[ $namespaceId => [ $this->snakSerializer->serialize( $snak ) ] ],
+				[ $namespaceId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 				'constraint'
 			],
 			'wbqc-violation-message-parameter-string'
@@ -754,8 +748,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseNamespaceParameter',
 			[
 				[ $namespaceId => [
-					$this->snakSerializer->serialize( $snak1 ),
-					$this->snakSerializer->serialize( $snak2 )
+					$this->getSnakSerializer()->serialize( $snak1 ),
+					$this->getSnakSerializer()->serialize( $snak2 )
 				] ],
 				'constraint'
 			],
@@ -769,7 +763,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
 
 		$parsed = $this->getConstraintParameterParser()->parseFormatParameter(
-			[ $formatId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			[ $formatId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 			''
 		);
 
@@ -813,7 +807,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertThrowsConstraintParameterException(
 			'parseFormatParameter',
 			[
-				[ $formatId => [ $this->snakSerializer->serialize( $snak ) ] ],
+				[ $formatId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 				'constraint'
 			],
 			'wbqc-violation-message-parameter-string'
@@ -831,8 +825,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseFormatParameter',
 			[
 				[ $formatId => [
-					$this->snakSerializer->serialize( $snak1 ),
-					$this->snakSerializer->serialize( $snak2 )
+					$this->getSnakSerializer()->serialize( $snak1 ),
+					$this->getSnakSerializer()->serialize( $snak2 )
 				] ],
 				'constraint'
 			],
@@ -849,8 +843,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseExceptionParameter(
 			[ $exceptionId => [
-				$this->snakSerializer->serialize( $snak1 ),
-				$this->snakSerializer->serialize( $snak2 ),
+				$this->getSnakSerializer()->serialize( $snak1 ),
+				$this->getSnakSerializer()->serialize( $snak2 ),
 			] ]
 		);
 
@@ -895,7 +889,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$this->assertThrowsConstraintParameterException(
 			'parseExceptionParameter',
-			[ [ $exceptionId => [ $this->snakSerializer->serialize( $snak ) ] ] ],
+			[ [ $exceptionId => [ $this->getSnakSerializer()->serialize( $snak ) ] ] ],
 			'wbqc-violation-message-parameter-entity'
 		);
 	}
@@ -922,7 +916,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$snak = new PropertyValueSnak( new PropertyId( $constraintStatusId ), new EntityIdValue( new ItemId( $mandatoryId ) ) );
 
 		$parsed = $this->getConstraintParameterParser()->parseConstraintStatusParameter(
-			[ $constraintStatusId => [ $this->snakSerializer->serialize( $snak ) ] ]
+			[ $constraintStatusId => [ $this->getSnakSerializer()->serialize( $snak ) ] ]
 		);
 
 		$this->assertEquals( 'mandatory', $parsed );
@@ -950,7 +944,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$this->assertThrowsConstraintParameterException(
 			'parseConstraintStatusParameter',
-			[ [ $constraintStatusId => [ $this->snakSerializer->serialize( $snak ) ] ] ],
+			[ [ $constraintStatusId => [ $this->getSnakSerializer()->serialize( $snak ) ] ] ],
 			'wbqc-violation-message-parameter-oneof'
 		);
 	}
@@ -977,7 +971,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
 
 		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 			Language::factory( 'en' )
 		);
 
@@ -990,7 +984,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
 
 		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 			Language::factory( 'de' )
 		);
 
@@ -1003,7 +997,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
 
 		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 			Language::factory( 'de-at' )
 		);
 
@@ -1016,7 +1010,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
 
 		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 			Language::factory( 'tlh' )
 		);
 
@@ -1034,9 +1028,9 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
 			[ $syntaxClarificationId => [
-				$this->snakSerializer->serialize( $snak1 ),
-				$this->snakSerializer->serialize( $snak2 ),
-				$this->snakSerializer->serialize( $snak3 ),
+				$this->getSnakSerializer()->serialize( $snak1 ),
+				$this->getSnakSerializer()->serialize( $snak2 ),
+				$this->getSnakSerializer()->serialize( $snak3 ),
 			] ],
 			Language::factory( 'pt' )
 		);
@@ -1050,7 +1044,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
 
 		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->snakSerializer->serialize( $snak ) ] ],
+			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
 			Language::factory( 'pt' )
 		);
 
@@ -1077,8 +1071,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseSyntaxClarificationParameter',
 			[
 				[ $syntaxClarificationId => [
-					$this->snakSerializer->serialize( $snak1 ),
-					$this->snakSerializer->serialize( $snak2 ),
+					$this->getSnakSerializer()->serialize( $snak1 ),
+					$this->getSnakSerializer()->serialize( $snak2 ),
 				] ],
 				Language::factory( 'en' )
 			],
@@ -1095,7 +1089,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseSyntaxClarificationParameter',
 			[
 				[ $syntaxClarificationId => [
-					$this->snakSerializer->serialize( $snak )
+					$this->getSnakSerializer()->serialize( $snak )
 				] ],
 				Language::factory( 'en' )
 			],
@@ -1111,7 +1105,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseSyntaxClarificationParameter',
 			[
 				[ $syntaxClarificationId => [
-					$this->snakSerializer->serialize( $snak )
+					$this->getSnakSerializer()->serialize( $snak )
 				] ],
 				Language::factory( 'en' )
 			],
