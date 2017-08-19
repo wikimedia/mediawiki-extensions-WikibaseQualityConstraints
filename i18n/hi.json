@@ -2,9 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Sfic",
-			"Vishwanath"
+			"Vishwanath",
+			"Sachinkatiyar"
 		]
 	},
 	"wbqc-constraintreport-status-warning": "चेतावनी",
-	"wbqc-violation-message-parameter-string": "\"$1\" पैरामीटर का मान एक स्ट्रिंग होना चाहिए, \"$2\" नहीं होना चाहिए।"
+	"wbqc-violation-message-parameter-string": "\"$1\" पैरामीटर का मान एक स्ट्रिंग होना चाहिए, \"$2\" नहीं होना चाहिए।",
+	"wbqc-violation-message-parameter-monolingualtext": "पैरामीटर \"$1\" के लिए मान एक एकल टेक्स्ट होना चाहिए, \"$2\" नहीं।",
+	"wbqc-violation-message-parameter-single-per-language": "पैरामीटर \"$1\" में प्रति भाषा केवल एक मान होना चाहिए, लेकिन $2 ($3) के लिए कई मान हैं।"
 }
