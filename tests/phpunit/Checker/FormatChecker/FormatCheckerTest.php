@@ -117,42 +117,42 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement6,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement7,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement8,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement9,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement10,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 	}
 
 	public function testFormatConstraintTaxonName() {
@@ -220,42 +220,57 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement6,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement7,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement8,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement9,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
 
 		$result = $this->formatChecker->checkConstraint(
 			$statement10,
 			$this->getConstraintMock( $this->formatParameter( $pattern ) ),
 			$this->getEntity()
 		);
-		$this->assertViolation( $result );
+		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+	}
+
+	public function testFormatConstraintWithSyntaxClarification() {
+		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$statement = NewStatement::forProperty( $syntaxClarificationId )
+			->withValue( '' )
+			->build();
+
+		$result = $this->formatChecker->checkConstraint(
+			$statement,
+			$this->getConstraintMock( array_merge( $this->formatParameter( '.+' ), $this->syntaxClarificationParameter( 'en', 'nonempty' ) ) ),
+			$this->getEntity()
+		);
+
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 	}
 
 	public function testFormatConstraintNoStringValue() {
