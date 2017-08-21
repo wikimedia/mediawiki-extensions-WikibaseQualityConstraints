@@ -2,16 +2,22 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Specials\SpecialConstraintReport;
 
+use MediaWiki\MediaWikiServices;
 use SpecialPageTestBase;
 use Wikibase\DataModel\Services\Statement\GuidGenerator;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use DataValues\StringValue;
+use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\Property;
+use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Lib\SnakFormatter;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
@@ -66,8 +72,30 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	protected function newSpecialPage() {
-		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
+		$config = $this->getDefaultConfig();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
+		$constraintParameterRenderer = new ConstraintParameterRenderer(
+			new PlainEntityIdFormatter(),
+			$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
+				SnakFormatter::FORMAT_HTML,
+				new FormatterOptions()
+			)
+		);
+		$constraintReportFactory = new ConstraintReportFactory(
+			$wikibaseRepo->getEntityLookup(),
+			$wikibaseRepo->getPropertyDataTypeLookup(),
+			$wikibaseRepo->getStatementGuidParser(),
+			$config,
+			$constraintParameterRenderer,
+			new ConstraintParameterParser(
+				$config,
+				$wikibaseRepo->getBaseDataModelDeserializerFactory(),
+				$constraintParameterRenderer
+			),
+			$wikibaseRepo->getRdfVocabulary(),
+			$wikibaseRepo->getEntityIdParser(),
+			MediaWikiServices::getInstance()->getTitleParser()
+		);
 
 		return new SpecialConstraintReport(
 			$wikibaseRepo->getEntityLookup(),
@@ -78,7 +106,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
 			$constraintReportFactory->getConstraintChecker(),
-			$this->getDefaultConfig()
+			$config
 		);
 	}
 
@@ -126,14 +154,16 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 				[
 					'constraint_guid' => '1',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
-					'constraint_type_qid' => 'Multi value',
-					'constraint_parameters' => '{"constraint_status":"mandatory"}'
+					'constraint_type_qid' =>
+						$this->getDefaultConfig()->get( 'WBQualityConstraintsMultiValueConstraintId' ),
+					'constraint_parameters' => '{}'
 				],
 				[
 					'constraint_guid' => '3',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
-					'constraint_type_qid' => 'Single value',
-					'constraint_parameters' => '{"constraint_status":"mandatory"}'
+					'constraint_type_qid' =>
+						$this->getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ),
+					'constraint_parameters' => '{}'
 				]
 			]
 		);
@@ -255,10 +285,10 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			havingTextContents( '(wbqc-constraintreport-result-table-header-constraint)' )
 		);
 
-		$matchers['value status - violation'] = both(
-			tagMatchingOutline( '<span class="wbqc-status wbqc-status-violation"/>' )
+		$matchers['value status - warning'] = both(
+			tagMatchingOutline( '<span class="wbqc-status wbqc-status-warning"/>' )
 		)->andAlso(
-			havingTextContents( '(wbqc-constraintreport-status-violation)' )
+			havingTextContents( '(wbqc-constraintreport-status-warning)' )
 		);
 
 		$matchers['value status - compliance'] = both(
