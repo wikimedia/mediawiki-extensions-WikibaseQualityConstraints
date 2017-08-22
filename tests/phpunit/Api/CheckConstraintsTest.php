@@ -13,7 +13,6 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
-use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -135,7 +134,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				'',
 				$entityIdParser,
 				new StatementGuidValidator( $entityIdParser ),
-				new StatementGuidParser( $entityIdParser ),
+				$repo->getStatementGuidParser(),
 				$constraintChecker,
 				$constraintParameterRenderer,
 				$repo->getApiHelperFactory( RequestContext::getMain() ),
@@ -239,11 +238,11 @@ class CheckConstraintsTest extends ApiTestCase {
 	}
 
 	private function givenPropertyHasViolation( PropertyId $propertyId ) {
-		self::$checkerMap['violationConstraint'] = new FakeChecker( CheckResult::STATUS_VIOLATION );
+		self::$checkerMap['Q1234'] = new FakeChecker( CheckResult::STATUS_VIOLATION );
 		self::$constraintLookupContents[] = new Constraint(
-			'some guid',
+			'P1234$6a4d1930-922b-4c2e-b6e1-9a06bf04c2f8',
 			$propertyId,
-			'violationConstraint',
+			'Q1234',
 			[]
 		);
 	}

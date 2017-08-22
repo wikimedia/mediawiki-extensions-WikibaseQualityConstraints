@@ -342,20 +342,10 @@ class CheckConstraints extends ApiBase {
 			$typeItemId = $checkResult->getConstraint()->getConstraintTypeItemId();
 
 			$title = $this->entityTitleLookup->getTitleForId( $checkResult->getPropertyId() );
-			try {
-				$statementGuid = $this->statementGuidParser->parse( $constraintId );
-				// constraint statement
-				$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
-				// TODO link to the statement when possible (T169224)
-				$link = $title->getFullUrl() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );
-			} catch ( StatementGuidParsingException $e ) {
-				// constraint template on talk page
-				$typeLabel = htmlspecialchars( $typeItemId );
-				if ( !$title->canHaveTalkPage() ) {
-					throw new MWException( 'Properties namespace must define a talk namespace' );
-				}
-				$link = $title->getTalkPageIfDefined()->getFullUrl();
-			}
+			$statementGuid = $this->statementGuidParser->parse( $constraintId );
+			$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
+			// TODO link to the statement when possible (T169224)
+			$link = $title->getFullUrl() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );
 
 			$result = [
 				'status' => $checkResult->getStatus(),
