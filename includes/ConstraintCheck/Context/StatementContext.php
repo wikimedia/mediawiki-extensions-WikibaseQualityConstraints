@@ -32,7 +32,7 @@ class StatementContext extends AbstractContext {
 	}
 
 	public function getType() {
-		return 'statement';
+		return self::TYPE_STATEMENT;
 	}
 
 	public function getSnakRank() {

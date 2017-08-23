@@ -101,7 +101,7 @@ class LoggingHelper {
 		if ( !isset( $limitSeconds ) ) {
 			return;
 		}
-		if ( $context->getType() !== 'statement' ) {
+		if ( $context->getType() !== Context::TYPE_STATEMENT ) {
 			// TODO log less details but still log something
 			return;
 		}

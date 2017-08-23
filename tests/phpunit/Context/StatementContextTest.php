@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Test\Context;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 
 /**
@@ -42,7 +43,7 @@ class StatementContextTest extends \PHPUnit_Framework_TestCase {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$context = new StatementContext( $entity, $statement );
 
-		$this->assertSame( 'statement', $context->getType() );
+		$this->assertSame( Context::TYPE_STATEMENT, $context->getType() );
 	}
 
 	public function testGetSnakRank() {

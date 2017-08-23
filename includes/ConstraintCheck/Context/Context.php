@@ -12,6 +12,25 @@ use Wikibase\DataModel\Statement\Statement;
 interface Context {
 
 	/**
+	 * Type of a context for the main snak of a statement.
+	 * @see getType()
+	 * @var string
+	 */
+	const TYPE_STATEMENT = 'statement';
+	/**
+	 * Type of a context for a qualifier of a statement.
+	 * @see getType()
+	 * @var string
+	 */
+	const TYPE_QUALIFIER = 'qualifier';
+	/**
+	 * Type of a context for a snak of a reference of a statement.
+	 * @see getType()
+	 * @var string
+	 */
+	const TYPE_REFERENCE = 'reference';
+
+	/**
 	 * The snak that is being checked.
 	 *
 	 * @return Snak
@@ -29,7 +48,8 @@ interface Context {
 	 * The type / role of the snak that is being checked within this context.
 	 * Not to be confused with the snak’s own type (value/somevalue/novalue).
 	 *
-	 * @return string 'statement', 'qualifier', 'reference', or something else
+	 * @return string one of {@link self::TYPE_STATEMENT},
+	 * {@link self::TYPE_QUALIFIER} or {@link self::TYPE_REFERENCE}.
 	 */
 	public function getType();
 
@@ -38,16 +58,16 @@ interface Context {
 	 * Only the main snak of a statement has a rank.
 	 *
 	 * @return integer|null One of the Statement::RANK_* constants
-	 * if this is a 'statement' context,
+	 * if this is a statement context,
 	 * or null if it’s any other type of context.
 	 */
 	public function getSnakRank();
 
 	/**
 	 * The statement that this snak is the main snak of.
-	 * Only the snak of a 'statement' context has a statement.
+	 * Only the snak of a statement context has a statement.
 	 *
-	 * @return Statement|null The statement if this is a 'statement' context,
+	 * @return Statement|null The statement if this is a statement context,
 	 * or null if it’s any other type of context.
 	 */
 	public function getSnakStatement();

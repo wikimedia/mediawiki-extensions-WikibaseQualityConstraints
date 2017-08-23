@@ -56,7 +56,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
-		if ( $context->getType() !== 'statement' ) {
+		if ( $context->getType() !== Context::TYPE_STATEMENT ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO );
 		}
 

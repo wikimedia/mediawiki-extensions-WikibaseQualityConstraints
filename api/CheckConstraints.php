@@ -24,6 +24,7 @@ use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -358,7 +359,7 @@ class CheckConstraints extends ApiBase {
 			if ( $checkResult->getMessage() ) {
 				$result['message-html'] = $checkResult->getMessage();
 			}
-			if ( $checkResult->getContext()->getType() === 'statement' ) {
+			if ( $checkResult->getContext()->getType() === Context::TYPE_STATEMENT ) {
 				$result['claim'] = $checkResult->getContext()->getSnakStatement()->getGuid();
 			}
 
