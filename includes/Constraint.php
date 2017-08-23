@@ -81,14 +81,9 @@ class Constraint {
 	}
 
 	/**
-	 * There are two formats of constraint parameters that this method can return:
-	 *
-	 * 1. Statement parameters were imported from constraint statements by {@link UpdateConstraintsTableJob}.
-	 *    They are lists of snak array serializations, indexed by property ID serialization.
-	 * 2. Template parameters were imported from constraint templates on property talk pages.
-	 *    They are plain strings (e. g. 'Q5,Q6,Q7') indexed by template parameters (e. g. 'item', 'property').
-	 *
-	 * Support for template parameters will soon be removed.
+	 * The constraint parameters, imported from the qualifiers of the constraint statement.
+	 * Contains lists of snak array serializations, indexed by property ID serialization.
+	 * (The import is done by {@link UpdateConstraintsTableJob}.)
 	 *
 	 * @return array
 	 */
