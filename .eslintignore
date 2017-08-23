@@ -1,3 +1,4 @@
 node_modules/**
 vendor/**
+tests/coverage/**
 modules/gadget-skip.js
