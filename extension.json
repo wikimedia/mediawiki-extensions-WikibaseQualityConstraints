@@ -121,6 +121,16 @@
 			"description": "Whether to use the new API output format, based on the Wikibase entity JSON format, which can accomodate constraint results on qualifiers and references.",
 			"public": true
 		},
+		"WBQualityConstraintsCheckQualifiers": {
+			"value": false,
+			"description": "Whether to check constraints on qualifiers. Requires the new API output format (otherwise ignored).",
+			"public": true
+		},
+		"WBQualityConstraintsCheckReferences": {
+			"value": false,
+			"description": "Whether to check constraints on references. Requires the new API output format (otherwise ignored).",
+			"public": true
+		},
 		"WBQualityConstraintsSparqlEndpoint": {
 			"value": "",
 			"description": "The URL of the SPARQL endpoint. Should accept the URL parameters 'query', 'format' and 'maxQueryTimeMillis'. Set to '' (empty string, default) to disable SPARQL functionality.",
