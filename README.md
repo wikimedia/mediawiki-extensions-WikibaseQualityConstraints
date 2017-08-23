@@ -64,7 +64,12 @@ require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";
 
   * If you have a SPARQL endpoint, configure it in `WBQualityConstraintsSparqlEndpoint`.
 
+  * Alternatively, to check “format” constraints without running a full SPARQL server,
+    you can use the [minisparql] server.
+
 * Run `php maintenance/runScript.php extensions/WikibaseQualityConstraints/maintenance/ImportConstraintStatements.php`.
+
+[minisparql]: https://github.com/lucaswerkmeister/minisparql
 
 ### Gadget
 
