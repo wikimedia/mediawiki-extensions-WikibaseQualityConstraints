@@ -85,7 +85,11 @@ class CheckConstraintsTest extends ApiTestCase {
 			$termLookup = $repo->getTermLookup();
 			$termBuffer = $repo->getTermBuffer();
 			$languageFallbackChainFactory = new LanguageFallbackChainFactory();
-			$fallbackLabelDescLookupFactory = new LanguageFallbackLabelDescriptionLookupFactory( $languageFallbackChainFactory, $termLookup, $termBuffer );
+			$fallbackLabelDescLookupFactory = new LanguageFallbackLabelDescriptionLookupFactory(
+				$languageFallbackChainFactory,
+				$termLookup,
+				$termBuffer
+			);
 			$language = new Language();
 			$labelLookup = $fallbackLabelDescLookupFactory->newLabelDescriptionLookup( $language );
 			$entityIdFormatter = $factory->getEntityIdFormatter( $labelLookup );

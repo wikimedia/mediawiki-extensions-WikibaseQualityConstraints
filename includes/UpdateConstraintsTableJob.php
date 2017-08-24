@@ -103,7 +103,10 @@ class UpdateConstraintsTableJob extends Job {
 		return $parameters;
 	}
 
-	public function extractConstraintFromStatement( PropertyId $propertyId, Statement $constraintStatement ) {
+	public function extractConstraintFromStatement(
+		PropertyId $propertyId,
+		Statement $constraintStatement
+	) {
 		$constraintId = $constraintStatement->getGuid();
 		$constraintTypeQid = $constraintStatement->getMainSnak()->getDataValue()->getEntityId()->getSerialization();
 		$parameters = $this->extractParametersFromQualifiers( $constraintStatement->getQualifiers() );
@@ -115,7 +118,11 @@ class UpdateConstraintsTableJob extends Job {
 		);
 	}
 
-	public function importConstraintsForProperty( Property $property, ConstraintRepository $constraintRepo, PropertyId $propertyConstraintPropertyId ) {
+	public function importConstraintsForProperty(
+		Property $property,
+		ConstraintRepository $constraintRepo,
+		PropertyId $propertyConstraintPropertyId
+	) {
 		$constraintsStatements = $property->getStatements()->getByPropertyId( $propertyConstraintPropertyId );
 		$constraints = [];
 		foreach ( $constraintsStatements->getIterator() as $constraintStatement ) {
@@ -135,7 +142,11 @@ class UpdateConstraintsTableJob extends Job {
 		$this->constraintRepo->deleteForPropertyWhereConstraintIdIsStatementId( $propertyId );
 
 		$property = $this->entityLookup->getEntity( $propertyId );
-		$this->importConstraintsForProperty( $property, $this->constraintRepo, new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) ) );
+		$this->importConstraintsForProperty(
+			$property,
+			$this->constraintRepo,
+			new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) )
+		);
 	}
 
 }

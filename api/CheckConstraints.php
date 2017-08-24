@@ -317,7 +317,8 @@ class CheckConstraints extends ApiBase {
 	 * { "Q1": { "P1": { "Q1$1a2b...": [ { "status": "compliance", ... }, { ... } ] } } }
 	 *
 	 * @param CheckResult[] $checkResults
-	 * @param string[]|null $entityIds optionally, a list of entity IDs that should be present in the output even if there are no check results for them
+	 * @param string[]|null $entityIds optionally, a list of entity IDs that should be present
+	 * in the output even if there are no check results for them
 	 *
 	 * @return array
 	 */

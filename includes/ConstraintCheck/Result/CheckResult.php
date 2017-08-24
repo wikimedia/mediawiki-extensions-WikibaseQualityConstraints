@@ -81,11 +81,18 @@ class CheckResult {
 	/**
 	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param array $parameters (string => string[]) parsed constraint parameters ($constraint->getParameters() contains the unparsed parameters)
+	 * @param array $parameters (string => string[]) parsed constraint parameters
+	 * ($constraint->getParameters() contains the unparsed parameters)
 	 * @param string $status
 	 * @param string $message (sanitized HTML)
 	 */
-	public function __construct( Context $context, Constraint $constraint, array $parameters = [], $status = self::STATUS_TODO, $message = '' ) {
+	public function __construct(
+		Context $context,
+		Constraint $constraint,
+		array $parameters = [],
+		$status = self::STATUS_TODO,
+		$message = ''
+	) {
 		$this->context = $context;
 		$this->constraint = $constraint;
 		$this->parameters = $parameters;

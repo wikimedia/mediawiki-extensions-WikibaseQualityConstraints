@@ -6,9 +6,9 @@
 
 	<rule ref="Generic.Files.LineLength">
 		<properties>
-			<!-- FIXME: Should be lowered to at least 140. -->
-			<property name="lineLimit" value="166" />
-			<property name="absoluteLineLimit" value="166" />
+			<!-- FIXME: Should be lowered further, ideally to 100 (default). -->
+			<property name="lineLimit" value="140" />
+			<property name="absoluteLineLimit" value="140" />
 		</properties>
 	</rule>
 
