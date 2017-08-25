@@ -208,7 +208,8 @@ class ConstraintReportFactory {
 				$sparqlHelper = new SparqlHelper(
 					$this->config,
 					$this->rdfVocabulary,
-					$this->entityIdParser
+					$this->entityIdParser,
+					MediaWikiServices::getInstance()->getMainWANObjectCache()
 				);
 			} else {
 				$sparqlHelper = null;

@@ -6,6 +6,7 @@ use Config;
 use IBufferingStatsdDataFactory;
 use MediaWiki\MediaWikiServices;
 use MWHttpRequest;
+use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Statement\Statement;
@@ -43,6 +44,11 @@ class SparqlHelper {
 	private $entityIdParser;
 
 	/**
+	 * @var WANObjectCache
+	 */
+	private $cache;
+
+	/**
 	 * @var IBufferingStatsdDataFactory
 	 */
 	private $dataFactory;
@@ -50,10 +56,12 @@ class SparqlHelper {
 	public function __construct(
 		Config $config,
 		RdfVocabulary $rdfVocabulary,
-		EntityIdParser $entityIdParser
+		EntityIdParser $entityIdParser,
+		WANObjectCache $cache
 	) {
 		$this->config = $config;
 		$this->entityIdParser = $entityIdParser;
+		$this->cache = $cache;
 
 		$this->entityPrefix = $rdfVocabulary->getNamespaceUri( RdfVocabulary::NS_ENTITY );
 		$this->prefixes = <<<EOT
@@ -179,6 +187,40 @@ EOF;
 	 * @throws ConstraintParameterException if the $regex is invalid
 	 */
 	public function matchesRegularExpression( $text, $regex ) {
+		// caching wrapper around matchesRegularExpressionWithSparql
+		return (bool)$this->cache->getWithSetCallback(
+			$this->cache->makeKey(
+				'WikibaseQualityConstraints', // extension
+				'regex', // action
+				'WDQS-Java', // regex flavor
+				hash( 'sha256', $regex ),
+				hash( 'sha256', $text )
+			),
+			WANObjectCache::TTL_DAY,
+			function() use ( $text, $regex ) {
+				$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cachemiss' );
+				// convert to int because boolean false is interpreted as value not found
+				return (int)$this->matchesRegularExpressionWithSparql( $text, $regex );
+			},
+			[
+				// avoid querying cache servers multiple times in a request
+				// (e. g. when checking format of a reference URL used multiple times on an entity)
+				'pcTTL' => WANObjectCache::TTL_PROC_LONG,
+			]
+		);
+	}
+
+	/**
+	 * This function is only public for testing purposes;
+	 * use matchesRegularExpression, which is equivalent but caches results.
+	 *
+	 * @param string $text
+	 * @param string $regex
+	 * @return boolean
+	 * @throws SparqlHelperException if the query times out or some other error occurs
+	 * @throws ConstraintParameterException if the $regex is invalid
+	 */
+	public function matchesRegularExpressionWithSparql( $text, $regex ) {
 		$textStringLiteral = $this->stringLiteral( $text );
 		$regexStringLiteral = $this->stringLiteral( '^' . $regex . '$' );
 

@@ -2,7 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\Helper;
 
+use HashBagOStuff;
 use HashConfig;
+use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
@@ -39,7 +41,8 @@ class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 							  'http://www.wikidata.org/entity/',
 							  'http://www.wikidata.org/wiki/Special:EntityData/'
 						  ),
-						  new ItemIdParser()
+						  new ItemIdParser(),
+						  WANObjectCache::newEmpty()
 					  ] )
 					  ->setMethods( [ 'runQuery' ] )
 					  ->getMock();
@@ -76,7 +79,8 @@ EOF;
 							  'http://www.wikidata.org/entity/',
 							  'http://www.wikidata.org/wiki/Special:EntityData/'
 						  ),
-						  new ItemIdParser()
+						  new ItemIdParser(),
+						  WANObjectCache::newEmpty()
 					  ] )
 					  ->setMethods( [ 'runQuery' ] )
 					  ->getMock();
@@ -110,7 +114,7 @@ EOF;
 		);
 	}
 
-	public function testMatchesRegularExpression() {
+	public function testMatchesRegularExpressionWithSparql() {
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
 		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\"$") AS ?matches) {}';
@@ -124,12 +128,12 @@ EOF;
 			->with( $this->equalTo( $query ) )
 			->willReturn( [ 'results' => [ 'bindings' => [ [ 'matches' => [ 'value' => 'false' ] ] ] ] ] );
 
-		$result = $sparqlHelper->matchesRegularExpression( $text, $regex );
+		$result = $sparqlHelper->matchesRegularExpressionWithSparql( $text, $regex );
 
 		$this->assertFalse( $result );
 	}
 
-	public function testMatchesRegularExpressionBadRegex() {
+	public function testMatchesRegularExpressionWithSparqlBadRegex() {
 		$text = '';
 		$regex = '(.{2,5)?';
 		$query = 'SELECT (REGEX("", "^(.{2,5)?$") AS ?matches) {}';
@@ -145,9 +149,9 @@ EOF;
 			->willReturn( [ 'results' => [ 'bindings' => [ [] ] ] ] );
 
 		try {
-			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpression' ], [ $text, $regex ] );
+			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpressionWithSparql' ], [ $text, $regex ] );
 			$this->assertTrue( false,
-				"matchesRegularExpression should have thrown a ConstraintParameterException with message ⧼$messageKey⧽." );
+				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message ⧼$messageKey⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
 				$this->getMock( Context::class ),
@@ -161,6 +165,49 @@ EOF;
 	}
 
 	/**
+	 * @dataProvider haveCache
+	 */
+	public function testMatchesRegularExpressionCache( $haveCache ) {
+		$text = '/.';
+		$regex = '.?';
+		$query = 'SELECT (REGEX("/.", "^.?$") AS ?matches) {}';
+		$cache = $haveCache ?
+			new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ) :
+			WANObjectCache::newEmpty();
+		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
+			->setConstructorArgs( [
+				$this->getDefaultConfig(),
+				new RdfVocabulary(
+					'http://www.wikidata.org/entity/',
+					'http://www.wikidata.org/wiki/Special:EntityData/'
+				),
+				new ItemIdParser(),
+				$cache
+			] )
+			->setMethods( [ 'runQuery' ] )
+			->getMock();
+
+		$sparqlHelper->expects( $haveCache ? $this->once() : $this->exactly( 2 ) )
+			->method( 'runQuery' )
+			->with( $this->equalTo( $query ) )
+			->willReturn( [ 'results' => [ 'bindings' => [ [ 'matches' => [ 'value' => 'false' ] ] ] ] ] );
+
+		$result1 = $sparqlHelper->matchesRegularExpression( $text, $regex );
+		$cache->clearProcessCache();
+		$result2 = $sparqlHelper->matchesRegularExpression( $text, $regex );
+
+		$this->assertFalse( $result1 );
+		$this->assertFalse( $result2 );
+	}
+
+	public function haveCache() {
+		return [
+			'with cache' => [ true ],
+			'without cache' => [ false ],
+		];
+	}
+
+	/**
 	 * @dataProvider isTimeoutProvider
 	 */
 	public function testIsTimeout( $content, $expected ) {
@@ -170,7 +217,8 @@ EOF;
 				'http://www.wikidata.org/entity/',
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
-			new ItemIdParser()
+			new ItemIdParser(),
+			WANObjectCache::newEmpty()
 		);
 
 		$actual = $sparqlHelper->isTimeout( $content );
@@ -191,7 +239,8 @@ EOF;
 				'http://www.wikidata.org/entity/',
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
-			new ItemIdParser()
+			new ItemIdParser(),
+			WANObjectCache::newEmpty()
 		);
 		$content = '(x+x+)+y';
 
