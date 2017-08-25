@@ -73,7 +73,7 @@
 				statuses: [
 					{
 						status: 'violation',
-						label: mw.message( 'wbqc-problems-short' ).text()
+						label: mw.message( 'wbqc-issues-short' ).text()
 					},
 					{
 						status: 'warning',
@@ -104,7 +104,7 @@
 			$target.append( buildPopup(
 				list.$element,
 				haveMandatoryViolations ? 'alert' : 'info',
-				haveMandatoryViolations ? 'wbqc-problems-long' : 'wbqc-potentialissues-long'
+				haveMandatoryViolations ? 'wbqc-issues-long' : 'wbqc-potentialissues-long'
 			).$element );
 		}
 	}

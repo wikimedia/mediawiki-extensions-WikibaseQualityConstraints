@@ -56,14 +56,14 @@
 				"wikibase"
 			],
 			"messages": [
+				"wbqc-issues-short",
+				"wbqc-issues-long",
 				"wbqc-potentialissues-short",
 				"wbqc-potentialissues-long",
 				"wbqc-badparameters-short",
 				"wbqc-badparameters-long",
 				"wbqc-parameterissues-short",
 				"wbqc-parameterissues-long",
-				"wbqc-problems-short",
-				"wbqc-problems-long",
 				"wbqc-constrainttypehelp-long"
 			],
 			"scripts": [
