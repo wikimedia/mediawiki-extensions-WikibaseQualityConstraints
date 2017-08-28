@@ -33,8 +33,6 @@
 	"wbqc-badparameters-short": "Parámetros incorreutos",
 	"wbqc-badparameters-long": "Esta declaración de torga tien dellos parámetros inválidos.",
 	"wbqc-parameterissues-short": "Incidencies avanzaes",
-	"wbqc-problems-short": "Problemes",
-	"wbqc-problems-long": "Esta declaración tien dellos problemes.",
 	"wbqc-constrainttypehelp-long": "Páxina d'ayuda pa esta triba de torga",
 	"wbq-subextension-name-wbqc": "Torgues",
 	"wbqc-violation-header-parameters": "Parámetros:",

@@ -14,8 +14,6 @@
 	"wbqc-constraintreport-result-table-header-status": "Statuss",
 	"wbqc-constraintreport-result-table-header-claim": "Apgalvojums",
 	"wbqc-badparameters-short": "Nederīgi parametri",
-	"wbqc-problems-short": "Problēmas",
-	"wbqc-problems-long": "Šim apgalvojumam ir dažas problēmas.",
 	"wbq-subextension-name-wbqc": "Ierobežojumi",
 	"wbqc-violation-header-parameters": "Parametri:",
 	"wbqc-violations-group": "Ierobežojumi",

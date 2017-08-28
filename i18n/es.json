@@ -27,8 +27,6 @@
 	"wbqc-potentialissues-long": "Esta oración tiene potenciales incidencias.",
 	"wbqc-badparameters-short": "Parámetros incorrectos",
 	"wbqc-parameterissues-short": "Incidencias avanzadas",
-	"wbqc-problems-short": "Problemas",
-	"wbqc-problems-long": "Esta declaración tiene algunos problemas.",
 	"wbqc-violation-header-parameters": "Parámetros:",
 	"wbqc-violations-group": "Restricciones",
 	"wbqc-violation-message": "La verificación de restricciones ha señalado una violación. Pulsa el icono para obtener más información.",

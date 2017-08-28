@@ -14,7 +14,6 @@
 	"wbqc-constraintreport-status-warning": "Упозорење",
 	"wbqc-potentialissues-short": "Могући проблеми",
 	"wbqc-potentialissues-long": "Ова изјава име неке могуће проблеме.",
-	"wbqc-problems-short": "Проблеми",
 	"apihelp-wbcheckconstraints-description": "Извођење провера забране на ентитету који одаберете и враћање резултата.",
 	"apihelp-wbcheckconstraints-param-id": "ID списак ентитета из којих ће се узимати подаци. Раздвојити вредности са '|' или др.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID списак за идентификацију тврдње за проверу извештаја забране. Раздвојити вредности са '|'.",

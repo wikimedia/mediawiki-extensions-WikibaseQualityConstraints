@@ -33,7 +33,7 @@
 	"wbqc-constraintreport-result-link-to-claim": "Text for the link to a claim group on the entity page.",
 	"wbqc-constraintreport-result-link-to-constraint": "Text for the link to a constraint on the property page.",
 	"wbqc-constraintreport-no-parameter": "Text that is displayed when there was no value for a parameter given.\n{{Identical|None}}",
-	"wbqc-issues-short": "Headline of the constraint report popup section for violations of mandatory constraints. These issues/problems are more severe than violations of non-mandatory constraints, which have the heading {{msg-mw|wbqc-potentialissues-short}}.",
+	"wbqc-issues-short": "Headline of the constraint report popup section for violations of mandatory constraints. These issues/problems are more severe than violations of non-mandatory constraints, which have the heading {{msg-mw|wbqc-potentialissues-short}}.\n{{Identical|Issue}}",
 	"wbqc-issues-long": "Title for the icon shown on statements with mandatory constraint violations, usually displayed by the browser when the user hovers over the icon with the mouse cursor.\n{{Related|wbqc-issues-short}}",
 	"wbqc-potentialissues-short": "Headline of the constraint report popup section for violations of non-mandatory constraints. Should be easy to understand for users, and convey that the reported violations are not always errors, but should be thought of as hints to the user that something might be wrong.\n{{Related|wbqc-issues-short}}",
 	"wbqc-potentialissues-long": "Title for the icon shown on statements with non-mandatory constraint violations, usually displayed by the browser when the user hovers over the icon with the mouse cursor.\n{{Related|wbqc-potentialissues-short}}\n{{Related|wbqc-issues-long}}",

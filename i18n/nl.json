@@ -31,11 +31,11 @@
 	"wbqc-constraintreport-result-link-to-claim": "naar verklaring gaan",
 	"wbqc-constraintreport-result-link-to-constraint": "naar beperking gaan",
 	"wbqc-constraintreport-no-parameter": "geen",
+	"wbqc-issues-short": "Problemen",
+	"wbqc-issues-long": "Deze verklaring kent enkele problemen.",
 	"wbqc-potentialissues-short": "Mogelijke problemen",
 	"wbqc-potentialissues-long": "Deze verklaring heeft mogelijke problemen.",
 	"wbqc-parameterissues-short": "Geavanceerde problemen",
-	"wbqc-problems-short": "Problemen",
-	"wbqc-problems-long": "Deze verklaring kent enkele problemen.",
 	"apihelp-wbcheckconstraints-description": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
 	"apihelp-wbcheckconstraints-summary": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
 	"apihelp-wbcheckconstraints-example-1": "Alle beperkingen voor de items Q5 en Q42 controleren.",
@@ -51,6 +51,7 @@
 	"wbqc-violation-message-target-entity-must-exist": "De doelentiteit moet bestaan.",
 	"wbqc-violation-message-value-entity-must-exist": "De entiteit die opgegeven is als waarde moet bestaan.",
 	"wbqc-violation-message-parameter-regex": "$1 is geen geldige reguliere expressie.",
+	"wbqc-violation-message-sparql-error": "De SPRQL-zoekopdracht heeft geleid tot een foutmelding.",
 	"wbqc-violation-message-commons-link-no-existent": "Link naar Commons moet bestaan.",
 	"wbqc-violation-message-commons-link-not-well-formed": "De koppeling naar Commons mag geen ongeldige tekens bevatten.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Controle voor naamruimte \"$1\" is nog niet beschikbaar.",
@@ -64,5 +65,6 @@
 	"wbqc-violation-message-qualifier": "De eigenschap mag alleen als kwalificatie worden gebruikt.",
 	"wbqc-violation-message-no-qualifiers": "$1-verklaringen zouden geen kwalificaties moeten hebben.",
 	"wbqc-violation-message-qualifiers": "$2 is geen geldige kwalificatie voor $1 – geldige {{PLURAL:$3|1=kwalificatie is $5.|2=kwalificaties zijn $5 en $6.|kwalificaties zijn:$4}}",
-	"wbqc-violation-message-symmetric": "$1 zou een symmetrische verklaring $2 $3 moeten hebben."
+	"wbqc-violation-message-symmetric": "$1 zou een symmetrische verklaring $2 $3 moeten hebben.",
+	"wbqc-violation-message-type-relation-instance-or-subclass": "Parameter \"relatie\" moet \"is een\" of \"subklasse van\" zijn."
 }
