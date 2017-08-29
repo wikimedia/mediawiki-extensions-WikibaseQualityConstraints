@@ -225,7 +225,6 @@ class SpecialConstraintReport extends SpecialPage {
 
 		try {
 			$entityId = $this->entityIdParser->parse( $subPage );
-			$entity = $this->entityLookup->getEntity( $entityId );
 		} catch ( EntityIdParsingException $e ) {
 			$out->addHTML(
 				$this->buildNotice( 'wbqc-constraintreport-invalid-entity-id', true )
@@ -233,16 +232,18 @@ class SpecialConstraintReport extends SpecialPage {
 			return;
 		}
 
-		if ( !$entity ) {
+		if ( !$this->entityLookup->hasEntity( $entityId ) ) {
 			$out->addHTML(
 				$this->buildNotice( 'wbqc-constraintreport-not-existent-entity', true )
 			);
 			return;
 		}
 
-		$results = $this->executeCheck( $entity );
+		MediaWikiServices::getInstance()->getStatsdDataFactory()
+			->increment( 'wikibase.quality.constraints.specials.specialConstraintReport.executeCheck' );
+		$results = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entityId );
 
-		if ( $results && count( $results ) > 0 ) {
+		if ( count( $results ) > 0 ) {
 			$out->addHTML(
 				$this->buildResultHeader( $entityId )
 				. $this->buildSummary( $results )
@@ -329,18 +330,6 @@ class SpecialConstraintReport extends SpecialPage {
 				$this->msg( 'wbqc-constraintreport-explanation-part-two' )->escaped()
 			)
 		);
-	}
-
-	/**
-	 * @param EntityDocument $entity
-	 *
-	 * @return CheckResult[]|null
-	 */
-	private function executeCheck( EntityDocument $entity ) {
-		MediaWikiServices::getInstance()->getStatsdDataFactory()
-			->increment( 'wikibase.quality.constraints.specials.specialConstraintReport.executeCheck' );
-
-		return $this->constraintChecker->checkAgainstConstraints( $entity );
 	}
 
 	/**

@@ -90,24 +90,6 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
-	 * Starts the whole constraint-check process.
-	 * Statements of the entity will be checked against every constraint that is defined on the property.
-	 *
-	 * @param EntityDocument|null $entity
-	 *
-	 * @return CheckResult[]|null
-	 */
-	public function checkAgainstConstraints( EntityDocument $entity = null ) {
-		if ( $entity instanceof StatementListProvider ) {
-			$result = $this->checkEveryStatement( $entity );
-
-			return $this->sortResult( $result );
-		}
-
-		return null;
-	}
-
-	/**
 	 * Starts the whole constraint-check process for entity or constraint ID on entity.
 	 * Statements of the entity will be checked against every constraint that is defined on the property.
 	 *
