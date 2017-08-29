@@ -4,8 +4,10 @@ namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
 use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
+use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\Tests\NewItem;
@@ -16,7 +18,6 @@ use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
@@ -59,13 +60,13 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	private $constraintChecker;
 
 	/**
-	 * @var JsonFileEntityLookup
+	 * @var InMemoryEntityLookup
 	 */
 	private $lookup;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = $this->createEntityLookup();
+		$this->lookup = new InMemoryEntityLookup();
 		$entityIdParser = new DispatchingEntityIdParser( [
 			'/^Q/' => function( $serialization ) {
 				return new ItemId( $serialization );
@@ -314,59 +315,97 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		);
 	}
 
-	public function testCheckAgainstConstraints() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
-		$this->assertEquals( 18, count( $result ), 'Every constraint should be represented by one result' );
+	public function testCheckOnEntityId() {
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement(
+				NewStatement::forProperty( 'P1' )
+					->withValue( 'foo' )
+			)
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
+		$this->assertCount( 18, $result, 'Every constraint should be represented by one result' );
 		foreach ( $result as $checkResult ) {
 			$this->assertNotSame( 'todo', $checkResult->getStatus(), 'Constraints should not be unimplemented' );
 		}
 	}
 
-	public function testCheckAgainstConstraintsWithoutEntity() {
-		$result = $this->constraintChecker->checkAgainstConstraints( null );
-		$this->assertEquals( null, $result, 'Should return null' );
+	public function testCheckOnEntityIdEmptyResult() {
+		$entity = NewItem::withId( 'Q2' )
+			->andStatement(
+				NewStatement::forProperty( 'P2' )
+					->withValue( 'foo' )
+			)
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
+		$this->assertCount( 0, $result, 'Should be empty' );
 	}
 
-	public function testCheckAgainstConstraintsDoesNotCrashWhenResultIsEmpty() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
-		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
-		$this->assertEquals( 0, count( $result ), 'Should be empty' );
-	}
+	public function testCheckOnEntityIdUnknownConstraint() {
+		$entity = NewItem::withId( 'Q3' )
+			->andStatement(
+				NewStatement::forProperty( 'P3' )
+					->withValue( 'foo' )
+			)
+			->build();
+		$this->lookup->addEntity( $entity );
 
-	public function testCheckAgainstConstraintsWithConstraintThatDoesNotBelongToCheckedConstraints() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
-		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
-		$this->assertEquals( 1, count( $result ), 'Should be one result' );
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
+		$this->assertCount( 1, $result, 'Should be one result' );
 		$this->assertEquals( 'todo', $result[ 0 ]->getStatus(), 'Should be marked as a todo' );
 	}
 
-	public function testCheckAgainstConstraintsDoesNotCrashWhenStatementHasNovalue() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
-		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
-		$this->assertEquals( 0, count( $result ), 'Should be empty' );
+	public function testCheckOnEntityIdNoValue() {
+		$entity = NewItem::withId( 'Q4' )
+			->andStatement(
+				NewStatement::noValueFor( 'P4' )
+			)
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
+		$this->assertCount( 0, $result, 'Should be empty' );
 	}
 
-	public function testCheckAgainstConstraintsWithKnownException() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q5' ) );
-		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
+	public function testCheckOnEntityIdKnownException() {
+		$entity = NewItem::withId( 'Q5' )
+			->andStatement(
+				NewStatement::forProperty( 'P10' )
+					->withValue( 'foo' )
+			)
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
 		$this->assertEquals( 'exception', $result[ 0 ]->getStatus(), 'Should be an exception' );
 	}
 
-	public function testCheckAgainstConstraintsWithBrokenException() {
+	public function testCheckOnEntityIdBrokenException() {
 		$entity = NewItem::withId( 'Q5' )
 			->andStatement( NewStatement::noValueFor( 'P11' ) )
 			->build();
-		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
 		$this->assertEquals( 'bad-parameters', $result[ 0 ]->getStatus(), 'Should be a bad parameter but not throw an exception' );
 	}
 
-	public function testCheckAgainstConstraintsWithMandatoryConstraint() {
+	public function testCheckOnEntityIdMandatoryConstraint() {
 		$entity = NewItem::withId( 'Q6' )
 			->andStatement( NewStatement::noValueFor( 'P6' ) )
 			->build();
+		$this->lookup->addEntity( $entity );
 
-		$results = $this->constraintChecker->checkAgainstConstraints( $entity );
+		$results = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
 		$this->assertCount( 1, $results );
 		$result = $results[0];
@@ -375,29 +414,52 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->assertSame( [ 'mandatory' ], $result->getParameters()[ 'constraint_status' ] );
 	}
 
-	public function testCheckAgainstConstraintsWithNonMandatoryConstraint() {
+	public function testCheckOnEntityIdNonMandatoryConstraint() {
 		$entity = NewItem::withId( 'Q7' )
 			->andStatement( NewStatement::noValueFor( 'P7' ) )
 			->build();
-		$result = $this->constraintChecker->checkAgainstConstraints( $entity );
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
 		$this->assertEquals( 'warning', $result[ 0 ]->getStatus(), 'Should be a warning' );
 	}
 
-	public function testCheckAgainstConstraints_ByClaims() {
+	public function testCheckOnClaimId() {
+		$statement = NewStatement::forProperty( 'P1' )
+			->withValue( 'foo' )
+			->withGuid( 'Q1$c0f25a6f-9e33-41c8-be34-c86a730ff30b' )
+			->build();
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $statement )
+			->build();
+		$this->lookup->addEntity( $entity );
+
 		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
-			'Q1$c0f25a6f-9e33-41c8-be34-c86a730ff30b' );
+			$statement->getGuid()
+		);
 
 		$this->assertCount( 18, $result, 'Every constraint should be represented by one result' );
 	}
 
-	public function testCheckAgainstConstraintsDoesNotCrashWhenResultIsEmpty_ByClaims() {
+	public function testCheckOnClaimIdEmptyResult() {
+		$statement = NewStatement::forProperty( 'P2' )
+			->withValue( 'foo' )
+			->withGuid( 'Q2$1d1fd258-91ca-4db5-91e4-26219c5aae7a' )
+			->build();
+		$entity = NewItem::withId( 'Q2' )
+			->andStatement( $statement )
+			->build();
+		$this->lookup->addEntity( $entity );
+
 		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
-			'Q2$c0f25a6f-9e33-41c8-be34-c86a730ff30b' );
+			$statement->getGuid()
+		);
 
 		$this->assertCount( 0, $result, 'Should be empty' );
 	}
 
-	public function testCheckAgainstConstraintsDoesNotCrashWhenClaimDoesNotExist() {
+	public function testCheckOnClaimIdUnknownClaimId() {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
 			'Q99$does-not-exist' );
 
@@ -405,7 +467,12 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testCheckConstraintParametersOnPropertyId() {
-		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new PropertyId( 'P1' ) );
+		$entity = new Property( new PropertyId( 'P1' ), null, 'time' );
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId(
+			$entity->getId()
+		);
 
 		$this->assertCount( 18, $result, 'Every constraint should be represented by one result' );
 		foreach ( $result as $constraintGuid => $constraintResult ) {
@@ -455,13 +522,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->assertCount( 2, $result, 'The constraint should have two exceptions' );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[0] );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[1] );
-	}
-
-	/**
-	 * @return JsonFileEntityLookup
-	 */
-	private function createEntityLookup() {
-		return new JsonFileEntityLookup( __DIR__ );
 	}
 
 }
