@@ -12,6 +12,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -66,12 +67,18 @@ class DelegatingConstraintChecker {
 	private $loggingHelper;
 
 	/**
+	 * @var bool
+	 */
+	private $apiV2;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintChecker[] $checkerMap
 	 * @param ConstraintLookup $constraintRepository
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param StatementGuidParser $statementGuidParser
 	 * @param LoggingHelper $loggingHelper
+	 * @param bool $apiV2 whether to use the new API output format
 	 */
 	public function __construct(
 		EntityLookup $lookup,
@@ -79,7 +86,8 @@ class DelegatingConstraintChecker {
 		ConstraintLookup $constraintRepository,
 		ConstraintParameterParser $constraintParameterParser,
 		StatementGuidParser $statementGuidParser,
-		LoggingHelper $loggingHelper
+		LoggingHelper $loggingHelper,
+		$apiV2
 	) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
@@ -87,6 +95,7 @@ class DelegatingConstraintChecker {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->loggingHelper = $loggingHelper;
+		$this->apiV2 = $apiV2;
 	}
 
 	/**
@@ -279,7 +288,9 @@ class DelegatingConstraintChecker {
 	private function checkConstraintsForStatementOnEntity( array $constraints, EntityDocument $entity, $statement ) {
 		$entityId = $entity->getId();
 		$result = [];
-		$context = new StatementContext( $entity, $statement );
+		$context = $this->apiV2 ?
+			new MainSnakContext( $entity, $statement ) :
+			new StatementContext( $entity, $statement );
 
 		foreach ( $constraints as $constraint ) {
 			$parameters = $constraint->getConstraintParameters();

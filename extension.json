@@ -114,6 +114,11 @@
 			"description": "Whether to import property constraint statements into the constraint database or not.",
 			"public": true
 		},
+		"WBQualityConstraintsNewApiOutputFormat": {
+			"value": false,
+			"description": "Whether to use the new API output format, based on the Wikibase entity JSON format, which can accomodate constraint results on qualifiers and references.",
+			"public": true
+		},
 		"WBQualityConstraintsSparqlEndpoint": {
 			"value": "",
 			"description": "The URL of the SPARQL endpoint. Should accept the URL parameters 'query', 'format' and 'maxQueryTimeMillis'. Set to '' (empty string, default) to disable SPARQL functionality.",
