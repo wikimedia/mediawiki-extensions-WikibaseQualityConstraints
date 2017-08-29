@@ -425,6 +425,30 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->assertEquals( 'warning', $result[ 0 ]->getStatus(), 'Should be a warning' );
 	}
 
+	public function testCheckOnEntityIdSelectConstraintIds() {
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement(
+				NewStatement::forProperty( 'P1' )
+					->withValue( 'foo' )
+			)
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId(
+			$entity->getId(),
+			[
+				'P1$ecb8f617-90f1-4ef3-afab-f4bf3881ec28',
+				'P1$6ad9eb64-13fd-43a1-afc8-84857108bd59',
+				'P1$cfff6d73-320c-43c5-8582-e9cbb98e2ca2',
+			]
+		);
+
+		$this->assertCount( 3, $result, 'Every selected constraint should be represented by one result' );
+		foreach ( $result as $checkResult ) {
+			$this->assertNotSame( 'todo', $checkResult->getStatus(), 'Constraints should not be unimplemented' );
+		}
+	}
+
 	public function testCheckOnClaimId() {
 		$statement = NewStatement::forProperty( 'P1' )
 			->withValue( 'foo' )
