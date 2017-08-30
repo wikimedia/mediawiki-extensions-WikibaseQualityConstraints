@@ -73,6 +73,7 @@
 				"modules/ui/ConstraintReportList.js"
 			],
 			"styles": [
+				"modules/ui/ConstraintReportPanel.css",
 				"modules/ui/ConstraintReportGroup.css"
 			]
 		},
