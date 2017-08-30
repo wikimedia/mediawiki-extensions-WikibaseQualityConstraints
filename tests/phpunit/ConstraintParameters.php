@@ -167,7 +167,7 @@ trait ConstraintParameters {
 	}
 
 	/**
-	 * @param string[] $items item ID serializations
+	 * @param (string|Snak)[] $items item ID serializations or snaks
 	 * @return array
 	 */
 	public function itemsParameter( array $items ) {
@@ -175,8 +175,12 @@ trait ConstraintParameters {
 		return [
 			$qualifierParameterId => array_map(
 				function( $item ) use ( $qualifierParameterId ) {
-					$value = new EntityIdValue( new ItemId( $item ) );
-					$snak = new PropertyValueSnak( new PropertyId( $qualifierParameterId ), $value );
+					if ( $item instanceof Snak ) {
+						$snak = $item;
+					} else {
+						$value = new EntityIdValue( new ItemId( $item ) );
+						$snak = new PropertyValueSnak( new PropertyId( $qualifierParameterId ), $value );
+					}
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
 				$items

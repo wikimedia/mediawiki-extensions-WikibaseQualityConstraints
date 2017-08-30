@@ -93,19 +93,12 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 		$somevalueSnak = new PropertySomeValueSnak( new PropertyId( 'P123' ) );
 		$novalueSnak = new PropertyNoValueSnak( new PropertyId( 'P123' ) );
 
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
-		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-
 		foreach ( [ $somevalueSnak, $novalueSnak ] as $allowed ) {
 			foreach ( [ $somevalueSnak, $novalueSnak ] as $present ) {
 
-				$constraintParameters = [
-					$qualifierId => [ $snakSerializer->serialize( $allowed ) ]
-				];
-
 				$result = $this->oneOfChecker->checkConstraint(
 					new FakeSnakContext( $present ),
-					$this->getConstraintMock( $constraintParameters )
+					$this->getConstraintMock( $this->itemsParameter( [ $allowed ] ) )
 				);
 				if ( $allowed === $present ) {
 					$this->assertCompliance( $result );
