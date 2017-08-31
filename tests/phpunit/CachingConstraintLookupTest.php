@@ -6,6 +6,15 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
 
+/**
+ * @covers \WikibaseQuality\ConstraintReport\CachingConstraintLookup
+ * @uses \Wikibase\DataModel\Entity\PropertyId
+ *
+ * @group WikibaseQualityConstraints
+ *
+ * @author Lucas Werkmeister
+ * @license GNU GPL v2+
+ */
 class CachingConstraintLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQuery_CalledOnce() {

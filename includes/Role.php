@@ -68,6 +68,9 @@ class Role {
 	 */
 	const CONSTRAINT_TYPE_ITEM = 'constraint-type-item';
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	private function __construct() {
 		throw new LogicException( 'This class should never be instantiated.' );
 	}
