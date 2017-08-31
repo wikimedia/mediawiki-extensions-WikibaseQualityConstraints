@@ -13,6 +13,8 @@ use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
@@ -190,7 +192,8 @@ class ConstraintReportFactory {
 					MediaWikiServices::getInstance()->getStatsdDataFactory(),
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 					$this->config
-				)
+				),
+				$this->config->get( 'WBQualityConstraintsNewApiOutputFormat' )
 			);
 		}
 

@@ -22,6 +22,7 @@ use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraints;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
@@ -129,7 +130,8 @@ class CheckConstraintsTest extends ApiTestCase {
 					MediaWikiServices::getInstance()->getStatsdDataFactory(),
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 					$config
-				)
+				),
+				false
 			);
 
 			return new CheckConstraints(
