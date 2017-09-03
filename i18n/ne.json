@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"बिप्लब आनन्द",
-			"Nirjal stha"
+			"Nirjal stha",
+			"Nirajan pant"
 		]
 	},
 	"wbqc-constraintreport": "श्रोत अभाव प्रतिवेदन",
@@ -13,5 +14,6 @@
 	"wbqc-constraintreport-status-todo": "टोडो",
 	"wbqc-constraintreport-result-table-header-claim": "दाबि",
 	"wbqc-constraintreport-result-table-header-constraint": "श्रोत अभाव",
-	"wbqc-constraintreport-result-link-to-claim": "दाबीमा जानुहोस्"
+	"wbqc-constraintreport-result-link-to-claim": "दाबीमा जानुहोस्",
+	"wbqc-issues-short": "मुद्दाहरू"
 }
