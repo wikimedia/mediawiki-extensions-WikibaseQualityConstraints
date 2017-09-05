@@ -349,10 +349,12 @@ class DelegatingConstraintChecker {
 				}
 			} else {
 				if ( $constraintStatus !== 'mandatory' ) {
+					// @codeCoverageIgnoreStart
 					throw new LogicException(
 						"Unknown constraint status '$constraintStatus', " .
 						"only known status is 'mandatory'"
 					);
+					// @codeCoverageIgnoreEnd
 				}
 				$result->addParameter( 'constraint_status', $constraintStatus );
 			}
