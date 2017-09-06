@@ -1,3 +1,9 @@
 .wbqc-report h4:first-child + p {
 	margin-top: 0;
 }
+
+.wbqc-report .wbqc-constraint-type-help {
+	font-weight: normal;
+	float: right;
+	margin-right: 0.5em;
+}

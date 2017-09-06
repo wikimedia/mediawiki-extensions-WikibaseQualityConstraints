@@ -64,6 +64,7 @@
 				"wbqc-badparameters-long",
 				"wbqc-parameterissues-short",
 				"wbqc-parameterissues-long",
+				"wbqc-constrainttypehelp-short",
 				"wbqc-constrainttypehelp-long"
 			],
 			"scripts": [
