@@ -127,106 +127,104 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 		$context7->storeCheckResultInArray( $result5, $actual );
 
 		$expected = [
-			'Q1' => [
-				'claims' => [
-					'P1' => [
+			'P1' => [
+				[
+					'id' => 'P1$13ea0742-0190-4d88-b7b0-baee67573818',
+					'references' => [
 						[
-							'id' => 'P1$13ea0742-0190-4d88-b7b0-baee67573818',
-							'references' => [
-								[
-									'hash' => $reference1->getHash(),
-									'snaks' => [
-										'P11' => [
-											[
-												'hash' => $snak1->getHash(),
-												'results' => [
-													$result1,
-												]
-											],
-											[
-												'hash' => $snak2->getHash(),
-												'results' => [
-													$result2,
-												]
-											]
-										],
-										'P12' => [
-											[
-												'hash' => $snak3->getHash(),
-												'results' => [
-													$result3,
-													$result4,
-												]
-											]
+							'hash' => $reference1->getHash(),
+							'snaks' => [
+								'P11' => [
+									[
+										'hash' => $snak1->getHash(),
+										'results' => [
+											$result1,
+										]
+									],
+									[
+										'hash' => $snak2->getHash(),
+										'results' => [
+											$result2,
 										]
 									]
 								],
-								[
-									'hash' => $reference2->getHash(),
-									'snaks' => [
-										'P11' => [
-											[
-												'hash' => $snak2->getHash(),
-												'results' => [
-													$result4,
-												]
-											]
-										],
-										'P12' => [
-											[
-												'hash' => $snak3->getHash(),
-												'results' => [
-													$result5,
-												]
-											]
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => [
+											$result3,
+											$result4,
 										]
 									]
-								],
-							],
+								]
+							]
 						],
 						[
-							'id' => 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d',
-							'references' => [
-								[
-									'hash' => $reference1->getHash(),
-									'snaks' => [
-										'P11' => [
-											[
-												'hash' => $snak1->getHash(),
-												'results' => [
-													$result5,
-												]
-											],
-										],
+							'hash' => $reference2->getHash(),
+							'snaks' => [
+								'P11' => [
+									[
+										'hash' => $snak2->getHash(),
+										'results' => [
+											$result4,
+										]
 									]
 								],
-							],
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => [
+											$result5,
+										]
+									]
+								]
+							]
 						],
 					],
-					'P2' => [
+				],
+				[
+					'id' => 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d',
+					'references' => [
 						[
-							'id' => 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9',
-							'references' => [
-								[
-									'hash' => $reference2->getHash(),
-									'snaks' => [
-										'P12' => [
-											[
-												'hash' => $snak3->getHash(),
-												'results' => [
-													$result5,
-												]
-											],
-										],
-									]
+							'hash' => $reference1->getHash(),
+							'snaks' => [
+								'P11' => [
+									[
+										'hash' => $snak1->getHash(),
+										'results' => [
+											$result5,
+										]
+									],
 								],
-							],
+							]
+						],
+					],
+				],
+			],
+			'P2' => [
+				[
+					'id' => 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9',
+					'references' => [
+						[
+							'hash' => $reference2->getHash(),
+							'snaks' => [
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => [
+											$result5,
+										]
+									],
+								],
+							]
 						],
 					],
 				],
 			],
 		];
-		$this->assertSame( $expected, $actual );
+		$this->assertSame( [ 'Q1' ], array_keys( $actual ) );
+		$this->assertSame( [ 'claims' ], array_keys( $actual['Q1'] ) );
+		$this->assertSame( $expected, $actual['Q1']['claims'] );
 	}
 
 }
