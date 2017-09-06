@@ -7,8 +7,3 @@
 	/* add some space between groups in a list */
 	margin-top: 1em;
 }
-
-.wbqc-reports-all .wbqc-reports:not( :last-child ) {
-	/* add a border between groups in a list */
-	border-bottom: 1px solid #a2a9b1; /* Base50 */
-}
