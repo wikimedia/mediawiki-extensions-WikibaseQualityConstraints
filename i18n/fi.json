@@ -8,6 +8,7 @@
 	"wbqc-constraintreport-not-existent-entity": "Yhteisöä ei ole!",
 	"wbqc-constraintreport-result-table-header-status": "Tila",
 	"wbqc-potentialissues-short": "Mahdollisia ongelmia",
+	"wbqc-constrainttypehelp-short": "Ohje",
 	"wbqc-violation-message-commons-link-no-existent": "Commons-linkki täytyy olla.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Commons-linkin täytyy olla kelvollinen.",
 	"wbqc-violation-message-diff-within-range": "Ominaisuuksien $3 ($4) ja $1 ($2) arvojen erotus pitää olla suurempi tai yhtäsuuri kuin $5 ja pienempi tai yhtäsuuri kuin $6 ([$5; $6])."

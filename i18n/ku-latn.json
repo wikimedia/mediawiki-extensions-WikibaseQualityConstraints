@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"George Animal",
-			"Bikarhêner"
+			"Bikarhêner",
+			"Cûndûllah el-Kurdî"
 		]
 	},
 	"wbqc-constraintreport-result-headline": "Encama bo",
-	"wbqc-constraintreport-result-table-header-status": "Rewş"
+	"wbqc-constraintreport-result-table-header-status": "Rewş",
+	"wbqc-constrainttypehelp-short": "Alîkarî"
 }

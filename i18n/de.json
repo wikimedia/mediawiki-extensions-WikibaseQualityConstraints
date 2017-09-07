@@ -38,6 +38,7 @@
 	"wbqc-badparameters-long": "Diese Beschränkungsaussage hat einige ungültige Parameter.",
 	"wbqc-parameterissues-short": "Erweiterte Probleme",
 	"wbqc-parameterissues-long": "Dies sind Probleme mit der Beschränkungsdefinition zu der Eigenschaft, nicht mit dieser Aussage.",
+	"wbqc-constrainttypehelp-short": "Hilfe",
 	"wbqc-constrainttypehelp-long": "Hilfeseite für diesen Beschränkungstyp",
 	"apihelp-wbcheckconstraints-description": "Führt Beschränkungsprüfungen zu jedem gewünschten Objekt aus und gibt das Ergebnis zurück.",
 	"apihelp-wbcheckconstraints-param-id": "Kennung der Objektliste, von der die Daten abgerufen werden sollen. Mehrere Werte mit „|“ oder Ähnlichem trennen.",

@@ -17,6 +17,7 @@
 	"wbqc-issues-long": "Dës Deklaratioun huet e puer Problemer.",
 	"wbqc-potentialissues-short": "Potenziell Problemer",
 	"wbqc-badparameters-short": "Falsch Parameteren",
+	"wbqc-constrainttypehelp-short": "Hëllef",
 	"wbqc-violation-header-parameters": "Parameteren:",
 	"wbqc-violations-group": "Limitatiounen",
 	"wbqc-violation-message-parameter-value": "De Parameter \"$1\" muss e personaliséierte Wäert hunn an net \"kee Wäert\" oder \"onbekannte Wäert\".",
