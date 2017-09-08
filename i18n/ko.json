@@ -30,6 +30,7 @@
 	"wbqc-issues-long": "이 문에 일부 문제가 있습니다.",
 	"wbqc-potentialissues-short": "잠재적인 문제",
 	"wbqc-badparameters-short": "잘못된 변수",
+	"wbqc-constrainttypehelp-short": "도움말",
 	"apihelp-wbcheckconstraints-example-1": "Q5, Q42 항목의 모든 제약 조건을 검사합니다.",
 	"apihelp-wbcheckconstraints-example-2": "하나의 문에 대한 모든 제약 조건을 검사합니다.",
 	"wbq-subextension-name-wbqc": "제약 조건",

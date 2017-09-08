@@ -10,7 +10,7 @@
 	"wbqc-constraintreport-status-warning": "Varning",
 	"wbqc-badparameters-short": "Trasiga parametrar",
 	"wbqc-parameterissues-short": "Avancerade ärenden",
-	"wbqc-problems-short": "Problem",
+	"wbqc-constrainttypehelp-short": "Hjälp",
 	"wbqc-violation-message-parameter-string": "Värdet för parametern \"$1\" måste vara en sträng, inte \"$2\".",
 	"wbqc-violation-message-parameter-regex": "$1 är inte ett giltigt reguljärt uttryck.",
 	"wbqc-violation-message-commons-link-no-existent": "Commons-länk bör finnas.",
