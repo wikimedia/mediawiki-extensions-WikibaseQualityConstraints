@@ -21,8 +21,7 @@ class QualifierChecker implements ConstraintChecker {
 	}
 
 	/**
-	 * If this method gets invoked, it is automatically a violation since this method only gets invoked
-	 * for properties used in statements.
+	 * Checks 'Qualifier' constraint.
 	 *
 	 * @param Context $context
 	 * @param Constraint $constraint
@@ -30,8 +29,12 @@ class QualifierChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
-		$message = wfMessage( "wbqc-violation-message-qualifier" )->escaped();
-		return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+		if ( $context->getType() === Context::TYPE_QUALIFIER ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE, '' );
+		} else {
+			$message = wfMessage( 'wbqc-violation-message-qualifier' )->escaped();
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+		}
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {
