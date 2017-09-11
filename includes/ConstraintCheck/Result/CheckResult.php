@@ -51,6 +51,12 @@ class CheckResult {
 	 * constraint checkers should not assign this status directly.
 	 */
 	const STATUS_WARNING = 'warning';
+	/**
+	 * The constraint type is only checked on statements,
+	 * but the current context is not a statement context,
+	 * so the constraint check is skipped.
+	 */
+	const STATUS_NOSTATEMENT = 'no-statement';
 
 	/**
 	 * @var Constraint
