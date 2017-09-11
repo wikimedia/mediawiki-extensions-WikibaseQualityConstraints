@@ -14,6 +14,8 @@ use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\Lib\Units\CSVUnitStorage;
+use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -59,10 +61,14 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		$rangeCheckerHelper = new RangeCheckerHelper(
+			$this->getDefaultConfig(),
+			new UnitConverter( new CSVUnitStorage( __DIR__ . '/units.csv' ), '' )
+		);
 		$this->checker = new RangeChecker(
 			new EntityRetrievingDataTypeLookup( $this->lookup ),
 			$this->getConstraintParameterParser(),
-			new RangeCheckerHelper( $this->getDefaultConfig() ),
+			$rangeCheckerHelper,
 			$this->getConstraintParameterRenderer()
 		);
 	}
@@ -94,6 +100,32 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
 		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-closed' );
+	}
+
+	public function testRangeConstraintGWithinRange() {
+		$value = new DecimalValue( 500.0 );
+		$snak = new PropertyValueSnak(
+			new PropertyId( 'P2067' ),
+			new QuantityValue( $value, 'g', $value, $value )
+		);
+		$constraint = $this->getConstraintMock( $this->rangeParameter( 'quantity', 0, 1 ) );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testRangeConstraintGTooBig() {
+		$value = new DecimalValue( 2000.0 );
+		$snak = new PropertyValueSnak(
+			new PropertyId( 'P2067' ),
+			new QuantityValue( $value, 'g', $value, $value )
+		);
+		$constraint = $this->getConstraintMock( $this->rangeParameter( 'quantity', 0, 1 ) );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-quantity-closed' );
 	}
 

@@ -333,6 +333,11 @@
 			"value": "http://www.wikidata.org/entity/Q577",
 			"description": "The unit used for a quantity that represents a difference between two dates, in years.",
 			"public": true
+		},
+		"WBQualityConstraintsSecondUnit": {
+			"value": "http://www.wikidata.org/entity/Q11574",
+			"description": "The unit used for a quantity that represents a difference between two dates, in seconds.",
+			"public": true
 		}
 	},
 	"manifest_version": 2
