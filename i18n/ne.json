@@ -3,7 +3,8 @@
 		"authors": [
 			"बिप्लब आनन्द",
 			"Nirjal stha",
-			"Nirajan pant"
+			"Nirajan pant",
+			"सरोज कुमार ढकाल"
 		]
 	},
 	"wbqc-constraintreport": "श्रोत अभाव प्रतिवेदन",
@@ -15,5 +16,6 @@
 	"wbqc-constraintreport-result-table-header-claim": "दाबि",
 	"wbqc-constraintreport-result-table-header-constraint": "श्रोत अभाव",
 	"wbqc-constraintreport-result-link-to-claim": "दाबीमा जानुहोस्",
-	"wbqc-issues-short": "मुद्दाहरू"
+	"wbqc-issues-short": "मुद्दाहरू",
+	"wbqc-constrainttypehelp-short": "सहायता"
 }

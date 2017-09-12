@@ -22,6 +22,7 @@
 	"wbqc-potentialissues-short": "সম্ভাব্য সমস্যা",
 	"wbqc-potentialissues-long": "এই বিবৃতির কিছু সম্ভাব্য সমস্যা রয়েছে।",
 	"wbqc-badparameters-short": "খারাপ প্যারামিটার",
+	"wbqc-constrainttypehelp-short": "সাহায্য",
 	"wbqc-violation-message-commons-link-no-existent": "কমন্সের সংযোগ বিদ্যমান থাকা উচিত।",
 	"wbqc-violation-message-commons-link-not-well-formed": "কমন্সের সংযোগ সঠিক-বিন্যাসকৃত হতে হবে।"
 }
