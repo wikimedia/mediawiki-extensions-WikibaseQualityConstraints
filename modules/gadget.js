@@ -48,26 +48,8 @@
 		} );
 	}
 
-	function addReportsToStatement( entityData, $statement ) {
-		var match = $statement.parents( '.wikibase-statementview' )[ 0 ].className.match(
-				/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
-			),
-			statementId = match && match[ 1 ],
-			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
-			results,
-			reports,
-			list,
-			$target,
-			haveMandatoryViolations;
-
-		if ( !( propertyId in entityData && statementId in entityData[ propertyId ] ) ) {
-			return;
-		}
-
-		results = entityData[ propertyId ][ statementId ];
-		reports = results.map( buildReport );
-
-		list = wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
+	function buildReportList( reports ) {
+		var list = wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
 			reports,
 			{
 				statuses: [
@@ -95,11 +77,59 @@
 			// ...and doesn't only contain collapsed items either
 			list.items[ 0 ].status !== 'bad-parameters'
 		) {
+			return list;
+		} else {
+			return null;
+		}
+	}
+
+	function extractResultsForStatement( entityData, propertyId, statementId ) {
+		var statements, index, statement, results = {};
+		if ( 'claims' in entityData ) {
+			// API v2 format
+			statements = entityData.claims[ propertyId ];
+			if ( statements === undefined ) {
+				return null;
+			}
+			for ( index in statements ) {
+				if ( statements[ index ].id === statementId ) {
+					statement = statements[ index ];
+					break;
+				}
+			}
+			if ( statement === undefined ) {
+				return null;
+			}
+
+			results.mainsnak = statement.mainsnak.results;
+
+			// TODO also extract qualifier and reference snaks
+
+			return results;
+		} else {
+			// API v1 format
+			if ( propertyId in entityData && statementId in entityData[ propertyId ] ) {
+				return {
+					mainsnak: entityData[ propertyId ][ statementId ]
+				};
+			} else {
+				return null;
+			}
+		}
+	}
+
+	function addResultsToSnak( results, $snak ) {
+		var reports = results.map( buildReport ),
+			list = buildReportList( reports ),
+			haveMandatoryViolations,
+			$target;
+
+		if ( list !== null ) {
 			haveMandatoryViolations = list.items[ 0 ].status === 'violation';
 
-			$target = $statement.find( '.valueview-instaticmode' );
+			$target = $snak.find( '.wikibase-snakview-value .valueview-instaticmode' );
 			if ( $target.length === 0 ) {
-				$target = $statement;
+				$target = $snak.find( '.wikibase-snakview-value' );
 			}
 			$target.append( buildPopup(
 				list.$element,
@@ -107,6 +137,26 @@
 				haveMandatoryViolations ? 'wbqc-issues-long' : 'wbqc-potentialissues-long'
 			).$element );
 		}
+	}
+
+	function addReportsToStatement( entityData, $statement ) {
+		var match = $statement[ 0 ].className.match(
+				/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
+			),
+			statementId = match && match[ 1 ],
+			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
+			results = extractResultsForStatement( entityData, propertyId, statementId );
+
+		if ( results === null ) {
+			return;
+		}
+
+		addResultsToSnak(
+			results.mainsnak,
+			$statement.find( '.wikibase-statementview-mainsnak' )
+		);
+
+		// TODO also add qualifier and reference results to snak
 	}
 
 	function addParameterReports( parameterReports ) {
@@ -170,7 +220,7 @@
 			uselang: lang,
 			id: entityId
 		} ).then( function( data ) {
-			$( '.wikibase-statementgroupview .wikibase-statementview-mainsnak .wikibase-snakview-value' )
+			$( '.wikibase-statementgroupview .wikibase-statementview' )
 				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 		} );
 
