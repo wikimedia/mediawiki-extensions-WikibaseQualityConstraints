@@ -44,25 +44,21 @@ class CheckConstraints extends ApiBase {
 	const PARAM_CONSTRAINT_ID = 'constraintid';
 
 	/**
-	 *
 	 * @var EntityIdParser
 	 */
 	private $entityIdParser;
 
 	/**
-	 *
 	 * @var StatementGuidValidator
 	 */
 	private $statementGuidValidator;
 
 	/**
-	 *
 	 * @var StatementGuidParser
 	 */
 	private $statementGuidParser;
 
 	/**
-	 *
 	 * @var DelegatingConstraintChecker
 	 */
 	private $delegatingConstraintChecker;
@@ -73,19 +69,16 @@ class CheckConstraints extends ApiBase {
 	private $resultBuilder;
 
 	/**
-	 *
 	 * @var ApiErrorReporter
 	 */
 	private $errorReporter;
 
 	/**
-	 *
 	 * @var StatementChangeOpFactory
 	 */
 	private $statementChangeOpFactory;
 
 	/**
-	 *
 	 * @var ConstraintParameterRenderer
 	 */
 	private $constraintParameterRenderer;

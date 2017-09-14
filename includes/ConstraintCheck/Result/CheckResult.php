@@ -63,13 +63,13 @@ class CheckResult {
 	private $context;
 
 	/**
-	 * @var array
+	 * @var array[]
 	 * Includes arrays of ItemIds or PropertyIds or strings.
 	 */
 	private $parameters;
 
 	/**
-	 * @var string
+	 * @var string One of the self::STATUS_… constants
 	 */
 	private $status;
 
@@ -81,9 +81,9 @@ class CheckResult {
 	/**
 	 * @param Context $context
 	 * @param Constraint $constraint
-	 * @param array $parameters (string => string[]) parsed constraint parameters
+	 * @param array[] $parameters (string => string[]) parsed constraint parameters
 	 * ($constraint->getParameters() contains the unparsed parameters)
-	 * @param string $status
+	 * @param string $status One of the self::STATUS_… constants
 	 * @param string $message (sanitized HTML)
 	 */
 	public function __construct(
@@ -150,7 +150,7 @@ class CheckResult {
 	}
 
 	/**
-	 * @return array
+	 * @return array[]
 	 */
 	public function getParameters() {
 		return $this->parameters;
@@ -158,14 +158,14 @@ class CheckResult {
 
 	/**
 	 * @param string $key
-	 * @param $value
+	 * @param string $value
 	 */
 	public function addParameter( $key, $value ) {
 		$this->parameters[$key][] = $value;
 	}
 
 	/**
-	 * @return string
+	 * @return string One of the self::STATUS_… constants
 	 */
 	public function getStatus() {
 		return $this->status;

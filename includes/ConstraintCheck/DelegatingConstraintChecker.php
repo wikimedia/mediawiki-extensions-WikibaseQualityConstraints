@@ -56,7 +56,6 @@ class DelegatingConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
-	 *
 	 * @var StatementGuidParser
 	 */
 	private $statementGuidParser;
@@ -246,11 +245,9 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
-	 *
 	 * @param EntityDocument|StatementListProvider $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
-	 *
 	 *
 	 * @return CheckResult[]
 	 */
