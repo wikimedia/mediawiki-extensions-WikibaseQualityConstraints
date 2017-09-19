@@ -384,12 +384,13 @@ class DelegatingConstraintChecker {
 		$sortFunction = function ( CheckResult $a, CheckResult $b ) {
 			$orderNum = 0;
 			$order = [
-				'bad-parameters' => $orderNum++,
-				'violation' => $orderNum++,
-				'warning' => $orderNum++,
-				'exception' => $orderNum++,
-				'compliance' => $orderNum++,
-				'deprecated' => $orderNum++,
+				CheckResult::STATUS_BAD_PARAMETERS => $orderNum++,
+				CheckResult::STATUS_VIOLATION => $orderNum++,
+				CheckResult::STATUS_WARNING => $orderNum++,
+				CheckResult::STATUS_EXCEPTION => $orderNum++,
+				CheckResult::STATUS_COMPLIANCE => $orderNum++,
+				CheckResult::STATUS_DEPRECATED => $orderNum++,
+				CheckResult::STATUS_NOT_MAIN_SNAK => $orderNum++,
 				'other' => $orderNum++,
 			];
 
