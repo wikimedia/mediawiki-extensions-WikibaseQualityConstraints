@@ -73,6 +73,10 @@ class ItemChecker implements ConstraintChecker {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
+		if ( $context->getType() !== Context::TYPE_STATEMENT ) {
+			// TODO T175562
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOSTATEMENT );
+		}
 
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
