@@ -10,6 +10,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
@@ -29,16 +30,6 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	use ResultAssertions;
 
 	/**
-	 * @var JsonFileEntityLookup
-	 */
-	private $lookup;
-
-	protected function setUp() {
-		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-	}
-
-	/**
 	 * @param StatementListProvider $entity
 	 *
 	 * @return Statement|false
@@ -48,14 +39,32 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		return reset( $statements );
 	}
 
-	public function testQualifierConstraintQualifierProperty() {
-		/** @var Item $entity */
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-		$qualifierChecker = new QualifierChecker();
-		$statement = $this->getFirstStatement( $entity );
+	/**
+	 * @param string $type context type
+	 * @param string|null $messageKey key of violation message, or null if compliance is expected
+	 * @dataProvider contextTypes
+	 */
+	public function testQualifierConstraint( $type, $messageKey ) {
+		$context = $this->getMock( Context::class );
+		$context->method( 'getType' )->willReturn( $type );
+		$checker = new QualifierChecker();
 		$constraint = $this->getConstraintMock( [] );
-		$checkResult = $qualifierChecker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifier' );
+
+		$checkResult = $checker->checkConstraint( $context, $constraint );
+
+		if ( $messageKey === null ) {
+			$this->assertCompliance( $checkResult );
+		} else {
+			$this->assertViolation( $checkResult, $messageKey );
+		}
+	}
+
+	public function contextTypes() {
+		return [
+			[ Context::TYPE_STATEMENT, 'wbqc-violation-message-qualifier' ],
+			[ Context::TYPE_QUALIFIER, null ],
+			[ Context::TYPE_REFERENCE, 'wbqc-violation-message-qualifier' ],
+		];
 	}
 
 	public function testQualifierConstraintDeprecatedStatement() {
