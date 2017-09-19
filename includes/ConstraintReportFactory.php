@@ -215,6 +215,7 @@ class ConstraintReportFactory {
 					$this->config,
 					$this->rdfVocabulary,
 					$this->entityIdParser,
+					$this->propertyDataTypeLookup,
 					MediaWikiServices::getInstance()->getMainWANObjectCache()
 				);
 			} else {

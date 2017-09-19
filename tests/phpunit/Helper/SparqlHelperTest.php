@@ -2,6 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\Helper;
 
+use DataValues\Geo\Values\GlobeCoordinateValue;
+use DataValues\Geo\Values\LatLongValue;
+use DataValues\MonolingualTextValue;
+use DataValues\StringValue;
+use DataValues\TimeValue;
+use DataValues\UnboundedQuantityValue;
 use HashBagOStuff;
 use HashConfig;
 use WANObjectCache;
@@ -9,6 +15,7 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -42,6 +49,7 @@ class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 							  'http://www.wikidata.org/wiki/Special:EntityData/'
 						  ),
 						  new ItemIdParser(),
+						  $this->getMock( PropertyDataTypeLookup::class ),
 						  WANObjectCache::newEmpty()
 					  ] )
 					  ->setMethods( [ 'runQuery' ] )
@@ -80,6 +88,7 @@ EOF;
 							  'http://www.wikidata.org/wiki/Special:EntityData/'
 						  ),
 						  new ItemIdParser(),
+						  $this->getMock( PropertyDataTypeLookup::class ),
 						  WANObjectCache::newEmpty()
 					  ] )
 					  ->setMethods( [ 'runQuery' ] )
@@ -112,6 +121,166 @@ EOF;
 			$sparqlHelper->findEntitiesWithSameStatement( $statement, true ),
 			[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ]
 		);
+	}
+
+	/**
+	 * @dataProvider findEntitiesQualifierReferenceProvider
+	 */
+	public function testFindEntitiesWithSameQualifierOrReference(
+		PropertyValueSnak $snak,
+		$dataType,
+		$contextType,
+		$sparqlValue,
+		$sparqlPath
+	) {
+		$dtLookup = $this->getMock( PropertyDataTypeLookup::class );
+		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
+
+		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
+			->setConstructorArgs( [
+				$this->getDefaultConfig(),
+				new RdfVocabulary(
+					'http://www.wikidata.org/entity/',
+					'http://www.wikidata.org/wiki/Special:EntityData/'
+				),
+				new ItemIdParser(),
+				$dtLookup,
+				WANObjectCache::newEmpty()
+			] )
+			->setMethods( [ 'runQuery' ] )
+			->getMock();
+
+		$query = <<<EOF
+SELECT ?entity ?otherEntity WHERE {
+  BIND(wd:Q10 AS ?entity)
+  BIND($sparqlValue AS ?value)
+  ?entity ?p ?statement.
+  ?statement $sparqlPath ?value.
+  ?otherStatement $sparqlPath ?value.
+  ?otherEntity ?otherP ?otherStatement.
+  FILTER(?otherEntity != ?entity)
+
+}
+LIMIT 10
+EOF;
+
+		$sparqlHelper->expects( $this->exactly( 1 ) )
+			->method( 'runQuery' )
+			->willReturn( [ 'head' => [ 'vars' => [ 'otherEntity' ] ], 'results' => [ 'bindings' => [
+				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
+				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
+			] ] ] )
+			->withConsecutive( [ $this->equalTo( $query ) ] );
+
+		$this->assertEquals(
+			$sparqlHelper->findEntitiesWithSameQualifierOrReference(
+				new ItemId( 'Q10' ),
+				$snak,
+				$contextType,
+				false
+			),
+			[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ]
+		);
+	}
+
+	public function findEntitiesQualifierReferenceProvider() {
+		$pid = new PropertyId( 'P1' );
+		$globeCoordinateValue = new GlobeCoordinateValue( new LatLongValue( 42.0, 13.37 ) );
+		$quantityValue = UnboundedQuantityValue::newFromNumber( -10, 'ms' );
+		$timeValue = new TimeValue(
+			'+00000001970-01-01T00:00:00Z',
+			0,
+			0,
+			0,
+			11,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
+		return [
+			'string, qualifier' => [
+				new PropertyValueSnak( $pid, new StringValue( 'foo' ) ),
+				'string',
+				'qualifier',
+				'"foo"',
+				'pq:P1'
+			],
+			'external identifier, reference' => [
+				new PropertyValueSnak( $pid, new StringValue( 'f00' ) ),
+				'external-id',
+				'reference',
+				'"f00"',
+				'prov:wasDerivedFrom/pr:P1'
+			],
+			'Commons media, qualifier' => [
+				new PropertyValueSnak( $pid, new StringValue( 'Bar.jpg' ) ),
+				'commonsMedia',
+				'qualifier',
+				'<http://commons.wikimedia.org/wiki/Special:FilePath/Bar.jpg>',
+				'pq:P1'
+			],
+			'geoshape, reference' => [
+				new PropertyValueSnak( $pid, new StringValue( 'Baznia.map' ) ),
+				'geo-shape',
+				'reference',
+				'<http://commons.wikimedia.org/data/main/Baznia.map>',
+				'prov:wasDerivedFrom/pr:P1'
+			],
+			'tabular data, qualifier' => [
+				new PropertyValueSnak( $pid, new StringValue( 'Qux.tab' ) ),
+				'tabular-data',
+				'qualifier',
+				'<http://commons.wikimedia.org/data/main/Qux.tab>',
+				'pq:P1'
+			],
+			'url, reference' => [
+				new PropertyValueSnak( $pid, new StringValue( 'https://wikibase.example/url' ) ),
+				'url',
+				'reference',
+				'<https://wikibase.example/url>',
+				'prov:wasDerivedFrom/pr:P1'
+			],
+			'item, qualifier' => [
+				new PropertyValueSnak( $pid, new EntityIdValue( new ItemId( 'Q100' ) ) ),
+				'wikibase-item',
+				'qualifier',
+				'wd:Q100',
+				'pq:P1'
+			],
+			'property, reference' => [
+				new PropertyValueSnak( $pid, new EntityIdValue( new PropertyId( 'P100' ) ) ),
+				'wikibase-property',
+				'reference',
+				'wd:P100',
+				'prov:wasDerivedFrom/pr:P1'
+			],
+			'monolingual text, qualifier' => [
+				new PropertyValueSnak( $pid, new MonolingualTextValue( 'qqx', 'lorem ipsum' ) ),
+				'monolingualtext',
+				'qualifier',
+				'"lorem ipsum"@qqx',
+				'pq:P1'
+			],
+			'globe coordinate, reference' => [
+				new PropertyValueSnak( $pid, $globeCoordinateValue ),
+				'globe-coordinate',
+				'reference',
+				"wdv:{$globeCoordinateValue->getHash()}",
+				'prov:wasDerivedFrom/prv:P1'
+			],
+			'quantity, qualifier' => [
+				new PropertyValueSnak( $pid, $quantityValue ),
+				'quantity',
+				'qualifier',
+				"wdv:{$quantityValue->getHash()}",
+				'pqv:P1'
+			],
+			'time, reference' => [
+				new PropertyValueSnak( $pid, $timeValue ),
+				'time',
+				'reference',
+				"wdv:{$timeValue->getHash()}",
+				'prov:wasDerivedFrom/prv:P1'
+			],
+		];
 	}
 
 	public function testMatchesRegularExpressionWithSparql() {
@@ -174,7 +343,9 @@ EOF;
 				'http://www.wikidata.org/entity/',
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
+
 			new ItemIdParser(),
+			$this->getMock( PropertyDataTypeLookup::class ),
 			WANObjectCache::newEmpty()
 		);
 
@@ -197,6 +368,7 @@ EOF;
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
 			new ItemIdParser(),
+			$this->getMock( PropertyDataTypeLookup::class ),
 			WANObjectCache::newEmpty()
 		);
 		$content = '(x+x+)+y';
