@@ -165,49 +165,6 @@ EOF;
 	}
 
 	/**
-	 * @dataProvider haveCache
-	 */
-	public function testMatchesRegularExpressionCache( $haveCache ) {
-		$text = '/.';
-		$regex = '.?';
-		$query = 'SELECT (REGEX("/.", "^.?$") AS ?matches) {}';
-		$cache = $haveCache ?
-			new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ) :
-			WANObjectCache::newEmpty();
-		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-			->setConstructorArgs( [
-				$this->getDefaultConfig(),
-				new RdfVocabulary(
-					'http://www.wikidata.org/entity/',
-					'http://www.wikidata.org/wiki/Special:EntityData/'
-				),
-				new ItemIdParser(),
-				$cache
-			] )
-			->setMethods( [ 'runQuery' ] )
-			->getMock();
-
-		$sparqlHelper->expects( $haveCache ? $this->once() : $this->exactly( 2 ) )
-			->method( 'runQuery' )
-			->with( $this->equalTo( $query ) )
-			->willReturn( [ 'results' => [ 'bindings' => [ [ 'matches' => [ 'value' => 'false' ] ] ] ] ] );
-
-		$result1 = $sparqlHelper->matchesRegularExpression( $text, $regex );
-		$cache->clearProcessCache();
-		$result2 = $sparqlHelper->matchesRegularExpression( $text, $regex );
-
-		$this->assertFalse( $result1 );
-		$this->assertFalse( $result2 );
-	}
-
-	public function haveCache() {
-		return [
-			'with cache' => [ true ],
-			'without cache' => [ false ],
-		];
-	}
-
-	/**
 	 * @dataProvider isTimeoutProvider
 	 */
 	public function testIsTimeout( $content, $expected ) {

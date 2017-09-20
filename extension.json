@@ -137,6 +137,11 @@
 			"description": "Whether or not to check the 'format' constraint. If this flag is set to false, any check of the 'format' constraint will return a 'todo' status with the 'wbqc-violation-message-security-reason' message.",
 			"public": true
 		},
+		"WBQualityConstraintsFormatCacheMapSize": {
+			"value": 100,
+			"description": "Size of the per-regex cache map for format/regex check results. For each regex, up to this many values will have cached whether they match the regex or not, on a least-recently-used basis.",
+			"public": true
+		},
 		"WBQualityConstraintsInstanceOfId": {
 			"value": "P31",
 			"description": "The property ID of the 'instance of' property (data type: item), which specifies the class(es) of an item.",
