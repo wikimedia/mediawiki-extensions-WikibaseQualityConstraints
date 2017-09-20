@@ -40,7 +40,8 @@ form {
 	color: #b32424; /* Red30 */
 }
 
-.wbqc-status-deprecated {
+.wbqc-status-deprecated,
+.wbqc-status-not-main-snak {
 	color: #72777d; /* Base30 */
 }
 

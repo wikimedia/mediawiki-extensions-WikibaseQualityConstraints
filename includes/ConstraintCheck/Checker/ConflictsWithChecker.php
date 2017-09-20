@@ -76,7 +76,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 		}
 		if ( $context->getType() !== Context::TYPE_STATEMENT ) {
 			// TODO T175562
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOSTATEMENT );
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_MAIN_SNAK );
 		}
 
 		$parameters = [];

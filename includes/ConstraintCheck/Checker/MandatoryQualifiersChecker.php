@@ -57,7 +57,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 		if ( $context->getType() !== Context::TYPE_STATEMENT ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOSTATEMENT );
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_MAIN_SNAK );
 		}
 
 		$parameters = [];

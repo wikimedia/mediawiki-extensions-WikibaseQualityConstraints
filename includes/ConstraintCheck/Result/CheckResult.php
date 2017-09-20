@@ -52,11 +52,18 @@ class CheckResult {
 	 */
 	const STATUS_WARNING = 'warning';
 	/**
-	 * The constraint type is only checked on statements,
-	 * but the current context is not a statement context,
+	 * The constraint type is only checked on the main snak of a statement,
+	 * but the current context is not a 'statement'-type context
+	 * (e. g. a 'qualifier' or 'reference' context),
 	 * so the constraint check is skipped.
 	 */
-	const STATUS_NOSTATEMENT = 'no-statement';
+	const STATUS_NOT_MAIN_SNAK = 'not-main-snak';
+	/*
+	 * When adding another status, don’t forget to also do the following:
+	 * * define a message for it in i18n/
+	 * * declare a color for it in modules/SpecialConstraintReportPage.css
+	 * * update $order in updateDelegatingConstraintChecker::sortResult
+	 */
 
 	/**
 	 * @var Constraint
