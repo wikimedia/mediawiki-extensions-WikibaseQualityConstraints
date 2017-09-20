@@ -56,6 +56,33 @@ class CommonsLinkChecker implements ConstraintChecker {
 	}
 
 	/**
+	 * Get the number of a namespace on Wikimedia Commons (commonswiki).
+	 * All namespaces not known to this function will be looked up by the TitleParser.
+	 *
+	 * @param string $namespace
+	 * @return array first element is the namespace number (default namespace for TitleParser),
+	 * second element is a string to prepend to the title before giving it to the TitleParser
+	 */
+	private function getCommonsNamespace( $namespace ) {
+		// for namespace numbers see mediawiki-config repo, wmf-config/InitialiseSettings.php,
+		// 'wgExtraNamespaces' key, 'commonswiki' subkey
+		switch ( $namespace ) {
+			case '':
+				return [ NS_MAIN, '' ];
+			case 'Creator':
+				return [ 100, '' ];
+			case 'TimedText':
+				return [ 102, '' ];
+			case 'Sequence':
+				return [ 104, '' ];
+			case 'Institution':
+				return [ 106, '' ];
+			default:
+				return [ NS_MAIN, $namespace . ':' ];
+		}
+	}
+
+	/**
 	 * Checks 'Commons link' constraint.
 	 *
 	 * @param Context $context
@@ -99,8 +126,8 @@ class CommonsLinkChecker implements ConstraintChecker {
 			if ( !$this->commonsLinkIsWellFormed( $commonsLink ) ) {
 				throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
 			}
-			$prefix = $namespace === '' ? '' : $namespace . ':';
-			$title = $this->titleParser->parseTitle( $prefix . $commonsLink, NS_MAIN );
+			list ( $defaultNamespace, $prefix ) = $this->getCommonsNamespace( $namespace );
+			$title = $this->titleParser->parseTitle( $prefix . $commonsLink, $defaultNamespace );
 			if ( $this->pageExists( $title ) ) {
 				$message = '';
 				$status = CheckResult::STATUS_COMPLIANCE;
