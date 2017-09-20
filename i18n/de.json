@@ -24,6 +24,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "Ungültige Parameter",
 	"wbqc-constraintreport-status-deprecated": "Veraltet",
 	"wbqc-constraintreport-status-warning": "Warnung",
+	"wbqc-constraintreport-status-not-main-snak": "Kein Hauptsnak",
 	"wbqc-constraintreport-result-table-header-status": "Status",
 	"wbqc-constraintreport-result-table-header-claim": "Behauptung",
 	"wbqc-constraintreport-result-table-header-constraint": "Beschränkung",
