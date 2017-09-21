@@ -30,6 +30,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "Mauvais paramètres",
 	"wbqc-constraintreport-status-deprecated": "Désuet",
 	"wbqc-constraintreport-status-warning": "Attention",
+	"wbqc-constraintreport-status-not-main-snak": "Pas le bloc principal",
 	"wbqc-constraintreport-result-table-header-status": "État",
 	"wbqc-constraintreport-result-table-header-claim": "Déclaration",
 	"wbqc-constraintreport-result-table-header-constraint": "Contrainte",

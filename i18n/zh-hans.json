@@ -22,6 +22,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "错误参数",
 	"wbqc-constraintreport-status-deprecated": "已弃用",
 	"wbqc-constraintreport-status-warning": "警告",
+	"wbqc-constraintreport-status-not-main-snak": "不是主snak",
 	"wbqc-constraintreport-result-table-header-status": "状态",
 	"wbqc-constraintreport-result-table-header-claim": "声称",
 	"wbqc-constraintreport-result-table-header-constraint": "约束",

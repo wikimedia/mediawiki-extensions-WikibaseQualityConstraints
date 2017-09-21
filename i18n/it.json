@@ -25,6 +25,7 @@
 	"wbqc-constraintreport-status-exception": "Eccezione",
 	"wbqc-constraintreport-status-todo": "Da fare",
 	"wbqc-constraintreport-status-bad-parameters": "Parametri incorretti",
+	"wbqc-constraintreport-status-not-main-snak": "Snak non principale",
 	"wbqc-constraintreport-result-table-header-status": "Stato",
 	"wbqc-constraintreport-result-table-header-claim": "Asserzione",
 	"wbqc-constraintreport-result-table-header-constraint": "Vincolo",
