@@ -3,13 +3,14 @@
 
 	var entityId;
 
-	function buildPopup( $content, icon, iconTitleMessageKey, flags /* = '' */ ) {
+	function buildPopup( $content, $container, icon, iconTitleMessageKey, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: icon,
 			iconTitle: mw.message( iconTitleMessageKey ).text(),
 			flags: flags || '',
 			framed: false,
 			classes: [ 'wbqc-reports-button' ],
+			$overlay: $container.parents( '.wikibase-statementview' ).first(),
 			popup: {
 				$content: $content,
 				width: 400,
@@ -20,7 +21,7 @@
 		} );
 		widget.popup.$element.css( 'z-index', 2 ); // prevent collision with rank selector and property grey field
 
-		return widget;
+		$container.append( widget.$element );
 	}
 
 	function buildReport( result ) {
@@ -84,7 +85,7 @@
 	}
 
 	function extractResultsForStatement( entityData, propertyId, statementId ) {
-		var statements, index, statement, results = {};
+		var statements, index, statement, results = {}, qualifierPID, referenceIndex, referenceHash, referencePID;
 		if ( 'claims' in entityData ) {
 			// API v2 format
 			statements = entityData.claims[ propertyId ];
@@ -103,7 +104,29 @@
 
 			results.mainsnak = statement.mainsnak.results;
 
-			// TODO also extract qualifier and reference snaks
+			results.qualifiers = [];
+			for ( qualifierPID in statement.qualifiers ) {
+				for ( index in statement.qualifiers[ qualifierPID ] ) {
+					results.qualifiers.push(
+						statement.qualifiers[ qualifierPID ][ index ]
+					);
+				}
+			}
+
+			results.references = [];
+			for ( referenceIndex in statement.references ) {
+				referenceHash = statement.references[ referenceIndex ].hash;
+				if ( !( referenceHash in results.references ) ) {
+					results.references[ referenceHash ] = [];
+				}
+				for ( referencePID in statement.references[ referenceIndex ].snaks ) {
+					for ( index in statement.references[ referenceIndex ].snaks[ referencePID ] ) {
+						results.references[ referenceHash ].push(
+							statement.references[ referenceIndex ].snaks[ referencePID ][ index ]
+						);
+					}
+				}
+			}
 
 			return results;
 		} else {
@@ -131,11 +154,12 @@
 			if ( $target.length === 0 ) {
 				$target = $snak.find( '.wikibase-snakview-value' );
 			}
-			$target.append( buildPopup(
+			buildPopup(
 				list.$element,
+				$target,
 				haveMandatoryViolations ? 'alert' : 'info',
 				haveMandatoryViolations ? 'wbqc-issues-long' : 'wbqc-potentialissues-long'
-			).$element );
+			);
 		}
 	}
 
@@ -145,7 +169,11 @@
 			),
 			statementId = match && match[ 1 ],
 			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
-			results = extractResultsForStatement( entityData, propertyId, statementId );
+			results = extractResultsForStatement( entityData, propertyId, statementId ),
+			index,
+			qualifier,
+			hash,
+			reference;
 
 		if ( results === null ) {
 			return;
@@ -156,7 +184,30 @@
 			$statement.find( '.wikibase-statementview-mainsnak' )
 		);
 
-		// TODO also add qualifier and reference results to snak
+		for ( index in results.qualifiers ) {
+			qualifier = results.qualifiers[ index ];
+			addResultsToSnak(
+				qualifier.results,
+				$statement.find(
+					'.wikibase-statementview-qualifiers ' +
+					'.wikibase-snakview-' + qualifier.hash
+				)
+			);
+		}
+
+		for ( hash in results.references ) {
+			for ( index in results.references[ hash ] ) {
+				reference = results.references[ hash ][ index ];
+				addResultsToSnak(
+					reference.results,
+					$statement.find(
+						'.wikibase-statementview-references ' +
+						'.wikibase-referenceview-' + hash + ' ' +
+						'.wikibase-snakview-' + reference.hash
+					)
+				);
+			}
+		}
 	}
 
 	function addParameterReports( parameterReports ) {
@@ -193,7 +244,7 @@
 			if ( $target.length === 0 ) {
 				$target = $statement;
 			}
-			$target.append( buildPopup( list.$element, 'alert', 'wbqc-badparameters-long', 'warning' ).$element );
+			buildPopup( list.$element, $target, 'alert', 'wbqc-badparameters-long', 'warning' );
 		}
 	}
 
