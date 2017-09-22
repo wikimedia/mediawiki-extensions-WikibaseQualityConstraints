@@ -4,5 +4,8 @@
 			"Ans"
 		]
 	},
-	"wbqc-constraintreport-status-bad-parameters": "ตัวแปรไม่ถูกต้อง"
+	"wbqc-constraintreport-status-bad-parameters": "ตัวแปรไม่ถูกต้อง",
+	"wbqc-constraintreport-result-table-header-constraint": "เงื่อนไขบังคับ",
+	"wbq-subextension-name-wbqc": "เงื่อนไขบังคับ",
+	"wbqc-violations-group": "เงื่อนไขบังคับ"
 }
