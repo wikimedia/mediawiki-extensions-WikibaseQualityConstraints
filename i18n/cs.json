@@ -60,7 +60,7 @@
 	"wbqc-violation-message-commons-link-not-well-formed": "Odkaz na Commons by měl být ve správném formátu.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Kontrola pro jmenný prostor „$1“ dosud nebyla implementována.",
 	"wbqc-violation-message-conflicts-with-property": "Entita nemůže mít současně tvrzení vlastností $1 a $2.",
-	"wbqc-violation-message-conflicts-with-claim": "Entita nemůže mít tvrzení vlastnosti $1, pokud má současně tvrzení vlasnosti $2 s hodnotou $3.",
+	"wbqc-violation-message-conflicts-with-claim": "Entita nemůže mít tvrzení vlastnosti $1, pokud má současně tvrzení vlastnosti $2 s hodnotou $3.",
 	"wbqc-violation-message-diff-within-range": "Rozdíl mezi vlastnostmi $3 ($4) a $1 ($2) by se měl nacházet v intervalu od $5 do $6 ([$5; $6]).",
 	"wbqc-violation-message-diff-within-range-leftopen": "Rozdíl mezi vlastnostmi $3 ($4) a $1 ($2) by neměl být větší než $5 ((−∞; $5]).",
 	"wbqc-violation-message-diff-within-range-rightopen": "Rozdíl mezi vlastnostmi $3 ($4) a $1 ($2) by neměl být menší než $5 ([$5; ∞)).",
