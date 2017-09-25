@@ -243,7 +243,7 @@
 				claimid: statementId
 			} ).then( function( data ) {
 				var statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' );
-				$( '.wikibase-statementgroupview .' + statementClass + ' .wikibase-statementview-mainsnak .wikibase-snakview-value' )
+				$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
 					.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 			} );
 		} );
