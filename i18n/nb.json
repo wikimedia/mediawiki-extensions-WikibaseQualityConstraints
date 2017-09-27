@@ -3,7 +3,8 @@
 		"authors": [
 			"Kingu",
 			"Jeblad",
-			"Danmichaelo"
+			"Danmichaelo",
+			"Jon Harald Søby"
 		]
 	},
 	"wbqc-constraintreport": "Rapporterte begrensinger",
@@ -19,6 +20,7 @@
 	"wbqc-constraintreport-status-exception": "Unntak",
 	"wbqc-constraintreport-status-todo": "Å gjøre",
 	"wbqc-constraintreport-status-bad-parameters": "Ugyldige parametre",
+	"wbqc-constraintreport-status-warning": "Advarsel",
 	"wbqc-constraintreport-result-table-header-status": "Status",
 	"wbqc-constraintreport-result-table-header-claim": "Påstand",
 	"wbqc-constraintreport-result-table-header-constraint": "Begrensing",
@@ -30,7 +32,6 @@
 	"wbq-subextension-name-wbqc": "Begrensing",
 	"wbqc-violation-header-parameters": "Parametre:",
 	"wbqc-violations-group": "Begrensing",
-	"wbqc-violation-message-value-needed": "Egenskapen med begrensningen «$1» må ha en verdi.",
 	"wbqc-violation-message-value-needed-of-type": "Egenskapen med begrensningen «$1» må ha en verdier av type «$2».",
 	"wbqc-violation-message-value-needed-of-types-2": "Egenskaper med begrensningen «$1» må ha en verdier av type «$2» eller «$3».",
 	"wbqc-violation-message-parameter-needed": "Egenskaper med begrensningen «$1» trenger en parameter «$2».",
