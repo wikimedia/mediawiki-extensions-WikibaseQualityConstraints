@@ -146,3 +146,94 @@ There are two ways to run the tests of this extension:
 
   This runs the tests without coverage report
   and is therefore much faster.
+
+### Adding a new constraint type
+
+To add a new constraint type, the following steps are necessary:
+
+* Define the constraint checker class.
+  * It should be defined in a new file in `includes/ConstraintCheck/Checker/`,
+    named after the class name.
+    It should be in the `WikibaseQuality\ConstraintReport\ConstraintCheck\Checker` namespace.
+  * The class name should follow the constraint type name (in English), ending in “Checker”.
+  * The class must implement the `ConstraintChecker` interface.
+  * It should have at least the following class-level documentation comment:
+    ```php
+    /**
+     * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
+     * @author YOUR NAME HERE
+     * @license GNU GPL v2+
+     */
+    ```
+  * Any services you need (`Config`, `EntityLookup`, …) should be injected as constructor parameters.
+  * If the constraint has parameters,
+    add support for parsing them to `ConstraintParameterParser`
+    (add a config setting for the associated property in `extension.json`
+    and a method to parse the parameter in `ConstraintParameterParser`),
+    and then add tests for them in `ConstraintParameterParserTest`.
+    This should be done in a separate commit.
+* Define new messages (at least a violation message for the constraint type).
+  * Define the message in `i18n/en.json`.
+    A violation message should have a key like `wbqc-violation-message-constraintType`.
+  * Document the message in `i18n/qqq.json`.
+    Use the same message key,
+    and insert the documentation in the same location where you also added the message in `en.json`
+    (that is, `en.json` and `qqq.json` should contain message keys in the same order).
+* Add a configuration setting for the constraint type item ID.
+  * Configuration settings are defined in `extension.json`,
+    as members of the `config` object.
+  * It should be added right after the current last `…ConstraintId` entry.
+  * It should be named after the constraint type item’s English label,
+    following the pattern `WBQualityConstraints___ConstraintId`.
+  * The default value should be the item ID on Wikidata,
+    so that no extra configuration is required for Wikidata
+    and importing the constraint type item (see “Data import” section) works.
+  * The first part of the description can be copied from similar settings,
+    the rest should contain a short description of the constraint type.
+  * The ID can always be public (`"public": true`).
+* Configure the constraint type checker in `ConstraintReportFactory`.
+  * Add an array entry like
+    ```php
+    $this->config->get( 'WBQualityConstraints___ConstraintId' )
+    	=> new ___Checker(
+    		// injected services
+    	),
+    ```
+    at the end of the `getConstraintCheckerMap()` function.
+* Add tests for the new constraint checker.
+  * The test class name should be the same as the checker class name,
+    with an additional suffix `Test` (i. e., `…CheckerTest`).
+  * The test class should be placed somewhere in `tests/phpunit/Checker/`,
+    either in the most suitable subdirectory
+    or directly in that directory if none of the subdirectories are suitable.
+    (The division into subdirectories there is dubious anyways,
+    and we may get rid of it in the future.)
+  * It should have at least the following class-level documentation comment:
+    ```php
+    /**
+     * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\___Checker
+     *
+     * @group WikibaseQualityConstraints
+     *
+     * @uses \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
+     *
+     * @author YOUR NAME HERE
+     * @license GNU GPL v2+
+     */
+    ```
+  * It should have at least one test for compliance with a constraint,
+    one test for a constraint violation,
+    one test for behavior on a deprecated statement,
+    and one test for the `checkConstraintParameters` method.
+  * Use the `ResultAssertions` trait’s methods to check constraint check results.
+  * Use the `NewItem` and `NewStatement` builders to construct test data.
+    (You might see `JsonFileEntityLookup` and separate JSON files used in some existing tests,
+    but that’s a lot less readable.)
+  * If the checker uses a `Config`, use the `DefaultConfig` trait.
+  * If the constraint has parameters,
+    add methods for them to the `ConstraintParameterns` trait and use it in the tests.
+  * You can copy+paste a `getConstraintMock` function from one of the existing tests,
+    adjusting the `getConstraintTypeItemId` mocked return value.
+    (Hopefully we’ll improve this in the future.)
+
+An example commit that performs all of these steps is [Change Id45d80e7a0](https://gerrit.wikimedia.org/r/381005).
