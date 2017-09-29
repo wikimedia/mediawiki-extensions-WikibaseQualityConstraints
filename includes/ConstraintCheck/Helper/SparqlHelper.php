@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use IBufferingStatsdDataFactory;
+use MapCacheLRU;
 use MediaWiki\MediaWikiServices;
 use MWHttpRequest;
 use WANObjectCache;
@@ -188,26 +189,60 @@ EOF;
 	 */
 	public function matchesRegularExpression( $text, $regex ) {
 		// caching wrapper around matchesRegularExpressionWithSparql
-		return (bool)$this->cache->getWithSetCallback(
+
+		$textHash = hash( 'sha256', $text );
+		$cacheMapSize = $this->config->get( 'WBQualityConstraintsFormatCacheMapSize' );
+
+		$cacheMapArray = $this->cache->getWithSetCallback(
 			$this->cache->makeKey(
 				'WikibaseQualityConstraints', // extension
 				'regex', // action
 				'WDQS-Java', // regex flavor
-				hash( 'sha256', $regex ),
-				hash( 'sha256', $text )
+				hash( 'sha256', $regex )
 			),
 			WANObjectCache::TTL_DAY,
-			function() use ( $text, $regex ) {
-				$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cachemiss' );
-				// convert to int because boolean false is interpreted as value not found
-				return (int)$this->matchesRegularExpressionWithSparql( $text, $regex );
+			function( $cacheMapArray ) use ( $text, $regex, $textHash, $cacheMapSize ) {
+				// Initialize the cache map if not set
+				if ( $cacheMapArray === false ) {
+					$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.refresh.init' );
+					return [];
+				}
+
+				$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.refresh' );
+				$cacheMap = MapCacheLRU::newFromArray( $cacheMapArray, $cacheMapSize );
+				if ( $cacheMap->has( $textHash ) ) {
+					$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.refresh.hit' );
+					$cacheMap->get( $textHash ); // ping cache
+				} else {
+					$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.refresh.miss' );
+					$cacheMap->set(
+						$textHash,
+						$this->matchesRegularExpressionWithSparql( $text, $regex ),
+						3 / 8
+					);
+				}
+
+				return $cacheMap->toArray();
 			},
 			[
+				// Once map is > 1 sec old, consider refreshing
+				'ageNew' => 1,
+				// Increase likelihood of refresh to certainty once 1 minute old;
+				// the most common keys are more likely to trigger this
+				'hotTTR' => 60,
 				// avoid querying cache servers multiple times in a request
 				// (e. g. when checking format of a reference URL used multiple times on an entity)
 				'pcTTL' => WANObjectCache::TTL_PROC_LONG,
 			]
 		);
+
+		if ( isset( $cacheMapArray[$textHash] ) ) {
+			$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.hit' );
+			return $cacheMapArray[$textHash];
+		} else {
+			$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.miss' );
+			return $this->matchesRegularExpressionWithSparql( $text, $regex );
+		}
 	}
 
 	/**
