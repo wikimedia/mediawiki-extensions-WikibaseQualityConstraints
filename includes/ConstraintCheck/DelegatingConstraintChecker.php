@@ -71,6 +71,16 @@ class DelegatingConstraintChecker {
 	private $apiV2;
 
 	/**
+	 * @var bool
+	 */
+	private $checkQualifiers;
+
+	/**
+	 * @var bool
+	 */
+	private $checkReferences;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintChecker[] $checkerMap
 	 * @param ConstraintLookup $constraintRepository
@@ -78,6 +88,8 @@ class DelegatingConstraintChecker {
 	 * @param StatementGuidParser $statementGuidParser
 	 * @param LoggingHelper $loggingHelper
 	 * @param bool $apiV2 whether to use the new API output format
+	 * @param bool $checkQualifiers whether to check qualifiers
+	 * @param bool $checkReferences whether to check references
 	 */
 	public function __construct(
 		EntityLookup $lookup,
@@ -86,7 +98,9 @@ class DelegatingConstraintChecker {
 		ConstraintParameterParser $constraintParameterParser,
 		StatementGuidParser $statementGuidParser,
 		LoggingHelper $loggingHelper,
-		$apiV2
+		$apiV2,
+		$checkQualifiers,
+		$checkReferences
 	) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
@@ -95,6 +109,8 @@ class DelegatingConstraintChecker {
 		$this->statementGuidParser = $statementGuidParser;
 		$this->loggingHelper = $loggingHelper;
 		$this->apiV2 = $apiV2;
+		$this->checkQualifiers = $apiV2 && $checkQualifiers;
+		$this->checkReferences = $apiV2 && $checkReferences;
 	}
 
 	/**

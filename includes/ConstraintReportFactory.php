@@ -194,7 +194,9 @@ class ConstraintReportFactory {
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 					$this->config
 				),
-				$this->config->get( 'WBQualityConstraintsNewApiOutputFormat' )
+				$this->config->get( 'WBQualityConstraintsNewApiOutputFormat' ),
+				$this->config->get( 'WBQualityConstraintsCheckQualifiers' ),
+				$this->config->get( 'WBQualityConstraintsCheckReferences' )
 			);
 		}
 
