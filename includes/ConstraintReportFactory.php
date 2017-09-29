@@ -35,6 +35,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChec
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
@@ -326,6 +327,8 @@ class ConstraintReportFactory {
 						$this->constraintParameterParser,
 						$this->constraintParameterRenderer
 					),
+				$this->config->get( 'WBQualityConstraintsUsedForValuesOnlyConstraintId' )
+					=> new ValueOnlyChecker(),
 			];
 		}
 
