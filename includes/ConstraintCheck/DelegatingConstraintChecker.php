@@ -13,6 +13,8 @@ use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -270,9 +272,33 @@ class DelegatingConstraintChecker {
 	private function checkStatement( EntityDocument $entity, Statement $statement, $constraintIds = null ) {
 		$result = [];
 
-		$constraints = $this->constraintLookup->queryConstraintsForProperty(
-			$statement->getPropertyId()
-		);
+		$result = array_merge( $result,
+			$this->checkConstraintsForMainSnak( $entity, $statement, $constraintIds ) );
+
+		if ( $this->checkQualifiers ) {
+			$result = array_merge( $result,
+				$this->checkConstraintsForQualifiers( $entity, $statement, $constraintIds ) );
+		}
+
+		if ( $this->checkReferences ) {
+			$result = array_merge( $result,
+				$this->checkConstraintsForReferences( $entity, $statement, $constraintIds ) );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get the constraints to actually check for a given property ID.
+	 * If $constraintIds is not null, only check constraints with those constraint IDs,
+	 * otherwise check all constraints for that property.
+	 *
+	 * @param PropertyId $propertyId
+	 * @param string[]|null $constraintIds
+	 * @return Constraint[]
+	 */
+	private function getConstraintsToUse( PropertyId $propertyId, array $constraintIds = null ) {
+		$constraints = $this->constraintLookup->queryConstraintsForProperty( $propertyId );
 		if ( $constraintIds !== null ) {
 			$constraintsToUse = [];
 			foreach ( $constraints as $constraint ) {
@@ -280,30 +306,31 @@ class DelegatingConstraintChecker {
 					$constraintsToUse[] = $constraint;
 				}
 			}
+			return $constraintsToUse;
 		} else {
-			$constraintsToUse = $constraints;
+			return $constraints;
 		}
-		$result = array_merge(
-			$result,
-			$this->checkConstraintsForStatementOnEntity( $constraintsToUse, $entity, $statement )
-		);
-
-		return $result;
 	}
 
 	/**
-	 * @param Constraint[] $constraints
-	 * @param EntityDocument|StatementListProvider $entity
+	 * @param EntityDocument $entity
 	 * @param Statement $statement
-	 *
+	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
 	 * @return CheckResult[]
 	 */
-	private function checkConstraintsForStatementOnEntity( array $constraints, EntityDocument $entity, $statement ) {
-		$entityId = $entity->getId();
+	private function checkConstraintsForMainSnak(
+		EntityDocument $entity,
+		Statement $statement,
+		array $constraintIds = null
+	) {
 		$result = [];
 		$context = $this->apiV2 ?
 			new MainSnakContext( $entity, $statement ) :
 			new StatementContext( $entity, $statement );
+		$constraints = $this->getConstraintsToUse(
+			$statement->getPropertyId(),
+			$constraintIds
+		);
 
 		foreach ( $constraints as $constraint ) {
 			$parameters = $constraint->getConstraintParameters();
@@ -314,13 +341,74 @@ class DelegatingConstraintChecker {
 				continue;
 			}
 
-			if ( in_array( $entityId, $exceptions ) ) {
+			if ( in_array( $entity->getId(), $exceptions ) ) {
 				$message = wfMessage( 'wbqc-exception-message' )->escaped();
 				$result[] = new CheckResult( $context, $constraint, [], CheckResult::STATUS_EXCEPTION, $message );
 				continue;
 			}
 
-			$result[ ] = $this->getCheckResultFor( $context, $constraint );
+			$result[] = $this->getCheckResultFor( $context, $constraint );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param EntityDocument $entity
+	 * @param Statement $statement
+	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
+	 * @return CheckResult[]
+	 */
+	private function checkConstraintsForQualifiers(
+		EntityDocument $entity,
+		Statement $statement,
+		array $constraintIds = null
+	) {
+		$result = [];
+
+		foreach ( $statement->getQualifiers() as $qualifier ) {
+			$qualifierContext = new QualifierContext( $entity, $statement, $qualifier );
+			$qualifierConstraints = $this->getConstraintsToUse(
+				$qualifierContext->getSnak()->getPropertyId(),
+				$constraintIds
+			);
+			foreach ( $qualifierConstraints as $qualifierConstraint ) {
+				$result[] = $this->getCheckResultFor( $qualifierContext, $qualifierConstraint );
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param EntityDocument $entity
+	 * @param Statement $statement
+	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
+	 * @return CheckResult[]
+	 */
+	private function checkConstraintsForReferences(
+		EntityDocument $entity,
+		Statement $statement,
+		array $constraintIds = null
+	) {
+		$result = [];
+
+		foreach ( $statement->getReferences() as $reference ) {
+			foreach ( $reference->getSnaks() as $snak ) {
+				$referenceContext = new ReferenceContext(
+					$entity, $statement, $reference, $snak
+				);
+				$referenceConstraints = $this->getConstraintsToUse(
+					$referenceContext->getSnak()->getPropertyId(),
+					$constraintIds
+				);
+				foreach ( $referenceConstraints as $referenceConstraint ) {
+					$result[] = $this->getCheckResultFor(
+						$referenceContext,
+						$referenceConstraint
+					);
+				}
+			}
 		}
 
 		return $result;
