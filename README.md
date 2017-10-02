@@ -231,7 +231,7 @@ To add a new constraint type, the following steps are necessary:
     but that’s a lot less readable.)
   * If the checker uses a `Config`, use the `DefaultConfig` trait.
   * If the constraint has parameters,
-    add methods for them to the `ConstraintParameterns` trait and use it in the tests.
+    add methods for them to the `ConstraintParameters` trait and use it in the tests.
   * You can copy+paste a `getConstraintMock` function from one of the existing tests,
     adjusting the `getConstraintTypeItemId` mocked return value.
     (Hopefully we’ll improve this in the future.)
