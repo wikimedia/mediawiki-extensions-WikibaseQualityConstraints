@@ -2,13 +2,16 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -232,6 +235,24 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
+	}
+
+	public function testTypeConstraintInstanceValidQualifier() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+		$context = new QualifierContext(
+			$entity,
+			new Statement( $this->typeSnak ),
+			new PropertyNoValueSnak( new PropertyId( 'P2000' ) )
+		);
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testCheckConstraintParameters() {
