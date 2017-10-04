@@ -601,6 +601,51 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertEquals( [ $now, null ], $parsed );
 	}
 
+	public function testParseRangeParameterQuantityOneYear() {
+		$config = $this->getDefaultConfig();
+		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
+		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
+		$yearUnit = $config->get( 'WBQualityConstraintsYearUnit' );
+		$min = UnboundedQuantityValue::newFromNumber( 0, 'other unit than ' . $yearUnit );
+		$max = UnboundedQuantityValue::newFromNumber( 150, $yearUnit );
+		$minSnak = new PropertyValueSnak( new PropertyId( $minimumId ), $min );
+		$maxSnak = new PropertyValueSnak( new PropertyId( $maximumId ), $max );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseRangeParameter',
+			[
+				[
+					$minimumId => [ $this->getSnakSerializer()->serialize( $minSnak ) ],
+					$maximumId => [ $this->getSnakSerializer()->serialize( $maxSnak ) ]
+				],
+				'constraint',
+				'quantity'
+			],
+			'wbqc-violation-message-range-parameters-one-year'
+		);
+	}
+
+	public function testParseRangeParameterQuantityOneYearLeftOpen() {
+		$config = $this->getDefaultConfig();
+		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
+		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
+		$yearUnit = $config->get( 'WBQualityConstraintsYearUnit' );
+		$max = UnboundedQuantityValue::newFromNumber( 150, $yearUnit );
+		$minSnak = new PropertyNoValueSnak( new PropertyId( $minimumId ) );
+		$maxSnak = new PropertyValueSnak( new PropertyId( $maximumId ), $max );
+
+		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+			[
+				$minimumId => [ $this->getSnakSerializer()->serialize( $minSnak ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( $maxSnak ) ]
+			],
+			'constraint',
+			'quantity'
+		);
+
+		$this->assertEquals( [ null, $max ], $parsed );
+	}
+
 	public function testParseRangeParameterMissingParameters() {
 		foreach ( [ 'quantity', 'time' ] as $type ) {
 			$this->assertThrowsConstraintParameterException(

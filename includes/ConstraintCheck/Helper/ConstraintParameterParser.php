@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
+use DataValues\QuantityValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
@@ -387,6 +388,23 @@ class ConstraintParameterParser {
 	}
 
 	/**
+	 * Checks whether there is exactly one non-null quantity with the given unit.
+	 * @param DataValue|null $min
+	 * @param DataValue|null $max
+	 * @param string $unit
+	 * @return bool
+	 */
+	private function exactlyOneQuantityWithUnit( $min, $max, $unit ) {
+		if ( $min === null || $max === null ) {
+			return false;
+		}
+		if ( $min->getType() !== 'quantity' || $max->getType() !== 'quantity' ) {
+			return false;
+		}
+		return ( $min->getUnit() === $unit ) !== ( $max->getUnit() === $unit );
+	}
+
+	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @param string $type 'quantity' or 'time' (can be data type or data value type)
@@ -432,10 +450,18 @@ class ConstraintParameterParser {
 		$this->requireSingleParameter( $constraintParameters, $minimumId );
 		$this->requireSingleParameter( $constraintParameters, $maximumId );
 		$parseFunction = $configKey === 'Date' ? 'parseValueOrNoValueOrNowParameter' : 'parseValueOrNoValueParameter';
-		return [
-			$this->$parseFunction( $constraintParameters[$minimumId][0], $minimumId ),
-			$this->$parseFunction( $constraintParameters[$maximumId][0], $maximumId )
-		];
+		$min = $this->$parseFunction( $constraintParameters[$minimumId][0], $minimumId );
+		$max = $this->$parseFunction( $constraintParameters[$maximumId][0], $maximumId );
+
+		$yearUnit = $this->config->get( 'WBQualityConstraintsYearUnit' );
+		if ( $this->exactlyOneQuantityWithUnit( $min, $max, $yearUnit ) ) {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-range-parameters-one-year' )
+					->escaped()
+			);
+		}
+
+		return [ $min, $max ];
 	}
 
 	/**

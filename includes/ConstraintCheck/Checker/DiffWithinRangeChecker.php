@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Config;
+use DataValues\QuantityValue;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -39,18 +41,26 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	/**
+	 * @var Config
+	 */
+	private $config;
+
+	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param RangeCheckerHelper $rangeCheckerHelper
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
+	 * @param Config $config
 	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
 		RangeCheckerHelper $rangeCheckerHelper,
-		ConstraintParameterRenderer $constraintParameterRenderer
+		ConstraintParameterRenderer $constraintParameterRenderer,
+		Config $config
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
+		$this->config = $config;
 	}
 
 	private function parseConstraintParameters( Constraint $constraint ) {
@@ -76,6 +86,25 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	}
 
 	/**
+	 * Check whether the endpoints of a range are in years or not.
+	 * @param QuantityValue|null $min
+	 * @param QuantityValue|null $max
+	 * @return bool
+	 */
+	private function rangeInYears( $min, $max ) {
+		$yearUnit = $this->config->get( 'WBQualityConstraintsYearUnit' );
+
+		if ( $min !== null && $min->getUnit() === $yearUnit ) {
+			return true;
+		}
+		if ( $max !== null && $max->getUnit() === $yearUnit ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Checks 'Diff within range' constraint.
 	 *
 	 * @param Context $context
@@ -98,7 +127,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
 		}
 
-		$dataValue = $snak->getDataValue();
+		$minuend = $snak->getDataValue();
 
 		list ( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
@@ -115,8 +144,11 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				continue;
 			}
 
-			if ( $otherMainSnak->getDataValue()->getType() === $dataValue->getType() ) {
-				$diff = $this->rangeCheckerHelper->getDifference( $dataValue, $otherMainSnak->getDataValue() );
+			$subtrahend = $otherMainSnak->getDataValue();
+			if ( $subtrahend->getType() === $minuend->getType() ) {
+				$diff = $this->rangeInYears( $min, $max ) ?
+					$this->rangeCheckerHelper->getDifferenceInYears( $minuend, $subtrahend ) :
+					$this->rangeCheckerHelper->getDifference( $minuend, $subtrahend );
 
 				if ( $this->rangeCheckerHelper->getComparison( $min, $diff ) > 0 ||
 					$this->rangeCheckerHelper->getComparison( $diff, $max ) > 0
@@ -126,9 +158,9 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					$message = wfMessage( "wbqc-violation-message-diff-within-range$openness" );
 					$message->rawParams(
 						$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE ),
-						$this->constraintParameterRenderer->formatDataValue( $snak->getDataValue(), Role::OBJECT ),
+						$this->constraintParameterRenderer->formatDataValue( $minuend, Role::OBJECT ),
 						$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId(), Role::PREDICATE ),
-						$this->constraintParameterRenderer->formatDataValue( $otherMainSnak->getDataValue(), Role::OBJECT )
+						$this->constraintParameterRenderer->formatDataValue( $subtrahend, Role::OBJECT )
 					);
 					if ( $min !== null ) {
 						$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min, Role::OBJECT ) );

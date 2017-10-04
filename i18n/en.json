@@ -108,6 +108,7 @@
 	"wbqc-violation-message-no-qualifiers": "$1 statements should not have any qualifiers.",
 	"wbqc-violation-message-qualifiers": "$2 is not a valid qualifier for $1 – the only valid {{PLURAL:$3|1=qualifier is $5.|2=qualifiers are $5 and $6.|qualifiers are:$4}}",
 	"wbqc-violation-message-range-parameters-needed": "Properties with values of type \"$1\" with constraint \"$4\" need the parameters \"$2\" and \"$3\".",
+	"wbqc-violation-message-range-parameters-one-year": "Endpoints of a time-unit range must either both or neither have the unit \"year\" because years cannot be converted losslessly to seconds.",
 	"wbqc-violation-message-range-quantity-closed": "The value for $1 ($2) should be between $3 and $4 ([$3; $4]).",
 	"wbqc-violation-message-range-quantity-leftopen": "The value for $1 ($2) should be no more than $3 ((−∞; $3]).",
 	"wbqc-violation-message-range-quantity-rightopen": "The value for $1 ($2) should be no less than $3 ([$3; ∞)).",

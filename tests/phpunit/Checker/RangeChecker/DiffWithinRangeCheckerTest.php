@@ -83,11 +83,18 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	private static $i1970;
 
 	/**
-	 * Constraint parameters specifying a range of [0, 150] years for date of birth (P569).
+	 * Constraint parameters specifying a range of [0, 150] years (a, with conversion) for date of birth (P569).
 	 *
 	 * @var array
 	 */
 	private $dob0to150Parameters;
+
+	/**
+	 * Constraint parameters specifying a range of [0, 150] years (without conversion) for date of birth (P569).
+	 *
+	 * @var array
+	 */
+	private $dob0to150YearsParameters;
 
 	/**
 	 * Constraint parameters specifying a range of [5, 10] days for date of birth (P569).
@@ -114,12 +121,22 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
+		$config = $this->getDefaultConfig();
+		$yearUnit = $config->get( 'WBQualityConstraintsYearUnit' );
 		$this->dob0to150Parameters = array_merge(
 			$this->propertyParameter( 'P569' ),
 			$this->rangeParameter(
 				'quantity',
 				UnboundedQuantityValue::newFromNumber( 0, 'a' ),
 				UnboundedQuantityValue::newFromNumber( 150, 'a' )
+			)
+		);
+		$this->dob0to150YearsParameters = array_merge(
+			$this->propertyParameter( 'P569' ),
+			$this->rangeParameter(
+				'quantity',
+				UnboundedQuantityValue::newFromNumber( 0, $yearUnit ),
+				UnboundedQuantityValue::newFromNumber( 150, $yearUnit )
 			)
 		);
 		$this->dob5to10DaysParameters = array_merge(
@@ -131,13 +148,14 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			)
 		);
 		$rangeCheckerHelper = new RangeCheckerHelper(
-			$this->getDefaultConfig(),
+			$config,
 			new UnitConverter( new CSVUnitStorage( __DIR__ . '/units.csv' ), '' )
 		);
 		$this->checker = new DiffWithinRangeChecker(
 			$this->getConstraintParameterParser(),
 			$rangeCheckerHelper,
-			$this->getConstraintParameterRenderer()
+			$this->getConstraintParameterRenderer(),
+			$config
 		);
 	}
 
@@ -209,6 +227,57 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
 
 		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
+	}
+
+	public function testDiffWithinRangeConstraintWithinYearsRange() {
+		// DoB June 1820 and DoD January 1970 has diff within range [0, 150] years
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
+				new TimeValue( '+00000001820-06-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+			) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
+		$context = new StatementContext( $entity, self::$s1970 );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testDiffWithinRangeConstraintTooFewYears() {
+		// DoB June 1970 and DoD January 1970 violates diff within range [0, 150] years
+		// because June is after January, even though the year difference is 0 (within range)
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
+				new TimeValue( '+00000001970-06-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+			) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
+		$context = new StatementContext( $entity, self::$s1970 );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
+	}
+
+	public function testDiffWithinRangeConstraintTooManyYears() {
+		// DoB March 1820 and DoD September 1970 violates diff within range [0, 150] years
+		// because March is before September, even though the year difference is 150 (within range)
+		$fall1970Statement = NewStatement::forProperty( 'P570' )->withValue(
+			new TimeValue( '+00000001970-09-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+		)->build();
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $fall1970Statement )
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
+				new TimeValue( '+00000001820-03-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+			) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
+		$context = new StatementContext( $entity, $fall1970Statement );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
