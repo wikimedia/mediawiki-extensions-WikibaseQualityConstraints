@@ -117,5 +117,6 @@
 	"wbqc-violation-message-valueType-subclass": "Os valores de declarações $1 deveriam ser subclasses de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 deveria ter {{PLURAL:$3|0=uma declaração $2.|1=uma declaração $2 $5.|uma declaração para $2 com um dos seguintes valores:$4}}",
 	"wbqc-violation-message-unique-value": "O valor da propriedade não pode estar presente em nenhum outro objeto, mas também está presente {{PLURAL:$1|1=em $3.|2=em $3 e $4.|nos seguintes objetos: $2}}",
+	"wbqc-violation-message-valueOnly": "Esta propriedade só deve ser usada para o valor principal de uma declaração, não para qualificadores nem referências.",
 	"wbqc-exception-message": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal."
 }

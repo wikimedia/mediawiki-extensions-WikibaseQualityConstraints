@@ -8,6 +8,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "Trasiga parametrar",
 	"wbqc-constraintreport-status-deprecated": "Föråldrad",
 	"wbqc-constraintreport-status-warning": "Varning",
+	"wbqc-constraintreport-status-not-main-snak": "Ingen huvudsnak",
 	"wbqc-badparameters-short": "Trasiga parametrar",
 	"wbqc-parameterissues-short": "Avancerade ärenden",
 	"wbqc-constrainttypehelp-short": "Hjälp",
