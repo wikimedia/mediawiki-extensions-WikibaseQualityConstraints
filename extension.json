@@ -49,6 +49,14 @@
 			"styles": "modules/SpecialConstraintReportPage.css",
 			"scripts": "modules/SpecialConstraintReportPage.js"
 		},
+		"wikibase.quality.constraints.icon": {
+			"class": "ResourceLoaderImageModule",
+			"selector": ".oo-ui-icon-{name}",
+			"images": {
+				"mandatory-constraint-violation": "modules/icon/mandatory-constraint-violation.svg",
+				"non-mandatory-constraint-violation": "modules/icon/non-mandatory-constraint-violation.svg"
+			}
+		},
 		"wikibase.quality.constraints.ui": {
 			"dependencies": [
 				"oojs-ui-core",
@@ -86,6 +94,7 @@
 				"oojs-ui-core",
 				"oojs-ui-widgets",
 				"oojs-ui.styles.icons-alerts",
+				"wikibase.quality.constraints.icon",
 				"wikibase.quality.constraints.ui"
 			],
 			"skipFunction": "modules/gadget-skip.js"

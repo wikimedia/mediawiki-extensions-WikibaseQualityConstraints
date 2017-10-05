@@ -157,7 +157,7 @@
 			buildPopup(
 				list.$element,
 				$target,
-				haveMandatoryViolations ? 'alert' : 'info',
+				( haveMandatoryViolations ? '' : 'non-' ) + 'mandatory-constraint-violation',
 				haveMandatoryViolations ? 'wbqc-issues-long' : 'wbqc-potentialissues-long'
 			);
 		}
@@ -260,6 +260,7 @@
 		'oojs-ui-core',
 		'oojs-ui-widgets',
 		'oojs-ui.styles.icons-alerts',
+		'wikibase.quality.constraints.icon',
 		'wikibase.quality.constraints.ui'
 	] ).done( function () {
 		var api = new mw.Api(),
