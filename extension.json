@@ -86,7 +86,6 @@
 				"oojs-ui-core",
 				"oojs-ui-widgets",
 				"oojs-ui.styles.icons-alerts",
-				"oojs-ui.styles.icons-interactions",
 				"wikibase.quality.constraints.ui"
 			],
 			"skipFunction": "modules/gadget-skip.js"
