@@ -260,7 +260,6 @@
 		'oojs-ui-core',
 		'oojs-ui-widgets',
 		'oojs-ui.styles.icons-alerts',
-		'oojs-ui.styles.icons-interactions',
 		'wikibase.quality.constraints.ui'
 	] ).done( function () {
 		var api = new mw.Api(),
