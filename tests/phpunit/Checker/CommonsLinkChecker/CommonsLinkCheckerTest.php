@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\CommonsLinkChecker;
 
+use Title;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -20,6 +21,7 @@ use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
+use WikiPage;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
@@ -55,38 +57,24 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	public function addDBData() {
 		$this->db->delete( 'page', '*' );
-		$this->db->insert(
-			'page',
-			[
-				'page_id' => '1',
-				'page_namespace' => NS_FILE,
-				'page_title' => 'Test_image.jpg'
-			]
-		);
-		$this->db->insert(
-			'page',
-			[
-				'page_id' => '2',
-				'page_namespace' => NS_CATEGORY,
-				'page_title' => 'Test_category'
-			]
-		);
-		$this->db->insert(
-			'page',
-			[
-				'page_id' => '3',
-				'page_namespace' => NS_MAIN,
-				'page_title' => 'Test_gallery'
-			]
-		);
-		$this->db->insert(
-			'page',
-			[
-				'page_id' => '4',
-				'page_namespace' => 100,
-				'page_title' => 'Test_creator'
-			]
-		);
+
+		$pages = [
+			[ NS_FILE, 'Test_image.jpg' ],
+			[ NS_CATEGORY, 'Test_category' ],
+			[ NS_MAIN, 'Test_gallery' ],
+			[ 100, 'Test_creator' ],
+		];
+
+		foreach ( $pages as list( $namespace, $title ) ) {
+			WikiPage::factory( Title::makeTitle( $namespace, $title ) )
+				->insertOn( $this->db );
+			/*
+			 * insertOn() says it *must* be followed by creating a revision and such,
+			 * but that’s just way too slow, and apparently not necessary for tests.
+			 * (But in case this breaks: try ->doEditContent( new TextContent( '' ), 'summary' );
+			 * instead of ->insertOn(), which is the method that does everything together.)
+			 */
+		}
 	}
 
 	public function testCommonsLinkConstraintValid() {
