@@ -13,6 +13,7 @@ use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -331,6 +332,8 @@ class ConstraintReportFactory {
 					),
 				$this->config->get( 'WBQualityConstraintsUsedForValuesOnlyConstraintId' )
 					=> new ValueOnlyChecker(),
+				$this->config->get( 'WBQualityConstraintsUsedAsReferenceConstraintId' )
+					=> new ReferenceChecker(),
 			];
 		}
 
