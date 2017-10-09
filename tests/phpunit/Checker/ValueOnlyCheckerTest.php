@@ -29,7 +29,7 @@ class ValueOnlyCheckerTest extends \PHPUnit_Framework_TestCase {
 	 * @param string|null $messageKey key of violation message, or null if compliance is expected
 	 * @dataProvider contextTypes
 	 */
-	public function testQualifierConstraint( $type, $messageKey ) {
+	public function testValueOnlyConstraint( $type, $messageKey ) {
 		$context = $this->getMock( Context::class );
 		$context->method( 'getType' )->willReturn( $type );
 		$checker = new ValueOnlyChecker();
@@ -52,7 +52,7 @@ class ValueOnlyCheckerTest extends \PHPUnit_Framework_TestCase {
 		];
 	}
 
-	public function testQualifierConstraintDeprecatedStatement() {
+	public function testValueOnlyConstraintDeprecatedStatement() {
 		$checker = new ValueOnlyChecker();
 		$statement = NewStatement::noValueFor( 'P1' )
 			->withDeprecatedRank()
