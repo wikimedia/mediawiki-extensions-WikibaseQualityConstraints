@@ -184,7 +184,7 @@ To add a new constraint type, the following steps are necessary:
     as members of the `config` object.
   * It should be added right after the current last `…ConstraintId` entry.
   * It should be named after the constraint type item’s English label,
-    following the pattern `WBQualityConstraints___ConstraintId`.
+    following the pattern `WBQualityConstraints…ConstraintId`.
   * The default value should be the item ID on Wikidata,
     so that no extra configuration is required for Wikidata
     and importing the constraint type item (see “Data import” section) works.
@@ -194,8 +194,8 @@ To add a new constraint type, the following steps are necessary:
 * Configure the constraint type checker in `ConstraintReportFactory`.
   * Add an array entry like
     ```php
-    $this->config->get( 'WBQualityConstraints___ConstraintId' )
-    	=> new ___Checker(
+    $this->config->get( 'WBQualityConstraints…ConstraintId' )
+    	=> new …Checker(
     		// injected services
     	),
     ```
@@ -211,7 +211,7 @@ To add a new constraint type, the following steps are necessary:
   * It should have at least the following class-level documentation comment:
     ```php
     /**
-     * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\___Checker
+     * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\…Checker
      *
      * @group WikibaseQualityConstraints
      *
@@ -235,5 +235,18 @@ To add a new constraint type, the following steps are necessary:
   * You can copy+paste a `getConstraintMock` function from one of the existing tests,
     adjusting the `getConstraintTypeItemId` mocked return value.
     (Hopefully we’ll improve this in the future.)
+* Update the tests for `DelegatingConstraintChecker`.
+    * In `DelegatingConstraintCheckerTest`,
+      add an entry for your constraint type to the `$constraints` array in `addDBData()`.
+    * The `constraint_guid` should be `P1$`,
+      followed by a new UUID (e. g. `cat /proc/sys/kernel/random/uuid` or `journalctl --new-id128`).
+    * The `pid` should be `1`. (Not `'1'`!)
+    * The `constraint_type_qid` should be `$this->getConstraintTypeItemId( '…' )`,
+      where `…` is just the `…` part of the `WBQualityConstraints…ConstraintId` `extension.json` config key.
+    * The `constraint_parameters` should be a valid JSON serialization of constraint parameters.
+      If the constraint type doesn’t have any parameters, you can pass `{}`,
+      otherwise there should ideally be methods to create the parameters in the `ConstraintParameters` trait
+      so that you can use `json_encode( $this->…Parameter( … ) )`
+      (perhaps with `array_merge` if there are multiple parameters).
 
-An example commit that performs all of these steps is [Change Id45d80e7a0](https://gerrit.wikimedia.org/r/381005).
+An example commit that performs all of these steps is [Change Ica05406e14](https://gerrit.wikimedia.org/r/382715).
