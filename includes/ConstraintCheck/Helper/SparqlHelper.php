@@ -3,15 +3,22 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
+use DataValues\DataValue;
 use IBufferingStatsdDataFactory;
+use InvalidArgumentException;
 use MapCacheLRU;
 use MediaWiki\MediaWikiServices;
 use MWHttpRequest;
 use WANObjectCache;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
@@ -30,6 +37,11 @@ class SparqlHelper {
 	private $config;
 
 	/**
+	 * @var RdfVocabulary
+	 */
+	private $rdfVocabulary;
+
+	/**
 	 * @var string
 	 */
 	private $entityPrefix;
@@ -45,6 +57,11 @@ class SparqlHelper {
 	private $entityIdParser;
 
 	/**
+	 * @var PropertyDataTypeLookup
+	 */
+	private $propertyDataTypeLookup;
+
+	/**
 	 * @var WANObjectCache
 	 */
 	private $cache;
@@ -58,10 +75,13 @@ class SparqlHelper {
 		Config $config,
 		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser,
+		PropertyDataTypeLookup $propertyDataTypeLookup,
 		WANObjectCache $cache
 	) {
 		$this->config = $config;
+		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
+		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->cache = $cache;
 
 		$this->entityPrefix = $rdfVocabulary->getNamespaceUri( RdfVocabulary::NS_ENTITY );
@@ -69,8 +89,13 @@ class SparqlHelper {
 PREFIX wd: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NS_ENTITY )}>
 PREFIX wds: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NS_STATEMENT )}>
 PREFIX wdt: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_DIRECT_CLAIM )}>
+PREFIX wdv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_VALUE )}>
 PREFIX p: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_CLAIM )}>
 PREFIX ps: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_CLAIM_STATEMENT )}>
+PREFIX pq: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_QUALIFIER )}>
+PREFIX pqv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_QUALIFIER_VALUE )}>
+PREFIX pr: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_REFERENCE )}>
+PREFIX prv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_REFERENCE_VALUE )}>
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX wikibase-beta: <http://wikiba.se/ontology-beta#>
 EOT;
@@ -154,21 +179,63 @@ EOF;
 
 		$result = $this->runQuery( $query );
 
-		return array_map(
-			function( $resultBindings ) {
-				$entityIRI = $resultBindings['otherEntity']['value'];
-				$entityPrefixLength = strlen( $this->entityPrefix );
-				if ( substr( $entityIRI, 0, $entityPrefixLength ) === $this->entityPrefix ) {
-					try {
-						return $this->entityIdParser->parse( substr( $entityIRI, $entityPrefixLength ) );
-					} catch ( EntityIdParsingException $e ) {
-						// fall through
-					}
-				}
-				return null;
-			},
-			$result['results']['bindings']
+		return $this->getOtherEntities( $result );
+	}
+
+	/**
+	 * @param EntityId $entityId The entity ID on the containing entity
+	 * @param PropertyValueSnak $snak
+	 * @param string $type Context::TYPE_QUALIFIER or Context::TYPE_REFERENCE
+	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
+	 * @return (EntityId|null)[]
+	 * @throws SparqlHelperException if the query times out or some other error occurs
+	 */
+	public function findEntitiesWithSameQualifierOrReference(
+		EntityId $entityId,
+		PropertyValueSnak $snak,
+		$type,
+		$ignoreDeprecatedStatements
+	) {
+		$eid = $entityId->getSerialization();
+		$pid = $snak->getPropertyId()->getSerialization();
+		$prefix = $type === Context::TYPE_QUALIFIER ? 'pq' : 'pr';
+		$dataValue = $snak->getDataValue();
+		$dataType = $this->propertyDataTypeLookup->getDataTypeIdForProperty(
+			$snak->getPropertyId()
 		);
+		list ( $value, $isFullValue ) = $this->getRdfLiteral( $dataType, $dataValue );
+		if ( $isFullValue ) {
+			$prefix .= 'v';
+		}
+		$path = $type === Context::TYPE_QUALIFIER ?
+			"$prefix:$pid" :
+			"prov:wasDerivedFrom/$prefix:$pid";
+
+		$deprecatedFilter = '';
+		if ( $ignoreDeprecatedStatements ) {
+			$deprecatedFilter = <<< EOF
+  MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }
+  MINUS { ?otherStatement wikibase-beta:rank wikibase-beta:DeprecatedRank. }
+EOF;
+		}
+
+		$query = <<<EOF
+SELECT ?entity ?otherEntity WHERE {
+  BIND(wd:$eid AS ?entity)
+  BIND($value AS ?value)
+  ?entity ?p ?statement.
+  ?statement $path ?value.
+  ?otherStatement $path ?value.
+  ?otherEntity ?otherP ?otherStatement.
+  FILTER(?otherEntity != ?entity)
+$deprecatedFilter
+}
+LIMIT 10
+EOF;
+
+		$result = $this->runQuery( $query );
+
+		return $this->getOtherEntities( $result );
 	}
 
 	/**
@@ -179,6 +246,85 @@ EOF;
 	private function stringLiteral( $text ) {
 		return '"' . strtr( $text, [ '"' => '\\"', '\\' => '\\\\' ] ) . '"';
 	}
+
+	/**
+	 * Extract and parse entity IDs from the ?otherEntity column of a SPARQL query result.
+	 *
+	 * @param array $result SPARQL query result
+	 * @return (EntityId|null)[]
+	 */
+	private function getOtherEntities( $result ) {
+		return array_map(
+			function ( $resultBindings ) {
+				$entityIRI = $resultBindings['otherEntity']['value'];
+				$entityPrefixLength = strlen( $this->entityPrefix );
+				if ( substr( $entityIRI, 0, $entityPrefixLength ) === $this->entityPrefix ) {
+					try {
+						return $this->entityIdParser->parse(
+							substr( $entityIRI, $entityPrefixLength )
+						);
+					} catch ( EntityIdParsingException $e ) {
+						// fall through
+					}
+				}
+
+				return null;
+			},
+			$result['results']['bindings']
+		);
+	}
+
+	// @codingStandardsIgnoreStart cyclomatic complexity of this function is too high
+	/**
+	 * Get an RDF literal or IRI with which the given data value can be matched in a query.
+	 *
+	 * @param string $dataType
+	 * @param DataValue $dataValue
+	 * @return array the literal or IRI as a string in SPARQL syntax,
+	 * and a boolean indicating whether it refers to a full value node or not
+	 */
+	private function getRdfLiteral( $dataType, DataValue $dataValue ) {
+		switch ( $dataType ) {
+			case 'string':
+			case 'external-id':
+				return [ $this->stringLiteral( $dataValue->getValue() ), false ];
+			case 'commonsMedia':
+				$url = $this->rdfVocabulary->getMediaFileURI( $dataValue->getValue() );
+				return [ '<' . $url . '>', false ];
+			case 'geo-shape':
+				$url = $this->rdfVocabulary->getGeoShapeURI( $dataValue->getValue() );
+				return [ '<' . $url . '>', false ];
+			case 'tabular-data':
+				$url = $this->rdfVocabulary->getTabularDataURI( $dataValue->getValue() );
+				return [ '<' . $url . '>', false ];
+			case 'url':
+				$url = $dataValue->getValue();
+				if ( !preg_match( '/^[^<>"{}\\\\|^`\\x00-\\x20]*$/D', $url ) ) {
+					// not a valid URL for SPARQL (see SPARQL spec, production 139 IRIREF)
+					// such an URL should never reach us, so just throw
+					throw new InvalidArgumentException( 'invalid URL: ' . $url );
+				}
+				return [ '<' . $url . '>', false ];
+			case 'wikibase-item':
+			case 'wikibase-property':
+				return [ 'wd:' . $dataValue->getEntityId()->getSerialization(), false ];
+			case 'monolingualtext':
+				$lang = $dataValue->getLanguageCode();
+				if ( !preg_match( '/^[a-zA-Z]+(-[a-zA-Z0-9]+)*$/D', $lang ) ) {
+					// not a valid language tag for SPARQL (see SPARQL spec, production 145 LANGTAG)
+					// such a language tag should never reach us, so just throw
+					throw new InvalidArgumentException( 'invalid language tag: ' . $lang );
+				}
+				return [ $this->stringLiteral( $dataValue->getText() ) . '@' . $lang, false ];
+			case 'globe-coordinate':
+			case 'quantity':
+			case 'time':
+				return [ 'wdv:' . $dataValue->getHash(), true ];
+			default:
+				throw new InvalidArgumentException( 'unknown data type: ' . $dataType );
+		}
+	}
+	// @codingStandardsIgnoreEnd
 
 	/**
 	 * @param string $text

@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
+use DataValues\StringValue;
+use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\ItemId;
@@ -11,6 +13,8 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -102,6 +106,49 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 		$constraint = $this->getConstraintMock( [] );
 
 		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testCheckUniqueValueConstraintInvalidOnQualifier() {
+		$entity = NewItem::withId( 'Q6' )->build();
+		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$entity->getStatements()->addStatement( $statement );
+		$snak = new PropertyValueSnak( new PropertyId( 'P7' ), new StringValue( 'O8' ) );
+		$sparqlHelper = $this->getSparqlHelperMockFindEntitiesQualifierReference(
+			new ItemId( 'Q6' ),
+			$snak,
+			'qualifier',
+			[ new ItemId( 'Q42' ) ]
+		);
+		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $sparqlHelper );
+		$context = new QualifierContext( $entity, $statement, $snak );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-unique-value' );
+	}
+
+	public function testCheckUniqueValueConstraintValidOnReference() {
+		$entity = NewItem::withId( 'Q6' )->build();
+		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$entity->getStatements()->addStatement( $statement );
+		$reference = new Reference();
+		$statement->getReferences()->addReference( $reference );
+		$snak = new PropertyValueSnak( new PropertyId( 'P7' ), new StringValue( 'O8' ) );
+		$reference->getSnaks()->addSnak( $snak );
+		$sparqlHelper = $this->getSparqlHelperMockFindEntitiesQualifierReference(
+			new ItemId( 'Q6' ),
+			$snak,
+			'reference',
+			[]
+		);
+		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $sparqlHelper );
+		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
+		$constraint = $this->getConstraintMock( [] );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}

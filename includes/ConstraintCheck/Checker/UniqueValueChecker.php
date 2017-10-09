@@ -57,18 +57,27 @@ class UniqueValueChecker implements ConstraintChecker {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
-		if ( $context->getType() !== Context::TYPE_STATEMENT ) {
-			// TODO T175561
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_MAIN_SNAK );
-		}
 
 		$parameters = [];
 
 		if ( $this->sparqlHelper !== null ) {
-			$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement(
-				$context->getSnakStatement(),
-				true // ignore deprecated statements
-			);
+			if ( $context->getType() === 'statement' ) {
+				$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement(
+					$context->getSnakStatement(),
+					true // ignore deprecated statements
+				);
+			} else {
+				if ( $context->getSnak()->getType() !== 'value' ) {
+					return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
+				}
+				$otherEntities = $this->sparqlHelper->findEntitiesWithSameQualifierOrReference(
+					$context->getEntity()->getId(),
+					$context->getSnak(),
+					$context->getType(),
+					// ignore qualifiers of deprecated statements but still check their references
+					$context->getType() === 'qualifier'
+				);
+			}
 
 			if ( $otherEntities === [] ) {
 				$status = CheckResult::STATUS_COMPLIANCE;
