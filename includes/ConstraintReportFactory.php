@@ -296,7 +296,8 @@ class ConstraintReportFactory {
 					=> new DiffWithinRangeChecker(
 						$this->constraintParameterParser,
 						$rangeCheckerHelper,
-						$this->constraintParameterRenderer
+						$this->constraintParameterRenderer,
+						$this->config
 					),
 				$this->config->get( 'WBQualityConstraintsTypeConstraintId' )
 					=> new TypeChecker(

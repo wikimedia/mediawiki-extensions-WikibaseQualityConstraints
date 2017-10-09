@@ -147,6 +147,59 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider getDifferenceInYearsProvider
+	 */
+	public function testGetDifferenceInYears(
+		$minExpected,
+		$maxExpected,
+		TimeValue $subtrahend,
+		TimeValue $minuend
+	) {
+		$rangeCheckHelper = $this->getRangeCheckerHelper();
+
+		$diff = $rangeCheckHelper->getDifferenceInYears( $minuend, $subtrahend );
+		$actual = $diff->getAmount()->getValueFloat();
+
+		// $minExpected ≤ $actual ≤ $maxExpected
+		$this->assertGreaterThanOrEqual( $minExpected, $actual );
+		$this->assertLessThanOrEqual( $maxExpected, $actual );
+	}
+
+	public function getDifferenceInYearsProvider() {
+		$spring74 = $this->getTimeValue( 1974, 04, 01 );
+		$fall74 = $this->getTimeValue( 1974, 10, 01 );
+		$spring75 = $this->getTimeValue( 1975, 04, 01 );
+		$fall75 = $this->getTimeValue( 1975, 10, 01 );
+
+		$cases = [
+			'spring ’74 to spring ’74' => [ 0, 0, $spring74, $spring74 ],
+			'spring ’74 to fall ’74' => [ 0.1, 0.9, $spring74, $fall74 ],
+			'spring ’74 to spring ’75' => [ 1, 1, $spring74, $spring75 ],
+			'spring ’74 to fall ’75' => [ 1.1, 1.9, $spring74, $fall75 ],
+			'fall ’74 to spring ’74' => [ -0.9, -0.1, $fall74, $spring74 ],
+			'fall ’74 to fall ’74' => [ 0, 0, $fall74, $fall74 ],
+			'fall ’74 to spring ’75' => [ 0.1, 0.9, $fall74, $spring75 ],
+			'fall ’74 to fall ’75' => [ 1, 1, $fall74, $fall75 ],
+			'spring ’75 to spring ’74' => [ -1, -1, $spring75, $spring74 ],
+			'spring ’75 to fall ’74' => [ -0.9, -0.1, $spring75, $fall74 ],
+			'spring ’75 to spring ’75' => [ 0, 0, $spring75, $spring75 ],
+			'spring ’75 to fall ’75' => [ 0.1, 0.9, $spring75, $fall75 ],
+			'fall ’75 to spring ’74' => [ -1.9, -1.1, $fall75, $spring74 ],
+			'fall ’75 to fall ’74' => [ -1, -1, $fall75, $fall74 ],
+			'fall ’75 to spring ’75' => [ -0.9, -0.1, $fall75, $spring75 ],
+			'fall ’75 to fall ’75' => [ 0, 0, $fall75, $fall75 ],
+			'spring 1 BCE to fall 1 CE' => [
+				1.1, 1.9, $this->getTimeValue( -1, 04, 01 ), $this->getTimeValue( 1, 10, 01 )
+			],
+			'spring 10 CE to fall 10 BCE' => [
+				-18.9, -18.1, $this->getTimeValue( 10, 04, 01 ), $this->getTimeValue( -10, 10, 01 )
+			],
+		];
+
+		return $cases;
+	}
+
+	/**
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testGetComparison_unsupportedDataValueTypeThrowsException() {

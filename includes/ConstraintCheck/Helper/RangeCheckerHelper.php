@@ -127,7 +127,6 @@ class RangeCheckerHelper {
 	 */
 	public function getDifference( DataValue $minuend, DataValue $subtrahend ) {
 		if ( $minuend->getType() === 'time' && $subtrahend->getType() === 'time' ) {
-			// TODO support calculating difference in years (for year ranges)
 			$minuendSeconds = $this->timeCalculator->getTimestamp( $minuend );
 			$subtrahendSeconds = $this->timeCalculator->getTimestamp( $subtrahend );
 			return UnboundedQuantityValue::newFromNumber(
@@ -147,6 +146,45 @@ class RangeCheckerHelper {
 		}
 
 		throw new InvalidArgumentException( 'Unsupported or different data value types' );
+	}
+
+	public function getDifferenceInYears( TimeValue $minuend, TimeValue $subtrahend ) {
+		if ( !preg_match( '/^([-+]\d{1,16})-(.*)$/', $minuend->getTime(), $minuendMatches ) ||
+		     !preg_match( '/^([-+]\d{1,16})-(.*)$/', $subtrahend->getTime(), $subtrahendMatches ) ) {
+			throw new InvalidArgumentException( 'TimeValue::getTime() did not match expected format' );
+		}
+		$minuendYear = (float)$minuendMatches[1];
+		$subtrahendYear = (float)$subtrahendMatches[1];
+		$minuendRest = $minuendMatches[2];
+		$subtrahendRest = $subtrahendMatches[2];
+
+		// calculate difference of years
+		$diff = $minuendYear - $subtrahendYear;
+		if ( $minuendYear > 0.0 && $subtrahendYear < 0.0 ) {
+			$diff -= 1.0; // there is no year 0, remove it from difference
+		} elseif ( $minuendYear < 0.0 && $subtrahendYear > 0.0 ) {
+			$diff -= -1.0; // there is no year 0, remove it from negative difference
+		}
+
+		// adjust for date within year by parsing the month-day part within the same year
+		$minuendDateValue = $this->timeParser->parse( '+0000000000001970-' . $minuendRest );
+		$subtrahendDateValue = $this->timeParser->parse( '+0000000000001970-' . $subtrahendRest );
+		$minuendDateSeconds = $this->timeCalculator->getTimestamp( $minuendDateValue );
+		$subtrahendDateSeconds = $this->timeCalculator->getTimestamp( $subtrahendDateValue );
+		if ( $minuendDateSeconds < $subtrahendDateSeconds ) {
+			// difference in the last year is actually less than one full year
+			// e. g. 1975-03-01 - 1974-09-01 is just six months
+			// (we don’t need sub-year precision in the difference, adjusting by 0.5 is enough)
+			$diff -= 0.5;
+		} elseif ( $minuendDateSeconds > $subtrahendDateSeconds ) {
+			// difference in the last year is actually more than one full year
+			// e. g. 1975-09-01 - 1974-03-01 is 18 months
+			// (we don’t need sub-year precision in the difference, adjusting by 0.5 is enough)
+			$diff += 0.5;
+		}
+
+		$unit = $this->config->get( 'WBQualityConstraintsYearUnit' );
+		return UnboundedQuantityValue::newFromNumber( $diff, $unit );
 	}
 
 	/**
