@@ -355,12 +355,12 @@
 		},
 		"WBQualityConstraintsYearUnit": {
 			"value": "http://www.wikidata.org/entity/Q577",
-			"description": "The unit used for a quantity that represents a difference between two dates, in years.",
+			"description": "The unit used for a quantity that represents a difference between two dates, in years. Note that for entity units, the full concept URI must be used, not just the entity ID.",
 			"public": true
 		},
 		"WBQualityConstraintsSecondUnit": {
 			"value": "http://www.wikidata.org/entity/Q11574",
-			"description": "The unit used for a quantity that represents a difference between two dates, in seconds.",
+			"description": "The unit used for a quantity that represents a difference between two dates, in seconds. Note that for entity units, the full concept URI must be used, not just the entity ID.",
 			"public": true
 		}
 	},
