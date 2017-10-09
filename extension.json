@@ -283,6 +283,11 @@
 			"description": "The item ID of the 'used for values only constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should only be used for the main value of a statement, not for qualifiers or references.",
 			"public": true
 		},
+		"WBQualityConstraintsUsedAsReferenceConstraintId": {
+			"value": "Q21528959",
+			"description": "The item ID of the 'used as reference constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should only be used for references, not for the main value of a statement or for qualifiers.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'relation' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
