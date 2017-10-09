@@ -69,7 +69,7 @@
 	"wbqc-violation-message-parameter-single-per-language": "De parameter \"$1\" mag maar een waarde per taal bevatten, maar heeft meerdere waarden voor $2 ($3).",
 	"wbqc-violation-message-parameter-oneof": "De parameter \"$1\" zou {{PLURAL:$2|1=$4 moeten zijn.|2=$4 of $5 moeten zijn.|een van de volgende moeten zijn:$3}}",
 	"wbqc-violation-message-parameter-regex": "$1 is geen geldige reguliere expressie.",
-	"wbqc-violation-message-sparql-error": "De SPRQL-zoekopdracht heeft geleid tot een foutmelding.",
+	"wbqc-violation-message-sparql-error": "De SPARQL-zoekopdracht heeft geleid tot een foutmelding.",
 	"wbqc-violation-message-parameters-error-unknown": "De parameters voor deze beperking konden niet worden geïmporteerd.",
 	"wbqc-violation-message-parameters-error-toolong": "De parameters voor deze beperking konden niet worden geïmporteerd omdat deze te lang waren.",
 	"wbqc-violation-message-commons-link-no-existent": "Link naar Commons moet bestaan.",
