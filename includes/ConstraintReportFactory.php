@@ -11,6 +11,7 @@ use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\SnakFormatter;
+use Wikibase\Lib\UnitConverter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
@@ -113,6 +114,11 @@ class ConstraintReportFactory {
 	private $titleParser;
 
 	/**
+	 * @var UnitConverter|null
+	 */
+	private $unitConverter;
+
+	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -150,7 +156,8 @@ class ConstraintReportFactory {
 				),
 				$wikibaseRepo->getRdfVocabulary(),
 				$wikibaseRepo->getEntityIdParser(),
-				$titleParser
+				$titleParser,
+				$wikibaseRepo->getUnitConverter()
 			);
 		}
 
@@ -166,7 +173,8 @@ class ConstraintReportFactory {
 		ConstraintParameterParser $constraintParameterParser,
 		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser,
-		TitleParser $titleParser
+		TitleParser $titleParser,
+		UnitConverter $unitConverter = null
 	) {
 		$this->lookup = $lookup;
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
@@ -177,6 +185,7 @@ class ConstraintReportFactory {
 		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
 		$this->titleParser = $titleParser;
+		$this->unitConverter = $unitConverter;
 	}
 
 	/**
@@ -210,7 +219,7 @@ class ConstraintReportFactory {
 	private function getConstraintCheckerMap() {
 		if ( $this->constraintCheckerMap === null ) {
 			$connectionCheckerHelper = new ConnectionCheckerHelper();
-			$rangeCheckerHelper = new RangeCheckerHelper( $this->config );
+			$rangeCheckerHelper = new RangeCheckerHelper( $this->config, $this->unitConverter );
 			if ( $this->config->get( 'WBQualityConstraintsSparqlEndpoint' ) !== '' ) {
 				$sparqlHelper = new SparqlHelper(
 					$this->config,

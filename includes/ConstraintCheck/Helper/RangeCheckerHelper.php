@@ -10,6 +10,7 @@ use DataValues\TimeValueCalculator;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 use ValueParsers\ValueParser;
+use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Repo\Parsers\TimeParserFactory;
 
 /**
@@ -36,10 +37,36 @@ class RangeCheckerHelper {
 	 */
 	private $timeCalculator;
 
-	public function __construct( Config $config ) {
+	/**
+	 * @var UnitConverter|null
+	 */
+	private $unitConverter;
+
+	public function __construct(
+		Config $config,
+		UnitConverter $unitConverter = null
+	) {
 		$this->config = $config;
 		$this->timeParser = ( new TimeParserFactory() )->getTimeParser();
 		$this->timeCalculator = new TimeValueCalculator();
+		$this->unitConverter = $unitConverter;
+	}
+
+	/**
+	 * @param UnboundedQuantityValue $value
+	 * @return UnboundedQuantityValue $value converted to standard units if possible, otherwise unchanged $value.
+	 */
+	private function standardize( UnboundedQuantityValue $value ) {
+		if ( $this->unitConverter !== null ) {
+			$standard = $this->unitConverter->toStandardUnits( $value );
+			if ( $standard !== null ) {
+				return $standard;
+			} else {
+				return $value;
+			}
+		} else {
+			return $value;
+		}
 	}
 
 	/**
@@ -78,15 +105,9 @@ class RangeCheckerHelper {
 			case 'quantity':
 				/** @var QuantityValue|UnboundedQuantityValue $lhs */
 				/** @var QuantityValue|UnboundedQuantityValue $rhs */
-				// TODO normalize values: T164371
-				$lhsValue = $lhs->getAmount()->getValue();
-				$rhsValue = $rhs->getAmount()->getValue();
-
-				if ( $lhsValue === $rhsValue ) {
-					return 0;
-				}
-
-				return $lhsValue < $rhsValue ? -1 : 1;
+				$lhsStandard = $this->standardize( $lhs );
+				$rhsStandard = $this->standardize( $rhs );
+				return $lhsStandard->getAmount()->compare( $rhsStandard->getAmount() );
 		}
 
 		throw new InvalidArgumentException( 'Unsupported data value type' );
@@ -94,9 +115,9 @@ class RangeCheckerHelper {
 
 	/**
 	 * Computes $minuend - $subtrahend, in a format depending on the data type.
-	 * For time values, the difference is in years;
-	 * otherwise, the difference is simply the numerical difference between the quantities.
-	 * (The units of the quantities are currently ignored: see T164371.)
+	 * For time values, the difference is in seconds;
+	 * for quantity values, the difference is the numerical difference between the quantities,
+	 * after attempting normalization of each side.
 	 *
 	 * @param TimeValue|QuantityValue|UnboundedQuantityValue $minuend
 	 * @param TimeValue|QuantityValue|UnboundedQuantityValue $subtrahend
@@ -106,28 +127,23 @@ class RangeCheckerHelper {
 	 */
 	public function getDifference( DataValue $minuend, DataValue $subtrahend ) {
 		if ( $minuend->getType() === 'time' && $subtrahend->getType() === 'time' ) {
-			// difference in years
-			// TODO calculate difference in days once we no longer import constraints from statements
-			// (then the range for the endpoints will also have units and we can convert as needed)
-			if ( !preg_match( '/^([-+]\d{1,16})-/', $minuend->getTime(), $minuendMatches ) ||
-				 !preg_match( '/^([-+]\d{1,16})-/', $subtrahend->getTime(), $subtrahendMatches ) ) {
-				throw new InvalidArgumentException( 'TimeValue::getTime() did not match expected format' );
-			}
-			$minuendYear = (float)$minuendMatches[1];
-			$subtrahendYear = (float)$subtrahendMatches[1];
-			$diff = $minuendYear - $subtrahendYear;
-			if ( $minuendYear > 0.0 && $subtrahendYear < 0.0 ) {
-				$diff -= 1.0; // there is no year 0, remove it from difference
-			} elseif ( $minuendYear < 0.0 && $subtrahendYear > 0.0 ) {
-				$diff += 1.0; // there is no year 0, remove it from negative difference
-			}
-			$unit = $this->config->get( 'WBQualityConstraintsYearUnit' ); // TODO unit for days
-			return UnboundedQuantityValue::newFromNumber( $diff, $unit );
+			// TODO support calculating difference in years (for year ranges)
+			$minuendSeconds = $this->timeCalculator->getTimestamp( $minuend );
+			$subtrahendSeconds = $this->timeCalculator->getTimestamp( $subtrahend );
+			return UnboundedQuantityValue::newFromNumber(
+				$minuendSeconds - $subtrahendSeconds,
+				$this->config->get( 'WBQualityConstraintsSecondUnit' )
+			);
 		}
 		if ( $minuend->getType() === 'quantity' && $subtrahend->getType() === 'quantity' ) {
-			// TODO normalize values: T164371
-			$diff = (float)$minuend->getAmount()->getValue() - (float)$subtrahend->getAmount()->getValue();
-			return UnboundedQuantityValue::newFromNumber( $diff, $minuend->getUnit() );
+			$minuendStandard = $this->standardize( $minuend );
+			$subtrahendStandard = $this->standardize( $subtrahend );
+			$minuendValue = $minuendStandard->getAmount()->getValueFloat();
+			$subtrahendValue = $subtrahendStandard->getAmount()->getValueFloat();
+			$diff = $minuendValue - $subtrahendValue;
+			// we don’t check whether both quantities have the same standard unit –
+			// that’s the job of a different constraint type, Units (T164372)
+			return UnboundedQuantityValue::newFromNumber( $diff, $minuendStandard->getUnit() );
 		}
 
 		throw new InvalidArgumentException( 'Unsupported or different data value types' );

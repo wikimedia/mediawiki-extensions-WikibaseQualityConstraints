@@ -3,7 +3,12 @@
 namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
 use DataValues\TimeValue;
+use DataValues\UnboundedQuantityValue;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Lib\Units\CSVUnitStorage;
+use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -78,11 +83,18 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	private static $i1970;
 
 	/**
-	 * Constraint parameters specifying a range of [0, 150] (years) for date of birth (P569).
+	 * Constraint parameters specifying a range of [0, 150] years for date of birth (P569).
 	 *
 	 * @var array
 	 */
 	private $dob0to150Parameters;
+
+	/**
+	 * Constraint parameters specifying a range of [5, 10] days for date of birth (P569).
+	 *
+	 * @var array
+	 */
+	private $dob5to10DaysParameters;
 
 	/**
 	 * @var DiffWithinRangeChecker
@@ -104,11 +116,27 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->dob0to150Parameters = array_merge(
 			$this->propertyParameter( 'P569' ),
-			$this->rangeParameter( 'quantity', 0, 150 )
+			$this->rangeParameter(
+				'quantity',
+				UnboundedQuantityValue::newFromNumber( 0, 'a' ),
+				UnboundedQuantityValue::newFromNumber( 150, 'a' )
+			)
+		);
+		$this->dob5to10DaysParameters = array_merge(
+			$this->propertyParameter( 'P569' ),
+			$this->rangeParameter(
+				'quantity',
+				UnboundedQuantityValue::newFromNumber( 5, 'd' ),
+				UnboundedQuantityValue::newFromNumber( 10, 'd' )
+			)
+		);
+		$rangeCheckerHelper = new RangeCheckerHelper(
+			$this->getDefaultConfig(),
+			new UnitConverter( new CSVUnitStorage( __DIR__ . '/units.csv' ), '' )
 		);
 		$this->checker = new DiffWithinRangeChecker(
 			$this->getConstraintParameterParser(),
-			new RangeCheckerHelper( $this->getDefaultConfig() ),
+			$rangeCheckerHelper,
 			$this->getConstraintParameterRenderer()
 		);
 	}
@@ -146,6 +174,45 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
 
+	public function testDiffWithinRangeConstraintWithinDaysRange() {
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
+				new TimeValue( '+00000001969-12-24T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+			) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testDiffWithinRangeConstraintTooFewDays() {
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
+				new TimeValue( '+00000001969-12-31T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+			) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
+	}
+
+	public function testDiffWithinRangeConstraintTooManyDays() {
+		$entity = self::$i1970
+			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
+				new TimeValue( '+00000001969-10-31T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+			) )
+			->build();
+		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
+
+		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
+	}
+
 	public function testDiffWithinRangeConstraintWithinRangeWithDeprecatedStatement() {
 		$deprecatedStatement = NewStatement::forProperty( 'P569' )
 			->withValue( self::$t1800 )
@@ -159,6 +226,87 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertCompliance( $checkResult );
+	}
+
+	public function testDiffWithinRangeConstraintGWithinRange() {
+		$entity = NewItem::withId( 'Q2' )
+			->andStatement(
+				NewStatement::forProperty( 'P2067' )
+					->withValue( UnboundedQuantityValue::newFromNumber( 5000, 'g' ) )
+			)
+			->build();
+		$snak = new PropertyValueSnak(
+			new PropertyId( 'P2068' ),
+			UnboundedQuantityValue::newFromNumber( 5500.0, 'g' )
+		);
+		$context = new StatementContext( $entity, new Statement( $snak ) );
+		$constraintParameters = array_merge(
+			$this->rangeParameter(
+				'quantity',
+				UnboundedQuantityValue::newFromNumber( 0, 'kg' ),
+				UnboundedQuantityValue::newFromNumber( 1, 'kg' )
+			),
+			$this->propertyParameter( 'P2067' )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testDiffWithinRangeConstraintGWithinTRange() {
+		$entity = NewItem::withId( 'Q2' )
+			->andStatement(
+				NewStatement::forProperty( 'P2067' )
+					->withValue( UnboundedQuantityValue::newFromNumber( 5000, 'g' ) )
+			)
+			->build();
+		$snak = new PropertyValueSnak(
+			new PropertyId( 'P2068' ),
+			UnboundedQuantityValue::newFromNumber( 5500.0, 'g' )
+		);
+		$context = new StatementContext( $entity, new Statement( $snak ) );
+		$constraintParameters = array_merge(
+			$this->rangeParameter(
+				'quantity',
+				UnboundedQuantityValue::newFromNumber( 0, 't' ),
+				UnboundedQuantityValue::newFromNumber( 0.001, 't' )
+			),
+			$this->propertyParameter( 'P2067' )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testDiffWithinRangeConstraintGTooBig() {
+		$entity = NewItem::withId( 'Q2' )
+			->andStatement(
+				NewStatement::forProperty( 'P2067' )
+					->withValue( UnboundedQuantityValue::newFromNumber( 5000, 'g' ) )
+			)
+			->build();
+		$snak = new PropertyValueSnak(
+			new PropertyId( 'P2068' ),
+			UnboundedQuantityValue::newFromNumber( 6500.0, 'g' )
+		);
+		$context = new StatementContext( $entity, new Statement( $snak ) );
+		$constraintParameters = array_merge(
+			$this->rangeParameter(
+				'quantity',
+				UnboundedQuantityValue::newFromNumber( 0, 'kg' ),
+				UnboundedQuantityValue::newFromNumber( 1, 'kg' )
+			),
+			$this->propertyParameter( 'P2067' )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
 
 	public function testDiffWithinRangeConstraintWithinRangeWithOtherSnakTypes() {
