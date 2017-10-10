@@ -84,5 +84,6 @@
 	"wbqc-violation-message-symmetric": "$1 dovrebbe avere anche la dichiarazione simmetrica $2 $3.",
 	"wbqc-violation-message-type-relation-instance-or-subclass": "Il parametro \"relazione\" deve essere \"istanza\" o \"sottoclasse\".",
 	"wbqc-violation-message-type-instance": "Entità che usano la proprietà $1 dovrebbero essere istanza di {{PLURAL:$3|1=$5|2=$5 o $6|una delle seguenti classi}} (o di {{PLURAL:$3|1=una delle sue sottoclassi|2=una loro sottoclasse|una delle loro sottoclassi}}), ma $2 attualmente {{PLURAL:$3|1=non lo è.|2=non lo è.|non lo è: $4}}",
-	"wbqc-violation-message-unique-value": "Il valore di questa proprietà non deve essere presente in nessun altro elemento, ma è presente anche {{PLURAL:$1|1=in $3.|2=in $3 e $4.|nei seguenti elementi: $2}}"
+	"wbqc-violation-message-unique-value": "Il valore di questa proprietà non deve essere presente in nessun altro elemento, ma è presente anche {{PLURAL:$1|1=in $3.|2=in $3 e $4.|nei seguenti elementi: $2}}",
+	"wbqc-violation-message-reference": "La proprietà deve essere utilizzata solo nei riferimenti, non per il valore principale di una dichiarazione o per un qualificatore."
 }

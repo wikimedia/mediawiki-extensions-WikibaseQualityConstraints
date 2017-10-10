@@ -102,6 +102,7 @@
 	"wbqc-violation-message-no-qualifiers": "As declarações $1 não deviam ter nenhum qualificador.",
 	"wbqc-violation-message-qualifiers": "$2 não é um qualificador válido para $1 – {{PLURAL:$3|1=o único qualificador válido é $5.|2=os únicos qualificadores válidos são $5 e $6.|os únicos qualificadores válidos são:$4}}",
 	"wbqc-violation-message-range-parameters-needed": "As propriedades com valores do tipo \"$1\" com a restrição \"$4\" necessitam dos parâmetros \"$2\" e \"$3\".",
+	"wbqc-violation-message-range-parameters-one-year": "Os extremos de um intervalo de unidades de tempo têm de ter ambos ou nenhum a unidade \"ano\", porque os anos não podem ser convertidos em segundos sem perdas.",
 	"wbqc-violation-message-range-quantity-closed": "O valor de $1 ($2) deve estar compreendido entre $3 e $4 ([$3; $4]).",
 	"wbqc-violation-message-range-quantity-leftopen": "O valor de $1 ($2) deve ser igual ou inferior a $3 ((−∞; $3]).",
 	"wbqc-violation-message-range-quantity-rightopen": "O valor de $1 ($2) deve ser igual ou superior a $3 ([$3; ∞)).",
@@ -118,5 +119,6 @@
 	"wbqc-violation-message-target-required-claim": "$1 deveria ter {{PLURAL:$3|0=uma declaração $2.|1=uma declaração $2 $5.|uma declaração para $2 com um dos seguintes valores:$4}}",
 	"wbqc-violation-message-unique-value": "O valor da propriedade não pode estar presente em nenhum outro objeto, mas também está presente {{PLURAL:$1|1=em $3.|2=em $3 e $4.|nos seguintes objetos: $2}}",
 	"wbqc-violation-message-valueOnly": "Esta propriedade só deve ser usada para o valor principal de uma declaração, não para qualificadores nem referências.",
+	"wbqc-violation-message-reference": "A propriedade só deve ser usada em referências e não para o valor principal de uma declaração nem para um qualificador.",
 	"wbqc-exception-message": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal."
 }

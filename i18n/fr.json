@@ -108,6 +108,7 @@
 	"wbqc-violation-message-no-qualifiers": "Les déclarations pour $1 ne doivent comporter aucun qualificatif.",
 	"wbqc-violation-message-qualifiers": "$2 n’est pas un qualificatif valable pour $1 – {{PLURAL:$3|1=le seul qualificatif valide est $5.|2=les seuls qualificatifs valides sont $5 et $6.|les seuls qualificatifs valides sont :$4}}",
 	"wbqc-violation-message-range-parameters-needed": "Les propriétés avec des valeurs de type «  $1  » ayant une contrainte «  $4  » doivent avoir les paramètres «  $2  » et «  $3  ».",
+	"wbqc-violation-message-range-parameters-one-year": "Les extrémités, pour un intervalle d'unités de temps, doivent avoir simultanément, ou ne pas avoir pour unité l'année car les années ne peuvent être converties en secondes sans pertes.",
 	"wbqc-violation-message-range-quantity-closed": "La valeur de $1 ($2) doit être entre $3 et $4 ([$3; $4]).",
 	"wbqc-violation-message-range-quantity-leftopen": "La valeur de $1 ($2) ne doit pas excéder $3 ((−∞; $3]).",
 	"wbqc-violation-message-range-quantity-rightopen": "La valeur de $1 ($2) ne doit pas être inférieure à $3 ([$3; ∞)).",
@@ -124,5 +125,6 @@
 	"wbqc-violation-message-target-required-claim": "$1 doit avoir {{PLURAL:$3|0=une déclaration $2.|1=une déclaration $2 $5.|une déclaration pour $2 avec une des valeurs suivantes : $4}}",
 	"wbqc-violation-message-unique-value": "Cette valeur de propriété ne doit être associée à aucun autre élément, et figure également sur {{PLURAL:$1|1=$3.|2=$3 et $4.|les éléments suivants : $2}}",
 	"wbqc-violation-message-valueOnly": "Cette propriété ne doit être utilisée que pour la valeur principale d'une expression, non pour des qualificateurs ou des références.",
+	"wbqc-violation-message-reference": "La propriété ne doit être utilisée que dans les références, et non comme valeur principale d'une déclaration ou pour un qualificatif.",
 	"wbqc-exception-message": "Cette entrée est une exception connue pour cette contrainte et a été marquée comme telle."
 }
