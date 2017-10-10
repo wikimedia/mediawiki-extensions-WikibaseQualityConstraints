@@ -15,8 +15,6 @@ use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;

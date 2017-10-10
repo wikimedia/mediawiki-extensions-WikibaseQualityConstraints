@@ -2,9 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
-use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;

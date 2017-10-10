@@ -2,8 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
-use Wikibase\DataModel\Entity\Item;
-use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use Wikibase\Repo\Tests\NewItem;
@@ -13,7 +11,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker

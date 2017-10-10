@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\Statement;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
  * A constraint check context for the main snak of a statement.

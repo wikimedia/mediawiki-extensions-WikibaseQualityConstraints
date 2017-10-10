@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\Snak;
-use Wikibase\DataModel\Statement\Statement;
 
 /**
  * Base implementation of some Context functions,

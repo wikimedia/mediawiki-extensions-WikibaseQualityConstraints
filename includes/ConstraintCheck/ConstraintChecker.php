@@ -2,9 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
-use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;

@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 use DataValues\DataValue;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityId;
-use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use LogicException;

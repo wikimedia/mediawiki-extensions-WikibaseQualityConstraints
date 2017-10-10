@@ -2,9 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
-use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Statement\Statement;
-
 /**
  * Abstract superclass of all contexts for the second version of the API output format.
  *

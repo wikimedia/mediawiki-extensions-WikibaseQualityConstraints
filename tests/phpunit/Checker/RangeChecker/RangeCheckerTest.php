@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
-use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;

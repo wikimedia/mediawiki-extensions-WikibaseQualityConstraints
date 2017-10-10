@@ -5,8 +5,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use Config;
 use IBufferingStatsdDataFactory;
 use Psr\Log\LoggerInterface;
-use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;

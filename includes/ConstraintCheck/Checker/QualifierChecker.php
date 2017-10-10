@@ -2,13 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
-use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use Wikibase\DataModel\Statement\Statement;
 
 /**
  * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker

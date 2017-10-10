@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
@@ -21,7 +20,6 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
-use Wikibase\Repo\WikibaseRepo;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker

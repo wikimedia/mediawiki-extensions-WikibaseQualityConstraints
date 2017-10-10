@@ -16,7 +16,6 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
-use Wikibase\Repo\WikibaseRepo;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker

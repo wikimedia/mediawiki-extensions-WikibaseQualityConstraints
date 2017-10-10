@@ -9,7 +9,6 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
-use WikibaseQuality\ConstraintReport\Role;
 
 /**
  * Class ConstraintParameterRenderer
@@ -20,7 +19,6 @@ use WikibaseQuality\ConstraintReport\Role;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-
 class ConstraintParameterRenderer {
 
 	/**

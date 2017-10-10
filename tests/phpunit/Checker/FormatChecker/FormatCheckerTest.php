@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Test\FormatChecker;
 
 use HashConfig;
 use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;

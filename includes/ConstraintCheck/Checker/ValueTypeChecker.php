@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Config;
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
