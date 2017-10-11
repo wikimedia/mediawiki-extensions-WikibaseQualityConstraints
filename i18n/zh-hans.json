@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"NeverBehave"
 		]
 	},
 	"wbqc-constraintreport": "约束报告",
@@ -100,7 +101,7 @@
 	"wbqc-violation-message-no-qualifiers": "$1声明不应包含任何限定符。",
 	"wbqc-violation-message-qualifiers": "$2不是用于$1的有效限定符——{{PLURAL:$3|1=唯一有效的限定符是$5。|2=只有$5和$6限定符有效。|只有以下限定符有效：$4}}",
 	"wbqc-violation-message-range-parameters-needed": "带类型“$1”值与约束“$4”的属性需要参数“$2”和“$3”。",
-	"wbqc-violation-message-range-parameters-one-year": "时间单位范围的两个端点必须都有（或都没有）单位“年”，因为年不能无损转换为秒。",
+	"wbqc-violation-message-range-parameters-one-year": "时间单位范围的两个端点必须都有（或都没有）单位“年”，因为年不能被无损地转换为秒。",
 	"wbqc-violation-message-range-quantity-closed": "$1（$2）的值应界定在$3和$4之间（[$3; $4]）。",
 	"wbqc-violation-message-range-quantity-leftopen": "$1（$2）的值不应大于$3（(−∞; $3]）。",
 	"wbqc-violation-message-range-quantity-rightopen": "$1（$2）的值不应小于$3（[$3; ∞)）。",
@@ -117,6 +118,6 @@
 	"wbqc-violation-message-target-required-claim": "$1应拥有{{PLURAL:$3|0=声明$2。|1=声明$2 $5。|声明$2，并使用以下值之一：$4}}",
 	"wbqc-violation-message-unique-value": "此属性的值不得出现在其他任何项中，但却也出现在了{{PLURAL:$1|1=$3上。|2=$3和$4上。|以下项中：$2}}",
 	"wbqc-violation-message-valueOnly": "此属性只应用于声明的主值，而不是限定符或参考文献。",
-	"wbqc-violation-message-reference": "属性只应用于参考文献中，而不是用于声明或限定符的主值。",
+	"wbqc-violation-message-reference": "属性只应该被应用于参考文献中，而不是用于声明或限定符的主值。",
 	"wbqc-exception-message": "此实体是该约束的已知例外，并已如此标记。"
 }

@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Felipe L. Ewald"
+			"Felipe L. Ewald",
+			"Eduardo Addad de Oliveira"
 		]
 	},
 	"wbqc-constraintreport": "Relatório de restrição",
@@ -34,8 +35,6 @@
 	"wbqc-badparameters-long": "Esta declaração de restrição possui alguns parâmetros inválidos.",
 	"wbqc-parameterissues-short": "Problemas avançados",
 	"wbqc-parameterissues-long": "Esses problemas são problemas com a definição de restrição na propriedade, não com esta declaração.",
-	"wbqc-problems-short": "Problemas",
-	"wbqc-problems-long": "Esta declaração tem alguns problemas.",
 	"apihelp-wbcheckconstraints-description": "Executa verificações de restrição em qualquer entidade que deseja e retorna o resultado.",
 	"apihelp-wbcheckconstraints-summary": "Executa verificações de restrição em qualquer entidade que deseja e retorna o resultado.",
 	"apihelp-wbcheckconstraints-param-id": "Lista de ID das entidades para obter os dados. Separar valores com '|' ou alternativa.",
@@ -56,7 +55,6 @@
 	"wbqc-violation-message": "A verificação de restrição apontou uma violação. Clique no ícone para obter mais informações.",
 	"wbqc-violation-message-not-yet-implemented": "Por razões técnicas, a verificação da restrição \"$1\" ainda não foi implementada.",
 	"wbqc-violation-message-security-reason": "Por razões de segurança, não é possível verificar a restrição \"$1\" no momento. Estamos trabalhando em uma solução.",
-	"wbqc-violation-message-value-needed": "As propriedades com restrição \"$1\" precisam ter um valor.",
 	"wbqc-violation-message-value-needed-of-type": "Propriedades com restrição \"$1\" precisam ter valores do tipo \"$2\".",
 	"wbqc-violation-message-value-needed-of-types-2": "Propriedades com restrição \"$1\" precisam ter valores do tipo \"$2\" ou \"$3\".",
 	"wbqc-violation-message-parameter-needed": "As propriedades com restrição \"$1\" precisam de um parâmetro \"$2\".",
@@ -84,7 +82,6 @@
 	"wbqc-violation-message-diff-within-range-leftopen": "A diferença entre $3 ($4) e $1 ($2) não deve ser superior a $5 ((-∞; $5]).",
 	"wbqc-violation-message-diff-within-range-rightopen": "A diferença entre $3 ($4) e $1 ($2) não deve ser inferior a $5 ([$5; ∞)).",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "A propriedade definida nos parâmetros deve existir.",
-	"wbqc-violation-message-diff-within-range-property-needs value": "A propriedade definida nos parâmetros precisa ter um valor.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "A propriedade definida nos parâmetros deve ter um valor do mesmo tipo que essa propriedade.",
 	"wbqc-violation-message-format": "O valor de $1 ($2) deve corresponder ao padrão $3.",
 	"wbqc-violation-message-inverse": "$1 também deve ter a declaração inversa $2 $3.",
@@ -110,5 +107,6 @@
 	"wbqc-violation-message-valueType-instance": "Os valores das declarações de $1 devem ser instâncias de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse deles|uma das suas subclasses}}), mas $2 atualmente {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-valueType-subclass": "Os valores das declarações de $1 devem ser subclasses de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse deles|uma das suas subclasses}}), mas $2 atualmente {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 deve ter {{PLURAL:$3|0=uma declaração $2.|1=uma declaração $2 $5.|Uma declaração para $2 com um dos seguintes valores: $4}}",
-	"wbqc-violation-message-unique-value": "O valor dessa propriedade não deve estar presente em nenhum outro item, mas também está presente em  {{PLURAL:$1|1=$3.|2=$3 e $4.|nos seguintes itens: $2}}"
+	"wbqc-violation-message-unique-value": "O valor dessa propriedade não deve estar presente em nenhum outro item, mas também está presente em  {{PLURAL:$1|1=$3.|2=$3 e $4.|nos seguintes itens: $2}}",
+	"wbqc-violation-message-valueOnly": "Esta propriedade só deve ser usada para o valor principal de uma declaração, não para qualificadores ou referências."
 }
