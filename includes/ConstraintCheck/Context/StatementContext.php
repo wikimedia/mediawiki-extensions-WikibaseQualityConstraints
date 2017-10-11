@@ -14,7 +14,7 @@ use Wikibase\DataModel\Statement\Statement;
 class StatementContext extends AbstractContext {
 
 	/**
-	 * @type Statement
+	 * @var Statement
 	 */
 	private $statement;
 

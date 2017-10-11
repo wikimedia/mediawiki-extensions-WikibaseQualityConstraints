@@ -11,7 +11,7 @@ use Wikibase\DataModel\Statement\Statement;
 class MainSnakContext extends ApiV2Context {
 
 	/**
-	 * @type Statement
+	 * @var Statement
 	 */
 	private $statement;
 

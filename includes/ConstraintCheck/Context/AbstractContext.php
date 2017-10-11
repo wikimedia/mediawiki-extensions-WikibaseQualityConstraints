@@ -12,12 +12,12 @@ use Wikibase\DataModel\Snak\Snak;
 abstract class AbstractContext implements Context {
 
 	/**
-	 * @type EntityDocument
+	 * @var EntityDocument
 	 */
 	protected $entity;
 
 	/**
-	 * @type Snak
+	 * @var Snak
 	 */
 	protected $snak;
 

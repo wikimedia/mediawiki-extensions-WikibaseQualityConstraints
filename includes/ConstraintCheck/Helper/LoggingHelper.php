@@ -24,12 +24,12 @@ class LoggingHelper {
 	private $dataFactory;
 
 	/**
-	 * @type LoggerInterface
+	 * @var LoggerInterface
 	 */
 	private $logger;
 
 	/**
-	 * @type float[]
+	 * @var float[]
 	 */
 	private $constraintCheckDurationLimits;
 
