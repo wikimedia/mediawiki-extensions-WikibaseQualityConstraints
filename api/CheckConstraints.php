@@ -27,6 +27,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 
@@ -217,12 +218,21 @@ class CheckConstraints extends ApiBase {
 		$this->resultBuilder->markSuccess( 1 );
 	}
 
+	public function defaultResults( Context $context ) {
+		return $context->getType() === Context::TYPE_STATEMENT ?
+			[ new NullResult( $context ) ] :
+			[];
+	}
+
 	private function checkItems( array $entityIds, $constraintIds ) {
 		$checkResults = [];
 
 		foreach ( $entityIds as $entityId ) {
 			$currentCheckResults = $this->delegatingConstraintChecker->checkAgainstConstraintsOnEntityId(
-				$entityId, $constraintIds );
+				$entityId,
+				$constraintIds,
+				[ $this, "defaultResults" ]
+			);
 			if ( $currentCheckResults ) {
 				$checkResults = array_merge( $checkResults, $currentCheckResults );
 			}
@@ -236,7 +246,10 @@ class CheckConstraints extends ApiBase {
 
 		foreach ( $claimIds as $claimId ) {
 			$currentCheckResults = $this->delegatingConstraintChecker->checkAgainstConstraintsOnClaimId(
-				$claimId, $constraintIds );
+				$claimId,
+				$constraintIds,
+				[ $this, "defaultResults" ]
+			);
 			if ( $currentCheckResults ) {
 				$checkResults = array_merge( $checkResults, $currentCheckResults );
 			}
@@ -328,33 +341,37 @@ class CheckConstraints extends ApiBase {
 		}
 
 		foreach ( $checkResults as $checkResult ) {
-			$entityId = $checkResult->getEntityId()->getSerialization();
-			$constraintId = $checkResult->getConstraint()->getConstraintId();
-			$typeItemId = $checkResult->getConstraint()->getConstraintTypeItemId();
+			if ( $checkResult instanceof NullResult ) {
+				$result = null;
+			} else {
+				$entityId = $checkResult->getEntityId()->getSerialization();
+				$constraintId = $checkResult->getConstraint()->getConstraintId();
+				$typeItemId = $checkResult->getConstraint()->getConstraintTypeItemId();
 
-			$title = $this->entityTitleLookup->getTitleForId( $checkResult->getContext()->getSnak()->getPropertyId() );
-			$statementGuid = $this->statementGuidParser->parse( $constraintId );
-			$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
-			// TODO link to the statement when possible (T169224)
-			$link = $title->getFullUrl() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );
+				$title = $this->entityTitleLookup->getTitleForId( $checkResult->getContext()->getSnak()->getPropertyId() );
+				$statementGuid = $this->statementGuidParser->parse( $constraintId );
+				$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
+				// TODO link to the statement when possible (T169224)
+				$link = $title->getFullUrl() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );
 
-			$result = [
-				'status' => $checkResult->getStatus(),
-				'property' => $checkResult->getContext()->getSnak()->getPropertyId()->getSerialization(),
-				'constraint' => [
-					'id' => $checkResult->getConstraintId(),
-					'type' => $typeItemId,
-					'typeLabel' => $typeLabel,
-					'link' => $link,
-					'detail' => $checkResult->getParameters(),
-					'detailHTML' => $this->constraintParameterRenderer->formatParameters( $checkResult->getParameters() )
-				]
-			];
-			if ( $checkResult->getMessage() ) {
-				$result['message-html'] = $checkResult->getMessage();
-			}
-			if ( $checkResult->getContext()->getType() === Context::TYPE_STATEMENT ) {
-				$result['claim'] = $checkResult->getContext()->getSnakStatement()->getGuid();
+				$result = [
+					'status' => $checkResult->getStatus(),
+					'property' => $checkResult->getContext()->getSnak()->getPropertyId()->getSerialization(),
+					'constraint' => [
+						'id' => $checkResult->getConstraintId(),
+						'type' => $typeItemId,
+						'typeLabel' => $typeLabel,
+						'link' => $link,
+						'detail' => $checkResult->getParameters(),
+						'detailHTML' => $this->constraintParameterRenderer->formatParameters( $checkResult->getParameters() )
+					]
+				];
+				if ( $checkResult->getMessage() ) {
+					$result['message-html'] = $checkResult->getMessage();
+				}
+				if ( $checkResult->getContext()->getType() === Context::TYPE_STATEMENT ) {
+					$result['claim'] = $checkResult->getContext()->getSnakStatement()->getGuid();
+				}
 			}
 
 			$checkResult->getContext()->storeCheckResultInArray( $result, $constraintReport );
