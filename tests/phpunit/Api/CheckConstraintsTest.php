@@ -42,7 +42,6 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
  *
  * @group API
  * @group Database
- * @group Wikibase
  * @group WikibaseAPI
  *
  * @group medium

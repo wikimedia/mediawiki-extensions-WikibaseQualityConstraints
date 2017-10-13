@@ -14,7 +14,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
  *
  * @group API
  * @group Database
- * @group Wikibase
  * @group WikibaseAPI
  *
  * @group medium
