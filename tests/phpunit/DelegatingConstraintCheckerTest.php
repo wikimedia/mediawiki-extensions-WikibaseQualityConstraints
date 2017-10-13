@@ -361,7 +361,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertCount( 0, $result, 'Should be empty' );
+		$this->assertEmpty( $result );
 	}
 
 	public function testCheckOnEntityIdUnknownConstraint() {
@@ -389,7 +389,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertCount( 0, $result, 'Should be empty' );
+		$this->assertEmpty( $result );
 	}
 
 	public function testCheckOnEntityIdKnownException() {
@@ -498,14 +498,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$statement->getGuid()
 		);
 
-		$this->assertCount( 0, $result, 'Should be empty' );
+		$this->assertEmpty( $result );
 	}
 
 	public function testCheckOnClaimIdUnknownClaimId() {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
 			'Q99$does-not-exist' );
 
-		$this->assertCount( 0, $result, 'Should be empty' );
+		$this->assertEmpty( $result );
 	}
 
 	public function testCheckConstraintParametersOnPropertyId() {

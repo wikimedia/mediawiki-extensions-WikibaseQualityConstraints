@@ -73,7 +73,7 @@ class ReferenceCheckerTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $checker->checkConstraintParameters( $constraint );
 
-		$this->assertCount( 0, $result );
+		$this->assertEmpty( $result );
 	}
 
 	/**

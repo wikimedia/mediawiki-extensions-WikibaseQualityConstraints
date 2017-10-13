@@ -85,7 +85,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 
 		$result = $checker->checkConstraintParameters( $constraint );
 
-		$this->assertCount( 0, $result );
+		$this->assertEmpty( $result );
 	}
 
 	/**

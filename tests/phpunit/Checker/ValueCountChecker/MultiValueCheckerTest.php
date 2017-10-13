@@ -100,7 +100,7 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->checker->checkConstraintParameters( $constraint );
 
-		$this->assertCount( 0, $result );
+		$this->assertEmpty( $result );
 	}
 
 	/**

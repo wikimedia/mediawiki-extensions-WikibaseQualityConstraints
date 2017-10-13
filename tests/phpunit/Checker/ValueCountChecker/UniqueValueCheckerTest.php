@@ -188,7 +188,7 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 
 		$result = $this->checker->checkConstraintParameters( $constraint );
 
-		$this->assertCount( 0, $result );
+		$this->assertEmpty( $result );
 	}
 
 	/**
