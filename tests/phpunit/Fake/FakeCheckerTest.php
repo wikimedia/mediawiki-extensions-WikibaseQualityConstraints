@@ -6,6 +6,13 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 
+/**
+ * @covers \WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker
+ *
+ * @group WikibaseQualityConstraints
+ *
+ * @license GNU GPL v2+
+ */
 class FakeCheckerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckConstraint_ResultContainsPassedContext() {

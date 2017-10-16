@@ -5,6 +5,13 @@ namespace WikibaseQuality\ConstraintReport\Tests\Fake;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 
+/**
+ * @covers \WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookupTest
+ *
+ * @group WikibaseQualityConstraints
+ *
+ * @license GNU GPL v2+
+ */
 class InMemoryConstraintLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQuery_NewLookup_ReturnsEmptyArrayForProperty() {
