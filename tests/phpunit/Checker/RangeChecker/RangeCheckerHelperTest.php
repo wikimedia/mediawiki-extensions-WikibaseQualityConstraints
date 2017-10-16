@@ -89,7 +89,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$rangeCheckHelper = $this->getRangeCheckerHelper();
 		$diff = $rangeCheckHelper->getDifference( $minuend, $subtrahend );
 		$actual = $diff->getAmount()->getValueFloat();
-		$this->assertSame( (float) $expected, $actual );
+		$this->assertSame( (float)$expected, $actual );
 	}
 
 	public function getDifferenceProvider() {
@@ -124,7 +124,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 				$secondsPerYear, $this->getTimeValue( -1970 ), $this->getTimeValue( -1971 )
 			],
 			'negative quantity difference' => [
-			    -1295, $this->getQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 )
+				-1295, $this->getQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 )
 			],
 			'positive quantity difference' => [
 				1295, $this->getQuantityValue( 1337.0 ), $this->getQuantityValue( 42.0 )

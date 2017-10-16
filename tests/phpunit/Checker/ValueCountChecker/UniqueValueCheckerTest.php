@@ -31,7 +31,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @author Olga Bode
  * @license GNU GPL v2+
  */
-class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
+class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase {
 
 	use ConstraintParameters, SparqlHelperMock;
 
@@ -56,7 +56,6 @@ class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase  {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->uniquePropertyId = new PropertyId( 'P31' );
-
 	}
 
 	public function testCheckUniqueValueConstraintInvalid() {

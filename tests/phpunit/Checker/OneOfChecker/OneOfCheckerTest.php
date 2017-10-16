@@ -91,7 +91,6 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 
 		foreach ( [ $somevalueSnak, $novalueSnak ] as $allowed ) {
 			foreach ( [ $somevalueSnak, $novalueSnak ] as $present ) {
-
 				$result = $this->oneOfChecker->checkConstraint(
 					new FakeSnakContext( $present ),
 					$this->getConstraintMock( $this->itemsParameter( [ $allowed ] ) )

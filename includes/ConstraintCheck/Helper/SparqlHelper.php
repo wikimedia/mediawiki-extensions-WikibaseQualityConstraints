@@ -439,7 +439,7 @@ EOF;
 			},
 			$this->config->get( 'WBQualityConstraintsSparqlTimeoutExceptionClasses' )
 		) );
-		return (bool) preg_match( '/' . $timeoutRegex . '/', $responseContent );
+		return (bool)preg_match( '/' . $timeoutRegex . '/', $responseContent );
 	}
 
 	/**
