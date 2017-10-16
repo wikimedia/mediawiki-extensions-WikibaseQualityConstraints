@@ -171,4 +171,87 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $actual );
 	}
 
+	public function testStoreCheckResultInArray_NullResult() {
+		$entity = NewItem::withId( 'Q1' )->build();
+		$statement1 = NewStatement::noValueFor( 'P1' )
+			->withGuid( 'P1$13ea0742-0190-4d88-b7b0-baee67573818' )
+			->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )
+			->withGuid( 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d' )
+			->build();
+		$statement3 = NewStatement::noValueFor( 'P2' )
+			->withGuid( 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' )
+			->build();
+		$snak1 = NewStatement::noValueFor( 'P11' )->build()->getMainSnak();
+		$snak2 = NewStatement::someValueFor( 'P11' )->build()->getMainSnak();
+		$snak3 = NewStatement::noValueFor( 'P12' )->build()->getMainSnak();
+		$context1 = new QualifierContext( $entity, $statement1, $snak1 );
+		$context2 = new QualifierContext( $entity, $statement1, $snak2 );
+		$context3 = new QualifierContext( $entity, $statement1, $snak3 );
+		$context4 = new QualifierContext( $entity, $statement2, $snak3 );
+		$context5 = new QualifierContext( $entity, $statement3, $snak3 );
+
+		$actual = [];
+		$context1->storeCheckResultInArray( null, $actual );
+		$context2->storeCheckResultInArray( null, $actual );
+		$context3->storeCheckResultInArray( null, $actual );
+		$context4->storeCheckResultInArray( null, $actual );
+		$context5->storeCheckResultInArray( null, $actual );
+
+		$expected = [
+			'Q1' => [
+				'claims' => [
+					'P1' => [
+						[
+							'id' => 'P1$13ea0742-0190-4d88-b7b0-baee67573818',
+							'qualifiers' => [
+								'P11' => [
+									[
+										'hash' => $snak1->getHash(),
+										'results' => []
+									],
+									[
+										'hash' => $snak2->getHash(),
+										'results' => []
+									]
+								],
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => []
+									]
+								]
+							],
+						],
+						[
+							'id' => 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d',
+							'qualifiers' => [
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => []
+									]
+								]
+							],
+						],
+					],
+					'P2' => [
+						[
+							'id' => 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9',
+							'qualifiers' => [
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => []
+									]
+								]
+							],
+						],
+					],
+				],
+			],
+		];
+		$this->assertSame( $expected, $actual );
+	}
+
 }

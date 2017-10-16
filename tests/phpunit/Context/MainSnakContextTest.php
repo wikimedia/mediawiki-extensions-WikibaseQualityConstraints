@@ -132,4 +132,58 @@ class MainSnakContextTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $actual );
 	}
 
+	public function testStoreCheckResultInArray_NullResult() {
+		$entity = NewItem::withId( 'Q1' )->build();
+		$statement1 = NewStatement::noValueFor( 'P1' )
+			->withGuid( 'P1$13ea0742-0190-4d88-b7b0-baee67573818' )
+			->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )
+			->withGuid( 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d' )
+			->build();
+		$statement3 = NewStatement::noValueFor( 'P2' )
+			->withGuid( 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' )
+			->build();
+		$context1 = new MainSnakContext( $entity, $statement1 );
+		$context2 = new MainSnakContext( $entity, $statement2 );
+		$context3 = new MainSnakContext( $entity, $statement3 );
+
+		$actual = [];
+		$context1->storeCheckResultInArray( null, $actual );
+		$context2->storeCheckResultInArray( null, $actual );
+		$context3->storeCheckResultInArray( null, $actual );
+
+		$expected = [
+			'Q1' => [
+				'claims' => [
+					'P1' => [
+						[
+							'id' => 'P1$13ea0742-0190-4d88-b7b0-baee67573818',
+							'mainsnak' => [
+								'hash' => $statement1->getMainSnak()->getHash(),
+								'results' => [],
+							],
+						],
+						[
+							'id' => 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d',
+							'mainsnak' => [
+								'hash' => $statement2->getMainSnak()->getHash(),
+								'results' => [],
+							],
+						],
+					],
+					'P2' => [
+						[
+							'id' => 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9',
+							'mainsnak' => [
+								'hash' => $statement3->getMainSnak()->getHash(),
+								'results' => [],
+							],
+						],
+					],
+				],
+			],
+		];
+		$this->assertSame( $expected, $actual );
+	}
+
 }

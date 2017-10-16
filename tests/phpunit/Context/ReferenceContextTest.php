@@ -227,4 +227,127 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $actual['Q1']['claims'] );
 	}
 
+	public function testStoreCheckResultInArray_NullResult() {
+		$entity = NewItem::withId( 'Q1' )->build();
+		$statement1 = NewStatement::noValueFor( 'P1' )
+			->withGuid( 'P1$13ea0742-0190-4d88-b7b0-baee67573818' )
+			->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )
+			->withGuid( 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d' )
+			->build();
+		$statement3 = NewStatement::noValueFor( 'P2' )
+			->withGuid( 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' )
+			->build();
+		$snak1 = NewStatement::noValueFor( 'P11' )->build()->getMainSnak();
+		$snak2 = NewStatement::someValueFor( 'P11' )->build()->getMainSnak();
+		$snak3 = NewStatement::noValueFor( 'P12' )->build()->getMainSnak();
+		$reference1 = new Reference( [ $snak1, $snak2, $snak3 ] );
+		$statement1->getReferences()->addReference( $reference1 );
+		$reference2 = new Reference( [ $snak2, $snak3 ] );
+		$statement1->getReferences()->addReference( $reference2 );
+		$statement2->getReferences()->addReference( $reference1 );
+		$statement3->getReferences()->addReference( $reference2 );
+		$context1 = new ReferenceContext( $entity, $statement1, $reference1, $snak1 );
+		$context2 = new ReferenceContext( $entity, $statement1, $reference1, $snak2 );
+		$context3 = new ReferenceContext( $entity, $statement1, $reference1, $snak3 );
+		$context4 = new ReferenceContext( $entity, $statement1, $reference2, $snak2 );
+		$context5 = new ReferenceContext( $entity, $statement1, $reference2, $snak3 );
+		$context6 = new ReferenceContext( $entity, $statement2, $reference1, $snak1 );
+		$context7 = new ReferenceContext( $entity, $statement3, $reference2, $snak3 );
+
+		$actual = [];
+		$context1->storeCheckResultInArray( null, $actual );
+		$context2->storeCheckResultInArray( null, $actual );
+		$context3->storeCheckResultInArray( null, $actual );
+		$context4->storeCheckResultInArray( null, $actual );
+		$context5->storeCheckResultInArray( null, $actual );
+		$context6->storeCheckResultInArray( null, $actual );
+		$context7->storeCheckResultInArray( null, $actual );
+
+		$expected = [
+			'P1' => [
+				[
+					'id' => 'P1$13ea0742-0190-4d88-b7b0-baee67573818',
+					'references' => [
+						[
+							'hash' => $reference1->getHash(),
+							'snaks' => [
+								'P11' => [
+									[
+										'hash' => $snak1->getHash(),
+										'results' => []
+									],
+									[
+										'hash' => $snak2->getHash(),
+										'results' => []
+									]
+								],
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => []
+									]
+								]
+							]
+						],
+						[
+							'hash' => $reference2->getHash(),
+							'snaks' => [
+								'P11' => [
+									[
+										'hash' => $snak2->getHash(),
+										'results' => []
+									]
+								],
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => []
+									]
+								]
+							]
+						],
+					],
+				],
+				[
+					'id' => 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d',
+					'references' => [
+						[
+							'hash' => $reference1->getHash(),
+							'snaks' => [
+								'P11' => [
+									[
+										'hash' => $snak1->getHash(),
+										'results' => []
+									],
+								],
+							]
+						],
+					],
+				],
+			],
+			'P2' => [
+				[
+					'id' => 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9',
+					'references' => [
+						[
+							'hash' => $reference2->getHash(),
+							'snaks' => [
+								'P12' => [
+									[
+										'hash' => $snak3->getHash(),
+										'results' => []
+									],
+								],
+							]
+						],
+					],
+				],
+			],
+		];
+		$this->assertSame( [ 'Q1' ], array_keys( $actual ) );
+		$this->assertSame( [ 'claims' ], array_keys( $actual['Q1'] ) );
+		$this->assertSame( $expected, $actual['Q1']['claims'] );
+	}
+
 }

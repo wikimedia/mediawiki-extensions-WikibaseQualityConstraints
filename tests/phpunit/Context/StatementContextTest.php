@@ -111,4 +111,38 @@ class StatementContextTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $actual );
 	}
 
+	public function testStoreCheckResultInArray_NullResult() {
+		$entity = NewItem::withId( 'Q1' )->build();
+		$statement1 = NewStatement::noValueFor( 'P1' )
+			->withGuid( 'P1$13ea0742-0190-4d88-b7b0-baee67573818' )
+			->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )
+			->withGuid( 'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d' )
+			->build();
+		$statement3 = NewStatement::noValueFor( 'P2' )
+			->withGuid( 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' )
+			->build();
+		$context1 = new StatementContext( $entity, $statement1 );
+		$context2 = new StatementContext( $entity, $statement2 );
+		$context3 = new StatementContext( $entity, $statement3 );
+
+		$actual = [];
+		$context1->storeCheckResultInArray( null, $actual );
+		$context2->storeCheckResultInArray( null, $actual );
+		$context3->storeCheckResultInArray( null, $actual );
+
+		$expected = [
+			'Q1' => [
+				'P1' => [
+					'P1$13ea0742-0190-4d88-b7b0-baee67573818' => [],
+					'P1$9fbfae7f-6f21-4967-8e2c-ec04ca16873d' => [],
+				],
+				'P2' => [
+					'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' => [],
+				],
+			],
+		];
+		$this->assertSame( $expected, $actual );
+	}
+
 }
