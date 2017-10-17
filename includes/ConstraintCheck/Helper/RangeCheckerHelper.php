@@ -16,7 +16,6 @@ use Wikibase\Repo\Parsers\TimeParserFactory;
 /**
  * Class for helper functions for range checkers.
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author BP2014N1
  * @license GNU GPL v2+
  */

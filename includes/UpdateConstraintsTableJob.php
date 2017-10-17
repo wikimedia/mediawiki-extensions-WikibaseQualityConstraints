@@ -19,7 +19,6 @@ use Wikimedia\Assert\Assert;
  * A job that updates the constraints table
  * when changes were made on a property.
  *
- * @package WikibaseQuality\ConstraintReport;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */

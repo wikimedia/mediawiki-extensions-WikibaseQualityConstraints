@@ -6,7 +6,6 @@ use LogicException;
 /**
  * Enum of possible roles of a value for ConstraintParameterRenderer.
  *
- * @package WikibaseQuality\ConstraintReport
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */

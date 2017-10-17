@@ -15,7 +15,6 @@ use Wikibase\DataModel\Services\Diff\EntityDiff;
 /**
  * Container for hook callbacks registered in extension.json.
  *
- * @package WikibaseQuality\ConstraintReport
  * @license GNU GPL v2+
  */
 final class WikibaseQualityConstraintsHooks {

@@ -15,7 +15,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
  *
  * Used to format the constraint values for output.
  *
- * @package WikibaseQuality\ConstraintReport
  * @author BP2014N1
  * @license GNU GPL v2+
  */

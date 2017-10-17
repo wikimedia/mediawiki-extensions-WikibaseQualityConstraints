@@ -160,7 +160,6 @@ To add a new constraint type, the following steps are necessary:
   * It should have at least the following class-level documentation comment:
     ```php
     /**
-     * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Checker
      * @author YOUR NAME HERE
      * @license GNU GPL v2+
      */

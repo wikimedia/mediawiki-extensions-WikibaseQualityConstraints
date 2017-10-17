@@ -12,7 +12,6 @@ use LogicException;
 /**
  * Used for getting information about the result of a constraint check
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Result
  * @author BP2014N1
  * @license GNU GPL v2+
  */

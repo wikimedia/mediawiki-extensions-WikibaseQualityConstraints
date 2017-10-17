@@ -25,7 +25,6 @@ use WikibaseQuality\ConstraintReport\Role;
 /**
  * Class for running a SPARQL query on some endpoint and getting the results.
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */

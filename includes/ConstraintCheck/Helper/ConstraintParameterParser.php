@@ -32,7 +32,6 @@ use WikibaseQuality\ConstraintReport\Role;
  * The results are used by the checkers,
  * which may include rendering them into violation messages.
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */

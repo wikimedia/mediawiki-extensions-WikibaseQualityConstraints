@@ -10,7 +10,6 @@ use Wikimedia\Assert\Assert;
 /**
  * Simple constraint lookup implentation backed by an array.
  *
- * @package WikibaseQuality\ConstraintReport\Tests\Fake
  * @license GNU GPL v2+
  */
 class InMemoryConstraintLookup implements ConstraintLookup {

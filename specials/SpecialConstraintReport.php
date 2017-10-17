@@ -39,7 +39,6 @@ use WikibaseQuality\Html\HtmlTableHeaderBuilder;
  * Special page that displays all constraints that are defined on an Entity with additional information
  * (whether it complied or was a violation, which parameters the constraint has etc.).
  *
- * @package WikibaseQuality\ConstraintReport\Specials
  * @author BP2014N1
  * @license GNU GPL v2+
  */
