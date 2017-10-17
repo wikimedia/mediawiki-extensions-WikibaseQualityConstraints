@@ -150,7 +150,8 @@ class RangeCheckerHelper {
 
 	public function getDifferenceInYears( TimeValue $minuend, TimeValue $subtrahend ) {
 		if ( !preg_match( '/^([-+]\d{1,16})-(.*)$/', $minuend->getTime(), $minuendMatches ) ||
-			!preg_match( '/^([-+]\d{1,16})-(.*)$/', $subtrahend->getTime(), $subtrahendMatches ) ) {
+			!preg_match( '/^([-+]\d{1,16})-(.*)$/', $subtrahend->getTime(), $subtrahendMatches )
+		) {
 			throw new InvalidArgumentException( 'TimeValue::getTime() did not match expected format' );
 		}
 		$minuendYear = (float)$minuendMatches[1];
