@@ -80,9 +80,12 @@ interface Context {
 	 *
 	 * Mainly used in the API, where $container is part of the API response.
 	 *
-	 * @param array $result
+	 * If $result is null, don’t actually store it,
+	 * but still populate the appropriate location for this context in $container.
+	 *
+	 * @param array|null $result
 	 * @param array &$container
 	 */
-	public function storeCheckResultInArray( array $result, array &$container );
+	public function storeCheckResultInArray( $result, array &$container );
 
 }

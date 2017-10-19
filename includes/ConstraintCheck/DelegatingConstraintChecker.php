@@ -119,15 +119,27 @@ class DelegatingConstraintChecker {
 	 *
 	 * @param EntityId $entityId
 	 * @param array $constraintIds
+	 * @param callable|null $defaultResults Optional function to pre-populate the check results.
+	 * For each {@link Context} where constraints will be checked,
+	 * this function (if not null) is first called with that context as argument,
+	 * and may return an array of check results to which the regular results are appended.
 	 *
 	 * @return CheckResult[]
 	 *
 	 */
-	public function checkAgainstConstraintsOnEntityId( EntityId $entityId, $constraintIds = null ) {
+	public function checkAgainstConstraintsOnEntityId(
+		EntityId $entityId,
+		$constraintIds = null,
+		callable $defaultResults = null
+	) {
 
 		$entity = $this->entityLookup->getEntity( $entityId );
 		if ( $entity instanceof StatementListProvider ) {
-			$result = $this->checkEveryStatement( $this->entityLookup->getEntity( $entityId ), $constraintIds );
+			$result = $this->checkEveryStatement(
+				$this->entityLookup->getEntity( $entityId ),
+				$constraintIds,
+				$defaultResults
+			);
 			$output = $this->sortResult( $result );
 			return $output;
 		}
@@ -141,9 +153,18 @@ class DelegatingConstraintChecker {
 	 *
 	 * @param string $guid
 	 * @param array $constraintIds
+	 * @param callable|null $defaultResults Optional function to pre-populate the check results.
+	 * For each {@link Context} where constraints will be checked,
+	 * this function (if not null) is first called with that context as argument,
+	 * and may return an array of check results to which the regular results are appended.
+	 *
 	 * @return CheckResult[]
 	 */
-	public function checkAgainstConstraintsOnClaimId( $guid, $constraintIds = null ) {
+	public function checkAgainstConstraintsOnClaimId(
+		$guid,
+		$constraintIds = null,
+		callable $defaultResults = null
+	) {
 
 		$parsedGuid = $this->statementGuidParser->parse( $guid );
 		$entityId = $parsedGuid->getEntityId();
@@ -151,7 +172,12 @@ class DelegatingConstraintChecker {
 		if ( $entity instanceof StatementListProvider ) {
 			$statement = $entity->getStatements()->getFirstStatementWithGuid( $guid );
 			if ( $statement ) {
-				$result = $this->checkStatement( $entity, $statement, $constraintIds );
+				$result = $this->checkStatement(
+					$entity,
+					$statement,
+					$constraintIds,
+					$defaultResults
+				);
 				$output = $this->sortResult( $result );
 				return $output;
 			}
@@ -246,15 +272,26 @@ class DelegatingConstraintChecker {
 	/**
 	 * @param EntityDocument|StatementListProvider $entity
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
+	 * @param callable|null $defaultResults optional function to pre-populate the check results
 	 *
 	 * @return CheckResult[]
 	 */
-	private function checkEveryStatement( EntityDocument $entity, $constraintIds = null ) {
+	private function checkEveryStatement(
+		EntityDocument $entity,
+		$constraintIds = null,
+		callable $defaultResults = null
+	) {
 		$result = [];
 
 		/** @var Statement $statement */
 		foreach ( $entity->getStatements() as $statement ) {
-			$result = array_merge( $result, $this->checkStatement( $entity, $statement, $constraintIds ) );
+			$result = array_merge( $result,
+				$this->checkStatement(
+					$entity,
+					$statement,
+					$constraintIds,
+					$defaultResults
+				) );
 		}
 
 		return $result;
@@ -264,23 +301,44 @@ class DelegatingConstraintChecker {
 	 * @param EntityDocument|StatementListProvider $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
+	 * @param callable|null $defaultResults optional function to pre-populate the check results
 	 *
 	 * @return CheckResult[]
 	 */
-	private function checkStatement( EntityDocument $entity, Statement $statement, $constraintIds = null ) {
+	private function checkStatement(
+		EntityDocument $entity,
+		Statement $statement,
+		$constraintIds = null,
+		callable $defaultResults = null
+	) {
 		$result = [];
 
 		$result = array_merge( $result,
-			$this->checkConstraintsForMainSnak( $entity, $statement, $constraintIds ) );
+			$this->checkConstraintsForMainSnak(
+				$entity,
+				$statement,
+				$constraintIds,
+				$defaultResults
+			) );
 
 		if ( $this->checkQualifiers ) {
 			$result = array_merge( $result,
-				$this->checkConstraintsForQualifiers( $entity, $statement, $constraintIds ) );
+				$this->checkConstraintsForQualifiers(
+					$entity,
+					$statement,
+					$constraintIds,
+					$defaultResults
+				) );
 		}
 
 		if ( $this->checkReferences ) {
 			$result = array_merge( $result,
-				$this->checkConstraintsForReferences( $entity, $statement, $constraintIds ) );
+				$this->checkConstraintsForReferences(
+					$entity,
+					$statement,
+					$constraintIds,
+					$defaultResults
+				) );
 		}
 
 		return $result;
@@ -314,14 +372,16 @@ class DelegatingConstraintChecker {
 	 * @param EntityDocument $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
+	 * @param callable|null $defaultResults optional function to pre-populate the check results
+	 *
 	 * @return CheckResult[]
 	 */
 	private function checkConstraintsForMainSnak(
 		EntityDocument $entity,
 		Statement $statement,
-		array $constraintIds = null
+		array $constraintIds = null,
+		callable $defaultResults = null
 	) {
-		$result = [];
 		$context = $this->apiV2 ?
 			new MainSnakContext( $entity, $statement ) :
 			new StatementContext( $entity, $statement );
@@ -329,6 +389,7 @@ class DelegatingConstraintChecker {
 			$statement->getPropertyId(),
 			$constraintIds
 		);
+		$result = $defaultResults !== null ? $defaultResults( $context ) : [];
 
 		foreach ( $constraints as $constraint ) {
 			$parameters = $constraint->getConstraintParameters();
@@ -355,17 +416,23 @@ class DelegatingConstraintChecker {
 	 * @param EntityDocument $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
+	 * @param callable|null $defaultResults optional function to pre-populate the check results
+	 *
 	 * @return CheckResult[]
 	 */
 	private function checkConstraintsForQualifiers(
 		EntityDocument $entity,
 		Statement $statement,
-		array $constraintIds = null
+		array $constraintIds = null,
+		callable $defaultResults = null
 	) {
 		$result = [];
 
 		foreach ( $statement->getQualifiers() as $qualifier ) {
 			$qualifierContext = new QualifierContext( $entity, $statement, $qualifier );
+			if ( $defaultResults !== null ) {
+				$result = array_merge( $result, $defaultResults( $qualifierContext ) );
+			}
 			$qualifierConstraints = $this->getConstraintsToUse(
 				$qualifierContext->getSnak()->getPropertyId(),
 				$constraintIds
@@ -382,12 +449,15 @@ class DelegatingConstraintChecker {
 	 * @param EntityDocument $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
+	 * @param callable|null $defaultResults optional function to pre-populate the check results
+	 *
 	 * @return CheckResult[]
 	 */
 	private function checkConstraintsForReferences(
 		EntityDocument $entity,
 		Statement $statement,
-		array $constraintIds = null
+		array $constraintIds = null,
+		callable $defaultResults = null
 	) {
 		$result = [];
 
@@ -396,6 +466,9 @@ class DelegatingConstraintChecker {
 				$referenceContext = new ReferenceContext(
 					$entity, $statement, $reference, $snak
 				);
+				if ( $defaultResults !== null ) {
+					$result = array_merge( $result, $defaultResults( $referenceContext ) );
+				}
 				$referenceConstraints = $this->getConstraintsToUse(
 					$referenceContext->getSnak()->getPropertyId(),
 					$constraintIds

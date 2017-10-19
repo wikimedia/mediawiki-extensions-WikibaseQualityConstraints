@@ -49,15 +49,28 @@ class StatementContext extends AbstractContext {
 	 * then by claim ID, and then contains the $result in a list:
 	 * { "Q1": { "P1": { "Q1$1a2b...": [ { "status": "compliance", ... } ] } } }
 	 *
-	 * @param array $result
+	 * @param array|null $result
 	 * @param array &$container
 	 */
-	public function storeCheckResultInArray( array $result, array &$container ) {
+	public function storeCheckResultInArray( $result, array &$container ) {
 		$entityId = $this->entity->getId()->getSerialization();
-		$propertyId = $this->statement->getPropertyId()->getSerialization();
-		$statementId = $this->statement->getGuid();
+		if ( !array_key_exists( $entityId, $container ) ) {
+			$container[$entityId] = [];
+		}
 
-		$container[$entityId][$propertyId][$statementId][] = $result;
+		$propertyId = $this->statement->getPropertyId()->getSerialization();
+		if ( !array_key_exists( $propertyId, $container[$entityId] ) ) {
+			$container[$entityId][$propertyId] = [];
+		}
+
+		$statementId = $this->statement->getGuid();
+		if ( !array_key_exists( $statementId, $container[$entityId][$propertyId] ) ) {
+			$container[$entityId][$propertyId][$statementId] = [];
+		}
+
+		if ( $result !== null ) {
+			$container[$entityId][$propertyId][$statementId][] = $result;
+		}
 	}
 
 }
