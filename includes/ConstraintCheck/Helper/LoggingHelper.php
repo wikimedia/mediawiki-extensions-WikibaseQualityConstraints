@@ -12,7 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 /**
  * Helper class for tracking and logging messages.
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */

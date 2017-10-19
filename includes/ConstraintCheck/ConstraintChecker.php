@@ -12,7 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * Checks a constraint on some constraint checking context.
  * Most implementations only support one constraint type.
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck
  * @license GNU GPL v2+
  */
 interface ConstraintChecker {

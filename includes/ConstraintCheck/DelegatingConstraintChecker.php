@@ -28,7 +28,6 @@ use Wikibase\DataModel\Entity\EntityId;
  * Used to start the constraint-check process and to delegate
  * the statements that has to be checked to the corresponding checkers
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck
  * @author BP2014N1
  * @license GNU GPL v2+
  */

@@ -14,7 +14,6 @@ $basePath = getenv( "MW_INSTALL_PATH" ) !== false
 require_once $basePath . "/maintenance/Maintenance.php";
 
 /**
- * @package WikibaseQuality\ConstraintReport\Maintenance
  *
  * Runs {@link UpdateConstraintsTableJob} once for every property.
  */

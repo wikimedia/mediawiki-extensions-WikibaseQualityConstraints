@@ -10,7 +10,6 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikimedia\Rdbms\ResultWrapper;
 
 /**
- * @package WikibaseQuality\ConstraintReport
  * @author BP2014N1
  * @license GNU GPL v2+
  */

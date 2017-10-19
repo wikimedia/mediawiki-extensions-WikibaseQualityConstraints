@@ -20,7 +20,6 @@ use WikibaseQuality\ConstraintReport\Role;
 /**
  * Class for helper functions for range checkers.
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author BP2014N1
  * @license GNU GPL v2+
  */

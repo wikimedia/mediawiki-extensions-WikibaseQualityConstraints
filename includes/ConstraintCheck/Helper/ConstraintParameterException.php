@@ -7,7 +7,6 @@ use Exception;
 /**
  * Exception thrown when a constraint’s parameters are invalid.
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Helper
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */

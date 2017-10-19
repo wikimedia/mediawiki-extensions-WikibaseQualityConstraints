@@ -48,7 +48,6 @@ use Wikibase\DataModel\Services\Statement\StatementGuidParser;
  * Factory for {@link DelegatingConstraintChecker}
  * and {@link ConstraintRepository}.
  *
- * @package WikibaseQuality\ConstraintReport
  * @license GNU GPL v2+
  */
 class ConstraintReportFactory {
