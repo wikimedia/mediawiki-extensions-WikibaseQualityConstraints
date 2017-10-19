@@ -8,6 +8,8 @@ use Wikibase\DataModel\Statement\Statement;
 
 /**
  * A constraint check context for a qualifier of a statement.
+ *
+ * @license GNU GPL v2+
  */
 class QualifierContext extends ApiV2Context {
 

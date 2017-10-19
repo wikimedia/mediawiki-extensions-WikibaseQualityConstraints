@@ -14,8 +14,9 @@ $basePath = getenv( "MW_INSTALL_PATH" ) !== false
 require_once $basePath . "/maintenance/Maintenance.php";
 
 /**
- *
  * Runs {@link UpdateConstraintsTableJob} once for every property.
+ *
+ * @license GNU GPL v2+
  */
 class ImportConstraintStatements extends Maintenance {
 

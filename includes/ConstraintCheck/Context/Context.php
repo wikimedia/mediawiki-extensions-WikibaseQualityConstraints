@@ -8,6 +8,8 @@ use Wikibase\DataModel\Statement\Statement;
 
 /**
  * A context in which a constraint check can run.
+ *
+ * @license GNU GPL v2+
  */
 interface Context {
 

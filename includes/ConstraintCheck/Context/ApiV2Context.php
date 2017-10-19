@@ -15,6 +15,8 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
  * 'qualifiers' keyed by property ID holding a list of snaks,
  * and a list of 'references' each having a 'hash' and 'snaks'
  * which are keyed by property ID and then hold a list of snaks.
+ *
+ * @license GNU GPL v2+
  */
 abstract class ApiV2Context extends AbstractContext {
 

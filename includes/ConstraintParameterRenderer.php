@@ -11,8 +11,6 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
- * Class ConstraintParameterRenderer
- *
  * Used to format the constraint values for output.
  *
  * @author BP2014N1

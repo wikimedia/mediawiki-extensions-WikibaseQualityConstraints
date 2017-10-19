@@ -10,6 +10,8 @@ use Wikibase\DataModel\Statement\Statement;
  *
  * The result format used by storeCheckResultInArray() is only suitable
  * if no other kinds of contexts are to be stored in the same container.
+ *
+ * @license GNU GPL v2+
  */
 class StatementContext extends AbstractContext {
 

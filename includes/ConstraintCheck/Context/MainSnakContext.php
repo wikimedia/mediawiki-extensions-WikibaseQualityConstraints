@@ -7,6 +7,8 @@ use Wikibase\DataModel\Statement\Statement;
 
 /**
  * A constraint check context for the main snak of a statement.
+ *
+ * @license GNU GPL v2+
  */
 class MainSnakContext extends ApiV2Context {
 

@@ -8,6 +8,8 @@ use Wikibase\DataModel\Snak\Snak;
 /**
  * Base implementation of some Context functions,
  * given a snak and an entity.
+ *
+ * @license GNU GPL v2+
  */
 abstract class AbstractContext implements Context {
 

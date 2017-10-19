@@ -5,8 +5,9 @@ namespace WikibaseQuality\ConstraintReport;
 use Wikibase\DataModel\Entity\PropertyId;
 
 /**
- *
  * Contains all data belonging to a certain constraint.
+ *
+ * @license GNU GPL v2+
  */
 class Constraint {
 

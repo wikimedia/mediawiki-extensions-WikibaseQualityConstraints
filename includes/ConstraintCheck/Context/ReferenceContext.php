@@ -9,6 +9,8 @@ use Wikibase\DataModel\Statement\Statement;
 
 /**
  * A constraint check context for a snak of a reference of a statement.
+ *
+ * @license GNU GPL v2+
  */
 class ReferenceContext extends ApiV2Context {
 
