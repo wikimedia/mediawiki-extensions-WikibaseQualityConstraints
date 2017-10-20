@@ -10,7 +10,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
@@ -68,7 +68,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 		$statement = $this->getFirstStatement( $entity );
 		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -79,7 +79,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 		$statement = $this->getFirstStatement( $entity );
 		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-qualifiers' );
 	}
@@ -90,7 +90,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 		$statement = $this->getFirstStatement( $entity );
 		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -103,7 +103,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

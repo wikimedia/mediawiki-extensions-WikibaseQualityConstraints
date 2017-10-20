@@ -11,7 +11,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
@@ -57,7 +57,7 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
 		$constraint = $this->getConstraintMock( [] );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -67,7 +67,7 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
 		$constraint = $this->getConstraintMock( [] );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-single-value' );
 	}
@@ -77,7 +77,7 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$statement = new Statement( new PropertyValueSnak( $this->singlePropertyId, new EntityIdValue( new ItemId( 'Q1384' ) ) ) );
 		$constraint = $this->getConstraintMock( [] );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -90,7 +90,7 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

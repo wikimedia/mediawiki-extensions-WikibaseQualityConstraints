@@ -124,19 +124,14 @@
 			"description": "Whether to import property constraint statements into the constraint database or not.",
 			"public": true
 		},
-		"WBQualityConstraintsNewApiOutputFormat": {
-			"value": true,
-			"description": "Whether to use the new API output format, based on the Wikibase entity JSON format, which can accommodate constraint results on qualifiers and references.",
-			"public": true
-		},
 		"WBQualityConstraintsCheckQualifiers": {
 			"value": false,
-			"description": "Whether to check constraints on qualifiers. Requires the new API output format (otherwise ignored).",
+			"description": "Whether to check constraints on qualifiers.",
 			"public": true
 		},
 		"WBQualityConstraintsCheckReferences": {
 			"value": false,
-			"description": "Whether to check constraints on references. Requires the new API output format (otherwise ignored).",
+			"description": "Whether to check constraints on references.",
 			"public": true
 		},
 		"WBQualityConstraintsSparqlEndpoint": {

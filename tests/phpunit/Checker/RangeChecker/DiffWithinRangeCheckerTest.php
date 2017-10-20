@@ -13,7 +13,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -165,7 +165,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -176,7 +176,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -187,7 +187,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -200,7 +200,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -213,7 +213,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -226,7 +226,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -239,7 +239,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
-		$context = new StatementContext( $entity, self::$s1970 );
+		$context = new MainSnakContext( $entity, self::$s1970 );
 
 		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
@@ -255,7 +255,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
-		$context = new StatementContext( $entity, self::$s1970 );
+		$context = new MainSnakContext( $entity, self::$s1970 );
 
 		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
@@ -275,7 +275,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
-		$context = new StatementContext( $entity, $fall1970Statement );
+		$context = new MainSnakContext( $entity, $fall1970Statement );
 
 		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
@@ -292,7 +292,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -308,7 +308,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			new PropertyId( 'P2068' ),
 			UnboundedQuantityValue::newFromNumber( 5500.0, 'g' )
 		);
-		$context = new StatementContext( $entity, new Statement( $snak ) );
+		$context = new MainSnakContext( $entity, new Statement( $snak ) );
 		$constraintParameters = array_merge(
 			$this->rangeParameter(
 				'quantity',
@@ -335,7 +335,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			new PropertyId( 'P2068' ),
 			UnboundedQuantityValue::newFromNumber( 5500.0, 'g' )
 		);
-		$context = new StatementContext( $entity, new Statement( $snak ) );
+		$context = new MainSnakContext( $entity, new Statement( $snak ) );
 		$constraintParameters = array_merge(
 			$this->rangeParameter(
 				'quantity',
@@ -362,7 +362,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			new PropertyId( 'P2068' ),
 			UnboundedQuantityValue::newFromNumber( 6500.0, 'g' )
 		);
-		$context = new StatementContext( $entity, new Statement( $snak ) );
+		$context = new MainSnakContext( $entity, new Statement( $snak ) );
 		$constraintParameters = array_merge(
 			$this->rangeParameter(
 				'quantity',
@@ -388,7 +388,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -397,7 +397,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$entity = self::$i1970->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
 	}
@@ -411,7 +411,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
 	}
@@ -425,7 +425,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
 	}
@@ -436,7 +436,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-must-have-equal-types' );
 	}
@@ -446,7 +446,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -461,7 +461,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -476,7 +476,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-leftopen' );
 	}
@@ -491,7 +491,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -506,7 +506,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-rightopen' );
 	}
@@ -519,7 +519,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

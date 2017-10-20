@@ -8,7 +8,7 @@ use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use Wikibase\Repo\Tests\NewItem;
@@ -56,7 +56,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -75,7 +75,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-mandatory-qualifier' );
 	}
@@ -88,7 +88,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

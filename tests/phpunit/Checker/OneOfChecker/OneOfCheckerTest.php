@@ -13,7 +13,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -112,7 +112,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 			->build();
 
-		$checkResult = $this->oneOfChecker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->oneOfChecker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

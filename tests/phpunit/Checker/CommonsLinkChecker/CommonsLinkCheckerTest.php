@@ -15,7 +15,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -190,7 +190,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->commonsLinkChecker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->commonsLinkChecker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		// this constraint is still checked on deprecated statements
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-commons-link-not-well-formed' );

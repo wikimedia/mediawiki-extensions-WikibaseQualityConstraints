@@ -14,7 +14,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
@@ -68,11 +67,6 @@ class DelegatingConstraintChecker {
 	/**
 	 * @var bool
 	 */
-	private $apiV2;
-
-	/**
-	 * @var bool
-	 */
 	private $checkQualifiers;
 
 	/**
@@ -87,7 +81,6 @@ class DelegatingConstraintChecker {
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param StatementGuidParser $statementGuidParser
 	 * @param LoggingHelper $loggingHelper
-	 * @param bool $apiV2 whether to use the new API output format
 	 * @param bool $checkQualifiers whether to check qualifiers
 	 * @param bool $checkReferences whether to check references
 	 */
@@ -98,7 +91,6 @@ class DelegatingConstraintChecker {
 		ConstraintParameterParser $constraintParameterParser,
 		StatementGuidParser $statementGuidParser,
 		LoggingHelper $loggingHelper,
-		$apiV2,
 		$checkQualifiers,
 		$checkReferences
 	) {
@@ -108,9 +100,8 @@ class DelegatingConstraintChecker {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->loggingHelper = $loggingHelper;
-		$this->apiV2 = $apiV2;
-		$this->checkQualifiers = $apiV2 && $checkQualifiers;
-		$this->checkReferences = $apiV2 && $checkReferences;
+		$this->checkQualifiers = $checkQualifiers;
+		$this->checkReferences = $checkReferences;
 	}
 
 	/**
@@ -382,9 +373,7 @@ class DelegatingConstraintChecker {
 		array $constraintIds = null,
 		callable $defaultResults = null
 	) {
-		$context = $this->apiV2 ?
-			new MainSnakContext( $entity, $statement ) :
-			new StatementContext( $entity, $statement );
+		$context = new MainSnakContext( $entity, $statement );
 		$constraints = $this->getConstraintsToUse(
 			$statement->getPropertyId(),
 			$constraintIds

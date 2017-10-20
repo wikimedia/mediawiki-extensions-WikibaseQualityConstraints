@@ -15,7 +15,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -67,7 +67,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -79,7 +79,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -90,7 +90,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-symmetric' );
 	}
@@ -101,7 +101,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
@@ -112,7 +112,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
@@ -122,7 +122,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -135,7 +135,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}
