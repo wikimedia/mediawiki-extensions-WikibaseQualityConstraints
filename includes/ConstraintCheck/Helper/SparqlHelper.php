@@ -373,9 +373,8 @@ EOF;
 			[
 				// Once map is > 1 sec old, consider refreshing
 				'ageNew' => 1,
-				// Increase likelihood of refresh to certainty once 1 minute old;
-				// the most common keys are more likely to trigger this
-				'hotTTR' => 60,
+				// Update 5 seconds after "ageNew" given a 1 query/sec cache check rate
+				'hotTTR' => 5,
 				// avoid querying cache servers multiple times in a request
 				// (e. g. when checking format of a reference URL used multiple times on an entity)
 				'pcTTL' => WANObjectCache::TTL_PROC_LONG,
