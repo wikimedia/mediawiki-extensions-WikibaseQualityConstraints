@@ -129,7 +129,7 @@ class CheckConstraintsTest extends ApiTestCase {
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 					$config
 				),
-				false,
+				true,
 				false,
 				false
 			);
@@ -191,7 +191,9 @@ class CheckConstraintsTest extends ApiTestCase {
 		$result = $this->doRequest( [ CheckConstraints::PARAM_ID => 'Q1' ] );
 
 		$this->assertCount( 1, $result['wbcheckconstraints'] );
-		$resultsForItem = $result['wbcheckconstraints']['Q1']['P1']['Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183'];
+		$resultStatement = $result['wbcheckconstraints']['Q1']['claims']['P1'][0];
+		$this->assertSame( 'Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183', $resultStatement['id'] );
+		$resultsForItem = $resultStatement['mainsnak']['results'];
 		$this->assertCount( 1, $resultsForItem );
 		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
 		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );
@@ -208,7 +210,9 @@ class CheckConstraintsTest extends ApiTestCase {
 		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => 'Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183' ] );
 
 		$this->assertCount( 1, $result['wbcheckconstraints'] );
-		$resultsForItem = $result['wbcheckconstraints']['Q1']['P1']['Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183'];
+		$resultStatement = $result['wbcheckconstraints']['Q1']['claims']['P1'][0];
+		$this->assertSame( 'Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183', $resultStatement['id'] );
+		$resultsForItem = $resultStatement['mainsnak']['results'];
 		$this->assertCount( 1, $resultsForItem );
 		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
 		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );
@@ -228,7 +232,9 @@ class CheckConstraintsTest extends ApiTestCase {
 		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => $guid ] );
 
 		$this->assertCount( 1, $result['wbcheckconstraints'] );
-		$resultsForItem = $result['wbcheckconstraints'][$itemId][$propertyId][$guid];
+		$resultStatement = $result['wbcheckconstraints']['Q1']['claims']['P1'][0];
+		$this->assertSame( $guid, $resultStatement['id'] );
+		$resultsForItem = $resultStatement['mainsnak']['results'];
 		$this->assertCount( 1, $resultsForItem );
 		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
 		$this->assertEquals( $propertyId, $resultsForItem[0]['property'] );
