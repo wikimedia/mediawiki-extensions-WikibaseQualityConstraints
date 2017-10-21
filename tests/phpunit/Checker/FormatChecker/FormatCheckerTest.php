@@ -15,7 +15,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
@@ -335,7 +335,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->formatChecker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->formatChecker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		// this constraint is still checked on deprecated statements
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-format' );

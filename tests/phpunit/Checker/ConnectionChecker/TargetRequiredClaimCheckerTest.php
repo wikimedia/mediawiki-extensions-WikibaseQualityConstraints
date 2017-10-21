@@ -12,7 +12,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -72,7 +72,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -87,7 +87,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
@@ -99,7 +99,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -111,7 +111,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
@@ -123,7 +123,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
@@ -135,7 +135,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
@@ -146,7 +146,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -159,7 +159,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}

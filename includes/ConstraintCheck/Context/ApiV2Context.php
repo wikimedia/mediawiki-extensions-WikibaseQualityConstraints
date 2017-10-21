@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 /**
  * Abstract superclass of all contexts for the second version of the API output format.
+ * (This is currently the only supported format.)
  *
  * This output format is modeled after the Wikibase entity JSON format,
  * where an object with the members 'hash' and a list of 'reports' can appear

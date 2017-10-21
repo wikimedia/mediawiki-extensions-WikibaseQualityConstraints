@@ -9,7 +9,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
@@ -30,7 +30,7 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraint = new Constraint( 'test constraint id', new PropertyId( 'P1' ), 'Q100', [] );
 		$entity = NewItem::withId( 'Q1' )->build();
-		$context = new StatementContext( $entity, $statement );
+		$context = new MainSnakContext( $entity, $statement );
 		$checkResult = new CheckResult(
 			$context,
 			$constraint,
@@ -103,7 +103,7 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraint = new Constraint( 'test constraint id', new PropertyId( 'P1' ), 'Q100', [] );
 		$entity = NewItem::withId( 'Q1' )->build();
-		$context = new StatementContext( $entity, $statement );
+		$context = new MainSnakContext( $entity, $statement );
 		$checkResult = new CheckResult(
 			$context,
 			$constraint,

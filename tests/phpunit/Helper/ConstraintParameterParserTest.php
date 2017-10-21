@@ -16,7 +16,7 @@ use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -84,7 +84,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				"$method should have thrown a ConstraintParameterException with message ⧼${messageKey}⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
-				new StatementContext(
+				new MainSnakContext(
 					new Item( new ItemId( 'Q1' ) ),
 					new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
 				),

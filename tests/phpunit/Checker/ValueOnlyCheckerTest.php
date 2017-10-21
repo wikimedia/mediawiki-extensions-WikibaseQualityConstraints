@@ -7,7 +7,7 @@ use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\StatementContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -61,7 +61,7 @@ class ValueOnlyCheckerTest extends \PHPUnit_Framework_TestCase {
 		$entity = NewItem::withId( 'Q1' )
 			->build();
 
-		$checkResult = $checker->checkConstraint( new StatementContext( $entity, $statement ), $constraint );
+		$checkResult = $checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		// this constraint is still checked on deprecated statements
 		$this->assertCompliance( $checkResult );
