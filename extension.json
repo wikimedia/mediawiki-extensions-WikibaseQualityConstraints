@@ -125,7 +125,7 @@
 			"public": true
 		},
 		"WBQualityConstraintsNewApiOutputFormat": {
-			"value": false,
+			"value": true,
 			"description": "Whether to use the new API output format, based on the Wikibase entity JSON format, which can accommodate constraint results on qualifiers and references.",
 			"public": true
 		},
