@@ -349,17 +349,21 @@ EOF;
 			function( $cacheMapArray ) use ( $text, $regex, $textHash, $cacheMapSize ) {
 				// Initialize the cache map if not set
 				if ( $cacheMapArray === false ) {
-					$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.refresh.init' );
+					$key = 'wikibase.quality.constraints.regex.cache.refresh.init';
+					$this->dataFactory->increment( $key );
 					return [];
 				}
 
-				$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.refresh' );
+				$key = 'wikibase.quality.constraints.regex.cache.refresh';
+				$this->dataFactory->increment( $key );
 				$cacheMap = MapCacheLRU::newFromArray( $cacheMapArray, $cacheMapSize );
 				if ( $cacheMap->has( $textHash ) ) {
-					$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.refresh.hit' );
+					$key = 'wikibase.quality.constraints.regex.cache.refresh.hit';
+					$this->dataFactory->increment( $key );
 					$cacheMap->get( $textHash ); // ping cache
 				} else {
-					$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.refresh.miss' );
+					$key = 'wikibase.quality.constraints.regex.cache.refresh.miss';
+					$this->dataFactory->increment( $key );
 					$cacheMap->set(
 						$textHash,
 						$this->matchesRegularExpressionWithSparql( $text, $regex ),
@@ -382,10 +386,12 @@ EOF;
 		);
 
 		if ( isset( $cacheMapArray[$textHash] ) ) {
-			$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.hit' );
+			$key = 'wikibase.quality.constraints.regex.cache.hit';
+			$this->dataFactory->increment( $key );
 			return $cacheMapArray[$textHash];
 		} else {
-			$this->dataFactory->increment( 'wikibase.quality.constraints.regex.cache.miss' );
+			$key = 'wikibase.quality.constraints.regex.cache.miss';
+			$this->dataFactory->increment( $key );
 			return $this->matchesRegularExpressionWithSparql( $text, $regex );
 		}
 	}
