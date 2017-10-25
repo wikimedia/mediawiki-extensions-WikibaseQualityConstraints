@@ -125,12 +125,12 @@
 			"public": true
 		},
 		"WBQualityConstraintsCheckQualifiers": {
-			"value": false,
+			"value": true,
 			"description": "Whether to check constraints on qualifiers.",
 			"public": true
 		},
 		"WBQualityConstraintsCheckReferences": {
-			"value": false,
+			"value": true,
 			"description": "Whether to check constraints on references.",
 			"public": true
 		},
