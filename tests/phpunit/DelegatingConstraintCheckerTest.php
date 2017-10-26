@@ -14,6 +14,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -362,6 +363,26 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
 		$this->assertEmpty( $result );
+	}
+
+	public function testCheckOnEntityIdNullResult() {
+		$statement = NewStatement::forProperty( 'P2' )
+			->withValue( 'foo' );
+		$entity = NewItem::withId( 'Q2' )
+			->andStatement( $statement )
+			->andStatement( $statement )
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId(
+			$entity->getId(),
+			null,
+			function( $context ) {
+				return [ new NullResult( $context ) ];
+			}
+		);
+
+		$this->assertCount( 2, $result );
 	}
 
 	public function testCheckOnEntityIdUnknownConstraint() {

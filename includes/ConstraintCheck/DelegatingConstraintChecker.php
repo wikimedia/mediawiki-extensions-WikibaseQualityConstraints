@@ -19,6 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use Wikibase\DataModel\Entity\EntityId;
@@ -573,6 +574,13 @@ class DelegatingConstraintChecker {
 					$hashB = $b->getContext()->getSnak()->getHash();
 
 					if ( $hashA === $hashB ) {
+						if ( $a instanceof NullResult ) {
+							return $b instanceof NullResult ? 0 : -1;
+						}
+						if ( $b instanceof NullResult ) {
+							return $a instanceof NullResult ? 0 : 1;
+						}
+
 						$typeA = $a->getConstraint()->getConstraintTypeItemId();
 						$typeB = $b->getConstraint()->getConstraintTypeItemId();
 
