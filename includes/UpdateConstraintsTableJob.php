@@ -134,6 +134,11 @@ class UpdateConstraintsTableJob extends Job {
 		$constraintRepo->insertBatch( $constraints );
 	}
 
+	/**
+	 * @see Job::run
+	 *
+	 * @return bool
+	 */
 	public function run() {
 		// TODO in the future: only touch constraints affected by the edit (requires T163465)
 
@@ -146,6 +151,8 @@ class UpdateConstraintsTableJob extends Job {
 			$this->constraintRepo,
 			new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) )
 		);
+
+		return true;
 	}
 
 }
