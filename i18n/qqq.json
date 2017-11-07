@@ -44,6 +44,8 @@
 	"wbqc-parameterissues-long": "Longer explanation of the section of the constraint parameter report popup that contains problems about the constraint parameters.\n{{Related|wbqc-parameterissues-short}}",
 	"wbqc-constrainttypehelp-short": "Text for the help link shown next to the constraint type in a constraint violation report. The link leads to a help page on Wikidata about the constraint type.\n{{Identical|Help}}",
 	"wbqc-constrainttypehelp-long": "Title for the help link shown next to the constraint type in a constraint violation report. The link leads to a help page on Wikidata about the constraint type.\n{{Related|wbqc-constrainttypehelp-short}}",
+	"wbqc-cached-generic": "Generic message informing the user that a constraint check result might be outdated. There is no information on how old the cached result is; if more information is available, a more specific message is used.",
+	"wbqc-cached-minutes": "Message informing the user that a constraint check result might be updated by up to ''n'' minutes.\n{{Related|wbqc-cached-generic}}",
 	"apihelp-wbcheckconstraints-description": "{{doc-apihelp-description|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-summary": "{{doc-apihelp-summary|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",

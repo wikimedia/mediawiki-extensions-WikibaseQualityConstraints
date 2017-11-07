@@ -24,12 +24,29 @@
 		$container.append( widget.$element );
 	}
 
+	function getCachedMessage( cached ) {
+		var maximumAgeInMinutes;
+		if ( typeof cached === 'object' && cached.maximumAgeInSeconds ) {
+			maximumAgeInMinutes = Math.ceil( cached.maximumAgeInSeconds / 60 );
+			return mw.message( 'wbqc-cached-minutes' )
+				.params( [ maximumAgeInMinutes ] )
+				.escaped();
+		} else {
+			return mw.message( 'wbqc-cached-generic' )
+				.escaped();
+		}
+	}
+
 	function buildReport( result ) {
-		return new wb.quality.constraints.ui.ConstraintReportPanel( {
+		var config = {
 			status: result.status,
 			constraint: result.constraint,
 			message: result[ 'message-html' ]
-		} );
+		};
+		if ( result.cached ) {
+			config.ancillaryMessages = [ getCachedMessage( result.cached ) ];
+		}
+		return new wb.quality.constraints.ui.ConstraintReportPanel( config );
 	}
 
 	function buildParameterReport( problem ) {

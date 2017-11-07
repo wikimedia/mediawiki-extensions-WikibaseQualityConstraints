@@ -73,7 +73,9 @@
 				"wbqc-parameterissues-short",
 				"wbqc-parameterissues-long",
 				"wbqc-constrainttypehelp-short",
-				"wbqc-constrainttypehelp-long"
+				"wbqc-constrainttypehelp-long",
+				"wbqc-cached-generic",
+				"wbqc-cached-minutes"
 			],
 			"scripts": [
 				"modules/ui/module.js",
