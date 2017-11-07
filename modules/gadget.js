@@ -268,6 +268,7 @@
 		api.get( {
 			action: 'wbcheckconstraints',
 			format: 'json',
+			formatversion: 2,
 			uselang: lang,
 			id: entityId
 		} ).then( function( data ) {
@@ -279,6 +280,7 @@
 			api.get( {
 				action: 'wbcheckconstraintparameters',
 				format: 'json',
+				formatversion: 2,
 				uselang: lang,
 				propertyid: entityId
 			} ).then( function( data ) {
@@ -290,6 +292,7 @@
 			api.get( {
 				action: 'wbcheckconstraints',
 				format: 'json',
+				formatversion: 2,
 				uselang: lang,
 				claimid: statementId
 			} ).then( function( data ) {
