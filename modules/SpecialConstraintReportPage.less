@@ -1,4 +1,7 @@
+@import 'mediawiki.ui/variables';
+
 /* named colors refer to the Wikimedia Style Guide, https://wikimedia.github.io/WikimediaUI-Style-Guide/visual-style_colors.html */
+/* TODO use some Less import for those as well (not part of 'mediawiki.ui/variables') */
 
 /* Entity id form */
 form {
@@ -12,7 +15,7 @@ form {
 
 .wbqc-constraintreport-notice-error {
 	font-weight: bold;
-	color: #d33; /* Red50 */
+	color: @colorErrorText;
 }
 
 /* Statuses */
@@ -29,20 +32,20 @@ form {
 }
 
 .wbqc-status-violation {
-	color: #d33; /* Red50 */
+	color: @colorErrorText;
 }
 
 .wbqc-status-todo {
-	color: #54595d; /* Base20 */
+	color: @colorTextLight;
 }
 
 .wbqc-status-bad-parameters {
-	color: #b32424; /* Red30 */
+	color: @colorDestructiveActive;
 }
 
 .wbqc-status-deprecated,
 .wbqc-status-not-main-snak {
-	color: #72777d; /* Base30 */
+	color: @colorNeutral;
 }
 
 .wbqc-status-warning {
@@ -51,7 +54,7 @@ form {
 
 /* Tooltip */
 .wbqc-indicator {
-	color: #72777d; /* Base30 */
+	color: @colorNeutral;
 	font-weight: 600;
 }
 
@@ -59,7 +62,7 @@ form {
 	margin-top: -40px;
 	margin-left: -5px;
 	background-color: #f8f9fa; /* Base90 */
-	border: 1px solid #a2a9b1; /* Base50 */
+	border: 1px solid @colorPlaceholder;
 	border-radius: 5px;
 	box-shadow: 2px 2px 1px rgba( 0, 0, 0, 0.2 );
 	padding: 2px 5px 2px 5px;
@@ -84,6 +87,6 @@ form {
 }
 
 .wbqc-expandable-content {
-	color: #222; /* Base10 */
+	color: @colorText;
 	display: none;
 }
