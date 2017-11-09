@@ -9,7 +9,7 @@
 			iconTitle: mw.message( iconTitleMessageKey ).text(),
 			flags: flags || '',
 			framed: false,
-			classes: [ 'wbqc-reports-button' ],
+			classes: [ 'wbqc-reports-button', 'wikibase-snakview-indicator' ],
 			$overlay: $container.parents( '.wikibase-statementview' ).first(),
 			popup: {
 				$content: $content,
