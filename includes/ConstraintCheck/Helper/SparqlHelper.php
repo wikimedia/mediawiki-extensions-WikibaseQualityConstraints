@@ -484,7 +484,7 @@ EOF;
 			( $endTime - $startTime ) * 1000
 		);
 
-		if ( $request->getResponseHeader( 'X-Cache-Status' ) === 'hit' ) {
+		if ( preg_match( '/^hit(?:-.*)?$/', $request->getResponseHeader( 'X-Cache-Status' ) ) ) {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.cached' );
 		}
 
