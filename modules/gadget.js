@@ -144,19 +144,14 @@
 	function addResultsToSnak( results, $snak ) {
 		var reports = results.map( buildReport ),
 			list = buildReportList( reports ),
-			haveMandatoryViolations,
-			$target;
+			haveMandatoryViolations;
 
 		if ( list !== null ) {
 			haveMandatoryViolations = list.items[ 0 ].status === 'violation';
 
-			$target = $snak.find( '.wikibase-snakview-value .valueview-instaticmode' );
-			if ( $target.length === 0 ) {
-				$target = $snak.find( '.wikibase-snakview-value' );
-			}
 			buildPopup(
 				list.$element,
-				$target,
+				$snak.find( '.wikibase-snakview-indicators' ),
 				( haveMandatoryViolations ? '' : 'non-' ) + 'mandatory-constraint-violation',
 				haveMandatoryViolations ? 'wbqc-issues-long' : 'wbqc-potentialissues-long'
 			);
@@ -216,8 +211,7 @@
 			problems,
 			reports,
 			list,
-			$statement,
-			$target;
+			$snak;
 
 		for ( constraintId in parameterReports ) {
 			status = parameterReports[ constraintId ].status;
@@ -238,13 +232,15 @@
 				expanded: false // expanded: true does not work within a popup
 			} );
 
-			$statement = $( '.wikibase-statement-' + constraintId.replace( /\$/g, '\\$' ) +
-								' .wikibase-statementview-mainsnak .wikibase-snakview-value' );
-			$target = $statement.find( '.valueview-instaticmode' );
-			if ( $target.length === 0 ) {
-				$target = $statement;
-			}
-			buildPopup( list.$element, $target, 'alert', 'wbqc-badparameters-long', 'warning' );
+			$snak = $( '.wikibase-statement-' + constraintId.replace( /\$/g, '\\$' ) +
+								' .wikibase-statementview-mainsnak .wikibase-snakview' );
+			buildPopup(
+				list.$element,
+				$snak.find( '.wikibase-snakview-indicators' ),
+				'alert',
+				'wbqc-badparameters-long',
+				'warning'
+			);
 		}
 	}
 
