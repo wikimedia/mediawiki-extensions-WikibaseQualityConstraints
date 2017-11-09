@@ -1,7 +1,5 @@
 @import 'mediawiki.ui/variables';
-
-/* named colors refer to the Wikimedia Style Guide, https://wikimedia.github.io/WikimediaUI-Style-Guide/visual-style_colors.html */
-/* TODO use some Less import for those as well (not part of 'mediawiki.ui/variables') */
+@import '../../lib/oojs-ui/wikimedia-ui-base';
 
 /* Entity id form */
 form {
@@ -24,11 +22,11 @@ form {
 }
 
 .wbqc-status-compliance {
-	color: #00af89; /* Green50 */
+	color: @wmui-color-green50;
 }
 
 .wbqc-status-exception {
-	color: #14866d; /* Green30 */
+	color: @wmui-color-green30;
 }
 
 .wbqc-status-violation {
@@ -49,7 +47,7 @@ form {
 }
 
 .wbqc-status-warning {
-	color: #ac6600; /* Yellow30 */
+	color: @wmui-color-yellow30;
 }
 
 /* Tooltip */
@@ -61,7 +59,7 @@ form {
 .wbqc-tooltip {
 	margin-top: -40px;
 	margin-left: -5px;
-	background-color: #f8f9fa; /* Base90 */
+	background-color: @background-color-framed;
 	border: 1px solid @colorPlaceholder;
 	border-radius: 5px;
 	box-shadow: 2px 2px 1px rgba( 0, 0, 0, 0.2 );
