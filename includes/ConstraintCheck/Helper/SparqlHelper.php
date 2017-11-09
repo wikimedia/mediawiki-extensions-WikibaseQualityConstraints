@@ -447,6 +447,33 @@ EOF;
 	}
 
 	/**
+	 * Return the max-age of a cached response,
+	 * or a boolean indicating whether the response was cached or not.
+	 *
+	 * @param array $responseHeaders see MWHttpRequest::getResponseHeaders()
+	 * @return integer|boolean the max-age (in seconds)
+	 * or a plain boolean if no max-age can be determined
+	 */
+	public function getCacheMaxAge( $responseHeaders ) {
+		if (
+			array_key_exists( 'x-cache-status', $responseHeaders ) &&
+			preg_match( '/^hit(?:-.*)?$/', $responseHeaders['x-cache-status'] )
+		) {
+			$maxage = [];
+			if (
+				array_key_exists( 'cache-control', $responseHeaders ) &&
+				preg_match( '/\bmax-age=(\d+)\b/', $responseHeaders['cache-control'], $maxage )
+			) {
+				return intval( $maxage[1] );
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Runs a query against the configured endpoint and returns the results.
 	 *
 	 * @param string $query The query, unencoded (plain string).
@@ -484,7 +511,7 @@ EOF;
 			( $endTime - $startTime ) * 1000
 		);
 
-		if ( preg_match( '/^hit(?:-.*)?$/', $request->getResponseHeader( 'X-Cache-Status' ) ) ) {
+		if ( $this->getCacheMaxAge( $request->getResponseHeaders() ) ) {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.cached' );
 		}
 

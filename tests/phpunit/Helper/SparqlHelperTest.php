@@ -407,4 +407,41 @@ EOF;
 		];
 	}
 
+	/**
+	 * @dataProvider getCacheMaxAgeProvider
+	 */
+	 public function testGetCacheMaxAge( $responseHeaders, $expected ) {
+		$sparqlHelper = new SparqlHelper(
+			$this->getDefaultConfig(),
+			new RdfVocabulary(
+				'http://www.wikidata.org/entity/',
+				'http://www.wikidata.org/wiki/Special:EntityData/'
+			),
+			new ItemIdParser(),
+			$this->getMock( PropertyDataTypeLookup::class ),
+			WANObjectCache::newEmpty()
+		);
+
+		$actual = $sparqlHelper->getCacheMaxAge( $responseHeaders );
+
+		$this->assertSame( $expected, $actual );
+	 }
+
+	 public function getCacheMaxAgeProvider() {
+		 return [
+			 'WDQS hit' => [
+				 [ 'x-cache-status' => 'hit-front', 'cache-control' => 'public, max-age=300' ],
+				 300
+			 ],
+			 'WDQS miss' => [
+				 [ 'x-cache-status' => 'miss', 'cache-control' => 'public, max-age=300' ],
+				 false
+			 ],
+			 'generic hit' => [
+				 [ 'x-cache-status' => 'hit' ],
+				 true
+			 ],
+		 ];
+	 }
+
 }
