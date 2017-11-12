@@ -9,8 +9,12 @@
 	"wbqc-constraintreport-form-submit-label": "Kontroli",
 	"wbqc-constraintreport-form-entityid-label": "Identigilo de ento:",
 	"wbqc-constraintreport-empty-result": "Ne estas limigoj difinitaj por ĉi tiu ento.",
+	"wbqc-constraintreport-status-exception": "Escepto",
+	"wbqc-constraintreport-status-warning": "Averto",
 	"wbqc-constraintreport-result-table-header-status": "Stato",
 	"wbqc-constraintreport-result-table-header-constraint": "Limigo",
+	"wbqc-issues-short": "Problemoj",
 	"wbq-subextension-name-wbqc": "Limigoj",
+	"wbqc-violation-header-parameters": "Parametroj:",
 	"wbqc-violations-group": "Limigoj"
 }
