@@ -318,7 +318,7 @@ EOF;
 		try {
 			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpressionWithSparql' ], [ $text, $regex ] );
 			$this->assertTrue( false,
-				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message ⧼$messageKey⧽." );
+				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message ⧼${messageKey}⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
 				$this->getMock( Context::class ),
