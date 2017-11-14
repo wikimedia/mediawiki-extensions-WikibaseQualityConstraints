@@ -82,7 +82,7 @@ EOF;
 			->willReturn( $this->askResult( true ) )
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
-		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ], true ) );
+		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ], true )->getBool() );
 	}
 
 	public function testFindEntitiesWithSameStatement() {

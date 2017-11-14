@@ -139,7 +139,13 @@ class ValueTypeChecker implements ConstraintChecker {
 
 		$statements = $item->getStatements();
 
-		if ( $this->typeCheckerHelper->hasClassInRelation( $statements, $relationId, $classes ) ) {
+		$result = $this->typeCheckerHelper->hasClassInRelation(
+			$statements,
+			$relationId,
+			$classes
+		);
+
+		if ( $result->getBool() ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

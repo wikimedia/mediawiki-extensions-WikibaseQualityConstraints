@@ -18,6 +18,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -109,7 +110,7 @@ EOT;
 	 * @param string $id entity ID serialization of the entity to check
 	 * @param string[] $classes entity ID serializations of the expected types
 	 * @param boolean $withInstance true for “instance” relation, false for “subclass” relation
-	 * @return boolean
+	 * @return CachedBool
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function hasType( $id, array $classes, $withInstance ) {
@@ -117,6 +118,8 @@ EOT;
 		$subclassOfId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 
 		$path = ( $withInstance ? "wdt:$instanceOfId/" : "" ) . "wdt:$subclassOfId*";
+
+		$cachingMetadatas = [];
 
 		foreach ( array_chunk( $classes, 20 ) as $classesChunk ) {
 			$classesValues = implode( ' ', array_map(
@@ -136,12 +139,19 @@ EOF;
 			// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
 
 			$result = $this->runQuery( $query );
+			$cachingMetadatas[] = $result->getCachingMetadata();
 			if ( $result->getArray()['boolean'] ) {
-				return true;
+				return new CachedBool(
+					true,
+					CachingMetadata::merge( $cachingMetadatas )
+				);
 			}
 		}
 
-		return false;
+		return new CachedBool(
+			false,
+			CachingMetadata::merge( $cachingMetadatas )
+		);
 	}
 
 	/**

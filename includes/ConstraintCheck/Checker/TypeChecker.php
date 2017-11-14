@@ -96,7 +96,13 @@ class TypeChecker implements ConstraintChecker {
 		}
 		$parameters['relation'] = [ $relation ];
 
-		if ( $this->typeCheckerHelper->hasClassInRelation( $context->getEntity()->getStatements(), $relationId, $classes ) ) {
+		$result = $this->typeCheckerHelper->hasClassInRelation(
+			$context->getEntity()->getStatements(),
+			$relationId,
+			$classes
+		);
+
+		if ( $result->getBool() ) {
 			$message = '';
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {

@@ -14,6 +14,8 @@ use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
@@ -125,13 +127,16 @@ class TypeCheckerHelper {
 	 * @param string[] $classesToCheck
 	 * @param int &$entitiesChecked
 	 *
-	 * @return bool
+	 * @return CachedBool
 	 *
 	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function isSubclassOfWithSparqlFallback( EntityId $comparativeClass, array $classesToCheck ) {
 		try {
-			return $this->isSubclassOf( $comparativeClass, $classesToCheck );
+			return new CachedBool(
+				$this->isSubclassOf( $comparativeClass, $classesToCheck ),
+				CachingMetadata::fresh()
+			);
 		} catch ( OverflowException $e ) {
 			if ( $this->sparqlHelper !== null ) {
 				MediaWikiServices::getInstance()->getStatsdDataFactory()
@@ -142,7 +147,7 @@ class TypeCheckerHelper {
 					/* withInstance = */ false
 				);
 			} else {
-				return false;
+				return new CachedBool( false, CachingMetadata::fresh() );
 			}
 		}
 	}
@@ -157,11 +162,13 @@ class TypeCheckerHelper {
 	 * @param string $relationId
 	 * @param string[] $classesToCheck
 	 *
-	 * @return bool
+	 * @return CachedBool
 	 *
 	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function hasClassInRelation( StatementList $statements, $relationId, array $classesToCheck ) {
+		$cachingMetadatas = [];
+
 		/** @var Statement $statement */
 		foreach ( $statements->getByPropertyId( new PropertyId( $relationId ) ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
@@ -176,15 +183,24 @@ class TypeCheckerHelper {
 			$comparativeClass = $dataValue->getEntityId();
 
 			if ( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
-				return true;
+				// discard $cachingMetadatas, we know this is fresh
+				return new CachedBool( true, CachingMetadata::fresh() );
 			}
 
-			if ( $this->isSubclassOfWithSparqlFallback( $comparativeClass, $classesToCheck ) ) {
-				return true;
+			$result = $this->isSubclassOfWithSparqlFallback( $comparativeClass, $classesToCheck );
+			$cachingMetadatas[] = $result->getCachingMetadata();
+			if ( $result->getBool() ) {
+				return new CachedBool(
+					true,
+					CachingMetadata::merge( $cachingMetadatas )
+				);
 			}
 		}
 
-		return false;
+		return new CachedBool(
+			false,
+			CachingMetadata::merge( $cachingMetadatas )
+		);
 	}
 
 	private function hasCorrectType( Snak $mainSnak ) {
