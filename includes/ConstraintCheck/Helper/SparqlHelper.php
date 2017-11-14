@@ -18,6 +18,8 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -134,7 +136,7 @@ EOF;
 			// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
 
 			$result = $this->runQuery( $query );
-			if ( $result['boolean'] ) {
+			if ( $result->getArray()['boolean'] ) {
 				return true;
 			}
 		}
@@ -249,10 +251,10 @@ EOF;
 	/**
 	 * Extract and parse entity IDs from the ?otherEntity column of a SPARQL query result.
 	 *
-	 * @param array $result SPARQL query result
+	 * @param CachedQueryResults $results
 	 * @return (EntityId|null)[]
 	 */
-	private function getOtherEntities( $result ) {
+	private function getOtherEntities( CachedQueryResults $results ) {
 		return array_map(
 			function ( $resultBindings ) {
 				$entityIRI = $resultBindings['otherEntity']['value'];
@@ -269,7 +271,7 @@ EOF;
 
 				return null;
 			},
-			$result['results']['bindings']
+			$results->getArray()['results']['bindings']
 		);
 	}
 
@@ -415,7 +417,7 @@ EOF;
 
 		$result = $this->runQuery( $query );
 
-		$vars = $result['results']['bindings'][0];
+		$vars = $result->getArray()['results']['bindings'][0];
 		if ( array_key_exists( 'matches', $vars ) ) {
 			// true or false ⇒ regex okay, text matches or not
 			return $vars['matches']['value'] === 'true';
@@ -478,7 +480,7 @@ EOF;
 	 *
 	 * @param string $query The query, unencoded (plain string).
 	 *
-	 * @return array The returned JSON data (you typically iterate over ["results"]["bindings"]).
+	 * @return CachedQueryResults
 	 *
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
@@ -511,14 +513,18 @@ EOF;
 			( $endTime - $startTime ) * 1000
 		);
 
-		if ( $this->getCacheMaxAge( $request->getResponseHeaders() ) ) {
+		$maxAge = $this->getCacheMaxAge( $request->getResponseHeaders() );
+		if ( $maxAge ) {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.cached' );
 		}
 
 		if ( $status->isOk() ) {
 			$json = $request->getContent();
 			$arr = json_decode( $json, true );
-			return $arr;
+			return new CachedQueryResults(
+				$arr,
+				$maxAge ? CachingMetadata::ofMaximumAgeInSeconds( $maxAge ) : CachingMetadata::fresh()
+			);
 		} else {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.error' );
 

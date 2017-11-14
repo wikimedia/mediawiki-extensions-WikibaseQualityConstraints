@@ -19,6 +19,8 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
@@ -37,6 +39,20 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 
 	use DefaultConfig, ResultAssertions;
+
+	private function selectResults( array $bindings ) {
+		return new CachedQueryResults(
+			[ 'results' => [ 'bindings' => $bindings ] ],
+			CachingMetadata::fresh()
+		);
+	}
+
+	private function askResult( $boolean ) {
+		return new CachedQueryResults(
+			[ 'boolean' => $boolean ],
+			CachingMetadata::fresh()
+		);
+	}
 
 	public function testHasType() {
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
@@ -63,7 +79,7 @@ EOF;
 
 		$sparqlHelper->expects( $this->exactly( 1 ) )
 			->method( 'runQuery' )
-			->willReturn( [ 'boolean' => true ] )
+			->willReturn( $this->askResult( true ) )
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
 		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ], true ) );
@@ -109,10 +125,10 @@ EOF;
 
 		$sparqlHelper->expects( $this->exactly( 1 ) )
 			->method( 'runQuery' )
-			->willReturn( [ 'head' => [ 'vars' => [ 'otherEntity' ] ], 'results' => [ 'bindings' => [
+			->willReturn( $this->selectResults( [
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
-			] ] ] )
+			] ) )
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
 		$this->assertEquals(
@@ -164,10 +180,10 @@ EOF;
 
 		$sparqlHelper->expects( $this->exactly( 1 ) )
 			->method( 'runQuery' )
-			->willReturn( [ 'head' => [ 'vars' => [ 'otherEntity' ] ], 'results' => [ 'bindings' => [
+			->willReturn( $this->selectResults( [
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
-			] ] ] )
+			] ) )
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
 		$this->assertEquals(
@@ -293,7 +309,7 @@ EOF;
 		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
 			->with( $this->equalTo( $query ) )
-			->willReturn( [ 'results' => [ 'bindings' => [ [ 'matches' => [ 'value' => 'false' ] ] ] ] ] );
+			->willReturn( $this->selectResults( [ [ 'matches' => [ 'value' => 'false' ] ] ] ) );
 
 		$result = $sparqlHelper->matchesRegularExpressionWithSparql( $text, $regex );
 
@@ -313,7 +329,7 @@ EOF;
 		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
 			->with( $this->equalTo( $query ) )
-			->willReturn( [ 'results' => [ 'bindings' => [ [] ] ] ] );
+			->willReturn( $this->selectResults( [ [] ] ) );
 
 		try {
 			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpressionWithSparql' ], [ $text, $regex ] );
