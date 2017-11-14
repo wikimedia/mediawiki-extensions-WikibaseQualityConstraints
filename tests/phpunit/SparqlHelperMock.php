@@ -5,6 +5,8 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 
 /**
@@ -55,7 +57,7 @@ trait SparqlHelperMock {
 
 		$mock->expects( $this->exactly( 1 ) )
 			->method( 'findEntitiesWithSameStatement' )
-			->willReturn( $result )
+			->willReturn( new CachedEntityIds( $result, CachingMetadata::fresh() ) )
 			->withConsecutive( [ $this->equalTo( $expectedStatement ), $this->equalTo( true ) ] );
 
 		return $mock;
@@ -73,7 +75,7 @@ trait SparqlHelperMock {
 
 		$mock->expects( $this->exactly( 1 ) )
 			->method( 'findEntitiesWithSameQualifierOrReference' )
-			->willReturn( $result )
+			->willReturn( new CachedEntityIds( $result, CachingMetadata::fresh() ) )
 			->withConsecutive( [
 				$this->equalTo( $expectedEntityId ),
 				$this->equalTo( $expectedSnak ),

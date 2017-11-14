@@ -132,7 +132,7 @@ EOF;
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
 		$this->assertEquals(
-			$sparqlHelper->findEntitiesWithSameStatement( $statement, true ),
+			$sparqlHelper->findEntitiesWithSameStatement( $statement, true )->getArray(),
 			[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ]
 		);
 	}
@@ -192,7 +192,7 @@ EOF;
 				$snak,
 				$contextType,
 				false
-			),
+			)->getArray(),
 			[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ]
 		);
 	}
