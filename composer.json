@@ -35,18 +35,6 @@
 		"wikibase/wikibase-codesniffer": "^0.2.0",
 		"mediawiki/minus-x": "0.2.0"
 	},
-	"autoload": {
-		"psr-4": {
-			"WikibaseQuality\\ConstraintReport\\": "includes/",
-			"WikibaseQuality\\ConstraintReport\\Api\\": "api/",
-			"WikibaseQuality\\ConstraintReport\\Specials\\": "specials/",
-			"WikibaseQuality\\ConstraintReport\\Tests\\": "tests/phpunit/",
-			"WikibaseQuality\\ConstraintReport\\Maintenance\\": "maintenance/"
-		},
-		"classmap": [
-			"WikibaseQualityConstraintsHooks.php"
-		]
-	},
 	"scripts": {
 		"fix": [
 			"phpcbf",
