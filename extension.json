@@ -374,6 +374,7 @@
 		"WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints": "api/CheckConstraints.php",
 		"WikibaseQuality\\ConstraintReport\\CachingConstraintLookup": "includes/CachingConstraintLookup.php",
 		"WikibaseQuality\\ConstraintReport\\Constraint": "includes/Constraint.php",
+		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Cache\\CachingMetadata": "includes/ConstraintCheck/Cache/CachingMetadata.php",
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Checker\\CommonsLinkChecker": "includes/ConstraintCheck/Checker/CommonsLinkChecker.php",
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Checker\\ConflictsWithChecker": "includes/ConstraintCheck/Checker/ConflictsWithChecker.php",
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Checker\\DiffWithinRangeChecker": "includes/ConstraintCheck/Checker/DiffWithinRangeChecker.php",
