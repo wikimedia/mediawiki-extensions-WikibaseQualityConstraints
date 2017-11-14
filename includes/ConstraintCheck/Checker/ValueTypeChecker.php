@@ -159,7 +159,8 @@ class ValueTypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
+			->setCachingMetadata( $result->getCachingMetadata() );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

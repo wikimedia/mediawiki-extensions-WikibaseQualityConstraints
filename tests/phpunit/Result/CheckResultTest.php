@@ -11,6 +11,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 
@@ -33,8 +34,10 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 		$status = CheckResult::STATUS_COMPLIANCE;
 		$message = 'All right';
 		$context = new FakeSnakContext( $snak, new Item( $entityId ) );
+		$cachingMetadata = CachingMetadata::ofMaximumAgeInSeconds( 42 );
 
 		$checkResult = new CheckResult( $context, $constraint, $parameters, $status, $message );
+		$checkResult->setCachingMetadata( $cachingMetadata );
 
 		$this->assertSame( $context, $checkResult->getContext() );
 		$this->assertSame( $entityId, $checkResult->getEntityId() );
@@ -45,6 +48,7 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame( $parameters, $checkResult->getParameters() );
 		$this->assertSame( $status, $checkResult->getStatus() );
 		$this->assertSame( $message, $checkResult->getMessage() );
+		$this->assertSame( $cachingMetadata, $checkResult->getCachingMetadata() );
 	}
 
 	public function testWithWrongSnakType() {
