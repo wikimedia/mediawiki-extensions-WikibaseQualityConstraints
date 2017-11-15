@@ -362,10 +362,14 @@ class CheckConstraints extends ApiBase {
 						'type' => $typeItemId,
 						'typeLabel' => $typeLabel,
 						'link' => $link,
-						'detail' => $checkResult->getParameters(),
-						'detailHTML' => $this->constraintParameterRenderer->formatParameters( $checkResult->getParameters() )
 					]
 				];
+				if ( $this->config->get( 'WBQualityConstraintsIncludeDetailInApi' ) ) {
+					$result['constraint'] += [
+						'detail' => $checkResult->getParameters(),
+						'detailHTML' => $this->constraintParameterRenderer->formatParameters( $checkResult->getParameters() ),
+					];
+				}
 				if ( $checkResult->getMessage() ) {
 					$result['message-html'] = $checkResult->getMessage();
 				}

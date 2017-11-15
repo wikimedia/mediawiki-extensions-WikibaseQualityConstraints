@@ -104,12 +104,14 @@ class CheckConstraintsTest extends ApiTestCase {
 			);
 			$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
+			// we can’t use the DefaultConfig trait because we’re in a static method
 			$config = new HashConfig( [
 				'WBQualityConstraintsPropertyConstraintId' => 'P1',
 				'WBQualityConstraintsExceptionToConstraintId' => 'P2',
 				'WBQualityConstraintsConstraintStatusId' => 'P3',
 				'WBQualityConstraintsCheckDurationInfoSeconds' => 1.0,
 				'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
+				'WBQualityConstraintsIncludeDetailInApi' => true,
 			] );
 			$entityIdParser = new ItemIdParser();
 			$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
