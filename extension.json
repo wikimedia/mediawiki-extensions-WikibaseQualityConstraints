@@ -46,7 +46,7 @@
 	},
 	"ResourceModules": {
 		"SpecialConstraintReportPage": {
-			"styles": "modules/SpecialConstraintReportPage.css",
+			"styles": "modules/SpecialConstraintReportPage.less",
 			"scripts": "modules/SpecialConstraintReportPage.js"
 		},
 		"wikibase.quality.constraints.icon": {
@@ -82,13 +82,13 @@
 				"modules/ui/ConstraintReportList.js"
 			],
 			"styles": [
-				"modules/ui/ConstraintReportPanel.css",
-				"modules/ui/ConstraintReportGroup.css"
+				"modules/ui/ConstraintReportPanel.less",
+				"modules/ui/ConstraintReportGroup.less"
 			]
 		},
 		"wikibase.quality.constraints.gadget": {
 			"scripts": "modules/gadget.js",
-			"styles": "modules/gadget.css",
+			"styles": "modules/gadget.less",
 			"dependencies": [
 				"mediawiki.api",
 				"oojs-ui-core",
