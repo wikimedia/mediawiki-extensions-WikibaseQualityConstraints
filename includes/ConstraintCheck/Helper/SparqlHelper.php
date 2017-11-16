@@ -19,6 +19,7 @@ use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -157,7 +158,7 @@ EOF;
 	/**
 	 * @param Statement $statement
 	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
-	 * @return (EntityId|null)[]
+	 * @return CachedEntityIds
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function findEntitiesWithSameStatement(
@@ -198,7 +199,7 @@ EOF;
 	 * @param PropertyValueSnak $snak
 	 * @param string $type Context::TYPE_QUALIFIER or Context::TYPE_REFERENCE
 	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
-	 * @return (EntityId|null)[]
+	 * @return CachedEntityIds
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function findEntitiesWithSameQualifierOrReference(
@@ -262,10 +263,10 @@ EOF;
 	 * Extract and parse entity IDs from the ?otherEntity column of a SPARQL query result.
 	 *
 	 * @param CachedQueryResults $results
-	 * @return (EntityId|null)[]
+	 * @return CachedEntityIds
 	 */
 	private function getOtherEntities( CachedQueryResults $results ) {
-		return array_map(
+		return new CachedEntityIds( array_map(
 			function ( $resultBindings ) {
 				$entityIRI = $resultBindings['otherEntity']['value'];
 				$entityPrefixLength = strlen( $this->entityPrefix );
@@ -282,7 +283,7 @@ EOF;
 				return null;
 			},
 			$results->getArray()['results']['bindings']
-		);
+		), $results->getCachingMetadata() );
 	}
 
 	// @codingStandardsIgnoreStart cyclomatic complexity of this function is too high

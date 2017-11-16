@@ -59,7 +59,7 @@ class UniqueValueChecker implements ConstraintChecker {
 
 		if ( $this->sparqlHelper !== null ) {
 			if ( $context->getType() === 'statement' ) {
-				$otherEntities = $this->sparqlHelper->findEntitiesWithSameStatement(
+				$result = $this->sparqlHelper->findEntitiesWithSameStatement(
 					$context->getSnakStatement(),
 					true // ignore deprecated statements
 				);
@@ -67,7 +67,7 @@ class UniqueValueChecker implements ConstraintChecker {
 				if ( $context->getSnak()->getType() !== 'value' ) {
 					return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 				}
-				$otherEntities = $this->sparqlHelper->findEntitiesWithSameQualifierOrReference(
+				$result = $this->sparqlHelper->findEntitiesWithSameQualifierOrReference(
 					$context->getEntity()->getId(),
 					$context->getSnak(),
 					$context->getType(),
@@ -75,6 +75,7 @@ class UniqueValueChecker implements ConstraintChecker {
 					$context->getType() === 'qualifier'
 				);
 			}
+			$otherEntities = $result->getArray();
 
 			if ( $otherEntities === [] ) {
 				$status = CheckResult::STATUS_COMPLIANCE;
