@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
@@ -76,6 +77,7 @@ class UniqueValueChecker implements ConstraintChecker {
 				);
 			}
 			$otherEntities = $result->getArray();
+			$cachingMetadata = $result->getCachingMetadata();
 
 			if ( $otherEntities === [] ) {
 				$status = CheckResult::STATUS_COMPLIANCE;
@@ -92,9 +94,11 @@ class UniqueValueChecker implements ConstraintChecker {
 			$message = wfMessage( "wbqc-violation-message-not-yet-implemented" )
 					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
 					 ->escaped();
+			$cachingMetadata = CachingMetadata::fresh();
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
+			->setCachingMetadata( $cachingMetadata );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

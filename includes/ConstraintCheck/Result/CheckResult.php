@@ -6,6 +6,7 @@ use DataValues\DataValue;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use LogicException;
 
@@ -90,6 +91,11 @@ class CheckResult {
 	private $message;
 
 	/**
+	 * @var CachingMetadata
+	 */
+	private $cachingMetadata;
+
+	/**
 	 * @param Context $context
 	 * @param Constraint $constraint
 	 * @param array[] $parameters (string => string[]) parsed constraint parameters
@@ -109,6 +115,7 @@ class CheckResult {
 		$this->parameters = $parameters;
 		$this->status = $status;
 		$this->message = $message;
+		$this->cachingMetadata = CachingMetadata::fresh();
 	}
 
 	/**
@@ -194,6 +201,22 @@ class CheckResult {
 	 */
 	public function getMessage() {
 		return $this->message;
+	}
+
+	/**
+	 * @param CachingMetadata $cm
+	 * @return self
+	 */
+	public function setCachingMetadata( CachingMetadata $cm ) {
+		$this->cachingMetadata = $cm;
+		return $this;
+	}
+
+	/**
+	 * @return CachingMetadata
+	 */
+	public function getCachingMetadata() {
+		return $this->cachingMetadata;
 	}
 
 }
