@@ -469,12 +469,12 @@ EOF;
 	public function getCacheMaxAge( $responseHeaders ) {
 		if (
 			array_key_exists( 'x-cache-status', $responseHeaders ) &&
-			preg_match( '/^hit(?:-.*)?$/', $responseHeaders['x-cache-status'] )
+			preg_match( '/^hit(?:-.*)?$/', $responseHeaders['x-cache-status'][0] )
 		) {
 			$maxage = [];
 			if (
 				array_key_exists( 'cache-control', $responseHeaders ) &&
-				preg_match( '/\bmax-age=(\d+)\b/', $responseHeaders['cache-control'], $maxage )
+				preg_match( '/\bmax-age=(\d+)\b/', $responseHeaders['cache-control'][0], $maxage )
 			) {
 				return intval( $maxage[1] );
 			} else {

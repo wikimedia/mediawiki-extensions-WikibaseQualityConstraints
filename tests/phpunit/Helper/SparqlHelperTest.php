@@ -446,15 +446,15 @@ EOF;
 	 public function getCacheMaxAgeProvider() {
 		 return [
 			 'WDQS hit' => [
-				 [ 'x-cache-status' => 'hit-front', 'cache-control' => 'public, max-age=300' ],
+				 [ 'x-cache-status' => [ 'hit-front' ], 'cache-control' => [ 'public, max-age=300' ] ],
 				 300
 			 ],
 			 'WDQS miss' => [
-				 [ 'x-cache-status' => 'miss', 'cache-control' => 'public, max-age=300' ],
+				 [ 'x-cache-status' => [ 'miss' ], 'cache-control' => [ 'public, max-age=300' ] ],
 				 false
 			 ],
 			 'generic hit' => [
-				 [ 'x-cache-status' => 'hit' ],
+				 [ 'x-cache-status' => [ 'hit' ] ],
 				 true
 			 ],
 		 ];
