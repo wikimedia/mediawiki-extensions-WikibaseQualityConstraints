@@ -20,18 +20,18 @@ class CachedBoolTest extends \PHPUnit_Framework_TestCase {
 		$bool = true;
 		$cm = CachingMetadata::fresh();
 
-		$ca = new CachedBool( $bool, $cm );
+		$cb = new CachedBool( $bool, $cm );
 
-		$this->assertSame( $bool, $ca->getBool() );
+		$this->assertSame( $bool, $cb->getBool() );
 	}
 
 	public function testGetCachingMetadata() {
 		$bool = false;
 		$cm = CachingMetadata::ofMaximumAgeInSeconds( 42 );
 
-		$ca = new CachedBool( $bool, $cm );
+		$cb = new CachedBool( $bool, $cm );
 
-		$this->assertSame( $cm, $ca->getCachingMetadata() );
+		$this->assertSame( $cm, $cb->getCachingMetadata() );
 	}
 
 }

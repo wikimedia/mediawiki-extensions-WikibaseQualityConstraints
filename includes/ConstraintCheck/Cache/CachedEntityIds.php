@@ -13,7 +13,7 @@ use Wikibase\DataModel\Entity\EntityId;
 class CachedEntityIds extends CachedArray {
 
 	/**
-	 * @return (EntityId|null) The entity IDs.
+	 * @return (EntityId|null)[] The entity IDs.
 	 */
 	public function getArray() {
 		return parent::getArray();

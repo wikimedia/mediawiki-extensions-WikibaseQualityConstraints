@@ -21,9 +21,9 @@ class CachedEntityIdsTest extends \PHPUnit_Framework_TestCase {
 		$array = [ 'boolean' => true ];
 		$cm = CachingMetadata::fresh();
 
-		$ca = new CachedEntityIds( $array, $cm );
+		$cei = new CachedEntityIds( $array, $cm );
 
-		$this->assertSame( $array, $ca->getArray() );
+		$this->assertSame( $array, $cei->getArray() );
 	}
 
 }

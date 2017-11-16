@@ -21,9 +21,9 @@ class CachedQueryResultsTest extends \PHPUnit_Framework_TestCase {
 		$array = [ 'boolean' => true ];
 		$cm = CachingMetadata::fresh();
 
-		$ca = new CachedQueryResults( $array, $cm );
+		$cqr = new CachedQueryResults( $array, $cm );
 
-		$this->assertSame( $array, $ca->getArray() );
+		$this->assertSame( $array, $cqr->getArray() );
 	}
 
 }
