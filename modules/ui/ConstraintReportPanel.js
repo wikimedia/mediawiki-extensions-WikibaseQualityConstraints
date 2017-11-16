@@ -26,14 +26,17 @@
 	 * @cfg {string} status The status of the report, e.g. 'violation' or 'compliance'.
 	 * @cfg {Object} constraint The constraint of the report, as returned by the wbcheckconstraints API.
 	 * @cfg {string} [message=''] The message (HTML) of the report, if present.
+	 * @cfg {string[]} [ancillaryMessages=[]] Additional messages (HTML) attached to the report, if any.
 	 * @cfg {jQuery} [$heading] The heading element of the panel. Should not contain the help link.
 	 * @cfg {jQuery} [$helpLink] The help link for the heading.
 	 * @cfg {jQuery} [$message] The message paragraph of the panel.
+	 * @cfg {jQuery} [$ancillaryMessages] The container of the additional messages.
 	 */
 	wb.quality.constraints.ui.ConstraintReportPanel = function WBQCConstraintReportPanel( config ) {
 		// Configuration initialization
 		config = $.extend( {
-			message: ''
+			message: '',
+			ancillaryMessages: []
 		}, config );
 		config.expanded = false;
 
@@ -61,6 +64,12 @@
 		);
 		this.message = config.message;
 		this.$message = config.$message || $( '<p>' ).html( this.message );
+		this.ancillaryMessages = config.ancillaryMessages;
+		this.$ancillaryMessages = config.$ancillaryMessages || $( '<div class="wbqc-ancillary-messages">' ).append(
+			this.ancillaryMessages.map( function( ancillaryMessage ) {
+				return $( '<p>' ).html( ancillaryMessage );
+			} )
+		);
 
 		// Events
 		// (none)
@@ -72,6 +81,7 @@
 		this.$heading.append( this.$helpLink );
 		this.$element.append( this.$heading );
 		this.$element.append( this.$message );
+		this.$element.append( this.$ancillaryMessages );
 	};
 
 	/* Setup */
