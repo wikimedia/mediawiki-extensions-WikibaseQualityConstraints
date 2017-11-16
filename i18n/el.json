@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Glavkos"
+			"Glavkos",
+			"KATRINE1992"
 		]
 	},
-	"wbqc-constrainttypehelp-short": "Βοήθεια"
+	"wbqc-constrainttypehelp-short": "Βοήθεια",
+	"wbqc-cached-generic": "Το αποτέλεσμα έχει χαθεί και μπορεί να είναι εκτός προθεσμίας",
+	"wbqc-cached-minutes": "Αυτό το αποτέλεσμα έχει χαθεί και μπορεί να είναι εκτός προθεσμίας μέχρι {{PLURAL:$1|1=one minute|$1&nbsp;minutes}}."
 }
