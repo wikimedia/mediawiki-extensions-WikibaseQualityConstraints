@@ -8,9 +8,9 @@ use JobSpecification;
 use MediaWiki\MediaWikiServices;
 use Title;
 use Wikibase\Change;
-use Wikibase\EntityChange;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Services\Diff\EntityDiff;
+use Wikibase\EntityChange;
+use Wikibase\Lib\Changes\EntityDiffChangedAspects;
 
 /**
  * Container for hook callbacks registered in extension.json.
@@ -55,13 +55,20 @@ final class WikibaseQualityConstraintsHooks {
 			return false;
 		}
 
-		$diff = $change->getDiff();
-		if ( !( $diff instanceof EntityDiff ) ) {
-			return false;
+		$info = $change->getInfo();
+
+		if ( !array_key_exists( 'compactDiff', $info ) ) {
+			// the non-compact diff ($info['diff']) does not contain statement diffs (T110996),
+			// so we only know that the change *might* affect the constraint statements
+			return true;
 		}
 
-		// TODO inspect the diff once T113468 or T163465 are resolved
-		return true;
+		/** @var EntityDiffChangedAspects $aspects */
+		$aspects = $info['compactDiff'];
+
+		$propertyConstraintId = MediaWikiServices::getInstance()->getMainConfig()
+			->get( 'WBQualityConstraintsPropertyConstraintId' );
+		return in_array( $propertyConstraintId, $aspects->getStatementChanges() );
 	}
 
 }
