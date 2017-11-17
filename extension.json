@@ -47,7 +47,10 @@
 	"ResourceModules": {
 		"SpecialConstraintReportPage": {
 			"styles": "modules/SpecialConstraintReportPage.less",
-			"scripts": "modules/SpecialConstraintReportPage.js"
+			"scripts": "modules/SpecialConstraintReportPage.js",
+			"dependencies": [
+				"oojs-ui-core.styles"
+			]
 		},
 		"wikibase.quality.constraints.icon": {
 			"class": "ResourceLoaderImageModule",
