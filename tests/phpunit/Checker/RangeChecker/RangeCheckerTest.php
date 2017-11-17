@@ -3,7 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
+use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
@@ -24,7 +24,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker
@@ -42,11 +41,6 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var JsonFileEntityLookup
-	 */
-	private $lookup;
-
-	/**
 	 * @var TimeValue
 	 */
 	private $timeValue;
@@ -58,14 +52,16 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
 		$rangeCheckerHelper = new RangeCheckerHelper(
 			$this->getDefaultConfig(),
 			new UnitConverter( new CSVUnitStorage( __DIR__ . '/units.csv' ), '' )
 		);
+		$dataTypeLookup = new InMemoryDataTypeLookup();
+		$dataTypeLookup->setDataTypeForProperty( new PropertyId( 'P1' ), 'time' );
+		$dataTypeLookup->setDataTypeForProperty( new PropertyId( 'P2' ), 'quantity' );
 		$this->checker = new RangeChecker(
-			new EntityRetrievingDataTypeLookup( $this->lookup ),
+			$dataTypeLookup,
 			$this->getConstraintParameterParser(),
 			$rangeCheckerHelper,
 			$this->getConstraintParameterRenderer()
