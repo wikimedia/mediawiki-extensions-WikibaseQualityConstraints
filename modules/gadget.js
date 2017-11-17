@@ -261,6 +261,19 @@
 		}
 	}
 
+	function mwApiOptions() {
+		var gadgetState = mw.loader.getState( 'wikibase.quality.constraints.gadget' );
+		return {
+			ajax: {
+				headers: {
+					'X-MediaWiki-Gadget': gadgetState === 'executing' ?
+						'checkConstraints' :
+						'checkConstraints-custom'
+				}
+			}
+		};
+	}
+
 	entityId = mw.config.get( 'wbEntityId' );
 
 	if ( entityId === null || mw.config.get( 'wgMFMode' ) ) {
@@ -276,7 +289,7 @@
 		'wikibase.quality.constraints.icon',
 		'wikibase.quality.constraints.ui'
 	] ).done( function () {
-		var api = new mw.Api(),
+		var api = new mw.Api( mwApiOptions() ),
 			lang = mw.config.get( 'wgUserLanguage' );
 		api.get( {
 			action: 'wbcheckconstraints',
