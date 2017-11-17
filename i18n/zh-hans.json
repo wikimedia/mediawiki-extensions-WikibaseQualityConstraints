@@ -40,6 +40,8 @@
 	"wbqc-parameterissues-long": "这些问题是属性上的约束定义问题，而不是此声明的问题。",
 	"wbqc-constrainttypehelp-short": "帮助",
 	"wbqc-constrainttypehelp-long": "此约束类型的帮助页面",
+	"wbqc-cached-generic": "此结果已缓存，并可能过时。",
+	"wbqc-cached-minutes": "此结果已缓存，并可能在{{PLURAL:$1|$1分钟}}后过时。",
 	"apihelp-wbcheckconstraints-description": "在任何您希望执行检查的实体上，执行约束检查并返回结果。",
 	"apihelp-wbcheckconstraints-summary": "在任何您希望执行的实体上执行约束检查，并返回结果。",
 	"apihelp-wbcheckconstraints-param-id": "要获取数据的实体ID列表。使用“|”或替代字符分隔值。",
