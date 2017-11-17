@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
 
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -13,7 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker
@@ -36,11 +34,6 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	private $qualifiersList;
 
 	/**
-	 * @var JsonFileEntityLookup
-	 */
-	private $lookup;
-
-	/**
 	 * @var QualifiersChecker
 	 */
 	private $checker;
@@ -48,7 +41,6 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->qualifiersList = [ 'P580', 'P582', 'P1365', 'P1366', 'P642', 'P805' ];
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->checker = new QualifiersChecker( $this->getConstraintParameterParser(), $this->getConstraintParameterRenderer() );
 	}
 
@@ -63,8 +55,15 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testQualifiersConstraint() {
-		/** @var Item $entity */
-		$entity = $this->lookup->getEntity( new ItemId( 'Q2' ) );
+		$entity = NewItem::withId( 'Q2' )
+			->andStatement(
+				NewStatement::forProperty( 'P39' )
+					->withValue( new ItemId( 'Q11696' ) )
+					->withQualifier( 'P580', '1970-01-01' )
+					->withQualifier( 'P582', 'somevalue' )
+					->withQualifier( 'P1365', new ItemId( 'Q207' ) )
+			)
+			->build();
 		$statement = $this->getFirstStatement( $entity );
 		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
 
@@ -74,8 +73,16 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testQualifiersConstraintTooManyQualifiers() {
-		/** @var Item $entity */
-		$entity = $this->lookup->getEntity( new ItemId( 'Q3' ) );
+		$entity = NewItem::withId( 'Q3' )
+			->andStatement(
+				NewStatement::forProperty( 'P39' )
+					->withValue( new ItemId( 'Q11696' ) )
+					->withQualifier( 'P580', '1970-01-01' )
+					->withQualifier( 'P582', 'somevalue' )
+					->withQualifier( 'P1365', new ItemId( 'Q207' ) )
+					->withQualifier( 'P39', new ItemId( 'Q11696' ) )
+			)
+			->build();
 		$statement = $this->getFirstStatement( $entity );
 		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
 
@@ -85,8 +92,12 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testQualifiersConstraintNoQualifiers() {
-		/** @var Item $entity */
-		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$entity = NewItem::withId( 'Q4' )
+			->andStatement(
+				NewStatement::forProperty( 'P39' )
+					->withValue( new ItemId( 'Q344' ) )
+			)
+			->build();
 		$statement = $this->getFirstStatement( $entity );
 		$constraint = $this->getConstraintMock( $this->propertiesParameter( $this->qualifiersList ) );
 
