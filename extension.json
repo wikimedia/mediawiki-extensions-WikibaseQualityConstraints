@@ -164,6 +164,11 @@
 			"description": "Size of the per-regex cache map for format/regex check results. For each regex, up to this many values will have cached whether they match the regex or not, on a least-recently-used basis.",
 			"public": true
 		},
+		"WBQualityConstraintsIncludeDetailInApi": {
+			"value": true,
+			"description": "Whether to include the 'detail' and 'detailHTML' fields in the response of the wbcheckconstraints API action.",
+			"public": true
+		},
 		"WBQualityConstraintsInstanceOfId": {
 			"value": "P31",
 			"description": "The property ID of the 'instance of' property (data type: item), which specifies the class(es) of an item.",
