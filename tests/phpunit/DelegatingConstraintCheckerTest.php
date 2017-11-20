@@ -102,7 +102,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->constraintChecker = $factory->getConstraintChecker();
 
 		// specify database tables used by this test
-		$this->tablesUsed[ ] = CONSTRAINT_TABLE;
+		$this->tablesUsed[ ] = 'wbqc_constraints';
 	}
 
 	/**
@@ -330,8 +330,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			}
 		) );
 
-		$this->db->delete( CONSTRAINT_TABLE, '*' );
-		$this->db->insert( CONSTRAINT_TABLE, $constraints );
+		$this->db->delete( 'wbqc_constraints', '*' );
+		$this->db->insert( 'wbqc_constraints', $constraints );
 	}
 
 	public function testCheckOnEntityId() {

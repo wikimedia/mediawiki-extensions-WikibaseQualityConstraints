@@ -7,7 +7,6 @@
 	"version": "1.0.0",
 	"license-name": "GPL-2.0+",
 	"type": "wikibase",
-	"callback": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onExtensionRegistration",
 	"MessagesDirs": {
 		"WikibaseQualityConstraints": [
 			"i18n"

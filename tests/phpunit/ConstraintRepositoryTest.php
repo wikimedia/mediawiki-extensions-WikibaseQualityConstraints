@@ -40,8 +40,8 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 	}
 
 	public function testQueryConstraintsForPropertyBrokenParameters() {
-		$this->db->delete( CONSTRAINT_TABLE, '*' );
-		$this->db->insert( CONSTRAINT_TABLE, [
+		$this->db->delete( 'wbqc_constraints', '*' );
+		$this->db->insert( 'wbqc_constraints', [
 			[
 				'constraint_guid' => 'P3$514751bb-1656-4d2d-a386-b0f0a69e02ed',
 				'pid' => 3,
@@ -68,7 +68,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$repo->insertBatch( $constraints );
 
 		$this->assertSelect(
-			CONSTRAINT_TABLE,
+			'wbqc_constraints',
 			[
 				'constraint_guid',
 				'pid',
@@ -112,7 +112,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 	}
 
 	public function testInsertBatchTooLongParameters() {
-		$this->db->delete( CONSTRAINT_TABLE, '*' );
+		$this->db->delete( 'wbqc_constraints', '*' );
 
 		$constraintParameters = [ 'known_exception' => [] ];
 		for ( $i = 0; $i < 10000; $i++ ) {
@@ -138,7 +138,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		] );
 
 		$this->assertSelect(
-			CONSTRAINT_TABLE,
+			'wbqc_constraints',
 			[
 				'constraint_guid',
 				'pid',
@@ -164,7 +164,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$repo->deleteAll();
 
 		$this->assertSelect(
-			CONSTRAINT_TABLE,
+			'wbqc_constraints',
 			'COUNT(constraint_guid)',
 			[],
 			[
@@ -174,8 +174,8 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 	}
 
 	public function insertTestData() {
-		$this->db->delete( CONSTRAINT_TABLE, '*' );
-		$this->db->insert( CONSTRAINT_TABLE, [
+		$this->db->delete( 'wbqc_constraints', '*' );
+		$this->db->insert( 'wbqc_constraints', [
 			[
 				'constraint_guid' => '1',
 				'pid' => 1,
