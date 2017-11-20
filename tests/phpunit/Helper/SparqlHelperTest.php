@@ -59,7 +59,7 @@ class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 					  ->setConstructorArgs( [
 						  $this->getDefaultConfig(),
 						  new RdfVocabulary(
-							  'http://www.wikidata.org/entity/',
+							  [ '' => 'http://www.wikidata.org/entity/' ],
 							  'http://www.wikidata.org/wiki/Special:EntityData/'
 						  ),
 						  new ItemIdParser(),
@@ -98,7 +98,7 @@ EOF;
 					  ->setConstructorArgs( [
 						  $this->getDefaultConfig(),
 						  new RdfVocabulary(
-							  'http://www.wikidata.org/entity/',
+							  [ '' => 'http://www.wikidata.org/entity/' ],
 							  'http://www.wikidata.org/wiki/Special:EntityData/'
 						  ),
 						  new ItemIdParser(),
@@ -154,7 +154,7 @@ EOF;
 			->setConstructorArgs( [
 				$this->getDefaultConfig(),
 				new RdfVocabulary(
-					'http://www.wikidata.org/entity/',
+					[ '' => 'http://www.wikidata.org/entity/' ],
 					'http://www.wikidata.org/wiki/Special:EntityData/'
 				),
 				new ItemIdParser(),
@@ -354,7 +354,7 @@ EOF;
 		$sparqlHelper = new SparqlHelper(
 			$this->getDefaultConfig(),
 			new RdfVocabulary(
-				'http://www.wikidata.org/entity/',
+				[ '' => 'http://www.wikidata.org/entity/' ],
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
 
@@ -378,7 +378,7 @@ EOF;
 				]
 			] ),
 			new RdfVocabulary(
-				'http://www.wikidata.org/entity/',
+				[ '' => 'http://www.wikidata.org/entity/' ],
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
 			new ItemIdParser(),
@@ -430,7 +430,7 @@ EOF;
 		$sparqlHelper = new SparqlHelper(
 			$this->getDefaultConfig(),
 			new RdfVocabulary(
-				'http://www.wikidata.org/entity/',
+				[ '' => 'http://www.wikidata.org/entity/' ],
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
 			new ItemIdParser(),

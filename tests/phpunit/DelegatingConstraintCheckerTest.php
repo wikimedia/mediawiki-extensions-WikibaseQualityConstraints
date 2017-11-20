@@ -84,7 +84,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		] );
 		$config = $this->getDefaultConfig();
 		$rdfVocabulary = new RdfVocabulary(
-			'http://www.wikidata.org/entity/',
+			[ '' => 'http://www.wikidata.org/entity/' ],
 			'http://www.wikidata.org/wiki/Special:EntityData/'
 		);
 		$titleParser = $this->getTitleParserMock();
