@@ -2,8 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
 
-use Wikibase\DataModel\Entity\EntityId;
-
 /**
  * A list of entity IDs, along with information whether and how they were cached.
  *
@@ -13,7 +11,8 @@ use Wikibase\DataModel\Entity\EntityId;
 class CachedEntityIds extends CachedArray {
 
 	/**
-	 * @return (EntityId|null)[] The entity IDs.
+	 * @return array List of EntityId objects. Can contain one or more null values to mark spots
+	 *  that should have been EntityIds too, but could not due to errors.
 	 */
 	public function getArray() {
 		return parent::getArray();

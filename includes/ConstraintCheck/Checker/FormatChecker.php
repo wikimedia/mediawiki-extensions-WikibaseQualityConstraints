@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Config;
+use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use Language;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -102,6 +103,7 @@ class FormatChecker implements ConstraintChecker {
 				$text = $dataValue->getValue();
 				break;
 			case 'monolingualtext':
+				/** @var MonolingualTextValue $dataValue */
 				$text = $dataValue->getText();
 				break;
 			default:

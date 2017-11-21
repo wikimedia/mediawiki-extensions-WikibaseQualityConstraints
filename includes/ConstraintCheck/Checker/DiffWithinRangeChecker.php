@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Config;
 use DataValues\QuantityValue;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
@@ -60,6 +61,12 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$this->config = $config;
 	}
 
+	/**
+	 * @param Constraint $constraint
+	 *
+	 * @throws ConstraintParameterException
+	 * @return array [ DataValue|null $min, DataValue|null $max, PropertyId $property, array $parameters ]
+	 */
 	private function parseConstraintParameters( Constraint $constraint ) {
 		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
 			$constraint->getConstraintParameters(),
@@ -86,6 +93,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	 * Check whether the endpoints of a range are in years or not.
 	 * @param QuantityValue|null $min
 	 * @param QuantityValue|null $max
+	 *
 	 * @return bool
 	 */
 	private function rangeInYears( $min, $max ) {
@@ -119,7 +127,6 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		}
 
 		$parameters = [];
-		$constraintParameters = $constraint->getConstraintParameters();
 
 		$snak = $context->getSnak();
 
@@ -130,6 +137,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 		$minuend = $snak->getDataValue();
 
+		/** @var PropertyId $property */
 		list ( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)

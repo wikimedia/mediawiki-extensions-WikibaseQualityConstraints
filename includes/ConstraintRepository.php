@@ -99,6 +99,8 @@ class ConstraintRepository implements ConstraintLookup {
 	 * Delete all constraints for the property ID where the constraint ID is a statement ID
 	 * (an entity ID, a '$' separator, and a UUID).
 	 *
+	 * @param PropertyId $propertyId
+	 *
 	 * @throws DBUnexpectedError
 	 */
 	public function deleteForPropertyWhereConstraintIdIsStatementId( PropertyId $propertyId ) {

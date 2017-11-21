@@ -51,6 +51,7 @@ class ConnectionCheckerHelper {
 		EntityId $value
 	) {
 		$statementListByPropertyId = $statementList->getByPropertyId( $propertyId );
+		/** @var Statement $statement */
 		foreach ( $statementListByPropertyId as $statement ) {
 			$snak = $statement->getMainSnak();
 			if ( $snak->getType() === 'value' ) {
@@ -81,6 +82,7 @@ class ConnectionCheckerHelper {
 		array $values
 	) {
 		$statementListByPropertyId = $statementList->getByPropertyId( $propertyId );
+		/** @var Statement $statement */
 		foreach ( $statementListByPropertyId as $statement ) {
 			$snak = $statement->getMainSnak();
 			foreach ( $values as $value ) {
