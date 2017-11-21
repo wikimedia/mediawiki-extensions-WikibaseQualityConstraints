@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use LogicException;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Statement\Statement;
@@ -451,6 +452,7 @@ class DelegatingConstraintChecker {
 	) {
 		$result = [];
 
+		/** @var Reference $reference */
 		foreach ( $statement->getReferences() as $reference ) {
 			foreach ( $reference->getSnaks() as $snak ) {
 				$referenceContext = new ReferenceContext(

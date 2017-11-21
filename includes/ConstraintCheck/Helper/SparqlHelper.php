@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use DataValues\DataValue;
+use DataValues\MonolingualTextValue;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
@@ -13,9 +14,9 @@ use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
+use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
@@ -111,6 +112,7 @@ EOT;
 	 * @param string $id entity ID serialization of the entity to check
 	 * @param string[] $classes entity ID serializations of the expected types
 	 * @param boolean $withInstance true for “instance” relation, false for “subclass” relation
+	 *
 	 * @return CachedBool
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
@@ -158,6 +160,7 @@ EOF;
 	/**
 	 * @param Statement $statement
 	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
+	 *
 	 * @return CachedEntityIds
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
@@ -199,6 +202,7 @@ EOF;
 	 * @param PropertyValueSnak $snak
 	 * @param string $type Context::TYPE_QUALIFIER or Context::TYPE_REFERENCE
 	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
+	 *
 	 * @return CachedEntityIds
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
@@ -252,7 +256,9 @@ EOF;
 
 	/**
 	 * Return SPARQL code for a string literal with $text as content.
+	 *
 	 * @param string $text
+	 *
 	 * @return string
 	 */
 	private function stringLiteral( $text ) {
@@ -263,6 +269,7 @@ EOF;
 	 * Extract and parse entity IDs from the ?otherEntity column of a SPARQL query result.
 	 *
 	 * @param CachedQueryResults $results
+	 *
 	 * @return CachedEntityIds
 	 */
 	private function getOtherEntities( CachedQueryResults $results ) {
@@ -292,6 +299,7 @@ EOF;
 	 *
 	 * @param string $dataType
 	 * @param DataValue $dataValue
+	 *
 	 * @return array the literal or IRI as a string in SPARQL syntax,
 	 * and a boolean indicating whether it refers to a full value node or not
 	 */
@@ -319,8 +327,10 @@ EOF;
 				return [ '<' . $url . '>', false ];
 			case 'wikibase-item':
 			case 'wikibase-property':
+				/** @var EntityIdValue $dataValue */
 				return [ 'wd:' . $dataValue->getEntityId()->getSerialization(), false ];
 			case 'monolingualtext':
+				/** @var MonolingualTextValue $dataValue */
 				$lang = $dataValue->getLanguageCode();
 				if ( !preg_match( '/^[a-zA-Z]+(-[a-zA-Z0-9]+)*$/D', $lang ) ) {
 					// not a valid language tag for SPARQL (see SPARQL spec, production 145 LANGTAG)
@@ -341,6 +351,7 @@ EOF;
 	/**
 	 * @param string $text
 	 * @param string $regex
+	 *
 	 * @return boolean
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 * @throws ConstraintParameterException if the $regex is invalid
@@ -414,6 +425,7 @@ EOF;
 	 *
 	 * @param string $text
 	 * @param string $regex
+	 *
 	 * @return boolean
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 * @throws ConstraintParameterException if the $regex is invalid
@@ -447,6 +459,7 @@ EOF;
 	 * Check whether the text content of an error response indicates a query timeout.
 	 *
 	 * @param string $responseContent
+	 *
 	 * @return boolean
 	 */
 	public function isTimeout( $responseContent ) {
@@ -464,6 +477,7 @@ EOF;
 	 * or a boolean indicating whether the response was cached or not.
 	 *
 	 * @param array $responseHeaders see MWHttpRequest::getResponseHeaders()
+	 *
 	 * @return integer|boolean the max-age (in seconds)
 	 * or a plain boolean if no max-age can be determined
 	 */

@@ -14,7 +14,6 @@ use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
-use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
 use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
@@ -52,11 +51,6 @@ class CheckConstraints extends ApiBase {
 	 * @var StatementGuidValidator
 	 */
 	private $statementGuidValidator;
-
-	/**
-	 * @var StatementGuidParser
-	 */
-	private $statementGuidParser;
 
 	/**
 	 * @var DelegatingConstraintChecker
@@ -122,7 +116,6 @@ class CheckConstraints extends ApiBase {
 		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
 		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
 		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
-		$statementGuidParser = $repo->getStatementGuidParser();
 		$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdHtmlLinkFormatter, $valueFormatter );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$titleParser = MediaWikiServices::getInstance()->getTitleParser();
@@ -130,7 +123,7 @@ class CheckConstraints extends ApiBase {
 		$constraintReportFactory = new ConstraintReportFactory(
 			$repo->getEntityLookup(),
 			$repo->getPropertyDataTypeLookup(),
-			$statementGuidParser,
+			$repo->getStatementGuidParser(),
 			$config,
 			$constraintParameterRenderer,
 			new ConstraintParameterParser(
@@ -144,13 +137,19 @@ class CheckConstraints extends ApiBase {
 			$unitConverter
 		);
 
-		return new CheckConstraints( $main, $name, $prefix, $repo->getEntityIdParser(),
-			$repo->getStatementGuidValidator(), $statementGuidParser, $constraintReportFactory->getConstraintChecker(),
+		return new CheckConstraints(
+			$main,
+			$name,
+			$prefix,
+			$repo->getEntityIdParser(),
+			$repo->getStatementGuidValidator(),
+			$constraintReportFactory->getConstraintChecker(),
 			$constraintParameterRenderer,
 			$repo->getApiHelperFactory( RequestContext::getMain() ),
 			$repo->getEntityTitleLookup(),
 			$entityIdLabelFormatter,
-			$config );
+			$config
+		);
 	}
 
 	/**
@@ -159,7 +158,6 @@ class CheckConstraints extends ApiBase {
 	 * @param string $prefix
 	 * @param EntityIdParser $entityIdParser
 	 * @param StatementGuidValidator $statementGuidValidator
-	 * @param StatementGuidParser $statementGuidParser
 	 * @param DelegatingConstraintChecker $delegatingConstraintChecker
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 * @param ApiHelperFactory $apiHelperFactory
@@ -169,7 +167,6 @@ class CheckConstraints extends ApiBase {
 	 */
 	public function __construct( ApiMain $main, $name, $prefix = '', EntityIdParser $entityIdParser,
 		StatementGuidValidator $statementGuidValidator,
-		StatementGuidParser $statementGuidParser,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
 		ConstraintParameterRenderer $constraintParameterRenderer,
 		ApiHelperFactory $apiHelperFactory,
@@ -186,7 +183,6 @@ class CheckConstraints extends ApiBase {
 
 		$this->entityIdParser = $entityIdParser;
 		$this->statementGuidValidator = $statementGuidValidator;
-		$this->statementGuidParser = $statementGuidParser;
 		$this->delegatingConstraintChecker = $delegatingConstraintChecker;
 		$this->resultBuilder = $apiHelperFactory->getResultBuilder( $this );
 		$this->errorReporter = $apiHelperFactory->getErrorReporter( $this );
@@ -344,12 +340,10 @@ class CheckConstraints extends ApiBase {
 			if ( $checkResult instanceof NullResult ) {
 				$result = null;
 			} else {
-				$entityId = $checkResult->getEntityId()->getSerialization();
 				$constraintId = $checkResult->getConstraint()->getConstraintId();
 				$typeItemId = $checkResult->getConstraint()->getConstraintTypeItemId();
 
 				$title = $this->entityTitleLookup->getTitleForId( $checkResult->getContext()->getSnak()->getPropertyId() );
-				$statementGuid = $this->statementGuidParser->parse( $constraintId );
 				$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
 				// TODO link to the statement when possible (T169224)
 				$link = $title->getFullUrl() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );

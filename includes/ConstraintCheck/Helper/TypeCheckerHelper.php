@@ -125,10 +125,8 @@ class TypeCheckerHelper {
 	 *
 	 * @param EntityId $comparativeClass
 	 * @param string[] $classesToCheck
-	 * @param int &$entitiesChecked
 	 *
 	 * @return CachedBool
-	 *
 	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function isSubclassOfWithSparqlFallback( EntityId $comparativeClass, array $classesToCheck ) {
@@ -163,7 +161,6 @@ class TypeCheckerHelper {
 	 * @param string[] $classesToCheck
 	 *
 	 * @return CachedBool
-	 *
 	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function hasClassInRelation( StatementList $statements, $relationId, array $classesToCheck ) {

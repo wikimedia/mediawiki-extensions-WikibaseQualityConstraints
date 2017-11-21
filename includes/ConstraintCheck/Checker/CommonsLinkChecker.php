@@ -56,6 +56,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * All namespaces not known to this function will be looked up by the TitleParser.
 	 *
 	 * @param string $namespace
+	 *
 	 * @return array first element is the namespace number (default namespace for TitleParser),
 	 * second element is a string to prepend to the title before giving it to the TitleParser
 	 */
@@ -193,6 +194,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 *
 	 * @param string $value
 	 * @param string $namespace
+	 *
 	 * @return bool
 	 */
 	private function valueIncludesNamespace( $value, $namespace ) {

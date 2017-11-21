@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use DomainException;
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -22,10 +23,13 @@ class ItemIdSnakValue {
 	 * @var ItemId?
 	 */
 	private $itemId = null;
+
 	/**
 	 * @var bool
 	 */
+
 	private $some = false;
+
 	/**
 	 * @var bool
 	 */
@@ -71,6 +75,9 @@ class ItemIdSnakValue {
 	/**
 	 * Get an {@link ItemIdSnakValue} that matches the given snak.
 	 *
+	 * @param Snak $snak
+	 *
+	 * @throws InvalidArgumentException
 	 * @return self
 	 */
 	public static function fromSnak( Snak $snak ) {

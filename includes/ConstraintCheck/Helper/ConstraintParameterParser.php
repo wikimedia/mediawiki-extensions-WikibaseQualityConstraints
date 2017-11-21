@@ -238,6 +238,7 @@ class ConstraintParameterParser {
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
+	 *
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return PropertyId
 	 */
@@ -390,7 +391,7 @@ class ConstraintParameterParser {
 	 * @param string $unit
 	 * @return bool
 	 */
-	private function exactlyOneQuantityWithUnit( $min, $max, $unit ) {
+	private function exactlyOneQuantityWithUnit( DataValue $min = null, DataValue $max = null, $unit ) {
 		if ( $min === null || $max === null ) {
 			return false;
 		}
@@ -404,6 +405,7 @@ class ConstraintParameterParser {
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @param string $type 'quantity' or 'time' (can be data type or data value type)
+	 *
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return DataValue[] a pair of two quantity-type data values, either of which may be null to signify an open range
 	 */
@@ -612,6 +614,7 @@ class ConstraintParameterParser {
 
 			$value = $snak->getDataValue();
 			$this->requireMonolingualTextParameter( $value, $parameterId );
+			/** @var MonolingualTextValue $value */
 
 			$code = $value->getLanguageCode();
 			if ( array_key_exists( $code, $result ) ) {

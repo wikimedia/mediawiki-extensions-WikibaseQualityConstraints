@@ -52,6 +52,7 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @param EntityLookup $lookup The backing lookup of the mock (defaults to JsonFileEntityLookup).
+	 *
 	 * @return EntityLookup Expects that getEntity is called
 	 * exactly WBQualityConstraintsTypeCheckMaxEntities times.
 	 */
@@ -72,6 +73,7 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @param boolean $return
 	 * @param array|null $arguments
+	 *
 	 * @return SparqlHelper expects that {@link SparqlHelper::hasType}
 	 * is called exactly once and returns $return.
 	 */

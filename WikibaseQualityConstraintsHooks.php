@@ -38,6 +38,7 @@ final class WikibaseQualityConstraintsHooks {
 		if ( MediaWikiServices::getInstance()->getMainConfig()->get( 'WBQualityConstraintsEnableConstraintsImportFromStatements' ) &&
 			self::isPropertyStatementsChange( $change )
 		) {
+			/** @var EntityChange $change */
 			$title = Title::newMainPage();
 			$params = [ 'propertyId' => $change->getEntityId()->getSerialization() ];
 			JobQueueGroup::singleton()->push(
