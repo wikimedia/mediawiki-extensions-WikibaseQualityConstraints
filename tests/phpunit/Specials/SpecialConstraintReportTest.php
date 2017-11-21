@@ -68,7 +68,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->tablesUsed[ ] = 'wbqc_constraints';
+		$this->tablesUsed[] = 'wbqc_constraints';
 	}
 
 	protected function newSpecialPage() {
@@ -143,10 +143,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		}
 
 		// Truncate table
-		$this->db->delete(
-			'wbqc_constraints',
-			'*'
-		);
+		$this->db->delete( 'wbqc_constraints', '*' );
 
 		$this->db->insert(
 			'wbqc_constraints',
