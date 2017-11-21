@@ -31,8 +31,8 @@ class ConstraintTest extends \MediaWikiTestCase {
 	}
 
 	public function addDBData() {
-		$this->db->delete( CONSTRAINT_TABLE, '*' );
-		$this->db->insert( CONSTRAINT_TABLE, [
+		$this->db->delete( 'wbqc_constraints', '*' );
+		$this->db->insert( 'wbqc_constraints', [
 			[
 				'constraint_guid' => '1',
 				'pid' => 1,

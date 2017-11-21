@@ -24,7 +24,7 @@ class ConstraintRepository implements ConstraintLookup {
 		$db = wfGetDB( DB_REPLICA );
 
 		$results = $db->select(
-			CONSTRAINT_TABLE,
+			'wbqc_constraints',
 			'*',
 			[ 'pid' => $propertyId->getNumericId() ]
 		);
@@ -62,7 +62,7 @@ class ConstraintRepository implements ConstraintLookup {
 		);
 
 		$db = wfGetDB( DB_MASTER );
-		return $db->insert( CONSTRAINT_TABLE, $accumulator );
+		return $db->insert( 'wbqc_constraints', $accumulator );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class ConstraintRepository implements ConstraintLookup {
 	public function deleteWhereConstraintIdIsUuid() {
 		$db = wfGetDB( DB_MASTER );
 		$db->delete(
-			CONSTRAINT_TABLE,
+			'wbqc_constraints',
 			// WHERE constraint_guid LIKE ________-____-____-____-____________
 			'constraint_guid ' . $db->buildLike( $this->uuidPattern( $db->anyChar() ) )
 		);
@@ -104,7 +104,7 @@ class ConstraintRepository implements ConstraintLookup {
 	public function deleteForPropertyWhereConstraintIdIsStatementId( PropertyId $propertyId ) {
 		$db = wfGetDB( DB_MASTER );
 		$db->delete(
-			CONSTRAINT_TABLE,
+			'wbqc_constraints',
 			[
 				'pid' => $propertyId->getNumericId(),
 				// AND constraint_guid LIKE %$________-____-____-____-____________
@@ -125,12 +125,12 @@ class ConstraintRepository implements ConstraintLookup {
 		}
 		$db = wfGetDB( DB_MASTER );
 		if ( $db->getType() === 'sqlite' ) {
-			$db->delete( CONSTRAINT_TABLE, '*' );
+			$db->delete( 'wbqc_constraints', '*' );
 		} else {
 			do {
 				$db->commit( __METHOD__, 'flush' );
 				wfGetLBFactory()->waitForReplication();
-				$table = $db->tableName( CONSTRAINT_TABLE );
+				$table = $db->tableName( 'wbqc_constraints' );
 				$db->query( sprintf( 'DELETE FROM %s LIMIT %d', $table, $batchSize ) );
 			} while ( $db->affectedRows() > 0 );
 		}

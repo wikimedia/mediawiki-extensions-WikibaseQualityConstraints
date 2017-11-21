@@ -41,12 +41,12 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->tablesUsed[] = CONSTRAINT_TABLE;
+		$this->tablesUsed[] = 'wbqc_constraints';
 	}
 
 	public function addDBData() {
-		$this->db->delete( CONSTRAINT_TABLE, '*' );
-		$this->db->insert( CONSTRAINT_TABLE, [
+		$this->db->delete( 'wbqc_constraints', '*' );
+		$this->db->insert( 'wbqc_constraints', [
 			// a constraint imported from a template (UUID)
 			[
 				'constraint_guid' => 'afbbe0c2-2bc4-47b6-958c-a318a53814ac',
@@ -211,7 +211,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 		);
 
 		$this->assertSelect(
-			CONSTRAINT_TABLE,
+			'wbqc_constraints',
 			[
 				'constraint_guid',
 				'pid',
@@ -266,7 +266,7 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 		$job->run();
 
 		$this->assertSelect(
-			CONSTRAINT_TABLE,
+			'wbqc_constraints',
 			[
 				'constraint_guid',
 				'pid',
