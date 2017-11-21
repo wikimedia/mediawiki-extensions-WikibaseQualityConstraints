@@ -102,7 +102,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->constraintChecker = $factory->getConstraintChecker();
 
 		// specify database tables used by this test
-		$this->tablesUsed[ ] = 'wbqc_constraints';
+		$this->tablesUsed[] = 'wbqc_constraints';
 	}
 
 	/**
