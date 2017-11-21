@@ -9,45 +9,45 @@ form {
 /* Notices */
 .wbqc-constraintreport-notice {
 	font-style: italic;
-}
 
-.wbqc-constraintreport-notice-error {
-	font-weight: bold;
-	color: @colorErrorText;
+	&-error {
+		font-weight: bold;
+		color: @colorErrorText;
+	}
 }
 
 /* Statuses */
 .wbqc-status {
 	font-weight: bold;
-}
 
-.wbqc-status-compliance {
-	color: @wmui-color-green50;
-}
+	&-compliance {
+		color: @wmui-color-green50;
+	}
 
-.wbqc-status-exception {
-	color: @wmui-color-green30;
-}
+	&-exception {
+		color: @wmui-color-green30;
+	}
 
-.wbqc-status-violation {
-	color: @colorErrorText;
-}
+	&-violation {
+		color: @colorErrorText;
+	}
 
-.wbqc-status-todo {
-	color: @colorTextLight;
-}
+	&-todo {
+		color: @colorTextLight;
+	}
 
-.wbqc-status-bad-parameters {
-	color: @colorDestructiveActive;
-}
+	&-bad-parameters {
+		color: @colorDestructiveActive;
+	}
 
-.wbqc-status-deprecated,
-.wbqc-status-not-main-snak {
-	color: @colorNeutral;
-}
+	&-deprecated,
+	&-not-main-snak {
+		color: @colorNeutral;
+	}
 
-.wbqc-status-warning {
-	color: @wmui-color-yellow30;
+	&-warning {
+		color: @wmui-color-yellow30;
+	}
 }
 
 /* Tooltip */
