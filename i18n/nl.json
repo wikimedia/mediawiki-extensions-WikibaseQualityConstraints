@@ -5,7 +5,8 @@
 			"Macofe",
 			"Siebrand",
 			"Mainframe98",
-			"Festina90"
+			"Festina90",
+			"Mar(c)"
 		]
 	},
 	"wbqc-constraintreport": "Beperkingenrapportage",
@@ -42,8 +43,8 @@
 	"wbqc-parameterissues-long": "Deze problemen hebben te maken met de beperkingenconfiguratie van de eigenschap, niet met deze verklaringen.",
 	"wbqc-constrainttypehelp-short": "Help",
 	"wbqc-constrainttypehelp-long": "Hulppagina voor dit type beperking",
-	"wbqc-cached-generic": "Dit resultaat wordt in de cache opgeslagen en is mogelijk verouderd.",
-	"wbqc-cached-minutes": "Dit resultaat wordt in de cache opgeslagen en kan tot {{PLURAL:$1|1=één minuut|$1&nbsp;minuten}} verouderd zijn.",
+	"wbqc-cached-generic": "Dit resultaat is in de cache opgeslagen en is mogelijk verouderd.",
+	"wbqc-cached-minutes": "Dit resultaat is in de cache opgeslagen en kan tot {{PLURAL:$1|1=één minuut|$1&nbsp;minuten}} verouderd zijn.",
 	"apihelp-wbcheckconstraints-description": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
 	"apihelp-wbcheckconstraints-summary": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
 	"apihelp-wbcheckconstraints-example-1": "Alle beperkingen voor de items Q5 en Q42 controleren.",
