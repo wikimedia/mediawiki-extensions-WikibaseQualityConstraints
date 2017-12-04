@@ -131,7 +131,6 @@ class CheckConstraintsTest extends ApiTestCase {
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 					$config
 				),
-				true,
 				false,
 				false
 			);
