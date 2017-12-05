@@ -12,7 +12,6 @@
 	"wbqc-constraintreport-invalid-entity-id": "Érvénytelen azonosító.",
 	"wbqc-constraintreport-not-existent-entity": "Az elem nem létezik.",
 	"wbqc-violation-message-diff-within-range": "$3 ($4) és $1 ($2) közötti különbségnek $5 és $6 ([$5; $6]) között kell lennie.",
-	"wbqc-violation-message-mandatory-qualifiers": "A(z) $1 utasításból {{PLURAL:$2|1=hiányzik egy minősítő: $4.|2=hiányoznak a következő minősítők: $4 és $5.|hiányoznak a következő minősítők: $3}}",
 	"wbqc-violation-message-qualifier": "A tulajdonságot csak minősítőként lehet használni.",
 	"wbqc-violation-message-no-qualifiers": "$1 utasításnak nem lehet semmilyen minősítője.",
 	"wbqc-violation-message-qualifiers": "$2 nem érvényes minősítő ehhez: $1 - csak a következő {{PLURAL:$3|1=minősítő engedélyezett:  $5.|2=minősítők engedélyezettek: $5 és $6.|minősítők engedélyezettek: $4}}"

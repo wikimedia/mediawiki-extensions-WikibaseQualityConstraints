@@ -32,8 +32,6 @@
 	"wbqc-badparameters-short": "معلمات سيئة",
 	"wbqc-badparameters-long": "يحتوي بيان المحددات على بعض المعلمات غير صالحة.",
 	"wbqc-parameterissues-long": "هذه القضايا هي مشاكل مع تعريف المحددات على الخواص، وليس مع هذا البيان.",
-	"wbqc-problems-short": "مشاكل",
-	"wbqc-problems-long": "هذا البيان لديه بعض المشاكل.",
 	"wbqc-constrainttypehelp-long": "صفحة المساعدة لهذا النوع من المحددات",
 	"apihelp-wbcheckconstraints-description": "إجراء عملية تحقق للمحددات على أي عنصر تريد وإرجاع النتيجة.",
 	"apihelp-wbcheckconstraints-summary": "إجراء عملية تحقق للمحددات على أي عنصر تريد وإرجاع النتيجة.",
