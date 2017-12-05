@@ -36,7 +36,7 @@ final class WikibaseQualityConstraintsHooks {
 
 	public static function onWikibaseChange( Change $change ) {
 		if ( MediaWikiServices::getInstance()->getMainConfig()->get( 'WBQualityConstraintsEnableConstraintsImportFromStatements' ) &&
-			self::isPropertyStatementsChange( $change )
+			self::isConstraintStatementsChange( $change )
 		) {
 			/** @var EntityChange $change */
 			$title = Title::newMainPage();
@@ -47,7 +47,7 @@ final class WikibaseQualityConstraintsHooks {
 		}
 	}
 
-	private static function isPropertyStatementsChange( Change $change ) {
+	private static function isConstraintStatementsChange( Change $change ) {
 		if ( !( $change instanceof EntityChange ) ||
 			 $change->getAction() !== EntityChange::UPDATE ||
 			 !( $change->getEntityId() instanceof PropertyId )
