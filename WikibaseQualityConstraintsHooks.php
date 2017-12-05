@@ -29,11 +29,6 @@ final class WikibaseQualityConstraintsHooks {
 		return true;
 	}
 
-	public static function onUnitTestsList( &$paths ) {
-		$paths[] = __DIR__ . '/tests/phpunit';
-		return true;
-	}
-
 	public static function onWikibaseChange( Change $change ) {
 		if ( MediaWikiServices::getInstance()->getMainConfig()->get( 'WBQualityConstraintsEnableConstraintsImportFromStatements' ) &&
 			self::isPropertyStatementsChange( $change )
