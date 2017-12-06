@@ -31,6 +31,9 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
  */
 class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 
+	const NONEXISTENT_ITEM = 'Q99';
+	const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
+
 	use DefaultConfig;
 
 	private function getResultsBuilder(
@@ -60,6 +63,89 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			),
 			$this->getDefaultConfig()
 		);
+	}
+
+	public function testGetResults() {
+		$q1 = new ItemId( 'Q1' );
+		$q2 = new ItemId( 'Q2' );
+		$s1 = 'Q3$7f6d761c-bad5-47b6-a335-89635f102771';
+		$s2 = 'Q4$41dcb5ec-2ca5-4cfa-822b-a602038fc99f';
+		$constraintIDs = [ 'P1$47681880-d5f5-417d-96c3-570d6e94d234' ];
+		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
+		$delegatingConstraintChecker = $mock->getMock();
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
+			->withConsecutive(
+				[ $this->equalTo( $q1 ), $this->equalTo( $constraintIDs ), $this->callback( 'is_callable' ) ],
+				[ $this->equalTo( $q2 ), $this->equalTo( $constraintIDs ), $this->callback( 'is_callable' ) ]
+			)
+			->will( $this->returnCallback( function ( $entityId ) {
+				return [ new CheckResult(
+					new MainSnakContext(
+						new Item( $entityId ),
+						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+					),
+					new Constraint(
+						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
+						new PropertyId( 'P1' ),
+						'Q1',
+						[]
+					)
+				) ];
+			} ) );
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
+			->withConsecutive(
+				[ $this->equalTo( $s1 ), $this->equalTo( $constraintIDs ), $this->callback( 'is_callable' ) ],
+				[ $this->equalTo( $s2 ), $this->equalTo( $constraintIDs ), $this->callback( 'is_callable' ) ]
+			)
+			->will( $this->returnCallback( function ( $claimId ) {
+				$entityId = new ItemId( substr( $claimId, 0, 2 ) );
+				return [ new CheckResult(
+					new MainSnakContext(
+						new Item( $entityId ),
+						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+					),
+					new Constraint(
+						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
+						new PropertyId( 'P1' ),
+						'Q1',
+						[]
+					)
+				) ];
+			} ) );
+
+		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
+			[ $q1, $q2 ],
+			[ $s1, $s2 ],
+			$constraintIDs
+		);
+
+		$this->assertSame( [ 'Q1', 'Q2', 'Q3', 'Q4' ], array_keys( $result ) );
+		foreach ( $result as $resultByQ ) {
+			$this->assertSame( [ 'P1' ], array_keys( $resultByQ['claims'] ) );
+			$this->assertCount( 1, $resultByQ['claims']['P1'] );
+			$this->assertCount( 1, $resultByQ['claims']['P1'][0]['mainsnak']['results'] );
+		}
+	}
+
+	public function testGetResults_Empty() {
+		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
+		$delegatingConstraintChecker = $mock->getMock();
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
+			->willReturn( [] );
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
+			->willReturn( [] );
+
+		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
+			[ new ItemId( self::NONEXISTENT_ITEM ) ],
+			[ self::NONEXISTENT_CLAIM ],
+			[]
+		);
+
+		$this->assertEmpty( $result );
 	}
 
 	public function testCheckResultToArray_NullResult() {
