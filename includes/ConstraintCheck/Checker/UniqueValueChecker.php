@@ -98,7 +98,7 @@ class UniqueValueChecker implements ConstraintChecker {
 		}
 
 		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
-			->setCachingMetadata( $cachingMetadata );
+			->withCachingMetadata( $cachingMetadata );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

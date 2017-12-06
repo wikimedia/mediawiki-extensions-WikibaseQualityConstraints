@@ -207,7 +207,7 @@ class CheckResult {
 	 * @param CachingMetadata $cm
 	 * @return self
 	 */
-	public function setCachingMetadata( CachingMetadata $cm ) {
+	public function withCachingMetadata( CachingMetadata $cm ) {
 		$this->cachingMetadata = $cm;
 		return $this;
 	}

@@ -233,7 +233,7 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				[]
 			)
 		);
-		$checkResult->setCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 10 ) );
+		$checkResult->withCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 10 ) );
 
 		$result = $this->getResultsBuilder()->checkResultToArray( $checkResult );
 
@@ -254,7 +254,7 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				[]
 			)
 		);
-		$checkResult->setCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 10 ) );
+		$checkResult->withCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 10 ) );
 
 		$result = $this->getResultsBuilder()->checkResultToArray( $checkResult );
 

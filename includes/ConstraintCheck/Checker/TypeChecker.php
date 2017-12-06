@@ -117,7 +117,7 @@ class TypeChecker implements ConstraintChecker {
 		}
 
 		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
-			->setCachingMetadata( $result->getCachingMetadata() );
+			->withCachingMetadata( $result->getCachingMetadata() );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

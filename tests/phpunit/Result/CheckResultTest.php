@@ -37,7 +37,7 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 		$cachingMetadata = CachingMetadata::ofMaximumAgeInSeconds( 42 );
 
 		$checkResult = new CheckResult( $context, $constraint, $parameters, $status, $message );
-		$checkResult->setCachingMetadata( $cachingMetadata );
+		$checkResult->withCachingMetadata( $cachingMetadata );
 
 		$this->assertSame( $context, $checkResult->getContext() );
 		$this->assertSame( $entityId, $checkResult->getEntityId() );
