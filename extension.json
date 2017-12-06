@@ -19,9 +19,6 @@
 		"LoadExtensionSchemaUpdates": [
 			"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema"
 		],
-		"UnitTestsList": [
-			"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onUnitTestsList"
-		],
 		"WikibaseChangeNotification": [
 			"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange"
 		]
