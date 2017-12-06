@@ -25,6 +25,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CheckingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
@@ -141,12 +142,14 @@ class CheckConstraintsTest extends ApiTestCase {
 				'',
 				$entityIdParser,
 				new StatementGuidValidator( $entityIdParser ),
-				$constraintChecker,
-				$constraintParameterRenderer,
 				$repo->getApiHelperFactory( RequestContext::getMain() ),
-				$repo->getEntityTitleLookup(),
-				$entityIdFormatter,
-				$config
+				new CheckingResultsBuilder(
+					$constraintChecker,
+					$repo->getEntityTitleLookup(),
+					$entityIdFormatter,
+					$constraintParameterRenderer,
+					$config
+				)
 			);
 		};
 	}
