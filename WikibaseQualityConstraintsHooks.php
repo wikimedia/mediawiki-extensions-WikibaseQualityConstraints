@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use Config;
 use DatabaseUpdater;
 use JobQueueGroup;
 use JobSpecification;
@@ -30,8 +31,9 @@ final class WikibaseQualityConstraintsHooks {
 	}
 
 	public static function onWikibaseChange( Change $change ) {
-		if ( MediaWikiServices::getInstance()->getMainConfig()->get( 'WBQualityConstraintsEnableConstraintsImportFromStatements' ) &&
-			self::isConstraintStatementsChange( $change )
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		if ( $config->get( 'WBQualityConstraintsEnableConstraintsImportFromStatements' ) &&
+			self::isConstraintStatementsChange( $config, $change )
 		) {
 			/** @var EntityChange $change */
 			$title = Title::newMainPage();
@@ -42,7 +44,7 @@ final class WikibaseQualityConstraintsHooks {
 		}
 	}
 
-	private static function isConstraintStatementsChange( Change $change ) {
+	public static function isConstraintStatementsChange( Config $config, Change $change ) {
 		if ( !( $change instanceof EntityChange ) ||
 			 $change->getAction() !== EntityChange::UPDATE ||
 			 !( $change->getEntityId() instanceof PropertyId )
@@ -61,8 +63,7 @@ final class WikibaseQualityConstraintsHooks {
 		/** @var EntityDiffChangedAspects $aspects */
 		$aspects = $info['compactDiff'];
 
-		$propertyConstraintId = MediaWikiServices::getInstance()->getMainConfig()
-			->get( 'WBQualityConstraintsPropertyConstraintId' );
+		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
 		return in_array( $propertyConstraintId, $aspects->getStatementChanges() );
 	}
 
