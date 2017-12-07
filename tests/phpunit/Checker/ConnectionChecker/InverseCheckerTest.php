@@ -161,6 +161,22 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$this->assertDeprecation( $checkResult );
 	}
 
+	public function testInverseConstraintDependedEntityIds() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+
+		$targetEntityId = new ItemId( 'Q7' );
+		$value = new EntityIdValue( $targetEntityId );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+
+		$constraintParameters = $this->propertyParameter( 'P1' );
+
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
+
+		$this->assertSame( [ $targetEntityId ], $checkResult->getCachingMetadata()->getDependedEntityIds() );
+	}
+
 	public function testCheckConstraintParameters() {
 		$constraint = $this->getConstraintMock( [] );
 
