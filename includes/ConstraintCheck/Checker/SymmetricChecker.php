@@ -93,14 +93,15 @@ class SymmetricChecker implements ConstraintChecker {
 		}
 		/** @var EntityIdValue $dataValue */
 
-		$targetItem = $this->entityLookup->getEntity( $dataValue->getEntityId() );
-		if ( $targetItem === null ) {
+		$targetEntityId = $dataValue->getEntityId();
+		$targetEntity = $this->entityLookup->getEntity( $targetEntityId );
+		if ( $targetEntity === null ) {
 			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$symmetricStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndEntityIdValue(
-			$targetItem->getStatements(),
+			$targetEntity->getStatements(),
 			$propertyId,
 			$context->getEntity()->getId()
 		);
@@ -110,7 +111,7 @@ class SymmetricChecker implements ConstraintChecker {
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-symmetric' )
 					 ->rawParams(
-						 $this->constraintParameterRenderer->formatEntityId( $targetItem->getId(), Role::SUBJECT ),
+						 $this->constraintParameterRenderer->formatEntityId( $targetEntityId, Role::SUBJECT ),
 						 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE ),
 						 $this->constraintParameterRenderer->formatEntityId( $context->getEntity()->getId(), Role::OBJECT )
 					 )
