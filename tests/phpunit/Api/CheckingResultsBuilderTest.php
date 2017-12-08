@@ -119,7 +119,7 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			[ $q1, $q2 ],
 			[ $s1, $s2 ],
 			$constraintIds
-		);
+		)->getArray();
 
 		$this->assertSame( [ 'Q1', 'Q2', 'Q3', 'Q4' ], array_keys( $result ) );
 		foreach ( $result as $resultByQ ) {
@@ -143,9 +143,58 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			[ new ItemId( self::NONEXISTENT_ITEM ) ],
 			[ self::NONEXISTENT_CLAIM ],
 			[]
-		);
+		)->getArray();
 
 		$this->assertEmpty( $result );
+	}
+
+	public function testGetResults_CachingMetadata() {
+		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
+		$delegatingConstraintChecker = $mock->getMock();
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
+			->willReturn( [
+				( new CheckResult(
+					new MainSnakContext(
+						new Item( new ItemId( 'Q1' ) ),
+						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+					),
+					new Constraint(
+						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
+						new PropertyId( 'P1' ),
+						'Q1',
+						[]
+					)
+				) )->withCachingMetadata( CachingMetadata::ofEntityId( new ItemId( 'Q100' ) ) )
+			] );
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
+			->willReturn( [
+				( new CheckResult(
+					new MainSnakContext(
+						new Item( new ItemId( 'Q2' ) ),
+						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+					),
+					new Constraint(
+						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
+						new PropertyId( 'P1' ),
+						'Q1',
+						[]
+					)
+				) )->withCachingMetadata( CachingMetadata::ofEntityId( new PropertyId( 'P100' ) ) )
+			] );
+
+		$cachingMetadata = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
+			[ new ItemId( 'Q1' ) ],
+			[ 'Q2$73408a9b-b1b0-4035-bf36-1e65ecf8772d' ],
+			null
+		)->getCachingMetadata();
+
+		$expected = [ new ItemId( 'Q100' ), new PropertyId( 'P100' ) ];
+		$actual = $cachingMetadata->getDependedEntityIds();
+		sort( $expected );
+		sort( $actual );
+		$this->assertEquals( $expected, $actual );
 	}
 
 	public function testCheckResultToArray_NullResult() {

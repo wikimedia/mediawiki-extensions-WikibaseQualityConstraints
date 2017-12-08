@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Api;
 
 use Wikibase\DataModel\Entity\EntityId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 
 /**
  * @author Lucas Werkmeister
@@ -14,7 +15,7 @@ interface ResultsBuilder {
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
-	 * @return array
+	 * @return CachedCheckConstraintsResponse
 	 */
 	public function getResults(
 		array $entityIds,

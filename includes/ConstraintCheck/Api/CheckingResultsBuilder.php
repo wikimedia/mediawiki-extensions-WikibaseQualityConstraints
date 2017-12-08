@@ -7,6 +7,8 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -62,7 +64,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
-	 * @return array
+	 * @return CachedCheckConstraintsResponse
 	 */
 	public function getResults(
 		array $entityIds,
@@ -70,6 +72,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		array $constraintIds = null
 	) {
 		$response = [];
+		$cachingMetadatas = [];
 		foreach ( $entityIds as $entityId ) {
 			$results = $this->delegatingConstraintChecker->checkAgainstConstraintsOnEntityId(
 				$entityId,
@@ -77,6 +80,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				[ $this, 'defaultResults' ]
 			);
 			foreach ( $results as $result ) {
+				$cachingMetadatas[] = $result->getCachingMetadata();
 				$resultArray = $this->checkResultToArray( $result );
 				$result->getContext()->storeCheckResultInArray( $resultArray, $response );
 			}
@@ -88,11 +92,15 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				[ $this, 'defaultResults' ]
 			);
 			foreach ( $results as $result ) {
+				$cachingMetadatas[] = $result->getCachingMetadata();
 				$resultArray = $this->checkResultToArray( $result );
 				$result->getContext()->storeCheckResultInArray( $resultArray, $response );
 			}
 		}
-		return $response;
+		return new CachedCheckConstraintsResponse(
+			$response,
+			CachingMetadata::merge( $cachingMetadatas )
+		);
 	}
 
 	public function defaultResults( Context $context ) {

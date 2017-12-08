@@ -384,6 +384,7 @@
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Api\\ResultsBuilder": "includes/ConstraintCheck/Api/ResultsBuilder.php",
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Cache\\CachedArray": "includes/ConstraintCheck/Cache/CachedArray.php",
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Cache\\CachedBool": "includes/ConstraintCheck/Cache/CachedBool.php",
+		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Cache\\CachedCheckConstraintsResponse": "includes/ConstraintCheck/Cache/CachedCheckConstraintsResponse.php",
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Cache\\CachedEntityIds": "includes/ConstraintCheck/Cache/CachedEntityIds.php",
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Cache\\CachedQueryResults": "includes/ConstraintCheck/Cache/CachedQueryResults.php",
 		"WikibaseQuality\\ConstraintReport\\ConstraintCheck\\Cache\\CachingMetadata": "includes/ConstraintCheck/Cache/CachingMetadata.php",
