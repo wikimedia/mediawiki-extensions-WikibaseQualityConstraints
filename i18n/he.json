@@ -39,6 +39,8 @@
 	"wbqc-parameterissues-long": "הסוגיות האלו הן בעיות עם הגדרת האילוצים על המאפיין, לא עם הקביעה הזאת.",
 	"wbqc-constrainttypehelp-short": "עזרה",
 	"wbqc-constrainttypehelp-long": "דף עזרה עבור סוג האילוץ הזה",
+	"wbqc-cached-generic": "התוצאה הזאת מוטמנת וייתכן שהיא מיושנת.",
+	"wbqc-cached-minutes": "התוצאה הזאת מוטמנת וייתכן שהיא מיושנת {{PLURAL:$1|בדקה אחת|ב־$1 דקות}}.",
 	"apihelp-wbcheckconstraints-description": "ביצוע בדיקות אילוצים על ישות כלשהי והחזרת התוצאה.",
 	"apihelp-wbcheckconstraints-summary": "ביצוע בדיקת אילוצים על כל ישות והחזרת התוצאה.",
 	"apihelp-wbcheckconstraints-param-id": "רשימת מזהי ישויות שמהן צריך לקבל נתונים. יש להפריד את הערכים בתו '|' או חלופות.",
