@@ -11,6 +11,7 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
@@ -499,6 +500,8 @@ class DelegatingConstraintChecker {
 			}
 			$endTime = microtime( true );
 
+			$this->addCachingMetadata( $result );
+
 			try {
 				$constraintStatus = $this->constraintParameterParser
 					->parseConstraintStatusParameter( $constraint->getConstraintParameters() );
@@ -536,6 +539,13 @@ class DelegatingConstraintChecker {
 		} else {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
 		}
+	}
+
+	private function addCachingMetadata( CheckResult $result ) {
+		$result->withCachingMetadata( CachingMetadata::merge( [
+			$result->getCachingMetadata(),
+			CachingMetadata::ofEntityId( $result->getEntityId() ),
+		] ) );
 	}
 
 	/**
