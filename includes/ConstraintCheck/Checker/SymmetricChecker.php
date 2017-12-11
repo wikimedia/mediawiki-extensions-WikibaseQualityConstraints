@@ -6,6 +6,7 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
@@ -119,7 +120,8 @@ class SymmetricChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
+			->withCachingMetadata( CachingMetadata::ofEntityId( $targetEntityId ) );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

@@ -164,6 +164,22 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$this->assertDeprecation( $checkResult );
 	}
 
+	public function testTargetRequiredClaimConstraintDependedEntityIds() {
+		$targetEntityId = new ItemId( 'Q5' );
+		$value = new EntityIdValue( $targetEntityId );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$constraintParameters = array_merge(
+			$this->propertyParameter( 'P2' ),
+			$this->itemsParameter( [ 'Q42' ] )
+		);
+
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+
+		$this->assertSame( [ $targetEntityId ], $checkResult->getCachingMetadata()->getDependedEntityIds() );
+	}
+
 	public function testCheckConstraintParameters() {
 		$constraint = $this->getConstraintMock( [] );
 

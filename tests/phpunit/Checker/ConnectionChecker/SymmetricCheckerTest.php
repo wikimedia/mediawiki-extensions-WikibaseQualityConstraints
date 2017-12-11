@@ -140,6 +140,18 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$this->assertDeprecation( $checkResult );
 	}
 
+	public function testSymmetricConstraintDependedEntityIds() {
+		$targetEntityId = new ItemId( 'Q3' );
+		$value = new EntityIdValue( $targetEntityId );
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+
+		$constraint = $this->getConstraintMock();
+
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+
+		$this->assertSame( [ $targetEntityId ], $checkResult->getCachingMetadata()->getDependedEntityIds() );
+	}
+
 	public function testCheckConstraintParameters() {
 		$constraint = $this->getConstraintMock( [] );
 
