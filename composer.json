@@ -33,7 +33,7 @@
 		"phpunit/phpunit": "~4.8",
 		"satooshi/php-coveralls": "master-dev",
 		"wikibase/wikibase-codesniffer": "^0.2.0",
-		"mediawiki/minus-x": "0.2.0"
+		"mediawiki/minus-x": "0.2.1"
 	},
 	"scripts": {
 		"fix": [
