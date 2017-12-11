@@ -545,6 +545,7 @@ class DelegatingConstraintChecker {
 		$result->withCachingMetadata( CachingMetadata::merge( [
 			$result->getCachingMetadata(),
 			CachingMetadata::ofEntityId( $result->getEntityId() ),
+			CachingMetadata::ofEntityId( $result->getConstraint()->getPropertyId() ),
 		] ) );
 	}
 

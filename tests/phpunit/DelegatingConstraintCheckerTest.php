@@ -350,6 +350,13 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$this->assertNotSame( 'todo', $checkResult->getStatus(), 'Constraints should not be unimplemented' );
 			$entityIds = $checkResult->getCachingMetadata()->getDependedEntityIds();
 			$this->assertContains( $checkResult->getEntityId(), $entityIds );
+			$this->assertContains(
+				new PropertyId( 'P1' ),
+				$entityIds,
+				'',
+				false,
+				false // undocumented parameter: don’t check object identity
+			);
 		}
 	}
 
