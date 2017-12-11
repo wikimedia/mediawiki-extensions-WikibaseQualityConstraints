@@ -291,7 +291,7 @@
 	] ).done( function () {
 		var api = new mw.Api( mwApiOptions() ),
 			lang = mw.config.get( 'wgUserLanguage' );
-		mw.track( 'counter.wikibase.quality.constraints.gadget.loadEntity' );
+		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
 		api.get( {
 			action: 'wbcheckconstraints',
 			format: 'json',
@@ -304,7 +304,7 @@
 		} );
 
 		if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
-			mw.track( 'counter.wikibase.quality.constraints.gadget.loadProperty' );
+			mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadProperty' );
 			api.get( {
 				action: 'wbcheckconstraintparameters',
 				format: 'json',
@@ -317,7 +317,7 @@
 		}
 
 		mw.hook( 'wikibase.statement.saved' ).add( function( entityId, statementId ) {
-			mw.track( 'counter.wikibase.quality.constraints.gadget.saveStatement' );
+			mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
 			api.get( {
 				action: 'wbcheckconstraints',
 				format: 'json',
