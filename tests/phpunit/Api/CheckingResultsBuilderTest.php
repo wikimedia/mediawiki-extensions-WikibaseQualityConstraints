@@ -70,15 +70,15 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$q2 = new ItemId( 'Q2' );
 		$s1 = 'Q3$7f6d761c-bad5-47b6-a335-89635f102771';
 		$s2 = 'Q4$41dcb5ec-2ca5-4cfa-822b-a602038fc99f';
-		$constraintIDs = [ 'P1$47681880-d5f5-417d-96c3-570d6e94d234' ];
+		$constraintIds = [ 'P1$47681880-d5f5-417d-96c3-570d6e94d234' ];
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
 			->withConsecutive(
-				[ $this->equalTo( $q1 ), $this->equalTo( $constraintIDs ), $this->callback( 'is_callable' ) ],
-				[ $this->equalTo( $q2 ), $this->equalTo( $constraintIDs ), $this->callback( 'is_callable' ) ]
+				[ $this->equalTo( $q1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
+				[ $this->equalTo( $q2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
 			)
 			->will( $this->returnCallback( function ( $entityId ) {
 				return [ new CheckResult(
@@ -96,8 +96,8 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			} ) );
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
 			->withConsecutive(
-				[ $this->equalTo( $s1 ), $this->equalTo( $constraintIDs ), $this->callback( 'is_callable' ) ],
-				[ $this->equalTo( $s2 ), $this->equalTo( $constraintIDs ), $this->callback( 'is_callable' ) ]
+				[ $this->equalTo( $s1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
+				[ $this->equalTo( $s2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
 			)
 			->will( $this->returnCallback( function ( $claimId ) {
 				$entityId = new ItemId( substr( $claimId, 0, 2 ) );
@@ -118,7 +118,7 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
 			[ $q1, $q2 ],
 			[ $s1, $s2 ],
-			$constraintIDs
+			$constraintIds
 		);
 
 		$this->assertSame( [ 'Q1', 'Q2', 'Q3', 'Q4' ], array_keys( $result ) );

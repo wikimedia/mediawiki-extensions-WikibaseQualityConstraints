@@ -59,21 +59,21 @@ class CheckingResultsBuilder implements ResultsBuilder {
 	}
 
 	/**
-	 * @param EntityId[] $entityIDs
-	 * @param string[] $claimIDs
-	 * @param string[]|null $constraintIDs
+	 * @param EntityId[] $entityIds
+	 * @param string[] $claimIds
+	 * @param string[]|null $constraintIds
 	 * @return array
 	 */
 	public function getResults(
-		array $entityIDs,
-		array $claimIDs,
-		array $constraintIDs = null
+		array $entityIds,
+		array $claimIds,
+		array $constraintIds = null
 	) {
 		$response = [];
-		foreach ( $entityIDs as $entityID ) {
+		foreach ( $entityIds as $entityId ) {
 			$results = $this->delegatingConstraintChecker->checkAgainstConstraintsOnEntityId(
-				$entityID,
-				$constraintIDs,
+				$entityId,
+				$constraintIds,
 				[ $this, 'defaultResults' ]
 			);
 			foreach ( $results as $result ) {
@@ -81,10 +81,10 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				$result->getContext()->storeCheckResultInArray( $resultArray, $response );
 			}
 		}
-		foreach ( $claimIDs as $claimID ) {
+		foreach ( $claimIds as $claimId ) {
 			$results = $this->delegatingConstraintChecker->checkAgainstConstraintsOnClaimId(
-				$claimID,
-				$constraintIDs,
+				$claimId,
+				$constraintIds,
 				[ $this, 'defaultResults' ]
 			);
 			foreach ( $results as $result ) {
