@@ -168,6 +168,16 @@
 			"description": "Whether to include the 'detail' and 'detailHTML' fields in the response of the wbcheckconstraints API action.",
 			"public": true
 		},
+		"WBQualityConstraintsCacheCheckConstraintsResults": {
+			"value": false,
+			"description": "Whether to cache results of the wbcheckconstraints API action or not. Results are only cached for constraint checks on full entities, and only when the set of constraints to be checked is not specified (i. e. the constraintid parameter is unset).",
+			"public": true
+		},
+		"WBQualityConstraintsCacheCheckConstraintsTTLSeconds": {
+			"value": 86400,
+			"description": "The time-to-live, in seconds, of cached results of the wbcheckconstraints API action. Ignored if WBQualityConstraintsCacheCheckConstraintsResults is not true.",
+			"public": true
+		},
 		"WBQualityConstraintsInstanceOfId": {
 			"value": "P31",
 			"description": "The property ID of the 'instance of' property (data type: item), which specifies the class(es) of an item.",
