@@ -7,7 +7,6 @@ use ApiMain;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
-use Wikibase\Repo\ChangeOp\StatementChangeOpFactory;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
@@ -137,12 +136,6 @@ class CheckConstraints extends ApiBase {
 								 ResultsBuilder $resultsBuilder
 	) {
 		parent::__construct( $main, $name, $prefix );
-
-		$repo = WikibaseRepo::getDefaultInstance();
-		$changeOpFactoryProvider = $repo->getChangeOpFactoryProvider();
-
-		$this->statementChangeOpFactory = $changeOpFactoryProvider->getStatementChangeOpFactory();
-
 		$this->entityIdParser = $entityIdParser;
 		$this->statementGuidValidator = $statementGuidValidator;
 		$this->resultBuilder = $apiHelperFactory->getResultBuilder( $this );
