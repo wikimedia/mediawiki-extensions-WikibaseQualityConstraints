@@ -623,7 +623,7 @@ class ConstraintParameterParser {
 						->rawParams(
 							$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY )
 						)
-						->params(
+						->plaintextParams(
 							Language::fetchLanguageName( $code ),
 							$code
 						)
