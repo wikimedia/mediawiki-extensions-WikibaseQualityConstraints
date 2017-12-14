@@ -74,7 +74,9 @@
 				"wbqc-constrainttypehelp-short",
 				"wbqc-constrainttypehelp-long",
 				"wbqc-cached-generic",
-				"wbqc-cached-minutes"
+				"wbqc-cached-minutes",
+				"wbqc-cached-hours",
+				"wbqc-cached-days"
 			],
 			"scripts": [
 				"modules/ui/module.js",

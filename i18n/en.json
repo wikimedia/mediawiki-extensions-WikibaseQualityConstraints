@@ -44,6 +44,8 @@
 	"wbqc-constrainttypehelp-long": "Help page for this constraint type",
 	"wbqc-cached-generic": "This result is cached and might be out of date.",
 	"wbqc-cached-minutes": "This result is cached and might be out of date by up to {{PLURAL:$1|1=one minute|$1&nbsp;minutes}}.",
+	"wbqc-cached-hours": "This result is cached and might be out of date by up to {{PLURAL:$1|1=one hour|$1&nbsp;hours}}.",
+	"wbqc-cached-days": "This result is cached and might be out of date by up to {{PLURAL:$1|1=one day|$1&nbsp;days}}.",
 
 	"apihelp-wbcheckconstraints-description": "Performs constraint checks on any entity you want and returns the result.",
 	"apihelp-wbcheckconstraints-summary": "Performs constraint checks on any entity you want and returns the result.",
