@@ -384,15 +384,9 @@
 			"public": true
 		}
 	},
-	"AutoloadClasses": {
-		"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks": "WikibaseQualityConstraintsHooks.php"
-	},
 	"AutoloadNamespaces": {
 		"WikibaseQuality\\ConstraintReport\\": "includes/",
-		"WikibaseQuality\\ConstraintReport\\Api\\": "api/",
-		"WikibaseQuality\\ConstraintReport\\Specials\\": "specials/",
-		"WikibaseQuality\\ConstraintReport\\Tests\\": "tests/phpunit/",
-		"WikibaseQuality\\ConstraintReport\\Maintenance\\": "maintenance/"
+		"WikibaseQuality\\ConstraintReport\\Tests\\": "tests/phpunit/"
 	},
 	"manifest_version": 2
 }
