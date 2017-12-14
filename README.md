@@ -152,7 +152,7 @@ There are two ways to run the tests of this extension:
 To add a new constraint type, the following steps are necessary:
 
 * Define the constraint checker class.
-  * It should be defined in a new file in `includes/ConstraintCheck/Checker/`,
+  * It should be defined in a new file in `src/ConstraintCheck/Checker/`,
     named after the class name.
     It should be in the `WikibaseQuality\ConstraintReport\ConstraintCheck\Checker` namespace.
   * The class name should follow the constraint type name (in English), ending in “Checker”.
