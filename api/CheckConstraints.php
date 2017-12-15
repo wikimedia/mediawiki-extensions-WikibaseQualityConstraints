@@ -19,6 +19,7 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\ResultsBuilder;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CachingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CheckingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
@@ -105,6 +106,24 @@ class CheckConstraints extends ApiBase {
 			$unitConverter
 		);
 
+		$resultsBuilder = new CheckingResultsBuilder(
+			$constraintReportFactory->getConstraintChecker(),
+			$repo->getEntityTitleLookup(),
+			$entityIdLabelFormatter,
+			$constraintParameterRenderer,
+			$config
+		);
+		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
+			$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+			$entityRevisionLookup = $repo->getEntityRevisionLookup();
+			$resultsBuilder = new CachingResultsBuilder(
+				$resultsBuilder,
+				$cache,
+				$entityRevisionLookup,
+				$config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' )
+			);
+		}
+
 		return new CheckConstraints(
 			$main,
 			$name,
@@ -112,13 +131,7 @@ class CheckConstraints extends ApiBase {
 			$repo->getEntityIdParser(),
 			$repo->getStatementGuidValidator(),
 			$repo->getApiHelperFactory( RequestContext::getMain() ),
-			new CheckingResultsBuilder(
-				$constraintReportFactory->getConstraintChecker(),
-				$repo->getEntityTitleLookup(),
-				$entityIdLabelFormatter,
-				$constraintParameterRenderer,
-				$config
-			)
+			$resultsBuilder
 		);
 	}
 
