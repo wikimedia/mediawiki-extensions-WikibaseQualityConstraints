@@ -29,7 +29,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( $this->equalTo( [ $q100 ] ), $this->equalTo( [] ), $this->equalTo( null ) )
+			->with( [ $q100 ], [], null )
 			->willReturn( $expectedResults );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
@@ -51,7 +51,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( $this->equalTo( [] ), $this->equalTo( [ 'fake' ] ), $this->equalTo( null ) )
+			->with( [], [ 'fake' ], null )
 			->willReturn( $expectedResults );
 		$cache = $this->getMockBuilder( WANObjectCache::class )
 			->disableOriginalConstructor()
@@ -78,7 +78,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( $this->equalTo( [ $q100 ] ), $this->equalTo( [] ), $this->equalTo( [ 'fake' ] ) )
+			->with( [ $q100 ], [], [ 'fake' ] )
 			->willReturn( $expectedResults );
 		$cache = $this->getMockBuilder( WANObjectCache::class )
 			->disableOriginalConstructor()
@@ -105,7 +105,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( $this->equalTo( [ $q100 ] ), $this->equalTo( [] ), $this->equalTo( null ) )
+			->with( [ $q100 ], [], null )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$lookup = $this->getMock( EntityRevisionLookup::class );
@@ -149,7 +149,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( $this->equalTo( [ $q100 ] ), $this->equalTo( [] ), $this->equalTo( null ) )
+			->with( [ $q100 ], [], null )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$lookup = $this->getMock( EntityRevisionLookup::class );
