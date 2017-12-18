@@ -348,7 +348,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->assertCount( $this->constraintCount, $result, 'Every constraint should be represented by one result' );
 		foreach ( $result as $checkResult ) {
 			$this->assertNotSame( 'todo', $checkResult->getStatus(), 'Constraints should not be unimplemented' );
-			$entityIds = $checkResult->getCachingMetadata()->getDependedEntityIds();
+			$entityIds = $checkResult->getMetadata()->getDependencyMetadata()->getEntityIds();
 			$this->assertContains( $checkResult->getEntityId(), $entityIds );
 			$this->assertContains(
 				new PropertyId( 'P1' ),

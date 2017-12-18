@@ -16,17 +16,17 @@ class CachedBool {
 	private $bool;
 
 	/**
-	 * @var CachingMetadata
+	 * @var Metadata
 	 */
-	private $cachingMetadata;
+	private $metadata;
 
 	/**
 	 * @param bool $bool
-	 * @param CachingMetadata $cachingMetadata
+	 * @param Metadata $metadata
 	 */
-	public function __construct( $bool, CachingMetadata $cachingMetadata ) {
+	public function __construct( $bool, Metadata $metadata ) {
 		$this->bool = $bool;
-		$this->cachingMetadata = $cachingMetadata;
+		$this->metadata = $metadata;
 	}
 
 	/**
@@ -37,10 +37,10 @@ class CachedBool {
 	}
 
 	/**
-	 * @return CachingMetadata
+	 * @return Metadata
 	 */
-	public function getCachingMetadata() {
-		return $this->cachingMetadata;
+	public function getMetadata() {
+		return $this->metadata;
 	}
 
 }

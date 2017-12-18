@@ -3,12 +3,12 @@
 namespace WikibaseQuality\ConstraintReport\Test\Cache;
 
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults
  * @uses \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedArray
- * @uses \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata
+ * @uses \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata
  *
  * @group WikibaseQualityConstraints
  *
@@ -19,7 +19,7 @@ class CachedQueryResultsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetArray() {
 		$array = [ 'boolean' => true ];
-		$cm = CachingMetadata::fresh();
+		$cm = Metadata::blank();
 
 		$cqr = new CachedQueryResults( $array, $cm );
 

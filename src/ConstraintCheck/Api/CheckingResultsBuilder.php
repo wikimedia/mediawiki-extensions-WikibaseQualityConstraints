@@ -7,7 +7,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -72,7 +72,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		array $constraintIds = null
 	) {
 		$response = [];
-		$cachingMetadatas = [];
+		$metadatas = [];
 		foreach ( $entityIds as $entityId ) {
 			$results = $this->delegatingConstraintChecker->checkAgainstConstraintsOnEntityId(
 				$entityId,
@@ -80,7 +80,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				[ $this, 'defaultResults' ]
 			);
 			foreach ( $results as $result ) {
-				$cachingMetadatas[] = $result->getCachingMetadata();
+				$metadatas[] = $result->getMetadata();
 				$resultArray = $this->checkResultToArray( $result );
 				$result->getContext()->storeCheckResultInArray( $resultArray, $response );
 			}
@@ -92,14 +92,14 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				[ $this, 'defaultResults' ]
 			);
 			foreach ( $results as $result ) {
-				$cachingMetadatas[] = $result->getCachingMetadata();
+				$metadatas[] = $result->getMetadata();
 				$resultArray = $this->checkResultToArray( $result );
 				$result->getContext()->storeCheckResultInArray( $resultArray, $response );
 			}
 		}
 		return new CachedCheckConstraintsResponse(
 			$response,
-			CachingMetadata::merge( $cachingMetadatas )
+			Metadata::merge( $metadatas )
 		);
 	}
 
@@ -149,7 +149,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		if ( $checkResult->getContext()->getType() === Context::TYPE_STATEMENT ) {
 			$result['claim'] = $checkResult->getContext()->getSnakStatement()->getGuid();
 		}
-		$cachingMetadata = $checkResult->getCachingMetadata();
+		$cachingMetadata = $checkResult->getMetadata()->getCachingMetadata();
 		if ( $cachingMetadata->isCached() ) {
 			$result['cached'] = [
 				'maximumAgeInSeconds' => $cachingMetadata->getMaximumAgeInSeconds(),

@@ -4,10 +4,11 @@ namespace WikibaseQuality\ConstraintReport\Test\Cache;
 
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedArray;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedArray
- * @uses \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata
+ * @uses \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata
  *
  * @group WikibaseQualityConstraints
  *
@@ -18,7 +19,7 @@ class CachedArrayTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetArray() {
 		$array = [ 'array' => true ];
-		$cm = CachingMetadata::fresh();
+		$cm = Metadata::blank();
 
 		$ca = new CachedArray( $array, $cm );
 
@@ -27,11 +28,11 @@ class CachedArrayTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetCachingMetadata() {
 		$array = [];
-		$cm = CachingMetadata::ofMaximumAgeInSeconds( 42 );
+		$m = Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 42 ) );
 
-		$ca = new CachedArray( $array, $cm );
+		$ca = new CachedArray( $array, $m );
 
-		$this->assertSame( $cm, $ca->getCachingMetadata() );
+		$this->assertSame( $m, $ca->getMetadata() );
 	}
 
 }

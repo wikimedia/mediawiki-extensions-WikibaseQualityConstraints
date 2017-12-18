@@ -20,7 +20,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
@@ -43,14 +43,14 @@ class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 	private function selectResults( array $bindings ) {
 		return new CachedQueryResults(
 			[ 'results' => [ 'bindings' => $bindings ] ],
-			CachingMetadata::fresh()
+			Metadata::blank()
 		);
 	}
 
 	private function askResult( $boolean ) {
 		return new CachedQueryResults(
 			[ 'boolean' => $boolean ],
-			CachingMetadata::fresh()
+			Metadata::blank()
 		);
 	}
 

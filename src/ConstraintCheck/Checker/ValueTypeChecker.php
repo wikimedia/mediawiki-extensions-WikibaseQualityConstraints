@@ -160,7 +160,7 @@ class ValueTypeChecker implements ConstraintChecker {
 		}
 
 		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
-			->withCachingMetadata( $result->getCachingMetadata() );
+			->withMetadata( $result->getMetadata() );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

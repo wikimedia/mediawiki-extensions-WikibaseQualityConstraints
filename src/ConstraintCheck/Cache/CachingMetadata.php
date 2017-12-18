@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
 
-use Wikibase\DataModel\Entity\EntityId;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -18,11 +17,6 @@ class CachingMetadata {
 	 * or false to indicate that the value wasn’t cached.
 	 */
 	private $maxAge = false;
-
-	/**
-	 * @var EntityId[] The tracked entity IDs.
-	 */
-	private $entityIds = [];
 
 	/**
 	 * @return self Indication that a value is fresh, i. e. not cached.
@@ -44,17 +38,6 @@ class CachingMetadata {
 	}
 
 	/**
-	 * @param EntityId $entityId An entity ID from which the value was derived.
-	 * @return self Indication that a value is fresh,
-	 * but was derived from the entity with the given ID.
-	 */
-	public static function ofEntityId( EntityId $entityId ) {
-		$ret = new self;
-		$ret->entityIds[] = $entityId;
-		return $ret;
-	}
-
-	/**
 	 * @param self[] $metadatas
 	 * @return self
 	 */
@@ -63,7 +46,6 @@ class CachingMetadata {
 		$ret = new self;
 		foreach ( $metadatas as $metadata ) {
 			$ret->maxAge = max( $ret->maxAge, $metadata->maxAge );
-			$ret->entityIds = array_merge( $ret->entityIds, $metadata->entityIds );
 		}
 		return $ret;
 	}
@@ -86,14 +68,6 @@ class CachingMetadata {
 		} else {
 			return 0;
 		}
-	}
-
-	/**
-	 * @return EntityId[] Entity IDs from whose entities the value was derived.
-	 * Changes to those entity IDs should invalidate the value.
-	 */
-	public function getDependedEntityIds() {
-		return $this->entityIds;
 	}
 
 }

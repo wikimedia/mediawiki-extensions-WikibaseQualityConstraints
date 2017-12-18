@@ -15,6 +15,8 @@ use Wikibase\Lib\Store\EntityTitleLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CheckingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -148,7 +150,7 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEmpty( $result );
 	}
 
-	public function testGetResults_CachingMetadata() {
+	public function testGetResults_DependencyMetadata() {
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
@@ -166,7 +168,8 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 						'Q1',
 						[]
 					)
-				) )->withCachingMetadata( CachingMetadata::ofEntityId( new ItemId( 'Q100' ) ) )
+				) )->withMetadata( Metadata::ofDependencyMetadata(
+					DependencyMetadata::ofEntityId( new ItemId( 'Q100' ) ) ) )
 			] );
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
 			->willReturn( [
@@ -181,17 +184,18 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 						'Q1',
 						[]
 					)
-				) )->withCachingMetadata( CachingMetadata::ofEntityId( new PropertyId( 'P100' ) ) )
+				) )->withMetadata( Metadata::ofDependencyMetadata(
+					DependencyMetadata::ofEntityId( new PropertyId( 'P100' ) ) ) )
 			] );
 
-		$cachingMetadata = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
+		$metadata = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
 			[ new ItemId( 'Q1' ) ],
 			[ 'Q2$73408a9b-b1b0-4035-bf36-1e65ecf8772d' ],
 			null
-		)->getCachingMetadata();
+		)->getMetadata();
 
 		$expected = [ new ItemId( 'Q100' ), new PropertyId( 'P100' ) ];
-		$actual = $cachingMetadata->getDependedEntityIds();
+		$actual = $metadata->getDependencyMetadata()->getEntityIds();
 		sort( $expected );
 		sort( $actual );
 		$this->assertEquals( $expected, $actual );
@@ -282,7 +286,8 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				[]
 			)
 		);
-		$checkResult->withCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 10 ) );
+		$checkResult->withMetadata( Metadata::ofCachingMetadata(
+			CachingMetadata::ofMaximumAgeInSeconds( 10 ) ) );
 
 		$result = $this->getResultsBuilder()->checkResultToArray( $checkResult );
 
@@ -303,7 +308,8 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				[]
 			)
 		);
-		$checkResult->withCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 10 ) );
+		$checkResult->withMetadata( Metadata::ofCachingMetadata(
+			CachingMetadata::ofMaximumAgeInSeconds( 10 ) ) );
 
 		$result = $this->getResultsBuilder()->checkResultToArray( $checkResult );
 

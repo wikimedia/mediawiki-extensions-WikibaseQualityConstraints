@@ -11,7 +11,8 @@ use Wikibase\Lib\Store\EntityRevisionLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CachingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\ResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CachingResultsBuilder
@@ -23,7 +24,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetAndStoreResults_SameResults() {
 		$expectedResults = new CachedCheckConstraintsResponse(
 			[ 'Q100' => 'garbage data, should not matter' ],
-			CachingMetadata::fresh()
+			Metadata::blank()
 		);
 		$q100 = new ItemId( 'Q100' );
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
@@ -46,7 +47,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetAndStoreResults_DontCacheClaimIds() {
 		$expectedResults = new CachedCheckConstraintsResponse(
 			[ 'Q100' => 'garbage data, should not matter' ],
-			CachingMetadata::fresh()
+			Metadata::blank()
 		);
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
@@ -72,7 +73,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetAndStoreResults_DontCacheWithConstraintIds() {
 		$expectedResults = new CachedCheckConstraintsResponse(
 			[ 'Q100' => 'garbage data, should not matter' ],
-			CachingMetadata::fresh()
+			Metadata::blank()
 		);
 		$q100 = new ItemId( 'Q100' );
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
@@ -99,7 +100,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetAndStoreResults_StoreResults() {
 		$expectedResults = new CachedCheckConstraintsResponse(
 			[ 'Q100' => 'garbage data, should not matter' ],
-			CachingMetadata::fresh()
+			Metadata::blank()
 		);
 		$q100 = new ItemId( 'Q100' );
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
@@ -135,11 +136,11 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$p102 = new PropertyId( 'P102' );
 		$expectedResults = new CachedCheckConstraintsResponse(
 			[ 'Q100' => 'garbage data, should not matter' ],
-			CachingMetadata::merge( [
-				CachingMetadata::ofEntityId( $q100 ),
-				CachingMetadata::ofEntityId( $q101 ),
-				CachingMetadata::ofEntityId( $p102 ),
-			] )
+			Metadata::ofDependencyMetadata( DependencyMetadata::merge( [
+				DependencyMetadata::ofEntityId( $q100 ),
+				DependencyMetadata::ofEntityId( $q101 ),
+				DependencyMetadata::ofEntityId( $p102 ),
+			] ) )
 		);
 		$revisionIds = [
 			$q100->getSerialization() => 12345,

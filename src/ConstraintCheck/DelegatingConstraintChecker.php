@@ -11,7 +11,8 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
@@ -500,7 +501,7 @@ class DelegatingConstraintChecker {
 			}
 			$endTime = microtime( true );
 
-			$this->addCachingMetadata( $result );
+			$this->addMetadata( $result );
 
 			try {
 				$constraintStatus = $this->constraintParameterParser
@@ -541,11 +542,13 @@ class DelegatingConstraintChecker {
 		}
 	}
 
-	private function addCachingMetadata( CheckResult $result ) {
-		$result->withCachingMetadata( CachingMetadata::merge( [
-			$result->getCachingMetadata(),
-			CachingMetadata::ofEntityId( $result->getEntityId() ),
-			CachingMetadata::ofEntityId( $result->getConstraint()->getPropertyId() ),
+	private function addMetadata( CheckResult $result ) {
+		$result->withMetadata( Metadata::merge( [
+			$result->getMetadata(),
+			Metadata::ofDependencyMetadata( DependencyMetadata::merge( [
+				DependencyMetadata::ofEntityId( $result->getEntityId() ),
+				DependencyMetadata::ofEntityId( $result->getConstraint()->getPropertyId() ),
+			] ) ),
 		] ) );
 	}
 

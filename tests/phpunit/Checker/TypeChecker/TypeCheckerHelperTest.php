@@ -14,7 +14,7 @@ use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -87,7 +87,7 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$mock->expects( $this->once() )
 			->method( 'hasType' )
 			->withConsecutive( $arguments )
-			->willReturn( new CachedBool( $return, CachingMetadata::fresh() ) );
+			->willReturn( new CachedBool( $return, Metadata::blank() ) );
 		return $mock;
 	}
 

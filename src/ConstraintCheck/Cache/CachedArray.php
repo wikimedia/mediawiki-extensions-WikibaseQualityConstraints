@@ -16,13 +16,13 @@ class CachedArray {
 	private $array;
 
 	/**
-	 * @var CachingMetadata
+	 * @var Metadata
 	 */
-	private $cachingMetadata;
+	private $metadata;
 
-	public function __construct( array $array, CachingMetadata $cachingMetadata ) {
+	public function __construct( array $array, Metadata $metadata ) {
 		$this->array = $array;
-		$this->cachingMetadata = $cachingMetadata;
+		$this->metadata = $metadata;
 	}
 
 	/**
@@ -33,10 +33,10 @@ class CachedArray {
 	}
 
 	/**
-	 * @return CachingMetadata
+	 * @return Metadata
 	 */
-	public function getCachingMetadata() {
-		return $this->cachingMetadata;
+	public function getMetadata() {
+		return $this->metadata;
 	}
 
 }

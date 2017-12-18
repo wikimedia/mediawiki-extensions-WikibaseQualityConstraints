@@ -89,7 +89,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 				$value = [
 					'results' => $results->getArray()[$entityId->getSerialization()],
 					'latestRevisionIds' => $this->getLatestRevisionIds(
-						$results->getCachingMetadata()->getDependedEntityIds()
+						$results->getMetadata()->getDependencyMetadata()->getEntityIds()
 					),
 				];
 				$this->cache->set( $key, $value, $this->ttlInSeconds );

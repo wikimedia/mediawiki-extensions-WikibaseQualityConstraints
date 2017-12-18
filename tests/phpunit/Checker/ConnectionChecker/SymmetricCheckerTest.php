@@ -149,7 +149,8 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
 
-		$this->assertSame( [ $targetEntityId ], $checkResult->getCachingMetadata()->getDependedEntityIds() );
+		$dependencyMetadata = $checkResult->getMetadata()->getDependencyMetadata();
+		$this->assertSame( [ $targetEntityId ], $dependencyMetadata->getEntityIds() );
 	}
 
 	public function testCheckConstraintParameters() {

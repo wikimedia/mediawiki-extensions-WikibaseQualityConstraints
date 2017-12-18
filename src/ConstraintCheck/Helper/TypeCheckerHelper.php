@@ -15,7 +15,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
@@ -133,7 +133,7 @@ class TypeCheckerHelper {
 		try {
 			return new CachedBool(
 				$this->isSubclassOf( $comparativeClass, $classesToCheck ),
-				CachingMetadata::fresh()
+				Metadata::blank()
 			);
 		} catch ( OverflowException $e ) {
 			if ( $this->sparqlHelper !== null ) {
@@ -145,7 +145,7 @@ class TypeCheckerHelper {
 					/* withInstance = */ false
 				);
 			} else {
-				return new CachedBool( false, CachingMetadata::fresh() );
+				return new CachedBool( false, Metadata::blank() );
 			}
 		}
 	}
@@ -164,7 +164,7 @@ class TypeCheckerHelper {
 	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function hasClassInRelation( StatementList $statements, $relationId, array $classesToCheck ) {
-		$cachingMetadatas = [];
+		$metadatas = [];
 
 		/** @var Statement $statement */
 		foreach ( $statements->getByPropertyId( new PropertyId( $relationId ) ) as $statement ) {
@@ -180,23 +180,23 @@ class TypeCheckerHelper {
 			$comparativeClass = $dataValue->getEntityId();
 
 			if ( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
-				// discard $cachingMetadatas, we know this is fresh
-				return new CachedBool( true, CachingMetadata::fresh() );
+				// discard $metadatas, we know this is fresh
+				return new CachedBool( true, Metadata::blank() );
 			}
 
 			$result = $this->isSubclassOfWithSparqlFallback( $comparativeClass, $classesToCheck );
-			$cachingMetadatas[] = $result->getCachingMetadata();
+			$metadatas[] = $result->getMetadata();
 			if ( $result->getBool() ) {
 				return new CachedBool(
 					true,
-					CachingMetadata::merge( $cachingMetadatas )
+					Metadata::merge( $metadatas )
 				);
 			}
 		}
 
 		return new CachedBool(
 			false,
-			CachingMetadata::merge( $cachingMetadatas )
+			Metadata::merge( $metadatas )
 		);
 	}
 

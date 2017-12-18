@@ -23,6 +23,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -122,7 +123,7 @@ EOT;
 
 		$path = ( $withInstance ? "wdt:$instanceOfId/" : "" ) . "wdt:$subclassOfId*";
 
-		$cachingMetadatas = [];
+		$metadatas = [];
 
 		foreach ( array_chunk( $classes, 20 ) as $classesChunk ) {
 			$classesValues = implode( ' ', array_map(
@@ -142,18 +143,18 @@ EOF;
 			// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
 
 			$result = $this->runQuery( $query );
-			$cachingMetadatas[] = $result->getCachingMetadata();
+			$metadatas[] = $result->getMetadata();
 			if ( $result->getArray()['boolean'] ) {
 				return new CachedBool(
 					true,
-					CachingMetadata::merge( $cachingMetadatas )
+					Metadata::merge( $metadatas )
 				);
 			}
 		}
 
 		return new CachedBool(
 			false,
-			CachingMetadata::merge( $cachingMetadatas )
+			Metadata::merge( $metadatas )
 		);
 	}
 
@@ -290,7 +291,7 @@ EOF;
 				return null;
 			},
 			$results->getArray()['results']['bindings']
-		), $results->getCachingMetadata() );
+		), $results->getMetadata() );
 	}
 
 	// @codingStandardsIgnoreStart cyclomatic complexity of this function is too high
@@ -548,7 +549,11 @@ EOF;
 			$arr = json_decode( $json, true );
 			return new CachedQueryResults(
 				$arr,
-				$maxAge ? CachingMetadata::ofMaximumAgeInSeconds( $maxAge ) : CachingMetadata::fresh()
+				Metadata::ofCachingMetadata(
+					$maxAge ?
+						CachingMetadata::ofMaximumAgeInSeconds( $maxAge ) :
+						CachingMetadata::fresh()
+				)
 			);
 		} else {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.error' );
