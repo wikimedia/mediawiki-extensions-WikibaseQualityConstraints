@@ -25,11 +25,25 @@
 	}
 
 	function getCachedMessage( cached ) {
-		var maximumAgeInMinutes;
+		var maximumAgeInMinutes,
+			maximumAgeInHours,
+			maximumAgeInDays;
 		if ( typeof cached === 'object' && cached.maximumAgeInSeconds ) {
-			maximumAgeInMinutes = Math.ceil( cached.maximumAgeInSeconds / 60 );
-			return mw.message( 'wbqc-cached-minutes' )
-				.params( [ maximumAgeInMinutes ] )
+			if ( cached.maximumAgeInSeconds < 60 * 90 ) {
+				maximumAgeInMinutes = Math.ceil( cached.maximumAgeInSeconds / 60 );
+				return mw.message( 'wbqc-cached-minutes' )
+					.params( [ maximumAgeInMinutes ] )
+					.escaped();
+			}
+			if ( cached.maximumAgeInSeconds < 60 * 60 * 36 ) {
+				maximumAgeInHours = Math.ceil( cached.maximumAgeInSeconds / ( 60 * 60 ) );
+				return mw.message( 'wbqc-cached-hours' )
+					.params( [ maximumAgeInHours ] )
+					.escaped();
+			}
+			maximumAgeInDays = Math.ceil( cached.maximumAgeInSeconds / ( 60 * 60 * 24 ) );
+			return mw.message( 'wbqc-cached-days' )
+				.params( [ maximumAgeInDays ] )
 				.escaped();
 		} else {
 			return mw.message( 'wbqc-cached-generic' )
