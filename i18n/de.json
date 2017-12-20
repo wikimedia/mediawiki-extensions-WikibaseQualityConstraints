@@ -43,6 +43,8 @@
 	"wbqc-constrainttypehelp-long": "Hilfeseite für diesen Beschränkungstyp",
 	"wbqc-cached-generic": "Dieses Ergebnis ist gecacht und könnte veraltet sein.",
 	"wbqc-cached-minutes": "Dieses Ergebnis ist gecacht und könnte bis zu {{PLURAL:$1|1=eine Minute|$1 Minuten}} alt sein.",
+	"wbqc-cached-hours": "Dieses Ergebnis stammt aus dem Cache und kann bis zu {{PLURAL:$1|1=eine Stunde|$1 Stunden}} alt sein.",
+	"wbqc-cached-days": "Dieses Ergebnis stammt aus dem Cache und kann bis zu {{PLURAL:$1|1=einen Tag|$1 Tage}} alt sein.",
 	"apihelp-wbcheckconstraints-description": "Führt Beschränkungsprüfungen zu jedem gewünschten Objekt aus und gibt das Ergebnis zurück.",
 	"apihelp-wbcheckconstraints-param-id": "Kennung der Objektliste, von der die Daten abgerufen werden sollen. Mehrere Werte mit „|“ oder Ähnlichem trennen.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID-Liste, die eine Behauptung erkennt, um einen Beschränkungsbericht zu prüfen. Mehrere Werte mit „|“ trennen.",

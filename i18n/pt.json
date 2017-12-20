@@ -3,7 +3,8 @@
 		"authors": [
 			"Vitorvicentevalente",
 			"Macofe",
-			"Hamilton Abreu"
+			"Hamilton Abreu",
+			"Athena in Wonderland"
 		]
 	},
 	"wbqc-constraintreport": "Relatório de restrições",
@@ -43,6 +44,8 @@
 	"wbqc-constrainttypehelp-long": "Página de ajuda para este tipo de restrição",
 	"wbqc-cached-generic": "Este resultado vem da cache e pode estar desatualizado.",
 	"wbqc-cached-minutes": "Este resultado vem da cache e pode estar desatualizado em até {{PLURAL:$1|1=um minuto|$1&nbsp;minutos}}.",
+	"wbqc-cached-hours": "Este resultado foi armazenado na cache e pode estar desatualizado por {{PLURAL:$1|1=até uma hora|$1&nbsp;horas}}.",
+	"wbqc-cached-days": "Este resultado foi armazenado na cache e pode estar desatualizado por {{PLURAL:$1|1=até um dia|$1&nbsp;dias}}.",
 	"apihelp-wbcheckconstraints-description": "Realiza a verificação das restrições de qualquer entidade que queira e devolve o resultado.",
 	"apihelp-wbcheckconstraints-summary": "Realiza a verificação das restrições de qualquer entidade que queira e devolve o resultado.",
 	"apihelp-wbcheckconstraints-param-id": "Lista de identificadores das entidades de que serão obtidos os dados. Separar os valores com '|' ou alternativa.",
