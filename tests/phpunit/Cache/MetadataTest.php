@@ -84,4 +84,13 @@ class MetadataTest extends \PHPUnit_Framework_TestCase {
 		] );
 	}
 
+	/**
+	 * Make sure metadata objects can be compared with assertEquals(), some other tests rely on this
+	 */
+	public function testMerge_blankEquals() {
+		$m = Metadata::merge( [ Metadata::blank() ] );
+
+		$this->assertEquals( Metadata::blank(), $m );
+	}
+
 }
