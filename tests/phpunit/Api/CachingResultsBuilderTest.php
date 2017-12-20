@@ -42,7 +42,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			WANObjectCache::newEmpty(),
 			$this->getMock( EntityRevisionLookup::class ),
 			new ItemIdParser(),
-			86400
+			86400,
+			[]
 		);
 
 		$results = $cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
@@ -71,7 +72,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$cache,
 			$lookup,
 			new ItemIdParser(),
-			86400
+			86400,
+			[]
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [], [ 'fake' ], null );
@@ -99,7 +101,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$cache,
 			$lookup,
 			new ItemIdParser(),
-			86400
+			86400,
+			[]
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], [ 'fake' ] );
@@ -123,7 +126,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$cache,
 			$lookup,
 			new ItemIdParser(),
-			86400
+			86400,
+			[]
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
@@ -170,7 +174,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$cache,
 			$lookup,
 			new ItemIdParser(),
-			86400
+			86400,
+			[]
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
@@ -187,7 +192,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			WANObjectCache::newEmpty(),
 			$this->getMock( EntityRevisionLookup::class ),
 			new ItemIdParser(),
-			86400
+			86400,
+			[]
 		);
 
 		$response = $cachingResultsBuilder->getStoredResults( new ItemId( 'Q1' ) );
@@ -212,7 +218,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$cache,
 			$entityRevisionLookup,
 			new ItemIdParser(),
-			86400
+			86400,
+			[]
 		);
 		$q5 = new ItemId( 'Q5' );
 		$key = $cachingResultsBuilder->makeKey( $q5 );
@@ -250,7 +257,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$cache,
 			$entityRevisionLookup,
 			new ItemIdParser(),
-			86400
+			86400,
+			[]
 		);
 		$cachingResultsBuilder->setMicrotimeFunction( function () use ( $now ) {
 			return $now;
@@ -417,6 +425,75 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$metadata = $results->getMetadata();
 		$this->assertSame( 64800, $metadata->getCachingMetadata()->getMaximumAgeInSeconds() );
 		$this->assertSame( [ $entityIds[1] ], $metadata->getDependencyMetadata()->getEntityIds() );
+	}
+
+	public function testUpdateCachingMetadata_CachedToplevel() {
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			WANObjectCache::newEmpty(),
+			$this->getMock( EntityRevisionLookup::class ),
+			new ItemIdParser(),
+			86400,
+			[]
+		);
+		$cm1 = CachingMetadata::ofMaximumAgeInSeconds( 20 );
+		$cm2 = CachingMetadata::ofMaximumAgeInSeconds( 40 );
+		$array1 = $cm1->toArray();
+		$array2 = $cm2->toArray();
+
+		$cachingResultsBuilder->updateCachingMetadata( $array1, 'cached', $cm2 );
+		$cachingResultsBuilder->updateCachingMetadata( $array2, 'cached', $cm1 );
+
+		$arrayMerged = CachingMetadata::merge( [ $cm1, $cm2 ] )->toArray();
+		$this->assertSame( $arrayMerged, $array1 );
+		$this->assertSame( $arrayMerged, $array2 );
+	}
+
+	public function testUpdateCachingMetadata_CachedNested() {
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			WANObjectCache::newEmpty(),
+			$this->getMock( EntityRevisionLookup::class ),
+			new ItemIdParser(),
+			86400,
+			[]
+		);
+		$cm1 = CachingMetadata::ofMaximumAgeInSeconds( 20 );
+		$cm2 = CachingMetadata::ofMaximumAgeInSeconds( 40 );
+		$array = [ 'foo' => [ [ 'bar' => 10, 'baz' => [ 'cached' => $cm1->toArray() ] ] ] ];
+
+		$cachingResultsBuilder->updateCachingMetadata( $array, 0, $cm2 );
+
+		$this->assertSame(
+			[ 'foo' => [ [ 'bar' => 10, 'baz' => [ 'cached' => $cm2->toArray() ] ] ] ],
+			$array
+		);
+	}
+
+	public function testUpdateCachingMetadata_AddToConstraint() {
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			WANObjectCache::newEmpty(),
+			$this->getMock( EntityRevisionLookup::class ),
+			new ItemIdParser(),
+			86400,
+			[ 'Q1' ]
+		);
+		$cm = CachingMetadata::ofMaximumAgeInSeconds( 10 );
+		$array = [
+			[ 'constraint' => [ 'type' => 'Q1' ], 'status' => '✔' ],
+			[ 'constraint' => [ 'type' => 'Q2' ], 'status' => '✘' ],
+		];
+
+		$cachingResultsBuilder->updateCachingMetadata( $array, 0, $cm );
+
+		$this->assertSame(
+			[
+				[ 'constraint' => [ 'type' => 'Q1' ], 'status' => '✔', 'cached' => $cm->toArray() ],
+				[ 'constraint' => [ 'type' => 'Q2' ], 'status' => '✘' ],
+			],
+			$array
+		);
 	}
 
 }
