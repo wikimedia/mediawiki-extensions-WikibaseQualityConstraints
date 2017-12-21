@@ -14,6 +14,7 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -63,7 +64,7 @@ class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 							  'http://www.wikidata.org/wiki/Special:EntityData/'
 						  ),
 						  new ItemIdParser(),
-						  $this->getMock( PropertyDataTypeLookup::class ),
+						  new InMemoryDataTypeLookup(),
 						  WANObjectCache::newEmpty()
 					  ] )
 					  ->setMethods( [ 'runQuery' ] )
@@ -102,7 +103,7 @@ EOF;
 							  'http://www.wikidata.org/wiki/Special:EntityData/'
 						  ),
 						  new ItemIdParser(),
-						  $this->getMock( PropertyDataTypeLookup::class ),
+						  new InMemoryDataTypeLookup(),
 						  WANObjectCache::newEmpty()
 					  ] )
 					  ->setMethods( [ 'runQuery' ] )
@@ -359,7 +360,7 @@ EOF;
 			),
 
 			new ItemIdParser(),
-			$this->getMock( PropertyDataTypeLookup::class ),
+			new InMemoryDataTypeLookup(),
 			WANObjectCache::newEmpty()
 		);
 
@@ -382,7 +383,7 @@ EOF;
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
 			new ItemIdParser(),
-			$this->getMock( PropertyDataTypeLookup::class ),
+			new InMemoryDataTypeLookup(),
 			WANObjectCache::newEmpty()
 		);
 		$content = '(x+x+)+y';
@@ -434,7 +435,7 @@ EOF;
 				'http://www.wikidata.org/wiki/Special:EntityData/'
 			),
 			new ItemIdParser(),
-			$this->getMock( PropertyDataTypeLookup::class ),
+			new InMemoryDataTypeLookup(),
 			WANObjectCache::newEmpty()
 		);
 
