@@ -3,7 +3,8 @@
 		"authors": [
 			"Elisardojm",
 			"Banjo",
-			"Toliño"
+			"Toliño",
+			"Athena in Wonderland"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restrición",
@@ -24,6 +25,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "Parámetros incorrectos",
 	"wbqc-constraintreport-status-deprecated": "Obsoleto",
 	"wbqc-constraintreport-status-warning": "Aviso",
+	"wbqc-constraintreport-status-not-main-snak": "Non é a aserción principal",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
 	"wbqc-constraintreport-result-table-header-claim": "Afirmación",
 	"wbqc-constraintreport-result-table-header-constraint": "Restrición",
