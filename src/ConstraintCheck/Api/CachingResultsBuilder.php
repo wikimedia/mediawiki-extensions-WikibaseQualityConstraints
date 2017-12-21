@@ -132,7 +132,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 * @param EntityId $entityId
 	 * @return string cache key
 	 */
-	public function getKey( EntityId $entityId ) {
+	public function makeKey( EntityId $entityId ) {
 		return $this->cache->makeKey(
 			'WikibaseQualityConstraints', // extension
 			'checkConstraints', // action
@@ -156,7 +156,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 
 		if ( $this->canStoreResults( $entityIds, $claimIds, $constraintIds ) ) {
 			foreach ( $entityIds as $entityId ) {
-				$key = $this->getKey( $entityId );
+				$key = $this->makeKey( $entityId );
 				$value = [
 					'results' => $results->getArray()[$entityId->getSerialization()],
 					'latestRevisionIds' => $this->getLatestRevisionIds(
@@ -196,7 +196,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	public function getStoredResults(
 		EntityId $entityId
 	) {
-		$key = $this->getKey( $entityId );
+		$key = $this->makeKey( $entityId );
 		$value = $this->cache->get( $key, $curTTL, [], $asOf );
 		$now = call_user_func( $this->microtime, true );
 
@@ -204,7 +204,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 			return null;
 		}
 
-		$ageInSeconds = (integer)ceil( $now - $asOf );
+		$ageInSeconds = (int)ceil( $now - $asOf );
 
 		$dependedEntityIds = array_map(
 			[ $this->entityIdParser, "parse" ],
