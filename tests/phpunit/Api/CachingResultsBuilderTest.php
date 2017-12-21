@@ -3,16 +3,22 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use HashBagOStuff;
+use TimeAdjustableWANObjectCache;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityRevisionLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CachingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\ResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+
+include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/WANObjectCacheTest.php';
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CachingResultsBuilder
@@ -36,6 +42,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$resultsBuilder,
 			WANObjectCache::newEmpty(),
 			$this->getMock( EntityRevisionLookup::class ),
+			$this->getMock( EntityIdParser::class ),
 			86400
 		);
 
@@ -64,6 +71,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$resultsBuilder,
 			$cache,
 			$lookup,
+			$this->getMock( EntityIdParser::class ),
 			86400
 		);
 
@@ -91,6 +99,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$resultsBuilder,
 			$cache,
 			$lookup,
+			$this->getMock( EntityIdParser::class ),
 			86400
 		);
 
@@ -114,16 +123,12 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$resultsBuilder,
 			$cache,
 			$lookup,
+			$this->getMock( EntityIdParser::class ),
 			86400
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
-		$cachedResults = $cache->get( $cache->makeKey(
-			'WikibaseQualityConstraints',
-			'checkConstraints',
-			'v2',
-			'Q100'
-		) );
+		$cachedResults = $cache->get( $cachingResultsBuilder->getKey( $q100 ) );
 
 		$this->assertNotNull( $cachedResults );
 		$this->assertArrayHasKey( 'results', $cachedResults );
@@ -165,20 +170,261 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$resultsBuilder,
 			$cache,
 			$lookup,
+			$this->getMock( EntityIdParser::class ),
 			86400
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
-		$cachedResults = $cache->get( $cache->makeKey(
-			'WikibaseQualityConstraints',
-			'checkConstraints',
-			'v2',
-			'Q100'
-		) );
+		$cachedResults = $cache->get( $cachingResultsBuilder->getKey( $q100 ) );
 
 		$this->assertNotNull( $cachedResults );
 		$this->assertArrayHasKey( 'latestRevisionIds', $cachedResults );
 		$this->assertSame( $revisionIds, $cachedResults['latestRevisionIds'] );
+	}
+
+	public function testGetStoredResults_CacheMiss() {
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			WANObjectCache::newEmpty(),
+			$this->getMock( EntityRevisionLookup::class ),
+			$this->getMock( EntityIdParser::class ),
+			86400
+		);
+
+		$response = $cachingResultsBuilder->getStoredResults( new ItemId( 'Q1' ) );
+
+		$this->assertNull( $response );
+	}
+
+	public function testGetStoredResults_Outdated() {
+		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
+		$entityRevisionLookup->method( 'getLatestRevisionId' )
+			->willReturnCallback( function( EntityId $entityId ) {
+				switch ( $entityId->getSerialization() ) {
+					case 'Q5':
+						return 100;
+					case 'Q10':
+						return 101;
+				}
+			} );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			$cache,
+			$entityRevisionLookup,
+			new ItemIdParser(),
+			86400
+		);
+		$q5 = new ItemId( 'Q5' );
+		$key = $cachingResultsBuilder->getKey( $q5 );
+		$value = [
+			'results' => 'garbage data, should not matter',
+			'latestRevisionIds' => [
+				'Q5' => 100,
+				'Q10' => 99,
+			],
+		];
+		$cache->set( $key, $value );
+
+		$response = $cachingResultsBuilder->getStoredResults( $q5 );
+
+		$this->assertNull( $response );
+	}
+
+	public function testGetStoredResults_Fresh() {
+		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
+		$entityRevisionLookup->method( 'getLatestRevisionId' )
+			->willReturnCallback( function( EntityId $entityId ) {
+				switch ( $entityId->getSerialization() ) {
+					case 'Q5':
+						return 100;
+					case 'Q10':
+						return 99;
+				}
+			} );
+		$cache = new TimeAdjustableWANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$now = microtime( true );
+		if ( ( $now - 1337 ) + 1337 !== $now ) {
+			$this->markTestSkipped( 'Unix time outside float accuracy range?!' );
+		}
+		$cache->setTime( $now - 1337 );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			$cache,
+			$entityRevisionLookup,
+			new ItemIdParser(),
+			86400
+		);
+		$cachingResultsBuilder->setMicrotimeFunction( function ( $get_as_float ) use ( $now ) {
+			$this->assertTrue( $get_as_float );
+			return $now;
+		} );
+		$q5 = new ItemId( 'Q5' );
+		$key = $cachingResultsBuilder->getKey( $q5 );
+		$expectedResults = 'garbage data, should not matter';
+		$value = [
+			'results' => $expectedResults,
+			'latestRevisionIds' => [
+				'Q5' => 100,
+				'Q10' => 99,
+			],
+		];
+		$cache->set( $key, $value );
+
+		$response = $cachingResultsBuilder->getStoredResults( $q5 );
+
+		$this->assertNotNull( $response );
+		$actualResults = $response->getArray();
+		$this->assertSame( [ 'Q5' => $expectedResults ], $actualResults );
+		$cachingMetadata = $response->getMetadata()->getCachingMetadata();
+		$this->assertTrue( $cachingMetadata->isCached() );
+		$maxAgeInSeconds = $cachingMetadata->getMaximumAgeInSeconds();
+		$this->assertSame( 1337, $maxAgeInSeconds );
+	}
+
+	public function testGetResults_EmptyCache() {
+		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
+			->getMock();
+		$cachingResultsBuilder->method( 'getStoredResults' )->willReturn( null );
+		$cachingResultsBuilder->method( 'getAndStoreResults' )
+			->willReturnCallback( function( $entityIds, $claimIds, $constraintIds ) {
+				$this->assertSame( [], $claimIds );
+				$this->assertNull( $constraintIds );
+				$results = [];
+				foreach ( $entityIds as $entityId ) {
+					$serialization = $entityId->getSerialization();
+					$results[$serialization] = 'garbage of ' . $serialization;
+				}
+				return new CachedCheckConstraintsResponse( $results, Metadata::blank() );
+			} );
+		/** @var CachingResultsBuilder $cachingResultsBuilder */
+
+		$results = $cachingResultsBuilder->getResults(
+			[ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ],
+			[],
+			null
+		);
+
+		$expected = [ 'Q5' => 'garbage of Q5', 'Q10' => 'garbage of Q10' ];
+		$actual = $results->getArray();
+		asort( $expected );
+		asort( $actual );
+		$this->assertSame( $expected, $actual );
+		$this->assertFalse( $results->getMetadata()->getCachingMetadata()->isCached() );
+	}
+
+	public function testGetResults_ConstraintIds() {
+		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
+		$statementIds = [];
+		$constraintIds = [ 'P12$11a14ea5-10dc-425b-b94d-6e65997be983' ];
+		$expected = new CachedCheckConstraintsResponse(
+			[ 'Q5' => 'garbage of Q5', 'Q10' => 'some garbage of Q10' ],
+			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
+		);
+		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
+			->getMock();
+		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
+		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
+			->with( $entityIds, $statementIds, $constraintIds )
+			->willReturn( $expected );
+		/** @var CachingResultsBuilder $cachingResultsBuilder */
+
+		$results = $cachingResultsBuilder->getResults( $entityIds, $statementIds, $constraintIds );
+
+		$this->assertSame( $expected->getArray(), $results->getArray() );
+		$this->assertEquals( $expected->getMetadata(), $results->getMetadata() );
+	}
+
+	public function testGetResults_StatementIds() {
+		$entityIds = [];
+		$statementIds = [ 'Q5$9c009c6f-fdf5-41d1-86e9-e790427e3dc6' ];
+		$constraintIds = [];
+		$expected = new CachedCheckConstraintsResponse(
+			[ 'Q5' => 'some garbage of Q5' ],
+			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
+		);
+		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
+			->getMock();
+		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
+		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
+			->with( $entityIds, $statementIds, $constraintIds )
+			->willReturn( $expected );
+		/** @var CachingResultsBuilder $cachingResultsBuilder */
+
+		$results = $cachingResultsBuilder->getResults( $entityIds, $statementIds, $constraintIds );
+
+		$this->assertSame( $expected->getArray(), $results->getArray() );
+		$this->assertEquals( $expected->getMetadata(), $results->getMetadata() );
+	}
+
+	public function testGetResults_FullyCached() {
+		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
+		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
+			->getMock();
+		$cachingResultsBuilder->expects( $this->exactly( 2 ) )->method( 'getStoredResults' )
+			->willReturnCallback( function ( EntityId $entityId ) {
+				$serialization = $entityId->getSerialization();
+				return new CachedCheckConstraintsResponse(
+					[ $serialization => 'garbage of ' . $serialization ],
+					Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 64800 ) )
+				);
+			} );
+		$cachingResultsBuilder->expects( $this->never() )->method( 'getAndStoreResults' );
+		/** @var CachingResultsBuilder $cachingResultsBuilder */
+
+		$results = $cachingResultsBuilder->getResults( $entityIds, [], null );
+
+		$expected = [ 'Q5' => 'garbage of Q5', 'Q10' => 'garbage of Q10' ];
+		$actual = $results->getArray();
+		asort( $expected );
+		asort( $actual );
+		$this->assertSame( $expected, $actual );
+		$this->assertSame( 64800, $results->getMetadata()->getCachingMetadata()->getMaximumAgeInSeconds() );
+	}
+
+	public function testGetResults_PartiallyCached() {
+		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
+		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
+			->getMock();
+		$cachingResultsBuilder->expects( $this->exactly( 2 ) )->method( 'getStoredResults' )
+			->willReturnCallback( function ( EntityId $entityId ) {
+				if ( $entityId->getSerialization() === 'Q5' ) {
+					return new CachedCheckConstraintsResponse(
+						[ 'Q5' => 'garbage of Q5' ],
+						Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 64800 ) )
+					);
+				} else {
+					return null;
+				}
+			} );
+		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
+			->with( [ $entityIds[1] ], [], null )
+			->willReturn( new CachedCheckConstraintsResponse(
+				[ 'Q10' => 'garbage of Q10' ],
+				Metadata::ofDependencyMetadata( DependencyMetadata::ofEntityId( $entityIds[1] ) )
+			) );
+		/** @var CachingResultsBuilder $cachingResultsBuilder */
+
+		$results = $cachingResultsBuilder->getResults( $entityIds, [], null );
+
+		$expected = [ 'Q5' => 'garbage of Q5', 'Q10' => 'garbage of Q10' ];
+		$actual = $results->getArray();
+		asort( $expected );
+		asort( $actual );
+		$this->assertSame( $expected, $actual );
+		$metadata = $results->getMetadata();
+		$this->assertSame( 64800, $metadata->getCachingMetadata()->getMaximumAgeInSeconds() );
+		$this->assertSame( [ $entityIds[1] ], $metadata->getDependencyMetadata()->getEntityIds() );
 	}
 
 }
