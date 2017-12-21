@@ -13,30 +13,35 @@ use Wikimedia\Assert\Assert;
 class Metadata {
 
 	/**
-	 * @var CachingMetadata|null
+	 * @var CachingMetadata
 	 */
-	private $cachingMetadata = null;
+	private $cachingMetadata;
 
 	/**
-	 * @var DependencyMetadata|null
+	 * @var DependencyMetadata
 	 */
-	private $dependencyMetadata = null;
+	private $dependencyMetadata;
 
 	/**
 	 * @return self Empty collection.
 	 */
 	public static function blank() {
-		return new self;
+		$ret = new self;
+		$ret->cachingMetadata = CachingMetadata::fresh();
+		$ret->dependencyMetadata = DependencyMetadata::blank();
+		return $ret;
 	}
 
 	public static function ofCachingMetadata( CachingMetadata $cachingMetadata ) {
 		$ret = new self;
 		$ret->cachingMetadata = $cachingMetadata;
+		$ret->dependencyMetadata = DependencyMetadata::blank();
 		return $ret;
 	}
 
 	public static function ofDependencyMetadata( DependencyMetadata $dependencyMetadata ) {
 		$ret = new self;
+		$ret->cachingMetadata = CachingMetadata::fresh();
 		$ret->dependencyMetadata = $dependencyMetadata;
 		return $ret;
 	}
@@ -50,12 +55,8 @@ class Metadata {
 		$cachingMetadatas = [];
 		$dependencyMetadatas = [];
 		foreach ( $metadatas as $metadata ) {
-			if ( $metadata->cachingMetadata !== null ) {
-				$cachingMetadatas[] = $metadata->cachingMetadata;
-			}
-			if ( $metadata->dependencyMetadata !== null ) {
-				$dependencyMetadatas[] = $metadata->dependencyMetadata;
-			}
+			$cachingMetadatas[] = $metadata->cachingMetadata;
+			$dependencyMetadatas[] = $metadata->dependencyMetadata;
 		}
 		$ret = new self;
 		$ret->cachingMetadata = CachingMetadata::merge( $cachingMetadatas );
@@ -67,14 +68,14 @@ class Metadata {
 	 * @return CachingMetadata
 	 */
 	public function getCachingMetadata() {
-		return $this->cachingMetadata ?: CachingMetadata::fresh();
+		return $this->cachingMetadata;
 	}
 
 	/**
 	 * @return DependencyMetadata
 	 */
 	public function getDependencyMetadata() {
-		return $this->dependencyMetadata ?: DependencyMetadata::blank();
+		return $this->dependencyMetadata;
 	}
 
 }
