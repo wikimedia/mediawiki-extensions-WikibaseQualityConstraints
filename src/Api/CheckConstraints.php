@@ -17,9 +17,6 @@ use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\ResultsBuilder;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CachingResultsBuilder;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CheckingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 

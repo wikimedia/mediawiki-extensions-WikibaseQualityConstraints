@@ -10,8 +10,8 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityRevisionLookup;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CachingResultsBuilder;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\ResultsBuilder;
+use WikibaseQuality\ConstraintReport\Api\CachingResultsBuilder;
+use WikibaseQuality\ConstraintReport\Api\ResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
@@ -20,7 +20,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/WANObjectCacheTest.php';
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CachingResultsBuilder
+ * @covers \WikibaseQuality\ConstraintReport\Api\CachingResultsBuilder
  *
  * @license GNU GPL v2+
  */

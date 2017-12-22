@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Api;
+namespace WikibaseQuality\ConstraintReport\Api;
 
 use Config;
 use Wikibase\DataModel\Entity\EntityId;

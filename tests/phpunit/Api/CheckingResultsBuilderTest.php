@@ -13,7 +13,7 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CheckingResultsBuilder;
+use WikibaseQuality\ConstraintReport\Api\CheckingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
@@ -27,7 +27,7 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Api\CheckingResultsBuilder
+ * @covers \WikibaseQuality\ConstraintReport\Api\CheckingResultsBuilder
  *
  * @license GNU GPL v2+
  */
