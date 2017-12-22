@@ -84,4 +84,54 @@ class CachingMetadataTest extends \PHPUnit_Framework_TestCase {
 		] );
 	}
 
+	public function testToArray_fresh() {
+		$cm = CachingMetadata::fresh();
+
+		$array = $cm->toArray();
+
+		$this->assertNull( $array );
+	}
+
+	public function testToArray_ofMaximumAgeInSeconds() {
+		$cm = CachingMetadata::ofMaximumAgeInSeconds( 42 );
+
+		$array = $cm->toArray();
+
+		$this->assertSame( [ 'maximumAgeInSeconds' => 42 ], $array );
+	}
+
+	public function testOfArray_fresh() {
+		$array = null;
+
+		$cm = CachingMetadata::ofArray( $array );
+
+		$this->assertFalse( $cm->isCached() );
+	}
+
+	public function testOfArray_ofMaximumAgeInSeconds() {
+		$array = [ 'maximumAgeInSeconds' => 45 ];
+
+		$cm = CachingMetadata::ofArray( $array );
+
+		$this->assertTrue( $cm->isCached() );
+		$this->assertSame( 45, $cm->getMaximumAgeInSeconds() );
+	}
+
+	/**
+	 * @dataProvider arrayRoundTripProvider
+	 */
+	public function testOfArray_RoundTrip( CachingMetadata $cm ) {
+		$array = $cm->toArray();
+		$cm_ = CachingMetadata::ofArray( $array );
+
+		$this->assertEquals( $cm, $cm_ );
+	}
+
+	public function arrayRoundTripProvider() {
+		return [
+			[ CachingMetadata::fresh() ],
+			[ CachingMetadata::ofMaximumAgeInSeconds( 52 ) ],
+		];
+	}
+
 }

@@ -149,11 +149,9 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		if ( $checkResult->getContext()->getType() === Context::TYPE_STATEMENT ) {
 			$result['claim'] = $checkResult->getContext()->getSnakStatement()->getGuid();
 		}
-		$cachingMetadata = $checkResult->getMetadata()->getCachingMetadata();
-		if ( $cachingMetadata->isCached() ) {
-			$result['cached'] = [
-				'maximumAgeInSeconds' => $cachingMetadata->getMaximumAgeInSeconds(),
-			];
+		$cachingMetadataArray = $checkResult->getMetadata()->getCachingMetadata()->toArray();
+		if ( $cachingMetadataArray !== null ) {
+			$result['cached'] = $cachingMetadataArray;
 		}
 
 		return $result;
