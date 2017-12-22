@@ -79,6 +79,11 @@ class DelegatingConstraintChecker {
 	private $checkReferences;
 
 	/**
+	 * @var string[]
+	 */
+	private $propertiesWithViolatingQualifiers;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param ConstraintChecker[] $checkerMap
 	 * @param ConstraintLookup $constraintRepository
@@ -87,6 +92,8 @@ class DelegatingConstraintChecker {
 	 * @param LoggingHelper $loggingHelper
 	 * @param bool $checkQualifiers whether to check qualifiers
 	 * @param bool $checkReferences whether to check references
+	 * @param string[] $propertiesWithViolatingQualifiers on statements of these properties,
+	 * qualifiers will not be checked
 	 */
 	public function __construct(
 		EntityLookup $lookup,
@@ -96,7 +103,8 @@ class DelegatingConstraintChecker {
 		StatementGuidParser $statementGuidParser,
 		LoggingHelper $loggingHelper,
 		$checkQualifiers,
-		$checkReferences
+		$checkReferences,
+		array $propertiesWithViolatingQualifiers
 	) {
 		$this->entityLookup = $lookup;
 		$this->checkerMap = $checkerMap;
@@ -106,6 +114,7 @@ class DelegatingConstraintChecker {
 		$this->loggingHelper = $loggingHelper;
 		$this->checkQualifiers = $checkQualifiers;
 		$this->checkReferences = $checkReferences;
+		$this->propertiesWithViolatingQualifiers = $propertiesWithViolatingQualifiers;
 	}
 
 	/**
@@ -420,6 +429,13 @@ class DelegatingConstraintChecker {
 		callable $defaultResults = null
 	) {
 		$result = [];
+
+		if ( in_array(
+			$statement->getPropertyId()->getSerialization(),
+			$this->propertiesWithViolatingQualifiers
+		) ) {
+			return $result;
+		}
 
 		foreach ( $statement->getQualifiers() as $qualifier ) {
 			$qualifierContext = new QualifierContext( $entity, $statement, $qualifier );

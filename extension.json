@@ -375,6 +375,11 @@
 			"description": "The property ID of the 'syntax clarification' property (data type: monolingual text), which specifies human-readable explanations of a 'format' constraint.",
 			"public": true
 		},
+		"WBQualityConstraintsPropertiesWithViolatingQualifiers": {
+			"value": [],
+			"description": "Property IDs of statements whose qualifiers are expected to violate constraints, and where constraints checks are therefore skipped, as if the subject entity was an exception to the constraints defined on the qualifier properties.",
+			"public": true
+		},
 		"WBQualityConstraintsYearUnit": {
 			"value": "http://www.wikidata.org/entity/Q577",
 			"description": "The unit used for a quantity that represents a difference between two dates, in years. Note that for entity units, the full concept URI must be used, not just the entity ID.",

@@ -209,7 +209,8 @@ class ConstraintReportFactory {
 					$this->config
 				),
 				$this->config->get( 'WBQualityConstraintsCheckQualifiers' ),
-				$this->config->get( 'WBQualityConstraintsCheckReferences' )
+				$this->config->get( 'WBQualityConstraintsCheckReferences' ),
+				$this->config->get( 'WBQualityConstraintsPropertiesWithViolatingQualifiers' )
 			);
 		}
 

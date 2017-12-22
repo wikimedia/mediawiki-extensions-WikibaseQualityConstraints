@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
 use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
@@ -12,11 +13,14 @@ use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
 use Wikimedia\Rdbms\DBUnexpectedError;
@@ -594,6 +598,51 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->assertCount( 2, $result, 'The constraint should have two exceptions' );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[0] );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[1] );
+	}
+
+	public function testPropertiesWithViolatingQualifiers() {
+		$q1 = new ItemId( 'Q1' );
+		$entityLookup = new InMemoryEntityLookup();
+		$entityLookup->addEntity(
+			NewItem::withId( $q1 )
+				->andStatement(
+					NewStatement::forProperty( 'P1' )
+						->withQualifier( 'P2', 'do not check this' )
+				)
+				->andStatement(
+					NewStatement::forProperty( 'P11' )
+						->withQualifier( 'P2', 'do check this' )
+				)
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$entityLookup,
+			[ /* no constraint checkers, status "not implemented" is enough for this test */ ],
+			new InMemoryConstraintLookup( [
+				new Constraint(
+					'P456$a34344b1-1843-4005-bd92-c082d7f7af2f',
+					new PropertyId( 'P2' ),
+					'Q1',
+					[]
+				),
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->getMockBuilder( LoggingHelper::class )
+				->disableOriginalConstructor()
+				->getMock(),
+			true,
+			false,
+			[ 'P1' ]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q1 );
+
+		$this->assertCount( 1, $results );
+		$this->assertSame(
+			'do check this',
+			$results[0]->getContext()->getSnak()->getDataValue()->getValue()
+		);
 	}
 
 }

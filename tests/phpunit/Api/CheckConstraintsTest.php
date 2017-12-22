@@ -133,7 +133,8 @@ class CheckConstraintsTest extends ApiTestCase {
 					$config
 				),
 				false,
-				false
+				false,
+				[]
 			);
 
 			return new CheckConstraints(
