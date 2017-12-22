@@ -121,7 +121,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		$title = $this->entityTitleLookup->getTitleForId( $constraintPropertyId );
 		$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
 		// TODO link to the statement when possible (T169224)
-		$link = $title->getFullUrl() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );
+		$link = $title->getFullURL() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );
 
 		$constraint = [
 			'id' => $constraintId,

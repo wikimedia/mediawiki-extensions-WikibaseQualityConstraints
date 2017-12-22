@@ -89,14 +89,14 @@ class SparqlHelper {
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->cache = $cache;
 
-		$this->entityPrefix = $rdfVocabulary->getNamespaceUri( RdfVocabulary::NS_ENTITY );
+		$this->entityPrefix = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY );
 		$this->prefixes = <<<EOT
-PREFIX wd: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NS_ENTITY )}>
-PREFIX wds: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NS_STATEMENT )}>
-PREFIX wdt: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_DIRECT_CLAIM )}>
+PREFIX wd: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY )}>
+PREFIX wds: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_STATEMENT )}>
+PREFIX wdt: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_DIRECT_CLAIM )}>
 PREFIX wdv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_VALUE )}>
-PREFIX p: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_CLAIM )}>
-PREFIX ps: <{$rdfVocabulary->getNamespaceUri( RdfVocabulary::NSP_CLAIM_STATEMENT )}>
+PREFIX p: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_CLAIM )}>
+PREFIX ps: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_CLAIM_STATEMENT )}>
 PREFIX pq: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_QUALIFIER )}>
 PREFIX pqv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_QUALIFIER_VALUE )}>
 PREFIX pr: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_REFERENCE )}>
@@ -544,7 +544,7 @@ EOF;
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.cached' );
 		}
 
-		if ( $status->isOk() ) {
+		if ( $status->isOK() ) {
 			$json = $request->getContent();
 			$arr = json_decode( $json, true );
 			return new CachedQueryResults(

@@ -170,7 +170,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		$dbConnection = $dbLoadBalancer->getConnection(
 			DB_REPLICA, false, $commonsWikiId );
 		$row = $dbConnection->selectRow( 'page', '*', [
-			'page_title' => $title->getDBKey(),
+			'page_title' => $title->getDBkey(),
 			'page_namespace' => $title->getNamespace()
 		] );
 
