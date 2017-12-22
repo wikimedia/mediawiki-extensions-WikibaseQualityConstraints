@@ -12,6 +12,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityRevisionLookup;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsBuilder;
 use WikibaseQuality\ConstraintReport\Api\ResultsBuilder;
+use WikibaseQuality\ConstraintReport\Api\ResultsCache;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
@@ -39,7 +40,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->willReturn( $expectedResults );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
-			WANObjectCache::newEmpty(),
+			new ResultsCache( WANObjectCache::newEmpty() ),
 			$this->getMock( EntityRevisionLookup::class ),
 			new ItemIdParser(),
 			86400,
@@ -69,7 +70,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$lookup->expects( $this->never() )->method( 'getLatestRevisionId ' );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
-			$cache,
+			new ResultsCache( $cache ),
 			$lookup,
 			new ItemIdParser(),
 			86400,
@@ -98,7 +99,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$lookup->expects( $this->never() )->method( 'getLatestRevisionId ' );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
-			$cache,
+			new ResultsCache( $cache ),
 			$lookup,
 			new ItemIdParser(),
 			86400,
@@ -120,10 +121,11 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( [ $q100 ], [], null )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$resultsCache = new ResultsCache( $cache );
 		$lookup = $this->getMock( EntityRevisionLookup::class );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
-			$cache,
+			$resultsCache,
 			$lookup,
 			new ItemIdParser(),
 			86400,
@@ -131,7 +133,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
-		$cachedResults = $cache->get( $cachingResultsBuilder->makeKey( $q100 ) );
+		$cachedResults = $resultsCache->get( $q100 );
 
 		$this->assertNotNull( $cachedResults );
 		$this->assertArrayHasKey( 'results', $cachedResults );
@@ -161,6 +163,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( [ $q100 ], [], null )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$resultsCache = new ResultsCache( $cache );
 		$lookup = $this->getMock( EntityRevisionLookup::class );
 		$lookup->expects( $this->atLeast( 3 ) )
 			->method( 'getLatestRevisionId' )
@@ -171,7 +174,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			} );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
-			$cache,
+			$resultsCache,
 			$lookup,
 			new ItemIdParser(),
 			86400,
@@ -179,7 +182,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
-		$cachedResults = $cache->get( $cachingResultsBuilder->makeKey( $q100 ) );
+		$cachedResults = $resultsCache->get( $q100 );
 
 		$this->assertNotNull( $cachedResults );
 		$this->assertArrayHasKey( 'latestRevisionIds', $cachedResults );
@@ -189,7 +192,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetStoredResults_CacheMiss() {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
-			WANObjectCache::newEmpty(),
+			new ResultsCache( WANObjectCache::newEmpty() ),
 			$this->getMock( EntityRevisionLookup::class ),
 			new ItemIdParser(),
 			86400,
@@ -213,16 +216,16 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				}
 			} );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$resultsCache = new ResultsCache( $cache );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
-			$cache,
+			$resultsCache,
 			$entityRevisionLookup,
 			new ItemIdParser(),
 			86400,
 			[]
 		);
 		$q5 = new ItemId( 'Q5' );
-		$key = $cachingResultsBuilder->makeKey( $q5 );
 		$value = [
 			'results' => 'garbage data, should not matter',
 			'latestRevisionIds' => [
@@ -230,7 +233,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				'Q10' => 99,
 			],
 		];
-		$cache->set( $key, $value );
+		$resultsCache->set( $q5, $value );
 
 		$response = $cachingResultsBuilder->getStoredResults( $q5 );
 
@@ -252,9 +255,10 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$cache = new TimeAdjustableWANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$now = 9001;
 		$cache->setTime( $now - 1337 );
+		$resultsCache = new ResultsCache( $cache );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
-			$cache,
+			$resultsCache,
 			$entityRevisionLookup,
 			new ItemIdParser(),
 			86400,
@@ -265,7 +269,6 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		} );
 
 		$q5 = new ItemId( 'Q5' );
-		$key = $cachingResultsBuilder->makeKey( $q5 );
 		$expectedResults = 'garbage data, should not matter';
 		$value = [
 			'results' => $expectedResults,
@@ -274,7 +277,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				'Q10' => 99,
 			],
 		];
-		$cache->set( $key, $value );
+		$resultsCache->set( $q5, $value );
 
 		$response = $cachingResultsBuilder->getStoredResults( $q5 );
 
@@ -430,7 +433,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testUpdateCachingMetadata_CachedToplevel() {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
-			WANObjectCache::newEmpty(),
+			new ResultsCache( WANObjectCache::newEmpty() ),
 			$this->getMock( EntityRevisionLookup::class ),
 			new ItemIdParser(),
 			86400,
@@ -452,7 +455,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testUpdateCachingMetadata_CachedNested() {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
-			WANObjectCache::newEmpty(),
+			new ResultsCache( WANObjectCache::newEmpty() ),
 			$this->getMock( EntityRevisionLookup::class ),
 			new ItemIdParser(),
 			86400,
@@ -473,7 +476,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testUpdateCachingMetadata_AddToConstraint() {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
-			WANObjectCache::newEmpty(),
+			new ResultsCache( WANObjectCache::newEmpty() ),
 			$this->getMock( EntityRevisionLookup::class ),
 			new ItemIdParser(),
 			86400,

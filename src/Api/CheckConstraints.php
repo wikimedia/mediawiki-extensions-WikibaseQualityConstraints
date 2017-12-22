@@ -110,12 +110,11 @@ class CheckConstraints extends ApiBase {
 			$config
 		);
 		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
-			$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
 			$entityRevisionLookup = $repo->getEntityRevisionLookup();
 			$entityIdParser = $repo->getEntityIdParser();
 			$resultsBuilder = new CachingResultsBuilder(
 				$resultsBuilder,
-				$cache,
+				ResultsCache::getDefaultInstance(),
 				$entityRevisionLookup,
 				$entityIdParser,
 				$config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),

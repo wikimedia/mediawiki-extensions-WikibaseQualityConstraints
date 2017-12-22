@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
-use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\Store\EntityRevisionLookup;
@@ -12,7 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 
 /**
- * A wrapper around another ResultsBuilder that caches results in a WANObjectCache.
+ * A wrapper around another ResultsBuilder that caches results in a ResultsCache.
  *
  * Results are cached independently per entity,
  * and the outermost level of the response returned by the wrapped ResultsBuilder
@@ -40,7 +39,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	private $resultsBuilder;
 
 	/**
-	 * @var WANObjectCache
+	 * @var ResultsCache
 	 */
 	private $cache;
 
@@ -71,7 +70,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 
 	/**
 	 * @param ResultsBuilder $resultsBuilder The ResultsBuilder that cache misses are delegated to.
-	 * @param WANObjectCache $cache The cache where results can be stored.
+	 * @param ResultsCache $cache The cache where results can be stored.
 	 * @param EntityRevisionLookup $entityRevisionLookup Used to get the latest revision ID.
 	 * @param EntityIdParser $entityIdParser Used to parse entity IDs in cached objects.
 	 * @param int $ttlInSeconds Time-to-live of the cached values, in seconds.
@@ -80,7 +79,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 */
 	public function __construct(
 		ResultsBuilder $resultsBuilder,
-		WANObjectCache $cache,
+		ResultsCache $cache,
 		EntityRevisionLookup $entityRevisionLookup,
 		EntityIdParser $entityIdParser,
 		$ttlInSeconds,
@@ -149,19 +148,6 @@ class CachingResultsBuilder implements ResultsBuilder {
 	}
 
 	/**
-	 * @param EntityId $entityId
-	 * @return string cache key
-	 */
-	public function makeKey( EntityId $entityId ) {
-		return $this->cache->makeKey(
-			'WikibaseQualityConstraints', // extension
-			'checkConstraints', // action
-			'v2', // API response format version
-			$entityId->getSerialization()
-		);
-	}
-
-	/**
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
@@ -176,14 +162,13 @@ class CachingResultsBuilder implements ResultsBuilder {
 
 		if ( $this->canStoreResults( $entityIds, $claimIds, $constraintIds ) ) {
 			foreach ( $entityIds as $entityId ) {
-				$key = $this->makeKey( $entityId );
 				$value = [
 					'results' => $results->getArray()[$entityId->getSerialization()],
 					'latestRevisionIds' => $this->getLatestRevisionIds(
 						$results->getMetadata()->getDependencyMetadata()->getEntityIds()
 					),
 				];
-				$this->cache->set( $key, $value, $this->ttlInSeconds );
+				$this->cache->set( $entityId, $value, $this->ttlInSeconds );
 			}
 		}
 
@@ -216,8 +201,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	public function getStoredResults(
 		EntityId $entityId
 	) {
-		$key = $this->makeKey( $entityId );
-		$value = $this->cache->get( $key, $curTTL, [], $asOf );
+		$value = $this->cache->get( $entityId, $curTTL, [], $asOf );
 		$now = call_user_func( $this->microtime, true );
 
 		if ( $value === false ) {
