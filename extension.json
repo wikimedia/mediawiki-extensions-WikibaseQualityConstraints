@@ -16,12 +16,8 @@
 		"WikibaseQualityConstraintsAlias": "WikibaseQualityConstraints.alias.php"
 	},
 	"Hooks": {
-		"LoadExtensionSchemaUpdates": [
-			"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema"
-		],
-		"WikibaseChangeNotification": [
-			"WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange"
-		]
+		"LoadExtensionSchemaUpdates": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema",
+		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange"
 	},
 	"SpecialPages": {
 		"ConstraintReport": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState"
