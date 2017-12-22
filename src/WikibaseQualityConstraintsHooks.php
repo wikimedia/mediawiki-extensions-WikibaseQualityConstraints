@@ -12,6 +12,9 @@ use Wikibase\Change;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\EntityChange;
 use Wikibase\Lib\Changes\EntityDiffChangedAspects;
+use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\Api\ResultsCache;
+use WikiPage;
 
 /**
  * Container for hook callbacks registered in extension.json.
@@ -65,6 +68,17 @@ final class WikibaseQualityConstraintsHooks {
 
 		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
 		return in_array( $propertyConstraintId, $aspects->getStatementChanges() );
+	}
+
+	public static function onArticlePurge( WikiPage $wikiPage ) {
+		$repo = WikibaseRepo::getDefaultInstance();
+
+		$entityContentFactory = $repo->getEntityContentFactory();
+		if ( $entityContentFactory->isEntityContentModel( $wikiPage->getContentModel() ) ) {
+			$entityId = $entityContentFactory->getEntityIdForTitle( $wikiPage->getTitle() );
+			$resultsCache = ResultsCache::getDefaultInstance();
+			$resultsCache->delete( $entityId );
+		}
 	}
 
 }

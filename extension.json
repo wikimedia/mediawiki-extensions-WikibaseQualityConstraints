@@ -17,7 +17,8 @@
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema",
-		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange"
+		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange",
+		"ArticlePurge": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onArticlePurge"
 	},
 	"SpecialPages": {
 		"ConstraintReport": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState"
