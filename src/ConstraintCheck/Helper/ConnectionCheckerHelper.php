@@ -3,7 +3,9 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
@@ -54,10 +56,9 @@ class ConnectionCheckerHelper {
 		/** @var Statement $statement */
 		foreach ( $statementListByPropertyId as $statement ) {
 			$snak = $statement->getMainSnak();
-			if ( $snak->getType() === 'value' ) {
+			if ( $snak instanceof PropertyValueSnak ) {
 				$dataValue = $snak->getDataValue();
-				if (
-					$dataValue->getType() === 'wikibase-entityid' &&
+				if ( $dataValue instanceof EntityIdValue &&
 					$dataValue->getEntityId()->equals( $value )
 				) {
 					return $statement;

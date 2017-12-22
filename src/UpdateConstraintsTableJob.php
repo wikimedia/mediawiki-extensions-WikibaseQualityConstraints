@@ -147,6 +147,7 @@ class UpdateConstraintsTableJob extends Job {
 		$propertyId = new PropertyId( $this->propertyId );
 		$this->constraintRepo->deleteForPropertyWhereConstraintIdIsStatementId( $propertyId );
 
+		/** @var Property $property */
 		$property = $this->entityLookup->getEntity( $propertyId );
 		$this->importConstraintsForProperty(
 			$property,

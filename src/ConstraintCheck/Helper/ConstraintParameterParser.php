@@ -6,6 +6,7 @@ use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
+use DataValues\UnboundedQuantityValue;
 use Language;
 use Wikibase\DataModel\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
@@ -394,12 +395,12 @@ class ConstraintParameterParser {
 	 * @return bool
 	 */
 	private function exactlyOneQuantityWithUnit( DataValue $min = null, DataValue $max = null, $unit ) {
-		if ( $min === null || $max === null ) {
+		if ( !( $min instanceof UnboundedQuantityValue ) ||
+			!( $max instanceof UnboundedQuantityValue )
+		) {
 			return false;
 		}
-		if ( $min->getType() !== 'quantity' || $max->getType() !== 'quantity' ) {
-			return false;
-		}
+
 		return ( $min->getUnit() === $unit ) !== ( $max->getUnit() === $unit );
 	}
 

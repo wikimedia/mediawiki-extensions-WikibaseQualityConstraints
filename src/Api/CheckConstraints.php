@@ -8,6 +8,7 @@ use IBufferingStatsdDataFactory;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
@@ -203,10 +204,7 @@ class CheckConstraints extends ApiBase {
 		$this->getResult()->addValue(
 			null,
 			$this->getModuleName(),
-			$this->resultsBuilder->getResults(
-				$entityIds,
-				$claimIds, $constraintIDs
-			)->getArray()
+			$this->resultsBuilder->getResults( $entityIds, $claimIds, $constraintIDs )->getArray()
 		);
 		// ensure that result contains the given entity IDs even if they have no statements
 		foreach ( $entityIds as $entityId ) {
@@ -218,6 +216,11 @@ class CheckConstraints extends ApiBase {
 		$this->resultBuilder->markSuccess( 1 );
 	}
 
+	/**
+	 * @param array $params
+	 *
+	 * @return EntityId[]
+	 */
 	private function parseEntityIds( array $params ) {
 		$ids = $params[self::PARAM_ID];
 
@@ -238,6 +241,11 @@ class CheckConstraints extends ApiBase {
 		}, $ids );
 	}
 
+	/**
+	 * @param array $params
+	 *
+	 * @return string[]
+	 */
 	private function parseClaimIds( array $params ) {
 		$ids = $params[self::PARAM_CLAIM_ID];
 

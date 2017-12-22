@@ -83,19 +83,20 @@ class ItemIdSnakValue {
 	public static function fromSnak( Snak $snak ) {
 		switch ( true ) {
 			case $snak instanceof PropertyValueSnak:
-				if (
-					$snak->getDataValue() instanceof EntityIdValue &&
-					$snak->getDataValue()->getEntityId() instanceof ItemId
+				$dataValue = $snak->getDataValue();
+				if ( $dataValue instanceof EntityIdValue
+					&& $dataValue->getEntityId() instanceof ItemId
 				) {
-					return self::fromItemId( $snak->getDataValue()->getEntityId() );
-				} else {
-					throw new InvalidArgumentException( 'Snak must contain item ID value or be a somevalue / novalue snak' );
+					return self::fromItemId( $dataValue->getEntityId() );
 				}
+				break;
 			case $snak instanceof PropertySomeValueSnak:
 				return self::someValue();
 			case $snak instanceof PropertyNoValueSnak:
 				return self::noValue();
 		}
+
+		throw new InvalidArgumentException( 'Snak must contain item ID value or be a somevalue / novalue snak' );
 	}
 
 	/**
