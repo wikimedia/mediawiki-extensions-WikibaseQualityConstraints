@@ -10,7 +10,8 @@
 	 *         constraint: {
 	 *             type: 'Q1',
 	 *             typeLabel: 'my constraint',
-	 *             link: 'http://example.com/my-constraint'
+	 *             link: 'http://example.com/my-constraint',
+	 *             discussLink: 'http://example.com/Property_talk:P2',
 	 *         },
 	 *         message: 'everything okay',
 	 *         expanded: false,
@@ -28,8 +29,9 @@
 	 * @cfg {string} [message=''] The message (HTML) of the report, if present.
 	 * @cfg {string[]} [ancillaryMessages=[]] Additional messages (HTML) attached to the report, if any.
 	 * @cfg {jQuery} [$heading] The heading element of the panel. Should not yet contain the heading links.
-	 * @cfg {jQuery} [$headingLinks] The container for the links in the heading of the panel. Should not yet contain the help link.
+	 * @cfg {jQuery} [$headingLinks] The container for the links in the heading of the panel. Should not yet contain the help link or the discussion link.
 	 * @cfg {jQuery} [$helpLink] The help link for the heading.
+	 * @cfg {jQuery} [$discussLink] The link to the discussion page.
 	 * @cfg {jQuery} [$message] The message paragraph of the panel.
 	 * @cfg {jQuery} [$ancillaryMessages] The container of the additional messages.
 	 */
@@ -62,6 +64,11 @@
 			.attr( 'title', mw.message( 'wbqc-constrainttypehelp-long' ).text() )
 			.attr( 'href', 'https://www.wikidata.org/wiki/Help:Property_constraints_portal/' + this.constraint.type )
 			.attr( 'target', '_blank' );
+		this.$discussLink = config.$discussLink || $( '<a class="wbqc-constraint-discuss">' )
+			.text( mw.message( 'wbqc-constraintdiscuss-short' ).text() )
+			.attr( 'title', mw.message( 'wbqc-constraintdiscuss-long' ).text() )
+			.attr( 'href', this.constraint.discussLink )
+			.attr( 'target', '_blank' );
 		this.message = config.message;
 		this.$message = config.$message || $( '<p>' ).html( this.message );
 		this.ancillaryMessages = config.ancillaryMessages;
@@ -78,7 +85,10 @@
 		this.$element
 			.addClass( 'wbqc-report' )
 			.addClass( 'wbqc-report-status-' + this.status );
-		this.$headingLinks.append( this.$helpLink );
+		this.$headingLinks
+			.append( this.$helpLink )
+			.append( ' ' )
+			.append( this.$discussLink );
 		this.$heading.append( this.$headingLinks );
 		this.$element.append( this.$heading );
 		this.$element.append( this.$message );

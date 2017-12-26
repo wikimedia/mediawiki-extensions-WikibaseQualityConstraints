@@ -128,6 +128,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 			'type' => $typeItemId,
 			'typeLabel' => $typeLabel,
 			'link' => $link,
+			'discussLink' => $title->getTalkPage()->getFullURL(),
 		];
 		if ( $this->config->get( 'WBQualityConstraintsIncludeDetailInApi' ) ) {
 			$parameters = $checkResult->getParameters();

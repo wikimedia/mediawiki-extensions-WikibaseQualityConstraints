@@ -44,6 +44,8 @@
 	"wbqc-parameterissues-long": "Longer explanation of the section of the constraint parameter report popup that contains problems about the constraint parameters.\n{{Related|wbqc-parameterissues-short}}",
 	"wbqc-constrainttypehelp-short": "Text for the help link shown next to the constraint type in a constraint violation report. The link leads to a help page on Wikidata about the constraint type.\n{{Identical|Help}}",
 	"wbqc-constrainttypehelp-long": "Title for the help link shown next to the constraint type in a constraint violation report. The link leads to a help page on Wikidata about the constraint type.\n{{Related|wbqc-constrainttypehelp-short}}",
+	"wbqc-constraintdiscuss-short": "Text for the discussion link shown next to the constraint type in a constraint violation report. The link leads to the talk page of the property on which the constraint is defined.\n{{Identical|Discuss}}",
+	"wbqc-constraintdiscuss-long": "Title for the discussion link shown next to the constraint type in a constraint violation report. The link leads to the talk page of the property on which the constraint is defined.\n{{Related|wbqc-constraintdiscuss-short}}",
 	"wbqc-cached-generic": "Generic message informing the user that a constraint check result might be outdated. There is no information on how old the cached result is; if more information is available, a more specific message is used.",
 	"wbqc-cached-minutes": "Message informing the user that a constraint check result might be outdated by up to ''n'' minutes.\n{{Related|wbqc-cached-generic}}",
 	"wbqc-cached-hours": "Message informing the user that a constraint check result might be outdated by up to ''n'' hours.\n{{Related|Wbqc-cached}}",

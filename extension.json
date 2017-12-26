@@ -73,6 +73,8 @@
 				"wbqc-parameterissues-long",
 				"wbqc-constrainttypehelp-short",
 				"wbqc-constrainttypehelp-long",
+				"wbqc-constraintdiscuss-short",
+				"wbqc-constraintdiscuss-long",
 				"wbqc-cached-generic",
 				"wbqc-cached-minutes",
 				"wbqc-cached-hours",
