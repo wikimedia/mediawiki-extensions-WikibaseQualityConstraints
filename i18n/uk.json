@@ -4,7 +4,8 @@
 			"Максим Підліснюк",
 			"Dars",
 			"Piramidion",
-			"SimondR"
+			"SimondR",
+			"Avatar6"
 		]
 	},
 	"wbqc-constraintreport": "Звіт про обмеження",
@@ -25,7 +26,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "Хибні параметри",
 	"wbqc-constraintreport-status-deprecated": "Застаріло",
 	"wbqc-constraintreport-status-warning": "Попередження",
-	"wbqc-constraintreport-status-not-main-snak": "Не основна подробиця",
+	"wbqc-constraintreport-status-not-main-snak": "Не головний снек",
 	"wbqc-constraintreport-result-table-header-status": "Статус",
 	"wbqc-constraintreport-result-table-header-claim": "Запис",
 	"wbqc-constraintreport-result-table-header-constraint": "Обмеження",
