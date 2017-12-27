@@ -121,7 +121,13 @@ class CheckConstraints extends ApiBase {
 				$cache,
 				$entityRevisionLookup,
 				$entityIdParser,
-				$config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' )
+				$config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),
+				[
+					$config->get( 'WBQualityConstraintsCommonsLinkConstraintId' ),
+					$config->get( 'WBQualityConstraintsTypeConstraintId' ),
+					$config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
+					$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
+				]
 			);
 		}
 

@@ -14,9 +14,20 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 /**
  * A wrapper around another ResultsBuilder that caches results in a WANObjectCache.
  *
- * The format of the response returned by the wrapped ResultsBuilder mostly does not matter,
- * but the outermost level must be an array from entity ID serialization to results for that entity.
- * Results are cached independently per entity.
+ * Results are cached independently per entity,
+ * and the outermost level of the response returned by the wrapped ResultsBuilder
+ * must be an array from entity ID serialization to results for that entity.
+ * Apart from that, the array structure does not matter.
+ *
+ * However, if the response for an entity is an array
+ * which contains 'cached' keys anywhere (possibly nested),
+ * the corresponding value is assumed to be CachingMetadata in array form,
+ * and updated with the age of the value in the WANObjectCache;
+ * and if the response contains arrays with a 'constraint' key (also possibly nested),
+ * these arrays are assumed to be a CheckResult in array form
+ * (as converted by CheckingResultsBuilder::checkResultToArray),
+ * and if their 'type' is in the list of $possiblyStaleConstraintTypes,
+ * their 'cached' information is also updated.
  *
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
@@ -49,6 +60,11 @@ class CachingResultsBuilder implements ResultsBuilder {
 	private $ttlInSeconds;
 
 	/**
+	 * @var string[]
+	 */
+	private $possiblyStaleConstraintTypes;
+
+	/**
 	 * @var callable
 	 */
 	private $microtime = 'microtime';
@@ -59,19 +75,23 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 * @param EntityRevisionLookup $entityRevisionLookup Used to get the latest revision ID.
 	 * @param EntityIdParser $entityIdParser Used to parse entity IDs in cached objects.
 	 * @param int $ttlInSeconds Time-to-live of the cached values, in seconds.
+	 * @param string[] $possiblyStaleConstraintTypes item IDs of constraint types
+	 * where cached results may always be stale, regardless of invalidation logic
 	 */
 	public function __construct(
 		ResultsBuilder $resultsBuilder,
 		WANObjectCache $cache,
 		EntityRevisionLookup $entityRevisionLookup,
 		EntityIdParser $entityIdParser,
-		$ttlInSeconds
+		$ttlInSeconds,
+		array $possiblyStaleConstraintTypes
 	) {
 		$this->resultsBuilder = $resultsBuilder;
 		$this->cache = $cache;
 		$this->entityRevisionLookup = $entityRevisionLookup;
 		$this->entityIdParser = $entityIdParser;
 		$this->ttlInSeconds = $ttlInSeconds;
+		$this->possiblyStaleConstraintTypes = $possiblyStaleConstraintTypes;
 	}
 
 	/**
@@ -215,6 +235,14 @@ class CachingResultsBuilder implements ResultsBuilder {
 			return null;
 		}
 
+		$cachingMetadata = $ageInSeconds > 0 ?
+			CachingMetadata::ofMaximumAgeInSeconds( $ageInSeconds ) :
+			CachingMetadata::fresh();
+
+		if ( is_array( $value['results'] ) ) {
+			array_walk( $value['results'], [ $this, 'updateCachingMetadata' ], $cachingMetadata );
+		}
+
 		return new CachedCheckConstraintsResponse(
 			[ $entityId->getSerialization() => $value['results'] ],
 			array_reduce(
@@ -227,11 +255,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 						)
 					] );
 				},
-				Metadata::ofCachingMetadata(
-					$ageInSeconds > 0 ?
-						CachingMetadata::ofMaximumAgeInSeconds( $ageInSeconds ) :
-						CachingMetadata::fresh()
-				)
+				Metadata::ofCachingMetadata( $cachingMetadata )
 			)
 		);
 	}
@@ -248,6 +272,30 @@ class CachingResultsBuilder implements ResultsBuilder {
 			$latestRevisionIds[$serialization] = $latestRevisionId;
 		}
 		return $latestRevisionIds;
+	}
+
+	public function updateCachingMetadata( &$element, $key, CachingMetadata $cachingMetadata ) {
+		if ( $key === 'cached' ) {
+			$element = CachingMetadata::merge( [
+				$cachingMetadata,
+				CachingMetadata::ofArray( $element ),
+			] )->toArray();
+		}
+		if (
+			is_array( $element ) &&
+			array_key_exists( 'constraint', $element ) &&
+			in_array( $element['constraint']['type'], $this->possiblyStaleConstraintTypes, true )
+		) {
+			$element['cached'] = CachingMetadata::merge( [
+				$cachingMetadata,
+				CachingMetadata::ofArray(
+					array_key_exists( 'cached', $element ) ? $element['cached'] : null
+				),
+			] )->toArray();
+		}
+		if ( is_array( $element ) ) {
+			array_walk( $element, [ $this, __FUNCTION__ ], $cachingMetadata );
+		}
 	}
 
 	/**
