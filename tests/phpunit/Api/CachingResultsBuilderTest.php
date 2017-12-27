@@ -10,6 +10,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\EntityRevisionLookup;
+use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsBuilder;
 use WikibaseQuality\ConstraintReport\Api\ResultsBuilder;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
@@ -38,10 +39,13 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null )
 			->willReturn( $expectedResults );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadRevisionInformation' )
+			->willReturn( [] );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$this->getMock( EntityRevisionLookup::class ),
+			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
 			[]
@@ -66,12 +70,12 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$cache->expects( $this->never() )->method( 'set' );
-		$lookup = $this->getMock( EntityRevisionLookup::class );
-		$lookup->expects( $this->never() )->method( 'getLatestRevisionId ' );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->expects( $this->never() )->method( 'loadRevisionInformation ' );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
 			new ResultsCache( $cache ),
-			$lookup,
+			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
 			[]
@@ -95,12 +99,12 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$cache->expects( $this->never() )->method( 'set' );
-		$lookup = $this->getMock( EntityRevisionLookup::class );
-		$lookup->expects( $this->never() )->method( 'getLatestRevisionId ' );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->expects( $this->never() )->method( 'loadRevisionInformation ' );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
 			new ResultsCache( $cache ),
-			$lookup,
+			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
 			[]
@@ -122,11 +126,13 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache );
-		$lookup = $this->getMock( EntityRevisionLookup::class );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadRevisionInformation' )
+			->willReturn( [] );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
 			$resultsCache,
-			$lookup,
+			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
 			[]
@@ -164,18 +170,27 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache );
-		$lookup = $this->getMock( EntityRevisionLookup::class );
-		$lookup->expects( $this->atLeast( 3 ) )
-			->method( 'getLatestRevisionId' )
-			->willReturnCallback( function( EntityId $entityId ) use ( $revisionIds ) {
-				$serialization = $entityId->getSerialization();
-				$this->assertArrayHasKey( $serialization, $revisionIds );
-				return $revisionIds[$serialization];
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->expects( $this->once() )
+			->method( 'loadRevisionInformation' )
+			->with(
+				[ $q100, $q101, $p102 ],
+				EntityRevisionLookup::LATEST_FROM_REPLICA
+			)
+			->willReturnCallback( function ( $entityIds, $mode ) use ( $revisionIds ) {
+				$metadata = [];
+				foreach ( $entityIds as $entityId ) {
+					$serialization = $entityId->getSerialization();
+					$metadata[$serialization] = (object)[
+						'page_latest' => $revisionIds[$entityId->getSerialization()],
+					];
+				}
+				return $metadata;
 			} );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$resultsBuilder,
 			$resultsCache,
-			$lookup,
+			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
 			[]
@@ -193,7 +208,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$this->getMock( EntityRevisionLookup::class ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
 			new ItemIdParser(),
 			86400,
 			[]
@@ -205,22 +220,18 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStoredResults_Outdated() {
-		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
-		$entityRevisionLookup->method( 'getLatestRevisionId' )
-			->willReturnCallback( function( EntityId $entityId ) {
-				switch ( $entityId->getSerialization() ) {
-					case 'Q5':
-						return 100;
-					case 'Q10':
-						return 101;
-				}
-			} );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadRevisionInformation' )
+			->willReturn( [
+				'Q5' => (object)[ 'page_latest' => 100 ],
+				'Q10' => (object)[ 'page_latest' => 101 ],
+			] );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache );
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			$resultsCache,
-			$entityRevisionLookup,
+			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
 			[]
@@ -241,16 +252,12 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStoredResults_Fresh() {
-		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
-		$entityRevisionLookup->method( 'getLatestRevisionId' )
-			->willReturnCallback( function( EntityId $entityId ) {
-				switch ( $entityId->getSerialization() ) {
-					case 'Q5':
-						return 100;
-					case 'Q10':
-						return 99;
-				}
-			} );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadRevisionInformation' )
+			->willReturn( [
+				'Q5' => (object)[ 'page_latest' => 100 ],
+				'Q10' => (object)[ 'page_latest' => 99 ],
+			] );
 
 		$cache = new TimeAdjustableWANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$now = 9001;
@@ -259,7 +266,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			$resultsCache,
-			$entityRevisionLookup,
+			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
 			[]
@@ -434,7 +441,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$this->getMock( EntityRevisionLookup::class ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
 			new ItemIdParser(),
 			86400,
 			[]
@@ -456,7 +463,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$this->getMock( EntityRevisionLookup::class ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
 			new ItemIdParser(),
 			86400,
 			[]
@@ -477,7 +484,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$this->getMock( EntityRevisionLookup::class ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
 			new ItemIdParser(),
 			86400,
 			[ 'Q1' ]

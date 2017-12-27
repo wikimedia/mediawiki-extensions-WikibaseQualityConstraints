@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\Store\EntityRevisionLookup;
+use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
@@ -44,9 +45,9 @@ class CachingResultsBuilder implements ResultsBuilder {
 	private $cache;
 
 	/**
-	 * @var EntityRevisionLookup
+	 * @var WikiPageEntityMetaDataAccessor
 	 */
-	private $entityRevisionLookup;
+	private $wikiPageEntityMetaDataAccessor;
 
 	/**
 	 * @var EntityIdParser
@@ -71,7 +72,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	/**
 	 * @param ResultsBuilder $resultsBuilder The ResultsBuilder that cache misses are delegated to.
 	 * @param ResultsCache $cache The cache where results can be stored.
-	 * @param EntityRevisionLookup $entityRevisionLookup Used to get the latest revision ID.
+	 * @param WikiPageEntityMetaDataAccessor $wikiPageEntityMetaDataAccessor Used to get the latest revision ID.
 	 * @param EntityIdParser $entityIdParser Used to parse entity IDs in cached objects.
 	 * @param int $ttlInSeconds Time-to-live of the cached values, in seconds.
 	 * @param string[] $possiblyStaleConstraintTypes item IDs of constraint types
@@ -80,14 +81,14 @@ class CachingResultsBuilder implements ResultsBuilder {
 	public function __construct(
 		ResultsBuilder $resultsBuilder,
 		ResultsCache $cache,
-		EntityRevisionLookup $entityRevisionLookup,
+		WikiPageEntityMetaDataAccessor $wikiPageEntityMetaDataAccessor,
 		EntityIdParser $entityIdParser,
 		$ttlInSeconds,
 		array $possiblyStaleConstraintTypes
 	) {
 		$this->resultsBuilder = $resultsBuilder;
 		$this->cache = $cache;
-		$this->entityRevisionLookup = $entityRevisionLookup;
+		$this->wikiPageEntityMetaDataAccessor = $wikiPageEntityMetaDataAccessor;
 		$this->entityIdParser = $entityIdParser;
 		$this->ttlInSeconds = $ttlInSeconds;
 		$this->possiblyStaleConstraintTypes = $possiblyStaleConstraintTypes;
@@ -249,11 +250,13 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 * @return int[]
 	 */
 	private function getLatestRevisionIds( array $entityIds ) {
+		$revisionInformations = $this->wikiPageEntityMetaDataAccessor->loadRevisionInformation(
+			$entityIds,
+			EntityRevisionLookup::LATEST_FROM_REPLICA
+		);
 		$latestRevisionIds = [];
-		foreach ( $entityIds as $entityId ) {
-			$serialization = $entityId->getSerialization();
-			$latestRevisionId = $this->entityRevisionLookup->getLatestRevisionId( $entityId );
-			$latestRevisionIds[$serialization] = $latestRevisionId;
+		foreach ( $revisionInformations as $serialization => $revisionInformation ) {
+			$latestRevisionIds[$serialization] = $revisionInformation->page_latest;
 		}
 		return $latestRevisionIds;
 	}

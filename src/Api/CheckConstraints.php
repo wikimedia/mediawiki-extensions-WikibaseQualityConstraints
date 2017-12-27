@@ -11,6 +11,7 @@ use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
 use Wikibase\Lib\SnakFormatter;
+use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
@@ -110,12 +111,15 @@ class CheckConstraints extends ApiBase {
 			$config
 		);
 		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
+			$wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
+				$repo->getEntityNamespaceLookup()
+			);
 			$entityRevisionLookup = $repo->getEntityRevisionLookup();
 			$entityIdParser = $repo->getEntityIdParser();
 			$resultsBuilder = new CachingResultsBuilder(
 				$resultsBuilder,
 				ResultsCache::getDefaultInstance(),
-				$entityRevisionLookup,
+				$wikiPageEntityMetaDataAccessor,
 				$entityIdParser,
 				$config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),
 				[
