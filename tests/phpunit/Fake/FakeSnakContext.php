@@ -28,10 +28,17 @@ class FakeSnakContext extends AbstractContext {
 		);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getType() {
 		return 'statement';
 	}
 
+	/**
+	 * @param array|null $result
+	 * @param array[] &$container
+	 */
 	public function storeCheckResultInArray( $result, array &$container ) {
 		if ( $result !== null ) {
 			$container[] = $result;

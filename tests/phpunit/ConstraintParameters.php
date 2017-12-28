@@ -87,7 +87,7 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string[] $classIds item ID serializations
-	 * @return array
+	 * @return array[]
 	 */
 	public function classParameter( array $classIds ) {
 		$classParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
@@ -108,7 +108,7 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string $relation 'instance' or 'subclass'
-	 * @return array
+	 * @return array[]
 	 */
 	public function relationParameter( $relation ) {
 		$relationParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
@@ -133,8 +133,8 @@ trait ConstraintParameters {
 	}
 
 	/**
-	 * @param string $propertyId property ID serialization
-	 * @return array
+	 * @param string $propertyId
+	 * @return array[]
 	 */
 	public function propertyParameter( $propertyId ) {
 		$propertyParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
@@ -150,7 +150,7 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string[] $properties property ID serializations
-	 * @return array
+	 * @return array[]
 	 */
 	public function propertiesParameter( array $properties ) {
 		$propertyParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
@@ -168,7 +168,7 @@ trait ConstraintParameters {
 
 	/**
 	 * @param (string|Snak)[] $items item ID serializations or snaks
-	 * @return array
+	 * @return array[]
 	 */
 	public function itemsParameter( array $items ) {
 		$qualifierParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
@@ -223,7 +223,7 @@ trait ConstraintParameters {
 	 * @param string $type 'quantity' or 'time'
 	 * @param DataValue|int|float|string|null $min lower boundary, see rangeEndpoint() for details
 	 * @param DataValue|int|float|string|null $max upper boundary, see rangeEndpoint() for details
-	 * @return array
+	 * @return array[]
 	 */
 	public function rangeParameter( $type, $min, $max ) {
 		$configKey = $type === 'quantity' ? 'Quantity' : 'Date';
@@ -241,7 +241,7 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string $namespace
-	 * @return array
+	 * @return array[]
 	 */
 	public function namespaceParameter( $namespace ) {
 		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
@@ -252,7 +252,7 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string $format
-	 * @return array
+	 * @return array[]
 	 */
 	public function formatParameter( $format ) {
 		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
@@ -264,7 +264,7 @@ trait ConstraintParameters {
 	/**
 	 * @param string $languageCode
 	 * @param string $syntaxClarification
-	 * @return array
+	 * @return array[]
 	 */
 	public function syntaxClarificationParameter( $languageCode, $syntaxClarification ) {
 		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
@@ -275,7 +275,7 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string[] $exceptions item ID serializations (other entity types currently not supported)
-	 * @return array
+	 * @return array[]
 	 */
 	public function exceptionsParameter( $exceptions ) {
 		$exceptionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
@@ -291,7 +291,7 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string $status (the only currently supported status is 'mandatory')
-	 * @return array
+	 * @return array[]
 	 */
 	public function statusParameter( $status ) {
 		$statusParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
