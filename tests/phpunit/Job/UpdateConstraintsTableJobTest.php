@@ -25,8 +25,6 @@ use Wikibase\Repo\WikibaseRepo;
 /**
  * @covers \WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob
  *
- * @uses \WikibaseQuality\ConstraintReport\ConstraintRepository
- *
  * @group WikibaseQualityConstraints
  * @group Database
  * @group medium

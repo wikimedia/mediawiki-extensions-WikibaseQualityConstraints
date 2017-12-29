@@ -15,8 +15,6 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  *
  * @group WikibaseQualityConstraints
  *
- * @uses \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- *
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */

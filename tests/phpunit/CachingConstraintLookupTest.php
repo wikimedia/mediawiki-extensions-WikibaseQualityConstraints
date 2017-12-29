@@ -8,7 +8,6 @@ use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\CachingConstraintLookup
- * @uses \Wikibase\DataModel\Entity\PropertyId
  *
  * @group WikibaseQualityConstraints
  *

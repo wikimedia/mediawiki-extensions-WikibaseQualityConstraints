@@ -12,9 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2Context
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext
- * @uses \Wikibase\DataModel\Statement\Statement
- * @uses \Wikibase\Repo\Tests\NewItem
- * @uses \Wikibase\Repo\Tests\NewStatement
  *
  * @group WikibaseQualityConstraints
  *
