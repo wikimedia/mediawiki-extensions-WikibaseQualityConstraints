@@ -214,8 +214,6 @@ To add a new constraint type, the following steps are necessary:
      *
      * @group WikibaseQualityConstraints
      *
-     * @uses \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
-     *
      * @author YOUR NAME HERE
      * @license GNU GPL v2+
      */
