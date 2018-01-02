@@ -20,7 +20,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
  *
  * @group WikibaseQualityConstraints
  *

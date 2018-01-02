@@ -21,7 +21,7 @@ use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper
  *
  * @group WikibaseQualityConstraints
  *

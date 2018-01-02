@@ -7,7 +7,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintRepository
+ * @covers WikibaseQuality\ConstraintReport\ConstraintRepository
  *
  * @group WikibaseQualityConstraints
  * @group database

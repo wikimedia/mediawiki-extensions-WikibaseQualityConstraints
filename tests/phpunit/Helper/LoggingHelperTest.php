@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper
  *
  * @group WikibaseQualityConstraints
  *

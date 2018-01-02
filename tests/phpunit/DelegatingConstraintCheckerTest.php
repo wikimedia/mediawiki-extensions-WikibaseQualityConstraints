@@ -26,7 +26,7 @@ use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *
  * @group WikibaseQualityConstraints
  * @group Database

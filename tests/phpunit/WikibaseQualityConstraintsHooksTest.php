@@ -12,7 +12,7 @@ use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks
+ * @covers WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks
  *
  * @group WikibaseQualityConstraints
  *

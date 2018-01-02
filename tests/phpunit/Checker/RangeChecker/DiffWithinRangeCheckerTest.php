@@ -19,7 +19,7 @@ use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker
  *
  * @group WikibaseQualityConstraints
  *

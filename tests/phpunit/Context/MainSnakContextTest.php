@@ -9,9 +9,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2Context
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2Context
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext
  *
  * @group WikibaseQualityConstraints
  *

@@ -12,7 +12,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper
  *
  * @group WikibaseQualityConstraints
  *

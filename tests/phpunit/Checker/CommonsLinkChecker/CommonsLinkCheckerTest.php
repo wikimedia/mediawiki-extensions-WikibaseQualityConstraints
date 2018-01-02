@@ -23,7 +23,7 @@ use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
 use WikiPage;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
  *
  * @group WikibaseQualityConstraints
  * @group Database

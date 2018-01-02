@@ -22,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\SparqlHelperMock;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
  *
  * @group WikibaseQualityConstraints
  *

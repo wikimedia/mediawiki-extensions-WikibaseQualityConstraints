@@ -23,7 +23,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikibase\Repo\WikibaseRepo;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob
+ * @covers WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob
  *
  * @group WikibaseQualityConstraints
  * @group Database

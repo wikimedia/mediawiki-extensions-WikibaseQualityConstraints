@@ -22,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
  *
  * @group WikibaseQualityConstraints
  *

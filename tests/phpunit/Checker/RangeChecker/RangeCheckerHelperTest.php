@@ -16,7 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper
  *
  * @group WikibaseQualityConstraints
  *

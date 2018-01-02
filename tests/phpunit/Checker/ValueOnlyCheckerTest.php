@@ -11,7 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker
  *
  * @group WikibaseQualityConstraints
  *

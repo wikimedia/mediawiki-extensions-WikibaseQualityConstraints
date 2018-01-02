@@ -30,7 +30,7 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper
  *
  * @group WikibaseQualityConstraints
  *

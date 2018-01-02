@@ -210,7 +210,7 @@ To add a new constraint type, the following steps are necessary:
   * It should have at least the following class-level documentation comment:
     ```php
     /**
-     * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\…Checker
+     * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\…Checker
      *
      * @group WikibaseQualityConstraints
      *

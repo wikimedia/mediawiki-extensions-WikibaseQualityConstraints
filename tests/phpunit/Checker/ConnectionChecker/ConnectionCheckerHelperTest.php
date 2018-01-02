@@ -15,7 +15,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHel
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper
  *
  * @group WikibaseQualityConstraints
  *

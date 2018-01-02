@@ -21,7 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/WANObjectCacheTest.php';
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\Api\CachingResultsBuilder
+ * @covers WikibaseQuality\ConstraintReport\Api\CachingResultsBuilder
  *
  * @license GNU GPL v2+
  */

@@ -9,7 +9,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\Api\ResultsCache
+ * @covers WikibaseQuality\ConstraintReport\Api\ResultsCache
  *
  * @group WikibaseQualityConstraints
  *

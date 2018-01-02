@@ -18,7 +18,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
  *
  * @group WikibaseQualityConstraints
  *

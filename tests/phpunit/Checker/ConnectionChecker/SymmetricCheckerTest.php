@@ -22,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
  *
  * @group WikibaseQualityConstraints
  *

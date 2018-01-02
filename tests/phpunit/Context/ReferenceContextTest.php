@@ -10,9 +10,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2Context
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2Context
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext
  *
  * @group WikibaseQualityConstraints
  *

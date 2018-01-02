@@ -6,7 +6,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\Constraint
+ * @covers WikibaseQuality\ConstraintReport\Constraint
  *
  * @group WikibaseQualityConstraints
  * @group database

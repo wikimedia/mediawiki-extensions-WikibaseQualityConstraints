@@ -10,7 +10,7 @@ use Wikimedia\Assert\ParameterElementTypeException;
 use Wikimedia\Assert\ParameterTypeException;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata
  *
  * @group WikibaseQualityConstraints
  *

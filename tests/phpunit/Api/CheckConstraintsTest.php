@@ -39,7 +39,7 @@ use Language;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraints
+ * @covers WikibaseQuality\ConstraintReport\Api\CheckConstraints
  *
  * @group API
  * @group Database

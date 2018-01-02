@@ -7,7 +7,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker
+ * @covers WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker
  *
  * @group WikibaseQualityConstraints
  *

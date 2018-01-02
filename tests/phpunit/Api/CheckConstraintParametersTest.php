@@ -10,7 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters
+ * @covers WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters
  *
  * @group API
  * @group Database

@@ -19,7 +19,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
  *
  * @group WikibaseQualityConstraints
  *

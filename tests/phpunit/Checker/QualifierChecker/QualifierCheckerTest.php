@@ -13,7 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker
  *
  * @group WikibaseQualityConstraints
  *

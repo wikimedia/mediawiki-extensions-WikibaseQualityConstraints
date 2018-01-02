@@ -27,7 +27,7 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\Api\CheckingResultsBuilder
+ * @covers WikibaseQuality\ConstraintReport\Api\CheckingResultsBuilder
  *
  * @license GNU GPL v2+
  */

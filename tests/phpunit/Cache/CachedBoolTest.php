@@ -7,7 +7,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool
  *
  * @group WikibaseQualityConstraints
  *

@@ -6,7 +6,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookupTest
+ * @covers WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookupTest
  *
  * @group WikibaseQualityConstraints
  *

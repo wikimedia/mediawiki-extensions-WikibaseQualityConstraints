@@ -10,7 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use Wikimedia\Assert\ParameterElementTypeException;
 
 /**
- * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata
  *
  * @group WikibaseQualityConstraints
  *
