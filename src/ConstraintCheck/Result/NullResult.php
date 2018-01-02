@@ -12,7 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
  * Used for contexts that should appear in the API output
  * even if no constraints are defined for them.
  *
- * @package WikibaseQuality\ConstraintReport\ConstraintCheck\Result
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
