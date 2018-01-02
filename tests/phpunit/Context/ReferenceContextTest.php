@@ -13,10 +13,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2Context
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext
- * @uses \Wikibase\DataModel\Reference
- * @uses \Wikibase\DataModel\Statement\Statement
- * @uses \Wikibase\Repo\Tests\NewItem
- * @uses \Wikibase\Repo\Tests\NewStatement
  *
  * @group WikibaseQualityConstraints
  *

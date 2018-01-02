@@ -26,8 +26,6 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  *
  * @group WikibaseQualityConstraints
  *
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- *
  * @author Olga Bode
  * @license GNU GPL v2+
  */

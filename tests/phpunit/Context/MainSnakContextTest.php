@@ -12,9 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2Context
  * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext
- * @uses \Wikibase\DataModel\Statement\Statement
- * @uses \Wikibase\Repo\Tests\NewItem
- * @uses \Wikibase\Repo\Tests\NewStatement
  *
  * @group WikibaseQualityConstraints
  *

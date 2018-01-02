@@ -31,27 +31,6 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  * @group WikibaseQualityConstraints
  * @group Database
  *
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker
- * @uses   \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
- *
  * @author BP2014N1
  * @license GNU GPL v2+
  */
