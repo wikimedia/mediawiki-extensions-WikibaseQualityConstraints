@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
+use IBufferingStatsdDataFactory;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\Store\EntityRevisionLookup;
@@ -65,6 +66,11 @@ class CachingResultsBuilder implements ResultsBuilder {
 	private $possiblyStaleConstraintTypes;
 
 	/**
+	 * @var IBufferingStatsdDataFactory
+	 */
+	private $dataFactory;
+
+	/**
 	 * @var callable
 	 */
 	private $microtime = 'microtime';
@@ -77,6 +83,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 * @param int $ttlInSeconds Time-to-live of the cached values, in seconds.
 	 * @param string[] $possiblyStaleConstraintTypes item IDs of constraint types
 	 * where cached results may always be stale, regardless of invalidation logic
+	 * @param IBufferingStatsdDataFactory $dataFactory
 	 */
 	public function __construct(
 		ResultsBuilder $resultsBuilder,
@@ -84,7 +91,8 @@ class CachingResultsBuilder implements ResultsBuilder {
 		WikiPageEntityMetaDataAccessor $wikiPageEntityMetaDataAccessor,
 		EntityIdParser $entityIdParser,
 		$ttlInSeconds,
-		array $possiblyStaleConstraintTypes
+		array $possiblyStaleConstraintTypes,
+		IBufferingStatsdDataFactory $dataFactory
 	) {
 		$this->resultsBuilder = $resultsBuilder;
 		$this->cache = $cache;
@@ -92,6 +100,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 		$this->entityIdParser = $entityIdParser;
 		$this->ttlInSeconds = $ttlInSeconds;
 		$this->possiblyStaleConstraintTypes = $possiblyStaleConstraintTypes;
+		$this->dataFactory = $dataFactory;
 	}
 
 	/**
@@ -112,6 +121,9 @@ class CachingResultsBuilder implements ResultsBuilder {
 			foreach ( $entityIds as $entityId ) {
 				$storedResults = $this->getStoredResults( $entityId );
 				if ( $storedResults !== null ) {
+					$this->dataFactory->increment(
+						'wikibase.quality.constraints.cache.entity.hit'
+					);
 					$results += $storedResults->getArray();
 					$metadatas[] = $storedResults->getMetadata();
 					$storedEntityIds[] = $entityId;
@@ -120,6 +132,10 @@ class CachingResultsBuilder implements ResultsBuilder {
 			$entityIds = array_values( array_diff( $entityIds, $storedEntityIds ) );
 		}
 		if ( $entityIds !== [] || $claimIds !== [] ) {
+			$this->dataFactory->updateCount(
+				'wikibase.quality.constraints.cache.entity.miss',
+				count( $entityIds )
+			);
 			$response = $this->getAndStoreResults( $entityIds, $claimIds, $constraintIds );
 			$results += $response->getArray();
 			$metadatas[] = $response->getMetadata();

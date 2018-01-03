@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use HashBagOStuff;
+use NullStatsdDataFactory;
 use TimeAdjustableWANObjectCache;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
@@ -48,7 +49,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 
 		$results = $cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
@@ -78,7 +80,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [], [ 'fake' ], null );
@@ -107,7 +110,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], [ 'fake' ] );
@@ -135,7 +139,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
@@ -193,7 +198,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
@@ -211,7 +217,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 
 		$response = $cachingResultsBuilder->getStoredResults( new ItemId( 'Q1' ) );
@@ -234,7 +241,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 		$q5 = new ItemId( 'Q5' );
 		$value = [
@@ -269,7 +277,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$metaDataAccessor,
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 		$cachingResultsBuilder->setMicrotimeFunction( function () use ( $now ) {
 			return $now;
@@ -299,7 +308,15 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
 
 		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [
+				$this->getMock( ResultsBuilder::class ),
+				new ResultsCache( WANObjectCache::newEmpty() ),
+				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
+				new ItemIdParser(),
+				86400,
+				[],
+				new NullStatsdDataFactory()
+			] )
 			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();
 		$cachingResultsBuilder->method( 'getStoredResults' )->willReturn( null );
@@ -334,7 +351,15 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
 		);
 		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [
+				$this->getMock( ResultsBuilder::class ),
+				new ResultsCache( WANObjectCache::newEmpty() ),
+				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
+				new ItemIdParser(),
+				86400,
+				[],
+				new NullStatsdDataFactory()
+			] )
 			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();
 		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
@@ -358,7 +383,15 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
 		);
 		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [
+				$this->getMock( ResultsBuilder::class ),
+				new ResultsCache( WANObjectCache::newEmpty() ),
+				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
+				new ItemIdParser(),
+				86400,
+				[],
+				new NullStatsdDataFactory()
+			] )
 			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();
 		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
@@ -376,7 +409,15 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetResults_FullyCached() {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
 		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [
+				$this->getMock( ResultsBuilder::class ),
+				new ResultsCache( WANObjectCache::newEmpty() ),
+				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
+				new ItemIdParser(),
+				86400,
+				[],
+				new NullStatsdDataFactory()
+			] )
 			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();
 		$cachingResultsBuilder->expects( $this->exactly( 2 ) )->method( 'getStoredResults' )
@@ -403,7 +444,15 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetResults_PartiallyCached() {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
 		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [
+				$this->getMock( ResultsBuilder::class ),
+				new ResultsCache( WANObjectCache::newEmpty() ),
+				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
+				new ItemIdParser(),
+				86400,
+				[],
+				new NullStatsdDataFactory()
+			] )
 			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();
 		$cachingResultsBuilder->expects( $this->exactly( 2 ) )->method( 'getStoredResults' )
@@ -444,7 +493,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 		$cm1 = CachingMetadata::ofMaximumAgeInSeconds( 20 );
 		$cm2 = CachingMetadata::ofMaximumAgeInSeconds( 40 );
@@ -466,7 +516,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
 			new ItemIdParser(),
 			86400,
-			[]
+			[],
+			new NullStatsdDataFactory()
 		);
 		$cm1 = CachingMetadata::ofMaximumAgeInSeconds( 20 );
 		$cm2 = CachingMetadata::ofMaximumAgeInSeconds( 40 );
@@ -487,7 +538,8 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
 			new ItemIdParser(),
 			86400,
-			[ 'Q1' ]
+			[ 'Q1' ],
+			new NullStatsdDataFactory()
 		);
 		$cm = CachingMetadata::ofMaximumAgeInSeconds( 10 );
 		$array = [

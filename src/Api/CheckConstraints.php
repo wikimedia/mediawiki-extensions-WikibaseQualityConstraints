@@ -135,7 +135,8 @@ class CheckConstraints extends ApiBase {
 					$config->get( 'WBQualityConstraintsTypeConstraintId' ),
 					$config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
 					$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
-				]
+				],
+				$dataFactory
 			);
 		}
 
