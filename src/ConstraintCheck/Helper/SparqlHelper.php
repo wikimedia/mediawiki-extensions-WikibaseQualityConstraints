@@ -9,6 +9,7 @@ use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
 use MediaWiki\MediaWikiServices;
+use MWException;
 use MWHttpRequest;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
@@ -361,15 +362,16 @@ EOF;
 		// caching wrapper around matchesRegularExpressionWithSparql
 
 		$textHash = hash( 'sha256', $text );
+		$cacheKey = $this->cache->makeKey(
+			'WikibaseQualityConstraints', // extension
+			'regex', // action
+			'WDQS-Java', // regex flavor
+			hash( 'sha256', $regex )
+		);
 		$cacheMapSize = $this->config->get( 'WBQualityConstraintsFormatCacheMapSize' );
 
 		$cacheMapArray = $this->cache->getWithSetCallback(
-			$this->cache->makeKey(
-				'WikibaseQualityConstraints', // extension
-				'regex', // action
-				'WDQS-Java', // regex flavor
-				hash( 'sha256', $regex )
-			),
+			$cacheKey,
 			WANObjectCache::TTL_DAY,
 			function( $cacheMapArray ) use ( $text, $regex, $textHash, $cacheMapSize ) {
 				// Initialize the cache map if not set
@@ -389,9 +391,20 @@ EOF;
 				} else {
 					$key = 'wikibase.quality.constraints.regex.cache.refresh.miss';
 					$this->dataFactory->increment( $key );
+					try {
+						$matches = $this->matchesRegularExpressionWithSparql( $text, $regex );
+					} catch ( ConstraintParameterException $e ) {
+						$matches = [
+							'type' => ConstraintParameterException::class,
+							'message' => $e->getMessage(),
+						];
+					} catch ( SparqlHelperException $e ) {
+						// don’t cache this
+						return $cacheMap->toArray();
+					}
 					$cacheMap->set(
 						$textHash,
-						$this->matchesRegularExpressionWithSparql( $text, $regex ),
+						$matches,
 						3 / 8
 					);
 				}
@@ -412,7 +425,20 @@ EOF;
 		if ( isset( $cacheMapArray[$textHash] ) ) {
 			$key = 'wikibase.quality.constraints.regex.cache.hit';
 			$this->dataFactory->increment( $key );
-			return $cacheMapArray[$textHash];
+			$matches = $cacheMapArray[$textHash];
+			if ( is_bool( $matches ) ) {
+				return $matches;
+			} elseif ( is_array( $matches ) &&
+				$matches['type'] == ConstraintParameterException::class ) {
+				throw new ConstraintParameterException( $matches['message'] );
+			} else {
+				throw new MWException(
+					'Value of unknown type in object cache (' .
+					'cache key: ' . $cacheKey . ', ' .
+					'cache map key: ' . $textHash . ', ' .
+					'value type: ' . gettype( $matches ) . ')'
+				);
+			}
 		} else {
 			$key = 'wikibase.quality.constraints.regex.cache.miss';
 			$this->dataFactory->increment( $key );
