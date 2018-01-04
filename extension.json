@@ -378,6 +378,26 @@
 			"description": "The property ID of the 'syntax clarification' property (data type: monolingual text), which specifies human-readable explanations of a 'format' constraint.",
 			"public": true
 		},
+		"WBQualityConstraintsConstraintScopeId": {
+			"value": "P4680",
+			"description": "The property ID of the 'constraint scope' property (data type: item), which specifies the context(s) in which a constraint is checked.",
+			"public": true
+		},
+		"WBQualityConstraintsConstraintCheckedOnMainValueId": {
+			"value": "Q46466787",
+			"description": "The item ID of the 'constraint checked on main value' item, which, when used in a 'constraint scope' qualifier of a 'property constraint' statement on a property, indicates that the constraint should be checked on the main snak of a statement.",
+			"public": true
+		},
+		"WBQualityConstraintsConstraintCheckedOnQualifiersId": {
+			"value": "Q46466783",
+			"description": "The item ID of the 'constraint checked on qualifiers' item, which, when used in a 'constraint scope' qualifier of a 'property constraint' statement on a property, indicates that the constraint should be checked on the qualifier snaks of a statement.",
+			"public": true
+		},
+		"WBQualityConstraintsConstraintCheckedOnReferencesId": {
+			"value": "Q46466805",
+			"description": "The item ID of the 'constraint checked on references' item, which, when used in a 'constraint scope' qualifier of a 'property constraint' statement on a property, indicates that the constraint should be checked on the reference snaks of a statement.",
+			"public": true
+		},
 		"WBQualityConstraintsPropertiesWithViolatingQualifiers": {
 			"value": [],
 			"description": "Property IDs of statements whose qualifiers are expected to violate constraints, and where constraints checks are therefore skipped, as if the subject entity was an exception to the constraints defined on the qualifier properties.",
