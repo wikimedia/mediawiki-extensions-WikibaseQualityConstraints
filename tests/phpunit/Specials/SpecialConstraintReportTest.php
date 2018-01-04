@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Specials\SpecialConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use NullStatsdDataFactory;
 use SpecialPageTestBase;
 use Wikibase\DataModel\Services\Statement\GuidGenerator;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
@@ -85,7 +86,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			),
 			$wikibaseRepo->getRdfVocabulary(),
 			$wikibaseRepo->getEntityIdParser(),
-			MediaWikiServices::getInstance()->getTitleParser()
+			MediaWikiServices::getInstance()->getTitleParser(),
+			null,
+			new NullStatsdDataFactory()
 		);
 
 		return new SpecialConstraintReport(
@@ -97,7 +100,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
 			$constraintReportFactory->getConstraintChecker(),
-			$config
+			$config,
+			new NullStatsdDataFactory()
 		);
 	}
 

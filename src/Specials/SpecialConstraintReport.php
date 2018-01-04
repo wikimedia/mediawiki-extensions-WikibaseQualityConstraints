@@ -6,6 +6,7 @@ use Config;
 use DataValues\DataValue;
 use Html;
 use HTMLForm;
+use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
 use SpecialPage;
@@ -89,10 +90,16 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private $config;
 
+	/**
+	 * @var IBufferingStatsdDataFactory
+	 */
+	private $dataFactory;
+
 	public static function newFromGlobalState() {
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 		$config = MediaWikiServices::getInstance()->getMainConfig();
+		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 
 		return new self(
 			$wikibaseRepo->getEntityLookup(),
@@ -103,7 +110,8 @@ class SpecialConstraintReport extends SpecialPage {
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
 			$constraintReportFactory->getConstraintChecker(),
-			$config
+			$config,
+			$dataFactory
 		);
 	}
 
@@ -117,6 +125,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param OutputFormatValueFormatterFactory $valueFormatterFactory
 	 * @param DelegatingConstraintChecker $constraintChecker
 	 * @param Config $config
+	 * @param IBufferingStatsdDataFactory $dataFactory
 	 */
 	public function __construct(
 		EntityLookup $entityLookup,
@@ -127,7 +136,8 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityIdParser $entityIdParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $constraintChecker,
-		Config $config
+		Config $config,
+		IBufferingStatsdDataFactory $dataFactory
 	) {
 		parent::__construct( 'ConstraintReport' );
 
@@ -159,6 +169,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->constraintParameterRenderer = new ConstraintParameterRenderer( $this->entityIdLabelFormatter, $this->dataValueFormatter );
 
 		$this->config = $config;
+		$this->dataFactory = $dataFactory;
 	}
 
 	/**
@@ -237,8 +248,9 @@ class SpecialConstraintReport extends SpecialPage {
 			return;
 		}
 
-		MediaWikiServices::getInstance()->getStatsdDataFactory()
-			->increment( 'wikibase.quality.constraints.specials.specialConstraintReport.executeCheck' );
+		$this->dataFactory->increment(
+			'wikibase.quality.constraints.specials.specialConstraintReport.executeCheck'
+		);
 		$results = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entityId );
 
 		if ( count( $results ) > 0 ) {

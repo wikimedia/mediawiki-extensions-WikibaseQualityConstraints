@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 
 use ApiBase;
 use ApiMain;
+use IBufferingStatsdDataFactory;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
@@ -59,6 +60,11 @@ class CheckConstraints extends ApiBase {
 	private $resultsBuilder;
 
 	/**
+	 * @var IBufferingStatsdDataFactory
+	 */
+	private $dataFactory;
+
+	/**
 	 * Creates new instance from global state.
 	 *
 	 * @param ApiMain $main
@@ -86,6 +92,7 @@ class CheckConstraints extends ApiBase {
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$titleParser = MediaWikiServices::getInstance()->getTitleParser();
 		$unitConverter = $repo->getUnitConverter();
+		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 		$constraintReportFactory = new ConstraintReportFactory(
 			$repo->getEntityLookup(),
 			$repo->getPropertyDataTypeLookup(),
@@ -100,7 +107,8 @@ class CheckConstraints extends ApiBase {
 			$repo->getRdfVocabulary(),
 			$repo->getEntityIdParser(),
 			$titleParser,
-			$unitConverter
+			$unitConverter,
+			$dataFactory
 		);
 
 		$resultsBuilder = new CheckingResultsBuilder(
@@ -138,7 +146,8 @@ class CheckConstraints extends ApiBase {
 			$repo->getEntityIdParser(),
 			$repo->getStatementGuidValidator(),
 			$repo->getApiHelperFactory( RequestContext::getMain() ),
-			$resultsBuilder
+			$resultsBuilder,
+			$dataFactory
 		);
 	}
 
@@ -150,11 +159,17 @@ class CheckConstraints extends ApiBase {
 	 * @param StatementGuidValidator $statementGuidValidator
 	 * @param ApiHelperFactory $apiHelperFactory
 	 * @param ResultsBuilder $resultsBuilder
+	 * @param IBufferingStatsdDataFactory $dataFactory
 	 */
-	public function __construct( ApiMain $main, $name, $prefix = '', EntityIdParser $entityIdParser,
-								 StatementGuidValidator $statementGuidValidator,
-								 ApiHelperFactory $apiHelperFactory,
-								 ResultsBuilder $resultsBuilder
+	public function __construct(
+		ApiMain $main,
+		$name,
+		$prefix = '',
+		EntityIdParser $entityIdParser,
+		StatementGuidValidator $statementGuidValidator,
+		ApiHelperFactory $apiHelperFactory,
+		ResultsBuilder $resultsBuilder,
+		IBufferingStatsdDataFactory $dataFactory
 	) {
 		parent::__construct( $main, $name, $prefix );
 		$this->entityIdParser = $entityIdParser;
@@ -162,14 +177,16 @@ class CheckConstraints extends ApiBase {
 		$this->resultBuilder = $apiHelperFactory->getResultBuilder( $this );
 		$this->errorReporter = $apiHelperFactory->getErrorReporter( $this );
 		$this->resultsBuilder = $resultsBuilder;
+		$this->dataFactory = $dataFactory;
 	}
 
 	/**
 	 * Evaluates the parameters, runs the requested constraint check, and sets up the result
 	 */
 	public function execute() {
-		MediaWikiServices::getInstance()->getStatsdDataFactory()
-			->increment( 'wikibase.quality.constraints.api.checkConstraints.execute' );
+		$this->dataFactory->increment(
+			'wikibase.quality.constraints.api.checkConstraints.execute'
+		);
 
 		$params = $this->extractRequestParams();
 

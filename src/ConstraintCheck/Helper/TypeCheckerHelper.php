@@ -3,7 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
-use MediaWiki\MediaWikiServices;
+use IBufferingStatsdDataFactory;
 use OverflowException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -48,21 +48,29 @@ class TypeCheckerHelper {
 	private $sparqlHelper;
 
 	/**
+	 * @var IBufferingStatsdDataFactory
+	 */
+	private $dataFactory;
+
+	/**
 	 * @param EntityLookup $lookup
 	 * @param Config $config
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 * @param SparqlHelper|null $sparqlHelper
+	 * @param IBufferingStatsdDataFactory $dataFactory
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		Config $config,
 		ConstraintParameterRenderer $constraintParameterRenderer,
-		SparqlHelper $sparqlHelper = null
+		SparqlHelper $sparqlHelper = null,
+		IBufferingStatsdDataFactory $dataFactory
 	) {
 		$this->entityLookup = $lookup;
 		$this->config = $config;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->sparqlHelper = $sparqlHelper;
+		$this->dataFactory = $dataFactory;
 	}
 
 	/**
@@ -137,8 +145,9 @@ class TypeCheckerHelper {
 			);
 		} catch ( OverflowException $e ) {
 			if ( $this->sparqlHelper !== null ) {
-				MediaWikiServices::getInstance()->getStatsdDataFactory()
-					->increment( 'wikibase.quality.constraints.sparql.typeFallback' );
+				$this->dataFactory->increment(
+					'wikibase.quality.constraints.sparql.typeFallback'
+				);
 				return $this->sparqlHelper->hasType(
 					$comparativeClass->getSerialization(),
 					$classesToCheck,

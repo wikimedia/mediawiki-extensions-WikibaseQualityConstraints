@@ -6,7 +6,7 @@ use ApiTestCase;
 use DataValues\UnknownValue;
 use HashConfig;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
+use NullStatsdDataFactory;
 use RequestContext;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -121,6 +121,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				$repo->getBaseDataModelDeserializerFactory(),
 				$constraintParameterRenderer
 			);
+			$dataFactory = new NullStatsdDataFactory();
 			$constraintChecker = new DelegatingConstraintChecker(
 				self::$entityLookup,
 				self::$checkerMap,
@@ -128,7 +129,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				$constraintParameterParser,
 				$repo->getStatementGuidParser(),
 				new LoggingHelper(
-					MediaWikiServices::getInstance()->getStatsdDataFactory(),
+					$dataFactory,
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 					$config
 				),
@@ -150,7 +151,8 @@ class CheckConstraintsTest extends ApiTestCase {
 					$entityIdFormatter,
 					$constraintParameterRenderer,
 					$config
-				)
+				),
+				$dataFactory
 			);
 		};
 	}

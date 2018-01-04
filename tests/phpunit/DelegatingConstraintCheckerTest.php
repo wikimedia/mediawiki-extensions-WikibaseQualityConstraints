@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
 
+use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
@@ -80,7 +81,9 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$this->getConstraintParameterParser(),
 			$rdfVocabulary,
 			$entityIdParser,
-			$titleParser
+			$titleParser,
+			null,
+			new NullStatsdDataFactory()
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 

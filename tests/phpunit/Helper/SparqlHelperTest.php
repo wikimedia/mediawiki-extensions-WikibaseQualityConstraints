@@ -9,6 +9,7 @@ use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use HashConfig;
+use NullStatsdDataFactory;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -65,7 +66,8 @@ class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 						  ),
 						  new ItemIdParser(),
 						  new InMemoryDataTypeLookup(),
-						  WANObjectCache::newEmpty()
+						  WANObjectCache::newEmpty(),
+						  new NullStatsdDataFactory()
 					  ] )
 					  ->setMethods( [ 'runQuery' ] )
 					  ->getMock();
@@ -104,7 +106,8 @@ EOF;
 						  ),
 						  new ItemIdParser(),
 						  new InMemoryDataTypeLookup(),
-						  WANObjectCache::newEmpty()
+						  WANObjectCache::newEmpty(),
+						  new NullStatsdDataFactory()
 					  ] )
 					  ->setMethods( [ 'runQuery' ] )
 					  ->getMock();
@@ -160,7 +163,8 @@ EOF;
 				),
 				new ItemIdParser(),
 				$dtLookup,
-				WANObjectCache::newEmpty()
+				WANObjectCache::newEmpty(),
+				new NullStatsdDataFactory()
 			] )
 			->setMethods( [ 'runQuery' ] )
 			->getMock();
@@ -361,7 +365,8 @@ EOF;
 
 			new ItemIdParser(),
 			new InMemoryDataTypeLookup(),
-			WANObjectCache::newEmpty()
+			WANObjectCache::newEmpty(),
+			new NullStatsdDataFactory()
 		);
 
 		$actual = $sparqlHelper->isTimeout( $content );
@@ -384,7 +389,8 @@ EOF;
 			),
 			new ItemIdParser(),
 			new InMemoryDataTypeLookup(),
-			WANObjectCache::newEmpty()
+			WANObjectCache::newEmpty(),
+			new NullStatsdDataFactory()
 		);
 		$content = '(x+x+)+y';
 
@@ -436,7 +442,8 @@ EOF;
 			),
 			new ItemIdParser(),
 			new InMemoryDataTypeLookup(),
-			WANObjectCache::newEmpty()
+			WANObjectCache::newEmpty(),
+			new NullStatsdDataFactory()
 		);
 
 		$actual = $sparqlHelper->getCacheMaxAge( $responseHeaders );

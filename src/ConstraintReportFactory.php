@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use Config;
+use IBufferingStatsdDataFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use TitleParser;
@@ -123,6 +124,11 @@ class ConstraintReportFactory {
 	private $unitConverter;
 
 	/**
+	 * @var IBufferingStatsdDataFactory
+	 */
+	private $dataFactory;
+
+	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -161,7 +167,8 @@ class ConstraintReportFactory {
 				$wikibaseRepo->getRdfVocabulary(),
 				$wikibaseRepo->getEntityIdParser(),
 				$titleParser,
-				$wikibaseRepo->getUnitConverter()
+				$wikibaseRepo->getUnitConverter(),
+				MediaWikiServices::getInstance()->getStatsdDataFactory()
 			);
 		}
 
@@ -178,7 +185,8 @@ class ConstraintReportFactory {
 		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser,
 		TitleParser $titleParser,
-		UnitConverter $unitConverter = null
+		UnitConverter $unitConverter = null,
+		IBufferingStatsdDataFactory $dataFactory
 	) {
 		$this->lookup = $lookup;
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
@@ -190,6 +198,7 @@ class ConstraintReportFactory {
 		$this->entityIdParser = $entityIdParser;
 		$this->titleParser = $titleParser;
 		$this->unitConverter = $unitConverter;
+		$this->dataFactory = $dataFactory;
 	}
 
 	/**
@@ -204,7 +213,7 @@ class ConstraintReportFactory {
 				$this->constraintParameterParser,
 				$this->statementGuidParser,
 				new LoggingHelper(
-					MediaWikiServices::getInstance()->getStatsdDataFactory(),
+					$this->dataFactory,
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 					$this->config
 				),
@@ -230,7 +239,8 @@ class ConstraintReportFactory {
 					$this->rdfVocabulary,
 					$this->entityIdParser,
 					$this->propertyDataTypeLookup,
-					MediaWikiServices::getInstance()->getMainWANObjectCache()
+					MediaWikiServices::getInstance()->getMainWANObjectCache(),
+					$this->dataFactory
 				);
 			} else {
 				$sparqlHelper = null;
@@ -239,7 +249,8 @@ class ConstraintReportFactory {
 				$this->lookup,
 				$this->config,
 				$this->constraintParameterRenderer,
-				$sparqlHelper
+				$sparqlHelper,
+				$this->dataFactory
 			);
 
 			$this->constraintCheckerMap = [

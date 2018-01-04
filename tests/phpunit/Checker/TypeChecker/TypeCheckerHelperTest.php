@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
+use NullStatsdDataFactory;
 use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
@@ -46,7 +47,8 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 			$entityLookup ?: new JsonFileEntityLookup( __DIR__ ),
 			$this->getDefaultConfig(),
 			$this->getConstraintParameterRenderer(),
-			$sparqlHelper
+			$sparqlHelper,
+			new NullStatsdDataFactory()
 		);
 	}
 

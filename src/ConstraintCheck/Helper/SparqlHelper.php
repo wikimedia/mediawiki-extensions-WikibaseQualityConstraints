@@ -8,7 +8,6 @@ use DataValues\MonolingualTextValue;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
-use MediaWiki\MediaWikiServices;
 use MWException;
 use MWHttpRequest;
 use WANObjectCache;
@@ -82,13 +81,15 @@ class SparqlHelper {
 		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser,
 		PropertyDataTypeLookup $propertyDataTypeLookup,
-		WANObjectCache $cache
+		WANObjectCache $cache,
+		IBufferingStatsdDataFactory $dataFactory
 	) {
 		$this->config = $config;
 		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->cache = $cache;
+		$this->dataFactory = $dataFactory;
 
 		$this->entityPrefix = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY );
 		$this->prefixes = <<<EOT
@@ -106,8 +107,6 @@ PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX wikibase-beta: <http://wikiba.se/ontology-beta#>
 EOT;
 		// TODO get wikibase: prefix from vocabulary once -beta is dropped (T112127)
-
-		$this->dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 	}
 
 	/**

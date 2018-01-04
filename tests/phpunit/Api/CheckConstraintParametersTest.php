@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use ApiTestCase;
+use NullStatsdDataFactory;
 use RequestContext;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters;
@@ -80,7 +81,8 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				$prefix,
 				$apiHelperFactory,
 				$delegatingConstraintChecker,
-				$statementGuidParser
+				$statementGuidParser,
+				new NullStatsdDataFactory()
 			);
 		};
 

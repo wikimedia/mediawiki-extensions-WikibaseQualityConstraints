@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
 
+use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -59,7 +60,9 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			new TypeCheckerHelper(
 				$this->lookup,
 				$this->getDefaultConfig(),
-				$this->getConstraintParameterRenderer()
+				$this->getConstraintParameterRenderer(),
+				null,
+				new NullStatsdDataFactory()
 			),
 			$this->getDefaultConfig()
 		);

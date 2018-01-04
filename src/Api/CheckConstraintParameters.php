@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use ApiBase;
 use ApiMain;
 use ApiResult;
+use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
@@ -51,6 +52,11 @@ class CheckConstraintParameters extends ApiBase {
 	private $statementGuidParser;
 
 	/**
+	 * @var IBufferingStatsdDataFactory
+	 */
+	private $dataFactory;
+
+	/**
 	 * Creates new instance from global state.
 	 *
 	 * @param ApiMain $main
@@ -69,7 +75,8 @@ class CheckConstraintParameters extends ApiBase {
 			$prefix,
 			$helperFactory,
 			$constraintReportFactory->getConstraintChecker(),
-			$repo->getStatementGuidParser()
+			$repo->getStatementGuidParser(),
+			MediaWikiServices::getInstance()->getStatsdDataFactory()
 		);
 	}
 
@@ -80,6 +87,7 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param ApiHelperFactory $apiHelperFactory
 	 * @param DelegatingConstraintChecker $delegatingConstraintChecker
 	 * @param StatementGuidParser $statementGuidParser
+	 * @param IBufferingStatsdDataFactory $dataFactory
 	 */
 	public function __construct(
 		ApiMain $main,
@@ -87,18 +95,21 @@ class CheckConstraintParameters extends ApiBase {
 		$prefix,
 		ApiHelperFactory $apiHelperFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
-		StatementGuidParser $statementGuidParser
+		StatementGuidParser $statementGuidParser,
+		IBufferingStatsdDataFactory $dataFactory
 	) {
 		parent::__construct( $main, $name, $prefix );
 
 		$this->apiErrorReporter = $apiHelperFactory->getErrorReporter( $this );
 		$this->delegatingConstraintChecker = $delegatingConstraintChecker;
 		$this->statementGuidParser = $statementGuidParser;
+		$this->dataFactory = $dataFactory;
 	}
 
 	public function execute() {
-		MediaWikiServices::getInstance()->getStatsdDataFactory()
-			->increment( 'wikibase.quality.constraints.api.checkConstraintParameters.execute' );
+		$this->dataFactory->increment(
+			'wikibase.quality.constraints.api.checkConstraintParameters.execute'
+		);
 
 		$params = $this->extractRequestParams();
 		$result = $this->getResult();
