@@ -27,7 +27,8 @@
 	 * @cfg {Object} constraint The constraint of the report, as returned by the wbcheckconstraints API.
 	 * @cfg {string} [message=''] The message (HTML) of the report, if present.
 	 * @cfg {string[]} [ancillaryMessages=[]] Additional messages (HTML) attached to the report, if any.
-	 * @cfg {jQuery} [$heading] The heading element of the panel. Should not contain the help link.
+	 * @cfg {jQuery} [$heading] The heading element of the panel. Should not yet contain the heading links.
+	 * @cfg {jQuery} [$headingLinks] The container for the links in the heading of the panel. Should not yet contain the help link.
 	 * @cfg {jQuery} [$helpLink] The help link for the heading.
 	 * @cfg {jQuery} [$message] The message paragraph of the panel.
 	 * @cfg {jQuery} [$ancillaryMessages] The container of the additional messages.
@@ -49,19 +50,18 @@
 		// Properties
 		this.status = config.status;
 		this.constraint = config.constraint;
-		this.$heading = config.$heading || $( '<h4>' ).append(
+		this.$heading = config.$heading || $( '<h4 class="wbqc-report-heading">' ).append(
 			$( '<a>' )
 				.text( this.constraint.typeLabel )
 				.attr( 'href', this.constraint.link )
 				.attr( 'target', '_blank' )
 		);
-		this.$helpLink = config.$helpLink || $( '<small class="wbqc-constraint-type-help">' ).append(
-			$( '<a>' )
-				.text( mw.message( 'wbqc-constrainttypehelp-short' ).text() )
-				.attr( 'title', mw.message( 'wbqc-constrainttypehelp-long' ).text() )
-				.attr( 'href', 'https://www.wikidata.org/wiki/Help:Property_constraints_portal/' + this.constraint.type )
-				.attr( 'target', '_blank' )
-		);
+		this.$headingLinks = config.$headingLinks || $( '<small class="wbqc-report-heading-links">' );
+		this.$helpLink = config.$helpLink || $( '<a class="wbqc-constraint-type-help">' )
+			.text( mw.message( 'wbqc-constrainttypehelp-short' ).text() )
+			.attr( 'title', mw.message( 'wbqc-constrainttypehelp-long' ).text() )
+			.attr( 'href', 'https://www.wikidata.org/wiki/Help:Property_constraints_portal/' + this.constraint.type )
+			.attr( 'target', '_blank' );
 		this.message = config.message;
 		this.$message = config.$message || $( '<p>' ).html( this.message );
 		this.ancillaryMessages = config.ancillaryMessages;
@@ -78,7 +78,8 @@
 		this.$element
 			.addClass( 'wbqc-report' )
 			.addClass( 'wbqc-report-status-' + this.status );
-		this.$heading.append( this.$helpLink );
+		this.$headingLinks.append( this.$helpLink );
+		this.$heading.append( this.$headingLinks );
 		this.$element.append( this.$heading );
 		this.$element.append( this.$message );
 		this.$element.append( this.$ancillaryMessages );
