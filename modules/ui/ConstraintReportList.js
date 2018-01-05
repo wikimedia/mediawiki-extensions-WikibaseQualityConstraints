@@ -15,7 +15,8 @@
 	 *                 constraint: {
 	 *                     type: 'Q1',
 	 *                     typeLabel: 'my constraint',
-	 *                     link: 'http://example.com/my-constraint'
+	 *                     link: 'http://example.com/my-constraint',
+	 *                     discussLink: 'https://wikidata.org/Property_talk:P2'
 	 *                 },
 	 *                 message: 'everything okay'
 	 *             } ),
@@ -24,7 +25,8 @@
 	 *                 constraint: {
 	 *                     type: 'Q2',
 	 *                     typeLabel: 'my other constraint',
-	 *                     link: 'http://example.com/my-other-constraint'
+	 *                     link: 'http://example.com/my-other-constraint',
+	 *                     discussLink: 'http://example.com/Property_talk:P2'
 	 *                 },
 	 *                 message: 'doing it wrong'
 	 *             } )
@@ -59,7 +61,8 @@
 	 *                         constraint: {
 	 *                             type: 'Q1',
 	 *                             typeLabel: 'my constraint',
-	 *                             link: 'http://example.com/my-constraint'
+	 *                             link: 'http://example.com/my-constraint',
+	 *                             discussLink: 'http://example.com/Property_talk:P2'
 	 *                         },
 	 *                         message: 'everything okay'
 	 *                     } )
@@ -73,7 +76,8 @@
 	 *                         constraint: {
 	 *                             type: 'Q2',
 	 *                             typeLabel: 'my other constraint',
-	 *                             link: 'http://example.com/my-other-constraint'
+	 *                             link: 'http://example.com/my-other-constraint',
+	 *                             discussLink: 'http://example.com/Property_talk:P2'
 	 *                         },
 	 *                         message: 'doing it wrong'
 	 *                     } )

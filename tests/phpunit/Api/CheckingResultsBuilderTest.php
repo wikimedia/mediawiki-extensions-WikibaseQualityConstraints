@@ -54,6 +54,13 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				$title = $this->getMock( Title::class );
 				$title->method( 'getFullUrl' )
 					->willReturn( 'http://wiki.test/' . $id->getSerialization() );
+				$title->method( 'getTalkPage' )
+					->will( $this->returnCallback( function() use ( $id ) {
+						$title = $this->getMock( Title::class );
+						$title->method( 'getFullUrl' )
+							->willReturn( 'http://wiki.test/Talk:' . $id->getSerialization() );
+						return $title;
+					} ) );
 				return $title;
 			} ) );
 		return new CheckingResultsBuilder(
@@ -232,6 +239,7 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( 'Q1', $constraint['type'] );
 		$this->assertSame( 'Q1', $constraint['typeLabel'] );
 		$this->assertSame( 'http://wiki.test/P1#P2302', $constraint['link'] );
+		$this->assertSame( 'http://wiki.test/Talk:P1', $constraint['discussLink'] );
 		if ( $this->getDefaultConfig()->get( 'WBQualityConstraintsIncludeDetailInApi' ) ) {
 			$this->assertSame( [], $constraint['detail'] );
 			$this->assertNull( $constraint['detailHTML'] );
