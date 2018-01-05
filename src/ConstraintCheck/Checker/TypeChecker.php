@@ -74,7 +74,7 @@ class TypeChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 		if ( $context->getType() === Context::TYPE_REFERENCE ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_MAIN_SNAK );
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE );
 		}
 
 		$parameters = [];
