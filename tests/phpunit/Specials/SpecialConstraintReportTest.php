@@ -71,7 +71,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
 				SnakFormatter::FORMAT_HTML,
 				new FormatterOptions()
-			)
+			),
+			$config
 		);
 		$constraintReportFactory = new ConstraintReportFactory(
 			$wikibaseRepo->getEntityLookup(),

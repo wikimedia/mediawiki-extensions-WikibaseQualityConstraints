@@ -166,7 +166,11 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$this->constraintChecker = $constraintChecker;
 
-		$this->constraintParameterRenderer = new ConstraintParameterRenderer( $this->entityIdLabelFormatter, $this->dataValueFormatter );
+		$this->constraintParameterRenderer = new ConstraintParameterRenderer(
+			$this->entityIdLabelFormatter,
+			$this->dataValueFormatter,
+			$config
+		);
 
 		$this->config = $config;
 		$this->dataFactory = $dataFactory;

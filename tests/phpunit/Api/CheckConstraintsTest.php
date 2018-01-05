@@ -115,7 +115,11 @@ class CheckConstraintsTest extends ApiTestCase {
 				'WBQualityConstraintsIncludeDetailInApi' => true,
 			] );
 			$entityIdParser = new ItemIdParser();
-			$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdFormatter, $valueFormatter );
+			$constraintParameterRenderer = new ConstraintParameterRenderer(
+				$entityIdFormatter,
+				$valueFormatter,
+				$config
+			);
 			$constraintParameterParser = new ConstraintParameterParser(
 				$config,
 				$repo->getBaseDataModelDeserializerFactory(),

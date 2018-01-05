@@ -151,7 +151,8 @@ class ConstraintReportFactory {
 				$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
 					SnakFormatter::FORMAT_HTML,
 					new FormatterOptions()
-				)
+				),
+				$config
 			);
 			$instance = new self(
 				$wikibaseRepo->getEntityLookup(),

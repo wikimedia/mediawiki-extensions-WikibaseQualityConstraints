@@ -67,7 +67,8 @@ trait ConstraintParameters {
 			$entityIdFormatter = new PlainEntityIdFormatter();
 			$this->renderer = new ConstraintParameterRenderer(
 				$entityIdFormatter,
-				$valueFormatter
+				$valueFormatter,
+				$this->getDefaultConfig()
 			);
 		}
 

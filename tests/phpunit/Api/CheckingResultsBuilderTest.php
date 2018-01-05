@@ -68,7 +68,9 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$entityTitleLookup,
 			$entityIdFormatter,
 			new ConstraintParameterRenderer(
-				$entityIdFormatter, $this->getMock( ValueFormatter::class )
+				$entityIdFormatter,
+				$this->getMock( ValueFormatter::class ),
+				$this->getDefaultConfig()
 			),
 			$this->getDefaultConfig()
 		);

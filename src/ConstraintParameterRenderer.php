@@ -1,6 +1,7 @@
 <?php
 namespace WikibaseQuality\ConstraintReport;
 
+use Config;
 use DataValues\DataValue;
 use InvalidArgumentException;
 use ValueFormatters\ValueFormatter;
@@ -8,6 +9,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
@@ -36,15 +38,23 @@ class ConstraintParameterRenderer {
 	private $dataValueFormatter;
 
 	/**
+	 * @var Config
+	 */
+	private $config;
+
+	/**
 	 * @param EntityIdFormatter $entityIdFormatter should return HTML
 	 * @param ValueFormatter $dataValueFormatter should return HTML
+	 * @param Config $config used to look up item IDs of constraint scopes (Context::TYPE_* constants)
 	 */
 	public function __construct(
 		EntityIdFormatter $entityIdFormatter,
-		ValueFormatter $dataValueFormatter
+		ValueFormatter $dataValueFormatter,
+		Config $config
 	) {
 		$this->entityIdLabelFormatter = $entityIdFormatter;
 		$this->dataValueFormatter = $dataValueFormatter;
+		$this->config = $config;
 	}
 
 	/**
@@ -223,6 +233,40 @@ class ConstraintParameterRenderer {
 	}
 
 	/**
+	 * Format a constraint scope (check on main snak, on qualifiers, or on references).
+	 *
+	 * @param string $scope one of the Context::TYPE_* constants
+	 * @param string|null $role one of the Role constants or null
+	 * @return string HTML
+	 */
+	public function formatConstraintScope( $scope, $role = null ) {
+		switch ( $scope ) {
+			case Context::TYPE_STATEMENT:
+				$itemId = $this->config->get(
+					'WBQualityConstraintsConstraintCheckedOnMainValueId'
+				);
+				break;
+			case Context::TYPE_QUALIFIER:
+				$itemId = $this->config->get(
+					'WBQualityConstraintsConstraintCheckedOnQualifiersId'
+				);
+				break;
+			case Context::TYPE_REFERENCE:
+				$itemId = $this->config->get(
+					'WBQualityConstraintsConstraintCheckedOnReferencesId'
+				);
+				break;
+			default:
+				// callers should never let this happen, but if it does happen,
+				// showing “unknown value” seems reasonable
+				// @codeCoverageIgnoreStart
+				return $this->formatItemIdSnakValue( ItemIdSnakValue::someValue(), $role );
+				// @codeCoverageIgnoreEnd
+		}
+		return $this->formatItemId( $itemId, $role );
+	}
+
+	/**
 	 * Format a list of (potentially unparsed) property IDs.
 	 *
 	 * The returned array begins with an HTML list of the formatted property IDs
@@ -329,6 +373,38 @@ class ConstraintParameterRenderer {
 			'<ul><li>' . implode( '</li><li>', $formattedValues ) . '</li></ul>'
 		);
 		return $formattedValues;
+	}
+
+	/**
+	 * Format a list of constraint scopes (check on main snak, qualifiers, and/or references).
+	 *
+	 * The returned array begins with an HTML list of the formatted scopes
+	 * and then contains all the individual formatted scopes.
+	 *
+	 * @param string[] $scopes
+	 * @param string|null $role one of the Role constants or null
+	 * @return string[] HTML
+	 */
+	public function formatConstraintScopeList( array $scopes, $role = null ) {
+		if ( empty( $scopes ) ) {
+			return [ '<ul></ul>' ];
+		}
+		$scopes = $this->limitArrayLength( $scopes );
+		$formattedScopes = array_map(
+			function( $scope ) use ( $role ) {
+				if ( $scope === '...' ) {
+					return '...';
+				} else {
+					return $this->formatConstraintScope( $scope, $role );
+				}
+			},
+			$scopes
+		);
+		array_unshift(
+			$formattedScopes,
+			'<ul><li>' . implode( '</li><li>', $formattedScopes ) . '</li></ul>'
+		);
+		return $formattedScopes;
 	}
 
 }
