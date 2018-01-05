@@ -60,8 +60,8 @@ class CheckResult {
 	/*
 	 * When adding another status, don’t forget to also do the following:
 	 * * define a message for it in i18n/
-	 * * declare a color for it in modules/SpecialConstraintReportPage.css
-	 * * update $order in updateDelegatingConstraintChecker::sortResult
+	 * * declare a color for it in modules/SpecialConstraintReportPage.less
+	 * * update $order in DelegatingConstraintChecker::sortResult
 	 */
 
 	/**
