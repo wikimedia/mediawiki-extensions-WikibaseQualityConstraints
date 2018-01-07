@@ -47,6 +47,8 @@
 	"wbqc-parameterissues-long": "Ces problèmes sont relatifs à la définition de la contrainte sur la propriété, et non à cette déclaration.",
 	"wbqc-constrainttypehelp-short": "Aide",
 	"wbqc-constrainttypehelp-long": "Page d'aide pour ce type de contrainte",
+	"wbqc-constraintdiscuss-short": "Discussions",
+	"wbqc-constraintdiscuss-long": "Page de discussion concernant cette contrainte",
 	"wbqc-cached-generic": "Ce résultat est en cache et peut être désuet.",
 	"wbqc-cached-minutes": "Ce résultat est en cache et peut être désuet depuis {{PLURAL:$1|1=une minute|$1&nbsp;minutes}}.",
 	"wbqc-cached-hours": "Ce résultat est mis en cache et pourrait être obsolète pendant {{PLURAL:$1|1=une heure|$1&nbsp;heures}}.",

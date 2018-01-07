@@ -19,6 +19,8 @@
 	"wbqc-potentialissues-short": "Potenziell Problemer",
 	"wbqc-badparameters-short": "Falsch Parameteren",
 	"wbqc-constrainttypehelp-short": "Hëllef",
+	"wbqc-constraintdiscuss-short": "Diskutéieren",
+	"wbqc-constraintdiscuss-long": "Diskussiounssäit iwwer dës Limitatioun",
 	"wbqc-cached-hours": "Dëst Resultat kënnt aus dem Tëschespäicher a ka bis zu  {{PLURAL:$1|1=enger Stonn|$1&nbsp;Stonnen}} al sinn.",
 	"wbqc-cached-days": "Dëst Resultat kënnt aus dem Tëschespäicher a ka bis zu  {{PLURAL:$1|1=engem Dag|$1&nbsp;Deeg}} al sinn.",
 	"wbqc-violation-header-parameters": "Parameteren:",

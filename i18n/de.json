@@ -41,6 +41,8 @@
 	"wbqc-parameterissues-long": "Dies sind Probleme mit der Beschränkungsdefinition zu der Eigenschaft, nicht mit dieser Aussage.",
 	"wbqc-constrainttypehelp-short": "Hilfe",
 	"wbqc-constrainttypehelp-long": "Hilfeseite für diesen Beschränkungstyp",
+	"wbqc-constraintdiscuss-short": "Diskussion",
+	"wbqc-constraintdiscuss-long": "Diskussionsseite über diese Beschränkung",
 	"wbqc-cached-generic": "Dieses Ergebnis ist gecacht und könnte veraltet sein.",
 	"wbqc-cached-minutes": "Dieses Ergebnis ist gecacht und könnte bis zu {{PLURAL:$1|1=eine Minute|$1 Minuten}} alt sein.",
 	"wbqc-cached-hours": "Dieses Ergebnis stammt aus dem Cache und kann bis zu {{PLURAL:$1|1=eine Stunde|$1 Stunden}} alt sein.",

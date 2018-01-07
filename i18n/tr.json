@@ -3,7 +3,8 @@
 		"authors": [
 			"Demircimehmed",
 			"Sadrettin",
-			"Sayginer"
+			"Sayginer",
+			"Hedda"
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "Kontrol",
@@ -11,5 +12,7 @@
 	"wbqc-constraintreport-result-table-header-status": "Durum",
 	"wbqc-constraintreport-result-table-header-claim": "Talep",
 	"wbqc-constraintreport-result-link-to-claim": "Talebe git.",
+	"wbqc-constraintdiscuss-short": "Tartış",
+	"wbqc-constraintdiscuss-long": "Kısıtlama hakkında tartışma",
 	"wbqc-violation-header-parameters": "Parametreler:"
 }
