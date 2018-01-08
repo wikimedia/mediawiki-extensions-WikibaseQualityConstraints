@@ -79,7 +79,7 @@ abstract class ApiV2Context extends AbstractContext {
 	 * @param array|null $result
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( $result, array &$container ) {
+	public function storeCheckResultInArray( array $result = null, array &$container ) {
 		$mainArray = &$this->getMainArray( $container );
 		if ( !array_key_exists( 'results', $mainArray ) ) {
 			$mainArray['results'] = [];

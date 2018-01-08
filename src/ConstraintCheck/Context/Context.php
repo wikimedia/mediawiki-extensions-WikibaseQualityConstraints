@@ -86,6 +86,6 @@ interface Context {
 	 * @param array|null $result
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( $result, array &$container );
+	public function storeCheckResultInArray( array $result = null, array &$container );
 
 }
