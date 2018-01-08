@@ -84,7 +84,7 @@ interface Context {
 	 * but still populate the appropriate location for this context in $container.
 	 *
 	 * @param array|null $result
-	 * @param array &$container
+	 * @param array[] &$container
 	 */
 	public function storeCheckResultInArray( $result, array &$container );
 

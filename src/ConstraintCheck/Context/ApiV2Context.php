@@ -24,17 +24,17 @@ abstract class ApiV2Context extends AbstractContext {
 	/**
 	 * Returns the statement subcontainer.
 	 *
-	 * @param array &$container
-	 * @param string $entityId entity ID serialization
-	 * @param string $propertyId property ID serialization
-	 * @param string $statementId statement GUID
+	 * @param array[] &$container
+	 * @param string $entityId
+	 * @param string $propertyId
+	 * @param string $statementGuid
 	 * @return array
 	 */
 	protected function &getStatementArray(
 		array &$container,
 		$entityId,
 		$propertyId,
-		$statementId
+		$statementGuid
 	) {
 		if ( !array_key_exists( $entityId, $container ) ) {
 			$container[$entityId] = [];
@@ -52,13 +52,13 @@ abstract class ApiV2Context extends AbstractContext {
 		$propertyContainer = &$claimsContainer[$propertyId];
 
 		foreach ( $propertyContainer as &$statement ) {
-			if ( $statement['id'] === $statementId ) {
+			if ( $statement['id'] === $statementGuid ) {
 				$statementArray = &$statement;
 				break;
 			}
 		}
 		if ( !isset( $statementArray ) ) {
-			$statementArray = [ 'id' => $statementId ];
+			$statementArray = [ 'id' => $statementGuid ];
 			$propertyContainer[] = &$statementArray;
 		}
 
@@ -70,11 +70,15 @@ abstract class ApiV2Context extends AbstractContext {
 	 * It should locate the array in $container or,
 	 * if the array doesn’t exist yet, create it and emplace it there.
 	 *
-	 * @param array &$container
+	 * @param array[] &$container
 	 * @return array
 	 */
 	abstract protected function &getMainArray( array &$container );
 
+	/**
+	 * @param array|null $result
+	 * @param array[] &$container
+	 */
 	public function storeCheckResultInArray( $result, array &$container ) {
 		$mainArray = &$this->getMainArray( $container );
 		if ( !array_key_exists( 'results', $mainArray ) ) {
