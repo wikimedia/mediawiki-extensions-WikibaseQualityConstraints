@@ -122,4 +122,18 @@ trait ResultAssertions {
 		);
 	}
 
+	/**
+	 * Assert that $result indicates a skipped constraint check
+	 * due to the snak not being within the scope of the constraint.
+	 *
+	 * @param CheckResult $result
+	 */
+	public function assertNotInScope( CheckResult $result ) {
+		$this->assertSame(
+			CheckResult::STATUS_NOT_IN_SCOPE,
+			$result->getStatus(),
+			'Check should indicate that snak is out of scope of constraint; message: ' . $result->getMessage()
+		);
+	}
+
 }
