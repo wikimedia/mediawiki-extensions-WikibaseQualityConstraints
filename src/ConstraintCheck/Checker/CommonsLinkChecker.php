@@ -52,6 +52,28 @@ class CommonsLinkChecker implements ConstraintChecker {
 	}
 
 	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
+	public function getSupportedContextTypes() {
+		return [
+			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_REFERENCE => CheckResult::STATUS_COMPLIANCE,
+		];
+	}
+
+	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
+	public function getDefaultContextTypes() {
+		return [
+			Context::TYPE_STATEMENT,
+			Context::TYPE_QUALIFIER,
+			Context::TYPE_REFERENCE,
+		];
+	}
+
+	/**
 	 * Get the number of a namespace on Wikimedia Commons (commonswiki).
 	 * All namespaces not known to this function will be looked up by the TitleParser.
 	 *

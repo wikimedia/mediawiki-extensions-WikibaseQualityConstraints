@@ -62,6 +62,30 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	}
 
 	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
+	public function getSupportedContextTypes() {
+		return [
+			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+			// TODO T175565
+			Context::TYPE_QUALIFIER => CheckResult::STATUS_TODO,
+			Context::TYPE_REFERENCE => CheckResult::STATUS_TODO,
+		];
+	}
+
+	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
+	public function getDefaultContextTypes() {
+		return [
+			Context::TYPE_STATEMENT,
+			// TODO T175565
+			// Context::TYPE_QUALIFIER,
+			// Context::TYPE_REFERENCE,
+		];
+	}
+
+	/**
 	 * @param Constraint $constraint
 	 *
 	 * @throws ConstraintParameterException

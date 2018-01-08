@@ -42,6 +42,28 @@ class UniqueValueChecker implements ConstraintChecker {
 	}
 
 	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
+	public function getSupportedContextTypes() {
+		return [
+			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_REFERENCE => CheckResult::STATUS_COMPLIANCE,
+		];
+	}
+
+	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
+	public function getDefaultContextTypes() {
+		return [
+			Context::TYPE_STATEMENT,
+			Context::TYPE_QUALIFIER,
+			Context::TYPE_REFERENCE,
+		];
+	}
+
+	/**
 	 * Checks 'Unique value' constraint.
 	 *
 	 * @param Context $context

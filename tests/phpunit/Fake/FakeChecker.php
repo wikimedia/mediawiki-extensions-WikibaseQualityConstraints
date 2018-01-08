@@ -26,6 +26,22 @@ class FakeChecker implements ConstraintChecker {
 		$this->status = $status;
 	}
 
+	public function getSupportedContextTypes() {
+		return [
+			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_REFERENCE => CheckResult::STATUS_COMPLIANCE,
+		];
+	}
+
+	public function getDefaultContextTypes() {
+		return [
+			Context::TYPE_STATEMENT,
+			Context::TYPE_QUALIFIER,
+			Context::TYPE_REFERENCE,
+		];
+	}
+
 	/**
 	 * @see ConstraintChecker::checkConstraint
 	 */
