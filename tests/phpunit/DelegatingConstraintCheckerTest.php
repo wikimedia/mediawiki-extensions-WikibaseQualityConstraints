@@ -15,9 +15,12 @@ use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -625,6 +628,175 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			'do check this',
 			$results[0]->getContext()->getSnak()->getDataValue()->getValue()
 		);
+	}
+
+	public function testSupportedContextTypes_NotSupported() {
+		$checker = $this->getMock( ConstraintChecker::class );
+		$checker->method( 'getSupportedContextTypes' )
+			->willReturn( [
+				Context::TYPE_STATEMENT => CheckResult::STATUS_NOT_IN_SCOPE,
+			] );
+		$checker->method( 'getDefaultContextTypes' )
+			->willReturn( [] );
+		$checker->expects( $this->never() )->method( 'checkConstraint' );
+		$lookup = new InMemoryEntityLookup();
+		$q2 = new ItemId( 'Q2' );
+		$lookup->addEntity(
+			NewItem::withId( $q2 )
+				->andStatement( NewStatement::noValueFor( 'P1' ) )
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$lookup,
+			[ 'Q1' => $checker ],
+			new InMemoryConstraintLookup( [
+				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->getMockBuilder( LoggingHelper::class )
+				->disableOriginalConstructor()
+				->getMock(),
+			true,
+			true,
+			[]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
+
+		$this->assertCount( 1, $results );
+		$this->assertNotInScope( $results[0] );
+	}
+
+	public function testSupportedContextTypes_NotImplemented() {
+		$checker = $this->getMock( ConstraintChecker::class );
+		$checker->method( 'getSupportedContextTypes' )
+			->willReturn( [
+				Context::TYPE_STATEMENT => CheckResult::STATUS_TODO,
+			] );
+		$checker->method( 'getDefaultContextTypes' )
+			->willReturn( [ Context::TYPE_STATEMENT ] );
+		$checker->expects( $this->never() )->method( 'checkConstraint' );
+		$lookup = new InMemoryEntityLookup();
+		$q2 = new ItemId( 'Q2' );
+		$lookup->addEntity(
+			NewItem::withId( $q2 )
+				->andStatement( NewStatement::noValueFor( 'P1' ) )
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$lookup,
+			[ 'Q1' => $checker ],
+			new InMemoryConstraintLookup( [
+				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->getMockBuilder( LoggingHelper::class )
+				->disableOriginalConstructor()
+				->getMock(),
+			true,
+			true,
+			[]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
+
+		$this->assertCount( 1, $results );
+		$this->assertTodo( $results[0] );
+	}
+
+	public function testSupportedContextTypes_DefaultScope() {
+		$checker = $this->getMock( ConstraintChecker::class );
+		$checker->method( 'getSupportedContextTypes' )
+			->willReturn( [
+				Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+				Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
+			] );
+		$checker->method( 'getDefaultContextTypes' )
+			->willReturn( [ Context::TYPE_QUALIFIER ] );
+		$checker->expects( $this->once() )
+			->method( 'checkConstraint' )
+			->willReturnCallback( function( Context $context, Constraint $constraint ) {
+				$this->assertSame( Context::TYPE_QUALIFIER, $context->getType() );
+				return new CheckResult( $context, $constraint );
+			} );
+		$lookup = new InMemoryEntityLookup();
+		$q2 = new ItemId( 'Q2' );
+		$lookup->addEntity(
+			NewItem::withId( $q2 )
+				->andStatement(
+					NewStatement::noValueFor( 'P1' )
+						->withQualifier( 'P1', 'value' )
+				)
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$lookup,
+			[ 'Q1' => $checker ],
+			new InMemoryConstraintLookup( [
+				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->getMockBuilder( LoggingHelper::class )
+				->disableOriginalConstructor()
+				->getMock(),
+			true,
+			true,
+			[]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
+	}
+
+	public function testSupportedContextTypes_ExplicitScope() {
+		$checker = $this->getMock( ConstraintChecker::class );
+		$checker->method( 'getSupportedContextTypes' )
+			->willReturn( [
+				Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+				Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
+			] );
+		$checker->method( 'getDefaultContextTypes' )
+			->willReturn( [ Context::TYPE_QUALIFIER ] );
+		$checker->expects( $this->once() )
+			->method( 'checkConstraint' )
+			->willReturnCallback( function( Context $context, Constraint $constraint ) {
+				$this->assertSame( Context::TYPE_STATEMENT, $context->getType() );
+				return new CheckResult( $context, $constraint );
+			} );
+		$lookup = new InMemoryEntityLookup();
+		$q2 = new ItemId( 'Q2' );
+		$lookup->addEntity(
+			NewItem::withId( $q2 )
+				->andStatement(
+					NewStatement::noValueFor( 'P1' )
+						->withQualifier( 'P1', 'value' )
+				)
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$lookup,
+			[ 'Q1' => $checker ],
+			new InMemoryConstraintLookup( [
+				new Constraint(
+					'',
+					new PropertyId( 'P1' ),
+					'Q1',
+					$this->scopeParameter( [ Context::TYPE_STATEMENT ] )
+				)
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->getMockBuilder( LoggingHelper::class )
+				->disableOriginalConstructor()
+				->getMock(),
+			true,
+			true,
+			[]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
 	}
 
 }
