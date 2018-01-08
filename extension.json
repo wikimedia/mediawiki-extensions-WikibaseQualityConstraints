@@ -60,6 +60,7 @@
 			"dependencies": [
 				"oojs-ui-core",
 				"oojs-ui-widgets",
+				"jquery.makeCollapsible",
 				"wikibase"
 			],
 			"messages": [
