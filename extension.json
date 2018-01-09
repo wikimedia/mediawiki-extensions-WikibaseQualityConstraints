@@ -169,7 +169,7 @@
 			"public": true
 		},
 		"WBQualityConstraintsIncludeDetailInApi": {
-			"value": true,
+			"value": false,
 			"description": "Whether to include the 'detail' and 'detailHTML' fields in the response of the wbcheckconstraints API action.",
 			"public": true
 		},
