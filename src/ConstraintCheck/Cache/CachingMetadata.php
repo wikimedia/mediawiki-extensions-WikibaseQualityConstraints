@@ -40,7 +40,7 @@ class CachingMetadata {
 	/**
 	 * Deserializes the metadata from an array (or null if the value is fresh).
 	 * @param array|null $array As returned by toArray.
-	 * @return CachingMetadata
+	 * @return self
 	 */
 	public static function ofArray( array $array = null ) {
 		$ret = new self;
