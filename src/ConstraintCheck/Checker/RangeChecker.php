@@ -65,6 +65,7 @@ class RangeChecker implements ConstraintChecker {
 	 * @param Context $context
 	 * @param Constraint $constraint
 	 *
+	 * @throws ConstraintParameterException
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {

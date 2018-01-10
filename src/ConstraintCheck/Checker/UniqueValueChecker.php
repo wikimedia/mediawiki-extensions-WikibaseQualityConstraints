@@ -47,9 +47,8 @@ class UniqueValueChecker implements ConstraintChecker {
 	 * @param Context $context
 	 * @param Constraint $constraint
 	 *
-	 * @return CheckResult
-	 *
 	 * @throws SparqlHelperException if the checker uses SPARQL and the query times out or some other error occurs
+	 * @return CheckResult
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
