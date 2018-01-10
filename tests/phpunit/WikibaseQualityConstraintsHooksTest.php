@@ -104,4 +104,48 @@ class WikibaseQualityConstraintsHooksTest extends \PHPUnit_Framework_TestCase {
 		yield 'property-copy-constraint' => [ $change, true ];
 	}
 
+	/**
+	 * @dataProvider isGadgetEnabledForUserNameProvider
+	 * @param string $userName
+	 * @param int $timestamp
+	 * @param bool $expected
+	 */
+	public function testIsGadgetEnabledForUserName( $userName, $timestamp, $expected ) {
+		$actual = WikibaseQualityConstraintsHooks::isGadgetEnabledForUserName(
+			$userName,
+			$timestamp
+		);
+
+		$this->assertSame( $expected, $actual );
+	}
+
+	public function isGadgetEnabledForUserNameProvider() {
+		yield 'enabled for no one' => [ 'Z', strtotime( '2018-02-28' ), false ];
+		yield 'enabled for Z' => [ 'Z', strtotime( '2018-03-01' ), true ];
+		yield 'not enabled for Y' => [ 'Y', strtotime( '2018-03-01' ), false ];
+		yield 'still not enabled for Y' => [ 'Y', strtotime( '2018-03-07' ), false ];
+		yield 'enabled for Y' => [ 'Y', strtotime( '2018-03-08' ), true ];
+		yield 'enabled for W' => [ 'W', strtotime( '2018-03-08' ), true ];
+		yield 'not enabled for V' => [ 'V', strtotime( '2018-03-08' ), false ];
+		yield 'still not enabled for V' => [ 'V', strtotime( '2018-03-14' ), false ];
+		yield 'enabled for V' => [ 'V', strtotime( '2018-03-15' ), true ];
+		yield 'enabled for T' => [ 'T', strtotime( '2018-03-15' ), true ];
+		yield 'not enabled for S' => [ 'S', strtotime( '2018-03-15' ), false ];
+		yield 'still not enabled for S' => [ 'S', strtotime( '2018-03-21' ), false ];
+		yield 'enabled for S' => [ 'S', strtotime( '2018-03-22' ), true ];
+		yield 'enabled for N' => [ 'N', strtotime( '2018-03-22' ), true ];
+		yield 'not enabled for M' => [ 'M', strtotime( '2018-03-22' ), false ];
+		yield 'still not enabled for M' => [ 'M', strtotime( '2018-03-28' ), false ];
+		yield 'enabled for M' => [ 'M', strtotime( '2018-03-29' ), true ];
+		yield 'enabled for E' => [ 'E', strtotime( '2018-03-29' ), true ];
+		yield 'not enabled for D' => [ 'D', strtotime( '2018-03-29' ), false ];
+		yield 'still not enabled for D' => [ 'D', strtotime( '2018-04-04' ), false ];
+		yield 'enabled for D' => [ 'D', strtotime( '2018-04-05' ), true ];
+		yield 'enabled for A' => [ 'A', strtotime( '2018-04-05' ), true ];
+		foreach ( [ 'Ω', 'Я', 'א', 'ا' ] as $nonAscii ) {
+			yield 'not enabled for ' . $nonAscii => [ $nonAscii, strtotime( '2018-04-04' ), false ];
+			yield 'enabled for ' . $nonAscii => [ $nonAscii, strtotime( '2018-04-05' ), true ];
+		}
+	}
+
 }

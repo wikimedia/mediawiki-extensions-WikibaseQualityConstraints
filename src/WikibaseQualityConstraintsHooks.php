@@ -7,6 +7,8 @@ use DatabaseUpdater;
 use JobQueueGroup;
 use JobSpecification;
 use MediaWiki\MediaWikiServices;
+use OutputPage;
+use Skin;
 use Title;
 use Wikibase\Change;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -78,6 +80,61 @@ final class WikibaseQualityConstraintsHooks {
 			$entityId = $entityContentFactory->getEntityIdForTitle( $wikiPage->getTitle() );
 			$resultsCache = ResultsCache::getDefaultInstance();
 			$resultsCache->delete( $entityId );
+		}
+	}
+
+	/**
+	 * @param string $userName
+	 * @param int $timestamp UTC timestamp (seconds since the Epoch)
+	 * @return bool
+	 */
+	public static function isGadgetEnabledForUserName( $userName, $timestamp ) {
+		$initial = $userName[0];
+
+		if ( $initial === 'Z' ) {
+			$firstWeek = 0;
+		} elseif ( $initial >= 'W' && $initial < 'Z' ) {
+			$firstWeek = 1;
+		} elseif ( $initial >= 'T' && $initial < 'W' ) {
+			$firstWeek = 2;
+		} elseif ( $initial >= 'N' && $initial < 'T' ) {
+			$firstWeek = 3;
+		} elseif ( $initial >= 'E' && $initial < 'N' ) {
+			$firstWeek = 4;
+		} else {
+			$firstWeek = 5;
+		}
+
+		$threshold = gmmktime(
+			0, // hour
+			0, // minute
+			0, // second
+			3, // month; overflows to 3 or 4 depending on day
+			$firstWeek * 7 + 1, // day
+			2018 // year
+		);
+
+		return $timestamp >= $threshold;
+	}
+
+	public static function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) {
+		$repo = WikibaseRepo::getDefaultInstance();
+
+		$lookup = $repo->getEntityNamespaceLookup();
+		$title = $out->getTitle();
+		if ( $title === null ) {
+			return;
+		}
+
+		if ( !$lookup->isEntityNamespace( $title->getNamespace() ) ) {
+			return;
+		}
+		if ( !$out->getUser()->isLoggedIn() ) {
+			return;
+		}
+
+		if ( self::isGadgetEnabledForUserName( $out->getUser()->getName(), time() ) ) {
+			$out->addModules( 'wikibase.quality.constraints.gadget' );
 		}
 	}
 
