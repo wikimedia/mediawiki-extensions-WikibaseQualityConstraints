@@ -10,12 +10,14 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob;
@@ -247,6 +249,65 @@ class UpdateConstraintsTableTest extends MediaWikiTestCase {
 					'{}'
 				],
 			]
+		);
+	}
+
+	public function testImportConstraintsForProperty_Deprecated() {
+		$config = $this->getDefaultConfig();
+		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
+		$usedForValuesOnlyId = $config->get( 'WBQualityConstraintsUsedForValuesOnlyConstraintId' );
+		$usedAsQualifierId = $config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' );
+		$usedAsReferenceId = $config->get( 'WBQualityConstraintsUsedAsReferenceConstraintId' );
+		$preferredConstraintStatement = NewStatement::forProperty( $propertyConstraintId )
+			->withValue( new ItemId( $usedForValuesOnlyId ) )
+			->withPreferredRank()
+			->build();
+		$normalConstraintStatement = NewStatement::forProperty( $propertyConstraintId )
+			->withValue( new ItemId( $usedAsQualifierId ) )
+			->withNormalRank()
+			->build();
+		$deprecatedConstraintStatement = NewStatement::forProperty( $propertyConstraintId )
+			->withValue( new ItemId( $usedAsReferenceId ) )
+			->withDeprecatedRank()
+			->build();
+		$property = new Property(
+			new PropertyId( 'P3' ),
+			null,
+			'string',
+			new StatementList( [
+				$preferredConstraintStatement,
+				$normalConstraintStatement,
+				$deprecatedConstraintStatement
+			] )
+		);
+		$entityLookup = new InMemoryEntityLookup();
+		$entityLookup->addEntity( $property );
+
+		$constraintRepository = $this->getMock( ConstraintRepository::class );
+		$constraintRepository->expects( $this->once() )
+			->method( 'insertBatch' )
+			->with( $this->callback(
+				function( array $constraints ) use ( $usedForValuesOnlyId, $usedAsQualifierId ) {
+					$this->assertCount( 2, $constraints );
+					$this->assertSame( $usedForValuesOnlyId, $constraints[0]->getConstraintTypeItemId() );
+					$this->assertSame( $usedAsQualifierId, $constraints[1]->getConstraintTypeItemId() );
+					return true;
+				}
+			) );
+
+		$job = new UpdateConstraintsTableJob(
+			Title::newFromText( 'constraintsTableUpdate' ),
+			[],
+			'P3',
+			$config,
+			$constraintRepository,
+			$entityLookup,
+			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
+		);
+		$job->importConstraintsForProperty(
+			$property,
+			$constraintRepository,
+			new PropertyId( $propertyConstraintId )
 		);
 	}
 
