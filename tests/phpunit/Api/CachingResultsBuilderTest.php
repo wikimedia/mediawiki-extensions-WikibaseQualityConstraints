@@ -19,6 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraint
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/WANObjectCacheTest.php';
 
@@ -35,10 +36,11 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			Metadata::blank()
 		);
 		$q100 = new ItemId( 'Q100' );
+		$statuses = [ 'garbage status', 'other status' ];
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( [ $q100 ], [], null )
+			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadRevisionInformation' )
@@ -53,7 +55,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			new NullStatsdDataFactory()
 		);
 
-		$results = $cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
+		$results = $cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 
 		$this->assertSame( $expectedResults, $results );
 	}
@@ -63,10 +65,11 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			[ 'Q100' => 'garbage data, should not matter' ],
 			Metadata::blank()
 		);
+		$statuses = [ 'garbage status', 'other status' ];
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( [], [ 'fake' ], null )
+			->with( [], [ 'fake' ], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = $this->getMockBuilder( WANObjectCache::class )
 			->disableOriginalConstructor()
@@ -84,7 +87,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			new NullStatsdDataFactory()
 		);
 
-		$cachingResultsBuilder->getAndStoreResults( [], [ 'fake' ], null );
+		$cachingResultsBuilder->getAndStoreResults( [], [ 'fake' ], null, $statuses );
 	}
 
 	public function testGetAndStoreResults_DontCacheWithConstraintIds() {
@@ -93,10 +96,11 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			Metadata::blank()
 		);
 		$q100 = new ItemId( 'Q100' );
+		$statuses = [ 'garbage status', 'other status' ];
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( [ $q100 ], [], [ 'fake' ] )
+			->with( [ $q100 ], [], [ 'fake' ], $statuses )
 			->willReturn( $expectedResults );
 		$cache = $this->getMockBuilder( WANObjectCache::class )
 			->disableOriginalConstructor()
@@ -114,7 +118,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			new NullStatsdDataFactory()
 		);
 
-		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], [ 'fake' ] );
+		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], [ 'fake' ], $statuses );
 	}
 
 	public function testGetAndStoreResults_StoreResults() {
@@ -123,10 +127,15 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			Metadata::blank()
 		);
 		$q100 = new ItemId( 'Q100' );
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS
+		];
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( [ $q100 ], [], null )
+			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache );
@@ -143,7 +152,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			new NullStatsdDataFactory()
 		);
 
-		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
+		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 		$cachedResults = $resultsCache->get( $q100 );
 
 		$this->assertNotNull( $cachedResults );
@@ -168,10 +177,15 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$q101->getSerialization() => 1337,
 			$p102->getSerialization() => 42,
 		];
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS
+		];
 		$resultsBuilder = $this->getMock( ResultsBuilder::class );
 		$resultsBuilder->expects( $this->once() )
 			->method( 'getResults' )
-			->with( [ $q100 ], [], null )
+			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache );
@@ -202,12 +216,43 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			new NullStatsdDataFactory()
 		);
 
-		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null );
+		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 		$cachedResults = $resultsCache->get( $q100 );
 
 		$this->assertNotNull( $cachedResults );
 		$this->assertArrayHasKey( 'latestRevisionIds', $cachedResults );
 		$this->assertSame( $revisionIds, $cachedResults['latestRevisionIds'] );
+	}
+
+	public function testGetAndStoreResults_DontStoreWithWrongStatuses() {
+		$expectedResults = new CachedCheckConstraintsResponse(
+			[ 'Q100' => 'garbage data, should not matter' ],
+			Metadata::blank()
+		);
+		$q100 = new ItemId( 'Q100' );
+		$statuses = [ CheckResult::STATUS_VIOLATION ];
+		$resultsBuilder = $this->getMock( ResultsBuilder::class );
+		$resultsBuilder->expects( $this->once() )
+			->method( 'getResults' )
+			->with( [ $q100 ], [], null, $statuses )
+			->willReturn( $expectedResults );
+		$cache = $this->getMockBuilder( WANObjectCache::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$cache->expects( $this->never() )->method( 'set' );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->expects( $this->never() )->method( 'loadRevisionInformation ' );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$resultsBuilder,
+			new ResultsCache( $cache ),
+			$metaDataAccessor,
+			new ItemIdParser(),
+			86400,
+			[],
+			new NullStatsdDataFactory()
+		);
+
+		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 	}
 
 	public function testGetStoredResults_CacheMiss() {
@@ -306,6 +351,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetResults_EmptyCache() {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
+		$statuses = [ 'garbage status', 'other status' ];
 
 		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
 			->setConstructorArgs( [
@@ -321,7 +367,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 		$cachingResultsBuilder->method( 'getStoredResults' )->willReturn( null );
 		$cachingResultsBuilder->method( 'getAndStoreResults' )
-			->with( $entityIds, [], null )
+			->with( $entityIds, [], null, $statuses )
 			->willReturnCallback( function( $entityIds, $claimIds, $constraintIds ) {
 				$results = [];
 				foreach ( $entityIds as $entityId ) {
@@ -332,7 +378,12 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			} );
 		/** @var CachingResultsBuilder $cachingResultsBuilder */
 
-		$results = $cachingResultsBuilder->getResults( $entityIds, [], null );
+		$results = $cachingResultsBuilder->getResults(
+			$entityIds,
+			[],
+			null,
+			$statuses
+		);
 
 		$expected = [ 'Q5' => 'garbage of Q5', 'Q10' => 'garbage of Q10' ];
 		$actual = $results->getArray();
@@ -346,6 +397,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
 		$statementIds = [];
 		$constraintIds = [ 'P12$11a14ea5-10dc-425b-b94d-6e65997be983' ];
+		$statuses = [ 'garbage status', 'other status' ];
 		$expected = new CachedCheckConstraintsResponse(
 			[ 'Q5' => 'garbage of Q5', 'Q10' => 'some garbage of Q10' ],
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
@@ -364,11 +416,16 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
 		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
-			->with( $entityIds, $statementIds, $constraintIds )
+			->with( $entityIds, $statementIds, $constraintIds, $statuses )
 			->willReturn( $expected );
 		/** @var CachingResultsBuilder $cachingResultsBuilder */
 
-		$results = $cachingResultsBuilder->getResults( $entityIds, $statementIds, $constraintIds );
+		$results = $cachingResultsBuilder->getResults(
+			$entityIds,
+			$statementIds,
+			$constraintIds,
+			$statuses
+		);
 
 		$this->assertSame( $expected->getArray(), $results->getArray() );
 		$this->assertEquals( $expected->getMetadata(), $results->getMetadata() );
@@ -378,6 +435,7 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$entityIds = [];
 		$statementIds = [ 'Q5$9c009c6f-fdf5-41d1-86e9-e790427e3dc6' ];
 		$constraintIds = [];
+		$statuses = [ 'garbage status', 'other status' ];
 		$expected = new CachedCheckConstraintsResponse(
 			[ 'Q5' => 'some garbage of Q5' ],
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
@@ -396,11 +454,16 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
 		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
-			->with( $entityIds, $statementIds, $constraintIds )
+			->with( $entityIds, $statementIds, $constraintIds, $statuses )
 			->willReturn( $expected );
 		/** @var CachingResultsBuilder $cachingResultsBuilder */
 
-		$results = $cachingResultsBuilder->getResults( $entityIds, $statementIds, $constraintIds );
+		$results = $cachingResultsBuilder->getResults(
+			$entityIds,
+			$statementIds,
+			$constraintIds,
+			$statuses
+		);
 
 		$this->assertSame( $expected->getArray(), $results->getArray() );
 		$this->assertEquals( $expected->getMetadata(), $results->getMetadata() );
@@ -408,6 +471,11 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetResults_FullyCached() {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS
+		];
 		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
 			->setConstructorArgs( [
 				$this->getMock( ResultsBuilder::class ),
@@ -431,7 +499,12 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$cachingResultsBuilder->expects( $this->never() )->method( 'getAndStoreResults' );
 		/** @var CachingResultsBuilder $cachingResultsBuilder */
 
-		$results = $cachingResultsBuilder->getResults( $entityIds, [], null );
+		$results = $cachingResultsBuilder->getResults(
+			$entityIds,
+			[],
+			null,
+			$statuses
+		);
 
 		$expected = [ 'Q5' => 'garbage of Q5', 'Q10' => 'garbage of Q10' ];
 		$actual = $results->getArray();
@@ -443,6 +516,11 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetResults_PartiallyCached() {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS
+		];
 		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
 			->setConstructorArgs( [
 				$this->getMock( ResultsBuilder::class ),
@@ -467,14 +545,19 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				}
 			} );
 		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
-			->with( [ $entityIds[1] ], [], null )
+			->with( [ $entityIds[1] ], [], null, $statuses )
 			->willReturn( new CachedCheckConstraintsResponse(
 				[ 'Q10' => 'garbage of Q10' ],
 				Metadata::ofDependencyMetadata( DependencyMetadata::ofEntityId( $entityIds[1] ) )
 			) );
 		/** @var CachingResultsBuilder $cachingResultsBuilder */
 
-		$results = $cachingResultsBuilder->getResults( $entityIds, [], null );
+		$results = $cachingResultsBuilder->getResults(
+			$entityIds,
+			[],
+			null,
+			$statuses
+		);
 
 		$expected = [ 'Q5' => 'garbage of Q5', 'Q10' => 'garbage of Q10' ];
 		$actual = $results->getArray();
@@ -484,6 +567,44 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$metadata = $results->getMetadata();
 		$this->assertSame( 64800, $metadata->getCachingMetadata()->getMaximumAgeInSeconds() );
 		$this->assertSame( [ $entityIds[1] ], $metadata->getDependencyMetadata()->getEntityIds() );
+	}
+
+	public function testGetResults_SkipCacheWithWrongStatuses() {
+		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS,
+			CheckResult::STATUS_TODO,
+		];
+		$expected = new CachedCheckConstraintsResponse(
+			[ 'Q5' => 'some garbage of Q5' ],
+			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
+		);
+		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
+			->setConstructorArgs( [
+				$this->getMock( ResultsBuilder::class ),
+				new ResultsCache( WANObjectCache::newEmpty() ),
+				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
+				new ItemIdParser(),
+				86400,
+				[],
+				new NullStatsdDataFactory()
+			] )
+			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
+			->getMock();
+		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
+		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
+			->with( $entityIds, [], null, $statuses )
+			->willReturn( $expected );
+		/** @var CachingResultsBuilder $cachingResultsBuilder */
+
+		$cachingResultsBuilder->getResults(
+			$entityIds,
+			[],
+			null,
+			$statuses
+		);
 	}
 
 	public function testUpdateCachingMetadata_CachedToplevel() {

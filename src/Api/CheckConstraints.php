@@ -20,6 +20,7 @@ use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 
@@ -204,7 +205,21 @@ class CheckConstraints extends ApiBase {
 		$this->getResult()->addValue(
 			null,
 			$this->getModuleName(),
-			$this->resultsBuilder->getResults( $entityIds, $claimIds, $constraintIDs )->getArray()
+			$this->resultsBuilder->getResults(
+				$entityIds,
+				$claimIds,
+				$constraintIDs,
+				[
+					CheckResult::STATUS_COMPLIANCE,
+					CheckResult::STATUS_VIOLATION,
+					CheckResult::STATUS_WARNING,
+					CheckResult::STATUS_EXCEPTION,
+					CheckResult::STATUS_NOT_IN_SCOPE,
+					CheckResult::STATUS_DEPRECATED,
+					CheckResult::STATUS_BAD_PARAMETERS,
+					CheckResult::STATUS_TODO,
+				]
+			)->getArray()
 		);
 		// ensure that result contains the given entity IDs even if they have no statements
 		foreach ( $entityIds as $entityId ) {

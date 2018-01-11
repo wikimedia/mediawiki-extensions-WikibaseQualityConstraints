@@ -11,6 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraint
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
  * A wrapper around another ResultsBuilder that caches results in a ResultsCache.
@@ -76,6 +77,15 @@ class CachingResultsBuilder implements ResultsBuilder {
 	private $microtime = 'microtime';
 
 	/**
+	 * TODO: In PHP 5.6, make this a public class constant instead,
+	 * and also use it in CheckConstraints::getAllowedParams()
+	 * and in some of the tests.
+	 *
+	 * @var string[]
+	 */
+	private $cachedStatuses;
+
+	/**
 	 * @param ResultsBuilder $resultsBuilder The ResultsBuilder that cache misses are delegated to.
 	 * @param ResultsCache $cache The cache where results can be stored.
 	 * @param WikiPageEntityMetaDataAccessor $wikiPageEntityMetaDataAccessor Used to get the latest revision ID.
@@ -101,22 +111,30 @@ class CachingResultsBuilder implements ResultsBuilder {
 		$this->ttlInSeconds = $ttlInSeconds;
 		$this->possiblyStaleConstraintTypes = $possiblyStaleConstraintTypes;
 		$this->dataFactory = $dataFactory;
+
+		$this->cachedStatuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS,
+		];
 	}
 
 	/**
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
+	 * @param string[] $statuses
 	 * @return CachedCheckConstraintsResponse
 	 */
 	public function getResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null
+		array $constraintIds = null,
+		array $statuses
 	) {
 		$results = [];
 		$metadatas = [];
-		if ( $this->canUseStoredResults( $entityIds, $claimIds, $constraintIds ) ) {
+		if ( $this->canUseStoredResults( $entityIds, $claimIds, $constraintIds, $statuses ) ) {
 			$storedEntityIds = [];
 			foreach ( $entityIds as $entityId ) {
 				$storedResults = $this->getStoredResults( $entityId );
@@ -136,7 +154,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 				'wikibase.quality.constraints.cache.entity.miss',
 				count( $entityIds )
 			);
-			$response = $this->getAndStoreResults( $entityIds, $claimIds, $constraintIds );
+			$response = $this->getAndStoreResults( $entityIds, $claimIds, $constraintIds, $statuses );
 			$results += $response->getArray();
 			$metadatas[] = $response->getMetadata();
 		}
@@ -147,37 +165,58 @@ class CachingResultsBuilder implements ResultsBuilder {
 	}
 
 	/**
-	 * We can only use cached constraint results if full constraint check results were requested:
+	 * We can only use cached constraint results
+	 * if exactly the problematic results of a full constraint check were requested:
 	 * constraint checks for the full entity (not just individual statements),
-	 * and without restricting the set of constraints to check.
+	 * without restricting the set of constraints to check,
+	 * and with exactly the 'violation', 'warning' and 'bad-parameters' statuses.
+	 *
+	 * (In theory, we could also use results for requests
+	 * that asked for a subset of these result statuses,
+	 * but removing the extra results from the cached value is tricky,
+	 * especially if you consider that they might have added qualifier contexts to the output
+	 * that should not only be empty, but completely absent.)
 	 *
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
+	 * @param string[] $statuses
 	 * @return bool
 	 */
 	private function canUseStoredResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null
+		array $constraintIds = null,
+		array $statuses
 	) {
-		return $claimIds === [] && $constraintIds === null;
+		if ( $claimIds !== [] ) {
+			return false;
+		}
+		if ( $constraintIds !== null ) {
+			return false;
+		}
+		if ( $statuses != $this->cachedStatuses ) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
+	 * @param string[] $statuses
 	 * @return CachedCheckConstraintsResponse
 	 */
 	public function getAndStoreResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null
+		array $constraintIds = null,
+		array $statuses
 	) {
-		$results = $this->resultsBuilder->getResults( $entityIds, $claimIds, $constraintIds );
+		$results = $this->resultsBuilder->getResults( $entityIds, $claimIds, $constraintIds, $statuses );
 
-		if ( $this->canStoreResults( $entityIds, $claimIds, $constraintIds ) ) {
+		if ( $this->canStoreResults( $entityIds, $claimIds, $constraintIds, $statuses ) ) {
 			foreach ( $entityIds as $entityId ) {
 				$value = [
 					'results' => $results->getArray()[$entityId->getSerialization()],
@@ -193,22 +232,37 @@ class CachingResultsBuilder implements ResultsBuilder {
 	}
 
 	/**
-	 * We can only store constraint results if the set of constraints to check was not restricted.
+	 * We can only store constraint results
+	 * if the set of constraints to check was not restricted
+	 * and exactly the problematic results were requested.
 	 * However, it doesn’t matter whether constraint checks on individual statements were requested:
 	 * we only store results for the mentioned entity IDs,
 	 * and those will be complete regardless of what’s in the statement IDs.
 	 *
+	 * (In theory, we could also store results of checks that requested extra result statuses,
+	 * but removing the extra results before caching the value is tricky,
+	 * especially if you consider that they might have added qualifier contexts to the output
+	 * that should not only be empty, but completely absent.)
+	 *
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
+	 * @param string[] $statuses
 	 * @return bool
 	 */
 	private function canStoreResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null
+		array $constraintIds = null,
+		array $statuses
 	) {
-		return $constraintIds === null;
+		if ( $constraintIds !== null ) {
+			return false;
+		}
+		if ( $statuses != $this->cachedStatuses ) {
+			return false;
+		}
+		return true;
 	}
 
 	/**

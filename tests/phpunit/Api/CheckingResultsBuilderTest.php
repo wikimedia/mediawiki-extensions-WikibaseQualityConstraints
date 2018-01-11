@@ -10,6 +10,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -129,7 +130,8 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
 			[ $q1, $q2 ],
 			[ $s1, $s2 ],
-			$constraintIds
+			$constraintIds,
+			[ CheckResult::STATUS_TODO ]
 		)->getArray();
 
 		$this->assertSame( [ 'Q1', 'Q2', 'Q3', 'Q4' ], array_keys( $result ) );
@@ -153,7 +155,8 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
 			[ new ItemId( self::NONEXISTENT_ITEM ) ],
 			[ self::NONEXISTENT_CLAIM ],
-			[]
+			[],
+			[ CheckResult::STATUS_TODO ]
 		)->getArray();
 
 		$this->assertEmpty( $result );
@@ -200,7 +203,8 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$metadata = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
 			[ new ItemId( 'Q1' ) ],
 			[ 'Q2$73408a9b-b1b0-4035-bf36-1e65ecf8772d' ],
-			null
+			null,
+			[ CheckResult::STATUS_TODO ]
 		)->getMetadata();
 
 		$expected = [ new ItemId( 'Q100' ), new PropertyId( 'P100' ) ];
@@ -208,6 +212,52 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		sort( $expected );
 		sort( $actual );
 		$this->assertEquals( $expected, $actual );
+	}
+
+	public function testGetResults_FilterStatuses() {
+		$q1 = new ItemId( 'Q1' );
+		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'checkAgainstConstraintsOnEntityId' ] );
+		$delegatingConstraintChecker = $mock->getMock();
+		$constraint = new Constraint(
+			'P1$47681880-d5f5-417d-96c3-570d6e94d234',
+			new PropertyId( 'P1' ),
+			'Q1',
+			[]
+		);
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
+			->willReturn( [
+				new CheckResult(
+					new MainSnakContext(
+						new Item( $q1 ),
+						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+					),
+					$constraint,
+					[],
+					CheckResult::STATUS_VIOLATION
+				),
+				new CheckResult(
+					new MainSnakContext(
+						new Item( $q1 ),
+						new Statement( new PropertySomeValueSnak( new PropertyId( 'P1' ) ) )
+					),
+					$constraint,
+					[],
+					CheckResult::STATUS_COMPLIANCE
+				),
+			] );
+
+		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
+			[ $q1 ],
+			[],
+			[],
+			[ CheckResult::STATUS_VIOLATION ]
+		)->getArray();
+
+		$statementResults = $result['Q1']['claims']['P1'][0]['mainsnak']['results'];
+		$this->assertCount( 1, $statementResults );
+		$this->assertSame( CheckResult::STATUS_VIOLATION, $statementResults[0]['status'] );
 	}
 
 	public function testCheckResultToArray_NullResult() {

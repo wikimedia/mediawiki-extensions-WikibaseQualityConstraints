@@ -15,12 +15,14 @@ interface ResultsBuilder {
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
+	 * @param string[] $statuses
 	 * @return CachedCheckConstraintsResponse
 	 */
 	public function getResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null
+		array $constraintIds = null,
+		array $statuses
 	);
 
 }
