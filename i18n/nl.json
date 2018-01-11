@@ -43,6 +43,8 @@
 	"wbqc-parameterissues-long": "Deze problemen hebben te maken met de beperkingenconfiguratie van de eigenschap, niet met deze verklaringen.",
 	"wbqc-constrainttypehelp-short": "Help",
 	"wbqc-constrainttypehelp-long": "Hulppagina voor dit type beperking",
+	"wbqc-constraintdiscuss-short": "Overleggen",
+	"wbqc-constraintdiscuss-long": "Overlegpagina van deze beperking",
 	"wbqc-cached-generic": "Dit resultaat is in de cache opgeslagen en is mogelijk verouderd.",
 	"wbqc-cached-minutes": "Dit resultaat is in de cache opgeslagen en kan tot {{PLURAL:$1|1=één minuut|$1&nbsp;minuten}} verouderd zijn.",
 	"apihelp-wbcheckconstraints-description": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
