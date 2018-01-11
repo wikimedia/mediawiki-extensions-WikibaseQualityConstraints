@@ -290,18 +290,18 @@ class CheckConstraints extends ApiBase {
 	 */
 	public function getAllowedParams() {
 		return [
-				self::PARAM_ID => [
-						ApiBase::PARAM_TYPE => 'string',
-						ApiBase::PARAM_ISMULTI => true
-				],
-				self::PARAM_CLAIM_ID => [
-						ApiBase::PARAM_TYPE => 'string',
-						ApiBase::PARAM_ISMULTI => true
-				],
-				self::PARAM_CONSTRAINT_ID => [
-						ApiBase::PARAM_TYPE => 'string',
-						ApiBase::PARAM_ISMULTI => true
-				]
+			self::PARAM_ID => [
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_ISMULTI => true,
+			],
+			self::PARAM_CLAIM_ID => [
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_ISMULTI => true,
+			],
+			self::PARAM_CONSTRAINT_ID => [
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_ISMULTI => true,
+			],
 		];
 	}
 
