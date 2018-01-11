@@ -58,9 +58,12 @@ class CheckResult {
 	const STATUS_NOT_IN_SCOPE = 'not-in-scope';
 	/*
 	 * When adding another status, don’t forget to also do the following:
-	 * * define a message for it in i18n/
+	 * * define messages for it in i18n/:
+	 *   * wbqc-constraintreport-status-
+	 *   * apihelp-wbcheckconstraints-paramvalue-status-
 	 * * declare a color for it in modules/SpecialConstraintReportPage.less
 	 * * update $order in DelegatingConstraintChecker::sortResult
+	 * * update PARAM_STATUS type in CheckConstraints::getAllowedParams
 	 */
 
 	/**

@@ -18,6 +18,8 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraints;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -200,7 +202,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			new PropertyId( 'P1' ),
 			'46fc8ec9-4903-4592-9a0e-afdd1fa03183'
 		);
-		$this->givenPropertyHasViolation( new PropertyId( 'P1' ) );
+		$this->givenPropertyHasStatus( new PropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
 
 		$result = $this->doRequest( [ CheckConstraints::PARAM_ID => 'Q1' ] );
 
@@ -219,7 +221,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			new PropertyId( 'P1' ),
 			'46fc8ec9-4903-4592-9a0e-afdd1fa03183'
 		);
-		$this->givenPropertyHasViolation( new PropertyId( 'P1' ) );
+		$this->givenPropertyHasStatus( new PropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
 
 		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => 'Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183' ] );
 
@@ -241,7 +243,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		$statement->setGuid( $guid );
 		$item->getStatements()->addStatement( $statement );
 		self::$entityLookup->addEntity( $item );
-		$this->givenPropertyHasViolation( new PropertyId( $propertyId ) );
+		$this->givenPropertyHasStatus( new PropertyId( $propertyId ), CheckResult::STATUS_VIOLATION );
 
 		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => $guid ] );
 
@@ -254,6 +256,34 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->assertEquals( $propertyId, $resultsForItem[0]['property'] );
 	}
 
+	public function testStatusParameterFiltersResults() {
+		$item = NewItem::withId( 'Q1' )
+			->andStatement( NewStatement::noValueFor( 'P1' ) )
+			->andStatement( NewStatement::noValueFor( 'P2' ) )
+			->build();
+		self::$entityLookup->addEntity( $item );
+		$this->givenPropertyHasStatus( new PropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
+		$this->givenPropertyHasStatus( new PropertyId( 'P2' ), CheckResult::STATUS_COMPLIANCE );
+
+		$result = $this->doRequest( [
+			CheckConstraints::PARAM_ID => 'Q1',
+			CheckConstraints::PARAM_STATUS => CheckResult::STATUS_VIOLATION . '|' . CheckResult::STATUS_WARNING,
+		] );
+
+		$this->assertCount( 1, $result['wbcheckconstraints'] );
+		$this->assertCount( 2, $result['wbcheckconstraints']['Q1']['claims'] );
+
+		$violatingStatement = $result['wbcheckconstraints']['Q1']['claims']['P1'][0];
+		$violatingStatementResults = $violatingStatement['mainsnak']['results'];
+		$this->assertCount( 1, $violatingStatementResults );
+		$this->assertEquals( CheckResult::STATUS_WARNING, $violatingStatementResults[0]['status'] );
+		$this->assertEquals( 'P1', $violatingStatementResults[0]['property'] );
+
+		$compliantStatement = $result['wbcheckconstraints']['Q1']['claims']['P2'][0];
+		$compliantStatementResults = $compliantStatement['mainsnak']['results'];
+		$this->assertCount( 0, $compliantStatementResults );
+	}
+
 	/**
 	 * @param array $params
 	 * @return array Array of violations
@@ -263,12 +293,14 @@ class CheckConstraintsTest extends ApiTestCase {
 		return $this->doApiRequest( $params, [], false, null )[0];
 	}
 
-	private function givenPropertyHasViolation( PropertyId $propertyId ) {
-		self::$checkerMap['Q1234'] = new FakeChecker( CheckResult::STATUS_VIOLATION );
+	private function givenPropertyHasStatus( PropertyId $propertyId, $status ) {
+		static $itemIdNumber = 1234;
+		$itemId = 'Q' . $itemIdNumber++;
+		self::$checkerMap[$itemId] = new FakeChecker( $status );
 		self::$constraintLookupContents[] = new Constraint(
 			'P1234$6a4d1930-922b-4c2e-b6e1-9a06bf04c2f8',
 			$propertyId,
-			'Q1234',
+			$itemId,
 			[]
 		);
 	}

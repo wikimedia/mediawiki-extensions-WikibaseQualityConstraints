@@ -35,6 +35,7 @@ class CheckConstraints extends ApiBase {
 	const PARAM_ID = 'id';
 	const PARAM_CLAIM_ID = 'claimid';
 	const PARAM_CONSTRAINT_ID = 'constraintid';
+	const PARAM_STATUS = 'status';
 
 	/**
 	 * @var EntityIdParser
@@ -201,6 +202,7 @@ class CheckConstraints extends ApiBase {
 		$entityIds = $this->parseEntityIds( $params );
 		$claimIds = $this->parseClaimIds( $params );
 		$constraintIDs = $params[self::PARAM_CONSTRAINT_ID];
+		$statuses = $params[self::PARAM_STATUS];
 
 		$this->getResult()->addValue(
 			null,
@@ -209,16 +211,7 @@ class CheckConstraints extends ApiBase {
 				$entityIds,
 				$claimIds,
 				$constraintIDs,
-				[
-					CheckResult::STATUS_COMPLIANCE,
-					CheckResult::STATUS_VIOLATION,
-					CheckResult::STATUS_WARNING,
-					CheckResult::STATUS_EXCEPTION,
-					CheckResult::STATUS_NOT_IN_SCOPE,
-					CheckResult::STATUS_DEPRECATED,
-					CheckResult::STATUS_BAD_PARAMETERS,
-					CheckResult::STATUS_TODO,
-				]
+				$statuses
 			)->getArray()
 		);
 		// ensure that result contains the given entity IDs even if they have no statements
@@ -316,6 +309,26 @@ class CheckConstraints extends ApiBase {
 			self::PARAM_CONSTRAINT_ID => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => true,
+			],
+			self::PARAM_STATUS => [
+				ApiBase::PARAM_TYPE => [
+					CheckResult::STATUS_COMPLIANCE,
+					CheckResult::STATUS_VIOLATION,
+					CheckResult::STATUS_WARNING,
+					CheckResult::STATUS_EXCEPTION,
+					CheckResult::STATUS_NOT_IN_SCOPE,
+					CheckResult::STATUS_DEPRECATED,
+					CheckResult::STATUS_BAD_PARAMETERS,
+					CheckResult::STATUS_TODO,
+				],
+				ApiBase::PARAM_ISMULTI => true,
+				ApiBase::PARAM_ALL => true,
+				ApiBase::PARAM_DFLT => /* implode( '|', [
+					CheckResult::STATUS_VIOLATION,
+					CheckResult::STATUS_WARNING,
+					CheckResult::STATUS_BAD_PARAMETERS,
+				] )*/ '*',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 		];
 	}
