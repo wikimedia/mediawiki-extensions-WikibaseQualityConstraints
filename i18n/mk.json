@@ -22,7 +22,6 @@
 	"wbqc-constraintreport-status-bad-parameters": "Неисправни параметри",
 	"wbqc-constraintreport-status-deprecated": "Застарен",
 	"wbqc-constraintreport-status-warning": "Предупредување",
-	"wbqc-constraintreport-status-not-main-snak": "Не е главна спојница",
 	"wbqc-constraintreport-result-table-header-status": "Статус",
 	"wbqc-constraintreport-result-table-header-claim": "Тврдење",
 	"wbqc-constraintreport-result-table-header-constraint": "Услов",

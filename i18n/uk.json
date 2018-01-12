@@ -26,7 +26,6 @@
 	"wbqc-constraintreport-status-bad-parameters": "Хибні параметри",
 	"wbqc-constraintreport-status-deprecated": "Застаріло",
 	"wbqc-constraintreport-status-warning": "Попередження",
-	"wbqc-constraintreport-status-not-main-snak": "Не головний снек",
 	"wbqc-constraintreport-result-table-header-status": "Статус",
 	"wbqc-constraintreport-result-table-header-claim": "Запис",
 	"wbqc-constraintreport-result-table-header-constraint": "Обмеження",

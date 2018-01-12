@@ -22,7 +22,6 @@
 	"wbqc-constraintreport-status-bad-parameters": "פרמטרים גרועים",
 	"wbqc-constraintreport-status-deprecated": "מיושן",
 	"wbqc-constraintreport-status-warning": "אזהרה",
-	"wbqc-constraintreport-status-not-main-snak": "לא סנאק ראשי",
 	"wbqc-constraintreport-result-table-header-status": "מצב",
 	"wbqc-constraintreport-result-table-header-claim": "טענה",
 	"wbqc-constraintreport-result-table-header-constraint": "אילוץ",
