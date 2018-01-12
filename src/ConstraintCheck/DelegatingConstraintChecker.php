@@ -587,7 +587,7 @@ class DelegatingConstraintChecker {
 				CheckResult::STATUS_EXCEPTION => $orderNum++,
 				CheckResult::STATUS_COMPLIANCE => $orderNum++,
 				CheckResult::STATUS_DEPRECATED => $orderNum++,
-				CheckResult::STATUS_NOT_MAIN_SNAK => $orderNum++,
+				CheckResult::STATUS_NOT_IN_SCOPE => $orderNum++,
 				'other' => $orderNum++,
 			];
 

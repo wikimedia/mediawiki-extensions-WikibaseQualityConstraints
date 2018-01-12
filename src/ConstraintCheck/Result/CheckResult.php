@@ -51,12 +51,11 @@ class CheckResult {
 	 */
 	const STATUS_WARNING = 'warning';
 	/**
-	 * The constraint type is only checked on the main snak of a statement,
-	 * but the current context is not a 'statement'-type context
-	 * (e. g. a 'qualifier' or 'reference' context),
+	 * The constraint is not checked on this kind of snak
+	 * (main snak, qualifier or reference),
 	 * so the constraint check is skipped.
 	 */
-	const STATUS_NOT_MAIN_SNAK = 'not-main-snak';
+	const STATUS_NOT_IN_SCOPE = 'not-in-scope';
 	/*
 	 * When adding another status, don’t forget to also do the following:
 	 * * define a message for it in i18n/
