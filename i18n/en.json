@@ -93,6 +93,7 @@
 	"wbqc-violation-message-sparql-error": "The SPARQL query resulted in an error.",
 	"wbqc-violation-message-parameters-error-unknown": "The parameters of this constraint could not be imported.",
 	"wbqc-violation-message-parameters-error-toolong": "The parameters of this constraint could not be imported because they were too long.",
+	"wbqc-violation-message-invalid-scope": "$1 is not a valid scope for the constraint type $2; the only valid {{PLURAL:$3|scope|scopes}} for this constraint type {{PLURAL:$3|is $5.|2=are $5 and $6.|are: $4}}",
 
 	"wbqc-violation-message-commons-link-no-existent": "Commons link should exist.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Commons link should be well-formed.",

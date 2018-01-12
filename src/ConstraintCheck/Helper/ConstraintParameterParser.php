@@ -18,6 +18,7 @@ use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\Repo\Parsers\TimeParserFactory;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -665,6 +666,93 @@ class ConstraintParameterParser {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
+	 * @param string[]|null $validScopes a list of Context::TYPE_* constants which are valid where this parameter appears.
+	 * If this is not null and one of the specified scopes is not in this list, a ConstraintParameterException is thrown.
+	 * @throws ConstraintParameterException if the parameter is invalid
+	 * @return string[]|null Context::TYPE_* constants
+	 */
+	public function parseConstraintScopeParameter( array $constraintParameters, $constraintTypeItemId, array $validScopes = null ) {
+		$constraintScopeId = $this->config->get( 'WBQualityConstraintsConstraintScopeId' );
+		$mainSnakId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
+		$qualifiersId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' );
+		$referencesId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
+
+		if ( !array_key_exists( $constraintScopeId, $constraintParameters ) ) {
+			return null;
+		}
+
+		$contextTypes = [];
+		foreach ( $constraintParameters[$constraintScopeId] as $snakSerialization ) {
+			$scopeEntityId = $this->parseEntityIdParameter( $snakSerialization, $constraintScopeId );
+			switch ( $scopeEntityId->getSerialization() ) {
+				case $mainSnakId:
+					$contextTypes[] = Context::TYPE_STATEMENT;
+					break;
+				case $qualifiersId:
+					$contextTypes[] = Context::TYPE_QUALIFIER;
+					break;
+				case $referencesId:
+					$contextTypes[] = Context::TYPE_REFERENCE;
+					break;
+				default:
+					throw new ConstraintParameterException(
+						wfMessage( 'wbqc-violation-message-parameter-oneof' )
+							->rawParams(
+								$this->constraintParameterRenderer->formatPropertyId(
+									$constraintScopeId,
+									Role::CONSTRAINT_PARAMETER_PROPERTY
+								)
+							)
+							->numParams( 3 )
+							->rawParams(
+								$this->constraintParameterRenderer->formatItemIdList(
+									[
+										$mainSnakId,
+										$qualifiersId,
+										$referencesId,
+									],
+									Role::CONSTRAINT_PARAMETER_VALUE
+								)
+							)
+							->escaped()
+					);
+			}
+		}
+
+		if ( $validScopes !== null ) {
+			$invalidScopes = array_diff( $contextTypes, $validScopes );
+			if ( $invalidScopes !== [] ) {
+				$invalidScope = array_pop( $invalidScopes );
+				throw new ConstraintParameterException(
+					wfMessage( 'wbqc-violation-message-invalid-scope' )
+						->rawParams(
+							$this->constraintParameterRenderer->formatConstraintScope(
+								$invalidScope,
+								Role::CONSTRAINT_PARAMETER_VALUE
+							),
+							$this->constraintParameterRenderer->formatItemId(
+								$constraintTypeItemId,
+								Role::CONSTRAINT_TYPE_ITEM
+							)
+						)
+						->numParams( count( $validScopes ) )
+						->rawParams(
+							$this->constraintParameterRenderer->formatConstraintScopeList(
+								$validScopes,
+								Role::CONSTRAINT_PARAMETER_VALUE
+							)
+						)
+						->escaped()
+				);
+			}
+		}
+
+		return $contextTypes;
 	}
 
 }

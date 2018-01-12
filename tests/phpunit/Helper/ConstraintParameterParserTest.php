@@ -16,6 +16,7 @@ use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -1002,6 +1003,99 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				Language::factory( 'en' )
 			],
 			'wbqc-violation-message-parameter-value'
+		);
+	}
+
+	public function testParseConstraintScopeParameter_MainSnak() {
+		$constraintScopeId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintScopeId' );
+		$mainSnakId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' ) );
+		$snak = new PropertyValueSnak( new PropertyId( $constraintScopeId ), new EntityIdValue( $mainSnakId ) );
+
+		$parsed = $this->getConstraintParameterParser()->parseConstraintScopeParameter(
+			[ $constraintScopeId => [
+				$this->getSnakSerializer()->serialize( $snak ),
+			] ],
+			''
+		);
+
+		$this->assertSame( [ Context::TYPE_STATEMENT ], $parsed );
+	}
+
+	public function testParseConstraintScopeParameter_NotMainSnak() {
+		$constraintScopeId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintScopeId' );
+		$qualifiersId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) );
+		$referencesId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' ) );
+		$snak1 = new PropertyValueSnak( new PropertyId( $constraintScopeId ), new EntityIdValue( $qualifiersId ) );
+		$snak2 = new PropertyValueSnak( new PropertyId( $constraintScopeId ), new EntityIdValue( $referencesId ) );
+
+		$parsed = $this->getConstraintParameterParser()->parseConstraintScopeParameter(
+			[ $constraintScopeId => [
+				$this->getSnakSerializer()->serialize( $snak1 ),
+				$this->getSnakSerializer()->serialize( $snak2 ),
+			] ],
+			''
+		);
+
+		$this->assertSame( [ Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ], $parsed );
+	}
+
+	public function testParseConstraintScopeParameter_Missing() {
+		$parsed = $this->getConstraintParameterParser()->parseConstraintScopeParameter( [], '' );
+
+		$this->assertNull( $parsed );
+	}
+
+	public function testParseConstraintParameter_ValidScope() {
+		$constraintScopeId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintScopeId' );
+		$qualifiersId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) );
+		$snak = new PropertyValueSnak( new PropertyId( $constraintScopeId ), new EntityIdValue( $qualifiersId ) );
+
+		$parsed = $this->getConstraintParameterParser()->parseConstraintScopeParameter(
+			[ $constraintScopeId => [
+				$this->getSnakSerializer()->serialize( $snak ),
+			] ],
+			'',
+			[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER ]
+		);
+
+		$this->assertSame( [ Context::TYPE_QUALIFIER ], $parsed );
+	}
+
+	public function testParseConstraintParameter_InvalidScope() {
+		$constraintScopeId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintScopeId' );
+		$referencesId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' ) );
+		$snak = new PropertyValueSnak( new PropertyId( $constraintScopeId ), new EntityIdValue( $referencesId ) );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseConstraintScopeParameter',
+			[
+				[ $constraintScopeId => [
+					$this->getSnakSerializer()->serialize( $snak ),
+				] ],
+				'',
+				[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER ]
+			],
+			'wbqc-violation-message-invalid-scope'
+		);
+	}
+
+	public function testParseConstraintScopeParameter_UnknownScope() {
+		$constraintScopeId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintScopeId' );
+		$qualifiersId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) );
+		$otherScopeId = new ItemId( 'Q1' );
+		$snak1 = new PropertyValueSnak( new PropertyId( $constraintScopeId ), new EntityIdValue( $qualifiersId ) );
+		$snak2 = new PropertyValueSnak( new PropertyId( $constraintScopeId ), new EntityIdValue( $otherScopeId ) );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseConstraintScopeParameter',
+			[
+				[ $constraintScopeId => [
+					$this->getSnakSerializer()->serialize( $snak1 ),
+					$this->getSnakSerializer()->serialize( $snak2 ),
+				] ],
+				'constraint'
+			],
+			'wbqc-violation-message-parameter-oneof'
 		);
 	}
 
