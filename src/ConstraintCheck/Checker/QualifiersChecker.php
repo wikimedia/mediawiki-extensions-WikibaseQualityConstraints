@@ -42,6 +42,26 @@ class QualifiersChecker implements ConstraintChecker {
 	}
 
 	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
+	public function getSupportedContextTypes() {
+		return [
+			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_QUALIFIER => CheckResult::STATUS_NOT_IN_SCOPE,
+			Context::TYPE_REFERENCE => CheckResult::STATUS_NOT_IN_SCOPE,
+		];
+	}
+
+	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
+	public function getDefaultContextTypes() {
+		return [
+			Context::TYPE_STATEMENT,
+		];
+	}
+
+	/**
 	 * Checks 'Qualifiers' constraint.
 	 *
 	 * @param Context $context
