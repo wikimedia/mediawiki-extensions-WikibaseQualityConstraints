@@ -17,6 +17,7 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\Repo\Parsers\TimeParserFactory;
@@ -311,6 +312,42 @@ trait ConstraintParameters {
 				)
 			) ]
 		];
+	}
+
+	/**
+	 * @param string[] $scopes Context::TYPE_* constants
+	 * @return array
+	 */
+	public function scopeParameter( array $scopes ) {
+		$config = $this->getDefaultConfig();
+		$constraintScopeParameterId = $config->get( 'WBQualityConstraintsConstraintScopeId' );
+		$itemIds = [];
+		foreach ( $scopes as $scope ) {
+			switch ( $scope ) {
+				case Context::TYPE_STATEMENT:
+					$itemIds[] = $config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
+					break;
+				case Context::TYPE_QUALIFIER:
+					$itemIds[] = $config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' );
+					break;
+				case Context::TYPE_REFERENCE:
+					$itemIds[] = $config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
+					break;
+				default:
+					$this->assertTrue( false, 'unknown context type ' . $scope );
+			}
+		}
+		return [ $constraintScopeParameterId => array_map(
+			function ( $itemId ) use ( $constraintScopeParameterId ) {
+				return $this->getSnakSerializer()->serialize(
+					new PropertyValueSnak(
+						new PropertyId( $constraintScopeParameterId ),
+						new EntityIdValue( new ItemId( $itemId ) )
+					)
+				);
+			},
+			$itemIds
+		) ];
 	}
 
 }
