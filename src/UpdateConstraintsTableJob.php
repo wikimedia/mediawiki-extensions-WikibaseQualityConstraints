@@ -122,7 +122,9 @@ class UpdateConstraintsTableJob extends Job {
 		ConstraintRepository $constraintRepo,
 		PropertyId $propertyConstraintPropertyId
 	) {
-		$constraintsStatements = $property->getStatements()->getByPropertyId( $propertyConstraintPropertyId );
+		$constraintsStatements = $property->getStatements()
+			->getByPropertyId( $propertyConstraintPropertyId )
+			->getByRank( [ Statement::RANK_PREFERRED, Statement::RANK_NORMAL ] );
 		$constraints = [];
 		foreach ( $constraintsStatements->getIterator() as $constraintStatement ) {
 			$constraints[] = $this->extractConstraintFromStatement( $property->getId(), $constraintStatement );
