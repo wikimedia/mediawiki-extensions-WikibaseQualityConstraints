@@ -88,11 +88,15 @@ class CheckConstraints extends ApiBase {
 		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
 		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
 		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
-		$constraintParameterRenderer = new ConstraintParameterRenderer( $entityIdHtmlLinkFormatter, $valueFormatter );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$titleParser = MediaWikiServices::getInstance()->getTitleParser();
 		$unitConverter = $repo->getUnitConverter();
 		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
+		$constraintParameterRenderer = new ConstraintParameterRenderer(
+			$entityIdHtmlLinkFormatter,
+			$valueFormatter,
+			$config
+		);
 		$constraintReportFactory = new ConstraintReportFactory(
 			$repo->getEntityLookup(),
 			$repo->getPropertyDataTypeLookup(),
