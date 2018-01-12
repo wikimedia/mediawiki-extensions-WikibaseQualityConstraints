@@ -190,6 +190,23 @@ class DelegatingConstraintChecker {
 		return [];
 	}
 
+	private function getAllowedContextTypes( Constraint $constraint ) {
+		if ( !array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
+			return [
+				Context::TYPE_STATEMENT,
+				Context::TYPE_QUALIFIER,
+				Context::TYPE_REFERENCE,
+			];
+		}
+
+		return array_keys( array_filter(
+			$this->checkerMap[$constraint->getConstraintTypeItemId()]->getSupportedContextTypes(),
+			function ( $resultStatus ) {
+				return $resultStatus !== CheckResult::STATUS_NOT_IN_SCOPE;
+			}
+		) );
+	}
+
 	/**
 	 * Like ConstraintChecker::checkConstraintParameters,
 	 * but for meta-parameters common to all checkers.
@@ -214,6 +231,15 @@ class DelegatingConstraintChecker {
 		}
 		try {
 			$this->constraintParameterParser->parseConstraintStatusParameter( $constraintParameters );
+		} catch ( ConstraintParameterException $e ) {
+			$problems[] = $e;
+		}
+		try {
+			$this->constraintParameterParser->parseConstraintScopeParameter(
+				$constraintParameters,
+				$constraint->getConstraintTypeItemId(),
+				$this->getAllowedContextTypes( $constraint )
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$problems[] = $e;
 		}
@@ -505,6 +531,12 @@ class DelegatingConstraintChecker {
 	private function getCheckResultFor( Context $context, Constraint $constraint ) {
 		if ( array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
 			$checker = $this->checkerMap[$constraint->getConstraintTypeItemId()];
+			$result = $this->handleScope( $checker, $context, $constraint );
+
+			if ( $result !== null ) {
+				$this->addMetadata( $result );
+				return $result;
+			}
 
 			$startTime = microtime( true );
 			try {
@@ -556,6 +588,31 @@ class DelegatingConstraintChecker {
 		} else {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
 		}
+	}
+
+	private function handleScope(
+		ConstraintChecker $checker,
+		Context $context,
+		Constraint $constraint
+	) {
+		try {
+			$checkedContextTypes = $this->constraintParameterParser->parseConstraintScopeParameter(
+				$constraint->getConstraintParameters(),
+				$constraint->getConstraintTypeItemId()
+			);
+		} catch ( ConstraintParameterException $e ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
+		}
+		if ( $checkedContextTypes === null ) {
+			$checkedContextTypes = $checker->getDefaultContextTypes();
+		}
+		if ( !in_array( $context->getType(), $checkedContextTypes ) ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE, null );
+		}
+		if ( $checker->getSupportedContextTypes()[$context->getType()] === CheckResult::STATUS_TODO ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
+		}
+		return null;
 	}
 
 	private function addMetadata( CheckResult $result ) {
