@@ -50,7 +50,7 @@
 	"apihelp-wbcheckconstraints-summary": "Executa verificações de restrição em qualquer entidade que deseja e retorna o resultado.",
 	"apihelp-wbcheckconstraints-param-id": "Lista de ID das entidades para obter os dados. Separar valores com '|' ou alternativa.",
 	"apihelp-wbcheckconstraints-param-claimid": "Uma lista GUID identificando uma reivindicação para verificar um relatório de restrição. Separar valores com '|'.",
-	"apihelp-wbcheckconstraints-param-constraintid": "Filtro opcional para retornar apenas as restrições que possuem o ID de restrição especificado",
+	"apihelp-wbcheckconstraints-param-constraintid": "Filtro opcional para devolver só as restrições que têm o identificador de restrição especificado.",
 	"apihelp-wbcheckconstraintparameters-summary": "Verifica os parâmetros de restrição das instruções de restrição.",
 	"apihelp-wbcheckconstraintparameters-extended-description": "Podem ser especificados os dois parâmetros <var>property</var> e <var>constraintid</var>; Todas as restrições selecionadas por qualquer dos parâmetros serão verificadas.",
 	"apihelp-wbcheckconstraintparameters-param-propertyid": "Lista de IDs de propriedade para verificar. Todas as instruções de restrição dessas propriedades serão verificadas.\n\nSe este parâmetro for especificado, ele não deve ser vazio.",
