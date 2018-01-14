@@ -5,7 +5,8 @@
 			"Raymond",
 			"Metalhead64",
 			"Amire80",
-			"Robby"
+			"Robby",
+			"Alifakoor"
 		]
 	},
 	"wbqc-constraintreport": "{{doc-special|ConstraintReport}}",
@@ -54,7 +55,7 @@
 	"apihelp-wbcheckconstraints-summary": "{{doc-apihelp-summary|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",
 	"apihelp-wbcheckconstraints-param-claimid": "{{doc-apihelp-param|wbcheckconstraints|claimid}}",
-	"apihelp-wbcheckconstraints-param-constraintid": "{{doc-apihelp-param|wbcheckconstraints|constraintid}}",
+	"apihelp-wbcheckconstraints-param-constraintid": "Sorry, the below documentation appears to be outdated, since no such patterns exist in the original text under translation:\n\n\n{{doc-apihelp-param|wbcheckconstraints|constraintid}}",
 	"apihelp-wbcheckconstraintparameters-summary": "{{doc-apihelp-summary|wbcheckconstraintparameters}}",
 	"apihelp-wbcheckconstraintparameters-extended-description": "{{doc-apihelp-extended-description|wbcheckconstraintparameters}}",
 	"apihelp-wbcheckconstraintparameters-param-propertyid": "{{doc-apihelp-param|wbcheckconstraintparameters|propertyid}}",
