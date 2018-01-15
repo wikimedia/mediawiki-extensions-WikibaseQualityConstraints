@@ -1,7 +1,8 @@
 ( function( mw, wb, $, OO ) {
 	'use strict';
 
-	var entityId;
+	var entityId,
+		cachedStatuses = 'violation|warning|bad-parameters';
 
 	function buildPopup( $content, $container, icon, iconTitleMessageKey, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
@@ -311,7 +312,8 @@
 			format: 'json',
 			formatversion: 2,
 			uselang: lang,
-			id: entityId
+			id: entityId,
+			status: cachedStatuses
 		} ).then( function( data ) {
 			$( '.wikibase-statementgroupview .wikibase-statementview' )
 				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
@@ -337,7 +339,8 @@
 				format: 'json',
 				formatversion: 2,
 				uselang: lang,
-				claimid: statementId
+				claimid: statementId,
+				status: cachedStatuses
 			} ).then( function( data ) {
 				var statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' );
 				$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
