@@ -64,21 +64,25 @@ class CheckingResultsBuilder implements ResultsBuilder {
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
+	 * @param string[] $statuses
 	 * @return CachedCheckConstraintsResponse
 	 */
 	public function getResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null
+		array $constraintIds = null,
+		array $statuses
 	) {
 		$response = [];
 		$metadatas = [];
+		$statusesFlipped = array_flip( $statuses );
 		foreach ( $entityIds as $entityId ) {
 			$results = $this->delegatingConstraintChecker->checkAgainstConstraintsOnEntityId(
 				$entityId,
 				$constraintIds,
 				[ $this, 'defaultResults' ]
 			);
+			$results = array_filter( $results, $this->statusSelected( $statusesFlipped ) );
 			foreach ( $results as $result ) {
 				$metadatas[] = $result->getMetadata();
 				$resultArray = $this->checkResultToArray( $result );
@@ -91,6 +95,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				$constraintIds,
 				[ $this, 'defaultResults' ]
 			);
+			$results = array_filter( $results, $this->statusSelected( $statusesFlipped ) );
 			foreach ( $results as $result ) {
 				$metadatas[] = $result->getMetadata();
 				$resultArray = $this->checkResultToArray( $result );
@@ -107,6 +112,13 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		return $context->getType() === Context::TYPE_STATEMENT ?
 			[ new NullResult( $context ) ] :
 			[];
+	}
+
+	public function statusSelected( array $statusesFlipped ) {
+		return function( CheckResult $result ) use ( $statusesFlipped ) {
+			return array_key_exists( $result->getStatus(), $statusesFlipped ) ||
+				$result instanceof NullResult;
+		};
 	}
 
 	public function checkResultToArray( CheckResult $checkResult ) {
