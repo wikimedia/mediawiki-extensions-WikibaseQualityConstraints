@@ -237,7 +237,7 @@ EOF;
 		}
 
 		$query = <<<EOF
-SELECT ?entity ?otherEntity WHERE {
+SELECT ?otherEntity WHERE {
   BIND(wd:$eid AS ?entity)
   BIND($value AS ?value)
   ?entity ?p ?statement.

@@ -170,7 +170,7 @@ EOF;
 			->getMock();
 
 		$query = <<<EOF
-SELECT ?entity ?otherEntity WHERE {
+SELECT ?otherEntity WHERE {
   BIND(wd:Q10 AS ?entity)
   BIND($sparqlValue AS ?value)
   ?entity ?p ?statement.
