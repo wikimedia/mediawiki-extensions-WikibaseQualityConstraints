@@ -179,7 +179,7 @@ EOF;
 		}
 
 		$query = <<<EOF
-SELECT ?otherEntity WHERE {
+SELECT DISTINCT ?otherEntity WHERE {
   BIND(wds:$guid AS ?statement)
   BIND(p:$pid AS ?p)
   BIND(ps:$pid AS ?ps)
@@ -237,7 +237,7 @@ EOF;
 		}
 
 		$query = <<<EOF
-SELECT ?otherEntity WHERE {
+SELECT DISTINCT ?otherEntity WHERE {
   BIND(wd:$eid AS ?entity)
   BIND($value AS ?value)
   ?entity ?p ?statement.

@@ -113,7 +113,7 @@ EOF;
 					  ->getMock();
 
 		$query = <<<EOF
-SELECT ?otherEntity WHERE {
+SELECT DISTINCT ?otherEntity WHERE {
   BIND(wds:Q1-8542690f-dfab-4846-944f-8382df730d2c AS ?statement)
   BIND(p:P1 AS ?p)
   BIND(ps:P1 AS ?ps)
@@ -170,7 +170,7 @@ EOF;
 			->getMock();
 
 		$query = <<<EOF
-SELECT ?otherEntity WHERE {
+SELECT DISTINCT ?otherEntity WHERE {
   BIND(wd:Q10 AS ?entity)
   BIND($sparqlValue AS ?value)
   ?entity ?p ?statement.
