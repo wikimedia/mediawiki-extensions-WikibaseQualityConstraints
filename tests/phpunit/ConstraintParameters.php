@@ -109,7 +109,7 @@ trait ConstraintParameters {
 	}
 
 	/**
-	 * @param string $relation 'instance' or 'subclass'
+	 * @param string $relation 'instance', 'subclass', or 'instanceOrSubclass'
 	 * @return array[]
 	 */
 	public function relationParameter( $relation ) {
@@ -120,6 +120,9 @@ trait ConstraintParameters {
 				break;
 			case 'subclass':
 				$configKey = 'WBQualityConstraintsSubclassOfRelationId';
+				break;
+			case 'instanceOrSubclass':
+				$configKey = 'WBQualityConstraintsInstanceOrSubclassOfRelationId';
 				break;
 			default:
 				throw new InvalidArgumentException( '$relation must be instance or subclass' );
