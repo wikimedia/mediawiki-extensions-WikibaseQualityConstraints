@@ -139,6 +139,30 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
+	public function testTypeConstraintInstanceOrSubclassValidViaInstance() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instanceOrSubclass' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testTypeConstraintInstanceOrSubclassValidViaSubclass() {
+		$entity = $this->lookup->getEntity( new ItemId( 'Q4' ) );
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instanceOrSubclass' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $this->typeSnak, $entity ), $constraint );
+		$this->assertCompliance( $checkResult );
+	}
+
 	public function testTypeConstraintInstanceInvalid() {
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 		$constraintParameters = array_merge(

@@ -97,21 +97,85 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
-		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, 'P31', [ 'Q1' ] )->getBool() );
+		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q1' ] )->getBool() );
 	}
 
 	public function testHasClassInRelation_Invalid() {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q100' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
-		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, 'P31', [ 'Q1' ] )->getBool() );
+		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q1' ] )->getBool() );
 	}
 
 	public function testHasClassInRelation_ValidWithIndirection() {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q5' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
-		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, 'P31', [ 'Q4' ] )->getBool() );
+		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
+	}
+
+	/**
+	 * Test the “instance or subclass of” relation.
+	 * The statement list being tested links to Q1 with $firstRelation.
+	 * If $secondRelation is not null, then Q1 links to Q2 with $secondRelation.
+	 *
+	 * @param string $firstRelation 'instance' or 'subclass'
+	 * @param string|null $secondRelation 'instance' or 'subclass'
+	 * @param string $class item ID serialization
+	 * @param bool $expected
+	 * @dataProvider getInstanceOrSubclassOfProvider
+	 */
+	public function testHasClassInRelation_InstanceOrSubclassOf(
+		$firstRelation,
+		$secondRelation,
+		$class,
+		$expected
+	) {
+		$instanceOfId = $this->getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfId' );
+		$subclassOfId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$relationIds = [ $instanceOfId, $subclassOfId ];
+
+		$statements = new StatementList(
+			NewStatement::forProperty(
+				$firstRelation === 'instance' ?
+					$instanceOfId :
+					$subclassOfId
+				)
+				->withValue( new ItemId( 'Q1' ) )
+				->build()
+		);
+		$lookup = new InMemoryEntityLookup();
+
+		if ( $secondRelation !== null ) {
+			$q1 = NewItem::withId( 'Q1' )
+				->andStatement(
+					NewStatement::forProperty(
+						$secondRelation === 'instance' ?
+							$instanceOfId :
+							$subclassOfId
+						)
+						->withValue( new ItemId( 'Q2' ) )
+				)
+				->build();
+			$lookup->addEntity( $q1 );
+		}
+		$helper = $this->getHelper( $lookup );
+
+		$result = $helper->hasClassInRelation( $statements, $relationIds, [ $class ] );
+
+		$this->assertSame( $expected, $result->getBool() );
+	}
+
+	public function getInstanceOrSubclassOfProvider() {
+		return [
+			'direct instance' => [ 'instance', null, 'Q1', true ],
+			'direct subclass' => [ 'subclass', null, 'Q1', true ],
+			'direct instance of unrelated' => [ 'instance', null, 'Q100', false ],
+			'instance of subclass' => [ 'instance', 'subclass', 'Q2', true ],
+			'subclass of subclass' => [ 'subclass', 'subclass', 'Q2', true ],
+			'subclass of instance' => [ 'subclass', 'instance', 'Q2', false ],
+			'instance of subclass of unrelated' => [ 'instance', 'subclass', 'Q200', false ],
+		];
 	}
 
 	public function testIsSubclassOf_ValidWithIndirection() {

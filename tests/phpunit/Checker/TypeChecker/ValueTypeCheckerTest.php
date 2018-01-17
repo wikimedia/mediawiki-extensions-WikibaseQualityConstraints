@@ -141,6 +141,30 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
+	public function testValueTypeConstraintInstanceOrSubclassValidViaInstance() {
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) );
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instanceOrSubclass' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testValueTypeConstraintInstanceOrSubclassValidViaSubclass() {
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q4' ) ) );
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instanceOrSubclass' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+		$this->assertCompliance( $checkResult );
+	}
+
 	public function testValueTypeConstraintInstanceInvalid() {
 		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) );
 		$constraintParameters = array_merge(
