@@ -34,7 +34,7 @@ use Wikibase\Repo\WikibaseRepo;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class UpdateConstraintsTableTest extends MediaWikiTestCase {
+class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 
 	use DefaultConfig;
 
