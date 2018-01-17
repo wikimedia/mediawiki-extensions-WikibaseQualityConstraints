@@ -93,56 +93,56 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		return $mock;
 	}
 
-	public function testCheckHasClassInRelationValid() {
+	public function testHasClassInRelation_Valid() {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
 		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, 'P31', [ 'Q1' ] )->getBool() );
 	}
 
-	public function testCheckHasClassInRelationInvalid() {
+	public function testHasClassInRelation_Invalid() {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q100' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
 		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, 'P31', [ 'Q1' ] )->getBool() );
 	}
 
-	public function testCheckHasClassInRelationValidWithIndirection() {
+	public function testHasClassInRelation_ValidWithIndirection() {
 		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) ) );
 		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q5' ) ) ) );
 		$statements = new StatementList( [ $statement1, $statement2 ] );
 		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, 'P31', [ 'Q4' ] )->getBool() );
 	}
 
-	public function testCheckIsSubclassOfValidWithIndirection() {
+	public function testIsSubclassOf_ValidWithIndirection() {
 		$this->assertTrue( $this->getHelper()->isSubclassOfWithSparqlFallback( new ItemId( 'Q6' ), [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-	public function testCheckIsSubclassOfInvalid() {
+	public function testIsSubclassOf_Invalid() {
 		$this->assertFalse( $this->getHelper()->isSubclassOfWithSparqlFallback( new ItemId( 'Q6' ), [ 'Q200', 'Q201' ] )->getBool() );
 	}
 
-	public function testCheckIsSubclassCyclic() {
+	public function testIsSubclassOf_Cyclic() {
 		$helper = $this->getHelper( $this->getMaxEntitiesLookup() );
 		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-	public function testCheckIsSubclassCyclicWide() {
+	public function testIsSubclassOf_CyclicWide() {
 		$helper = $this->getHelper( $this->getMaxEntitiesLookup() );
 		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-	public function testCheckIsSubclassCyclicWideWithSparqlTrue() {
+	public function testIsSubclassOf_CyclicWideWithSparqlTrue() {
 		$helper = $this->getHelper( $this->getMaxEntitiesLookup(), $this->getSparqlHelper( true ) );
 		$this->assertTrue( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-	public function testCheckIsSubclassCyclicWideWithSparqlFalse() {
+	public function testIsSubclassOf_CyclicWideWithSparqlFalse() {
 		$helper = $this->getHelper( $this->getMaxEntitiesLookup(), $this->getSparqlHelper( false ) );
 		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-	public function testCheckIsSubclassTree() {
+	public function testIsSubclassOf_Tree() {
 		$lookup = new InMemoryEntityLookup();
 		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
 
