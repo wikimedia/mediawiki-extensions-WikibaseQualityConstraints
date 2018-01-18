@@ -3,12 +3,9 @@
 namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
 use PHPUnit_Framework_TestCase;
-use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 
 /**
@@ -16,32 +13,35 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHel
  *
  * @group WikibaseQualityConstraints
  *
- * @author BP2014N1
+ * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
 class ValueCountCheckerHelperTest extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var StatementList
+	 * @dataProvider getPropertyCountProvider
 	 */
-	private $statementList;
+	public function testGetPropertyCount( $snaks, $propertyIdSerialization, $expectedCount ) {
+		$propertyId = new PropertyId( $propertyIdSerialization );
+		$helper = new ValueCountCheckerHelper();
+		$propertyCount = $helper->getPropertyCount( $snaks, $propertyId );
 
-	protected function setUp() {
-		parent::setUp();
-		$statement1 = new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
-		$statement2 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q2' ) ) ) );
-		$statement3 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q3' ) ) ) );
-		$statement4 = new Statement( new PropertyValueSnak( new PropertyId( 'P2' ), new EntityIdValue( new ItemId( 'Q4' ) ) ) );
-		$statement4->setRank( Statement::RANK_DEPRECATED );
-		$this->statementList = new StatementList( [ $statement1, $statement2, $statement3, $statement4 ] );
+		$this->assertSame( $expectedCount, $propertyCount );
 	}
 
-	public function testGetPropertyCount() {
-		$checker = new ValueCountCheckerHelper();
-		$propertyCount = $checker->getPropertyCount( $this->statementList );
+	public function getPropertyCountProvider() {
+		$p1_1 = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
+		$p1_2 = new PropertySomeValueSnak( new PropertyId( 'P1' ) );
+		$p2 = new PropertyNoValueSnak( new PropertyId( 'P2' ) );
 
-		$this->assertEquals( 1, $propertyCount['P1'] );
-		$this->assertEquals( 2, $propertyCount['P2'] );
+		return [
+			'empty' => [ [], 'P1', 0 ],
+			'only other property' => [ [ $p2 ], 'P1', 0 ],
+			'only searched property' => [ [ $p1_1 ], 'P1', 1 ],
+			'both properties' => [ [ $p1_1, $p2 ], 'P1', 1 ],
+			'searched property multiple times' => [ [ $p1_1, $p1_2 ], 'P1', 2 ],
+			'same snak multiple times' => [ [ $p1_1, $p1_1, $p1_2 ], 'P1', 3 ],
+		];
 	}
 
 }

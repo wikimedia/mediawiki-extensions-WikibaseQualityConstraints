@@ -64,9 +64,12 @@ class SingleValueChecker implements ConstraintChecker {
 
 		$parameters = [];
 
-		$propertyCountArray = $this->valueCountCheckerHelper->getPropertyCount( $context->getEntity()->getStatements() );
+		$propertyCount = $this->valueCountCheckerHelper->getPropertyCount(
+			$context->getSnakGroup(),
+			$propertyId
+		);
 
-		if ( $propertyCountArray[$propertyId->getSerialization()] > 1 ) {
+		if ( $propertyCount > 1 ) {
 			$message = wfMessage( "wbqc-violation-message-single-value" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {

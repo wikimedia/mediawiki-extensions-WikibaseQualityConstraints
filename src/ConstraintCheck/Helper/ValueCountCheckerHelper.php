@@ -2,43 +2,31 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Statement\StatementList;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\Snak;
 
 /**
  * Class for helper functions for value count checkers.
  *
- * @author BP2014N1
+ * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
 class ValueCountCheckerHelper {
 
 	/**
-	 * @var int[]
-	 */
-	private $propertyCount;
-
-	/**
-	 * @param StatementList $statements
+	 * Count the number of snaks with the given property ID.
 	 *
-	 * @return int[]
+	 * @param Snak[] $snaks
+	 * @param PropertyId $propertyId
+	 * @return int
 	 */
-	public function getPropertyCount( StatementList $statements ) {
-		if ( !isset( $this->propertyCount ) ) {
-			$this->propertyCount = [];
-
-			/** @var Statement $statement */
-			foreach ( $statements as $statement ) {
-				$counter = $statement->getRank() === Statement::RANK_DEPRECATED ? 0 : 1;
-				if ( array_key_exists( $statement->getPropertyId()->getSerialization(), $this->propertyCount ) ) {
-					$this->propertyCount[$statement->getPropertyId()->getSerialization()] += $counter;
-				} else {
-					$this->propertyCount[$statement->getPropertyId()->getSerialization()] = $counter;
-				}
+	public function getPropertyCount( array $snaks, PropertyId $propertyId ) {
+		return count( array_filter(
+			$snaks,
+			function ( Snak $snak ) use ( $propertyId ) {
+				return $snak->getPropertyId()->equals( $propertyId );
 			}
-		}
-
-		return $this->propertyCount;
+		) );
 	}
 
 }
