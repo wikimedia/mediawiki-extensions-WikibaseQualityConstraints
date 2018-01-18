@@ -75,6 +75,21 @@ interface Context {
 	public function getSnakStatement();
 
 	/**
+	 * The group of snaks that the snak being checked resides in.
+	 * For a statement context, this is the main snaks of non-deprecated statements;
+	 * for a qualifier context, the qualifiers of the same statement;
+	 * and for a reference context, the snaks of the same reference.
+	 *
+	 * The snak being checked ({@link getSnak}) is always included,
+	 * possibly more than once in the case of a statement context,
+	 * since an entity can have several statements with the same main snak.
+	 *
+	 * @return Snak[] not a SnakList because for a statement context,
+	 * the returned value might contain the same snak several times.
+	 */
+	public function getSnakGroup();
+
+	/**
 	 * Store the check result serialization $result
 	 * at the appropriate location for this context in $container.
 	 *

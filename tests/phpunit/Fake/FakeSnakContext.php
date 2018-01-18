@@ -35,6 +35,10 @@ class FakeSnakContext extends AbstractContext {
 		return 'statement';
 	}
 
+	public function getSnakGroup() {
+		return [ $this->snak ];
+	}
+
 	/**
 	 * @param array|null $result
 	 * @param array[] &$container

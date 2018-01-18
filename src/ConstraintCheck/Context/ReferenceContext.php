@@ -39,6 +39,11 @@ class ReferenceContext extends ApiV2Context {
 		return self::TYPE_REFERENCE;
 	}
 
+	public function getSnakGroup() {
+		$snaks = $this->reference->getSnaks();
+		return array_values( $snaks->getArrayCopy() );
+	}
+
 	protected function &getMainArray( array &$container ) {
 		$statementArray = &$this->getStatementArray(
 			$container,

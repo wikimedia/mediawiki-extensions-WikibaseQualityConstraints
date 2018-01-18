@@ -2,6 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\Context;
 
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -66,6 +69,24 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 		$context = new QualifierContext( $entity, $statement, $snak );
 
 		$this->assertSame( null, $context->getSnakStatement() );
+	}
+
+	public function testGetSnakGroup() {
+		$qualifier1 = NewStatement::noValueFor( 'P10' )->build()->getMainSnak();
+		$qualifier2 = NewStatement::someValueFor( 'P20' )->build()->getMainSnak();
+		$statement = new Statement(
+			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+			new SnakList( [ $qualifier1, $qualifier2 ] )
+		);
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $statement )
+			->andStatement( NewStatement::someValueFor( 'P2' ) )
+			->build();
+		$context = new QualifierContext( $entity, $statement, $qualifier1 );
+
+		$snakGroup = $context->getSnakGroup();
+
+		$this->assertSame( [ $qualifier1, $qualifier2 ], $snakGroup );
 	}
 
 	public function testStoreCheckResultInArray() {

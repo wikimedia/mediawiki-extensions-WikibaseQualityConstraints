@@ -4,6 +4,9 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Statement\StatementList;
+use Wikibase\DataModel\Statement\StatementListProvider;
+use Wikimedia\Assert\Assert;
 
 /**
  * A constraint check context for the main snak of a statement.
@@ -18,6 +21,7 @@ class MainSnakContext extends ApiV2Context {
 	private $statement;
 
 	public function __construct( EntityDocument $entity, Statement $statement ) {
+		Assert::parameterType( StatementListProvider::class, $entity, '$entity' );
 		parent::__construct( $entity, $statement->getMainSnak() );
 
 		$this->statement = $statement;
@@ -33,6 +37,14 @@ class MainSnakContext extends ApiV2Context {
 
 	public function getSnakStatement() {
 		return $this->statement;
+	}
+
+	public function getSnakGroup() {
+		/** @var StatementList $statements */
+		$statements = $this->entity->getStatements();
+		return $statements
+			->getByRank( [ Statement::RANK_NORMAL, Statement::RANK_PREFERRED ] )
+			->getMainSnaks();
 	}
 
 	protected function &getMainArray( array &$container ) {

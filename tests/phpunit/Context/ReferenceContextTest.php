@@ -2,7 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\Context;
 
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Reference;
+use Wikibase\DataModel\ReferenceList;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -77,6 +80,26 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
 
 		$this->assertSame( null, $context->getSnakStatement() );
+	}
+
+	public function testGetSnakGroup() {
+		$referenceSnak1 = NewStatement::noValueFor( 'P100' )->build()->getMainSnak();
+		$referenceSnak2 = NewStatement::someValueFor( 'P200' )->build()->getMainSnak();
+		$reference1 = new Reference( [ $referenceSnak1, $referenceSnak2 ] );
+		$reference2 = new Reference( [ new PropertyNoValueSnak( new PropertyId( 'P300' ) ) ] );
+		$statement = new Statement(
+			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+			null,
+			new ReferenceList( [ $reference1, $reference2 ] )
+		);
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $statement )
+			->build();
+		$context = new ReferenceContext( $entity, $statement, $reference1, $referenceSnak1 );
+
+		$snakGroup = $context->getSnakGroup();
+
+		$this->assertSame( [ $referenceSnak1, $referenceSnak2 ], $snakGroup );
 	}
 
 	public function testStoreCheckResultInArray() {

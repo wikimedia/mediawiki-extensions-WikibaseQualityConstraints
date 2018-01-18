@@ -31,6 +31,11 @@ class QualifierContext extends ApiV2Context {
 		return self::TYPE_QUALIFIER;
 	}
 
+	public function getSnakGroup() {
+		$snaks = $this->statement->getQualifiers();
+		return array_values( $snaks->getArrayCopy() );
+	}
+
 	protected function &getMainArray( array &$container ) {
 		$statementArray = &$this->getStatementArray(
 			$container,

@@ -63,6 +63,24 @@ class MainSnakContextTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $statement, $context->getSnakStatement() );
 	}
 
+	public function testGetSnakGroup() {
+		$statement1 = NewStatement::noValueFor( 'P1' )->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )->build();
+		$statement3 = NewStatement::noValueFor( 'P2' )
+			->withDeprecatedRank()
+			->build();
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $statement1 )
+			->andStatement( $statement2 )
+			->andStatement( $statement3 )
+			->build();
+		$context = new MainSnakContext( $entity, $statement1 );
+
+		$snakGroup = $context->getSnakGroup();
+
+		$this->assertSame( [ $statement1->getMainSnak(), $statement2->getMainSnak() ], $snakGroup );
+	}
+
 	public function testStoreCheckResultInArray() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement1 = NewStatement::noValueFor( 'P1' )
