@@ -109,16 +109,18 @@ class TypeChecker implements ConstraintChecker {
 		);
 
 		$relation = $this->constraintParameterParser->parseRelationParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
-		if ( $relation === 'instance' ) {
-			$relationId = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
-		} elseif ( $relation === 'subclass' ) {
-			$relationId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
+		$relationIds = [];
+		if ( $relation === 'instance' || $relation === 'instanceOrSubclass' ) {
+			$relationIds[] = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
+		}
+		if ( $relation === 'subclass' || $relation === 'instanceOrSubclass' ) {
+			$relationIds[] = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 		}
 		$parameters['relation'] = [ $relation ];
 
 		$result = $this->typeCheckerHelper->hasClassInRelation(
 			$context->getEntity()->getStatements(),
-			$relationId,
+			$relationIds,
 			$classes
 		);
 

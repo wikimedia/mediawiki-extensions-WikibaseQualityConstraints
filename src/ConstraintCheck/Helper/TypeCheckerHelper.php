@@ -162,21 +162,21 @@ class TypeCheckerHelper {
 	/**
 	 * Checks, if one of the itemId serializations in $classesToCheck
 	 * is contained in the list of $statements
-	 * via property $relationId or if it is a subclass of
-	 * one of the items referenced in $statements via $relationId
+	 * via properties $relationIds or if it is a subclass of
+	 * one of the items referenced in $statements via $relationIds
 	 *
 	 * @param StatementList $statements
-	 * @param string $relationId
+	 * @param string[] $relationIds
 	 * @param string[] $classesToCheck
 	 *
 	 * @return CachedBool
 	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
-	public function hasClassInRelation( StatementList $statements, $relationId, array $classesToCheck ) {
+	public function hasClassInRelation( StatementList $statements, array $relationIds, array $classesToCheck ) {
 		$metadatas = [];
 
 		/** @var Statement $statement */
-		foreach ( $statements->getByPropertyId( new PropertyId( $relationId ) ) as $statement ) {
+		foreach ( $this->getStatementsByPropertyIds( $statements, $relationIds ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
 			if ( !$this->hasCorrectType( $mainSnak ) ) {
@@ -215,11 +215,30 @@ class TypeCheckerHelper {
 	}
 
 	/**
+	 * @param StatementList $statements
+	 * @param string[] $propertyIdSerializations
+	 * @return StatementList
+	 */
+	private function getStatementsByPropertyIds(
+		StatementList $statements,
+		array $propertyIdSerializations
+	) {
+		$statementArrays = [];
+		foreach ( $propertyIdSerializations as $propertyIdSerialization ) {
+			$propertyId = new PropertyId( $propertyIdSerialization );
+			$statementArrays[] = $statements->getByPropertyId( $propertyId )->toArray();
+		}
+		return new StatementList(
+			call_user_func_array( 'array_merge', $statementArrays )
+		);
+	}
+
+	/**
 	 * @param PropertyId $propertyId ID of the property that introduced the constraint
 	 * @param EntityId $entityId ID of the entity that does not have the required type
 	 * @param string[] $classes item ID serializations of the classes that $entityId should have
 	 * @param string $checker "type" or "valueType" (for message key)
-	 * @param string $relation "instance" or "subclass" (for message key)
+	 * @param string $relation "instance", "subclass", or "instanceOrSubclass" (for message key)
 	 *
 	 * @return string Localized HTML message
 	 */
@@ -227,8 +246,10 @@ class TypeCheckerHelper {
 		// Possible messages:
 		// wbqc-violation-message-type-instance
 		// wbqc-violation-message-type-subclass
+		// wbqc-violation-message-type-instanceOrSubclass
 		// wbqc-violation-message-valueType-instance
 		// wbqc-violation-message-valueType-subclass
+		// wbqc-violation-message-valueType-instanceOrSubclass
 		$message = wfMessage( 'wbqc-violation-message-' . $checker . '-' . $relation );
 
 		$message->rawParams(
