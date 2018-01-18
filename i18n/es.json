@@ -63,6 +63,5 @@
 	"wbqc-violation-message-qualifiers": "La propiedad solo debe usarse con los calificadores definidos en los parámetros.",
 	"wbqc-violation-message-single-value": "Esta propiedad debería contener un único valor. Es decir, debería haber una declaración utilizando esta propiedad.",
 	"wbqc-violation-message-symmetric": "$1 también debería tener la declaración simétrica $2 $3.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "El parámetro \"relation\" debe ser \"instance\" o \"subclass\".",
 	"wbqc-violation-message-unique-value": "El valor de esta propiedad no debe estar presente en ningún otro elemento, pero existe también en {{PLURAL:$1|1=$3.|2=$3 y $4.|los elementos siguientes: $2}}"
 }

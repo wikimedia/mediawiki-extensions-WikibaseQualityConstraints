@@ -102,6 +102,5 @@
 	"wbqc-violation-message-range-time-rightopen": "O valor para $1 ($2) non debe estar antes de $3.",
 	"wbqc-violation-message-single-value": "Esta propiedade só debe ter un único valor. Isto é, debe haber só unha afirmación usando esta propiedade.",
 	"wbqc-violation-message-symmetric": "Esta propiedade só debe ser usada cando hai unha declaración no seu valor entidade coa mesma propiedade e este obxecto co seu valor.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "O parámetro \"relation\" (relación) debe ser \"instance\" (caso) ou \"subclass\" (subclase).",
 	"wbqc-violation-message-unique-value": "Este valor de propiedade non debe estar presente en ningún outro elemento."
 }

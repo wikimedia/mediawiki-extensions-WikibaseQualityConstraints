@@ -128,7 +128,6 @@
 	"wbqc-violation-message-range-time-rightopen": "O valor de $1 ($2) não deve ser antes de $3.",
 	"wbqc-violation-message-single-value": "Esta propriedade só deve conter um único valor. Por outras palavras, só deveria haver uma declaração a usar esta propriedade.",
 	"wbqc-violation-message-symmetric": "$1 também deveria ter a declaração simétrica $2 $3.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "O parâmetro \"relation\" (relação) tem de ser \"instance\" (instância) ou \"subclass\" (subclasse).",
 	"wbqc-violation-message-type-instance": "As entidades que usam a propriedade $1 deveriam ser instâncias de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-type-subclass": "As entidades que usam a propriedade $1 deveriam ser subclasses de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-valueType-instance": "Os valores de declarações $1 deveriam ser instâncias de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",

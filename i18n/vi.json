@@ -60,6 +60,5 @@
 	"wbqc-violation-message-qualifier": "Chỉ nên sử dụng thuộc tính này làm từ hạn định.",
 	"wbqc-violation-message-qualifiers": "$2 không phải là từ hạn định hợp lệ cho $1 – chỉ có {{PLURAL:$3|1=$5 là từ hạn định hợp lệ.|2=$5 và $6 là từ hạn định hợp lệ.|các từ hạn định sau là hợp lệ: $4}}",
 	"wbqc-violation-message-single-value": "Thuộc tính này chỉ nên sử dụng một giá trị, tức chỉ có một lời tuyên bố sử dụng thuộc tính này.",
-	"wbqc-violation-message-symmetric": "$1 nên cũng có lời tuyên bố đối xứng $2 $3.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "Thông số “relation” phải là “instance” hoặc “subclass”."
+	"wbqc-violation-message-symmetric": "$1 nên cũng có lời tuyên bố đối xứng $2 $3."
 }

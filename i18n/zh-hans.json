@@ -126,7 +126,6 @@
 	"wbqc-violation-message-range-time-rightopen": "$1（$2）的值不应在$3之前。",
 	"wbqc-violation-message-single-value": "此属性应只包含一个值。换言之，这里应只有一个声明使用此属性。",
 	"wbqc-violation-message-symmetric": "$1也应当拥有对称声明$2 $3。",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "参数“relation”必须是“instance”或“subclass”两者之一。",
 	"wbqc-violation-message-type-instance": "使用$1属性的实体性质应为{{PLURAL:$3|1=$5|2=$5或$6|以下类之一}}（或为{{PLURAL:$3|其子类之一}}），但$2当前{{PLURAL:$3|1=并非如此。|2=并非如此。|并非如此：$4}}",
 	"wbqc-violation-message-type-subclass": "使用$1属性的实体的上级分类应为{{PLURAL:$3|1=$5|2=$5或$6|以下类之一}}（或为{{PLURAL:$3|其子类之一}}），但$2当前{{PLURAL:$3|1=并非如此。|2=并非如此。|并非如此：$4}}",
 	"wbqc-violation-message-valueType-instance": "$1声明的值性质应为{{PLURAL:$3|1=$5|2=$5或$6|以下类之一}}（或为{{PLURAL:$3|其子类之一}}），但$2当前{{PLURAL:$3|1=并非如此。|2=并非如此。|并非如此：$4}}",

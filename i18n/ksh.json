@@ -27,6 +27,5 @@
 	"wbqc-violation-message": "De Pröhfong hädd_en Verläzong vum Berett för de müjjelesche Wääte jefonge. Op dat Minnibelldsche Kleke brängk Der mih Aanjahbe derzoh.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "För dat Appachtemang „$1“ jidd_et noch keine Pröhvong.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Di Eijeschaff, di en dä Parramehtere faßjelaht es, moß ene Wäät vun dersällve Zoot han, wi heh di Eijeschaff.",
-	"wbqc-violation-message-multi-value": "Heh di Eijeschaff moß mih wi eijne Wäät han. Et möße alsu zwai udder mih Behoutonge doh sin, di se bruche.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "Dä Parramehter „Relation“ muss entweder „Instanz“ oder „Unterklasse“ sein."
+	"wbqc-violation-message-multi-value": "Heh di Eijeschaff moß mih wi eijne Wäät han. Et möße alsu zwai udder mih Behoutonge doh sin, di se bruche."
 }

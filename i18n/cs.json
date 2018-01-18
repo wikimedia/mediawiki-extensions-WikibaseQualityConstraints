@@ -102,7 +102,6 @@
 	"wbqc-violation-message-range-time-rightopen": "Hodnota vlastnosti $1 ($2) by neměla být před $3.",
 	"wbqc-violation-message-single-value": "Tato vlastnost by měla obsahovat pouze jednu hodnotu. To znamená, že by zde mělo být pouze jedno tvrzení používající tuto vlastnost.",
 	"wbqc-violation-message-symmetric": "$1 by také měla mít symetrické tvrzení $2 $3.",
-	"wbqc-violation-message-type-relation-instance-or-subclass": "Parametr „relation“ musí být buď „instance“, nebo „subclass“.",
 	"wbqc-violation-message-type-instance": "Entity s vlastností $1 by měly být instancemi {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-type-subclass": "Entity s vlastností $1 by měly být podtřídami {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-valueType-instance": "Hodnoty tvrzení vlastnosti $1 by měly být instancemi {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
