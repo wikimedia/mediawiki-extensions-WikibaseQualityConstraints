@@ -334,6 +334,11 @@
 			"description": "The item ID of the 'subclass of' item, which, when used in a 'relation' qualifier of a 'property constraint' statement on a property, indicates that the 'type' or 'value type' constraint defined in this statement demands a 'subclass' relation.",
 			"public": true
 		},
+		"WBQualityConstraintsInstanceOrSubclassOfRelationId": {
+			"value": "Q30208840",
+			"description": "The item ID of the 'instance or subclass of' item, which, when used in a 'relation' qualifier of a 'property constraint' statement on a property, indicates that the 'type' or 'value type' constraint defined in this statement demands a 'instance or subclass' relation.",
+			"public": true
+		},
 		"WBQualityConstraintsPropertyId": {
 			"value": "P2306",
 			"description": "The property ID of the 'property' property (data type: property), which specifies the property parameter of an 'inverse', 'item requires claim', 'value requires claim', 'difference within range', 'mandatory qualifiers', or 'qualifiers' constraint.",

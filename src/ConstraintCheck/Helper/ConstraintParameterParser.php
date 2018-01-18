@@ -176,7 +176,7 @@ class ConstraintParameterParser {
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
-	 * @return string 'instance' or 'subclass'
+	 * @return string 'instance', 'subclass', or 'instanceOrSubclass'
 	 */
 	public function parseRelationParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$this->checkError( $constraintParameters );
@@ -194,17 +194,23 @@ class ConstraintParameterParser {
 		$relationEntityId = $this->parseEntityIdParameter( $constraintParameters[$relationId][0], $relationId );
 		$instanceId = $this->config->get( 'WBQualityConstraintsInstanceOfRelationId' );
 		$subclassId = $this->config->get( 'WBQualityConstraintsSubclassOfRelationId' );
+		$instanceOrSubclassId = $this->config->get( 'WBQualityConstraintsInstanceOrSubclassOfRelationId' );
 		switch ( $relationEntityId ) {
 			case $instanceId:
 				return 'instance';
 			case $subclassId:
 				return 'subclass';
+			case $instanceOrSubclassId:
+				return 'instanceOrSubclass';
 			default:
 				throw new ConstraintParameterException(
 					wfMessage( 'wbqc-violation-message-parameter-oneof' )
 						->rawParams( $this->constraintParameterRenderer->formatPropertyId( $relationId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-						->numParams( 2 )
-						->rawParams( $this->constraintParameterRenderer->formatItemIdList( [ $instanceId, $subclassId ], Role::CONSTRAINT_PARAMETER_VALUE ) )
+						->numParams( 3 )
+						->rawParams( $this->constraintParameterRenderer->formatItemIdList(
+							[ $instanceId, $subclassId, $instanceOrSubclassId ],
+							Role::CONSTRAINT_PARAMETER_VALUE
+						) )
 						->escaped()
 				);
 		}
