@@ -5,7 +5,11 @@ namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Reference;
+use Wikibase\DataModel\ReferenceList;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Units\CSVUnitStorage;
 use Wikibase\Lib\Units\UnitConverter;
@@ -14,6 +18,8 @@ use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -506,6 +512,41 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-rightopen' );
+	}
+
+	public function testDiffWithinRangeConstraint_Qualifier() {
+		$qualifier1 = new PropertyValueSnak( new PropertyId( 'P569' ), self::$t1900 );
+		$qualifier2 = new PropertyValueSnak( new PropertyId( 'P570' ), self::$t1970 );
+		$statement = new Statement(
+			new PropertySomeValueSnak( new PropertyId( 'P10' ) ),
+			new SnakList( [ $qualifier1, $qualifier2 ] ),
+			null,
+			'Q1$c5f1968c-c8f9-4edd-9f2d-f12c93cd8b2b'
+		);
+		$entity = NewItem::withStatement( $statement )->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
+
+		$checkResult = $this->checker->checkConstraint( new QualifierContext( $entity, $statement, $qualifier2 ), $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testDiffWithinRangeConstraint_Reference() {
+		$snak1 = new PropertyValueSnak( new PropertyId( 'P569' ), self::$t2000 );
+		$snak2 = new PropertyValueSnak( new PropertyId( 'P570' ), self::$t1970 );
+		$reference = new Reference( [ $snak1, $snak2 ] );
+		$statement = new Statement(
+			new PropertySomeValueSnak( new PropertyId( 'P10' ) ),
+			null,
+			new ReferenceList( [ $reference ] ),
+			'Q1$80a5fb6c-8b14-4f18-a60e-2c853d5dfbd1'
+		);
+		$entity = NewItem::withStatement( $statement )->build();
+		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
+
+		$checkResult = $this->checker->checkConstraint( new ReferenceContext( $entity, $statement, $reference, $snak2 ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
 
 	public function testDiffWithinRangeConstraintDeprecatedStatement() {
