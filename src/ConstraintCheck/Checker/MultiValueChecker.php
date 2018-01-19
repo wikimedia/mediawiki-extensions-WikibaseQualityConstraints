@@ -30,9 +30,8 @@ class MultiValueChecker implements ConstraintChecker {
 	public function getSupportedContextTypes() {
 		return [
 			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
-			// TODO T175566
-			Context::TYPE_QUALIFIER => CheckResult::STATUS_TODO,
-			Context::TYPE_REFERENCE => CheckResult::STATUS_TODO,
+			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_REFERENCE => CheckResult::STATUS_COMPLIANCE,
 		];
 	}
 

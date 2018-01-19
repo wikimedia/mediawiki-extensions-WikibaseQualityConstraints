@@ -2,11 +2,14 @@
 
 namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
 
+use Wikibase\DataModel\Reference;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -72,6 +75,36 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
 
 		$this->assertCompliance( $checkResult );
+	}
+
+	public function testSingleValueConstraint_One_Qualifier() {
+		$qualifier1 = NewStatement::noValueFor( 'P1' )->build()->getMainSnak();
+		$qualifier2 = NewStatement::noValueFor( 'P2' )->build()->getMainSnak();
+		$statement = NewStatement::someValueFor( 'P10' )->build();
+		$statement->getQualifiers()->addSnak( $qualifier1 );
+		$statement->getQualifiers()->addSnak( $qualifier2 );
+		$item = NewItem::withStatement( $statement )
+			->andStatement( NewStatement::someValueFor( 'P1' ) )
+			->build();
+		$context = new QualifierContext( $item, $statement, $qualifier1 );
+
+		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testSingleValueConstraint_Two_Reference() {
+		$referenceSnak1 = NewStatement::noValueFor( 'P1' )->build()->getMainSnak();
+		$referenceSnak2 = NewStatement::someValueFor( 'P1' )->build()->getMainSnak();
+		$reference = new Reference( [ $referenceSnak1, $referenceSnak2 ] );
+		$statement = NewStatement::someValueFor( 'P10' )->build();
+		$statement->getReferences()->addReference( $reference );
+		$item = NewItem::withStatement( $statement )->build();
+		$context = new ReferenceContext( $item, $statement, $reference, $referenceSnak1 );
+
+		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-single-value' );
 	}
 
 	public function testSingleValueConstraintDeprecatedStatement() {
