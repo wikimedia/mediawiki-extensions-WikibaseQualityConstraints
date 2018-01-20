@@ -9,7 +9,8 @@
 			"Thibaut120094",
 			"Urhixidur",
 			"Envlh",
-			"Verdy p"
+			"Verdy p",
+			"Pamputt"
 		]
 	},
 	"wbqc-constraintreport": "Rapport de contrainte",
@@ -134,9 +135,11 @@
 	"wbqc-violation-message-single-value": "Cette propriété devrait avoir une valeur unique. C’est-à-dire qu’il devrait y avoir une seule déclaration utilisant cette propriété.",
 	"wbqc-violation-message-symmetric": "$1 devrait également avoir la proposition symétrique $2 $3.",
 	"wbqc-violation-message-type-instance": "Les entités utilisant la propriété $1 doivent être des instances de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes de}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas actuellement : $4}}",
-	"wbqc-violation-message-type-subclass": "Les entités utilsiant la propriété $1 doivent être des sous-classes de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas actuellement : $4}}",
+	"wbqc-violation-message-type-subclass": "Les entités utilisant la propriété $1 doivent être des sous-classes de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas actuellement : $4}}",
+	"wbqc-violation-message-type-instanceOrSubclass": "Les entités utilisant la propriété $1 doivent être des instances ou des sous-classes de {{PLURAL:$3|1=$5|2=$5 ou $6|d’une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est actuellement pas.|2=ne l’est actuellement pas.|ne l’est actuellement pas : $4}}",
 	"wbqc-violation-message-valueType-instance": "Les valeurs des déclarations $1 devraient être des instances de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas : $4}}",
 	"wbqc-violation-message-valueType-subclass": "Les valeurs des déclarations $1 doivent être des sous-classes de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est pas actuellement.|2=ne l’est pas actuellement.|ne l’est pas : $4}}",
+	"wbqc-violation-message-valueType-instanceOrSubclass": "Les valeurs des déclarations $1 doivent être des instances ou des sous-classes de {{PLURAL:$3|1=$5|2=$5 ou $6|une des classes suivantes}} (ou {{PLURAL:$3|1=d’une de ses sous-classes|2=d’une de leurs sous-classes|d’une de leurs sous-classes}}), mais $2 {{PLURAL:$3|1=ne l’est actuellement pas.|2=ne l’est actuellement pas.|ne l’est actuellement pas : $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 doit avoir {{PLURAL:$3|0=une déclaration $2.|1=une déclaration $2 $5.|une déclaration pour $2 avec une des valeurs suivantes : $4}}",
 	"wbqc-violation-message-unique-value": "Cette valeur de propriété ne doit être associée à aucun autre élément, et figure également sur {{PLURAL:$1|1=$3.|2=$3 et $4.|les éléments suivants : $2}}",
 	"wbqc-violation-message-valueOnly": "Cette propriété ne doit être utilisée que pour la valeur principale d'une expression, non pour des qualificateurs ou des références.",
