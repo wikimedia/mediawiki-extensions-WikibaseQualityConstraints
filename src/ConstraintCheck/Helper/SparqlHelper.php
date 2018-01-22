@@ -220,7 +220,7 @@ EOF;
 		$dataType = $this->propertyDataTypeLookup->getDataTypeIdForProperty(
 			$snak->getPropertyId()
 		);
-		list ( $value, $isFullValue ) = $this->getRdfLiteral( $dataType, $dataValue );
+		list( $value, $isFullValue ) = $this->getRdfLiteral( $dataType, $dataValue );
 		if ( $isFullValue ) {
 			$prefix .= 'v';
 		}
