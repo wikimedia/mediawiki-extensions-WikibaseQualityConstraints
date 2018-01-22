@@ -132,6 +132,9 @@ final class WikibaseQualityConstraintsHooks {
 		if ( !$out->getUser()->isLoggedIn() ) {
 			return;
 		}
+		if ( !$out->getJsConfigVars()['wbIsEditView'] ) {
+			return;
+		}
 
 		if ( self::isGadgetEnabledForUserName( $out->getUser()->getName(), time() ) ) {
 			$out->addModules( 'wikibase.quality.constraints.gadget' );

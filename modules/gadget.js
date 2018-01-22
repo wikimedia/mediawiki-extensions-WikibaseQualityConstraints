@@ -291,8 +291,8 @@
 
 	entityId = mw.config.get( 'wbEntityId' );
 
-	if ( entityId === null || mw.config.get( 'wgMFMode' ) ) {
-		// no entity or mobile frontend, skip
+	if ( entityId === null || mw.config.get( 'wgMFMode' ) || !mw.config.get( 'wbIsEditView' ) ) {
+		// no entity, mobile frontend, or not editing (diff, oldid, …) – skip
 		return;
 	}
 
