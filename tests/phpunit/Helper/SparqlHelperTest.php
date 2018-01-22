@@ -142,7 +142,7 @@ EOF;
 	}
 
 	/**
-	 * @dataProvider findEntitiesQualifierReferenceProvider
+	 * @dataProvider provideSnaksWithSparqlValuesAndPropertyPaths
 	 */
 	public function testFindEntitiesWithSameQualifierOrReference(
 		PropertyValueSnak $snak,
@@ -202,7 +202,7 @@ EOF;
 		);
 	}
 
-	public function findEntitiesQualifierReferenceProvider() {
+	public function provideSnaksWithSparqlValuesAndPropertyPaths() {
 		$pid = new PropertyId( 'P1' );
 		$globeCoordinateValue = new GlobeCoordinateValue( new LatLongValue( 42.0, 13.37 ) );
 		$quantityValue = UnboundedQuantityValue::newFromNumber( -10, 'ms' );
@@ -353,7 +353,7 @@ EOF;
 	}
 
 	/**
-	 * @dataProvider isTimeoutProvider
+	 * @dataProvider provideTimeoutMessages
 	 */
 	public function testIsTimeout( $content, $expected ) {
 		$sparqlHelper = new SparqlHelper(
@@ -399,7 +399,7 @@ EOF;
 		$this->assertTrue( $actual );
 	}
 
-	public function isTimeoutProvider() {
+	public function provideTimeoutMessages() {
 		return [
 			'empty' => [
 				'',
@@ -431,7 +431,7 @@ EOF;
 	}
 
 	/**
-	 * @dataProvider getCacheMaxAgeProvider
+	 * @dataProvider provideCacheHeaders
 	 */
 	 public function testGetCacheMaxAge( $responseHeaders, $expected ) {
 		$sparqlHelper = new SparqlHelper(
@@ -451,7 +451,7 @@ EOF;
 		$this->assertSame( $expected, $actual );
 	 }
 
-	 public function getCacheMaxAgeProvider() {
+	 public function provideCacheHeaders() {
 		 return [
 			 'WDQS hit' => [
 				 [ 'x-cache-status' => [ 'hit-front' ], 'cache-control' => [ 'public, max-age=300' ] ],

@@ -123,7 +123,7 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	 * @param string|null $secondRelation 'instance' or 'subclass'
 	 * @param string $class item ID serialization
 	 * @param bool $expected
-	 * @dataProvider getInstanceOrSubclassOfProvider
+	 * @dataProvider provideRelations
 	 */
 	public function testHasClassInRelation_InstanceOrSubclassOf(
 		$firstRelation,
@@ -166,7 +166,7 @@ class TypeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $result->getBool() );
 	}
 
-	public function getInstanceOrSubclassOfProvider() {
+	public function provideRelations() {
 		return [
 			'direct instance' => [ 'instance', null, 'Q1', true ],
 			'direct subclass' => [ 'subclass', null, 'Q1', true ],

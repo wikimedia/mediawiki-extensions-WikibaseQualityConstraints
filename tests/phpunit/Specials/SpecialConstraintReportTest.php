@@ -163,7 +163,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	/**
-	 * @dataProvider executeProvider
+	 * @dataProvider provideRequestsAndMatchers
 	 */
 	public function testExecute( $subPage, array $request, $userLanguage, array $matchers ) {
 		$request = new \FauxRequest( $request );
@@ -184,7 +184,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		}
 	}
 
-	public function executeProvider() {
+	public function provideRequestsAndMatchers() {
 		$userLanguage = 'qqx';
 		$cases = [];
 		$matchers = [];

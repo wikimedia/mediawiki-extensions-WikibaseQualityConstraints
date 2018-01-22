@@ -310,7 +310,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @dataProvider propertyIdProvider
+	 * @dataProvider providePropertyIds
 	 */
 	public function testCheckConstraintParameters( $propertyId ) {
 		$constraint = $this->getConstraintMock( [], $propertyId );
@@ -320,7 +320,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertCount( 1, $result );
 	}
 
-	public function propertyIdProvider() {
+	public function providePropertyIds() {
 		return [ [ 'P1' ], [ 'P2' ] ];
 	}
 

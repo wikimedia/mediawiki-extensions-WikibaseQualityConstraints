@@ -25,7 +25,7 @@ class ReferenceCheckerTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @param string $type context type
 	 * @param string|null $messageKey key of violation message, or null if compliance is expected
-	 * @dataProvider contextTypes
+	 * @dataProvider provideContextTypes
 	 */
 	public function testReferenceConstraint( $type, $messageKey ) {
 		$context = $this->getMock( Context::class );
@@ -42,7 +42,7 @@ class ReferenceCheckerTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	public function contextTypes() {
+	public function provideContextTypes() {
 		return [
 			[ Context::TYPE_STATEMENT, 'wbqc-violation-message-reference' ],
 			[ Context::TYPE_QUALIFIER, 'wbqc-violation-message-reference' ],
