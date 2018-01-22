@@ -31,7 +31,7 @@
 		"jakub-onderka/php-console-highlighter": "0.3.2",
 		"jakub-onderka/php-parallel-lint": "0.9.2",
 		"phpunit/phpunit": "~4.8",
-		"satooshi/php-coveralls": "master-dev",
+		"php-coveralls/php-coveralls": "master-dev",
 		"wikibase/wikibase-codesniffer": "^0.2.0",
 		"mediawiki/minus-x": "0.2.1"
 	},
