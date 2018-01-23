@@ -159,7 +159,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$minuend = $snak->getDataValue();
 
 		/** @var PropertyId $property */
-		list ( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
+		list( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
 		/** @var Statement $otherStatement */

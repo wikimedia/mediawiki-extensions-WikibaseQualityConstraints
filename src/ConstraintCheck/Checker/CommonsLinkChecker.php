@@ -146,7 +146,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 			if ( !$this->commonsLinkIsWellFormed( $commonsLink ) ) {
 				throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
 			}
-			list ( $defaultNamespace, $prefix ) = $this->getCommonsNamespace( $namespace );
+			list( $defaultNamespace, $prefix ) = $this->getCommonsNamespace( $namespace );
 			$title = $this->titleParser->parseTitle( $prefix . $commonsLink, $defaultNamespace );
 			if ( $this->pageExists( $title ) ) {
 				$message = '';
