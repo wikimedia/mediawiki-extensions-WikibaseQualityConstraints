@@ -279,7 +279,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$formatted = $constraintParameterRenderer->formatPropertyIdList( [] );
 
-		$this->assertSame( [ '<ul></ul>' ], $formatted );
+		$this->assertConstraintReportParameterList( [], $formatted );
 	}
 
 	public function testFormatPropertyIdList_TwoPropertyIds() {
@@ -294,7 +294,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			new PropertyId( 'P2' ),
 		] );
 
-		$this->assertSame( [ '<ul><li>P1</li><li>P2</li></ul>', 'P1', 'P2' ], $formatted );
+		$this->assertConstraintReportParameterList( [ 'P1', 'P2' ], $formatted );
 	}
 
 	public function testFormatPropertyIdList_TwentyPropertyIds() {
@@ -313,25 +313,8 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->assertSame(
-			[
-				'<ul>' .
-					'<li>P1</li><li>P2</li><li>P3</li><li>P4</li><li>P5</li>' .
-					'<li>P6</li><li>P7</li><li>P8</li><li>P9</li><li>P10</li>' .
-					'<li>...</li>' .
-				'</ul>',
-				'P1',
-				'P2',
-				'P3',
-				'P4',
-				'P5',
-				'P6',
-				'P7',
-				'P8',
-				'P9',
-				'P10',
-				'...',
-			],
+		$this->assertConstraintReportParameterList(
+			[ 'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', '...' ],
 			$formatted
 		);
 	}
@@ -345,7 +328,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$formatted = $constraintParameterRenderer->formatItemIdList( [] );
 
-		$this->assertSame( [ '<ul></ul>' ], $formatted );
+		$this->assertConstraintReportParameterList( [], $formatted );
 	}
 
 	public function testFormatItemIdList_TwoItemIds() {
@@ -360,7 +343,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			new ItemId( 'Q2' ),
 		] );
 
-		$this->assertSame( [ '<ul><li>Q1</li><li>Q2</li></ul>', 'Q1', 'Q2' ], $formatted );
+		$this->assertConstraintReportParameterList( [ 'Q1', 'Q2' ], $formatted );
 	}
 
 	public function testFormatItemIdList_TwentyItemIds() {
@@ -379,25 +362,8 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->assertSame(
-			[
-				'<ul>' .
-					'<li>Q1</li><li>Q2</li><li>Q3</li><li>Q4</li><li>Q5</li>' .
-					'<li>Q6</li><li>Q7</li><li>Q8</li><li>Q9</li><li>Q10</li>' .
-					'<li>...</li>' .
-				'</ul>',
-				'Q1',
-				'Q2',
-				'Q3',
-				'Q4',
-				'Q5',
-				'Q6',
-				'Q7',
-				'Q8',
-				'Q9',
-				'Q10',
-				'...',
-			],
+		$this->assertConstraintReportParameterList(
+			[ 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', '...' ],
 			$formatted
 		);
 	}
@@ -411,7 +377,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$formatted = $constraintParameterRenderer->formatEntityIdList( [] );
 
-		$this->assertSame( [ '<ul></ul>' ], $formatted );
+		$this->assertConstraintReportParameterList( [], $formatted );
 	}
 
 	public function testFormatEntityIdList_PropertyIdItemIdAndNull() {
@@ -427,7 +393,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			null
 		] );
 
-		$this->assertSame( [ '<ul><li>P1</li><li>Q2</li></ul>', 'P1', 'Q2' ], $formatted );
+		$this->assertConstraintReportParameterList( [ 'P1', 'Q2' ], $formatted );
 	}
 
 	public function testFormatEntityIdList_TwentyItemIds() {
@@ -446,25 +412,8 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->assertSame(
-			[
-				'<ul>' .
-					'<li>Q1</li><li>Q2</li><li>Q3</li><li>Q4</li><li>Q5</li>' .
-					'<li>Q6</li><li>Q7</li><li>Q8</li><li>Q9</li><li>Q10</li>' .
-					'<li>...</li>' .
-				'</ul>',
-				'Q1',
-				'Q2',
-				'Q3',
-				'Q4',
-				'Q5',
-				'Q6',
-				'Q7',
-				'Q8',
-				'Q9',
-				'Q10',
-				'...',
-			],
+		$this->assertConstraintReportParameterList(
+			[ 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', '...' ],
 			$formatted
 		);
 	}
@@ -478,7 +427,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$formatted = $constraintParameterRenderer->formatItemIdSnakValueList( [] );
 
-		$this->assertSame( [ '<ul></ul>' ], $formatted );
+		$this->assertConstraintReportParameterList( [], $formatted );
 	}
 
 	public function testFormatItemIdSnakValueList_ValueSomeValueAndNoValue() {
@@ -500,13 +449,8 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 		$expectedNoValue = $constraintParameterRenderer->formatItemIdSnakValue(
 			ItemIdSnakValue::noValue()
 		);
-		$this->assertSame(
-			[
-				"<ul><li>Q1</li><li>$expectedSomeValue</li><li>$expectedNoValue</li></ul>",
-				'Q1',
-				$expectedSomeValue,
-				$expectedNoValue,
-			],
+		$this->assertConstraintReportParameterList(
+			[ 'Q1', $expectedSomeValue, $expectedNoValue ],
 			$formatted
 		);
 	}
@@ -527,25 +471,8 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->assertSame(
-			[
-				'<ul>' .
-					'<li>Q1</li><li>Q2</li><li>Q3</li><li>Q4</li><li>Q5</li>' .
-					'<li>Q6</li><li>Q7</li><li>Q8</li><li>Q9</li><li>Q10</li>' .
-					'<li>...</li>' .
-				'</ul>',
-				'Q1',
-				'Q2',
-				'Q3',
-				'Q4',
-				'Q5',
-				'Q6',
-				'Q7',
-				'Q8',
-				'Q9',
-				'Q10',
-				'...',
-			],
+		$this->assertConstraintReportParameterList(
+			[ 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', '...' ],
 			$formatted
 		);
 	}
@@ -559,7 +486,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$formatted = $constraintParameterRenderer->formatConstraintScopeList( [] );
 
-		$this->assertSame( [ '<ul></ul>' ], $formatted );
+		$this->assertConstraintReportParameterList( [], $formatted );
 	}
 
 	public function testFormatConstraintScopeList_QualifierAndReferenceScope() {
@@ -592,8 +519,8 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			Context::TYPE_REFERENCE,
 		] );
 
-		$this->assertSame(
-			[ '<ul><li>qualifier</li><li>reference</li></ul>', 'qualifier', 'reference' ],
+		$this->assertConstraintReportParameterList(
+			[ 'qualifier', 'reference' ],
 			$formatted
 		);
 	}
@@ -627,28 +554,22 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 			array_fill( 0, 20, Context::TYPE_STATEMENT )
 		);
 
-		$this->assertSame(
-			[
-				'<ul>' .
-					'<li>statement</li><li>statement</li><li>statement</li>' .
-					'<li>statement</li><li>statement</li><li>statement</li>' .
-					'<li>statement</li><li>statement</li><li>statement</li>' .
-					'<li>statement</li><li>...</li>' .
-				'</ul>',
-				'statement',
-				'statement',
-				'statement',
-				'statement',
-				'statement',
-				'statement',
-				'statement',
-				'statement',
-				'statement',
-				'statement',
-				'...',
-			],
+		$this->assertConstraintReportParameterList(
+			array_fill( 0, 10, 'statement' ) + [ 11 => '...' ],
 			$formatted
 		);
+	}
+
+	/**
+	 * @param string[] $expected
+	 * @param string $actual
+	 */
+	private function assertConstraintReportParameterList( array $expected, $actual ) {
+		$htmlList = '<ul>' . implode( '', array_map( function ( $item ) {
+			return "<li>$item</li>";
+		}, $expected ) ) . '</ul>';
+		array_unshift( $expected, $htmlList );
+		$this->assertSame( $expected, $actual );
 	}
 
 }
