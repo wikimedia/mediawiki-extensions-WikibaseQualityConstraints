@@ -36,11 +36,6 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 */
 	private $titleParser;
 
-	/**
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
-	 * @param TitleParser $titleParser
-	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
 		ConstraintParameterRenderer $constraintParameterRenderer,

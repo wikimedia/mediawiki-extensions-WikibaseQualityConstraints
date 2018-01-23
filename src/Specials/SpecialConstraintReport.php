@@ -115,18 +115,6 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 	}
 
-	/**
-	 * @param EntityLookup $entityLookup
-	 * @param EntityTitleLookup $entityTitleLookup
-	 * @param EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory
-	 * @param EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory
-	 * @param LanguageFallbackLabelDescriptionLookupFactory $fallbackLabelDescLookupFactory
-	 * @param EntityIdParser $entityIdParser
-	 * @param OutputFormatValueFormatterFactory $valueFormatterFactory
-	 * @param DelegatingConstraintChecker $constraintChecker
-	 * @param Config $config
-	 * @param IBufferingStatsdDataFactory $dataFactory
-	 */
 	public function __construct(
 		EntityLookup $entityLookup,
 		EntityTitleLookup $entityTitleLookup,

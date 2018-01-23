@@ -43,12 +43,6 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	 */
 	private $config;
 
-	/**
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param RangeCheckerHelper $rangeCheckerHelper
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
-	 * @param Config $config
-	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
 		RangeCheckerHelper $rangeCheckerHelper,

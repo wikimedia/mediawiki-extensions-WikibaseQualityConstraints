@@ -37,11 +37,6 @@ class SymmetricChecker implements ConstraintChecker {
 	 */
 	private $constraintParameterRenderer;
 
-	/**
-	 * @param EntityLookup $lookup
-	 * @param ConnectionCheckerHelper $connectionCheckerHelper
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
-	 */
 	public function __construct(
 		EntityLookup $lookup,
 		ConnectionCheckerHelper $connectionCheckerHelper,

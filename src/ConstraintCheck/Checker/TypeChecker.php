@@ -41,12 +41,6 @@ class TypeChecker implements ConstraintChecker {
 	 */
 	private $config;
 
-	/**
-	 * @param EntityLookup $lookup
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param TypeCheckerHelper $typeCheckerHelper
-	 * @param Config $config
-	 */
 	public function __construct(
 		EntityLookup $lookup,
 		ConstraintParameterParser $constraintParameterParser,

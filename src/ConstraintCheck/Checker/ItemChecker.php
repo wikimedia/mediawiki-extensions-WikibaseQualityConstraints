@@ -40,12 +40,6 @@ class ItemChecker implements ConstraintChecker {
 	 */
 	private $constraintParameterRenderer;
 
-	/**
-	 * @param EntityLookup $lookup
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param ConnectionCheckerHelper $connectionCheckerHelper
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
-	 */
 	public function __construct(
 		EntityLookup $lookup,
 		ConstraintParameterParser $constraintParameterParser,
