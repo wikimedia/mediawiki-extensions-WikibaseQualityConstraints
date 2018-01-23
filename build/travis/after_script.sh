@@ -2,4 +2,4 @@
 
 cd ../wiki/extensions/WikibaseQualityConstraints
 
-php vendor/bin/coveralls -v
+php vendor/bin/php-coveralls -v
