@@ -8,8 +8,8 @@ It performs constraint checks in Wikibase.
 
 [travis-badge]: https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints.svg?branch=master
 [travis]: https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints
-[coveralls-badge]: https://coveralls.io/repos/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badge.svg
-[coveralls]: https://coveralls.io/r/wikimedia/mediawiki-extensions-WikibaseQualityConstraints
+[coveralls-badge]: https://coveralls.io/repos/github/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badge.svg
+[coveralls]: https://coveralls.io/github/wikimedia/mediawiki-extensions-WikibaseQualityConstraints
 [scrutinizer-badge]: https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badges/quality-score.png?b=master
 [scrutinizer]: https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/?branch=master
 [wbq]: https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality.git
