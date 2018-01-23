@@ -24,7 +24,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * @dataProvider logLongConstraintProvider
+	 * @dataProvider provideConstraintCheckDurationsAndLogLevels
 	 */
 	public function testLogConstraintCheck( $durationSeconds, $expectedLevel, $expectedLimit ) {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
@@ -91,7 +91,7 @@ class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function logLongConstraintProvider() {
+	public function provideConstraintCheckDurationsAndLogLevels() {
 		return [
 			'short constraint check, nothing to log' => [ 0.5, null, null ],
 			'long but not extremely long constraint check, log as info' => [ 5.0, 'info', 1.0 ],

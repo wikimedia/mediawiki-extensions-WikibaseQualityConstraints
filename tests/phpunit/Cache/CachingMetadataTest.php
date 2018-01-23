@@ -118,7 +118,7 @@ class CachingMetadataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider arrayRoundTripProvider
+	 * @dataProvider provideCachingMetadata
 	 */
 	public function testOfArray_RoundTrip( CachingMetadata $cm ) {
 		$array = $cm->toArray();
@@ -127,7 +127,7 @@ class CachingMetadataTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( $cm, $cm_ );
 	}
 
-	public function arrayRoundTripProvider() {
+	public function provideCachingMetadata() {
 		return [
 			[ CachingMetadata::fresh() ],
 			[ CachingMetadata::ofMaximumAgeInSeconds( 52 ) ],

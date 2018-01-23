@@ -24,7 +24,7 @@ class WikibaseQualityConstraintsHooksTest extends \PHPUnit_Framework_TestCase {
 	use DefaultConfig;
 
 	/**
-	 * @dataProvider isConstraintStatementsChangeProvider
+	 * @dataProvider provideChanges
 	 * @param Change $change
 	 * @param bool $expected
 	 */
@@ -36,7 +36,7 @@ class WikibaseQualityConstraintsHooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $actual );
 	}
 
-	public function isConstraintStatementsChangeProvider() {
+	public function provideChanges() {
 		$factory = TestChanges::getEntityChangeFactory();
 		$changes = TestChanges::getChanges();
 		$changeKeys = [];
@@ -105,7 +105,7 @@ class WikibaseQualityConstraintsHooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider isGadgetEnabledForUserNameProvider
+	 * @dataProvider provideUserNamesAndDates
 	 * @param string $userName
 	 * @param int $timestamp
 	 * @param bool $expected
@@ -119,7 +119,7 @@ class WikibaseQualityConstraintsHooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $actual );
 	}
 
-	public function isGadgetEnabledForUserNameProvider() {
+	public function provideUserNamesAndDates() {
 		yield 'enabled for no one' => [ 'Z', strtotime( '2018-02-28' ), false ];
 		yield 'enabled for Z' => [ 'Z', strtotime( '2018-03-01' ), true ];
 		yield 'not enabled for Y' => [ 'Y', strtotime( '2018-03-01' ), false ];

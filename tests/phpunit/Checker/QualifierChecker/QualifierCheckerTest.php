@@ -37,7 +37,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	/**
 	 * @param string $type context type
 	 * @param string|null $messageKey key of violation message, or null if compliance is expected
-	 * @dataProvider contextTypes
+	 * @dataProvider provideContextTypes
 	 */
 	public function testQualifierConstraint( $type, $messageKey ) {
 		$context = $this->getMock( Context::class );
@@ -54,7 +54,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 		}
 	}
 
-	public function contextTypes() {
+	public function provideContextTypes() {
 		return [
 			[ Context::TYPE_STATEMENT, 'wbqc-violation-message-qualifier' ],
 			[ Context::TYPE_QUALIFIER, null ],

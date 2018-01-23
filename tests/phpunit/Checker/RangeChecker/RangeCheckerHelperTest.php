@@ -41,7 +41,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider getComparisonProvider
+	 * @dataProvider provideComparisons
 	 */
 	public function testGetComparison( $expected, DataValue $lhs, DataValue $rhs ) {
 		$this->assertContains( $expected, [ -1, 0, 1 ], '$expected must be -1, 0, or 1' );
@@ -60,7 +60,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		}
 	}
 
-	public function getComparisonProvider() {
+	public function provideComparisons() {
 		$cases = [
 			[ -1, $this->getTimeValue( 1970 ), $this->getTimeValue( 1971 ) ],
 			[ 0, $this->getTimeValue( 1970 ), $this->getTimeValue( 1970 ) ],
@@ -80,7 +80,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider getDifferenceProvider
+	 * @dataProvider provideDifferences
 	 */
 	public function testGetDifference( $expected, DataValue $minuend, DataValue $subtrahend ) {
 		$rangeCheckHelper = $this->getRangeCheckerHelper();
@@ -89,7 +89,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame( (float)$expected, $actual );
 	}
 
-	public function getDifferenceProvider() {
+	public function provideDifferences() {
 		$secondsPerYear = 60 * 60 * 24 * 365;
 		$secondsPerLeapYear = 60 * 60 * 24 * 366;
 		$cases = [
@@ -144,7 +144,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider getDifferenceInYearsProvider
+	 * @dataProvider provideDifferencesInYears
 	 */
 	public function testGetDifferenceInYears(
 		$minExpected,
@@ -162,7 +162,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$this->assertLessThanOrEqual( $maxExpected, $actual );
 	}
 
-	public function getDifferenceInYearsProvider() {
+	public function provideDifferencesInYears() {
 		$spring74 = $this->getTimeValue( 1974, 04, 01 );
 		$fall74 = $this->getTimeValue( 1974, 10, 01 );
 		$spring75 = $this->getTimeValue( 1975, 04, 01 );
