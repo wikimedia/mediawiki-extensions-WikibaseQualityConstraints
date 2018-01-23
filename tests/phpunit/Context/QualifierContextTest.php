@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Test\Context;
 
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
@@ -26,7 +27,7 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$context = new QualifierContext( $entity, $statement, $snak );
 
 		$this->assertSame( $snak, $context->getSnak() );
@@ -35,7 +36,7 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetEntity() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$context = new QualifierContext( $entity, $statement, $snak );
 
 		$this->assertSame( $entity, $context->getEntity() );
@@ -44,7 +45,7 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetType() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$context = new QualifierContext( $entity, $statement, $snak );
 
 		$this->assertSame( Context::TYPE_QUALIFIER, $context->getType() );
@@ -56,7 +57,7 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 		$statement = NewStatement::noValueFor( 'P1' )
 			->withRank( $rank )
 			->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$context = new QualifierContext( $entity, $statement, $snak );
 
 		$this->assertSame( null, $context->getSnakRank() );
@@ -65,15 +66,15 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSnakStatement() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$context = new QualifierContext( $entity, $statement, $snak );
 
 		$this->assertSame( null, $context->getSnakStatement() );
 	}
 
 	public function testGetSnakGroup() {
-		$qualifier1 = NewStatement::noValueFor( 'P10' )->build()->getMainSnak();
-		$qualifier2 = NewStatement::someValueFor( 'P20' )->build()->getMainSnak();
+		$qualifier1 = new PropertyNoValueSnak( new PropertyId( 'P10' ) );
+		$qualifier2 = new PropertySomeValueSnak( new PropertyId( 'P20' ) );
 		$statement = new Statement(
 			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
 			new SnakList( [ $qualifier1, $qualifier2 ] )
@@ -100,9 +101,9 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 		$statement3 = NewStatement::noValueFor( 'P2' )
 			->withGuid( 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' )
 			->build();
-		$snak1 = NewStatement::noValueFor( 'P11' )->build()->getMainSnak();
-		$snak2 = NewStatement::someValueFor( 'P11' )->build()->getMainSnak();
-		$snak3 = NewStatement::noValueFor( 'P12' )->build()->getMainSnak();
+		$snak1 = new PropertyNoValueSnak( new PropertyId( 'P11' ) );
+		$snak2 = new PropertySomeValueSnak( new PropertyId( 'P11' ) );
+		$snak3 = new PropertyNoValueSnak( new PropertyId( 'P12' ) );
 		$context1 = new QualifierContext( $entity, $statement1, $snak1 );
 		$context2 = new QualifierContext( $entity, $statement1, $snak2 );
 		$context3 = new QualifierContext( $entity, $statement1, $snak3 );
@@ -200,9 +201,9 @@ class QualifierContextTest extends \PHPUnit_Framework_TestCase {
 		$statement3 = NewStatement::noValueFor( 'P2' )
 			->withGuid( 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' )
 			->build();
-		$snak1 = NewStatement::noValueFor( 'P11' )->build()->getMainSnak();
-		$snak2 = NewStatement::someValueFor( 'P11' )->build()->getMainSnak();
-		$snak3 = NewStatement::noValueFor( 'P12' )->build()->getMainSnak();
+		$snak1 = new PropertyNoValueSnak( new PropertyId( 'P11' ) );
+		$snak2 = new PropertySomeValueSnak( new PropertyId( 'P11' ) );
+		$snak3 = new PropertyNoValueSnak( new PropertyId( 'P12' ) );
 		$context1 = new QualifierContext( $entity, $statement1, $snak1 );
 		$context2 = new QualifierContext( $entity, $statement1, $snak2 );
 		$context3 = new QualifierContext( $entity, $statement1, $snak3 );

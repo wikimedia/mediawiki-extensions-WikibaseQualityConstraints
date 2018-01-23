@@ -29,7 +29,7 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$reference = new Reference( [ $snak ] );
 		$statement->getReferences()->addReference( $reference );
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
@@ -40,7 +40,7 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetEntity() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$reference = new Reference( [ $snak ] );
 		$statement->getReferences()->addReference( $reference );
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
@@ -51,7 +51,7 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetType() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$reference = new Reference( [ $snak ] );
 		$statement->getReferences()->addReference( $reference );
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
@@ -65,7 +65,7 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 		$statement = NewStatement::noValueFor( 'P1' )
 			->withRank( $rank )
 			->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$reference = new Reference( [ $snak ] );
 		$statement->getReferences()->addReference( $reference );
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
@@ -76,7 +76,7 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSnakStatement() {
 		$entity = NewItem::withId( 'Q1' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$snak = NewStatement::someValueFor( 'P2' )->build()->getMainSnak();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$reference = new Reference( [ $snak ] );
 		$statement->getReferences()->addReference( $reference );
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
@@ -85,10 +85,10 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSnakGroup() {
-		$referenceSnak1 = NewStatement::noValueFor( 'P100' )->build()->getMainSnak();
-		$referenceSnak2 = NewStatement::someValueFor( 'P200' )->build()->getMainSnak();
-		$referenceSnak3 = NewStatement::noValueFor( 'P300' )->build()->getMainSnak();
-		$referenceSnak4 = NewStatement::someValueFor( 'P400' )->build()->getMainSnak();
+		$referenceSnak1 = new PropertyNoValueSnak( new PropertyId( 'P100' ) );
+		$referenceSnak2 = new PropertySomeValueSnak( new PropertyId( 'P200' ) );
+		$referenceSnak3 = new PropertyNoValueSnak( new PropertyId( 'P300' ) );
+		$referenceSnak4 = new PropertySomeValueSnak( new PropertyId( 'P400' ) );
 		$reference1 = new Reference( [ $referenceSnak1, $referenceSnak2 ] );
 		$reference2 = new Reference( [ $referenceSnak3 ] );
 		$reference3 = new Reference( [ $referenceSnak4 ] );
@@ -124,9 +124,9 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 		$statement3 = NewStatement::noValueFor( 'P2' )
 			->withGuid( 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' )
 			->build();
-		$snak1 = NewStatement::noValueFor( 'P11' )->build()->getMainSnak();
-		$snak2 = NewStatement::someValueFor( 'P11' )->build()->getMainSnak();
-		$snak3 = NewStatement::noValueFor( 'P12' )->build()->getMainSnak();
+		$snak1 = new PropertyNoValueSnak( new PropertyId( 'P11' ) );
+		$snak2 = new PropertySomeValueSnak( new PropertyId( 'P11' ) );
+		$snak3 = new PropertyNoValueSnak( new PropertyId( 'P12' ) );
 		$reference1 = new Reference( [ $snak1, $snak2, $snak3 ] );
 		$statement1->getReferences()->addReference( $reference1 );
 		$reference2 = new Reference( [ $snak2, $snak3 ] );
@@ -268,9 +268,9 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 		$statement3 = NewStatement::noValueFor( 'P2' )
 			->withGuid( 'P2$4638ca58-5128-4a1f-88a9-b379fe9f8ad9' )
 			->build();
-		$snak1 = NewStatement::noValueFor( 'P11' )->build()->getMainSnak();
-		$snak2 = NewStatement::someValueFor( 'P11' )->build()->getMainSnak();
-		$snak3 = NewStatement::noValueFor( 'P12' )->build()->getMainSnak();
+		$snak1 = new PropertyNoValueSnak( new PropertyId( 'P11' ) );
+		$snak2 = new PropertySomeValueSnak( new PropertyId( 'P11' ) );
+		$snak3 = new PropertyNoValueSnak( new PropertyId( 'P12' ) );
 		$reference1 = new Reference( [ $snak1, $snak2, $snak3 ] );
 		$statement1->getReferences()->addReference( $reference1 );
 		$reference2 = new Reference( [ $snak2, $snak3 ] );
