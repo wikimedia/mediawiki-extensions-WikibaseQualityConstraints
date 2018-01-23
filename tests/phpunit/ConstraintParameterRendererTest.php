@@ -555,7 +555,7 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertConstraintReportParameterList(
-			array_fill( 0, 10, 'statement' ) + [ 11 => '...' ],
+			array_fill( 0, 10, 'statement' ) + [ 10 => '...' ],
 			$formatted
 		);
 	}
@@ -565,11 +565,13 @@ class ConstraintParameterRendererTest extends \PHPUnit_Framework_TestCase {
 	 * @param string $actual
 	 */
 	private function assertConstraintReportParameterList( array $expected, $actual ) {
-		$htmlList = '<ul>' . implode( '', array_map( function ( $item ) {
-			return "<li>$item</li>";
-		}, $expected ) ) . '</ul>';
-		array_unshift( $expected, $htmlList );
-		$this->assertSame( $expected, $actual );
+		$htmlList = '<ul>';
+		foreach ( $expected as $item ) {
+			$htmlList .= "<li>$item</li>";
+		}
+		$htmlList .= '</ul>';
+		$this->assertSame( $htmlList, $actual[0] );
+		$this->assertSame( $expected, array_slice( $actual, 1 ) );
 	}
 
 }
