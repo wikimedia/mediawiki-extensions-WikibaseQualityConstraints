@@ -44,7 +44,7 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSingleValueConstraint_One() {
-		$statement = NewStatement::noValueFor( 'P1' )->withSomeGuid()->build();
+		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$item = NewItem::withStatement( $statement )->build();
 		$context = new MainSnakContext( $item, $statement );
 
@@ -54,8 +54,8 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSingleValueConstraint_Two() {
-		$statement1 = NewStatement::noValueFor( 'P1' )->withSomeGuid()->build();
-		$statement2 = NewStatement::noValueFor( 'P1' )->withSomeGuid()->build();
+		$statement1 = NewStatement::noValueFor( 'P1' )->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )->build();
 		$item = NewItem::withStatement( $statement1 )->andStatement( $statement2 )->build();
 		$context = new MainSnakContext( $item, $statement1 );
 
@@ -65,10 +65,10 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSingleValueConstraint_TwoButOneDeprecated() {
-		$statement1 = NewStatement::noValueFor( 'P1' )->withSomeGuid()->build();
+		$statement1 = NewStatement::noValueFor( 'P1' )->build();
 		$statement2 = NewStatement::noValueFor( 'P1' )
 			->withDeprecatedRank()
-			->withSomeGuid()->build();
+			->build();
 		$item = NewItem::withStatement( $statement1 )->andStatement( $statement2 )->build();
 		$context = new MainSnakContext( $item, $statement1 );
 
@@ -110,7 +110,7 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 	public function testSingleValueConstraintDeprecatedStatement() {
 		$statement = NewStatement::noValueFor( 'P1' )
 			->withDeprecatedRank()
-			->withSomeGuid()->build();
+			->build();
 		$entity = NewItem::withId( 'Q1' )
 			->build();
 		$context = new MainSnakContext( $entity, $statement );
