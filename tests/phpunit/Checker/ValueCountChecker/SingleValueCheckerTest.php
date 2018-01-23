@@ -83,9 +83,7 @@ class SingleValueCheckerTest extends \MediaWikiTestCase {
 		$statement = NewStatement::someValueFor( 'P10' )->build();
 		$statement->getQualifiers()->addSnak( $qualifier1 );
 		$statement->getQualifiers()->addSnak( $qualifier2 );
-		$item = NewItem::withStatement( $statement )
-			->andStatement( NewStatement::someValueFor( 'P1' ) )
-			->build();
+		$item = NewItem::withStatement( $statement )->build();
 		$context = new QualifierContext( $item, $statement, $qualifier1 );
 
 		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
