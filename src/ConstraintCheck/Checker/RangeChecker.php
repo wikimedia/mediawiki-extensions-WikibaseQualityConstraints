@@ -41,12 +41,6 @@ class RangeChecker implements ConstraintChecker {
 	 */
 	private $constraintParameterRenderer;
 
-	/**
-	 * @param PropertyDataTypeLookup $propertyDataTypeLookup
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param RangeCheckerHelper $rangeCheckerHelper
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
-	 */
 	public function __construct(
 		PropertyDataTypeLookup $propertyDataTypeLookup,
 		ConstraintParameterParser $constraintParameterParser,

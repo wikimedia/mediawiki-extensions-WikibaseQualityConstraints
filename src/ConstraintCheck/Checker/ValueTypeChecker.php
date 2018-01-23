@@ -51,13 +51,6 @@ class ValueTypeChecker implements ConstraintChecker {
 	 */
 	private $config;
 
-	/**
-	 * @param EntityLookup $lookup
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
-	 * @param TypeCheckerHelper $typeCheckerHelper
-	 * @param Config $config
-	 */
 	public function __construct(
 		EntityLookup $lookup,
 		ConstraintParameterParser $constraintParameterParser,

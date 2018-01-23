@@ -23,10 +23,7 @@ abstract class AbstractContext implements Context {
 	 */
 	protected $snak;
 
-	public function __construct(
-		EntityDocument $entity,
-		Snak $snak
-	) {
+	public function __construct( EntityDocument $entity, Snak $snak ) {
 		$this->entity = $entity;
 		$this->snak = $snak;
 	}

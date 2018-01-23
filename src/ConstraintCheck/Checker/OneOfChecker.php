@@ -28,10 +28,6 @@ class OneOfChecker implements ConstraintChecker {
 	 */
 	private $constraintParameterRenderer;
 
-	/**
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
-	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
 		ConstraintParameterRenderer $constraintParameterRenderer

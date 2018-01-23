@@ -122,18 +122,17 @@ class DelegatingConstraintChecker {
 	 * Statements of the entity will be checked against every constraint that is defined on the property.
 	 *
 	 * @param EntityId $entityId
-	 * @param array $constraintIds
+	 * @param string[]|null $constraintIds
 	 * @param callable|null $defaultResults Optional function to pre-populate the check results.
 	 * For each {@link Context} where constraints will be checked,
 	 * this function (if not null) is first called with that context as argument,
 	 * and may return an array of check results to which the regular results are appended.
 	 *
 	 * @return CheckResult[]
-	 *
 	 */
 	public function checkAgainstConstraintsOnEntityId(
 		EntityId $entityId,
-		$constraintIds = null,
+		array $constraintIds = null,
 		callable $defaultResults = null
 	) {
 
@@ -156,7 +155,7 @@ class DelegatingConstraintChecker {
 	 * Statements of the entity will be checked against every constraint that is defined on the claim.
 	 *
 	 * @param string $guid
-	 * @param array $constraintIds
+	 * @param string[]|null $constraintIds
 	 * @param callable|null $defaultResults Optional function to pre-populate the check results.
 	 * For each {@link Context} where constraints will be checked,
 	 * this function (if not null) is first called with that context as argument,
@@ -166,7 +165,7 @@ class DelegatingConstraintChecker {
 	 */
 	public function checkAgainstConstraintsOnClaimId(
 		$guid,
-		$constraintIds = null,
+		array $constraintIds = null,
 		callable $defaultResults = null
 	) {
 
@@ -308,7 +307,7 @@ class DelegatingConstraintChecker {
 	 */
 	private function checkEveryStatement(
 		EntityDocument $entity,
-		$constraintIds = null,
+		array $constraintIds = null,
 		callable $defaultResults = null
 	) {
 		$result = [];
@@ -338,7 +337,7 @@ class DelegatingConstraintChecker {
 	private function checkStatement(
 		EntityDocument $entity,
 		Statement $statement,
-		$constraintIds = null,
+		array $constraintIds = null,
 		callable $defaultResults = null
 	) {
 		$result = [];

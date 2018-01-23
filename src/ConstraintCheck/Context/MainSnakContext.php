@@ -17,15 +17,9 @@ class MainSnakContext extends ApiV2Context {
 	 */
 	private $statement;
 
-	/**
-	 * @param EntityDocument $entity
-	 * @param Statement $statement
-	 */
-	public function __construct(
-		EntityDocument $entity,
-		Statement $statement
-	) {
+	public function __construct( EntityDocument $entity, Statement $statement ) {
 		parent::__construct( $entity, $statement->getMainSnak() );
+
 		$this->statement = $statement;
 	}
 
