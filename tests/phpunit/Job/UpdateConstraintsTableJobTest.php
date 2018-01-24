@@ -21,7 +21,6 @@ use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikibase\Repo\WikibaseRepo;
 
 /**
@@ -312,13 +311,30 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 	}
 
 	public function testRun() {
+		$config = $this->getDefaultConfig();
+		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
+		$singleValueConstraintId = $config->get( 'WBQualityConstraintsSingleValueConstraintId' );
+		$property = new Property(
+			new PropertyId( 'P2' ),
+			null,
+			'wikibase-item',
+			new StatementList(
+				NewStatement::forProperty( $propertyConstraintId )
+					->withValue( new ItemId( $singleValueConstraintId ) )
+					->withGuid( 'P2$484b7eaf-e86c-4f25-91dc-7ae19f8be8de' )
+					->build()
+			)
+		);
+		$entityLookup = new InMemoryEntityLookup();
+		$entityLookup->addEntity( $property );
+
 		$job = new UpdateConstraintsTableJob(
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[],
 			'P2',
 			$this->getDefaultConfig(),
 			new ConstraintRepository(),
-			new JsonFileEntityLookup( __DIR__ ),
+			$entityLookup,
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 
