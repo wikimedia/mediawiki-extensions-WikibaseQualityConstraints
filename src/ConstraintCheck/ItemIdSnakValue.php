@@ -130,6 +130,7 @@ class ItemIdSnakValue {
 	 * Get the item ID contained in this {@link ItemIdSnakValue}.
 	 * Only valid if {@link isValue} is true.
 	 *
+	 * @throws DomainException if this value does not contain an item ID
 	 * @return ItemId
 	 */
 	public function getItemId() {
