@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\TypeChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\TypeChecker;
 
 use NullStatsdDataFactory;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;

@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\RangeChecker;
 
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;

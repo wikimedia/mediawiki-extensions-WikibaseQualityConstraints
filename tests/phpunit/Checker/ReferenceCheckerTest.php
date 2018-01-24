@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test;
+namespace WikibaseQuality\ConstraintReport\Tests;
 
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -8,7 +8,6 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
-use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker

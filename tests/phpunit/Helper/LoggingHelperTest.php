@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\ConstraintChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
 
 use HashConfig;
 use IBufferingStatsdDataFactory;

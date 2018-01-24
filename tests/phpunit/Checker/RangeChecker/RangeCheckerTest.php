@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\RangeChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\RangeChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;

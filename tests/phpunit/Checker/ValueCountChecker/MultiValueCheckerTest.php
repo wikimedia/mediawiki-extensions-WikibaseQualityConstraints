@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\ValueCountChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\ValueCountChecker;
 
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Reference;

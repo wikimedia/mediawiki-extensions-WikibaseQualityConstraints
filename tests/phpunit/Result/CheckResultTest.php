@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\CheckResult;
+namespace WikibaseQuality\ConstraintReport\Tests\CheckResult;
 
 use LogicException;
 use PHPUnit_Framework_TestCase;

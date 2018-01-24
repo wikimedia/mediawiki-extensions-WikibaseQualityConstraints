@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\Helper;
+namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
 use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
