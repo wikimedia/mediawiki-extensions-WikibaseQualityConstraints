@@ -61,9 +61,8 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	public function getSupportedContextTypes() {
 		return [
 			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
-			// TODO T175565
-			Context::TYPE_QUALIFIER => CheckResult::STATUS_TODO,
-			Context::TYPE_REFERENCE => CheckResult::STATUS_TODO,
+			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
+			Context::TYPE_REFERENCE => CheckResult::STATUS_COMPLIANCE,
 		];
 	}
 
@@ -73,9 +72,8 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	public function getDefaultContextTypes() {
 		return [
 			Context::TYPE_STATEMENT,
-			// TODO T175565
-			// Context::TYPE_QUALIFIER,
-			// Context::TYPE_REFERENCE,
+			Context::TYPE_QUALIFIER,
+			Context::TYPE_REFERENCE,
 		];
 	}
 
@@ -156,19 +154,15 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		list( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
-		/** @var Statement $otherStatement */
-		foreach ( $context->getEntity()->getStatements() as $otherStatement ) {
-			$otherMainSnak = $otherStatement->getMainSnak();
-
+		foreach ( $context->getSnakGroup() as $otherSnak ) {
 			if (
-				!$property->equals( $otherStatement->getPropertyId() ) ||
-				$otherStatement->getRank() === Statement::RANK_DEPRECATED ||
-				!$otherMainSnak instanceof PropertyValueSnak
+				!$property->equals( $otherSnak->getPropertyId() ) ||
+				!$otherSnak instanceof PropertyValueSnak
 			) {
 				continue;
 			}
 
-			$subtrahend = $otherMainSnak->getDataValue();
+			$subtrahend = $otherSnak->getDataValue();
 			if ( $subtrahend->getType() === $minuend->getType() ) {
 				$diff = $this->rangeInYears( $min, $max ) ?
 					$this->rangeCheckerHelper->getDifferenceInYears( $minuend, $subtrahend ) :
@@ -183,7 +177,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					$message->rawParams(
 						$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE ),
 						$this->constraintParameterRenderer->formatDataValue( $minuend, Role::OBJECT ),
-						$this->constraintParameterRenderer->formatEntityId( $otherStatement->getPropertyId(), Role::PREDICATE ),
+						$this->constraintParameterRenderer->formatEntityId( $otherSnak->getPropertyId(), Role::PREDICATE ),
 						$this->constraintParameterRenderer->formatDataValue( $subtrahend, Role::OBJECT )
 					);
 					if ( $min !== null ) {
