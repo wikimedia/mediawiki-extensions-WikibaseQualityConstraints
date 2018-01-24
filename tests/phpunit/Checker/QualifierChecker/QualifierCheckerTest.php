@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\QualifierChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\QualifierChecker;
 
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;

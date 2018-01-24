@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\CommonsLinkChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\CommonsLinkChecker;
 
 use Title;
 use Wikibase\DataModel\Entity\EntityDocument;

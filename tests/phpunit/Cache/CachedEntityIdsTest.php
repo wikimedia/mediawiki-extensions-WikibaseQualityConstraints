@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\Cache;
+namespace WikibaseQuality\ConstraintReport\Tests\Cache;
 
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;

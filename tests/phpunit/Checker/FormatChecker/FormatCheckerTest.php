@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Test\FormatChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\FormatChecker;
 
 use HashConfig;
 use Wikibase\DataModel\Entity\EntityDocument;
