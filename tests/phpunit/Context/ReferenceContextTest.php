@@ -6,6 +6,8 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\ReferenceList;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
+use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -85,17 +87,26 @@ class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSnakGroup() {
 		$referenceSnak1 = NewStatement::noValueFor( 'P100' )->build()->getMainSnak();
 		$referenceSnak2 = NewStatement::someValueFor( 'P200' )->build()->getMainSnak();
+		$referenceSnak3 = NewStatement::noValueFor( 'P300' )->build()->getMainSnak();
+		$referenceSnak4 = NewStatement::someValueFor( 'P400' )->build()->getMainSnak();
 		$reference1 = new Reference( [ $referenceSnak1, $referenceSnak2 ] );
-		$reference2 = new Reference( [ new PropertyNoValueSnak( new PropertyId( 'P300' ) ) ] );
-		$statement = new Statement(
+		$reference2 = new Reference( [ $referenceSnak3 ] );
+		$reference3 = new Reference( [ $referenceSnak4 ] );
+		$statement1 = new Statement(
 			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
-			null,
+			/* qualifiers = */ new SnakList( [ $referenceSnak3 ] ),
 			new ReferenceList( [ $reference1, $reference2 ] )
 		);
+		$statement2 = new Statement(
+			new PropertySomeValueSnak( new PropertyId( 'P2' ) ),
+			null,
+			new ReferenceList( [ $reference2, $reference3 ] )
+		);
 		$entity = NewItem::withId( 'Q1' )
-			->andStatement( $statement )
+			->andStatement( $statement1 )
+			->andStatement( $statement2 )
 			->build();
-		$context = new ReferenceContext( $entity, $statement, $reference1, $referenceSnak1 );
+		$context = new ReferenceContext( $entity, $statement1, $reference1, $referenceSnak1 );
 
 		$snakGroup = $context->getSnakGroup();
 
