@@ -65,4 +65,26 @@ class CheckResultTest extends PHPUnit_Framework_TestCase {
 		$checkResult->getDataValue();
 	}
 
+	public function testAddParameter() {
+		$context = new FakeSnakContext( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) );
+		$constraint = new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] );
+		$checkResult = new CheckResult( $context, $constraint );
+
+		$this->assertSame( [], $checkResult->getParameters() );
+
+		$checkResult->addParameter( 'constraint_status', 'mandatory' );
+		$this->assertSame( [ 'constraint_status' => [ 'mandatory' ] ], $checkResult->getParameters() );
+	}
+
+	public function testSetStatus() {
+		$context = new FakeSnakContext( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) );
+		$constraint = new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] );
+		$checkResult = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION );
+
+		$this->assertSame( CheckResult::STATUS_VIOLATION, $checkResult->getStatus() );
+
+		$checkResult->setStatus( CheckResult::STATUS_WARNING );
+		$this->assertSame( CheckResult::STATUS_WARNING, $checkResult->getStatus() );
+	}
+
 }
