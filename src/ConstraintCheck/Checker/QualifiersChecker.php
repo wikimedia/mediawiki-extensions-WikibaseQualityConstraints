@@ -8,6 +8,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -95,10 +96,8 @@ class QualifiersChecker implements ConstraintChecker {
 			}
 			if ( !$allowedQualifier ) {
 				if ( empty( $properties ) || $properties === [ '' ] ) {
-					$message = wfMessage( 'wbqc-violation-message-no-qualifiers' );
-					$message->rawParams(
-						$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY )
-					);
+					$message = ( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
+						->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY );
 				} else {
 					$message = wfMessage( "wbqc-violation-message-qualifiers" );
 					$message->rawParams(
@@ -107,8 +106,8 @@ class QualifiersChecker implements ConstraintChecker {
 					);
 					$message->numParams( count( $properties ) );
 					$message->rawParams( $this->constraintParameterRenderer->formatPropertyIdList( $properties, Role::QUALIFIER_PREDICATE ) );
+					$message = $message->escaped();
 				}
-				$message = $message->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 				break;
 			}

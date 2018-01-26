@@ -8,6 +8,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -81,12 +82,9 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['property'] = [ $propertyId ];
 
-		$message = wfMessage( "wbqc-violation-message-mandatory-qualifier" )
-				 ->rawParams(
-					 $this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
-					 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::QUALIFIER_PREDICATE )
-				 )
-				 ->escaped();
+		$message = ( new ViolationMessage( 'wbqc-violation-message-mandatory-qualifier' ) )
+			->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY )
+			->withEntityId( $propertyId, Role::QUALIFIER_PREDICATE );
 		$status = CheckResult::STATUS_VIOLATION;
 
 		/** @var Snak $qualifier */

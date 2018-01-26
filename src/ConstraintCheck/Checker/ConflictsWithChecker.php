@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHel
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -111,12 +112,9 @@ class ConflictsWithChecker implements ConstraintChecker {
 				$propertyId
 			);
 			if ( $offendingStatement !== null ) {
-				$message = wfMessage( "wbqc-violation-message-conflicts-with-property" )
-						 ->rawParams(
-							 $this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
-							 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE )
-						 )
-						 ->escaped();
+				$message = ( new ViolationMessage( 'wbqc-violation-message-conflicts-with-property' ) )
+					->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY )
+					->withEntityId( $propertyId, Role::PREDICATE );
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
 				$message = null;
