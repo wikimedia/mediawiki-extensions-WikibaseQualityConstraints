@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -150,12 +151,12 @@ class CommonsLinkChecker implements ConstraintChecker {
 				if ( $this->valueIncludesNamespace( $commonsLink, $namespace ) ) {
 					throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
 				} else {
-					$message = wfMessage( "wbqc-violation-message-commons-link-no-existent" )->escaped();
+					$message = new ViolationMessage( 'wbqc-violation-message-commons-link-no-existent' );
 					$status = CheckResult::STATUS_VIOLATION;
 				}
 			}
 		} catch ( MalformedTitleException $e ) {
-			$message = wfMessage( "wbqc-violation-message-commons-link-not-well-formed" )->escaped();
+			$message = new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' );
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 

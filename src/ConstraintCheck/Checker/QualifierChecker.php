@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -50,7 +51,7 @@ class QualifierChecker implements ConstraintChecker {
 		if ( $context->getType() === Context::TYPE_QUALIFIER ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 		} else {
-			$message = wfMessage( 'wbqc-violation-message-qualifier' )->escaped();
+			$message = new ViolationMessage( 'wbqc-violation-message-qualifier' );
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
 		}
 	}

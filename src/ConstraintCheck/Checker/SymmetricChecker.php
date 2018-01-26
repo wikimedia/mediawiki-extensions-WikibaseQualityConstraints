@@ -11,6 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -114,7 +115,7 @@ class SymmetricChecker implements ConstraintChecker {
 		$targetEntityId = $dataValue->getEntityId();
 		$targetEntity = $this->entityLookup->getEntity( $targetEntityId );
 		if ( $targetEntity === null ) {
-			$message = wfMessage( "wbqc-violation-message-target-entity-must-exist" )->escaped();
+			$message = new ViolationMessage( 'wbqc-violation-message-target-entity-must-exist' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 

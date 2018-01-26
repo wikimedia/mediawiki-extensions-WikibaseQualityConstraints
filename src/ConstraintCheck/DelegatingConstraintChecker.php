@@ -21,6 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
@@ -543,7 +544,7 @@ class DelegatingConstraintChecker {
 			} catch ( ConstraintParameterException $e ) {
 				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
 			} catch ( SparqlHelperException $e ) {
-				$message = wfMessage( 'wbqc-violation-message-sparql-error' )->escaped();
+				$message = new ViolationMessage( 'wbqc-violation-message-sparql-error' );
 				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
 			}
 			$endTime = microtime( true );

@@ -11,6 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -193,14 +194,14 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					$status = CheckResult::STATUS_COMPLIANCE;
 				}
 			} else {
-				$message = wfMessage( "wbqc-violation-message-diff-within-range-must-have-equal-types" )->escaped();
+				$message = new ViolationMessage( 'wbqc-violation-message-diff-within-range-must-have-equal-types' );
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 
 			return new CheckResult( $context, $constraint, $parameters, $status, $message );
 		}
 
-		$message = wfMessage( "wbqc-violation-message-diff-within-range-property-must-exist" )->escaped();
+		$message = new ViolationMessage( 'wbqc-violation-message-diff-within-range-property-must-exist' );
 		$status = CheckResult::STATUS_VIOLATION;
 		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}

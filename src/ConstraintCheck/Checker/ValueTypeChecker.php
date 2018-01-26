@@ -13,6 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
@@ -150,7 +151,7 @@ class ValueTypeChecker implements ConstraintChecker {
 		$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
 
 		if ( !( $item instanceof StatementListProvider ) ) {
-			$message = wfMessage( "wbqc-violation-message-value-entity-must-exist" )->escaped();
+			$message = new ViolationMessage( 'wbqc-violation-message-value-entity-must-exist' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
