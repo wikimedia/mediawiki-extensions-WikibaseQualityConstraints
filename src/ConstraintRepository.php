@@ -5,9 +5,9 @@ namespace WikibaseQuality\ConstraintReport;
 use InvalidArgumentException;
 use MediaWiki\Logger\LoggerFactory;
 use Wikimedia\Rdbms\DBUnexpectedError;
+use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LikeMatch;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @author BP2014N1
@@ -139,11 +139,11 @@ class ConstraintRepository implements ConstraintLookup {
 	}
 
 	/**
-	 * @param ResultWrapper $results
+	 * @param IResultWrapper $results
 	 *
 	 * @return Constraint[]
 	 */
-	private function convertToConstraints( ResultWrapper $results ) {
+	private function convertToConstraints( IResultWrapper $results ) {
 		$constraints = [];
 		foreach ( $results as $result ) {
 			$constraintTypeItemId = $result->constraint_type_qid;
