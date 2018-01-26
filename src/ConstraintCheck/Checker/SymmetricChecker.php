@@ -91,7 +91,7 @@ class SymmetricChecker implements ConstraintChecker {
 
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE );
 		}
 
 		$dataValue = $snak->getDataValue();
@@ -124,7 +124,7 @@ class SymmetricChecker implements ConstraintChecker {
 			$context->getEntity()->getId()
 		);
 		if ( $symmetricStatement !== null ) {
-			$message = '';
+			$message = null;
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-symmetric' )

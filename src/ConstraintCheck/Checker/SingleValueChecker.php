@@ -72,7 +72,7 @@ class SingleValueChecker implements ConstraintChecker {
 			$message = wfMessage( "wbqc-violation-message-single-value" )->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
-			$message = '';
+			$message = null;
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 

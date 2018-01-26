@@ -145,7 +145,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE );
 		}
 
 		$minuend = $snak->getDataValue();
@@ -189,7 +189,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 					$message = $message->escaped();
 					$status = CheckResult::STATUS_VIOLATION;
 				} else {
-					$message = '';
+					$message = null;
 					$status = CheckResult::STATUS_COMPLIANCE;
 				}
 			} else {

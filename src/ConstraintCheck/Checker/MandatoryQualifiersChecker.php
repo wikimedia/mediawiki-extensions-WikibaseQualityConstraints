@@ -92,7 +92,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 		/** @var Snak $qualifier */
 		foreach ( $context->getSnakStatement()->getQualifiers() as $qualifier ) {
 			if ( $propertyId->equals( $qualifier->getPropertyId() ) ) {
-				$message = '';
+				$message = null;
 				$status = CheckResult::STATUS_COMPLIANCE;
 				break;
 			}

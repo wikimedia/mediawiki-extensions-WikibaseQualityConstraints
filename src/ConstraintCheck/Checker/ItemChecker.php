@@ -119,7 +119,7 @@ class ItemChecker implements ConstraintChecker {
 
 		if ( $requiredStatement !== null ) {
 			$status = CheckResult::STATUS_COMPLIANCE;
-			$message = '';
+			$message = null;
 		} else {
 			$status = CheckResult::STATUS_VIOLATION;
 			$message = wfMessage( 'wbqc-violation-message-item' );

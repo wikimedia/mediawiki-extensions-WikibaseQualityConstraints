@@ -89,7 +89,7 @@ class OneOfChecker implements ConstraintChecker {
 
 		foreach ( $items as $item ) {
 			if ( $item->matchesSnak( $snak ) ) {
-				$message = '';
+				$message = null;
 				$status = CheckResult::STATUS_COMPLIANCE;
 				break;
 			}

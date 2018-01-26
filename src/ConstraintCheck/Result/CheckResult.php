@@ -111,7 +111,7 @@ class CheckResult {
 		Constraint $constraint,
 		array $parameters = [],
 		$status = self::STATUS_TODO,
-		$message = ''
+		$message = null
 	) {
 		$this->context = $context;
 		$this->constraint = $constraint;

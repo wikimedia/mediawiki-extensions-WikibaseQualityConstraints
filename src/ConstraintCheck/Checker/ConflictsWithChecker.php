@@ -119,7 +119,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
-				$message = '';
+				$message = null;
 				$status = CheckResult::STATUS_COMPLIANCE;
 			}
 		} else {
@@ -139,7 +139,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 						 ->escaped();
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
-				$message = '';
+				$message = null;
 				$status = CheckResult::STATUS_COMPLIANCE;
 			}
 		}
