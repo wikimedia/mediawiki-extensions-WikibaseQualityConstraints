@@ -13,6 +13,7 @@ use SpecialPage;
 use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -84,6 +85,11 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @var ConstraintParameterRenderer
 	 */
 	private $constraintParameterRenderer;
+
+	/**
+	 * @var ViolationMessageRenderer
+	 */
+	private $violationMessageRenderer;
 
 	/**
 	 * @var Config
@@ -159,6 +165,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$this->dataValueFormatter,
 			$config
 		);
+		$this->violationMessageRenderer = new ViolationMessageRenderer();
 
 		$this->config = $config;
 		$this->dataFactory = $dataFactory;
@@ -370,7 +377,9 @@ class SpecialConstraintReport extends SpecialPage {
 		// Status column
 		$statusColumn = $this->buildTooltipElement(
 			$this->formatStatus( $result->getStatus() ),
-			$result->getMessage(),
+			$result->getMessage() !== null ?
+				$this->violationMessageRenderer->render( $result->getMessage() ) :
+				null,
 			'[?]'
 		);
 

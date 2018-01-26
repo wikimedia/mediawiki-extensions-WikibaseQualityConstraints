@@ -11,6 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -42,6 +43,11 @@ class CheckingResultsBuilder implements ResultsBuilder {
 	private $constraintParameterRenderer;
 
 	/**
+	 * @var ViolationMessageRenderer
+	 */
+	private $violationMessageRenderer;
+
+	/**
 	 * @var Config
 	 */
 	private $config;
@@ -51,12 +57,14 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		EntityTitleLookup $entityTitleLookup,
 		EntityIdFormatter $entityIdLabelFormatter,
 		ConstraintParameterRenderer $constraintParameterRenderer,
+		ViolationMessageRenderer $violationMessageRenderer,
 		Config $config
 	) {
 		$this->delegatingConstraintChecker = $delegatingConstraintChecker;
 		$this->entityTitleLookup = $entityTitleLookup;
 		$this->entityIdLabelFormatter = $entityIdLabelFormatter;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
+		$this->violationMessageRenderer = $violationMessageRenderer;
 		$this->config = $config;
 	}
 
@@ -157,7 +165,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		];
 		$message = $checkResult->getMessage();
 		if ( $message ) {
-			$result['message-html'] = $message;
+			$result['message-html'] = $this->violationMessageRenderer->render( $message );
 		}
 		if ( $checkResult->getContext()->getType() === Context::TYPE_STATEMENT ) {
 			$result['claim'] = $checkResult->getContext()->getSnakStatement()->getGuid();

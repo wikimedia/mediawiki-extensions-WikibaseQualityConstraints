@@ -21,6 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -73,6 +74,7 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				$this->getMock( ValueFormatter::class ),
 				$this->getDefaultConfig()
 			),
+			new ViolationMessageRenderer(),
 			$this->getDefaultConfig()
 		);
 	}

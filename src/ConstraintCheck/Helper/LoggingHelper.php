@@ -7,6 +7,7 @@ use IBufferingStatsdDataFactory;
 use Psr\Log\LoggerInterface;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -103,6 +104,11 @@ class LoggingHelper {
 			return;
 		}
 
+		$resultMessage = $result->getMessage();
+		if ( $resultMessage instanceof ViolationMessage ) {
+			$resultMessage = $resultMessage->getMessageKey();
+		}
+
 		$this->logger->log(
 			$logLevel,
 			'Constraint check with {constraintCheckerClassShortName} ' .
@@ -123,7 +129,7 @@ class LoggingHelper {
 				'statementGuid' => $context->getSnakStatement()->getGuid(),
 				'resultStatus' => $result->getStatus(),
 				'resultParameters' => $result->getParameters(),
-				'resultMessage' => $result->getMessage(),
+				'resultMessage' => $resultMessage,
 			]
 		);
 	}
