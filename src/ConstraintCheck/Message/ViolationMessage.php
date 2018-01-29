@@ -27,6 +27,12 @@ class ViolationMessage {
 	const TYPE_ENTITY_ID = 'e';
 
 	/**
+	 * Argument type for a list of entity IDs.
+	 * Value type: {@link EntityId}[]
+	 */
+	const TYPE_ENTITY_ID_LIST = 'E';
+
+	/**
 	 * @var string
 	 */
 	private $messageKeySuffix;
@@ -99,6 +105,24 @@ class ViolationMessage {
 	 */
 	public function withEntityId( EntityId $entityId, $role = null ) {
 		return $this->withArgument( self::TYPE_ENTITY_ID, $role, $entityId );
+	}
+
+	/**
+	 * Append a list of entity IDs to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * This is not the same as appending the list elements individually with {@link withEntityId}!
+	 * In the final message, this corresponds to
+	 * one parameter for the number of list elements,
+	 * one parameter with an HTML list of the list elements,
+	 * and then one parameter per entity ID.
+	 *
+	 * @param EntityId[] $entityIdList
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withEntityIdList( array $entityIdList, $role = null ) {
+		return $this->withArgument( self::TYPE_ENTITY_ID_LIST, $role, $entityIdList );
 	}
 
 }
