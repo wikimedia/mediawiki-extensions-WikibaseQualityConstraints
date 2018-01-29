@@ -431,6 +431,7 @@ class ConstraintParameterParser {
 				throw new ConstraintParameterException(
 					wfMessage( 'wbqc-violation-message-value-needed-of-types-2' )
 						->rawParams(
+							$this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ),
 							wfMessage( 'datatypes-type-quantity' )->escaped(),
 							wfMessage( 'datatypes-type-time' )->escaped()
 						)
