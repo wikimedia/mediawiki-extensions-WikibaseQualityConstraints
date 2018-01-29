@@ -7,6 +7,7 @@ use IBufferingStatsdDataFactory;
 use OverflowException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -16,6 +17,7 @@ use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
@@ -240,9 +242,16 @@ class TypeCheckerHelper {
 	 * @param string $checker "type" or "valueType" (for message key)
 	 * @param string $relation "instance", "subclass", or "instanceOrSubclass" (for message key)
 	 *
-	 * @return string Localized HTML message
+	 * @return ViolationMessage
 	 */
 	public function getViolationMessage( PropertyId $propertyId, EntityId $entityId, array $classes, $checker, $relation ) {
+		$classes = array_map(
+			function( $itemIdSerialization ) {
+				return new ItemId( $itemIdSerialization );
+			},
+			$classes
+		);
+
 		// Possible messages:
 		// wbqc-violation-message-type-instance
 		// wbqc-violation-message-type-subclass
@@ -250,16 +259,10 @@ class TypeCheckerHelper {
 		// wbqc-violation-message-valueType-instance
 		// wbqc-violation-message-valueType-subclass
 		// wbqc-violation-message-valueType-instanceOrSubclass
-		$message = wfMessage( 'wbqc-violation-message-' . $checker . '-' . $relation );
-
-		$message->rawParams(
-			$this->constraintParameterRenderer->formatEntityId( $propertyId, Role::CONSTRAINT_PROPERTY ),
-			$this->constraintParameterRenderer->formatEntityId( $entityId, Role::SUBJECT )
-		);
-		$message->numParams( count( $classes ) );
-		$message->rawParams( $this->constraintParameterRenderer->formatItemIdList( $classes, Role::OBJECT ) );
-
-		return $message->escaped();
+		return ( new ViolationMessage( 'wbqc-violation-message-' . $checker . '-' . $relation ) )
+			->withEntityId( $propertyId, Role::CONSTRAINT_PROPERTY )
+			->withEntityId( $entityId, Role::SUBJECT )
+			->withEntityIdList( $classes, Role::OBJECT );
 	}
 
 }

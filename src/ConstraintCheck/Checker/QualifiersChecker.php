@@ -99,14 +99,10 @@ class QualifiersChecker implements ConstraintChecker {
 					$message = ( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
 						->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY );
 				} else {
-					$message = wfMessage( "wbqc-violation-message-qualifiers" );
-					$message->rawParams(
-						$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
-						$this->constraintParameterRenderer->formatEntityId( $qualifier->getPropertyId(), Role::QUALIFIER_PREDICATE )
-					);
-					$message->numParams( count( $properties ) );
-					$message->rawParams( $this->constraintParameterRenderer->formatPropertyIdList( $properties, Role::QUALIFIER_PREDICATE ) );
-					$message = $message->escaped();
+					$message = ( new ViolationMessage( 'wbqc-violation-message-qualifiers' ) )
+						->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY )
+						->withEntityId( $qualifier->getPropertyId(), Role::QUALIFIER_PREDICATE )
+						->withEntityIdList( $properties, Role::QUALIFIER_PREDICATE );
 				}
 				$status = CheckResult::STATUS_VIOLATION;
 				break;

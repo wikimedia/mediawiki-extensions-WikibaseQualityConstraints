@@ -106,11 +106,10 @@ class UniqueValueChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_COMPLIANCE;
 				$message = null;
 			} else {
+				$otherEntities = array_values( array_filter( $otherEntities ) ); // remove nulls
 				$status = CheckResult::STATUS_VIOLATION;
-				$message = wfMessage( 'wbqc-violation-message-unique-value' )
-						 ->numParams( count( $otherEntities ) )
-						 ->rawParams( $this->constraintParameterRenderer->formatEntityIdList( $otherEntities, Role::SUBJECT ) )
-						 ->escaped();
+				$message = ( new ViolationMessage( 'wbqc-violation-message-unique-value' ) )
+					->withEntityIdList( $otherEntities, Role::SUBJECT );
 			}
 		} else {
 			$status = CheckResult::STATUS_TODO;
