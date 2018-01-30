@@ -28,6 +28,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsBuilder;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
@@ -160,6 +161,7 @@ class CheckConstraintsTest extends ApiTestCase {
 					$repo->getEntityTitleLookup(),
 					$entityIdFormatter,
 					$constraintParameterRenderer,
+					new ViolationMessageRenderer(),
 					$config
 				),
 				$dataFactory

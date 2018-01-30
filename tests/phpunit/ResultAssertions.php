@@ -2,6 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use Language;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -18,6 +21,19 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  */
 trait ResultAssertions {
 
+	private function renderMessage( CheckResult $result ) {
+		$resultMessage = $result->getMessage();
+		if ( $resultMessage === null ) {
+			return '';
+		}
+
+		$renderer = new ViolationMessageRenderer();
+		return $renderer->render(
+			$resultMessage,
+			Language::factory( 'en' )
+		);
+	}
+
 	/**
 	 * Assert that $result indicates compliance with a constraint.
 	 *
@@ -27,7 +43,7 @@ trait ResultAssertions {
 		$this->assertEquals(
 			CheckResult::STATUS_COMPLIANCE,
 			$result->getStatus(),
-			'Check should comply; message: ' . $result->getMessage()
+			'Check should comply; message: ' . $this->renderMessage( $result )
 		);
 	}
 
@@ -44,30 +60,47 @@ trait ResultAssertions {
 			$result->getStatus(),
 			'Check should not comply'
 		);
-		$this->assertStringNotMatchesFormat(
-			"⧼%a⧽",
-			$result->getMessage(),
-			"Message should not refer to a non-existing message key ({$result->getMessage()})."
-		);
-		if ( $messageKey !== null ) {
-			$message = wfMessage( $messageKey );
-			$messagePlain = $message->plain();
-			$pos = stripos( $messagePlain, '{{PLURAL:' );
-			if ( $pos === false ) {
-				// turn parameters into “match all” and match full message
-				$pattern = preg_replace( '/\$[0-9]+/', '%a', $message->escaped() );
-			} else {
-				// no chance to match after {{PLURAL}} processing, take pattern up to that and append “match all”
-				$pattern = substr( $messagePlain, 0, $pos );
-				$pattern = preg_replace( '/\$[0-9]+/', '%a', $pattern );
-				$pattern = htmlspecialchars( $pattern, ENT_QUOTES, 'UTF-8', false ); // simulate ->escaped()
-				$pattern .= '%a';
-			}
-			$this->assertStringMatchesFormat(
-				$pattern,
-				$result->getMessage(),
-				"Violation message should be ⧼${messageKey}⧽."
+		$resultMessage = $result->getMessage();
+		if ( $resultMessage instanceof ViolationMessage ) {
+			$resultMessageKey = $resultMessage->getMessageKey();
+			$this->assertNotNull(
+				Language::getMessageFor( $resultMessageKey, 'en' ),
+				"Message should not refer to a non-existing message key (⧼{$resultMessageKey}⧽)."
 			);
+		} else {
+			$this->assertStringNotMatchesFormat(
+				"⧼%a⧽",
+				$resultMessage,
+				"Message should not refer to a non-existing message key ($resultMessage)."
+			);
+		}
+		if ( $messageKey !== null ) {
+			if ( $resultMessage instanceof ViolationMessage ) {
+				$this->assertSame(
+					$messageKey,
+					$resultMessage->getMessageKey(),
+					"Violation message should be ⧼${messageKey}⧽."
+				);
+			} else {
+				$message = wfMessage( $messageKey );
+				$messagePlain = $message->plain();
+				$pos = stripos( $messagePlain, '{{PLURAL:' );
+				if ( $pos === false ) {
+					// turn parameters into “match all” and match full message
+					$pattern = preg_replace( '/\$[0-9]+/', '%a', $message->escaped() );
+				} else {
+					// no chance to match after {{PLURAL}} processing, take pattern up to that and append “match all”
+					$pattern = substr( $messagePlain, 0, $pos );
+					$pattern = preg_replace( '/\$[0-9]+/', '%a', $pattern );
+					$pattern = htmlspecialchars( $pattern, ENT_QUOTES, 'UTF-8', false ); // simulate ->escaped()
+					$pattern .= '%a';
+				}
+				$this->assertStringMatchesFormat(
+					$pattern,
+					$resultMessage,
+					"Violation message should be ⧼${messageKey}⧽."
+				);
+			}
 		}
 	}
 
@@ -118,7 +151,7 @@ trait ResultAssertions {
 		$this->assertEquals(
 			CheckResult::STATUS_DEPRECATED,
 			$result->getStatus(),
-			'Check should indicate deprecation; message: ' . $result->getMessage()
+			'Check should indicate deprecation; message: ' . $this->renderMessage( $result )
 		);
 	}
 
@@ -132,7 +165,8 @@ trait ResultAssertions {
 		$this->assertSame(
 			CheckResult::STATUS_NOT_IN_SCOPE,
 			$result->getStatus(),
-			'Check should indicate that snak is out of scope of constraint; message: ' . $result->getMessage()
+			'Check should indicate that snak is out of scope of constraint; message: ' .
+				$this->renderMessage( $result )
 		);
 	}
 

@@ -9,6 +9,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use LogicException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 
 /**
  * Used for getting information about the result of a constraint check
@@ -88,7 +89,7 @@ class CheckResult {
 	private $status;
 
 	/**
-	 * @var string
+	 * @var string|ViolationMessage|null
 	 */
 	private $message;
 
@@ -103,7 +104,7 @@ class CheckResult {
 	 * @param array[] $parameters (string => string[]) parsed constraint parameters
 	 * ($constraint->getParameters() contains the unparsed parameters)
 	 * @param string $status One of the self::STATUS_… constants
-	 * @param string $message (sanitized HTML)
+	 * @param string|ViolationMessage|null $message sanitized HTML string or ViolationMessage object
 	 */
 	public function __construct(
 		Context $context,
@@ -199,7 +200,7 @@ class CheckResult {
 	}
 
 	/**
-	 * @return string (sanitized HTML)
+	 * @return string|ViolationMessage|null sanitized HTML string or ViolationMessage object
 	 */
 	public function getMessage() {
 		return $this->message;
