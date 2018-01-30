@@ -132,7 +132,7 @@ final class WikibaseQualityConstraintsHooks {
 		if ( !$out->getUser()->isLoggedIn() ) {
 			return;
 		}
-		if ( !$out->getJsConfigVars()['wbIsEditView'] ) {
+		if ( empty( $out->getJsConfigVars()['wbIsEditView'] ) ) {
 			return;
 		}
 
