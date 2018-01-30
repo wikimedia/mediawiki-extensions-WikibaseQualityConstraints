@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -39,7 +40,7 @@ class ValueOnlyChecker implements ConstraintChecker {
 		if ( $context->getType() === Context::TYPE_STATEMENT ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 		} else {
-			$message = wfMessage( 'wbqc-violation-message-valueOnly' )->escaped();
+			$message = new ViolationMessage( 'wbqc-violation-message-valueOnly' );
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
 		}
 	}

@@ -6,6 +6,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -69,7 +70,7 @@ class MultiValueChecker implements ConstraintChecker {
 		);
 
 		if ( $propertyCount <= 1 ) {
-			$message = wfMessage( "wbqc-violation-message-multi-value" )->escaped();
+			$message = new ViolationMessage( 'wbqc-violation-message-multi-value' );
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = null;
