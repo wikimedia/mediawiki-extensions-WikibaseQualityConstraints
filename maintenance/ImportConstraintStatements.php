@@ -46,6 +46,7 @@ class ImportConstraintStatements extends Maintenance {
 		};
 
 		$this->addDescription( 'Imports property constraints from statements on properties' );
+		$this->requireExtension( 'WikibaseQualityConstraints' );
 	}
 
 	public function execute() {
