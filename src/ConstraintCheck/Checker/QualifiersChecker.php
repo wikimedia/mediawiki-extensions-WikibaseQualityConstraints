@@ -81,7 +81,7 @@ class QualifiersChecker implements ConstraintChecker {
 		$properties = $this->constraintParameterParser->parsePropertiesParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
 		$parameters['property'] = $properties;
 
-		$message = '';
+		$message = null;
 		$status = CheckResult::STATUS_COMPLIANCE;
 
 		/** @var Snak $qualifier */

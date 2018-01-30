@@ -102,7 +102,7 @@ class UniqueValueChecker implements ConstraintChecker {
 
 			if ( $otherEntities === [] ) {
 				$status = CheckResult::STATUS_COMPLIANCE;
-				$message = '';
+				$message = null;
 			} else {
 				$status = CheckResult::STATUS_VIOLATION;
 				$message = wfMessage( 'wbqc-violation-message-unique-value' )

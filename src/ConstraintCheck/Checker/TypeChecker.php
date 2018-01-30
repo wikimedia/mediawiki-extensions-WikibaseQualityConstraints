@@ -119,7 +119,7 @@ class TypeChecker implements ConstraintChecker {
 		);
 
 		if ( $result->getBool() ) {
-			$message = '';
+			$message = null;
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
 			$message = $this->typeCheckerHelper->getViolationMessage(

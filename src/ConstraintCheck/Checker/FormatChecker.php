@@ -112,7 +112,7 @@ class FormatChecker implements ConstraintChecker {
 
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE );
 		}
 
 		$dataValue = $snak->getDataValue();
@@ -142,7 +142,7 @@ class FormatChecker implements ConstraintChecker {
 
 		if ( $this->sparqlHelper !== null && $this->config->get( 'WBQualityConstraintsCheckFormatConstraint' ) ) {
 			if ( $this->sparqlHelper->matchesRegularExpression( $text, $format ) ) {
-				$message = '';
+				$message = null;
 				$status = CheckResult::STATUS_COMPLIANCE;
 			} else {
 				$message = wfMessage(

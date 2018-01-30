@@ -37,7 +37,7 @@ class ValueOnlyChecker implements ConstraintChecker {
 
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getType() === Context::TYPE_STATEMENT ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 		} else {
 			$message = wfMessage( 'wbqc-violation-message-valueOnly' )->escaped();
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );

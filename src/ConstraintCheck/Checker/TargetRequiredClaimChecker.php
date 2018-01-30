@@ -105,7 +105,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, '' );
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE );
 		}
 
 		$dataValue = $snak->getDataValue();
@@ -152,7 +152,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 
 		if ( $requiredStatement !== null ) {
 			$status = CheckResult::STATUS_COMPLIANCE;
-			$message = '';
+			$message = null;
 		} else {
 			$status = CheckResult::STATUS_VIOLATION;
 			$message = wfMessage( 'wbqc-violation-message-target-required-claim' );
