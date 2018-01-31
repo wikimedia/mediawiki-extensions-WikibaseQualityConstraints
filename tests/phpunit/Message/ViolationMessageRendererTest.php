@@ -95,9 +95,8 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityId = new PropertyId( 'P1' );
 		$role = Role::PREDICATE;
 		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
-		$entityIdFormatter->expects( $this->once() )
+		$entityIdFormatter
 			->method( 'formatEntityId' )
-			->with( $entityId )
 			->willReturn( '<test property>' );
 		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
 
@@ -179,9 +178,8 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdList = [ new ItemId( 'Q1' ) ];
 		$role = Role::OBJECT;
 		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
-		$entityIdFormatter->expects( $this->once() )
+		$entityIdFormatter
 			->method( 'formatEntityId' )
-			->with( $entityIdList[0] )
 			->willReturn( '<test item>' );
 		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
 
