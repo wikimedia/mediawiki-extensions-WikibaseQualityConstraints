@@ -74,7 +74,7 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 				$this->getMock( ValueFormatter::class ),
 				$this->getDefaultConfig()
 			),
-			new ViolationMessageRenderer(),
+			new ViolationMessageRenderer( $entityIdFormatter ),
 			$this->getDefaultConfig()
 		);
 	}
