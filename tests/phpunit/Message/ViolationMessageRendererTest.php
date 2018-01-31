@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use DataValues\StringValue;
 use Message;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -114,6 +115,134 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
+	 */
+	public function testRenderList() {
+		$valueList = [ '<any value>', new StringValue( 'any kind of value' ) ];
+		$role = null;
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderMock = $this->getMockBuilder( \stdClass::class )
+			->setMethods( [ 'render' ] )
+			->getMock();
+		$renderMock->expects( $this->exactly( 2 ) )
+			->method( 'render' )
+			->withConsecutive( [ $valueList[0], $role ], [ $valueList[1], $role ] )
+			->willReturnCallback( function ( $value, $role ) {
+				if ( $value instanceof StringValue ) {
+					return Message::rawParam( $value->getValue() );
+				} else {
+					return Message::rawParam( $value );
+				}
+			} );
+		$renderFunction = [ $renderMock, 'render' ];
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderList( $valueList, $role, $renderFunction );
+
+		$this->assertSame(
+			[
+				Message::numParam( 2 ),
+				Message::rawParam( '<ul><li><any value></li><li>any kind of value</li></ul>' ),
+				Message::rawParam( '<any value>' ),
+				Message::rawParam( 'any kind of value' ),
+			],
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
+	 */
+	public function testRenderList_empty() {
+		$valueList = [];
+		$role = null;
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderMock = $this->getMockBuilder( \stdClass::class )
+			->setMethods( [ 'render' ] )
+			->getMock();
+		$renderMock->expects( $this->never() )
+			->method( 'render' );
+		$renderFunction = [ $renderMock, 'render' ];
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderList( $valueList, $role, $renderFunction );
+
+		$this->assertSame(
+			[
+				Message::numParam( 0 ),
+				Message::rawParam( '<ul></ul>' ),
+			],
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
+	 */
+	public function testRenderList_tooLong() {
+		$valueList = [ 'Q1', 'P2', 'Q3' ];
+		$role = null;
+		$renderer = new ViolationMessageRenderer(
+			new PlainEntityIdFormatter(),
+			2
+		);
+		$renderMock = $this->getMockBuilder( \stdClass::class )
+			->setMethods( [ 'render' ] )
+			->getMock();
+		$renderMock->expects( $this->exactly( 2 ) )
+			->method( 'render' )
+			->withConsecutive( [ $valueList[0], $role ], [ $valueList[1], $role ] )
+			->willReturnCallback( function ( $value, $role ) {
+				return Message::rawParam( $value );
+			} );
+		$renderFunction = [ $renderMock, 'render' ];
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderList( $valueList, $role, $renderFunction );
+
+		$this->assertSame(
+			[
+				Message::numParam( 2 ),
+				Message::rawParam( '<ul><li>Q1</li><li>P2</li><li>...</li></ul>' ),
+				Message::rawParam( 'Q1' ),
+				Message::rawParam( 'P2' ),
+			],
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
+	 */
+	public function testRenderList_withRole() {
+		$valueList = [ '<test item>' ];
+		$role = Role::OBJECT;
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderMock = $this->getMockBuilder( \stdClass::class )
+			->setMethods( [ 'render' ] )
+			->getMock();
+		$renderMock->expects( $this->once() )
+			->method( 'render' )
+			->with( $valueList[0], $role )
+			->willReturn( Message::rawParam(
+				'<span class="wbqc-role wbqc-role-object">' . $valueList[0] . '</span>'
+			) );
+		$renderFunction = [ $renderMock, 'render' ];
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderList( $valueList, $role, $renderFunction );
+
+		$this->assertSame(
+			[
+				Message::numParam( 1 ),
+				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
+				Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ),
+			],
+			$params
+		);
+	}
+
+	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityId
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
 	 */
@@ -178,54 +307,6 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			[
 				Message::numParam( 2 ),
 				Message::rawParam( '<ul><li>Q1</li><li>P2</li></ul>' ),
-				Message::rawParam( 'Q1' ),
-				Message::rawParam( 'P2' ),
-			],
-			$params
-		);
-	}
-
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityIdList
-	 */
-	public function testRenderEntityIdList_empty() {
-		$entityIdList = [];
-		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
-		$entityIdFormatter->expects( $this->never() )
-			->method( 'formatEntityId' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
-
-		$params = TestingAccessWrapper::newFromObject( $renderer )
-			->renderEntityIdList( $entityIdList, $role );
-
-		$this->assertSame(
-			[
-				Message::numParam( 0 ),
-				Message::rawParam( '<ul></ul>' ),
-			],
-			$params
-		);
-	}
-
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityIdList
-	 */
-	public function testRenderEntityIdList_tooLong() {
-		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ), new ItemId( 'Q3' ) ];
-		$role = null;
-		$renderer = new ViolationMessageRenderer(
-			new PlainEntityIdFormatter(),
-			2
-		);
-
-		$params = TestingAccessWrapper::newFromObject( $renderer )
-			->renderEntityIdList( $entityIdList, $role );
-
-		$this->assertSame(
-			[
-				Message::numParam( 2 ),
-				Message::rawParam( '<ul><li>Q1</li><li>P2</li><li>...</li></ul>' ),
 				Message::rawParam( 'Q1' ),
 				Message::rawParam( 'P2' ),
 			],
