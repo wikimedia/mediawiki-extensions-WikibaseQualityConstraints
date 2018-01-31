@@ -17,10 +17,19 @@ class ViolationMessageRenderer {
 
 	private $entityIdFormatter;
 
+	private $maxListLength;
+
+	/**
+	 * @param EntityIdFormatter $entityIdFormatter
+	 * @param int $maxListLength The maximum number of elements to be rendered in a list parameter.
+	 * Longer lists are truncated to this length and then rendered with an ellipsis in the HMTL list.
+	 */
 	public function __construct(
-		EntityIdFormatter $entityIdFormatter
+		EntityIdFormatter $entityIdFormatter,
+		$maxListLength = 10
 	) {
 		$this->entityIdFormatter = $entityIdFormatter;
+		$this->maxListLength = $maxListLength;
 	}
 
 	/**
@@ -61,6 +70,9 @@ class ViolationMessageRenderer {
 			case ViolationMessage::TYPE_ENTITY_ID:
 				$params = $this->renderEntityId( $argument['value'], $argument['role'] );
 				break;
+			case ViolationMessage::TYPE_ENTITY_ID_LIST:
+				$params = $this->renderEntityIdList( $argument['value'], $argument['role'] );
+				break;
 			default:
 				throw new InvalidArgumentException(
 					'Unknown ViolationMessage argument type ' . $argument['type'] . '!'
@@ -74,6 +86,47 @@ class ViolationMessageRenderer {
 			$this->entityIdFormatter->formatEntityId( $entityId ),
 			$role
 		) );
+	}
+
+	private function renderEntityIdList( array $entityIdList, $role ) {
+		if ( $entityIdList === [] ) {
+			return [
+				Message::numParam( 0 ),
+				Message::rawParam( '<ul></ul>' ),
+			];
+		}
+
+		if ( count( $entityIdList ) > $this->maxListLength ) {
+			$entityIdList = array_slice( $entityIdList, 0, $this->maxListLength );
+			$truncated = true;
+		}
+
+		$renderedParams = array_map(
+			[ $this, 'renderEntityId' ],
+			$entityIdList,
+			array_fill( 0, count( $entityIdList ), $role )
+		);
+		$renderedElements = array_map(
+			function ( $param ) {
+				return $param['raw'];
+			},
+			$renderedParams
+		);
+		if ( isset( $truncated ) ) {
+			$renderedElements[] = wfMessage( 'ellipsis' )->escaped();
+		}
+
+		return array_merge(
+			[
+				Message::numParam( count( $entityIdList ) ),
+				Message::rawParam(
+					'<ul><li>' .
+					implode( '</li><li>', $renderedElements ) .
+					'</li></ul>'
+				),
+			],
+			$renderedParams
+		);
 	}
 
 }

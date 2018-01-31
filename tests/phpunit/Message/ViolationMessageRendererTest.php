@@ -47,6 +47,22 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
+	public function testRender_entityIdList() {
+		$messageKey = 'wbqc-violation-message-unique-value';
+		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ) ];
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withEntityIdList( $entityIdList );
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+
+		$rendered = $renderer->render( $message );
+
+		$expected = wfMessage( $messageKey )
+			->numParams( 2 )
+			->rawParams( '<ul><li>Q1</li><li>P2</li></ul>', 'Q1', 'P2' )
+			->escaped();
+		$this->assertSame( $expected, $rendered );
+	}
+
 	public function testRenderEntityId() {
 		$entityId = new ItemId( 'Q1' );
 		$role = null;
@@ -81,6 +97,94 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			Message::rawParam( '<span class="wbqc-role wbqc-role-predicate"><test property></span>' ),
+			$params
+		);
+	}
+
+	public function testRenderEntityIdList() {
+		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ) ];
+		$role = null;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter->expects( $this->exactly( 2 ) )
+			->method( 'formatEntityId' )
+			->willReturnCallback( [ new PlainEntityIdFormatter(), 'formatEntityId' ] );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderEntityIdList( $entityIdList, $role );
+
+		$this->assertSame(
+			[
+				Message::numParam( 2 ),
+				Message::rawParam( '<ul><li>Q1</li><li>P2</li></ul>' ),
+				Message::rawParam( 'Q1' ),
+				Message::rawParam( 'P2' ),
+			],
+			$params
+		);
+	}
+
+	public function testRenderEntityIdList_empty() {
+		$entityIdList = [];
+		$role = null;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter->expects( $this->never() )
+			->method( 'formatEntityId' );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderEntityIdList( $entityIdList, $role );
+
+		$this->assertSame(
+			[
+				Message::numParam( 0 ),
+				Message::rawParam( '<ul></ul>' ),
+			],
+			$params
+		);
+	}
+
+	public function testRenderEntityIdList_tooLong() {
+		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ), new ItemId( 'Q3' ) ];
+		$role = null;
+		$renderer = new ViolationMessageRenderer(
+			new PlainEntityIdFormatter(),
+			2
+		);
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderEntityIdList( $entityIdList, $role );
+
+		$this->assertSame(
+			[
+				Message::numParam( 2 ),
+				Message::rawParam( '<ul><li>Q1</li><li>P2</li><li>...</li></ul>' ),
+				Message::rawParam( 'Q1' ),
+				Message::rawParam( 'P2' ),
+			],
+			$params
+		);
+	}
+
+	public function testRenderEntityIdList_withRole() {
+		$entityIdList = [ new ItemId( 'Q1' ) ];
+		$role = Role::OBJECT;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter->expects( $this->once() )
+			->method( 'formatEntityId' )
+			->with( $entityIdList[0] )
+			->willReturn( '<test item>' );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderEntityIdList( $entityIdList, $role );
+
+		$this->assertSame(
+			[
+				Message::numParam( 1 ),
+				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
+				Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ),
+			],
 			$params
 		);
 	}
