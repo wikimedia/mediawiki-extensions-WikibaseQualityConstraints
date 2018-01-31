@@ -156,14 +156,10 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 			$message = null;
 		} else {
 			$status = CheckResult::STATUS_VIOLATION;
-			$message = wfMessage( 'wbqc-violation-message-target-required-claim' );
-			$message->rawParams(
-				$this->constraintParameterRenderer->formatEntityId( $targetEntityId, Role::SUBJECT ),
-				$this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE )
-			);
-			$message->numParams( count( $items ) );
-			$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, Role::OBJECT ) );
-			$message = $message->escaped();
+			$message = ( new ViolationMessage( 'wbqc-violation-message-target-required-claim' ) )
+				->withEntityId( $targetEntityId, Role::SUBJECT )
+				->withEntityId( $propertyId, Role::PREDICATE )
+				->withItemIdSnakValueList( $items, Role::OBJECT );
 		}
 
 		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )

@@ -9,6 +9,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -122,14 +123,10 @@ class ItemChecker implements ConstraintChecker {
 			$message = null;
 		} else {
 			$status = CheckResult::STATUS_VIOLATION;
-			$message = wfMessage( 'wbqc-violation-message-item' );
-			$message->rawParams(
-				$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
-				$this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE )
-			);
-			$message->numParams( count( $items ) );
-			$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, Role::OBJECT ) );
-			$message = $message->escaped();
+			$message = ( new ViolationMessage( 'wbqc-violation-message-item' ) )
+				->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY )
+				->withEntityId( $propertyId, Role::PREDICATE )
+				->withItemIdSnakValueList( $items, Role::OBJECT );
 		}
 
 		return new CheckResult( $context, $constraint, $parameters, $status, $message );
