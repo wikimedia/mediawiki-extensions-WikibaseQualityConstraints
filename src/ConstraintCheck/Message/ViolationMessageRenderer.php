@@ -83,6 +83,9 @@ class ViolationMessageRenderer {
 			case ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST:
 				$params = $this->renderItemIdSnakValueList( $value, $role );
 				break;
+			case ViolationMessage::TYPE_DATA_VALUE_TYPE:
+				$params = $this->renderDataValueType( $value, $role );
+				break;
 			default:
 				throw new InvalidArgumentException(
 					'Unknown ViolationMessage argument type ' . $type . '!'
@@ -172,6 +175,27 @@ class ViolationMessageRenderer {
 
 	private function renderItemIdSnakValueList( array $valueList, $role ) {
 		return $this->renderList( $valueList, $role, [ $this, 'renderItemIdSnakValue' ] );
+	}
+
+	private function renderDataValueType( $dataValueType, $role ) {
+		$messageKeys = [
+			'string' => 'datatypes-type-string',
+			'monolingualtext' => 'datatypes-monolingualtext',
+			'wikibase-entityid' => 'wbqc-dataValueType-wikibase-entityid',
+		];
+
+		if ( array_key_exists( $dataValueType, $messageKeys ) ) {
+			return Message::rawParam( $this->addRole(
+				wfMessage( $messageKeys[$dataValueType] )->escaped(),
+				$role
+			) );
+		} else {
+			// @codeCoverageIgnoreStart
+			throw new LogicException(
+				'Unknown data value type ' . $dataValueType
+			);
+			// @codeCoverageIgnoreEnd
+		}
 	}
 
 }

@@ -115,6 +115,26 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
+	public function testRender_dataValueType() {
+		$messageKey = 'wbqc-violation-message-value-needed-of-type';
+		$dataValueType = 'string';
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withEntityId( new ItemId( 'Q1' ) )
+			->withDataValueType( $dataValueType );
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+
+		$rendered = $renderer->render( $message );
+
+		$expected = wfMessage( $messageKey )
+			->rawParams( 'Q1', wfMessage( 'datatypes-type-string' )->escaped() )
+			->escaped();
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
 	 */
 	public function testRenderList() {
@@ -489,6 +509,40 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
 				Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ),
 			],
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderDataValueType
+	 */
+	public function testRenderDataValueType_string() {
+		$dataValueType = 'string';
+		$role = null;
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderDataValueType( $dataValueType, $role );
+
+		$this->assertSame(
+			Message::rawParam( wfMessage( 'datatypes-type-string' )->escaped() ),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderDataValueType
+	 */
+	public function testRenderDataValueType_entityId() {
+		$dataValueType = 'wikibase-entityid';
+		$role = null;
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderDataValueType( $dataValueType, $role );
+
+		$this->assertSame(
+			Message::rawParam( wfMessage( 'wbqc-dataValueType-wikibase-entityid' )->escaped() ),
 			$params
 		);
 	}
