@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -116,6 +117,20 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			[ 'type' => ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[1]
+		);
+	}
+
+	public function testWithDataValue() {
+		$value = UnboundedQuantityValue::newFromNumber( 0 );
+		$role = Role::OBJECT;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-range-quantity-rightopen' ) )
+			->withEntityId( new PropertyId( 'P1' ), Role::PREDICATE )
+			->withDataValue( $value, $role )
+			->withDataValue( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_DATA_VALUE, 'role' => $role, 'value' => $value ],
 			$message->getArguments()[1]
 		);
 	}

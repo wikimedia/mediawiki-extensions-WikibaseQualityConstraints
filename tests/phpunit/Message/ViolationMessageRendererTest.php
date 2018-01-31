@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use DataValues\StringValue;
 use Message;
+use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -138,6 +139,27 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
 					'</span>'
 			)
+			->escaped();
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
+	public function testRender_dataValue() {
+		$messageKey = 'wbqc-violation-message-range-quantity-rightopen';
+		$dataValue = new StringValue( 'a string' );
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withEntityId( new PropertyId( 'P1' ) )
+			->withDataValue( $dataValue )
+			->withDataValue( $dataValue );
+		$renderer = $this->newViolationMessageRenderer( null, new StringFormatter() );
+
+		$rendered = $renderer->render( $message );
+
+		$expected = wfMessage( $messageKey )
+			->rawParams( 'P1', 'a string', 'a string' )
 			->escaped();
 		$this->assertSame( $expected, $rendered );
 	}
@@ -534,6 +556,51 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
 				Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ),
 			],
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderDataValue
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderDataValue() {
+		$dataValue = new StringValue( 'a&nbsp;string' );
+		$role = null;
+		$dataValueFormatter = $this->getMock( ValueFormatter::class );
+		$dataValueFormatter->expects( $this->once() )
+			->method( 'format' )
+			->with( $dataValue )
+			->willReturn( '<a&amp;nbsp;string>' );
+		$renderer = $this->newViolationMessageRenderer( null, $dataValueFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderDataValue( $dataValue, $role );
+
+		$this->assertSame(
+			Message::rawParam( '<a&amp;nbsp;string>' ),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderDataValue
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderDataValue_withRole() {
+		$dataValue = new StringValue( 'test' );
+		$role = Role::OBJECT;
+		$dataValueFormatter = $this->getMock( ValueFormatter::class );
+		$dataValueFormatter
+			->method( 'format' )
+			->willReturn( 'test' );
+		$renderer = $this->newViolationMessageRenderer( null, $dataValueFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderDataValue( $dataValue, $role );
+
+		$this->assertSame(
+			Message::rawParam( '<span class="wbqc-role wbqc-role-object">test</span>' ),
 			$params
 		);
 	}

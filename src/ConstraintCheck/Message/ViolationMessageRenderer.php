@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
+use DataValues\DataValue;
 use InvalidArgumentException;
 use LogicException;
 use Message;
@@ -91,6 +92,9 @@ class ViolationMessageRenderer {
 				break;
 			case ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST:
 				$params = $this->renderItemIdSnakValueList( $value, $role );
+				break;
+			case ViolationMessage::TYPE_DATA_VALUE:
+				$params = $this->renderDataValue( $value, $role );
 				break;
 			case ViolationMessage::TYPE_DATA_VALUE_TYPE:
 				$params = $this->renderDataValueType( $value, $role );
@@ -184,6 +188,13 @@ class ViolationMessageRenderer {
 
 	private function renderItemIdSnakValueList( array $valueList, $role ) {
 		return $this->renderList( $valueList, $role, [ $this, 'renderItemIdSnakValue' ] );
+	}
+
+	private function renderDataValue( DataValue $dataValue, $role ) {
+		return Message::rawParam( $this->addRole(
+			$this->dataValueFormatter->format( $dataValue ),
+			$role
+		) );
 	}
 
 	private function renderDataValueType( $dataValueType, $role ) {

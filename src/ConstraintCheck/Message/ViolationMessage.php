@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
+use DataValues\DataValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
@@ -44,6 +45,12 @@ class ViolationMessage {
 	 * Value type: {@link ItemIdSnakValue}[]
 	 */
 	const TYPE_ITEM_ID_SNAK_VALUE_LIST = 'I';
+
+	/**
+	 * Argument type for a single data value.
+	 * Value type: {@link DataValue}
+	 */
+	const TYPE_DATA_VALUE = 'v';
 
 	/**
 	 * Argument type for a data value type, like "time" or "wikibase-entityid".
@@ -173,6 +180,18 @@ class ViolationMessage {
 	 */
 	public function withItemIdSnakValueList( array $valueList, $role = null ) {
 		return $this->withArgument( self::TYPE_ITEM_ID_SNAK_VALUE_LIST, $role, $valueList );
+	}
+
+	/**
+	 * Append a single data value to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * @param DataValue $dataValue
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withDataValue( DataValue $dataValue, $role = null ) {
+		return $this->withArgument( self::TYPE_DATA_VALUE, $role, $dataValue );
 	}
 
 	/**
