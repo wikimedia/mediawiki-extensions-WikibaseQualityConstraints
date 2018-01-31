@@ -10,6 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -120,18 +121,22 @@ class RangeChecker implements ConstraintChecker {
 			// at least one of $min, $max is set at this point, otherwise there could be no violation
 			$type = $dataValue->getType();
 			$openness = $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen';
-			$message = wfMessage( "wbqc-violation-message-range-$type-$openness" );
-			$message->rawParams(
-				$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE ),
-				$this->constraintParameterRenderer->formatDataValue( $dataValue, Role::OBJECT )
-			);
+			// possible message keys:
+			// wbqc-violation-message-range-quantity-closed
+			// wbqc-violation-message-range-quantity-leftopen
+			// wbqc-violation-message-range-quantity-rightopen
+			// wbqc-violation-message-range-time-closed
+			// wbqc-violation-message-range-time-leftopen
+			// wbqc-violation-message-range-time-rightopen
+			$message = ( new ViolationMessage( "wbqc-violation-message-range-$type-$openness" ) )
+				->withEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE )
+				->withDataValue( $dataValue, Role::OBJECT );
 			if ( $min !== null ) {
-				$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min, Role::OBJECT ) );
+				$message = $message->withDataValue( $min, Role::OBJECT );
 			}
 			if ( $max !== null ) {
-				$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $max, Role::OBJECT ) );
+				$message = $message->withDataValue( $max, Role::OBJECT );
 			}
-			$message = $message->escaped();
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = null;
