@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use MalformedTitleException;
 use TitleParser;
 use TitleValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -127,12 +128,9 @@ class CommonsLinkChecker implements ConstraintChecker {
 		 *   parameter $namespace can be null, works for commons galleries
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )
-					 ->rawParams(
-						 $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ),
-						 wfMessage( 'datatypes-type-string' )->escaped()
-					 )
-					 ->escaped();
+			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
+				->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM )
+				->withDataValueType( 'string' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 

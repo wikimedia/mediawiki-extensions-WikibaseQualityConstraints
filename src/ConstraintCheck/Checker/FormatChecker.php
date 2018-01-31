@@ -132,13 +132,10 @@ class FormatChecker implements ConstraintChecker {
 				$text = $dataValue->getText();
 				break;
 			default:
-				$message = wfMessage( "wbqc-violation-message-value-needed-of-types-2" )
-						 ->rawParams(
-							 $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ),
-							 wfMessage( 'datatypes-type-string' )->escaped(),
-							 wfMessage( 'datatypes-type-monolingualtext' )->escaped()
-						 )
-						 ->escaped();
+				$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-types-2' ) )
+					->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM )
+					->withDataValueType( 'string' )
+					->withDataValueType( 'monolingualtext' );
 				return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
