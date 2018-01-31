@@ -128,13 +128,10 @@ class ConflictsWithChecker implements ConstraintChecker {
 			);
 			if ( $offendingStatement !== null ) {
 				$offendingValue = ItemIdSnakValue::fromSnak( $offendingStatement->getMainSnak() );
-				$message = wfMessage( "wbqc-violation-message-conflicts-with-claim" )
-						 ->rawParams(
-							 $this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY ),
-							 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE ),
-							 $this->constraintParameterRenderer->formatItemIdSnakValue( $offendingValue, Role::OBJECT )
-						 )
-						 ->escaped();
+				$message = ( new ViolationMessage( 'wbqc-violation-message-conflicts-with-claim' ) )
+					->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY )
+					->withEntityId( $propertyId, Role::PREDICATE )
+					->withItemIdSnakValue( $offendingValue, Role::OBJECT );
 				$status = CheckResult::STATUS_VIOLATION;
 			} else {
 				$message = null;
