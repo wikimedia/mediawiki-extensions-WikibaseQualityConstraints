@@ -361,7 +361,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'Format' ) );
+			 ->will( $this->returnValue( 'Q21502404' ) );
 
 		return $mock;
 	}

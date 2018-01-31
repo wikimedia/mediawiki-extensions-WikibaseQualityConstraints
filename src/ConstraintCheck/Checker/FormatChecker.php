@@ -6,6 +6,7 @@ use Config;
 use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use Language;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -14,6 +15,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -162,9 +164,8 @@ class FormatChecker implements ConstraintChecker {
 				$status = CheckResult::STATUS_VIOLATION;
 			}
 		} else {
-			$message = wfMessage( "wbqc-violation-message-security-reason" )
-					 ->rawParams( $this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ) )
-					 ->escaped();
+			$message = ( new ViolationMessage( 'wbqc-violation-message-security-reason' ) )
+				->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM );
 			$status = CheckResult::STATUS_TODO;
 		}
 		return new CheckResult( $context, $constraint, $parameters, $status, $message );

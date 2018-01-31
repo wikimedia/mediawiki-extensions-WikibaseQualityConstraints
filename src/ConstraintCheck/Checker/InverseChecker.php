@@ -141,13 +141,10 @@ class InverseChecker implements ConstraintChecker {
 			$message = null;
 			$status = CheckResult::STATUS_COMPLIANCE;
 		} else {
-			$message = wfMessage( 'wbqc-violation-message-inverse' )
-					 ->rawParams(
-						 $this->constraintParameterRenderer->formatEntityId( $targetEntityId, Role::SUBJECT ),
-						 $this->constraintParameterRenderer->formatEntityId( $propertyId, Role::PREDICATE ),
-						 $this->constraintParameterRenderer->formatEntityId( $context->getEntity()->getId(), Role::OBJECT )
-					 )
-					 ->escaped();
+			$message = ( new ViolationMessage( 'wbqc-violation-message-inverse' ) )
+				->withEntityId( $targetEntityId, Role::SUBJECT )
+				->withEntityId( $propertyId, Role::PREDICATE )
+				->withEntityId( $context->getEntity()->getId(), Role::OBJECT );
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
