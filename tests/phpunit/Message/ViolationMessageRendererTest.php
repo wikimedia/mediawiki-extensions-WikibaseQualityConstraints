@@ -7,6 +7,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -81,6 +82,33 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$expected = wfMessage( $messageKey )
 			->numParams( 2 )
 			->rawParams( '<ul><li>Q1</li><li>P2</li></ul>', 'Q1', 'P2' )
+			->escaped();
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
+	public function testRender_itemIdSnakValue() {
+		$messageKey = 'wbqc-violation-message-conflicts-with-claim';
+		$itemIdSnakValue = ItemIdSnakValue::someValue();
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withEntityId( new PropertyId( 'P1' ) )
+			->withEntityId( new PropertyId( 'P2' ) )
+			->withItemIdSnakValue( $itemIdSnakValue );
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+
+		$rendered = $renderer->render( $message );
+
+		$expected = wfMessage( $messageKey )
+			->rawParams(
+				'P1',
+				'P2',
+				'<span class="wikibase-snakview-variation-somevaluesnak">' .
+					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
+					'</span>'
+			)
 			->escaped();
 		$this->assertSame( $expected, $rendered );
 	}
@@ -227,6 +255,103 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
 				Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ),
 			],
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValue
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderItemIdSnakValue_itemId() {
+		$itemId = new ItemId( 'Q1' );
+		$itemIdSnakValue = ItemIdSnakValue::fromItemId( $itemId );
+		$role = null;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter->expects( $this->once() )
+			->method( 'formatEntityId' )
+			->with( $itemId )
+			->willReturn( '<test item>' );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderItemIdSnakValue( $itemIdSnakValue, $role );
+
+		$this->assertSame(
+			Message::rawParam( '<test item>' ),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValue
+	 */
+	public function testRenderItemIdSnakValue_someValue() {
+		$itemIdSnakValue = ItemIdSnakValue::someValue();
+		$role = null;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter
+			->expects( $this->never() )
+			->method( 'formatEntityId' );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderItemIdSnakValue( $itemIdSnakValue, $role );
+
+		$this->assertSame(
+			Message::rawParam(
+				'<span class="wikibase-snakview-variation-somevaluesnak">' .
+					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
+					'</span>'
+			),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValue
+	 */
+	public function testRenderItemIdSnakValue_noValue() {
+		$itemIdSnakValue = ItemIdSnakValue::noValue();
+		$role = null;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter
+			->expects( $this->never() )
+			->method( 'formatEntityId' );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderItemIdSnakValue( $itemIdSnakValue, $role );
+
+		$this->assertSame(
+			Message::rawParam(
+				'<span class="wikibase-snakview-variation-novaluesnak">' .
+				wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped() .
+				'</span>'
+			),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValue
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderItemIdSnakValue_withRole() {
+		$itemId = new ItemId( 'Q1' );
+		$itemIdSnakValue = ItemIdSnakValue::fromItemId( $itemId );
+		$role = Role::OBJECT;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter
+			->method( 'formatEntityId' )
+			->willReturn( '<test item>' );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderItemIdSnakValue( $itemIdSnakValue, $role );
+
+		$this->assertSame(
+			Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ),
 			$params
 		);
 	}

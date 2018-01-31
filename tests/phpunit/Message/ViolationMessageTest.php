@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Message;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\Role;
 
@@ -76,6 +77,20 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame(
 			[ [ 'type' => ViolationMessage::TYPE_ENTITY_ID_LIST, 'role' => $role, 'value' => $value ] ],
 			$message->getArguments()
+		);
+	}
+
+	public function testWithItemIdSnakValue() {
+		$value = ItemIdSnakValue::noValue();
+		$role = Role::OBJECT;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-conflicts-with-claim' ) )
+			->withEntityId( new PropertyId( 'P1' ), Role::CONSTRAINT_PROPERTY )
+			->withEntityId( new PropertyId( 'P2' ), Role::PREDICATE )
+			->withItemIdSnakValue( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[2]
 		);
 	}
 

@@ -4,9 +4,11 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use InvalidArgumentException;
 use Language;
+use LogicException;
 use Message;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
  * Render a {@link ViolationMessage} into a localized string.
@@ -15,8 +17,14 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
  */
 class ViolationMessageRenderer {
 
+	/**
+	 * @var EntityIdFormatter
+	 */
 	private $entityIdFormatter;
 
+	/**
+	 * @var int
+	 */
 	private $maxListLength;
 
 	/**
@@ -66,16 +74,22 @@ class ViolationMessageRenderer {
 	}
 
 	private function renderArgument( array $argument, Message $message ) {
-		switch ( $argument['type'] ) {
+		$type = $argument['type'];
+		$value = $argument['value'];
+		$role = $argument['role'];
+		switch ( $type ) {
 			case ViolationMessage::TYPE_ENTITY_ID:
-				$params = $this->renderEntityId( $argument['value'], $argument['role'] );
+				$params = $this->renderEntityId( $value, $role );
 				break;
 			case ViolationMessage::TYPE_ENTITY_ID_LIST:
-				$params = $this->renderEntityIdList( $argument['value'], $argument['role'] );
+				$params = $this->renderEntityIdList( $value, $role );
+				break;
+			case ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE:
+				$params = $this->renderItemIdSnakValue( $value, $role );
 				break;
 			default:
 				throw new InvalidArgumentException(
-					'Unknown ViolationMessage argument type ' . $argument['type'] . '!'
+					'Unknown ViolationMessage argument type ' . $type . '!'
 				);
 		}
 		$message->params( $params );
@@ -127,6 +141,33 @@ class ViolationMessageRenderer {
 			],
 			$renderedParams
 		);
+	}
+
+	private function renderItemIdSnakValue( ItemIdSnakValue $value, $role ) {
+		switch ( true ) {
+			case $value->isValue():
+				return $this->renderEntityId( $value->getItemId(), $role );
+			case $value->isSomeValue():
+				return Message::rawParam( $this->addRole(
+					'<span class="wikibase-snakview-variation-somevaluesnak">' .
+						wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
+						'</span>',
+					$role
+				) );
+			case $value->isNoValue():
+				return Message::rawParam( $this->addRole(
+					'<span class="wikibase-snakview-variation-novaluesnak">' .
+						wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped() .
+						'</span>',
+					$role
+				) );
+			default:
+				// @codeCoverageIgnoreStart
+				throw new LogicException(
+					'ItemIdSnakValue should guarantee that one of is{,Some,No}Value() is true'
+				);
+				// @codeCoverageIgnoreEnd
+		}
 	}
 
 }

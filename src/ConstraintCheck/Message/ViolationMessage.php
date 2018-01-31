@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
  * A violation message of a constraint check.
@@ -31,6 +32,12 @@ class ViolationMessage {
 	 * Value type: {@link EntityId}[]
 	 */
 	const TYPE_ENTITY_ID_LIST = 'E';
+
+	/**
+	 * Argument type for an item ID, “unknown value”, or “no value”.
+	 * Value type: {@link ItemIdSnakValue}
+	 */
+	const TYPE_ITEM_ID_SNAK_VALUE = 'i';
 
 	/**
 	 * @var string
@@ -123,6 +130,18 @@ class ViolationMessage {
 	 */
 	public function withEntityIdList( array $entityIdList, $role = null ) {
 		return $this->withArgument( self::TYPE_ENTITY_ID_LIST, $role, $entityIdList );
+	}
+
+	/**
+	 * Append a single item ID, “unknown value”, or “no value” to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * @param ItemIdSnakValue $value
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withItemIdSnakValue( ItemIdSnakValue $value, $role = null ) {
+		return $this->withArgument( self::TYPE_ITEM_ID_SNAK_VALUE, $role, $value );
 	}
 
 }
