@@ -27,6 +27,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "Slechte parameters",
 	"wbqc-constraintreport-status-deprecated": "Verouderd",
 	"wbqc-constraintreport-status-warning": "Waarschuwing",
+	"wbqc-constraintreport-status-not-in-scope": "Niet in bereik",
 	"wbqc-constraintreport-result-table-header-status": "Status",
 	"wbqc-constraintreport-result-table-header-claim": "Verklaring",
 	"wbqc-constraintreport-result-table-header-constraint": "Beperking",
