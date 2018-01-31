@@ -7,6 +7,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -80,11 +81,9 @@ class OneOfChecker implements ConstraintChecker {
 
 		$snak = $context->getSnak();
 
-		$message = wfMessage( 'wbqc-violation-message-one-of' );
-		$message->rawParams( $this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE ) );
-		$message->numParams( count( $items ) );
-		$message->rawParams( $this->constraintParameterRenderer->formatItemIdSnakValueList( $items, Role::OBJECT ) );
-		$message = $message->escaped();
+		$message = ( new ViolationMessage( 'wbqc-violation-message-one-of' ) )
+			->withEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE )
+			->withItemIdSnakValueList( $items, Role::OBJECT );
 		$status = CheckResult::STATUS_VIOLATION;
 
 		foreach ( $items as $item ) {
