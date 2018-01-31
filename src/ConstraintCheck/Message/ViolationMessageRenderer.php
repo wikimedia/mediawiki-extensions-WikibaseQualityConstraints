@@ -88,30 +88,23 @@ class ViolationMessageRenderer {
 		$message->params( $params );
 	}
 
-	private function renderEntityId( EntityId $entityId, $role ) {
-		return Message::rawParam( $this->addRole(
-			$this->entityIdFormatter->formatEntityId( $entityId ),
-			$role
-		) );
-	}
-
-	private function renderEntityIdList( array $entityIdList, $role ) {
-		if ( $entityIdList === [] ) {
+	private function renderList( array $list, $role, callable $render ) {
+		if ( $list === [] ) {
 			return [
 				Message::numParam( 0 ),
 				Message::rawParam( '<ul></ul>' ),
 			];
 		}
 
-		if ( count( $entityIdList ) > $this->maxListLength ) {
-			$entityIdList = array_slice( $entityIdList, 0, $this->maxListLength );
+		if ( count( $list ) > $this->maxListLength ) {
+			$list = array_slice( $list, 0, $this->maxListLength );
 			$truncated = true;
 		}
 
 		$renderedParams = array_map(
-			[ $this, 'renderEntityId' ],
-			$entityIdList,
-			array_fill( 0, count( $entityIdList ), $role )
+			$render,
+			$list,
+			array_fill( 0, count( $list ), $role )
 		);
 		$renderedElements = array_map(
 			function ( $param ) {
@@ -125,7 +118,7 @@ class ViolationMessageRenderer {
 
 		return array_merge(
 			[
-				Message::numParam( count( $entityIdList ) ),
+				Message::numParam( count( $list ) ),
 				Message::rawParam(
 					'<ul><li>' .
 					implode( '</li><li>', $renderedElements ) .
@@ -134,6 +127,17 @@ class ViolationMessageRenderer {
 			],
 			$renderedParams
 		);
+	}
+
+	private function renderEntityId( EntityId $entityId, $role ) {
+		return Message::rawParam( $this->addRole(
+			$this->entityIdFormatter->formatEntityId( $entityId ),
+			$role
+		) );
+	}
+
+	private function renderEntityIdList( array $entityIdList, $role ) {
+		return $this->renderList( $entityIdList, $role, [ $this, 'renderEntityId' ] );
 	}
 
 	private function renderItemIdSnakValue( ItemIdSnakValue $value, $role ) {
