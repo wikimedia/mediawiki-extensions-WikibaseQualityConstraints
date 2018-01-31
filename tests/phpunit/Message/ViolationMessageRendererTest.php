@@ -22,6 +22,15 @@ use Wikimedia\TestingAccessWrapper;
  */
 class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 
+	public function testRender_string() {
+		$message = 'A <em>pre-rendered</em> message.';
+		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+
+		$rendered = $renderer->render( $message );
+
+		$this->assertSame( $message, $rendered );
+	}
+
 	public function testRender_simpleMessage() {
 		$messageKey = 'wbqc-violation-message-single-value';
 		$message = new ViolationMessage( $messageKey );
