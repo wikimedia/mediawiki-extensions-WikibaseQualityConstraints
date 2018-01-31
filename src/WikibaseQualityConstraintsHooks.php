@@ -27,12 +27,9 @@ final class WikibaseQualityConstraintsHooks {
 
 	/**
 	 * @param DatabaseUpdater $updater
-	 *
-	 * @return bool
 	 */
 	public static function onCreateSchema( DatabaseUpdater $updater ) {
 		$updater->addExtensionTable( 'wbqc_constraints', __DIR__ . '/../sql/create_wbqc_constraints.sql' );
-		return true;
 	}
 
 	public static function onWikibaseChange( Change $change ) {
@@ -117,7 +114,7 @@ final class WikibaseQualityConstraintsHooks {
 		return $timestamp >= $threshold;
 	}
 
-	public static function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) {
+	public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
 		$repo = WikibaseRepo::getDefaultInstance();
 
 		$lookup = $repo->getEntityNamespaceLookup();
