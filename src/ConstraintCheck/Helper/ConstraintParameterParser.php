@@ -416,7 +416,7 @@ class ConstraintParameterParser {
 	 * @param string $type 'quantity' or 'time' (can be data type or data value type)
 	 *
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
-	 * @return DataValue[] a pair of two quantity-type data values, either of which may be null to signify an open range
+	 * @return DataValue[] a pair of two data values, either of which may be null to signify an open range
 	 */
 	public function parseRangeParameter( array $constraintParameters, $constraintTypeItemId, $type ) {
 		$this->checkError( $constraintParameters );
