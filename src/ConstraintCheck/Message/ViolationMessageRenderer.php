@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use InvalidArgumentException;
-use Language;
 use LogicException;
 use Message;
 use Wikibase\DataModel\Entity\EntityId;
@@ -43,24 +42,18 @@ class ViolationMessageRenderer {
 	/**
 	 * @param ViolationMessage|string $violationMessage
 	 * (temporarily, pre-rendered strings are allowed and returned without changes)
-	 * @param Language|null $language language to use, defaulting to current user language
-	 * @param string $format one of the Message::FORMAT_* constants
 	 * @return string
 	 */
-	public function render(
-		$violationMessage,
-		$language = null,
-		$format = Message::FORMAT_ESCAPED
-	) {
+	public function render( $violationMessage ) {
 		if ( is_string( $violationMessage ) ) {
 			// TODO remove this once all checkers produce ViolationMessage objects
 			return $violationMessage;
 		}
-		$message = new Message( $violationMessage->getMessageKey(), [], $language );
+		$message = new Message( $violationMessage->getMessageKey() );
 		foreach ( $violationMessage->getArguments() as $argument ) {
 			$this->renderArgument( $argument, $message );
 		}
-		return $message->toString( $format );
+		return $message->escaped();
 	}
 
 	private function addRole( $value, $role ) {
