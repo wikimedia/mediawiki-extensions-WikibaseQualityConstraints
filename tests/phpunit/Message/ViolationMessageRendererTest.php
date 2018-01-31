@@ -437,4 +437,60 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValueList
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderItemIdSnakValueList() {
+		$valueList = [
+			ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ),
+			ItemIdSnakValue::fromItemId( new ItemId( 'Q2' ) ),
+		];
+		$role = null;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter->expects( $this->exactly( 2 ) )
+			->method( 'formatEntityId' )
+			->willReturnCallback( [ new PlainEntityIdFormatter(), 'formatEntityId' ] );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderItemIdSnakValueList( $valueList, $role );
+
+		$this->assertSame(
+			[
+				Message::numParam( 2 ),
+				Message::rawParam( '<ul><li>Q1</li><li>Q2</li></ul>' ),
+				Message::rawParam( 'Q1' ),
+				Message::rawParam( 'Q2' ),
+			],
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValueList
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderItemIdSnakValueList_withRole() {
+		$valueList = [ ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ) ];
+		$role = Role::OBJECT;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter
+			->method( 'formatEntityId' )
+			->willReturn( '<test item>' );
+		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderItemIdSnakValueList( $valueList, $role );
+
+		$this->assertSame(
+			[
+				Message::numParam( 1 ),
+				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
+				Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ),
+			],
+			$params
+		);
+	}
+
 }

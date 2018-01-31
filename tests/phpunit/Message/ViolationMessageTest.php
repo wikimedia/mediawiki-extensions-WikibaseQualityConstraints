@@ -94,4 +94,30 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testWithItemIdSnakValueList() {
+		$value = [ ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ), ItemIdSnakValue::noValue() ];
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-one-of' ) )
+			->withEntityId( new ItemId( 'Q1' ) )
+			->withItemIdSnakValueList( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[1]
+		);
+	}
+
+	public function testWithItemIdSnakValueList_empty() {
+		$value = [];
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-one-of' ) )
+			->withEntityId( new ItemId( 'Q1' ) )
+			->withItemIdSnakValueList( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[1]
+		);
+	}
+
 }

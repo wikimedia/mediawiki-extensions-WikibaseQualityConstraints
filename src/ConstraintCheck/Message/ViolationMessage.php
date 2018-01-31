@@ -40,6 +40,12 @@ class ViolationMessage {
 	const TYPE_ITEM_ID_SNAK_VALUE = 'i';
 
 	/**
+	 * Argument type for a list of item IDs, “unknown value”s, or “no value”s.
+	 * Value type: {@link ItemIdSnakValue}[]
+	 */
+	const TYPE_ITEM_ID_SNAK_VALUE_LIST = 'I';
+
+	/**
 	 * @var string
 	 */
 	private $messageKeySuffix;
@@ -142,6 +148,24 @@ class ViolationMessage {
 	 */
 	public function withItemIdSnakValue( ItemIdSnakValue $value, $role = null ) {
 		return $this->withArgument( self::TYPE_ITEM_ID_SNAK_VALUE, $role, $value );
+	}
+
+	/**
+	 * Append a list of item IDs, “unknown value”s, or “no value”s to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * This is not the same as appending the list elements individually with {@link withItemIdSnakValue}!
+	 * In the final message, this corresponds to
+	 * one parameter for the number of list elements,
+	 * one parameter with an HTML list of the list elements,
+	 * and then one parameter per value.
+	 *
+	 * @param ItemIdSnakValue[] $valueList
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withItemIdSnakValueList( array $valueList, $role = null ) {
+		return $this->withArgument( self::TYPE_ITEM_ID_SNAK_VALUE_LIST, $role, $valueList );
 	}
 
 }

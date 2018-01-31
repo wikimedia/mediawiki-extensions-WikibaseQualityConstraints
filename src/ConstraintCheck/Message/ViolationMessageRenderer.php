@@ -80,6 +80,9 @@ class ViolationMessageRenderer {
 			case ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE:
 				$params = $this->renderItemIdSnakValue( $value, $role );
 				break;
+			case ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST:
+				$params = $this->renderItemIdSnakValueList( $value, $role );
+				break;
 			default:
 				throw new InvalidArgumentException(
 					'Unknown ViolationMessage argument type ' . $type . '!'
@@ -165,6 +168,10 @@ class ViolationMessageRenderer {
 				);
 				// @codeCoverageIgnoreEnd
 		}
+	}
+
+	private function renderItemIdSnakValueList( array $valueList, $role ) {
+		return $this->renderList( $valueList, $role, [ $this, 'renderItemIdSnakValue' ] );
 	}
 
 }
