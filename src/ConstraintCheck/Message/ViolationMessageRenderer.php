@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 use InvalidArgumentException;
 use LogicException;
 use Message;
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
@@ -22,20 +23,28 @@ class ViolationMessageRenderer {
 	private $entityIdFormatter;
 
 	/**
+	 * @var ValueFormatter
+	 */
+	private $dataValueFormatter;
+
+	/**
 	 * @var int
 	 */
 	private $maxListLength;
 
 	/**
 	 * @param EntityIdFormatter $entityIdFormatter
+	 * @param ValueFormatter $dataValueFormatter
 	 * @param int $maxListLength The maximum number of elements to be rendered in a list parameter.
 	 * Longer lists are truncated to this length and then rendered with an ellipsis in the HMTL list.
 	 */
 	public function __construct(
 		EntityIdFormatter $entityIdFormatter,
+		ValueFormatter $dataValueFormatter,
 		$maxListLength = 10
 	) {
 		$this->entityIdFormatter = $entityIdFormatter;
+		$this->dataValueFormatter = $dataValueFormatter;
 		$this->maxListLength = $maxListLength;
 	}
 

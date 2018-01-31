@@ -4,10 +4,12 @@ namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use DataValues\StringValue;
 use Message;
+use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
+use Wikibase\Lib\UnDeserializableValueFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
@@ -23,12 +25,38 @@ use Wikimedia\TestingAccessWrapper;
 class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 
 	/**
+	 * Create a new ViolationMessageRenderer
+	 * with some constructor arguments defaulting to a simple base implementation.
+	 *
+	 * @param EntityIdFormatter|null $entityIdFormatter
+	 * @param ValueFormatter|null $dataValueFormatter
+	 * @return ViolationMessageRenderer
+	 */
+	private function newViolationMessageRenderer(
+		EntityIdFormatter $entityIdFormatter = null,
+		ValueFormatter $dataValueFormatter = null,
+		$maxListLength = 10
+	) {
+		if ( $entityIdFormatter === null ) {
+			$entityIdFormatter = new PlainEntityIdFormatter();
+		}
+		if ( $dataValueFormatter === null ) {
+			$dataValueFormatter = new UnDeserializableValueFormatter();
+		}
+		return new ViolationMessageRenderer(
+			$entityIdFormatter,
+			$dataValueFormatter,
+			$maxListLength
+		);
+	}
+
+	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::__construct
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
 	 */
 	public function testRender_string() {
 		$message = 'A <em>pre-rendered</em> message.';
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 
 		$rendered = $renderer->render( $message );
 
@@ -41,7 +69,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	public function testRender_simpleMessage() {
 		$messageKey = 'wbqc-violation-message-single-value';
 		$message = new ViolationMessage( $messageKey );
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 
 		$rendered = $renderer->render( $message );
 
@@ -57,7 +85,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityId = new PropertyId( 'P1' );
 		$message = ( new ViolationMessage( $messageKey ) )
 			->withEntityId( $entityId );
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 
 		$rendered = $renderer->render( $message );
 
@@ -76,7 +104,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ) ];
 		$message = ( new ViolationMessage( $messageKey ) )
 			->withEntityIdList( $entityIdList );
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 
 		$rendered = $renderer->render( $message );
 
@@ -98,7 +126,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->withEntityId( new PropertyId( 'P1' ) )
 			->withEntityId( new PropertyId( 'P2' ) )
 			->withItemIdSnakValue( $itemIdSnakValue );
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 
 		$rendered = $renderer->render( $message );
 
@@ -124,7 +152,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$message = ( new ViolationMessage( $messageKey ) )
 			->withEntityId( new ItemId( 'Q1' ) )
 			->withDataValueType( $dataValueType );
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 
 		$rendered = $renderer->render( $message );
 
@@ -140,7 +168,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	public function testRenderList() {
 		$valueList = [ '<any value>', new StringValue( 'any kind of value' ) ];
 		$role = null;
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 		$renderMock = $this->getMockBuilder( \stdClass::class )
 			->setMethods( [ 'render' ] )
 			->getMock();
@@ -176,7 +204,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	public function testRenderList_empty() {
 		$valueList = [];
 		$role = null;
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 		$renderMock = $this->getMockBuilder( \stdClass::class )
 			->setMethods( [ 'render' ] )
 			->getMock();
@@ -202,10 +230,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	public function testRenderList_tooLong() {
 		$valueList = [ 'Q1', 'P2', 'Q3' ];
 		$role = null;
-		$renderer = new ViolationMessageRenderer(
-			new PlainEntityIdFormatter(),
-			2
-		);
+		$renderer = $this->newViolationMessageRenderer( null, null, 2 );
 		$renderMock = $this->getMockBuilder( \stdClass::class )
 			->setMethods( [ 'render' ] )
 			->getMock();
@@ -237,7 +262,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	public function testRenderList_withRole() {
 		$valueList = [ '<test item>' ];
 		$role = Role::OBJECT;
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 		$renderMock = $this->getMockBuilder( \stdClass::class )
 			->setMethods( [ 'render' ] )
 			->getMock();
@@ -274,7 +299,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->method( 'formatEntityId' )
 			->with( $entityId )
 			->willReturn( '<test property>' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderEntityId( $entityId, $role );
@@ -296,7 +321,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test property>' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderEntityId( $entityId, $role );
@@ -318,7 +343,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdFormatter->expects( $this->exactly( 2 ) )
 			->method( 'formatEntityId' )
 			->willReturnCallback( [ new PlainEntityIdFormatter(), 'formatEntityId' ] );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderEntityIdList( $entityIdList, $role );
@@ -345,7 +370,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test item>' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderEntityIdList( $entityIdList, $role );
@@ -373,7 +398,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->method( 'formatEntityId' )
 			->with( $itemId )
 			->willReturn( '<test item>' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
@@ -394,7 +419,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdFormatter
 			->expects( $this->never() )
 			->method( 'formatEntityId' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
@@ -419,7 +444,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdFormatter
 			->expects( $this->never() )
 			->method( 'formatEntityId' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
@@ -446,7 +471,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test item>' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
@@ -471,7 +496,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdFormatter->expects( $this->exactly( 2 ) )
 			->method( 'formatEntityId' )
 			->willReturnCallback( [ new PlainEntityIdFormatter(), 'formatEntityId' ] );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValueList( $valueList, $role );
@@ -498,7 +523,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test item>' );
-		$renderer = new ViolationMessageRenderer( $entityIdFormatter );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValueList( $valueList, $role );
@@ -519,7 +544,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	public function testRenderDataValueType_string() {
 		$dataValueType = 'string';
 		$role = null;
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderDataValueType( $dataValueType, $role );
@@ -536,7 +561,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	public function testRenderDataValueType_entityId() {
 		$dataValueType = 'wikibase-entityid';
 		$role = null;
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = $this->newViolationMessageRenderer();
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderDataValueType( $dataValueType, $role );
