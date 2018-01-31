@@ -13,8 +13,6 @@ use WikibaseQuality\ConstraintReport\Role;
 use Wikimedia\TestingAccessWrapper;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer
- *
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
@@ -22,6 +20,10 @@ use Wikimedia\TestingAccessWrapper;
  */
 class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::__construct
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 */
 	public function testRender_string() {
 		$message = 'A <em>pre-rendered</em> message.';
 		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
@@ -31,6 +33,9 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $message, $rendered );
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 */
 	public function testRender_simpleMessage() {
 		$messageKey = 'wbqc-violation-message-single-value';
 		$message = new ViolationMessage( $messageKey );
@@ -41,6 +46,10 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( wfMessage( $messageKey )->escaped(), $rendered );
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
 	public function testRender_entityId() {
 		$messageKey = 'wbqc-violation-message-no-qualifiers';
 		$entityId = new PropertyId( 'P1' );
@@ -56,6 +65,10 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
 	public function testRender_entityIdList() {
 		$messageKey = 'wbqc-violation-message-unique-value';
 		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ) ];
@@ -72,6 +85,10 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityId
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
 	public function testRenderEntityId() {
 		$entityId = new ItemId( 'Q1' );
 		$role = null;
@@ -91,6 +108,10 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityId
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
 	public function testRenderEntityId_withRole() {
 		$entityId = new PropertyId( 'P1' );
 		$role = Role::PREDICATE;
@@ -109,6 +130,10 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityIdList
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
 	public function testRenderEntityIdList() {
 		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ) ];
 		$role = null;
@@ -132,6 +157,9 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityIdList
+	 */
 	public function testRenderEntityIdList_empty() {
 		$entityIdList = [];
 		$role = null;
@@ -152,6 +180,9 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityIdList
+	 */
 	public function testRenderEntityIdList_tooLong() {
 		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ), new ItemId( 'Q3' ) ];
 		$role = null;
@@ -174,6 +205,10 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityIdList
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
 	public function testRenderEntityIdList_withRole() {
 		$entityIdList = [ new ItemId( 'Q1' ) ];
 		$role = Role::OBJECT;
