@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use DataValues\StringValue;
+use InvalidArgumentException;
 use Message;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
@@ -204,6 +205,22 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->rawParams( 'Q1', wfMessage( 'datatypes-type-string' )->escaped() )
 			->escaped();
 		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
+	public function testRender_unknownArgumentType() {
+		$message = $this->getMockBuilder( ViolationMessage::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$message->method( 'getArguments' )
+			->willReturn( [ [ 'type' => 'unknown', 'value' => null, 'role' => null ] ] );
+		$renderer = $this->newViolationMessageRenderer();
+
+		$this->setExpectedException( InvalidArgumentException::class );
+		$renderer->render( $message );
 	}
 
 	/**
