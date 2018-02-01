@@ -174,20 +174,21 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 				) {
 					// at least one of $min, $max is set at this point, otherwise there could be no violation
 					$openness = $min !== null ? ( $max !== null ? '' : '-rightopen' ) : '-leftopen';
-					$message = wfMessage( "wbqc-violation-message-diff-within-range$openness" );
-					$message->rawParams(
-						$this->constraintParameterRenderer->formatEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE ),
-						$this->constraintParameterRenderer->formatDataValue( $minuend, Role::OBJECT ),
-						$this->constraintParameterRenderer->formatEntityId( $otherSnak->getPropertyId(), Role::PREDICATE ),
-						$this->constraintParameterRenderer->formatDataValue( $subtrahend, Role::OBJECT )
-					);
+					// possible message keys:
+					// wbqc-violation-message-diff-within-range
+					// wbqc-violation-message-diff-within-range-leftopen
+					// wbqc-violation-message-diff-within-range-rightopen
+					$message = ( new ViolationMessage( "wbqc-violation-message-diff-within-range$openness" ) )
+						->withEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE )
+						->withDataValue( $minuend, Role::OBJECT )
+						->withEntityId( $otherSnak->getPropertyId(), Role::PREDICATE )
+						->withDataValue( $subtrahend, Role::OBJECT );
 					if ( $min !== null ) {
-						$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $min, Role::OBJECT ) );
+						$message = $message->withDataValue( $min, Role::OBJECT );
 					}
 					if ( $max !== null ) {
-						$message->rawParams( $this->constraintParameterRenderer->formatDataValue( $max, Role::OBJECT ) );
+						$message = $message->withDataValue( $max, Role::OBJECT );
 					}
-					$message = $message->escaped();
 					$status = CheckResult::STATUS_VIOLATION;
 				} else {
 					$message = null;
