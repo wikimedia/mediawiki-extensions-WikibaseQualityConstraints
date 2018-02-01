@@ -90,6 +90,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				$constraintIds,
 				[ $this, 'defaultResults' ]
 			);
+			/** @var CheckResult[] $results */
 			$results = array_filter( $results, $this->statusSelected( $statusesFlipped ) );
 			foreach ( $results as $result ) {
 				$metadatas[] = $result->getMetadata();
