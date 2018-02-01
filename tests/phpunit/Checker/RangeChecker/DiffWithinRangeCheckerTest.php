@@ -514,6 +514,31 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-rightopen' );
 	}
 
+	public function testDiffWithinRangeConstraint_yearQuantityInYearRange() {
+		$yearUnit = $this->getDefaultConfig()->get( 'WBQualityConstraintsYearUnit' );
+		$subtrahendStatement = NewStatement::forProperty( 'P1' )
+			->withValue( UnboundedQuantityValue::newFromNumber( 0, $yearUnit ) )
+			->build();
+		$minuendStatement = NewStatement::forProperty( 'P2' )
+			->withValue( UnboundedQuantityValue::newFromNumber( 1500, $yearUnit ) )
+			->build();
+		$entity = NewItem::withStatement( $subtrahendStatement )
+			->andStatement( $minuendStatement )
+			->build();
+		$constraint = $this->getConstraintMock( array_merge(
+			$this->propertyParameter( 'P1' ),
+			$this->rangeParameter(
+				'quantity',
+				UnboundedQuantityValue::newFromNumber( 0, $yearUnit ),
+				UnboundedQuantityValue::newFromNumber( 150, $yearUnit )
+			)
+		) );
+
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $minuendStatement ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
+	}
+
 	public function testDiffWithinRangeConstraint_Qualifier() {
 		$qualifier1 = new PropertyValueSnak( new PropertyId( 'P569' ), self::$t1900 );
 		$qualifier2 = new PropertyValueSnak( new PropertyId( 'P570' ), self::$t1970 );

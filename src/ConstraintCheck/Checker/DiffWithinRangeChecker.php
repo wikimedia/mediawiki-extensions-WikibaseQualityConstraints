@@ -165,7 +165,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 			$subtrahend = $otherSnak->getDataValue();
 			if ( $subtrahend->getType() === $minuend->getType() ) {
-				$diff = $this->rangeInYears( $min, $max ) ?
+				$diff = $this->rangeInYears( $min, $max ) && $minuend->getType() === 'time' ?
 					$this->rangeCheckerHelper->getDifferenceInYears( $minuend, $subtrahend ) :
 					$this->rangeCheckerHelper->getDifference( $minuend, $subtrahend );
 
