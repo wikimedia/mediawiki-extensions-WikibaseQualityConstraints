@@ -52,6 +52,7 @@
 	"wbqc-cached-minutes": "Message informing the user that a constraint check result might be outdated by up to ''n'' minutes.\n{{Related|wbqc-cached-generic}}",
 	"wbqc-cached-hours": "Message informing the user that a constraint check result might be outdated by up to ''n'' hours.\n{{Related|Wbqc-cached}}",
 	"wbqc-cached-days": "Message informing the user that a constraint check result might be outdated by up to ''n'' days.\n{{Related|wbqc-cached-minutes}}\n{{Related|wbqc-cached-generic}}",
+	"wbqc-dataValueType-wikibase-entityid": "The name of a data value type.\n{{related|Datatypes-type}}",
 	"apihelp-wbcheckconstraints-description": "{{doc-apihelp-description|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-summary": "{{doc-apihelp-summary|wbcheckconstraints}}",
 	"apihelp-wbcheckconstraints-param-id": "{{doc-apihelp-param|wbcheckconstraints|id}}",

@@ -46,6 +46,13 @@ class ViolationMessage {
 	const TYPE_ITEM_ID_SNAK_VALUE_LIST = 'I';
 
 	/**
+	 * Argument type for a data value type, like "time" or "wikibase-entityid".
+	 * (Not to be confused with a data type, like "time" or "wikibase-item".)
+	 * Value type: string
+	 */
+	const TYPE_DATA_VALUE_TYPE = 't';
+
+	/**
 	 * @var string
 	 */
 	private $messageKeySuffix;
@@ -166,6 +173,22 @@ class ViolationMessage {
 	 */
 	public function withItemIdSnakValueList( array $valueList, $role = null ) {
 		return $this->withArgument( self::TYPE_ITEM_ID_SNAK_VALUE_LIST, $role, $valueList );
+	}
+
+	/**
+	 * Append a single data value type, like "time" or "wikibase-entityid".
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * Data value types should not be confused with data types, like "time" or "wikibase-item".
+	 * For example, "wikibase-entityid" is the data value type
+	 * used by the data types "wikibase-item" and "wikibase-property".
+	 *
+	 * @param string $dataValueType
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withDataValueType( $dataValueType, $role = null ) {
+		return $this->withArgument( self::TYPE_DATA_VALUE_TYPE, $role, $dataValueType );
 	}
 
 }

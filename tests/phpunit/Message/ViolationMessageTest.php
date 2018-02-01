@@ -120,4 +120,17 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testWithDataValueType() {
+		$value = 'wikibase-entityid';
+		$role = null;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
+			->withEntityId( new ItemId( 'Q1' ), Role::CONSTRAINT_TYPE_ITEM )
+			->withDataValueType( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_DATA_VALUE_TYPE, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[1]
+		);
+	}
+
 }
