@@ -201,7 +201,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'Target required claim' ) );
+			 ->will( $this->returnValue( 'Q21503247' ) );
 
 		return $mock;
 	}

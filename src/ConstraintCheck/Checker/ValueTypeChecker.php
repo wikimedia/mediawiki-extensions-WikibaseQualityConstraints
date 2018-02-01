@@ -138,12 +138,9 @@ class ValueTypeChecker implements ConstraintChecker {
 		 *   type of $dataValue for properties with 'Value type' constraint has to be 'wikibase-entityid'
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
-			$message = wfMessage( "wbqc-violation-message-value-needed-of-type" )
-				->rawParams(
-					$this->constraintParameterRenderer->formatItemId( $constraint->getConstraintTypeItemId(), Role::CONSTRAINT_TYPE_ITEM ),
-					'wikibase-entityid' // TODO is there a message for this type so we can localize it?
-				)
-				->escaped();
+			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
+				->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM )
+				->withDataValueType( 'wikibase-entityid' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 		/** @var EntityIdValue $dataValue */
