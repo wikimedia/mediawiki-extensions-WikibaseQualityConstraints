@@ -147,6 +147,28 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
 	 */
+	public function testRender_itemIdSnakValueList() {
+		$messageKey = 'wbqc-violation-message-one-of';
+		$valueList = [ ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ) ];
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withEntityId( new PropertyId( 'P1' ) )
+			->withItemIdSnakValueList( $valueList );
+		$renderer = $this->newViolationMessageRenderer();
+
+		$rendered = $renderer->render( $message );
+
+		$expected = wfMessage( $messageKey )
+			->rawParams( 'P1' )
+			->numParams( 1 )
+			->rawParams( '<ul><li>Q1</li></ul>', 'Q1' )
+			->escaped();
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
 	public function testRender_dataValue() {
 		$messageKey = 'wbqc-violation-message-range-quantity-rightopen';
 		$dataValue = new StringValue( 'a string' );
