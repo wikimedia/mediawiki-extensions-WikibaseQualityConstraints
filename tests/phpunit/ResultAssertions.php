@@ -30,8 +30,7 @@ trait ResultAssertions {
 
 		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
 		return $renderer->render(
-			$resultMessage,
-			Language::factory( 'en' )
+			$resultMessage
 		);
 	}
 
