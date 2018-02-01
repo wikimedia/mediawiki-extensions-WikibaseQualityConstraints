@@ -99,6 +99,9 @@ class ViolationMessageRenderer {
 			case ViolationMessage::TYPE_DATA_VALUE_TYPE:
 				$params = $this->renderDataValueType( $value, $role );
 				break;
+			case ViolationMessage::TYPE_INLINE_CODE:
+				$params = $this->renderInlineCode( $value, $role );
+				break;
 			default:
 				throw new InvalidArgumentException(
 					'Unknown ViolationMessage argument type ' . $type . '!'
@@ -216,6 +219,13 @@ class ViolationMessageRenderer {
 			);
 			// @codeCoverageIgnoreEnd
 		}
+	}
+
+	private function renderInlineCode( $code, $role ) {
+		return Message::rawParam( $this->addRole(
+			'<code>' . htmlspecialchars( $code ) . '</code>',
+			$role
+		) );
 	}
 
 }
