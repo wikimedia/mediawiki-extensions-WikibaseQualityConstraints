@@ -161,7 +161,7 @@ class CheckConstraintsTest extends ApiTestCase {
 					$repo->getEntityTitleLookup(),
 					$entityIdFormatter,
 					$constraintParameterRenderer,
-					new ViolationMessageRenderer( $entityIdFormatter ),
+					new ViolationMessageRenderer( $entityIdFormatter, $valueFormatter ),
 					$config
 				),
 				$dataFactory

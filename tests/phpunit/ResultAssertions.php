@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use Language;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
+use Wikibase\Lib\UnDeserializableValueFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -28,7 +29,10 @@ trait ResultAssertions {
 			return '';
 		}
 
-		$renderer = new ViolationMessageRenderer( new PlainEntityIdFormatter() );
+		$renderer = new ViolationMessageRenderer(
+			new PlainEntityIdFormatter(),
+			new UnDeserializableValueFormatter()
+		);
 		return $renderer->render(
 			$resultMessage
 		);

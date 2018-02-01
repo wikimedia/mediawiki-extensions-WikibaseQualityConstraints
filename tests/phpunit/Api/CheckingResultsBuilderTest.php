@@ -65,16 +65,18 @@ class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 					} ) );
 				return $title;
 			} ) );
+		$valueFormatter = $this->getMock( ValueFormatter::class );
+
 		return new CheckingResultsBuilder(
 			$delegatingConstraintChecker,
 			$entityTitleLookup,
 			$entityIdFormatter,
 			new ConstraintParameterRenderer(
 				$entityIdFormatter,
-				$this->getMock( ValueFormatter::class ),
+				$valueFormatter,
 				$this->getDefaultConfig()
 			),
-			new ViolationMessageRenderer( $entityIdFormatter ),
+			new ViolationMessageRenderer( $entityIdFormatter, $valueFormatter ),
 			$this->getDefaultConfig()
 		);
 	}
