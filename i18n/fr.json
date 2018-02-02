@@ -54,6 +54,7 @@
 	"wbqc-cached-minutes": "Ce résultat est en cache et peut être désuet depuis {{PLURAL:$1|1=une minute|$1&nbsp;minutes}}.",
 	"wbqc-cached-hours": "Ce résultat est mis en cache et pourrait être obsolète pendant {{PLURAL:$1|1=une heure|$1&nbsp;heures}}.",
 	"wbqc-cached-days": "Ce résultat est mis en cache et pourrait être obsolète pendant {{PLURAL:$1|1=un jour|$1&nbsp;jours}}.",
+	"wbqc-dataValueType-wikibase-entityid": "ID de l’entité",
 	"apihelp-wbcheckconstraints-description": "Réalise les contrôles de contraintes sur n'importe quelle entité que vous désirez et retourne les résultats.",
 	"apihelp-wbcheckconstraints-summary": "Réalise les contrôles de contraintes sur toute entité que vous désirez et retourne le résultat.",
 	"apihelp-wbcheckconstraints-param-id": "Liste d'ID des entités pour lesquelles ont veux les informations. Séparez les valeurs avec  '|' ou similaire.",

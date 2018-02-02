@@ -3,7 +3,8 @@
 		"authors": [
 			"Macofe",
 			"Annamerida",
-			"F3RaN"
+			"F3RaN",
+			"Fitoschido"
 		]
 	},
 	"wbqc-constraintreport-explanation-part-one": "Aquesta pàgina especial comprova les restriccions de qualsevol entitat que desitgis. Les entitats es descarreguen del sistema activat, per tant cada violació de restricció que s'arregli serà eliminada immediatament de la llista.",
@@ -12,6 +13,7 @@
 	"wbqc-constraintreport-status-violation": "Violació",
 	"wbqc-constraintreport-status-exception": "Excepció",
 	"wbqc-constraintreport-result-table-header-status": "Estat",
+	"wbqc-dataValueType-wikibase-entityid": "Id. d’entitat",
 	"wbqc-violation-header-parameters": "Paràmetres:",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La verificació de l'espai de noms \"$1\" encara no ha sigut implementada.",
 	"wbqc-violation-message-multi-value": "Aquesta propietat ha de tenir múltiples valors. És a dir, hi ha d'haver més d'una concessió utilitzant-la."

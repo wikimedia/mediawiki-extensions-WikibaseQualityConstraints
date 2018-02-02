@@ -46,6 +46,7 @@
 	"wbqc-cached-minutes": "此结果已缓存，并可能在{{PLURAL:$1|$1分钟}}后过时。",
 	"wbqc-cached-hours": "此结果已缓存，并可能在最多{{PLURAL:$1|$1小时}}后过期。",
 	"wbqc-cached-days": "此结果已缓存，并可能在{{PLURAL:$1|$1天}}后过期。",
+	"wbqc-dataValueType-wikibase-entityid": "实体ID",
 	"apihelp-wbcheckconstraints-description": "在任何您希望执行检查的实体上，执行约束检查并返回结果。",
 	"apihelp-wbcheckconstraints-summary": "在任何您希望执行的实体上执行约束检查，并返回结果。",
 	"apihelp-wbcheckconstraints-param-id": "要获取数据的实体ID列表。使用“|”或替代字符分隔值。",

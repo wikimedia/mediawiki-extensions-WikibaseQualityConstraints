@@ -37,6 +37,7 @@
 	"wbqc-constrainttypehelp-short": "Aiuto",
 	"wbqc-cached-hours": "Questo risultato è memorizzato nella cache e potrebbe non essere aggiornato da {{PLURAL:$1|1=un'ora|$1&nbsp;ore}}.",
 	"wbqc-cached-days": "Questo risultato è memorizzato nella cache e potrebbe non essere aggiornato da {{PLURAL:$1|1=un giorno|$1&nbsp;giorni}}.",
+	"wbqc-dataValueType-wikibase-entityid": "ID entità",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "La dichiarazione soddisfa il vincolo.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "La dichiarazione viola il vincolo.",
 	"apihelp-wbcheckconstraints-paramvalue-status-exception": "Il soggetto dell'entità della dichiarazione è un'eccezione nota al vincolo.",

@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"Assoc"
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "檢查",
@@ -10,5 +11,6 @@
 	"wbqc-constraintreport-no-parameter": "無",
 	"wbqc-constrainttypehelp-short": "說明",
 	"wbqc-constraintdiscuss-short": "討論",
+	"wbqc-dataValueType-wikibase-entityid": "實體 ID",
 	"wbqc-violation-header-parameters": "參數："
 }
