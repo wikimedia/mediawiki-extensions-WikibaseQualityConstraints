@@ -72,6 +72,12 @@ class ViolationMessage {
 	const TYPE_CONSTRAINT_SCOPE = 's';
 
 	/**
+	 * Argument type for a list of constraint scopes.
+	 * Value type: string[]
+	 */
+	const TYPE_CONSTRAINT_SCOPE_LIST = 'S';
+
+	/**
 	 * @var string
 	 */
 	private $messageKeySuffix;
@@ -244,6 +250,18 @@ class ViolationMessage {
 	 */
 	public function withConstraintScope( $scope, $role = null ) {
 		return $this->withArgument( self::TYPE_CONSTRAINT_SCOPE, $role, $scope );
+	}
+
+	/**
+	 * Append a list of constraint scopes to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * @param string[] $scopeList Role::* constants
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withConstraintScopeList( array $scopeList, $role = null ) {
+		return $this->withArgument( self::TYPE_CONSTRAINT_SCOPE_LIST, $role, $scopeList );
 	}
 
 }

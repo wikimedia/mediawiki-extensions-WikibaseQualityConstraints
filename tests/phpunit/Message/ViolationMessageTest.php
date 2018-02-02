@@ -176,4 +176,32 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testWithConstraintScopeList() {
+		$value = [ Context::TYPE_STATEMENT, Context::TYPE_REFERENCE ];
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-invalid-scope' ) )
+			->withConstraintScope( Context::TYPE_QUALIFIER )
+			->withEntityId( new ItemId( 'Q1' ) )
+			->withConstraintScopeList( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[2]
+		);
+	}
+
+	public function testWithConstraintScopeList_empty() {
+		$value = [];
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-invalid-scope' ) )
+			->withConstraintScope( Context::TYPE_QUALIFIER )
+			->withEntityId( new ItemId( 'Q1' ) )
+			->withConstraintScopeList( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[2]
+		);
+	}
+
 }

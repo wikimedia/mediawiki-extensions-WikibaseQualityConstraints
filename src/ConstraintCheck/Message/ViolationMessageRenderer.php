@@ -107,6 +107,7 @@ class ViolationMessageRenderer {
 			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'renderDataValueType',
 			ViolationMessage::TYPE_INLINE_CODE => 'renderInlineCode',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'renderConstraintScope',
+			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'renderConstraintScopeList',
 		];
 
 		$type = $argument['type'];
@@ -271,6 +272,10 @@ class ViolationMessageRenderer {
 				// @codeCoverageIgnoreEnd
 		}
 		return $this->renderEntityId( new ItemId( $itemId ), $role );
+	}
+
+	private function renderConstraintScopeList( array $scopeList, $role ) {
+		return $this->renderList( $scopeList, $role, [ $this, 'renderConstraintScope' ] );
 	}
 
 }
