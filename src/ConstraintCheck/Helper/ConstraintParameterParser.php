@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use Language;
@@ -613,7 +614,7 @@ class ConstraintParameterParser {
 	 * @param array $snakSerializations
 	 * @param string $parameterId
 	 * @throws ConstraintParameterException if invalid snaks are found or a language has multiple texts
-	 * @return string[]
+	 * @return MultilingualTextValue
 	 */
 	private function parseMultilingualTextParameter( array $snakSerializations, $parameterId ) {
 		$result = [];
@@ -641,40 +642,30 @@ class ConstraintParameterParser {
 				);
 			}
 
-			$result[$code] = $value->getText();
+			$result[$code] = $value;
 		}
 
-		return $result;
+		return new MultilingualTextValue( $result );
 	}
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
-	 * @param Language $language
 	 * @throws ConstraintParameterException if the parameter is invalid
-	 * @return string|null
+	 * @return MultilingualTextValue
 	 */
-	public function parseSyntaxClarificationParameter( array $constraintParameters, Language $language ) {
+	public function parseSyntaxClarificationParameter( array $constraintParameters ) {
 		$syntaxClarificationId = $this->config->get( 'WBQualityConstraintsSyntaxClarificationId' );
 
 		if ( !array_key_exists( $syntaxClarificationId, $constraintParameters ) ) {
-			return null;
+			return new MultilingualTextValue( [] );
 		}
-
-		$languageCodes = $language->getFallbackLanguages();
-		array_unshift( $languageCodes, $language->getCode() );
 
 		$syntaxClarifications = $this->parseMultilingualTextParameter(
 			$constraintParameters[$syntaxClarificationId],
 			$syntaxClarificationId
 		);
 
-		foreach ( $languageCodes as $languageCode ) {
-			if ( array_key_exists( $languageCode, $syntaxClarifications ) ) {
-				return $syntaxClarifications[$languageCode];
-			}
-		}
-
-		return null;
+		return $syntaxClarifications;
 	}
 
 	/**

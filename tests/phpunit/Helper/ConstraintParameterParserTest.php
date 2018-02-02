@@ -3,10 +3,10 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
 use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
-use Language;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -858,59 +858,22 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		);
 	}
 
-	public function testParseSyntaxClarificationParameter_English() {
+	public function testParseSyntaxClarificationParameter_SingleClarification() {
 		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$value = new MonolingualTextValue( 'en', 'explanation' );
 		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
 
 		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-			Language::factory( 'en' )
+			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ]
 		);
 
-		$this->assertSame( 'explanation', $parsed );
-	}
-
-	public function testParseSyntaxClarificationParameter_German() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
-		$value = new MonolingualTextValue( 'de', 'Erklärung' );
-		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
-
-		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-			Language::factory( 'de' )
+		$this->assertEquals(
+			new MultilingualTextValue( [ $value ] ),
+			$parsed
 		);
-
-		$this->assertSame( 'Erklärung', $parsed );
 	}
 
-	public function testParseSyntaxClarificationParameter_AustrianGermanFallback() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
-		$value = new MonolingualTextValue( 'de', 'Erklärung' );
-		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
-
-		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-			Language::factory( 'de-at' )
-		);
-
-		$this->assertSame( 'Erklärung', $parsed );
-	}
-
-	public function testParseSyntaxClarificationParameter_KlingonFallback() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
-		$value = new MonolingualTextValue( 'en', 'explanation' );
-		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
-
-		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-			Language::factory( 'tlh' )
-		);
-
-		$this->assertSame( 'explanation', $parsed );
-	}
-
-	public function testParseSyntaxClarificationParameter_MultipleLanguages() {
+	public function testParseSyntaxClarificationParameter_MultipleClarifications() {
 		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$value1 = new MonolingualTextValue( 'en', 'explanation' );
 		$snak1 = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value1 );
@@ -924,33 +887,21 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$this->getSnakSerializer()->serialize( $snak1 ),
 				$this->getSnakSerializer()->serialize( $snak2 ),
 				$this->getSnakSerializer()->serialize( $snak3 ),
-			] ],
-			Language::factory( 'pt' )
+			] ]
 		);
 
-		$this->assertSame( 'explicação', $parsed );
+		$this->assertEquals(
+			new MultilingualTextValue( [ $value1, $value2, $value3 ] ),
+			$parsed
+		);
 	}
 
-	public function testParseSyntaxClarificationParameter_NoFallback() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
-		$value = new MonolingualTextValue( 'de', 'Erklärung' );
-		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
-
+	public function testParseSyntaxClarificationParameter_NoClarifications() {
 		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-			Language::factory( 'pt' )
+			[]
 		);
 
-		$this->assertNull( $parsed );
-	}
-
-	public function testParseSyntaxClarificationParameter_None() {
-		$parsed = $this->getConstraintParameterParser()->parseSyntaxClarificationParameter(
-			[],
-			Language::factory( 'pt' )
-		);
-
-		$this->assertNull( $parsed );
+		$this->assertEquals( new MultilingualTextValue( [] ), $parsed );
 	}
 
 	public function testParseSyntaxClarificationParameter_Invalid_MultipleValuesForLanguage() {
@@ -966,8 +917,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				[ $syntaxClarificationId => [
 					$this->getSnakSerializer()->serialize( $snak1 ),
 					$this->getSnakSerializer()->serialize( $snak2 ),
-				] ],
-				Language::factory( 'en' )
+				] ]
 			],
 			'wbqc-violation-message-parameter-single-per-language'
 		);
@@ -983,8 +933,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[ $syntaxClarificationId => [
 					$this->getSnakSerializer()->serialize( $snak )
-				] ],
-				Language::factory( 'en' )
+				] ]
 			],
 			'wbqc-violation-message-parameter-monolingualtext'
 		);
@@ -999,8 +948,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[
 				[ $syntaxClarificationId => [
 					$this->getSnakSerializer()->serialize( $snak )
-				] ],
-				Language::factory( 'en' )
+				] ]
 			],
 			'wbqc-violation-message-parameter-value'
 		);
