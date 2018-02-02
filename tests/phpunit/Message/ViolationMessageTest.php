@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
@@ -214,6 +216,28 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame(
 			[ 'type' => ViolationMessage::TYPE_LANGUAGE, 'role' => $role, 'value' => $value ],
 			$message->getArguments()[1]
+		);
+	}
+
+	public function testWithMultilingualText() {
+		$value = new MultilingualTextValue( [
+			new MonolingualTextValue( 'en', 'an HTTP or HTTPS URL' ),
+			new MonolingualTextValue( 'de', 'eine HTTP- oder HTTPS-URL' ),
+		] );
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-format-clarification' ) )
+			->withEntityId( new ItemId( 'Q1' ), Role::CONSTRAINT_PROPERTY )
+			->withDataValue( new StringValue( 'ftp://mirror.example/' ), Role::OBJECT )
+			->withInlineCode( 'https?://[^/]+/.*', Role::CONSTRAINT_PARAMETER_VALUE )
+			->withMultilingualText( $value, $role );
+
+		$this->assertSame(
+			[
+				'type' => ViolationMessage::TYPE_MULTILINGUAL_TEXT,
+				'role' => $role,
+				'value' => $value,
+			],
+			$message->getArguments()[3]
 		);
 	}
 

@@ -18,6 +18,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 /**
  * Render a {@link ViolationMessage} into a localized string.
  *
+ * Note: This class does <em>not</em> support multilingual text arguments –
+ * for that, use {@link MultilingualTextViolationMessageRenderer}.
+ *
  * @license GNU GPL v2+
  */
 class ViolationMessageRenderer {
@@ -89,7 +92,7 @@ class ViolationMessageRenderer {
 	 * @param string|null $role one of the Role::* constants
 	 * @return string HTML
 	 */
-	private function addRole( $value, $role ) {
+	protected function addRole( $value, $role ) {
 		if ( $role === null ) {
 			return $value;
 		}
@@ -103,7 +106,7 @@ class ViolationMessageRenderer {
 	 * @param array $argument
 	 * @return array[] params (for Message::params)
 	 */
-	private function renderArgument( array $argument ) {
+	protected function renderArgument( array $argument ) {
 		$methods = [
 			ViolationMessage::TYPE_ENTITY_ID => 'renderEntityId',
 			ViolationMessage::TYPE_ENTITY_ID_LIST => 'renderEntityIdList',

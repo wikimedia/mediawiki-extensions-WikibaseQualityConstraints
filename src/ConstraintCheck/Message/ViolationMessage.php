@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use DataValues\DataValue;
+use DataValues\MultilingualTextValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
@@ -82,6 +83,12 @@ class ViolationMessage {
 	 * Value type: string (language code)
 	 */
 	const TYPE_LANGUAGE = 'l';
+
+	/**
+	 * Argument type for a multilingual text value.
+	 * Value type: {@link MultilingualTextValue}
+	 */
+	const TYPE_MULTILINGUAL_TEXT = 'm';
 
 	/**
 	 * @var string
@@ -286,6 +293,22 @@ class ViolationMessage {
 	 */
 	public function withLanguage( $languageCode ) {
 		return $this->withArgument( self::TYPE_LANGUAGE, null, $languageCode );
+	}
+
+	/**
+	 * Append a multilingual text value to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * Note that multilingual text arguments can only be rendered for specific message keys
+	 * (see {@link MultilingualTextViolationMessageRenderer} for details),
+	 * but this method does not verify whether you’re using one of those message keys.
+	 *
+	 * @param MultilingualTextValue $text
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withMultilingualText( MultilingualTextValue $text, $role = null ) {
+		return $this->withArgument( self::TYPE_MULTILINGUAL_TEXT, $role, $text );
 	}
 
 }
