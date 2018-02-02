@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use HashConfig;
 use Language;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\UnDeserializableValueFormatter;
@@ -31,7 +32,12 @@ trait ResultAssertions {
 
 		$renderer = new ViolationMessageRenderer(
 			new PlainEntityIdFormatter(),
-			new UnDeserializableValueFormatter()
+			new UnDeserializableValueFormatter(),
+			new HashConfig( [
+				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
+				'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
+				'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
+			] )
 		);
 		return $renderer->render(
 			$resultMessage

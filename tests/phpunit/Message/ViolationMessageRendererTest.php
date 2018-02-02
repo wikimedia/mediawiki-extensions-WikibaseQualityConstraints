@@ -2,7 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use Config;
 use DataValues\StringValue;
+use HashConfig;
 use InvalidArgumentException;
 use Message;
 use ValueFormatters\StringFormatter;
@@ -32,11 +34,14 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param EntityIdFormatter|null $entityIdFormatter
 	 * @param ValueFormatter|null $dataValueFormatter
+	 * @param Config|null $config
+	 * @param int $maxListLength
 	 * @return ViolationMessageRenderer
 	 */
 	private function newViolationMessageRenderer(
 		EntityIdFormatter $entityIdFormatter = null,
 		ValueFormatter $dataValueFormatter = null,
+		Config $config = null,
 		$maxListLength = 10
 	) {
 		if ( $entityIdFormatter === null ) {
@@ -45,9 +50,17 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		if ( $dataValueFormatter === null ) {
 			$dataValueFormatter = new UnDeserializableValueFormatter();
 		}
+		if ( $config === null ) {
+			$config = new HashConfig( [
+				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
+				'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
+				'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
+			] );
+		}
 		return new ViolationMessageRenderer(
 			$entityIdFormatter,
 			$dataValueFormatter,
+			$config,
 			$maxListLength
 		);
 	}
@@ -312,7 +325,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	public function testRenderList_tooLong() {
 		$valueList = [ 'Q1', 'P2', 'Q3' ];
 		$role = null;
-		$renderer = $this->newViolationMessageRenderer( null, null, 2 );
+		$renderer = $this->newViolationMessageRenderer( null, null, null, 2 );
 		$renderMock = $this->getMockBuilder( \stdClass::class )
 			->setMethods( [ 'render' ] )
 			->getMock();

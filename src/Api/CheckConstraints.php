@@ -124,7 +124,7 @@ class CheckConstraints extends ApiBase {
 			$repo->getEntityTitleLookup(),
 			$entityIdLabelFormatter,
 			$constraintParameterRenderer,
-			new ViolationMessageRenderer( $entityIdHtmlLinkFormatter, $valueFormatter ),
+			new ViolationMessageRenderer( $entityIdHtmlLinkFormatter, $valueFormatter, $config ),
 			$config
 		);
 		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
