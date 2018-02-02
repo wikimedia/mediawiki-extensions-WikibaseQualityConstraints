@@ -177,7 +177,6 @@ class TypeCheckerHelper {
 	public function hasClassInRelation( StatementList $statements, array $relationIds, array $classesToCheck ) {
 		$metadatas = [];
 
-		/** @var Statement $statement */
 		foreach ( $this->getStatementsByPropertyIds( $statements, $relationIds ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
@@ -219,20 +218,21 @@ class TypeCheckerHelper {
 	/**
 	 * @param StatementList $statements
 	 * @param string[] $propertyIdSerializations
-	 * @return StatementList
+	 *
+	 * @return Statement[]
 	 */
 	private function getStatementsByPropertyIds(
 		StatementList $statements,
 		array $propertyIdSerializations
 	) {
 		$statementArrays = [];
+
 		foreach ( $propertyIdSerializations as $propertyIdSerialization ) {
 			$propertyId = new PropertyId( $propertyIdSerialization );
 			$statementArrays[] = $statements->getByPropertyId( $propertyId )->toArray();
 		}
-		return new StatementList(
-			call_user_func_array( 'array_merge', $statementArrays )
-		);
+
+		return call_user_func_array( 'array_merge', $statementArrays );
 	}
 
 	/**
