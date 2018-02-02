@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 use Config;
 use DataValues\DataValue;
 use InvalidArgumentException;
+use Language;
 use LogicException;
 use Message;
 use ValueFormatters\ValueFormatter;
@@ -108,6 +109,7 @@ class ViolationMessageRenderer {
 			ViolationMessage::TYPE_INLINE_CODE => 'renderInlineCode',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'renderConstraintScope',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'renderConstraintScopeList',
+			ViolationMessage::TYPE_LANGUAGE => 'renderLanguage',
 		];
 
 		$type = $argument['type'];
@@ -276,6 +278,13 @@ class ViolationMessageRenderer {
 
 	private function renderConstraintScopeList( array $scopeList, $role ) {
 		return $this->renderList( $scopeList, $role, [ $this, 'renderConstraintScope' ] );
+	}
+
+	private function renderLanguage( $languageCode, $role ) {
+		return [
+			Message::plaintextParam( Language::fetchLanguageName( $languageCode ) ),
+			Message::plaintextParam( $languageCode ),
+		];
 	}
 
 }

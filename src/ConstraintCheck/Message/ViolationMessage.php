@@ -78,6 +78,12 @@ class ViolationMessage {
 	const TYPE_CONSTRAINT_SCOPE_LIST = 'S';
 
 	/**
+	 * Argument type for a language.
+	 * Value type: string (language code)
+	 */
+	const TYPE_LANGUAGE = 'l';
+
+	/**
 	 * @var string
 	 */
 	private $messageKeySuffix;
@@ -262,6 +268,22 @@ class ViolationMessage {
 	 */
 	public function withConstraintScopeList( array $scopeList, $role = null ) {
 		return $this->withArgument( self::TYPE_CONSTRAINT_SCOPE_LIST, $role, $scopeList );
+	}
+
+	/**
+	 * Append a single language to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * One language argument corresponds to two params in the final message,
+	 * one for the language name (autonym) and one for the language code.
+	 *
+	 * (Language arguments do not support roles.)
+	 *
+	 * @param string $languageCode
+	 * @return ViolationMessage
+	 */
+	public function withLanguage( $languageCode ) {
+		return $this->withArgument( self::TYPE_LANGUAGE, null, $languageCode );
 	}
 
 }

@@ -288,6 +288,27 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
 	 */
+	public function testRender_language() {
+		$messageKey = 'wbqc-violation-message-parameter-single-per-language';
+		$languageCode = 'pt';
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withEntityId( new PropertyId( 'P1' ) )
+			->withLanguage( $languageCode );
+		$renderer = $this->newViolationMessageRenderer();
+
+		$rendered = $renderer->render( $message );
+
+		$expected = wfMessage( $messageKey )
+			->rawParams( 'P1' )
+			->plaintextParams( 'português', 'pt' )
+			->escaped();
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
 	public function testRender_unknownArgumentType() {
 		$message = $this->getMockBuilder( ViolationMessage::class )
 			->disableOriginalConstructor()
@@ -947,6 +968,26 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 				Message::numParam( 1 ),
 				Message::rawParam( '<ul><li>' . $html . '</li></ul>' ),
 				Message::rawParam( $html ),
+			],
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderLanguage
+	 */
+	public function testRenderLanguage() {
+		$languageCode = 'pt';
+		$role = null;
+		$renderer = $this->newViolationMessageRenderer();
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderLanguage( $languageCode, $role );
+
+		$this->assertSame(
+			[
+				Message::plaintextParam( 'português' ),
+				Message::plaintextParam( 'pt' ),
 			],
 			$params
 		);

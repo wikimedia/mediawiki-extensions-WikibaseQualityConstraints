@@ -204,4 +204,17 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testWithLanguage() {
+		$value = 'pt';
+		$role = null;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-parameter-single-per-language' ) )
+			->withEntityId( new PropertyId( 'P1' ) )
+			->withLanguage( $value );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_LANGUAGE, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[1]
+		);
+	}
+
 }
