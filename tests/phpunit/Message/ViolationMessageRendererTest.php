@@ -14,6 +14,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\UnDeserializableValueFormatter;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
@@ -237,6 +238,25 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = wfMessage( $messageKey )
 			->rawParams( 'Q1', 'ftp://mirror.example/', '<code>https?://[^/]+/.*</code>' )
+			->escaped();
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
+	public function testRender_constraintScope() {
+		$messageKey = 'wbqc-violation-message-invalid-scope';
+		$scope = Context::TYPE_STATEMENT;
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withConstraintScope( $scope );
+		$renderer = $this->newViolationMessageRenderer();
+
+		$rendered = $renderer->render( $message );
+
+		$expected = wfMessage( $messageKey )
+			->rawParams( 'Q1' )
 			->escaped();
 		$this->assertSame( $expected, $rendered );
 	}
@@ -768,6 +788,88 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 				'<span class="wbqc-role wbqc-role-constraint-parameter-value">' .
 					'<code>https?://[^/]+/.*</code>' .
 					'</span>'
+			),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScope
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 * @dataProvider provideConstraintScopes
+	 */
+	public function testRenderConstraintScope( $contextType, $itemIdSerialization, $returnValue ) {
+		$scope = $contextType;
+		$role = null;
+		$itemId = new ItemId( $itemIdSerialization );
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter->expects( $this->once() )
+			->method( 'formatEntityId' )
+			->with( $itemId )
+			->willReturn( $returnValue );
+		$config = new HashConfig( [
+			'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q10',
+			'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q20',
+			'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q30',
+		] );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter, null, $config );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderConstraintScope( $scope, $role );
+
+		$this->assertSame(
+			Message::rawParam( $returnValue ),
+			$params
+		);
+	}
+
+	public function provideConstraintScopes() {
+		return [
+			[ Context::TYPE_STATEMENT, 'Q10', 'statement scope' ],
+			[ Context::TYPE_QUALIFIER, 'Q20', 'qualifier scope' ],
+			[ Context::TYPE_REFERENCE, 'Q30', 'reference scope' ],
+		];
+	}
+
+	/*
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScope
+	 */
+	public function testRenderConstraintScope_unknown() {
+		$scope = 'some unknown scope';
+		$role = null;
+		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter->expects( $this->never() )
+			->method( 'formatEntityId' );
+		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderConstraintScope( $scope, $role );
+
+		$this->assertSame(
+			Message::rawParam(
+				'<span class="wikibase-snakview-variation-somevaluesnak">' .
+					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
+					'</span>'
+			),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScope
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderConstraintScope_withRole() {
+		$scope = Context::TYPE_STATEMENT;
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$renderer = $this->newViolationMessageRenderer();
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderConstraintScope( $scope, $role );
+
+		$this->assertSame(
+			Message::rawParam(
+				'<span class="wbqc-role wbqc-role-constraint-parameter-value">Q1</span>'
 			),
 			$params
 		);

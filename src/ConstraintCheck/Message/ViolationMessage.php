@@ -66,6 +66,12 @@ class ViolationMessage {
 	const TYPE_INLINE_CODE = 'c';
 
 	/**
+	 * Argument type for a single constraint scope.
+	 * Value type: string (one of the Context::TYPE_* constants)
+	 */
+	const TYPE_CONSTRAINT_SCOPE = 's';
+
+	/**
 	 * @var string
 	 */
 	private $messageKeySuffix;
@@ -226,6 +232,18 @@ class ViolationMessage {
 	 */
 	public function withInlineCode( $code, $role = null ) {
 		return $this->withArgument( self::TYPE_INLINE_CODE, $role, $code );
+	}
+
+	/**
+	 * Append a single constraint scope to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * @param string $scope one of the Context::TYPE_* constants
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withConstraintScope( $scope, $role = null ) {
+		return $this->withArgument( self::TYPE_CONSTRAINT_SCOPE, $role, $scope );
 	}
 
 }

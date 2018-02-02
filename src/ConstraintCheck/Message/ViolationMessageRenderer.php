@@ -9,7 +9,9 @@ use LogicException;
 use Message;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
@@ -104,6 +106,7 @@ class ViolationMessageRenderer {
 			ViolationMessage::TYPE_DATA_VALUE => 'renderDataValue',
 			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'renderDataValueType',
 			ViolationMessage::TYPE_INLINE_CODE => 'renderInlineCode',
+			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'renderConstraintScope',
 		];
 
 		$type = $argument['type'];
@@ -241,6 +244,33 @@ class ViolationMessageRenderer {
 			'<code>' . htmlspecialchars( $code ) . '</code>',
 			$role
 		) );
+	}
+
+	private function renderConstraintScope( $scope, $role ) {
+		switch ( $scope ) {
+			case Context::TYPE_STATEMENT:
+				$itemId = $this->config->get(
+					'WBQualityConstraintsConstraintCheckedOnMainValueId'
+				);
+				break;
+			case Context::TYPE_QUALIFIER:
+				$itemId = $this->config->get(
+					'WBQualityConstraintsConstraintCheckedOnQualifiersId'
+				);
+				break;
+			case Context::TYPE_REFERENCE:
+				$itemId = $this->config->get(
+					'WBQualityConstraintsConstraintCheckedOnReferencesId'
+				);
+				break;
+			default:
+				// callers should never let this happen, but if it does happen,
+				// showing “unknown value” seems reasonable
+				// @codeCoverageIgnoreStart
+				return $this->renderItemIdSnakValue( ItemIdSnakValue::someValue(), $role );
+				// @codeCoverageIgnoreEnd
+		}
+		return $this->renderEntityId( new ItemId( $itemId ), $role );
 	}
 
 }

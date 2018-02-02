@@ -7,6 +7,7 @@ use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\Role;
@@ -160,6 +161,18 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame(
 			[ 'type' => ViolationMessage::TYPE_INLINE_CODE, 'role' => $role, 'value' => $value ],
 			$message->getArguments()[2]
+		);
+	}
+
+	public function testWithConstraintScope() {
+		$value = Context::TYPE_STATEMENT;
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-invalid-scope' ) )
+			->withConstraintScope( $value, $role );
+
+		$this->assertSame(
+			[ [ 'type' => ViolationMessage::TYPE_CONSTRAINT_SCOPE, 'role' => $role, 'value' => $value ] ],
+			$message->getArguments()
 		);
 	}
 
