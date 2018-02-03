@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Mr. Ibrahem"
+			"Mr. Ibrahem",
+			"Azouz.anis"
 		]
 	},
 	"wbqc-constraintreport": "تقارير القيود",
@@ -33,6 +34,7 @@
 	"wbqc-badparameters-long": "يحتوي بيان المحددات على بعض المعلمات غير صالحة.",
 	"wbqc-parameterissues-long": "هذه القضايا هي مشاكل مع تعريف المحددات على الخواص، وليس مع هذا البيان.",
 	"wbqc-constrainttypehelp-long": "صفحة المساعدة لهذا النوع من المحددات",
+	"wbqc-dataValueType-wikibase-entityid": "معرف الكيان",
 	"apihelp-wbcheckconstraints-description": "إجراء عملية تحقق للمحددات على أي عنصر تريد وإرجاع النتيجة.",
 	"apihelp-wbcheckconstraints-summary": "إجراء عملية تحقق للمحددات على أي عنصر تريد وإرجاع النتيجة.",
 	"apihelp-wbcheckconstraints-param-id": "معرف العناصر للحصول على البيانات منه. قيم منفصلة بـ '|'.",

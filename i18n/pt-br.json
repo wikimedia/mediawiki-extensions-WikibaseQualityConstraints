@@ -47,6 +47,7 @@
 	"wbqc-cached-minutes": "Esse resultado está em cache e pode estar desatualizado até {{PLURAL:$1|1=um minuto|$1&nbsp;minutos}}.",
 	"wbqc-cached-hours": "Este resultado foi armazenado na cache e pode estar desatualizado em até {{PLURAL:$1|1=uma hora|$1&nbsp;horas}}.",
 	"wbqc-cached-days": "Este resultado foi armazenado na cache e pode estar desatualizado em até {{PLURAL:$1|1=um dia|$1&nbsp;dias}}.",
+	"wbqc-dataValueType-wikibase-entityid": "Identificador da entidade",
 	"apihelp-wbcheckconstraints-description": "Executa verificações de restrição em qualquer entidade que deseja e retorna o resultado.",
 	"apihelp-wbcheckconstraints-summary": "Executa verificações de restrição em qualquer entidade que deseja e retorna o resultado.",
 	"apihelp-wbcheckconstraints-param-id": "Lista de ID das entidades para obter os dados. Separar valores com '|' ou alternativa.",
