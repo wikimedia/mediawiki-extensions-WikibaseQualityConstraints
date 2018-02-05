@@ -135,12 +135,14 @@ class ViolationMessage {
 	}
 
 	/**
+	 * Note: usually you don’t want to use this function directly.
+	 *
 	 * @param string $type one of the self::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
 	 * @param mixed $value the value, which should match the $type
 	 * @return ViolationMessage
 	 */
-	private function withArgument( $type, $role, $value ) {
+	public function withArgument( $type, $role, $value ) {
 		$ret = clone $this;
 		$ret->arguments[] = [ 'type' => $type, 'role' => $role, 'value' => $value ];
 		return $ret;
