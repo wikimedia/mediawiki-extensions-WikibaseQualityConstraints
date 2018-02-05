@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use InvalidArgumentException;
 use Serializers\Serializer;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -44,6 +45,7 @@ class ViolationMessageSerializer implements Serializer {
 	 */
 	private function serializeArgument( array $argument ) {
 		$methods = [
+			ViolationMessage::TYPE_ENTITY_ID => 'serializeEntityId',
 		];
 
 		$type = $argument['type'];
@@ -72,6 +74,14 @@ class ViolationMessageSerializer implements Serializer {
 		}
 
 		return $serialized;
+	}
+
+	/**
+	 * @param EntityId $entityId
+	 * @return string entity ID serialization
+	 */
+	private function serializeEntityId( EntityId $entityId ) {
+		return $entityId->getSerialization();
 	}
 
 }

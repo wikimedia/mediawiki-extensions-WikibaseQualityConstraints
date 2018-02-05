@@ -4,6 +4,8 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use Deserializers\Deserializer;
 use InvalidArgumentException;
+use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -12,6 +14,17 @@ use Wikimedia\Assert\Assert;
  * @license GNU GPL v2+
  */
 class ViolationMessageDeserializer implements Deserializer {
+
+	/**
+	 * @var EntityIdParser
+	 */
+	private $entityIdParser;
+
+	public function __construct(
+		EntityIdParser $entityIdParser
+	) {
+		$this->entityIdParser = $entityIdParser;
+	}
 
 	public function unabbreviateViolationMessageKey( $messageKeySuffix ) {
 		return ViolationMessage::MESSAGE_KEY_PREFIX . $messageKeySuffix;
@@ -43,6 +56,7 @@ class ViolationMessageDeserializer implements Deserializer {
 	 */
 	private function deserializeArgument( ViolationMessage $message, array $serializedArgument ) {
 		$methods = [
+			ViolationMessage::TYPE_ENTITY_ID => 'deserializeEntityId',
 		];
 
 		$type = $serializedArgument['t'];
@@ -66,6 +80,14 @@ class ViolationMessageDeserializer implements Deserializer {
 		}
 
 		return $message->withArgument( $type, $role, $value, $alternativeMessageKey );
+	}
+
+	/**
+	 * @param string $entityIdSerialization entity ID serialization
+	 * @return EntityId
+	 */
+	private function deserializeEntityId( $entityIdSerialization ) {
+		return $this->entityIdParser->parse( $entityIdSerialization );
 	}
 
 }
