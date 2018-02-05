@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
@@ -51,6 +52,10 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 			'entity ID' => [
 				( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
 					->withEntityId( new PropertyId( 'P1' ) )
+			],
+			'entity ID list' => [
+				( new ViolationMessage( 'wbqc-violation-message-unique-value' ) )
+					->withEntityIdList( [ new ItemId( 'Q1' ), new PropertyId( 'P1' ) ] )
 			],
 		];
 	}

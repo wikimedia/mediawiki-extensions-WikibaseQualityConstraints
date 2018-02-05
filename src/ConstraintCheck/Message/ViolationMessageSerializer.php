@@ -46,6 +46,7 @@ class ViolationMessageSerializer implements Serializer {
 	private function serializeArgument( array $argument ) {
 		$methods = [
 			ViolationMessage::TYPE_ENTITY_ID => 'serializeEntityId',
+			ViolationMessage::TYPE_ENTITY_ID_LIST => 'serializeEntityIdList',
 		];
 
 		$type = $argument['type'];
@@ -82,6 +83,14 @@ class ViolationMessageSerializer implements Serializer {
 	 */
 	private function serializeEntityId( EntityId $entityId ) {
 		return $entityId->getSerialization();
+	}
+
+	/**
+	 * @param EntityId[] $entityIdList
+	 * @return string[] entity ID serializations
+	 */
+	private function serializeEntityIdList( array $entityIdList ) {
+		return array_map( [ $this, 'serializeEntityId' ], $entityIdList );
 	}
 
 }
