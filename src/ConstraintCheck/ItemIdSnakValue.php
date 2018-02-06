@@ -20,7 +20,7 @@ use Wikibase\DataModel\Snak\Snak;
 class ItemIdSnakValue {
 
 	/**
-	 * @var ItemId?
+	 * @var ItemId|null
 	 */
 	private $itemId = null;
 
