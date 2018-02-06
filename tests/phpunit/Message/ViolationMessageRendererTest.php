@@ -336,9 +336,9 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->withConsecutive( [ $valueList[0], $role ], [ $valueList[1], $role ] )
 			->willReturnCallback( function ( $value, $role ) {
 				if ( $value instanceof StringValue ) {
-					return Message::rawParam( $value->getValue() );
+					return [ Message::rawParam( $value->getValue() ) ];
 				} else {
-					return Message::rawParam( $value );
+					return [ Message::rawParam( $value ) ];
 				}
 			} );
 		$renderFunction = [ $renderMock, 'render' ];
@@ -397,7 +397,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->method( 'render' )
 			->withConsecutive( [ $valueList[0], $role ], [ $valueList[1], $role ] )
 			->willReturnCallback( function ( $value, $role ) {
-				return Message::rawParam( $value );
+				return [ Message::rawParam( $value ) ];
 			} );
 		$renderFunction = [ $renderMock, 'render' ];
 
@@ -428,9 +428,9 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 		$renderMock->expects( $this->once() )
 			->method( 'render' )
 			->with( $valueList[0], $role )
-			->willReturn( Message::rawParam(
+			->willReturn( [ Message::rawParam(
 				'<span class="wbqc-role wbqc-role-object">' . $valueList[0] . '</span>'
-			) );
+			) ] );
 		$renderFunction = [ $renderMock, 'render' ];
 
 		$params = TestingAccessWrapper::newFromObject( $renderer )
@@ -464,7 +464,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderEntityId( $entityId, $role );
 
 		$this->assertSame(
-			Message::rawParam( '<test property>' ),
+			[ Message::rawParam( '<test property>' ) ],
 			$params
 		);
 	}
@@ -486,7 +486,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderEntityId( $entityId, $role );
 
 		$this->assertSame(
-			Message::rawParam( '<span class="wbqc-role wbqc-role-predicate"><test property></span>' ),
+			[ Message::rawParam( '<span class="wbqc-role wbqc-role-predicate"><test property></span>' ) ],
 			$params
 		);
 	}
@@ -563,7 +563,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
 
 		$this->assertSame(
-			Message::rawParam( '<test item>' ),
+			[ Message::rawParam( '<test item>' ) ],
 			$params
 		);
 	}
@@ -584,11 +584,11 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
 
 		$this->assertSame(
-			Message::rawParam(
+			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-somevaluesnak">' .
 					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
 					'</span>'
-			),
+			) ],
 			$params
 		);
 	}
@@ -609,11 +609,11 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
 
 		$this->assertSame(
-			Message::rawParam(
+			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-novaluesnak">' .
 				wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped() .
 				'</span>'
-			),
+			) ],
 			$params
 		);
 	}
@@ -636,7 +636,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
 
 		$this->assertSame(
-			Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ),
+			[ Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ) ],
 			$params
 		);
 	}
@@ -715,7 +715,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderDataValue( $dataValue, $role );
 
 		$this->assertSame(
-			Message::rawParam( '<a&amp;nbsp;string>' ),
+			[ Message::rawParam( '<a&amp;nbsp;string>' ) ],
 			$params
 		);
 	}
@@ -737,7 +737,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderDataValue( $dataValue, $role );
 
 		$this->assertSame(
-			Message::rawParam( '<span class="wbqc-role wbqc-role-object">test</span>' ),
+			[ Message::rawParam( '<span class="wbqc-role wbqc-role-object">test</span>' ) ],
 			$params
 		);
 	}
@@ -754,7 +754,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderDataValueType( $dataValueType, $role );
 
 		$this->assertSame(
-			Message::rawParam( wfMessage( 'datatypes-type-string' )->escaped() ),
+			[ Message::rawParam( wfMessage( 'datatypes-type-string' )->escaped() ) ],
 			$params
 		);
 	}
@@ -771,7 +771,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderDataValueType( $dataValueType, $role );
 
 		$this->assertSame(
-			Message::rawParam( wfMessage( 'wbqc-dataValueType-wikibase-entityid' )->escaped() ),
+			[ Message::rawParam( wfMessage( 'wbqc-dataValueType-wikibase-entityid' )->escaped() ) ],
 			$params
 		);
 	}
@@ -789,7 +789,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderInlineCode( $code, $role );
 
 		$this->assertSame(
-			Message::rawParam( '<code>https?://[^/]+/.*</code>' ),
+			[ Message::rawParam( '<code>https?://[^/]+/.*</code>' ) ],
 			$params
 		);
 	}
@@ -806,11 +806,11 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderInlineCode( $code, $role );
 
 		$this->assertSame(
-			Message::rawParam(
+			[ Message::rawParam(
 				'<code>' .
 					'&lt;script&gt;alert(&quot;im in ur html&quot;)&lt;/script&gt;' .
 					'</code>'
-			),
+			) ],
 			$params
 		);
 	}
@@ -828,11 +828,11 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderInlineCode( $code, $role );
 
 		$this->assertSame(
-			Message::rawParam(
+			[ Message::rawParam(
 				'<span class="wbqc-role wbqc-role-constraint-parameter-value">' .
 					'<code>https?://[^/]+/.*</code>' .
 					'</span>'
-			),
+			) ],
 			$params
 		);
 	}
@@ -862,7 +862,7 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderConstraintScope( $scope, $role );
 
 		$this->assertSame(
-			Message::rawParam( $returnValue ),
+			[ Message::rawParam( $returnValue ) ],
 			$params
 		);
 	}
@@ -890,11 +890,11 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderConstraintScope( $scope, $role );
 
 		$this->assertSame(
-			Message::rawParam(
+			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-somevaluesnak">' .
 					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
 					'</span>'
-			),
+			) ],
 			$params
 		);
 	}
@@ -912,9 +912,9 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 			->renderConstraintScope( $scope, $role );
 
 		$this->assertSame(
-			Message::rawParam(
+			[ Message::rawParam(
 				'<span class="wbqc-role wbqc-role-constraint-parameter-value">Q1</span>'
-			),
+			) ],
 			$params
 		);
 	}

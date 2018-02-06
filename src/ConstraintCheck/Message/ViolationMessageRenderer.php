@@ -84,6 +84,11 @@ class ViolationMessageRenderer {
 			->escaped();
 	}
 
+	/**
+	 * @param string $value HTML
+	 * @param string|null $role one of the Role::* constants
+	 * @return string HTML
+	 */
 	private function addRole( $value, $role ) {
 		if ( $role === null ) {
 			return $value;
@@ -96,7 +101,7 @@ class ViolationMessageRenderer {
 
 	/**
 	 * @param array $argument
-	 * @return array params (for Message::params)
+	 * @return array[] params (for Message::params)
 	 */
 	private function renderArgument( array $argument ) {
 		$methods = [
@@ -125,12 +130,16 @@ class ViolationMessageRenderer {
 			);
 		}
 
-		if ( !array_key_exists( 0, $params ) ) {
-			$params = [ $params ];
-		}
 		return $params;
 	}
 
+	/**
+	 * @param array $list
+	 * @param string|null $role one of the Role::* constants
+	 * @param callable $render must accept $list elements and $role as parameters
+	 * and return a single-element array with a raw message param (i. e. [ Message::rawParam( … ) ])
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
 	private function renderList( array $list, $role, callable $render ) {
 		if ( $list === [] ) {
 			return [
@@ -144,10 +153,16 @@ class ViolationMessageRenderer {
 			$truncated = true;
 		}
 
-		$renderedParams = array_map(
+		$renderedParamsLists = array_map(
 			$render,
 			$list,
 			array_fill( 0, count( $list ), $role )
+		);
+		$renderedParams = array_map(
+			function ( $params ) {
+				return $params[0];
+			},
+			$renderedParamsLists
 		);
 		$renderedElements = array_map(
 			function ( $param ) {
@@ -172,35 +187,50 @@ class ViolationMessageRenderer {
 		);
 	}
 
+	/**
+	 * @param EntityId $entityId
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
+	 */
 	private function renderEntityId( EntityId $entityId, $role ) {
-		return Message::rawParam( $this->addRole(
+		return [ Message::rawParam( $this->addRole(
 			$this->entityIdFormatter->formatEntityId( $entityId ),
 			$role
-		) );
+		) ) ];
 	}
 
+	/**
+	 * @param EntityId[] $entityIdList
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
 	private function renderEntityIdList( array $entityIdList, $role ) {
 		return $this->renderList( $entityIdList, $role, [ $this, 'renderEntityId' ] );
 	}
 
+	/**
+	 * @param ItemIdSnakValue $value
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
+	 */
 	private function renderItemIdSnakValue( ItemIdSnakValue $value, $role ) {
 		switch ( true ) {
 			case $value->isValue():
 				return $this->renderEntityId( $value->getItemId(), $role );
 			case $value->isSomeValue():
-				return Message::rawParam( $this->addRole(
+				return [ Message::rawParam( $this->addRole(
 					'<span class="wikibase-snakview-variation-somevaluesnak">' .
 						wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
 						'</span>',
 					$role
-				) );
+				) ) ];
 			case $value->isNoValue():
-				return Message::rawParam( $this->addRole(
+				return [ Message::rawParam( $this->addRole(
 					'<span class="wikibase-snakview-variation-novaluesnak">' .
 						wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped() .
 						'</span>',
 					$role
-				) );
+				) ) ];
 			default:
 				// @codeCoverageIgnoreStart
 				throw new LogicException(
@@ -210,17 +240,32 @@ class ViolationMessageRenderer {
 		}
 	}
 
+	/**
+	 * @param ItemIdSnakValue[] $valueList
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
 	private function renderItemIdSnakValueList( array $valueList, $role ) {
 		return $this->renderList( $valueList, $role, [ $this, 'renderItemIdSnakValue' ] );
 	}
 
+	/**
+	 * @param DataValue $dataValue
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
 	private function renderDataValue( DataValue $dataValue, $role ) {
-		return Message::rawParam( $this->addRole(
+		return [ Message::rawParam( $this->addRole(
 			$this->dataValueFormatter->format( $dataValue ),
 			$role
-		) );
+		) ) ];
 	}
 
+	/**
+	 * @param string $dataValueType
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
 	private function renderDataValueType( $dataValueType, $role ) {
 		$messageKeys = [
 			'string' => 'datatypes-type-string',
@@ -229,10 +274,10 @@ class ViolationMessageRenderer {
 		];
 
 		if ( array_key_exists( $dataValueType, $messageKeys ) ) {
-			return Message::rawParam( $this->addRole(
+			return [ Message::rawParam( $this->addRole(
 				wfMessage( $messageKeys[$dataValueType] )->escaped(),
 				$role
-			) );
+			) ) ];
 		} else {
 			// @codeCoverageIgnoreStart
 			throw new LogicException(
@@ -242,13 +287,23 @@ class ViolationMessageRenderer {
 		}
 	}
 
+	/**
+	 * @param string $code (not yet HTML-escaped)
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
 	private function renderInlineCode( $code, $role ) {
-		return Message::rawParam( $this->addRole(
+		return [ Message::rawParam( $this->addRole(
 			'<code>' . htmlspecialchars( $code ) . '</code>',
 			$role
-		) );
+		) ) ];
 	}
 
+	/**
+	 * @param string $scope one of the Context::TYPE_* constants
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
+	 */
 	private function renderConstraintScope( $scope, $role ) {
 		switch ( $scope ) {
 			case Context::TYPE_STATEMENT:
@@ -276,10 +331,20 @@ class ViolationMessageRenderer {
 		return $this->renderEntityId( new ItemId( $itemId ), $role );
 	}
 
+	/**
+	 * @param string[] $text Context::TYPE_* constants
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
 	private function renderConstraintScopeList( array $scopeList, $role ) {
 		return $this->renderList( $scopeList, $role, [ $this, 'renderConstraintScope' ] );
 	}
 
+	/**
+	 * @param string $languageCode MediaWiki language code
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
 	private function renderLanguage( $languageCode, $role ) {
 		return [
 			Message::plaintextParam( Language::fetchLanguageName( $languageCode ) ),
