@@ -60,6 +60,12 @@ class ViolationMessage {
 	const TYPE_DATA_VALUE_TYPE = 't';
 
 	/**
+	 * Argument type for a short fragment of inline computer code.
+	 * Value type: string
+	 */
+	const TYPE_INLINE_CODE = 'c';
+
+	/**
 	 * @var string
 	 */
 	private $messageKeySuffix;
@@ -208,6 +214,18 @@ class ViolationMessage {
 	 */
 	public function withDataValueType( $dataValueType, $role = null ) {
 		return $this->withArgument( self::TYPE_DATA_VALUE_TYPE, $role, $dataValueType );
+	}
+
+	/**
+	 * Append a single short fragment of inline computer code to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * @param string $code
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withInlineCode( $code, $role = null ) {
+		return $this->withArgument( self::TYPE_INLINE_CODE, $role, $code );
 	}
 
 }

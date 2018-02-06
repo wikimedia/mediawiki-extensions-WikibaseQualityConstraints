@@ -211,6 +211,27 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
 	 */
+	public function testRender_inlineCode() {
+		$messageKey = 'wbqc-violation-message-format';
+		$code = 'https?://[^/]+/.*';
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withEntityId( new ItemId( 'Q1' ) )
+			->withDataValue( new StringValue( 'ftp://mirror.example/' ) )
+			->withInlineCode( $code );
+		$renderer = $this->newViolationMessageRenderer( null, new StringFormatter() );
+
+		$rendered = $renderer->render( $message );
+
+		$expected = wfMessage( $messageKey )
+			->rawParams( 'Q1', 'ftp://mirror.example/', '<code>https?://[^/]+/.*</code>' )
+			->escaped();
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
 	public function testRender_unknownArgumentType() {
 		$message = $this->getMockBuilder( ViolationMessage::class )
 			->disableOriginalConstructor()
@@ -674,6 +695,67 @@ class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			Message::rawParam( wfMessage( 'wbqc-dataValueType-wikibase-entityid' )->escaped() ),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderInlineCode
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderInlineCode() {
+		$code = 'https?://[^/]+/.*';
+		$role = null;
+		$renderer = $this->newViolationMessageRenderer();
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderInlineCode( $code, $role );
+
+		$this->assertSame(
+			Message::rawParam( '<code>https?://[^/]+/.*</code>' ),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderInlineCode
+	 */
+	public function testRenderInlineCode_htmlEscape() {
+		$code = '<script>alert("im in ur html")</script>';
+		$role = null;
+		$renderer = $this->newViolationMessageRenderer();
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderInlineCode( $code, $role );
+
+		$this->assertSame(
+			Message::rawParam(
+				'<code>' .
+					'&lt;script&gt;alert(&quot;im in ur html&quot;)&lt;/script&gt;' .
+					'</code>'
+			),
+			$params
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderInlineCode
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 */
+	public function testRenderInlineCode_withRole() {
+		$code = 'https?://[^/]+/.*';
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$renderer = $this->newViolationMessageRenderer();
+
+		$params = TestingAccessWrapper::newFromObject( $renderer )
+			->renderInlineCode( $code, $role );
+
+		$this->assertSame(
+			Message::rawParam(
+				'<span class="wbqc-role wbqc-role-constraint-parameter-value">' .
+					'<code>https?://[^/]+/.*</code>' .
+					'</span>'
+			),
 			$params
 		);
 	}

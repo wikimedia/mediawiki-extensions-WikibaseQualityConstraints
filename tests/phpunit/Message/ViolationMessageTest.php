@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\ItemId;
@@ -145,6 +146,20 @@ class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame(
 			[ 'type' => ViolationMessage::TYPE_DATA_VALUE_TYPE, 'role' => $role, 'value' => $value ],
 			$message->getArguments()[1]
+		);
+	}
+
+	public function testWithInlineCode() {
+		$value = 'https?://[^/]+/.*';
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-format' ) )
+			->withEntityId( new ItemId( 'Q1' ), Role::CONSTRAINT_PROPERTY )
+			->withDataValue( new StringValue( 'ftp://mirror.example/' ), Role::OBJECT )
+			->withInlineCode( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_INLINE_CODE, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[2]
 		);
 	}
 
