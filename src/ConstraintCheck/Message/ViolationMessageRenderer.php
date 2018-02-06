@@ -59,11 +59,17 @@ class ViolationMessageRenderer {
 			// TODO remove this once all checkers produce ViolationMessage objects
 			return $violationMessage;
 		}
-		$message = new Message( $violationMessage->getMessageKey() );
+
+		$messageKey = $violationMessage->getMessageKey();
+		$paramsLists = [ [] ];
 		foreach ( $violationMessage->getArguments() as $argument ) {
-			$this->renderArgument( $argument, $message );
+			$params = $this->renderArgument( $argument );
+			$paramsLists[] = $params;
 		}
-		return $message->escaped();
+		$allParams = call_user_func_array( 'array_merge', $paramsLists );
+		return ( new Message( $messageKey ) )
+			->params( $allParams )
+			->escaped();
 	}
 
 	private function addRole( $value, $role ) {
@@ -76,7 +82,11 @@ class ViolationMessageRenderer {
 			'</span>';
 	}
 
-	private function renderArgument( array $argument, Message $message ) {
+	/**
+	 * @param array $argument
+	 * @return array params (for Message::params)
+	 */
+	private function renderArgument( array $argument ) {
 		$type = $argument['type'];
 		$value = $argument['value'];
 		$role = $argument['role'];
@@ -107,7 +117,10 @@ class ViolationMessageRenderer {
 					'Unknown ViolationMessage argument type ' . $type . '!'
 				);
 		}
-		$message->params( $params );
+		if ( !array_key_exists( 0, $params ) ) {
+			$params = [ $params ];
+		}
+		return $params;
 	}
 
 	private function renderList( array $list, $role, callable $render ) {
