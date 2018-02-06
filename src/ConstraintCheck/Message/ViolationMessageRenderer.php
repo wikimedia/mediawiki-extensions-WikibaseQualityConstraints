@@ -87,36 +87,29 @@ class ViolationMessageRenderer {
 	 * @return array params (for Message::params)
 	 */
 	private function renderArgument( array $argument ) {
+		$methods = [
+			ViolationMessage::TYPE_ENTITY_ID => 'renderEntityId',
+			ViolationMessage::TYPE_ENTITY_ID_LIST => 'renderEntityIdList',
+			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE => 'renderItemIdSnakValue',
+			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST => 'renderItemIdSnakValueList',
+			ViolationMessage::TYPE_DATA_VALUE => 'renderDataValue',
+			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'renderDataValueType',
+			ViolationMessage::TYPE_INLINE_CODE => 'renderInlineCode',
+		];
+
 		$type = $argument['type'];
 		$value = $argument['value'];
 		$role = $argument['role'];
-		switch ( $type ) {
-			case ViolationMessage::TYPE_ENTITY_ID:
-				$params = $this->renderEntityId( $value, $role );
-				break;
-			case ViolationMessage::TYPE_ENTITY_ID_LIST:
-				$params = $this->renderEntityIdList( $value, $role );
-				break;
-			case ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE:
-				$params = $this->renderItemIdSnakValue( $value, $role );
-				break;
-			case ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST:
-				$params = $this->renderItemIdSnakValueList( $value, $role );
-				break;
-			case ViolationMessage::TYPE_DATA_VALUE:
-				$params = $this->renderDataValue( $value, $role );
-				break;
-			case ViolationMessage::TYPE_DATA_VALUE_TYPE:
-				$params = $this->renderDataValueType( $value, $role );
-				break;
-			case ViolationMessage::TYPE_INLINE_CODE:
-				$params = $this->renderInlineCode( $value, $role );
-				break;
-			default:
-				throw new InvalidArgumentException(
-					'Unknown ViolationMessage argument type ' . $type . '!'
-				);
+
+		if ( array_key_exists( $type, $methods ) ) {
+			$method = $methods[$type];
+			$params = $this->$method( $value, $role );
+		} else {
+			throw new InvalidArgumentException(
+				'Unknown ViolationMessage argument type ' . $type . '!'
+			);
 		}
+
 		if ( !array_key_exists( 0, $params ) ) {
 			$params = [ $params ];
 		}
