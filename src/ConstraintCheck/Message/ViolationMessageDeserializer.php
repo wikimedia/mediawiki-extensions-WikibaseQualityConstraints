@@ -6,6 +6,7 @@ use Deserializers\Deserializer;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -58,6 +59,7 @@ class ViolationMessageDeserializer implements Deserializer {
 		$methods = [
 			ViolationMessage::TYPE_ENTITY_ID => 'deserializeEntityId',
 			ViolationMessage::TYPE_ENTITY_ID_LIST => 'deserializeEntityIdList',
+			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE => 'deserializeItemIdSnakValue',
 		];
 
 		$type = $serializedArgument['t'];
@@ -97,6 +99,21 @@ class ViolationMessageDeserializer implements Deserializer {
 	 */
 	private function deserializeEntityIdList( array $entityIdSerializations ) {
 		return array_map( [ $this, 'deserializeEntityId' ], $entityIdSerializations );
+	}
+
+	/**
+	 * @param string $valueSerialization entity ID serialization, '::somevalue' or '::novalue'
+	 * @return ItemIdSnakValue
+	 */
+	private function deserializeItemIdSnakValue( $valueSerialization ) {
+		switch ( $valueSerialization ) {
+			case '::somevalue':
+				return ItemIdSnakValue::someValue();
+			case '::novalue':
+				return ItemIdSnakValue::noValue();
+			default:
+				return ItemIdSnakValue::fromItemId( $this->deserializeEntityId( $valueSerialization ) );
+		}
 	}
 
 }

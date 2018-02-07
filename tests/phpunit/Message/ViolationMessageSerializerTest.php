@@ -3,8 +3,10 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use InvalidArgumentException;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -110,6 +112,58 @@ class ViolationMessageSerializerTest extends \PHPUnit_Framework_TestCase {
 			->serializeEntityIdList( $entityIds );
 
 		$this->assertSame( [], $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
+	 */
+	public function testSerializeItemIdSnakValue_itemId() {
+		$value = ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) );
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeItemIdSnakValue( $value );
+
+		$this->assertSame( 'Q1', $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
+	 */
+	public function testSerializeItemIdSnakValue_someValue() {
+		$value = ItemIdSnakValue::someValue();
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeItemIdSnakValue( $value );
+
+		$this->assertSame( '::somevalue', $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
+	 */
+	public function testSerializeItemIdSnakValue_noValue() {
+		$value = ItemIdSnakValue::noValue();
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeItemIdSnakValue( $value );
+
+		$this->assertSame( '::novalue', $serialized );
+	}
+
+	/**
+	 * Verify that a string beginning with two colons is not a valid entity ID serialization.
+	 * If this ever changes, we’re in trouble because our serialization of
+	 * ItemIdSnakValue::someValue() and ItemIdSnakValue::noValue() might become ambiguous.
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
+	 */
+	public function testSerializeItemIdSnakValue_sanityCheck() {
+		$this->setExpectedException( InvalidArgumentException::class );
+		$this->getMockBuilder( EntityId::class )
+			->setConstructorArgs( [ '::somevalue' ] )
+			->getMock();
 	}
 
 }

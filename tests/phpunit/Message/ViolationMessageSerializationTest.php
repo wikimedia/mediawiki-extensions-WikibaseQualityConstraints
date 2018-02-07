@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Message;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
@@ -57,6 +58,12 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 				( new ViolationMessage( 'wbqc-violation-message-unique-value' ) )
 					->withEntityIdList( [ new ItemId( 'Q1' ), new PropertyId( 'P1' ) ] )
 			],
+			'entity ID + somevalue' => [
+				( new ViolationMessage( 'wbqc-violation-message-conflicts-with-claim' ) )
+					->withEntityId( new PropertyId( 'P1' ) )
+					->withEntityId( new PropertyId( 'P2' ) )
+					->withItemIdSnakValue( ItemIdSnakValue::someValue() )
+			]
 		];
 	}
 
