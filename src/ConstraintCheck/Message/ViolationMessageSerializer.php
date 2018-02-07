@@ -50,6 +50,7 @@ class ViolationMessageSerializer implements Serializer {
 			ViolationMessage::TYPE_ENTITY_ID => 'serializeEntityId',
 			ViolationMessage::TYPE_ENTITY_ID_LIST => 'serializeEntityIdList',
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE => 'serializeItemIdSnakValue',
+			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST => 'serializeItemIdSnakValueList',
 		];
 
 		$type = $argument['type'];
@@ -116,6 +117,14 @@ class ViolationMessageSerializer implements Serializer {
 				);
 				// @codeCoverageIgnoreEnd
 		}
+	}
+
+	/**
+	 * @param ItemIdSnakValue[] $valueList
+	 * @return string[] array of entity ID serializations, '::somevalue's or '::novalue's
+	 */
+	private function serializeItemIdSnakValueList( array $valueList ) {
+		return array_map( [ $this, 'serializeItemIdSnakValue' ], $valueList );
 	}
 
 }
