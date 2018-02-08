@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use MalformedTitleException;
+use MediaWiki\MediaWikiServices;
 use TitleParser;
 use TitleValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -183,9 +184,10 @@ class CommonsLinkChecker implements ConstraintChecker {
 			$commonsWikiId = false;
 		}
 
-		$dbLoadBalancer = wfGetLB( $commonsWikiId );
-		$dbConnection = $dbLoadBalancer->getConnection(
-			DB_REPLICA, false, $commonsWikiId );
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$dbConnection = $lbFactory->getMainLB( $commonsWikiId )->getConnection(
+			DB_REPLICA, false, $commonsWikiId
+		);
 		$row = $dbConnection->selectRow( 'page', '*', [
 			'page_title' => $title->getDBkey(),
 			'page_namespace' => $title->getNamespace()

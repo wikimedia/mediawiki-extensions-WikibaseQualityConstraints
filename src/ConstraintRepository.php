@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use InvalidArgumentException;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\DBUnexpectedError;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LikeMatch;
@@ -125,13 +126,14 @@ class ConstraintRepository implements ConstraintLookup {
 		if ( !is_int( $batchSize ) ) {
 			throw new InvalidArgumentException();
 		}
-		$db = wfGetDB( DB_MASTER );
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$db = $lbFactory->getMainLB()->getConnection( DB_MASTER );
 		if ( $db->getType() === 'sqlite' ) {
 			$db->delete( 'wbqc_constraints', '*' );
 		} else {
 			do {
 				$db->commit( __METHOD__, 'flush' );
-				wfGetLBFactory()->waitForReplication();
+				$lbFactory->waitForReplication();
 				$table = $db->tableName( 'wbqc_constraints' );
 				$db->query( sprintf( 'DELETE FROM %s LIMIT %d', $table, $batchSize ) );
 			} while ( $db->affectedRows() > 0 );
