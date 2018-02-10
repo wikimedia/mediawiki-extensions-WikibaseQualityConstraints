@@ -57,6 +57,7 @@ class ViolationMessageDeserializer implements Deserializer {
 	private function deserializeArgument( ViolationMessage $message, array $serializedArgument ) {
 		$methods = [
 			ViolationMessage::TYPE_ENTITY_ID => 'deserializeEntityId',
+			ViolationMessage::TYPE_ENTITY_ID_LIST => 'deserializeEntityIdList',
 		];
 
 		$type = $serializedArgument['t'];
@@ -88,6 +89,14 @@ class ViolationMessageDeserializer implements Deserializer {
 	 */
 	private function deserializeEntityId( $entityIdSerialization ) {
 		return $this->entityIdParser->parse( $entityIdSerialization );
+	}
+
+	/**
+	 * @param string[] $entityIdSerializations entity ID serializations
+	 * @return EntityId[]
+	 */
+	private function deserializeEntityIdList( array $entityIdSerializations ) {
+		return array_map( [ $this, 'deserializeEntityId' ], $entityIdSerializations );
 	}
 
 }

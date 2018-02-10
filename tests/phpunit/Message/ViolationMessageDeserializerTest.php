@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Message;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
@@ -105,6 +106,32 @@ class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->deserializeEntityId( 'P1' );
 
 		$this->assertSame( $propertyId, $deserialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeEntityIdList
+	 */
+	public function testDeserializeEntityIdList() {
+		$entityIdSerializations = [ 'Q1', 'P1' ];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeEntityIdList( $entityIdSerializations );
+
+		$this->assertEquals( [ new ItemId( 'Q1' ), new PropertyId( 'P1' ) ], $deserialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeEntityIdList
+	 */
+	public function testDeserializeEntityIdList_Empty() {
+		$entityIdSerializations = [];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeEntityIdList( $entityIdSerializations );
+
+		$this->assertEquals( [], $deserialized );
 	}
 
 }

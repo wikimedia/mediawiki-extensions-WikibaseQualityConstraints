@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use InvalidArgumentException;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
@@ -83,6 +84,32 @@ class ViolationMessageSerializerTest extends \PHPUnit_Framework_TestCase {
 			->serializeEntityId( $entityId );
 
 		$this->assertSame( 'P1', $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeEntityIdList
+	 */
+	public function testSerializeEntityIdList() {
+		$entityIds = [ new ItemId( 'Q1' ), new PropertyId( 'P1' ) ];
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeEntityIdList( $entityIds );
+
+		$this->assertSame( [ 'Q1', 'P1' ], $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeEntityIdList
+	 */
+	public function testSerializeEntityIdList_empty() {
+		$entityIds = [];
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeEntityIdList( $entityIds );
+
+		$this->assertSame( [], $serialized );
 	}
 
 }
