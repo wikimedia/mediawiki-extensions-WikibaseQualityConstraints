@@ -1,4 +1,4 @@
-( function( OO, wb ) {
+( function ( OO, wb ) {
 	'use strict';
 
 	/**

@@ -1,4 +1,4 @@
-( function( OO, wb ) {
+( function ( OO, wb ) {
 	'use strict';
 
 	/**
@@ -132,16 +132,16 @@
 	 * @return {wikibase.quality.constraints.ui.ConstraintReportList}
 	 * @static
 	 */
-	wb.quality.constraints.ui.ConstraintReportList.static.fromPanels = function( panels, config ) {
+	wb.quality.constraints.ui.ConstraintReportList.static.fromPanels = function ( panels, config ) {
 		var panelsByStatus = {},
 			items = [];
 
-		panels.forEach( function( panel ) {
+		panels.forEach( function ( panel ) {
 			panelsByStatus[ panel.status ] = panelsByStatus[ panel.status ] || [];
 			panelsByStatus[ panel.status ].push( panel );
 		} );
 
-		config.statuses.forEach( function( statusConfig ) {
+		config.statuses.forEach( function ( statusConfig ) {
 			var status = statusConfig.status,
 				statusPanels = panelsByStatus[ status ];
 

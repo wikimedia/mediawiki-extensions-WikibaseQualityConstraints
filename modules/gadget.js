@@ -1,4 +1,4 @@
-( function( mw, wb, $, OO ) {
+( function ( mw, wb, $, OO ) {
 	'use strict';
 
 	var entityId,
@@ -314,7 +314,7 @@
 			uselang: lang,
 			id: entityId,
 			status: cachedStatuses
-		} ).then( function( data ) {
+		} ).then( function ( data ) {
 			$( '.wikibase-statementgroupview .wikibase-statementview' )
 				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 		} );
@@ -327,12 +327,12 @@
 				formatversion: 2,
 				uselang: lang,
 				propertyid: entityId
-			} ).then( function( data ) {
+			} ).then( function ( data ) {
 				addParameterReports( data.wbcheckconstraintparameters[ entityId ] );
 			} );
 		}
 
-		mw.hook( 'wikibase.statement.saved' ).add( function( entityId, statementId ) {
+		mw.hook( 'wikibase.statement.saved' ).add( function ( entityId, statementId ) {
 			mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
 			api.get( {
 				action: 'wbcheckconstraints',
@@ -341,7 +341,7 @@
 				uselang: lang,
 				claimid: statementId,
 				status: cachedStatuses
-			} ).then( function( data ) {
+			} ).then( function ( data ) {
 				var statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' );
 				$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
 					.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );

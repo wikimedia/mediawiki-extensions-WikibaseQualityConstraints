@@ -1,4 +1,4 @@
-( function( mw, wb ) {
+( function ( mw, wb ) {
 	'use strict';
 
 	/**
@@ -73,7 +73,7 @@
 		this.$message = config.$message || $( '<p>' ).html( this.message );
 		this.ancillaryMessages = config.ancillaryMessages;
 		this.$ancillaryMessages = config.$ancillaryMessages || $( '<div class="wbqc-ancillary-messages">' ).append(
-			this.ancillaryMessages.map( function( ancillaryMessage ) {
+			this.ancillaryMessages.map( function ( ancillaryMessage ) {
 				return $( '<p>' ).html( ancillaryMessage );
 			} )
 		);
