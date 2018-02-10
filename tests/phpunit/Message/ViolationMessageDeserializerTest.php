@@ -7,6 +7,7 @@ use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -132,6 +133,49 @@ class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->deserializeEntityIdList( $entityIdSerializations );
 
 		$this->assertEquals( [], $deserialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValue
+	 */
+	public function testDeserializeItemIdSnakValue_itemId() {
+		$serialization = 'Q1';
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		/** @var ItemIdSnakValue $deserialized */
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeItemIdSnakValue( $serialization );
+
+		$this->assertTrue( $deserialized->isValue() );
+		$this->assertEquals( new ItemId( 'Q1' ), $deserialized->getItemId() );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValue
+	 */
+	public function testDeserializeItemIdSnakValue_someValue() {
+		$serialization = '::somevalue';
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		/** @var ItemIdSnakValue $deserialized */
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeItemIdSnakValue( $serialization );
+
+		$this->assertTrue( $deserialized->isSomeValue() );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValue
+	 */
+	public function testDeserializeItemIdSnakValue_noValue() {
+		$serialization = '::novalue';
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		/** @var ItemIdSnakValue $deserialized */
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeItemIdSnakValue( $serialization );
+
+		$this->assertTrue( $deserialized->isNoValue() );
 	}
 
 }

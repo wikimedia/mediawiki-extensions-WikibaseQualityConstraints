@@ -3,8 +3,10 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use InvalidArgumentException;
+use LogicException;
 use Serializers\Serializer;
 use Wikibase\DataModel\Entity\EntityId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -47,6 +49,7 @@ class ViolationMessageSerializer implements Serializer {
 		$methods = [
 			ViolationMessage::TYPE_ENTITY_ID => 'serializeEntityId',
 			ViolationMessage::TYPE_ENTITY_ID_LIST => 'serializeEntityIdList',
+			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE => 'serializeItemIdSnakValue',
 		];
 
 		$type = $argument['type'];
@@ -91,6 +94,28 @@ class ViolationMessageSerializer implements Serializer {
 	 */
 	private function serializeEntityIdList( array $entityIdList ) {
 		return array_map( [ $this, 'serializeEntityId' ], $entityIdList );
+	}
+
+	/**
+	 * @param ItemIdSnakValue $value
+	 * @return string entity ID serialization, '::somevalue', or '::novalue'
+	 * (according to EntityId::PATTERN, entity ID serializations can never begin with two colons)
+	 */
+	private function serializeItemIdSnakValue( ItemIdSnakValue $value ) {
+		switch ( true ) {
+			case $value->isValue():
+				return $this->serializeEntityId( $value->getItemId() );
+			case $value->isSomeValue():
+				return '::somevalue';
+			case $value->isNoValue():
+				return '::novalue';
+			default:
+				// @codeCoverageIgnoreStart
+				throw new LogicException(
+					'ItemIdSnakValue should guarantee that one of is{,Some,No}Value() is true'
+				);
+				// @codeCoverageIgnoreEnd
+		}
 	}
 
 }
