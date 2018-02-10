@@ -60,6 +60,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_ENTITY_ID => 'deserializeEntityId',
 			ViolationMessage::TYPE_ENTITY_ID_LIST => 'deserializeEntityIdList',
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE => 'deserializeItemIdSnakValue',
+			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST => 'deserializeItemIdSnakValueList',
 		];
 
 		$type = $serializedArgument['t'];
@@ -114,6 +115,14 @@ class ViolationMessageDeserializer implements Deserializer {
 			default:
 				return ItemIdSnakValue::fromItemId( $this->deserializeEntityId( $valueSerialization ) );
 		}
+	}
+
+	/**
+	 * @param string[] $valueSerializations entity ID serializations, '::somevalue's or '::novalue's
+	 * @return ItemIdSnakValue[]
+	 */
+	private function deserializeItemIdSnakValueList( $valueSerializations ) {
+		return array_map( [ $this, 'deserializeItemIdSnakValue' ], $valueSerializations );
 	}
 
 }

@@ -166,4 +166,34 @@ class ViolationMessageSerializerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValueList
+	 */
+	public function testSerializeItemIdSnakValueList() {
+		$valueList = [
+			ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ),
+			ItemIdSnakValue::someValue(),
+			ItemIdSnakValue::noValue(),
+		];
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeItemIdSnakValueList( $valueList );
+
+		$this->assertSame( [ 'Q1', '::somevalue', '::novalue' ], $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValueList
+	 */
+	public function testSerializeItemIdSnakValueList_empty() {
+		$valueList = [];
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeItemIdSnakValueList( $valueList );
+
+		$this->assertSame( [], $serialized );
+	}
+
 }

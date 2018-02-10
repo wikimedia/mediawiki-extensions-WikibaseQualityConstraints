@@ -178,4 +178,35 @@ class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $deserialized->isNoValue() );
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValueList
+	 */
+	public function testDeserializeItemIdSnakValueList() {
+		$serializations = [ 'Q1', '::somevalue', '::novalue' ];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		/** @var ItemIdSnakValue[] $deserialized */
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeItemIdSnakValueList( $serializations );
+
+		$this->assertCount( 3, $deserialized );
+		$this->assertTrue( $deserialized[0]->isValue() );
+		$this->assertEquals( new ItemId( 'Q1' ), $deserialized[0]->getItemId() );
+		$this->assertTrue( $deserialized[1]->isSomeValue() );
+		$this->assertTrue( $deserialized[2]->isNoValue() );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValueList
+	 */
+	public function testDeserializeItemIdSnakValueList_empty() {
+		$serializations = [];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeItemIdSnakValueList( $serializations );
+
+		$this->assertSame( [], $deserialized );
+	}
+
 }
