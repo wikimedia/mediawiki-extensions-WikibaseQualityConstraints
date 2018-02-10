@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use Wikibase\DataModel\Entity\BasicEntityIdParser;
+use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
@@ -15,14 +17,30 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSer
 class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 
 	/**
+	 * @var ViolationMessageSerializer
+	 */
+	private $serializer;
+
+	/**
+	 * @var ViolationMessageDeserializer
+	 */
+	private $deserializer;
+
+	public function setUp() {
+		parent::setUp();
+		$this->serializer = new ViolationMessageSerializer();
+		$this->deserializer = new ViolationMessageDeserializer(
+			new BasicEntityIdParser()
+		);
+	}
+
+	/**
 	 * @dataProvider provideViolationMessages
 	 */
 	public function testSerializeDeserialize( ViolationMessage $message ) {
-		$serializer = new ViolationMessageSerializer();
-		$deserializer = new ViolationMessageDeserializer();
 
-		$serialized = $serializer->serialize( $message );
-		$deserialized = $deserializer->deserialize( $serialized );
+		$serialized = $this->serializer->serialize( $message );
+		$deserialized = $this->deserializer->deserialize( $serialized );
 
 		$this->assertEquals( $message, $deserialized );
 	}
@@ -30,6 +48,10 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 	public function provideViolationMessages() {
 		return [
 			'no arguments' => [ new ViolationMessage( 'wbqc-violation-message-single-value' ) ],
+			'entity ID' => [
+				( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
+					->withEntityId( new PropertyId( 'P1' ) )
+			],
 		];
 	}
 
