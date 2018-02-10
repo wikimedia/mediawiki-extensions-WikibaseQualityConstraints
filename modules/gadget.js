@@ -348,4 +348,4 @@
 			} );
 		} );
 	} );
-} )( mediaWiki, wikibase, jQuery, OO );
+}( mediaWiki, wikibase, jQuery, OO ) );

@@ -6,4 +6,4 @@
 			$( this ).closest( 'td' ).find( '.wbqc-expandable-content' ).slideToggle( 'fast' );
 		} );
 	} );
-} )( jQuery );
+}( jQuery ) );
