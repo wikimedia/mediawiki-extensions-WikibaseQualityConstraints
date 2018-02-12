@@ -60,8 +60,6 @@ class UniqueValueChecker implements ConstraintChecker {
 	public function getDefaultContextTypes() {
 		return [
 			Context::TYPE_STATEMENT,
-			Context::TYPE_QUALIFIER,
-			Context::TYPE_REFERENCE,
 		];
 	}
 
