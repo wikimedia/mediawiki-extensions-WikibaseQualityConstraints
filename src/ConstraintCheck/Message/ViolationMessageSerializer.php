@@ -57,6 +57,7 @@ class ViolationMessageSerializer implements Serializer {
 			ViolationMessage::TYPE_INLINE_CODE => 'serializeStringByIdentity',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'serializeConstraintScope',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'serializeConstraintScopeList',
+			ViolationMessage::TYPE_LANGUAGE => 'serializeStringByIdentity',
 		];
 
 		$type = $argument['type'];
