@@ -576,8 +576,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$expandableContent
 		);
 
-		return
-			sprintf( '%s %s %s', $content, $tooltipIndicator, $expandableContent );
+		return sprintf( '%s %s %s', $content, $tooltipIndicator, $expandableContent );
 	}
 
 	/**
@@ -646,15 +645,14 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return string HTML
 	 */
 	private function getClaimLink( EntityId $entityId, PropertyId $propertyId, $text ) {
-		return
-			Html::rawElement(
-				'a',
-				[
-					'href' => $this->getClaimUrl( $entityId, $propertyId ),
-					'target' => '_blank'
-				],
-				$text
-			);
+		return Html::rawElement(
+			'a',
+			[
+				'href' => $this->getClaimUrl( $entityId, $propertyId ),
+				'target' => '_blank'
+			],
+			$text
+		);
 	}
 
 	/**

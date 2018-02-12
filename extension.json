@@ -5,7 +5,7 @@
 	"url": "https://www.mediawiki.org/wiki/Extension:WikibaseQualityConstraints",
 	"descriptionmsg": "wbqc-desc",
 	"version": "1.0.0",
-	"license-name": "GPL-2.0+",
+	"license-name": "GPL-2.0-or-later",
 	"type": "wikibase",
 	"requires": {
 		"MediaWiki": ">= 1.31.0"
