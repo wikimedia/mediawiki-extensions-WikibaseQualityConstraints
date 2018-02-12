@@ -13,6 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
+use WikibaseQuality\ConstraintReport\Role;
 
 /**
  * @group WikibaseQualityConstraints
@@ -85,6 +86,12 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 					->withDataValue( new TimeValue( '+19997-02-08T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
 					->withDataValue( new TimeValue( '+1001-01-01T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
 					->withDataValue( new TimeValue( '+2000-12-31T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
+			],
+			'entity ID + data value types' => [
+				( new ViolationMessage( 'wbqc-violation-message-value-needed-of-types-2' ) )
+					->withEntityId( new ItemId( 'Q1' ), Role::CONSTRAINT_TYPE_ITEM )
+					->withDataValueType( 'string' )
+					->withDataValueType( 'monolingualtext' )
 			],
 		];
 	}
