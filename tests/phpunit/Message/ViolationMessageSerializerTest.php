@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
@@ -234,6 +235,27 @@ class ViolationMessageSerializerTest extends \PHPUnit_Framework_TestCase {
 			->serializeDataValue( $dataValue );
 
 		$this->assertSame( [ 'value' => '<a string>', 'type' => 'string' ], $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeConstraintScope
+	 * @dataProvider provideConstraintScopes
+	 */
+	public function testSerializeConstraintScope( $scope, $abbreviation ) {
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeConstraintScope( $scope );
+
+		$this->assertSame( $abbreviation, $serialized );
+	}
+
+	public function provideConstraintScopes() {
+		return [
+			[ Context::TYPE_STATEMENT, 's' ],
+			[ Context::TYPE_QUALIFIER, 'q' ],
+			[ Context::TYPE_REFERENCE, 'r' ],
+		];
 	}
 
 }
