@@ -9,6 +9,7 @@ use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
@@ -92,6 +93,12 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 					->withEntityId( new ItemId( 'Q1' ), Role::CONSTRAINT_TYPE_ITEM )
 					->withDataValueType( 'string' )
 					->withDataValueType( 'monolingualtext' )
+			],
+			'entity ID + constraint scope + constraint scope list' => [
+				( new ViolationMessage( 'wbqc-violation-message-invalid-scope' ) )
+					->withConstraintScope( Context::TYPE_QUALIFIER )
+					->withEntityId( new ItemId( 'Q1' ) )
+					->withConstraintScopeList( [ Context::TYPE_STATEMENT ] )
 			],
 		];
 	}

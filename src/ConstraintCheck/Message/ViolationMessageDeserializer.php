@@ -75,6 +75,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'deserializeStringByIdentity',
 			ViolationMessage::TYPE_INLINE_CODE => 'deserializeStringByIdentity',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'deserializeConstraintScope',
+			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'deserializeConstraintScopeList',
 		];
 
 		$type = $serializedArgument['t'];
@@ -167,6 +168,14 @@ class ViolationMessageDeserializer implements Deserializer {
 				);
 				// @codeCoverageIgnoreEnd
 		}
+	}
+
+	/**
+	 * @param string[] $scopeAbbreviations
+	 * @return string[] Context::TYPE_* constants
+	 */
+	private function deserializeConstraintScopeList( array $scopeAbbreviations ) {
+		return array_map( [ $this, 'deserializeConstraintScope' ], $scopeAbbreviations );
 	}
 
 }
