@@ -53,6 +53,7 @@ class ViolationMessageSerializer implements Serializer {
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST => 'serializeItemIdSnakValueList',
 			ViolationMessage::TYPE_DATA_VALUE => 'serializeDataValue',
 			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'serializeStringByIdentity',
+			ViolationMessage::TYPE_INLINE_CODE => 'serializeStringByIdentity',
 		];
 
 		$type = $argument['type'];
