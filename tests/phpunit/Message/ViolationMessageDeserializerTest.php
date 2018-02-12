@@ -2,6 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use DataValues\DataValueFactory;
+use DataValues\Deserializers\DataValueDeserializer;
+use DataValues\StringValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -22,13 +25,17 @@ use Wikimedia\TestingAccessWrapper;
 class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 	private function getViolationMessageDeserializer(
-		EntityIdParser $entityIdParser = null
+		EntityIdParser $entityIdParser = null,
+		DataValueFactory $dataValueFactory = null
 	) {
 		if ( $entityIdParser === null ) {
 			$entityIdParser = new BasicEntityIdParser();
 		}
+		if ( $dataValueFactory === null ) {
+			$dataValueFactory = new DataValueFactory( new DataValueDeserializer() );
+		}
 
-		return new ViolationMessageDeserializer( $entityIdParser );
+		return new ViolationMessageDeserializer( $entityIdParser, $dataValueFactory );
 	}
 
 	/**
@@ -207,6 +214,22 @@ class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->deserializeItemIdSnakValueList( $serializations );
 
 		$this->assertSame( [], $deserialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeDataValue
+	 */
+	public function testDeserializeDataValue() {
+		$serialization = [ 'type' => 'string', 'value' => '<a string>' ];
+		$deserializer = $this->getViolationMessageDeserializer(
+			null,
+			new DataValueFactory( new DataValueDeserializer( [ 'string' => StringValue::class ] ) )
+		);
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeDataValue( $serialization );
+
+		$this->assertEquals( new StringValue( '<a string>' ), $deserialized );
 	}
 
 }

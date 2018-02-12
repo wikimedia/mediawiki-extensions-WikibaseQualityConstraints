@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use DataValues\StringValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
@@ -194,6 +195,19 @@ class ViolationMessageSerializerTest extends \PHPUnit_Framework_TestCase {
 			->serializeItemIdSnakValueList( $valueList );
 
 		$this->assertSame( [], $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeDataValue
+	 */
+	public function testSerializeDataValue() {
+		$dataValue = new StringValue( '<a string>' );
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeDataValue( $dataValue );
+
+		$this->assertSame( [ 'value' => '<a string>', 'type' => 'string' ], $serialized );
 	}
 
 }

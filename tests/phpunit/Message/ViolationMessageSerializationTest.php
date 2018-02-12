@@ -2,6 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use DataValues\DataValueFactory;
+use DataValues\Deserializers\DataValueDeserializer;
+use DataValues\TimeValue;
+use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -32,7 +36,11 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 		$this->serializer = new ViolationMessageSerializer();
 		$this->deserializer = new ViolationMessageDeserializer(
-			new BasicEntityIdParser()
+			new BasicEntityIdParser(),
+			new DataValueFactory( new DataValueDeserializer( [
+				UnboundedQuantityValue::getType() => UnboundedQuantityValue::class,
+				TimeValue::getType() => TimeValue::class,
+			] ) )
 		);
 	}
 
@@ -63,7 +71,21 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 					->withEntityId( new PropertyId( 'P1' ) )
 					->withEntityId( new PropertyId( 'P2' ) )
 					->withItemIdSnakValue( ItemIdSnakValue::someValue() )
-			]
+			],
+			'entity ID + quantities' => [
+				( new ViolationMessage( 'wbqc-violation-message-range-quantity-closed' ) )
+					->withEntityId( new PropertyId( 'P1' ) )
+					->withDataValue( UnboundedQuantityValue::newFromNumber( -10 ) )
+					->withDataValue( UnboundedQuantityValue::newFromNumber( 0 ) )
+					->withDataValue( UnboundedQuantityValue::newFromNumber( 10000 ) )
+			],
+			'entity ID + times' => [
+				( new ViolationMessage( 'wbqc-violation-message-time-closed' ) )
+					->withEntityId( new PropertyId( 'P2' ) )
+					->withDataValue( new TimeValue( '+19997-02-08T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
+					->withDataValue( new TimeValue( '+1001-01-01T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
+					->withDataValue( new TimeValue( '+2000-12-31T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
+			],
 		];
 	}
 
