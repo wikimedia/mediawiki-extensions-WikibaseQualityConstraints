@@ -99,6 +99,32 @@ class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeStringByIdentity
+	 */
+	public function testDeserializeStringByIdentity_noEscaping() {
+		$serialized = '<pseudo html>&apos;; DROP TABLE Students; -- <![CDATA[ \write18{reboot} ]]>';
+		$serializer = $this->getViolationMessageDeserializer();
+
+		$value = TestingAccessWrapper::newFromObject( $serializer )
+			->deserializeStringByIdentity( $serialized );
+
+		$this->assertSame( $serialized, $value );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeStringByIdentity
+	 */
+	public function testDeserializeStringByIdentity_empty() {
+		$serialized = '';
+		$serializer = $this->getViolationMessageDeserializer();
+
+		$value = TestingAccessWrapper::newFromObject( $serializer )
+			->deserializeStringByIdentity( $serialized );
+
+		$this->assertSame( $serialized, $value );
+	}
+
+	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeEntityId
 	 */
 	public function testDeserializeEntityId() {

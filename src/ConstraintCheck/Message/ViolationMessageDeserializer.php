@@ -70,6 +70,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE => 'deserializeItemIdSnakValue',
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST => 'deserializeItemIdSnakValueList',
 			ViolationMessage::TYPE_DATA_VALUE => 'deserializeDataValue',
+			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'deserializeStringByIdentity',
 		];
 
 		$type = $serializedArgument['t'];
@@ -86,6 +87,14 @@ class ViolationMessageDeserializer implements Deserializer {
 		}
 
 		return $message->withArgument( $type, $role, $value );
+	}
+
+	/**
+	 * @param string $string any value that shall simply be deserialized into itself
+	 * @return string that same value, unchanged
+	 */
+	private function deserializeStringByIdentity( $string ) {
+		return $string;
 	}
 
 	/**
