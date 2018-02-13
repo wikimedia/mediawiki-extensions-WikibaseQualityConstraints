@@ -71,6 +71,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST => 'deserializeItemIdSnakValueList',
 			ViolationMessage::TYPE_DATA_VALUE => 'deserializeDataValue',
 			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'deserializeStringByIdentity',
+			ViolationMessage::TYPE_INLINE_CODE => 'deserializeStringByIdentity',
 		];
 
 		$type = $serializedArgument['t'];
