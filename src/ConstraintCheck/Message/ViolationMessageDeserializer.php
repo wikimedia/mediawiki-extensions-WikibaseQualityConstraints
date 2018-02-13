@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
+use DataValues\DataValue;
+use DataValues\DataValueFactory;
 use Deserializers\Deserializer;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
@@ -21,10 +23,17 @@ class ViolationMessageDeserializer implements Deserializer {
 	 */
 	private $entityIdParser;
 
+	/**
+	 * @var DataValueFactory
+	 */
+	private $dataValueFactory;
+
 	public function __construct(
-		EntityIdParser $entityIdParser
+		EntityIdParser $entityIdParser,
+		DataValueFactory $dataValueFactory
 	) {
 		$this->entityIdParser = $entityIdParser;
+		$this->dataValueFactory = $dataValueFactory;
 	}
 
 	public function unabbreviateViolationMessageKey( $messageKeySuffix ) {
@@ -60,6 +69,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_ENTITY_ID_LIST => 'deserializeEntityIdList',
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE => 'deserializeItemIdSnakValue',
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST => 'deserializeItemIdSnakValueList',
+			ViolationMessage::TYPE_DATA_VALUE => 'deserializeDataValue',
 		];
 
 		$type = $serializedArgument['t'];
@@ -115,6 +125,14 @@ class ViolationMessageDeserializer implements Deserializer {
 	 */
 	private function deserializeItemIdSnakValueList( $valueSerializations ) {
 		return array_map( [ $this, 'deserializeItemIdSnakValue' ], $valueSerializations );
+	}
+
+	/**
+	 * @param array $dataValueSerialization the data value in array form
+	 * @return DataValue
+	 */
+	private function deserializeDataValue( array $dataValueSerialization ) {
+		return $this->dataValueFactory->newFromArray( $dataValueSerialization );
 	}
 
 }

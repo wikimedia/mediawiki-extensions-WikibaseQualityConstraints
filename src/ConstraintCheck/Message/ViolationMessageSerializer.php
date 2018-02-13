@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
+use DataValues\DataValue;
 use InvalidArgumentException;
 use LogicException;
 use Serializers\Serializer;
@@ -50,6 +51,7 @@ class ViolationMessageSerializer implements Serializer {
 			ViolationMessage::TYPE_ENTITY_ID_LIST => 'serializeEntityIdList',
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE => 'serializeItemIdSnakValue',
 			ViolationMessage::TYPE_ITEM_ID_SNAK_VALUE_LIST => 'serializeItemIdSnakValueList',
+			ViolationMessage::TYPE_DATA_VALUE => 'serializeDataValue',
 		];
 
 		$type = $argument['type'];
@@ -118,6 +120,14 @@ class ViolationMessageSerializer implements Serializer {
 	 */
 	private function serializeItemIdSnakValueList( array $valueList ) {
 		return array_map( [ $this, 'serializeItemIdSnakValue' ], $valueList );
+	}
+
+	/**
+	 * @param DataValue $dataValue
+	 * @return array the data value in array form
+	 */
+	private function serializeDataValue( DataValue $dataValue ) {
+		return $dataValue->toArray();
 	}
 
 }
