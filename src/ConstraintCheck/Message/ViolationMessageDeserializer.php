@@ -76,6 +76,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_INLINE_CODE => 'deserializeStringByIdentity',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'deserializeConstraintScope',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'deserializeConstraintScopeList',
+			ViolationMessage::TYPE_LANGUAGE => 'deserializeStringByIdentity',
 		];
 
 		$type = $serializedArgument['t'];
