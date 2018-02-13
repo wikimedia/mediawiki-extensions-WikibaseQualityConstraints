@@ -13,6 +13,7 @@ use SpecialPage;
 use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Entity\EntityId;
@@ -165,7 +166,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$this->dataValueFormatter,
 			$config
 		);
-		$this->violationMessageRenderer = new ViolationMessageRenderer(
+		$this->violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
 			$this->entityIdLabelFormatter,
 			$this->dataValueFormatter,
 			$config

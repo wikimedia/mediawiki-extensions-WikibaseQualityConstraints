@@ -20,7 +20,7 @@ use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
@@ -124,7 +124,7 @@ class CheckConstraints extends ApiBase {
 			$repo->getEntityTitleLookup(),
 			$entityIdLabelFormatter,
 			$constraintParameterRenderer,
-			new ViolationMessageRenderer( $entityIdHtmlLinkFormatter, $valueFormatter, $config ),
+			new MultilingualTextViolationMessageRenderer( $entityIdHtmlLinkFormatter, $valueFormatter, $config ),
 			$config
 		);
 		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
