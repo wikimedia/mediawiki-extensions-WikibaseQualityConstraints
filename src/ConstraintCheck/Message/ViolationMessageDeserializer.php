@@ -51,8 +51,7 @@ class ViolationMessageDeserializer implements Deserializer {
 
 	/**
 	 * @param ViolationMessage $message
-	 * @param array $serializedArgument [ 't' => ViolationMessage::TYPE_*, 'v' => serialized value,
-	 * 'r' => $role, (optional) 'a' => $alternativeMessageKey ]
+	 * @param array $serializedArgument [ 't' => ViolationMessage::TYPE_*, 'v' => serialized value, 'r' => $role ]
 	 * @return ViolationMessage $message with the deserialized argument appended
 	 */
 	private function deserializeArgument( ViolationMessage $message, array $serializedArgument ) {
@@ -66,13 +65,6 @@ class ViolationMessageDeserializer implements Deserializer {
 		$type = $serializedArgument['t'];
 		$serializedValue = $serializedArgument['v'];
 		$role = $serializedArgument['r'];
-		if ( array_key_exists( 'a', $serializedArgument ) ) {
-			$alternativeMessageKey = $this->unabbreviateViolationMessageKey(
-				$serializedArgument['a']
-			);
-		} else {
-			$alternativeMessageKey = null;
-		}
 
 		if ( array_key_exists( $type, $methods ) ) {
 			$method = $methods[$type];
@@ -83,7 +75,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			);
 		}
 
-		return $message->withArgument( $type, $role, $value, $alternativeMessageKey );
+		return $message->withArgument( $type, $role, $value );
 	}
 
 	/**

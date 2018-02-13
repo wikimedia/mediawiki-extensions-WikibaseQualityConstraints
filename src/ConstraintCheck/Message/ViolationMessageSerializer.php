@@ -42,8 +42,7 @@ class ViolationMessageSerializer implements Serializer {
 
 	/**
 	 * @param array $argument element of ViolationMessage::getArguments()
-	 * @return array [ 't' => ViolationMessage::TYPE_*, 'v' => serialized value,
-	 * 'r' => $role, (optional) 'a' => $alternativeMessageKey ]
+	 * @return array [ 't' => ViolationMessage::TYPE_*, 'v' => serialized value, 'r' => $role ]
 	 */
 	private function serializeArgument( array $argument ) {
 		$methods = [
@@ -71,12 +70,6 @@ class ViolationMessageSerializer implements Serializer {
 			'v' => $serializedValue,
 			'r' => $role,
 		];
-
-		if ( array_key_exists( 'alternativeMessageKey', $argument ) ) {
-			$serialized['a'] = $this->abbreviateViolationMessageKey(
-				$argument['alternativeMessageKey']
-			);
-		}
 
 		return $serialized;
 	}
