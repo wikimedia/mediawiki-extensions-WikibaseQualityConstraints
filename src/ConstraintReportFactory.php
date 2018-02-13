@@ -44,6 +44,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 
 /**
  * Factory for {@link DelegatingConstraintChecker}
@@ -104,6 +106,16 @@ class ConstraintReportFactory {
 	private $constraintParameterParser;
 
 	/**
+	 * @var ViolationMessageSerializer
+	 */
+	private $violationMessageSerializer;
+
+	/**
+	 * @var ViolationMessageDeserializer
+	 */
+	private $violationMessageDeserializer;
+
+	/**
 	 * @var RdfVocabulary
 	 */
 	private $rdfVocabulary;
@@ -154,6 +166,10 @@ class ConstraintReportFactory {
 				),
 				$config
 			);
+			$violationMessageDeserializer = new ViolationMessageDeserializer(
+				$wikibaseRepo->getEntityIdParser(),
+				$wikibaseRepo->getDataValueFactory()
+			);
 			$instance = new self(
 				$wikibaseRepo->getEntityLookup(),
 				$wikibaseRepo->getPropertyDataTypeLookup(),
@@ -165,6 +181,8 @@ class ConstraintReportFactory {
 					$wikibaseRepo->getBaseDataModelDeserializerFactory(),
 					$constraintParameterRenderer
 				),
+				new ViolationMessageSerializer(),
+				$violationMessageDeserializer,
 				$wikibaseRepo->getRdfVocabulary(),
 				$wikibaseRepo->getEntityIdParser(),
 				$titleParser,
@@ -183,6 +201,8 @@ class ConstraintReportFactory {
 		Config $config,
 		ConstraintParameterRenderer $constraintParameterRenderer,
 		ConstraintParameterParser $constraintParameterParser,
+		ViolationMessageSerializer $violationMessageSerializer,
+		ViolationMessageDeserializer $violationMessageDeserializer,
 		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser,
 		TitleParser $titleParser,
@@ -195,6 +215,8 @@ class ConstraintReportFactory {
 		$this->config = $config;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->constraintParameterParser = $constraintParameterParser;
+		$this->violationMessageSerializer = $violationMessageSerializer;
+		$this->violationMessageDeserializer = $violationMessageDeserializer;
 		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
 		$this->titleParser = $titleParser;
@@ -241,6 +263,8 @@ class ConstraintReportFactory {
 					$this->entityIdParser,
 					$this->propertyDataTypeLookup,
 					MediaWikiServices::getInstance()->getMainWANObjectCache(),
+					$this->violationMessageSerializer,
+					$this->violationMessageDeserializer,
 					$this->dataFactory
 				);
 			} else {

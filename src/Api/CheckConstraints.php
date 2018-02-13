@@ -21,6 +21,8 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
@@ -111,6 +113,11 @@ class CheckConstraints extends ApiBase {
 				$config,
 				$repo->getBaseDataModelDeserializerFactory(),
 				$constraintParameterRenderer
+			),
+			new ViolationMessageSerializer(),
+			new ViolationMessageDeserializer(
+				$repo->getEntityIdParser(),
+				$repo->getDataValueFactory()
 			),
 			$repo->getRdfVocabulary(),
 			$repo->getEntityIdParser(),

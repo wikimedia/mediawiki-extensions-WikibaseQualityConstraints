@@ -20,6 +20,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
@@ -82,6 +84,10 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$config,
 			$this->getConstraintParameterRenderer(),
 			$this->getConstraintParameterParser(),
+			new ViolationMessageSerializer(),
+			$this->getMockBuilder( ViolationMessageDeserializer::class )
+				->disableOriginalConstructor()
+				->getMock(),
 			$rdfVocabulary,
 			$entityIdParser,
 			$titleParser,

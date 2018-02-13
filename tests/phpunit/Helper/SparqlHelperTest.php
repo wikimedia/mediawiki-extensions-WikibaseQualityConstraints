@@ -2,6 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
+use Config;
+use DataValues\DataValueFactory;
+use DataValues\Deserializers\DataValueDeserializer;
 use DataValues\Geo\Values\GlobeCoordinateValue;
 use DataValues\Geo\Values\LatLongValue;
 use DataValues\MonolingualTextValue;
@@ -26,6 +29,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -56,21 +61,41 @@ class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	private function getSparqlHelper(
+		Config $config = null,
+		PropertyDataTypeLookup $dataTypeLookup = null
+	) {
+		if ( $config === null ) {
+			$config = $this->getDefaultConfig();
+		}
+		if ( $dataTypeLookup === null ) {
+			$dataTypeLookup = new InMemoryDataTypeLookup();
+		}
+		$entityIdParser = new ItemIdParser();
+
+		return $this->getMockBuilder( SparqlHelper::class )
+			->setConstructorArgs( [
+				$config,
+				new RdfVocabulary(
+					[ '' => 'http://www.wikidata.org/entity/' ],
+					'http://www.wikidata.org/wiki/Special:EntityData/'
+				),
+				$entityIdParser,
+				$dataTypeLookup,
+				WANObjectCache::newEmpty(),
+				new ViolationMessageSerializer(),
+				new ViolationMessageDeserializer(
+					$entityIdParser,
+					new DataValueFactory( new DataValueDeserializer() )
+				),
+				new NullStatsdDataFactory()
+			] )
+			->setMethods( [ 'runQuery' ] )
+			->getMock();
+	}
+
 	public function testHasType() {
-		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-					  ->setConstructorArgs( [
-						  $this->getDefaultConfig(),
-						  new RdfVocabulary(
-							  [ '' => 'http://www.wikidata.org/entity/' ],
-							  'http://www.wikidata.org/wiki/Special:EntityData/'
-						  ),
-						  new ItemIdParser(),
-						  new InMemoryDataTypeLookup(),
-						  WANObjectCache::newEmpty(),
-						  new NullStatsdDataFactory()
-					  ] )
-					  ->setMethods( [ 'runQuery' ] )
-					  ->getMock();
+		$sparqlHelper = $this->getSparqlHelper();
 
 		$query = <<<EOF
 ASK {
@@ -97,20 +122,7 @@ EOF;
 			$guid
 		);
 
-		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-					  ->setConstructorArgs( [
-						  $this->getDefaultConfig(),
-						  new RdfVocabulary(
-							  [ '' => 'http://www.wikidata.org/entity/' ],
-							  'http://www.wikidata.org/wiki/Special:EntityData/'
-						  ),
-						  new ItemIdParser(),
-						  new InMemoryDataTypeLookup(),
-						  WANObjectCache::newEmpty(),
-						  new NullStatsdDataFactory()
-					  ] )
-					  ->setMethods( [ 'runQuery' ] )
-					  ->getMock();
+		$sparqlHelper = $this->getSparqlHelper();
 
 		$query = <<<EOF
 SELECT DISTINCT ?otherEntity WHERE {
@@ -154,20 +166,7 @@ EOF;
 		$dtLookup = $this->getMock( PropertyDataTypeLookup::class );
 		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
 
-		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-			->setConstructorArgs( [
-				$this->getDefaultConfig(),
-				new RdfVocabulary(
-					[ '' => 'http://www.wikidata.org/entity/' ],
-					'http://www.wikidata.org/wiki/Special:EntityData/'
-				),
-				new ItemIdParser(),
-				$dtLookup,
-				WANObjectCache::newEmpty(),
-				new NullStatsdDataFactory()
-			] )
-			->setMethods( [ 'runQuery' ] )
-			->getMock();
+		$sparqlHelper = $this->getSparqlHelper( null, $dtLookup );
 
 		$query = <<<EOF
 SELECT DISTINCT ?otherEntity WHERE {
@@ -306,10 +305,7 @@ EOF;
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
 		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\"$") AS ?matches) {}';
-		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-					  ->disableOriginalConstructor()
-					  ->setMethods( [ 'runQuery' ] )
-					  ->getMock();
+		$sparqlHelper = $this->getSparqlHelper();
 
 		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
@@ -325,10 +321,7 @@ EOF;
 		$text = '';
 		$regex = '(.{2,5)?';
 		$query = 'SELECT (REGEX("", "^(.{2,5)?$") AS ?matches) {}';
-		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-					  ->disableOriginalConstructor()
-					  ->setMethods( [ 'runQuery' ] )
-					  ->getMock();
+		$sparqlHelper = $this->getSparqlHelper();
 		$messageKey = 'wbqc-violation-message-parameter-regex';
 
 		$sparqlHelper->expects( $this->once() )
@@ -356,18 +349,7 @@ EOF;
 	 * @dataProvider provideTimeoutMessages
 	 */
 	public function testIsTimeout( $content, $expected ) {
-		$sparqlHelper = new SparqlHelper(
-			$this->getDefaultConfig(),
-			new RdfVocabulary(
-				[ '' => 'http://www.wikidata.org/entity/' ],
-				'http://www.wikidata.org/wiki/Special:EntityData/'
-			),
-
-			new ItemIdParser(),
-			new InMemoryDataTypeLookup(),
-			WANObjectCache::newEmpty(),
-			new NullStatsdDataFactory()
-		);
+		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->isTimeout( $content );
 
@@ -375,22 +357,14 @@ EOF;
 	}
 
 	public function testIsTimeoutRegex() {
-		$sparqlHelper = new SparqlHelper(
+		$sparqlHelper = $this->getSparqlHelper(
 			new HashConfig( [
 				'WBQualityConstraintsSparqlTimeoutExceptionClasses' => [
 					'(?!this may look like a regular expression)',
 					'/but should not be interpreted as one/',
 					'(x+x+)+y',
 				]
-			] ),
-			new RdfVocabulary(
-				[ '' => 'http://www.wikidata.org/entity/' ],
-				'http://www.wikidata.org/wiki/Special:EntityData/'
-			),
-			new ItemIdParser(),
-			new InMemoryDataTypeLookup(),
-			WANObjectCache::newEmpty(),
-			new NullStatsdDataFactory()
+			] )
 		);
 		$content = '(x+x+)+y';
 
@@ -434,17 +408,7 @@ EOF;
 	 * @dataProvider provideCacheHeaders
 	 */
 	 public function testGetCacheMaxAge( $responseHeaders, $expected ) {
-		$sparqlHelper = new SparqlHelper(
-			$this->getDefaultConfig(),
-			new RdfVocabulary(
-				[ '' => 'http://www.wikidata.org/entity/' ],
-				'http://www.wikidata.org/wiki/Special:EntityData/'
-			),
-			new ItemIdParser(),
-			new InMemoryDataTypeLookup(),
-			WANObjectCache::newEmpty(),
-			new NullStatsdDataFactory()
-		);
+		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->getCacheMaxAge( $responseHeaders );
 

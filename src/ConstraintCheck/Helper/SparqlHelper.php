@@ -25,6 +25,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
@@ -72,6 +74,16 @@ class SparqlHelper {
 	private $cache;
 
 	/**
+	 * @var ViolationMessageSerializer
+	 */
+	private $violationMessageSerializer;
+
+	/**
+	 * @var ViolationMessageDeserializer
+	 */
+	private $violationMessageDeserializer;
+
+	/**
 	 * @var IBufferingStatsdDataFactory
 	 */
 	private $dataFactory;
@@ -82,6 +94,8 @@ class SparqlHelper {
 		EntityIdParser $entityIdParser,
 		PropertyDataTypeLookup $propertyDataTypeLookup,
 		WANObjectCache $cache,
+		ViolationMessageSerializer $violationMessageSerializer,
+		ViolationMessageDeserializer $violationMessageDeserializer,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
 		$this->config = $config;
@@ -89,6 +103,8 @@ class SparqlHelper {
 		$this->entityIdParser = $entityIdParser;
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->cache = $cache;
+		$this->violationMessageSerializer = $violationMessageSerializer;
+		$this->violationMessageDeserializer = $violationMessageDeserializer;
 		$this->dataFactory = $dataFactory;
 
 		$this->entityPrefix = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY );
