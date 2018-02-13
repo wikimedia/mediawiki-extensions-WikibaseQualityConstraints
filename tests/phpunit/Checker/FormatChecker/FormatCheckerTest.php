@@ -111,37 +111,37 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			new FakeSnakContext( $snak5 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak6 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak7 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak8 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak9 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak10 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 	}
 
 	public function testFormatConstraintTaxonName() {
@@ -204,37 +204,37 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			new FakeSnakContext( $snak5 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak6 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak7 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak8 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak9 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $snak10 ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertViolation( $result, 'wbqc-violation-message-format' );
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 	}
 
 	public function testFormatConstraintWithSyntaxClarification() {
@@ -335,7 +335,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->formatChecker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		// this constraint is still checked on deprecated statements
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-format' );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-format-clarification' );
 	}
 
 	public function testCheckConstraintParameters() {
