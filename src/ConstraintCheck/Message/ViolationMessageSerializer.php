@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use DataValues\DataValue;
+use DataValues\MultilingualTextValue;
 use InvalidArgumentException;
 use LogicException;
 use Serializers\Serializer;
@@ -58,6 +59,7 @@ class ViolationMessageSerializer implements Serializer {
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'serializeConstraintScope',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'serializeConstraintScopeList',
 			ViolationMessage::TYPE_LANGUAGE => 'serializeStringByIdentity',
+			ViolationMessage::TYPE_MULTILINGUAL_TEXT => 'serializeMultilingualText',
 		];
 
 		$type = $argument['type'];
@@ -172,6 +174,14 @@ class ViolationMessageSerializer implements Serializer {
 	 */
 	private function serializeConstraintScopeList( array $scopeList ) {
 		return array_map( [ $this, 'serializeConstraintScope' ], $scopeList );
+	}
+
+	/**
+	 * @param MultilingualTextValue $text
+	 * @return mixed {@see MultilingualTextValue::getArrayValue}
+	 */
+	private function serializeMultilingualText( MultilingualTextValue $text ) {
+		return $text->getArrayValue();
 	}
 
 }

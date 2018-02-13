@@ -4,6 +4,8 @@ namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use DataValues\DataValueFactory;
 use DataValues\Deserializers\DataValueDeserializer;
+use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
@@ -309,6 +311,41 @@ class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->deserializeConstraintScopeList( $serializations );
 
 		$this->assertSame( [], $deserialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeMultilingualText
+	 */
+	public function testDeserializeMultilingualText() {
+		$textSerialization = [
+			[ 'language' => 'en', 'text' => 'must <strong>not</strong> contain punctuation' ],
+			[ 'language' => 'de', 'text' => 'darf <strong>keine</strong> Satzzeichen enthalten' ],
+		];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeMultilingualText( $textSerialization );
+
+		$this->assertEquals(
+			new MultilingualTextValue( [
+				new MonolingualTextValue( 'en', 'must <strong>not</strong> contain punctuation' ),
+				new MonolingualTextValue( 'de', 'darf <strong>keine</strong> Satzzeichen enthalten' ),
+			] ),
+			$deserialized
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeMultilingualText
+	 */
+	public function testDeserializeMultilingualText_empty() {
+		$textSerialization = [];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeMultilingualText( $textSerialization );
+
+		$this->assertEquals( new MultilingualTextValue( [] ), $deserialized );
 	}
 
 }

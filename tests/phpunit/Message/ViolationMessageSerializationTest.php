@@ -4,6 +4,9 @@ namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use DataValues\DataValueFactory;
 use DataValues\Deserializers\DataValueDeserializer;
+use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
+use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
@@ -42,6 +45,7 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 			new DataValueFactory( new DataValueDeserializer( [
 				UnboundedQuantityValue::getType() => UnboundedQuantityValue::class,
 				TimeValue::getType() => TimeValue::class,
+				StringValue::getType() => StringValue::class,
 			] ) )
 		);
 	}
@@ -100,6 +104,16 @@ class ViolationMessageSerializationTest extends \PHPUnit_Framework_TestCase {
 					->withEntityId( new ItemId( 'Q1' ) )
 					->withConstraintScopeList( [ Context::TYPE_STATEMENT ] )
 			],
+			'entity ID + string value + inline code + multilingual text' => [
+				( new ViolationMessage( 'wbqc-violation-message-format-clarification' ) )
+					->withEntityId( new PropertyId( 'P1' ) )
+					->withDataValue( new StringValue( 'ftp://mirror.example/mirror.html' ) )
+					->withInlineCode( 'https?://[^/]+/.*' )
+					->withMultilingualText( new MultilingualTextValue( [
+						new MonolingualTextValue( 'en', 'HTTP or HTTPS URL' ),
+						new MonolingualTextValue( 'de', 'HTTP- oder HTTPS-URL' ),
+					] ) )
+			]
 		];
 	}
 

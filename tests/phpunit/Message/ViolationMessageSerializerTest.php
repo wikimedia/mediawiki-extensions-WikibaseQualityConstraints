@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
+use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
@@ -284,6 +286,43 @@ class ViolationMessageSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$serialized = TestingAccessWrapper::newFromObject( $serializer )
 			->serializeConstraintScopeList( $scopeList );
+
+		$this->assertSame( [], $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeMultilingualText
+	 */
+	public function testSerializeMultilingualText() {
+		$text = new MultilingualTextValue( [
+			new MonolingualTextValue( 'en', 'the text' ),
+			new MonolingualTextValue( 'de', 'der Text' ),
+			new MonolingualTextValue( 'html', '<span class="text"></span>' ),
+		] );
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeMultilingualText( $text );
+
+		$this->assertSame(
+			[
+				[ 'text' => 'the text', 'language' => 'en' ],
+				[ 'text' => 'der Text', 'language' => 'de' ],
+				[ 'text' => '<span class="text"></span>', 'language' => 'html' ],
+			],
+			$serialized
+		);
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeMultilingualText
+	 */
+	public function testSerializeMultilingualText_empty() {
+		$text = new MultilingualTextValue( [] );
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeMultilingualText( $text );
 
 		$this->assertSame( [], $serialized );
 	}

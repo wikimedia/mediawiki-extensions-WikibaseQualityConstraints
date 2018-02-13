@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use DataValues\DataValue;
 use DataValues\DataValueFactory;
+use DataValues\MultilingualTextValue;
 use Deserializers\Deserializer;
 use InvalidArgumentException;
 use LogicException;
@@ -77,6 +78,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'deserializeConstraintScope',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'deserializeConstraintScopeList',
 			ViolationMessage::TYPE_LANGUAGE => 'deserializeStringByIdentity',
+			ViolationMessage::TYPE_MULTILINGUAL_TEXT => 'deserializeMultilingualText',
 		];
 
 		$type = $serializedArgument['t'];
@@ -177,6 +179,14 @@ class ViolationMessageDeserializer implements Deserializer {
 	 */
 	private function deserializeConstraintScopeList( array $scopeAbbreviations ) {
 		return array_map( [ $this, 'deserializeConstraintScope' ], $scopeAbbreviations );
+	}
+
+	/**
+	 * @param mixed $textSerialization {@see MultilingualTextValue::getArrayValue}
+	 * @return MultilingualTextValue
+	 */
+	private function deserializeMultilingualText( $textSerialization ) {
+		return MultilingualTextValue::newFromArray( $textSerialization );
 	}
 
 }
