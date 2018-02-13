@@ -6,8 +6,10 @@ use DataValues\DataValue;
 use DataValues\DataValueFactory;
 use Deserializers\Deserializer;
 use InvalidArgumentException;
+use LogicException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use Wikimedia\Assert\Assert;
 
@@ -72,6 +74,7 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_DATA_VALUE => 'deserializeDataValue',
 			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'deserializeStringByIdentity',
 			ViolationMessage::TYPE_INLINE_CODE => 'deserializeStringByIdentity',
+			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'deserializeConstraintScope',
 		];
 
 		$type = $serializedArgument['t'];
@@ -143,6 +146,27 @@ class ViolationMessageDeserializer implements Deserializer {
 	 */
 	private function deserializeDataValue( array $dataValueSerialization ) {
 		return $this->dataValueFactory->newFromArray( $dataValueSerialization );
+	}
+
+	/**
+	 * @param string $scopeAbbreviation
+	 * @return string one of the Context::TYPE_* constants
+	 */
+	private function deserializeConstraintScope( $scopeAbbreviation ) {
+		switch ( $scopeAbbreviation ) {
+			case 's':
+				return Context::TYPE_STATEMENT;
+			case 'q':
+				return Context::TYPE_QUALIFIER;
+			case 'r':
+				return Context::TYPE_REFERENCE;
+			default:
+				// @codeCoverageIgnoreStart
+				throw new LogicException(
+					'Unknown constraint scope abbreviation ' . $scopeAbbreviation
+				);
+				// @codeCoverageIgnoreEnd
+		}
 	}
 
 }

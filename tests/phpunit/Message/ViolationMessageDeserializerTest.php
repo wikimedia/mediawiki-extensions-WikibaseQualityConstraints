@@ -10,6 +10,7 @@ use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
@@ -256,6 +257,27 @@ class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->deserializeDataValue( $serialization );
 
 		$this->assertEquals( new StringValue( '<a string>' ), $deserialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeConstraintScope
+	 * @dataProvider provideConstraintScopeAbbreviations
+	 */
+	public function testDeserializeConstraintScope( $abbreviation, $scope ) {
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeConstraintScope( $abbreviation );
+
+		$this->assertSame( $scope, $deserialized );
+	}
+
+	public function provideConstraintScopeAbbreviations() {
+		return [
+			[ 's', Context::TYPE_STATEMENT ],
+			[ 'q', Context::TYPE_QUALIFIER ],
+			[ 'r', Context::TYPE_REFERENCE ],
+		];
 	}
 
 }

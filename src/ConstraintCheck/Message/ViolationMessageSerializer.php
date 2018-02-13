@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use LogicException;
 use Serializers\Serializer;
 use Wikibase\DataModel\Entity\EntityId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use Wikimedia\Assert\Assert;
 
@@ -54,6 +55,7 @@ class ViolationMessageSerializer implements Serializer {
 			ViolationMessage::TYPE_DATA_VALUE => 'serializeDataValue',
 			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'serializeStringByIdentity',
 			ViolationMessage::TYPE_INLINE_CODE => 'serializeStringByIdentity',
+			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'serializeConstraintScope',
 		];
 
 		$type = $argument['type'];
@@ -138,6 +140,27 @@ class ViolationMessageSerializer implements Serializer {
 	 */
 	private function serializeDataValue( DataValue $dataValue ) {
 		return $dataValue->toArray();
+	}
+
+	/**
+	 * @param string $scope one of the Context::TYPE_* constants
+	 * @return string the abbreviated scope
+	 */
+	private function serializeConstraintScope( $scope ) {
+		switch ( $scope ) {
+			case Context::TYPE_STATEMENT:
+				return 's';
+			case Context::TYPE_QUALIFIER:
+				return 'q';
+			case Context::TYPE_REFERENCE:
+				return 'r';
+			default:
+				// @codeCoverageIgnoreStart
+				throw new LogicException(
+					'Unknown constraint scope ' . $scope
+				);
+				// @codeCoverageIgnoreEnd
+		}
 	}
 
 }
