@@ -87,6 +87,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @return string that same value, unchanged
 	 */
 	private function serializeStringByIdentity( $string ) {
+		Assert::parameterType( 'string', $string, '$string' );
 		return $string;
 	}
 
