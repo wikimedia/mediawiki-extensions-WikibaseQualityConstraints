@@ -280,4 +280,35 @@ class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
 		];
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeConstraintScopeList
+	 */
+	public function testDeserializeConstraintScopeList() {
+		$serializations = [ 's', 'r', 'q' ];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeConstraintScopeList( $serializations );
+
+		$expected = [
+			Context::TYPE_STATEMENT,
+			Context::TYPE_REFERENCE,
+			Context::TYPE_QUALIFIER,
+		];
+		$this->assertSame( $expected, $deserialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeConstraintScopeList
+	 */
+	public function testDeserializeConstraintScopeList_empty() {
+		$serializations = [];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializeConstraintScopeList( $serializations );
+
+		$this->assertSame( [], $deserialized );
+	}
+
 }

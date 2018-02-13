@@ -258,4 +258,34 @@ class ViolationMessageSerializerTest extends \PHPUnit_Framework_TestCase {
 		];
 	}
 
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeConstraintScopeList
+	 */
+	public function testSerializeConstraintScopeList() {
+		$scopeList = [
+			Context::TYPE_STATEMENT,
+			Context::TYPE_REFERENCE,
+			Context::TYPE_QUALIFIER,
+		];
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeConstraintScopeList( $scopeList );
+
+		$this->assertSame( [ 's', 'r', 'q' ], $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeConstraintScopeList
+	 */
+	public function testSerializeConstraintScopeList_empty() {
+		$scopeList = [];
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializeConstraintScopeList( $scopeList );
+
+		$this->assertSame( [], $serialized );
+	}
+
 }

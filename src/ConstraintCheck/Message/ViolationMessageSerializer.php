@@ -56,6 +56,7 @@ class ViolationMessageSerializer implements Serializer {
 			ViolationMessage::TYPE_DATA_VALUE_TYPE => 'serializeStringByIdentity',
 			ViolationMessage::TYPE_INLINE_CODE => 'serializeStringByIdentity',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'serializeConstraintScope',
+			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'serializeConstraintScopeList',
 		];
 
 		$type = $argument['type'];
@@ -161,6 +162,14 @@ class ViolationMessageSerializer implements Serializer {
 				);
 				// @codeCoverageIgnoreEnd
 		}
+	}
+
+	/**
+	 * @param string[] $scopeList Context::TYPE_* constants
+	 * @return string[] abbreviated scopes
+	 */
+	private function serializeConstraintScopeList( array $scopeList ) {
+		return array_map( [ $this, 'serializeConstraintScope' ], $scopeList );
 	}
 
 }
