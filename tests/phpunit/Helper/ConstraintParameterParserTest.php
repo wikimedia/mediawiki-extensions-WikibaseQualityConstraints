@@ -507,16 +507,18 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new PropertyId( 'P1' );
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$this->assertThrowsConstraintParameterException(
+			'parseRangeParameter',
 			[
-				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
-				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
+				[
+					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
+					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
+				],
+				'',
+				'quantity'
 			],
-			'',
-			'quantity'
+			'wbqc-violation-message-range-parameters-same'
 		);
-
-		$this->assertSame( [ null, null ], $parsed );
 	}
 
 	public function testParseRangeParameter_Quantity_SomeValue() {
@@ -536,6 +538,27 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				'quantity'
 			],
 			'wbqc-violation-message-parameter-value-or-novalue'
+		);
+	}
+
+	public function testParseRangeParameter_Quantity_Same() {
+		$config = $this->getDefaultConfig();
+		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
+		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
+		$propertyId = new PropertyId( 'P1' );
+		$quantity = UnboundedQuantityValue::newFromNumber( 13.37 );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseRangeParameter',
+			[
+				[
+					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $quantity ) ) ],
+					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $quantity ) ) ]
+				],
+				'constraint',
+				'quantity'
+			],
+			'wbqc-violation-message-range-parameters-same'
 		);
 	}
 
