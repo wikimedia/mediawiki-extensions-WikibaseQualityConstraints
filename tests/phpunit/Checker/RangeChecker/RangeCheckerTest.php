@@ -296,6 +296,80 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-rightopen' );
 	}
 
+	public function testRangeConstraintOutsideClosedRangeToNow() {
+		$misspelledNineteenEightyFour = new TimeValue(
+			'+00000019984-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_YEAR,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $misspelledNineteenEightyFour );
+		$constraintParameters = $this->rangeParameter( 'time', $this->timeValue, 'now' );
+
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed-rightnow' );
+	}
+
+	public function testRangeConstraintOutsideOpenRangeToNow() {
+		$misspelledNineteenEightyFour = new TimeValue(
+			'+00000019984-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_YEAR,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $misspelledNineteenEightyFour );
+		$constraintParameters = $this->rangeParameter( 'time', null, 'now' );
+
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-leftopen-rightnow' );
+	}
+
+	public function testRangeConstraintOutsideClosedRangeFromNow() {
+		$farFuture = new TimeValue(
+			'+00000019984-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_YEAR,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
+		$nineteenEightyFour = new TimeValue(
+			'+00000001984-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_YEAR,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour );
+		$constraintParameters = $this->rangeParameter( 'time', 'now', $farFuture );
+
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed-leftnow' );
+	}
+
+	public function testRangeConstraintOutsideOpenRangeFromNow() {
+		$nineteenEightyFour = new TimeValue(
+			'+00000001984-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_YEAR,
+			'http://www.wikidata.org/entity/Q1985727'
+		);
+		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour );
+		$constraintParameters = $this->rangeParameter( 'time', 'now', null );
+
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-rightopen-leftnow' );
+	}
+
 	public function testRangeConstraintDeprecatedStatement() {
 		$statement = NewStatement::noValueFor( 'P1' )
 				   ->withDeprecatedRank()

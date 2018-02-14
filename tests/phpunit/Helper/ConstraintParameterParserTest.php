@@ -19,6 +19,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -588,8 +589,6 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new PropertyId( 'P1' );
-		$calendar = 'http://www.wikidata.org/entity/Q1985727';
-		$now = new TimeValue( gmdate( '+Y-m-d\T00:00:00\Z' ), 0, 0, 0, TimeValue::PRECISION_DAY, $calendar );
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
@@ -600,7 +599,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'time'
 		);
 
-		$this->assertEquals( [ null, $now ], $parsed );
+		$this->assertEquals( [ null, new NowValue() ], $parsed );
 	}
 
 	public function testParseRangeParameter_Time_Future() {
@@ -608,8 +607,6 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new PropertyId( 'P1' );
-		$calendar = 'http://www.wikidata.org/entity/Q1985727';
-		$now = new TimeValue( gmdate( '+Y-m-d\T00:00:00\Z' ), 0, 0, 0, TimeValue::PRECISION_DAY, $calendar );
 
 		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
 			[
@@ -620,7 +617,55 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'time'
 		);
 
-		$this->assertEquals( [ $now, null ], $parsed );
+		$this->assertEquals( [ new NowValue(), null ], $parsed );
+	}
+
+	public function testParseRangeParameter_Time_BothNow() {
+		$config = $this->getDefaultConfig();
+		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
+		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
+		$propertyId = new PropertyId( 'P1' );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseRangeParameter',
+			[
+				[
+					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
+					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
+				],
+				'',
+				'time'
+			],
+			'wbqc-violation-message-range-parameters-same'
+		);
+	}
+
+	public function testParseRangeParameter_Time_Wikidata() {
+		// range: from the inception of Wikidata until now
+		// (NowValue uses the same date internally, but that should not result in a “same range endpoints” error)
+		$config = $this->getDefaultConfig();
+		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
+		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
+		$propertyId = new PropertyId( 'P1' );
+		$wikidataInception = new TimeValue(
+			'+2012-10-29T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_SECOND,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+
+		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+			[
+				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $wikidataInception ) ) ],
+				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
+			],
+			'',
+			'time'
+		);
+
+		$this->assertEquals( [ $wikidataInception, new NowValue() ], $parsed );
 	}
 
 	public function testParseRangeParameter_Quantity_OneYear() {

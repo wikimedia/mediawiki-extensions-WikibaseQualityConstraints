@@ -19,7 +19,6 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
-use Wikibase\Repo\Parsers\TimeParserFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -389,8 +388,7 @@ class ConstraintParameterParser {
 			return $this->parseValueOrNoValueParameter( $snakSerialization, $parameterId );
 		} catch ( ConstraintParameterException $e ) {
 			// unknown value means “now”
-			$timeParser = ( new TimeParserFactory() )->getTimeParser();
-			return $timeParser->parse( gmdate( '+Y-m-d\T00:00:00\Z' ) );
+			return new NowValue();
 		}
 	}
 
