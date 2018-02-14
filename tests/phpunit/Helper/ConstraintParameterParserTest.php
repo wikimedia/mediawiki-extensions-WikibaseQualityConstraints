@@ -568,7 +568,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new PropertyId( 'P1' );
-		$calendar = 'http://www.wikidata.org/entity/Q1985727';
+		$calendar = TimeValue::CALENDAR_GREGORIAN;
 		$min = new TimeValue( '+1789-05-08T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_YEAR, $calendar );
 		$max = new TimeValue( '+1955-02-05T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_YEAR, $calendar );
 

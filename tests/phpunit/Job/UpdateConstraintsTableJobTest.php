@@ -75,7 +75,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$class1 = new EntityIdValue( new ItemId( 'Q5' ) );
 		$class2 = new EntityIdValue( new ItemId( 'Q15632617' ) );
 		$quantity = UnboundedQuantityValue::newFromNumber( 50, 'kg' );
-		$date = new TimeValue( '+2000-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, 'Q1985727' );
+		$date = new TimeValue( '+2000-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN );
 		$snakP2308A = new PropertyValueSnak(
 			new PropertyId( 'P2308' ),
 			$class1

@@ -113,11 +113,11 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		self::$t0001 = new TimeValue( '+00000000001-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
-		self::$t1800 = new TimeValue( '+00000001800-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
-		self::$t1900 = new TimeValue( '+00000001900-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
-		self::$t1970 = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
-		self::$t2000 = new TimeValue( '+00000002000-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		self::$t0001 = new TimeValue( '+00000000001-01-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN );
+		self::$t1800 = new TimeValue( '+00000001800-01-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN );
+		self::$t1900 = new TimeValue( '+00000001900-01-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN );
+		self::$t1970 = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN );
+		self::$t2000 = new TimeValue( '+00000002000-01-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN );
 		self::$s1970 = NewStatement::forProperty( 'P570' )->withValue( self::$t1970 )->build();
 		self::$i1970 = NewItem::withId( 'Q1' )->andStatement( self::$s1970 );
 	}
@@ -198,7 +198,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	public function testDiffWithinRangeConstraintWithinDaysRange() {
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001969-12-24T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+				new TimeValue( '+00000001969-12-24T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
@@ -211,7 +211,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	public function testDiffWithinRangeConstraintTooFewDays() {
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001969-12-31T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+				new TimeValue( '+00000001969-12-31T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
@@ -224,7 +224,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	public function testDiffWithinRangeConstraintTooManyDays() {
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001969-10-31T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+				new TimeValue( '+00000001969-10-31T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
@@ -238,7 +238,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		// DoB June 1820 and DoD January 1970 has diff within range [0, 150] years
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001820-06-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+				new TimeValue( '+00000001820-06-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
@@ -254,7 +254,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		// because June is after January, even though the year difference is 0 (within range)
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001970-06-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+				new TimeValue( '+00000001970-06-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
@@ -269,12 +269,12 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		// DoB March 1820 and DoD September 1970 violates diff within range [0, 150] years
 		// because March is before September, even though the year difference is 150 (within range)
 		$fall1970Statement = NewStatement::forProperty( 'P570' )->withValue(
-			new TimeValue( '+00000001970-09-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+			new TimeValue( '+00000001970-09-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN )
 		)->build();
 		$entity = NewItem::withId( 'Q1' )
 			->andStatement( $fall1970Statement )
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001820-03-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' )
+				new TimeValue( '+00000001820-03-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
