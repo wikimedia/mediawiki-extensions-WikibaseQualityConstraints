@@ -210,7 +210,7 @@ EOF;
 			0,
 			0,
 			0,
-			11,
+			TimeValue::PRECISION_DAY,
 			TimeValue::CALENDAR_GREGORIAN
 		);
 		return [

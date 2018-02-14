@@ -238,7 +238,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 			0,
 			0,
 			0,
-			11,
+			TimeValue::PRECISION_DAY,
 			TimeValue::CALENDAR_GREGORIAN
 		);
 	}
