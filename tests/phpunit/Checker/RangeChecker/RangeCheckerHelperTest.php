@@ -239,7 +239,7 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 			0,
 			0,
 			11,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 	}
 

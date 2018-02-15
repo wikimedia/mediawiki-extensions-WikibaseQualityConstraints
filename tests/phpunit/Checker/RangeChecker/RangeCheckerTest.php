@@ -49,7 +49,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, 'http://www.wikidata.org/entity/Q1985727' );
+		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN );
 		$rangeCheckerHelper = new RangeCheckerHelper(
 			$this->getDefaultConfig(),
 			new UnitConverter( new CSVUnitStorage( __DIR__ . '/units.csv' ), '' )
@@ -233,7 +233,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'+00000001949-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenFourtyNine );
 		$constraintParameters = $this->rangeParameter( 'time', null, $this->timeValue );
@@ -250,7 +250,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'+00000001984-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour );
 		$constraintParameters = $this->rangeParameter( 'time', null, $this->timeValue );
@@ -267,7 +267,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'+00000001984-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour );
 		$constraintParameters = $this->rangeParameter( 'time', $this->timeValue, null );
@@ -284,7 +284,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'+00000001949-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenFourtyNine );
 		$constraintParameters = $this->rangeParameter( 'time', $this->timeValue, null );
@@ -301,7 +301,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'+00000019984-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $misspelledNineteenEightyFour );
 		$constraintParameters = $this->rangeParameter( 'time', $this->timeValue, 'now' );
@@ -318,7 +318,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'+00000019984-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $misspelledNineteenEightyFour );
 		$constraintParameters = $this->rangeParameter( 'time', null, 'now' );
@@ -335,13 +335,13 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'+00000019984-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$nineteenEightyFour = new TimeValue(
 			'+00000001984-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour );
 		$constraintParameters = $this->rangeParameter( 'time', 'now', $farFuture );
@@ -358,7 +358,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			'+00000001984-01-01T00:00:00Z',
 			0, 0, 0,
 			TimeValue::PRECISION_YEAR,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		$snak = new PropertyValueSnak( new PropertyId( 'P1457' ), $nineteenEightyFour );
 		$constraintParameters = $this->rangeParameter( 'time', 'now', null );

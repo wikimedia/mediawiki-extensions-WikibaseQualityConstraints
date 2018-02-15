@@ -211,7 +211,7 @@ EOF;
 			0,
 			0,
 			11,
-			'http://www.wikidata.org/entity/Q1985727'
+			TimeValue::CALENDAR_GREGORIAN
 		);
 		return [
 			'string, qualifier' => [
