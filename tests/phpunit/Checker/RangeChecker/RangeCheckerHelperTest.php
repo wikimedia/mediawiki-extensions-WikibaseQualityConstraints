@@ -83,8 +83,8 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	 * @dataProvider provideDifferences
 	 */
 	public function testGetDifference( $expected, DataValue $minuend, DataValue $subtrahend ) {
-		$rangeCheckHelper = $this->getRangeCheckerHelper();
-		$diff = $rangeCheckHelper->getDifference( $minuend, $subtrahend );
+		$rangeCheckerHelper = $this->getRangeCheckerHelper();
+		$diff = $rangeCheckerHelper->getDifference( $minuend, $subtrahend );
 		$actual = $diff->getAmount()->getValueFloat();
 		$this->assertSame( (float)$expected, $actual );
 	}
@@ -152,9 +152,9 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		TimeValue $subtrahend,
 		TimeValue $minuend
 	) {
-		$rangeCheckHelper = $this->getRangeCheckerHelper();
+		$rangeCheckerHelper = $this->getRangeCheckerHelper();
 
-		$diff = $rangeCheckHelper->getDifferenceInYears( $minuend, $subtrahend );
+		$diff = $rangeCheckerHelper->getDifferenceInYears( $minuend, $subtrahend );
 		$actual = $diff->getAmount()->getValueFloat();
 
 		// $minExpected ≤ $actual ≤ $maxExpected
@@ -200,16 +200,16 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testGetComparison_unsupportedDataValueTypeThrowsException() {
-		$rangeCheckHelper = $this->getRangeCheckerHelper();
-		$rangeCheckHelper->getComparison( new StringValue( 'kittens' ), new StringValue( 'puppies' ) );
+		$rangeCheckerHelper = $this->getRangeCheckerHelper();
+		$rangeCheckerHelper->getComparison( new StringValue( 'kittens' ), new StringValue( 'puppies' ) );
 	}
 
 	/**
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testGetComparison_differingDataValueTypeThrowsException() {
-		$rangeCheckHelper = $this->getRangeCheckerHelper();
-		$rangeCheckHelper->getComparison( $this->getQuantityValue( 42.0 ), $this->getTimeValue( 1970 ) );
+		$rangeCheckerHelper = $this->getRangeCheckerHelper();
+		$rangeCheckerHelper->getComparison( $this->getQuantityValue( 42.0 ), $this->getTimeValue( 1970 ) );
 	}
 
 	/**
