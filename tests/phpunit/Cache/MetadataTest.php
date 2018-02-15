@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Cache;
 
+use DataValues\TimeValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
@@ -43,6 +44,14 @@ class MetadataTest extends \PHPUnit_Framework_TestCase {
 	public function testMerge() {
 		$q42 = new ItemId( 'Q42' );
 		$p31 = new PropertyId( 'P31' );
+		$future = new TimeValue(
+			'+2117-02-15T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
 		$m = Metadata::merge( [
 			Metadata::blank(),
 			Metadata::ofCachingMetadata( CachingMetadata::fresh() ),
@@ -52,6 +61,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase {
 			Metadata::ofDependencyMetadata( DependencyMetadata::blank() ),
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 13 ) ),
 			Metadata::ofDependencyMetadata( DependencyMetadata::ofEntityId( $p31 ) ),
+			Metadata::ofDependencyMetadata( DependencyMetadata::ofFutureTime( $future ) ),
 		] );
 
 		$this->assertTrue( $m->getCachingMetadata()->isCached() );
@@ -61,6 +71,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase {
 		sort( $expectedEntityIds );
 		sort( $actualEntityIds );
 		$this->assertSame( $expectedEntityIds, $actualEntityIds );
+		$this->assertSame( $future, $m->getDependencyMetadata()->getFutureTime() );
 	}
 
 	public function testMerge_blank() {
