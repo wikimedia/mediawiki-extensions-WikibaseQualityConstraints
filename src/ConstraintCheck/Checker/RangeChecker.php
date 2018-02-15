@@ -3,10 +3,13 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use DataValues\DataValue;
+use DataValues\TimeValue;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
@@ -133,7 +136,18 @@ class RangeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		if (
+			$dataValue instanceof  TimeValue &&
+			( $min instanceof NowValue || $max instanceof NowValue ) &&
+			$this->rangeCheckerHelper->isFutureTime( $dataValue )
+		) {
+			$dependencyMetadata = DependencyMetadata::ofFutureTime( $dataValue );
+		} else {
+			$dependencyMetadata = DependencyMetadata::blank();
+		}
+
+		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
+			->withMetadata( Metadata::ofDependencyMetadata( $dependencyMetadata ) );
 	}
 
 	/**
