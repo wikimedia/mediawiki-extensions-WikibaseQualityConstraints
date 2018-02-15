@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use DataValues\DataValue;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -119,35 +121,12 @@ class RangeChecker implements ConstraintChecker {
 		if ( $this->rangeCheckerHelper->getComparison( $min, $dataValue ) > 0 ||
 			 $this->rangeCheckerHelper->getComparison( $dataValue, $max ) > 0
 		) {
-			// possible message keys:
-			// wbqc-violation-message-range-quantity-closed
-			// wbqc-violation-message-range-quantity-leftopen
-			// wbqc-violation-message-range-quantity-rightopen
-			// wbqc-violation-message-range-time-closed
-			// wbqc-violation-message-range-time-closed-leftnow
-			// wbqc-violation-message-range-time-closed-rightnow
-			// wbqc-violation-message-range-time-leftopen
-			// wbqc-violation-message-range-time-leftopen-rightnow
-			// wbqc-violation-message-range-time-rightopen
-			// wbqc-violation-message-range-time-rightopen-leftnow
-			$messageKey = 'wbqc-violation-message-range';
-			$messageKey .= '-' . $dataValue->getType();
-			// at least one of $min, $max is set at this point, otherwise there could be no violation
-			$messageKey .= '-' . ( $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen' );
-			if ( $min instanceof NowValue ) {
-				$messageKey .= '-leftnow';
-			} elseif ( $max instanceof  NowValue ) {
-				$messageKey .= '-rightnow';
-			}
-			$message = ( new ViolationMessage( $messageKey ) )
-				->withEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE )
-				->withDataValue( $dataValue, Role::OBJECT );
-			if ( $min !== null && !( $min instanceof NowValue ) ) {
-				$message = $message->withDataValue( $min, Role::OBJECT );
-			}
-			if ( $max !== null && !( $max instanceof  NowValue ) ) {
-				$message = $message->withDataValue( $max, Role::OBJECT );
-			}
+			$message = $this->getViolationMessage(
+				$context->getSnak()->getPropertyId(),
+				$dataValue,
+				$min,
+				$max
+			);
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = null;
@@ -155,6 +134,47 @@ class RangeChecker implements ConstraintChecker {
 		}
 
 		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+	}
+
+	/**
+	 * @param PropertyId $predicate
+	 * @param DataValue $value
+	 * @param DataValue|null $min
+	 * @param DataValue|null $max
+	 *
+	 * @return ViolationMessage
+	 */
+	private function getViolationMessage( PropertyId $predicate, DataValue $value, $min, $max ) {
+		// possible message keys:
+		// wbqc-violation-message-range-quantity-closed
+		// wbqc-violation-message-range-quantity-leftopen
+		// wbqc-violation-message-range-quantity-rightopen
+		// wbqc-violation-message-range-time-closed
+		// wbqc-violation-message-range-time-closed-leftnow
+		// wbqc-violation-message-range-time-closed-rightnow
+		// wbqc-violation-message-range-time-leftopen
+		// wbqc-violation-message-range-time-leftopen-rightnow
+		// wbqc-violation-message-range-time-rightopen
+		// wbqc-violation-message-range-time-rightopen-leftnow
+		$messageKey = 'wbqc-violation-message-range';
+		$messageKey .= '-' . $value->getType();
+		// at least one of $min, $max is set, otherwise there could be no violation
+		$messageKey .= '-' . ( $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen' );
+		if ( $min instanceof NowValue ) {
+			$messageKey .= '-leftnow';
+		} elseif ( $max instanceof  NowValue ) {
+			$messageKey .= '-rightnow';
+		}
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withEntityId( $predicate, Role::PREDICATE )
+			->withDataValue( $value, Role::OBJECT );
+		if ( $min !== null && !( $min instanceof NowValue ) ) {
+			$message = $message->withDataValue( $min, Role::OBJECT );
+		}
+		if ( $max !== null && !( $max instanceof  NowValue ) ) {
+			$message = $message->withDataValue( $max, Role::OBJECT );
+		}
+		return $message;
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {
