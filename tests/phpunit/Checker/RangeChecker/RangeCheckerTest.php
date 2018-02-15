@@ -49,7 +49,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, 11, TimeValue::CALENDAR_GREGORIAN );
+		$this->timeValue = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN );
 		$rangeCheckerHelper = new RangeCheckerHelper(
 			$this->getDefaultConfig(),
 			new UnitConverter( new CSVUnitStorage( __DIR__ . '/units.csv' ), '' )
