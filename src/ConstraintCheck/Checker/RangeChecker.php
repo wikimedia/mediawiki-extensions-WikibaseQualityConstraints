@@ -9,6 +9,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -118,23 +119,33 @@ class RangeChecker implements ConstraintChecker {
 		if ( $this->rangeCheckerHelper->getComparison( $min, $dataValue ) > 0 ||
 			 $this->rangeCheckerHelper->getComparison( $dataValue, $max ) > 0
 		) {
-			// at least one of $min, $max is set at this point, otherwise there could be no violation
-			$type = $dataValue->getType();
-			$openness = $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen';
 			// possible message keys:
 			// wbqc-violation-message-range-quantity-closed
 			// wbqc-violation-message-range-quantity-leftopen
 			// wbqc-violation-message-range-quantity-rightopen
 			// wbqc-violation-message-range-time-closed
+			// wbqc-violation-message-range-time-closed-leftnow
+			// wbqc-violation-message-range-time-closed-rightnow
 			// wbqc-violation-message-range-time-leftopen
+			// wbqc-violation-message-range-time-leftopen-rightnow
 			// wbqc-violation-message-range-time-rightopen
-			$message = ( new ViolationMessage( "wbqc-violation-message-range-$type-$openness" ) )
+			// wbqc-violation-message-range-time-rightopen-leftnow
+			$messageKey = 'wbqc-violation-message-range';
+			$messageKey .= '-' . $dataValue->getType();
+			// at least one of $min, $max is set at this point, otherwise there could be no violation
+			$messageKey .= '-' . ( $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen' );
+			if ( $min instanceof NowValue ) {
+				$messageKey .= '-leftnow';
+			} elseif ( $max instanceof  NowValue ) {
+				$messageKey .= '-rightnow';
+			}
+			$message = ( new ViolationMessage( $messageKey ) )
 				->withEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE )
 				->withDataValue( $dataValue, Role::OBJECT );
-			if ( $min !== null ) {
+			if ( $min !== null && !( $min instanceof NowValue ) ) {
 				$message = $message->withDataValue( $min, Role::OBJECT );
 			}
-			if ( $max !== null ) {
+			if ( $max !== null && !( $max instanceof  NowValue ) ) {
 				$message = $message->withDataValue( $max, Role::OBJECT );
 			}
 			$status = CheckResult::STATUS_VIOLATION;
