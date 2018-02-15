@@ -469,6 +469,17 @@ class ConstraintParameterParser {
 					->escaped()
 			);
 		}
+		if ( $min === null && $max === null ||
+			$min !== null && $max !== null && $min->equals( $max ) ) {
+			throw new ConstraintParameterException(
+				wfMessage( 'wbqc-violation-message-range-parameters-same' )
+					->rawParams(
+						$this->constraintParameterRenderer->formatPropertyId( $minimumId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
+						$this->constraintParameterRenderer->formatPropertyId( $maximumId, Role::CONSTRAINT_PARAMETER_PROPERTY )
+					)
+					->escaped()
+			);
+		}
 
 		return [ $min, $max ];
 	}
