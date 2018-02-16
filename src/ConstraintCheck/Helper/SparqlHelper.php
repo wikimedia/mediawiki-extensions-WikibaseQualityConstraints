@@ -28,7 +28,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
 /**
@@ -513,10 +512,8 @@ EOF;
 		} else {
 			// empty result: regex broken
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-regex' )
-					->rawParams( ConstraintParameterRenderer::formatByRole( Role::CONSTRAINT_PARAMETER_VALUE,
-						'<code><nowiki>' . htmlspecialchars( $regex ) . '</nowiki></code>' ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
+					->withInlineCode( $regex, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
 	}
