@@ -37,6 +37,11 @@ class RangeCheckerHelper {
 	private $timeCalculator;
 
 	/**
+	 * @var TimeValueComparer
+	 */
+	private $timeValueComparer;
+
+	/**
 	 * @var UnitConverter|null
 	 */
 	private $unitConverter;
@@ -48,6 +53,7 @@ class RangeCheckerHelper {
 		$this->config = $config;
 		$this->timeParser = ( new TimeParserFactory() )->getTimeParser();
 		$this->timeCalculator = new TimeValueCalculator();
+		$this->timeValueComparer = new TimeValueComparer();
 		$this->unitConverter = $unitConverter;
 	}
 
@@ -93,14 +99,7 @@ class RangeCheckerHelper {
 			case 'time':
 				/** @var TimeValue $lhs */
 				/** @var TimeValue $rhs */
-				$lhsTimestamp = $this->timeCalculator->getTimestamp( $lhs );
-				$rhsTimestamp = $this->timeCalculator->getTimestamp( $rhs );
-
-				if ( $lhsTimestamp === $rhsTimestamp ) {
-					return 0;
-				}
-
-				return $lhsTimestamp < $rhsTimestamp ? -1 : 1;
+				return $this->timeValueComparer->getComparison( $lhs, $rhs );
 			case 'quantity':
 				/** @var QuantityValue|UnboundedQuantityValue $lhs */
 				/** @var QuantityValue|UnboundedQuantityValue $rhs */
