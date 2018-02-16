@@ -9,6 +9,8 @@ use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters
@@ -75,12 +77,26 @@ class CheckConstraintParametersTest extends ApiTestCase {
 					}
 				) );
 
+			$violationMessageRenderer = $this->getMockBuilder( ViolationMessageRenderer::class )
+				->disableOriginalConstructor()
+				->setMethods( [ 'render' ] )
+				->getMock();
+			$violationMessageRenderer->method( 'render' )
+				->willReturnCallback( function( $violationMessage ) {
+					if ( $violationMessage instanceof ViolationMessage ) {
+						return $violationMessage->getMessageKey();
+					} else {
+						return $violationMessage;
+					}
+				} );
+
 			return new CheckConstraintParameters(
 				$main,
 				$name,
 				$prefix,
 				$apiHelperFactory,
 				$delegatingConstraintChecker,
+				$violationMessageRenderer,
 				$statementGuidParser,
 				new NullStatsdDataFactory()
 			);
