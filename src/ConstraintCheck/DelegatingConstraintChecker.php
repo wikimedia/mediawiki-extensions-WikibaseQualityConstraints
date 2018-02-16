@@ -424,7 +424,7 @@ class DelegatingConstraintChecker {
 			try {
 				$exceptions = $this->constraintParameterParser->parseExceptionParameter( $parameters );
 			} catch ( ConstraintParameterException $e ) {
-				$result[] = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
+				$result[] = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
 				continue;
 			}
 
@@ -542,7 +542,7 @@ class DelegatingConstraintChecker {
 			try {
 				$result = $checker->checkConstraint( $context, $constraint );
 			} catch ( ConstraintParameterException $e ) {
-				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
+				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
 			} catch ( SparqlHelperException $e ) {
 				$message = new ViolationMessage( 'wbqc-violation-message-sparql-error' );
 				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
@@ -555,7 +555,7 @@ class DelegatingConstraintChecker {
 				$constraintStatus = $this->constraintParameterParser
 					->parseConstraintStatusParameter( $constraint->getConstraintParameters() );
 			} catch ( ConstraintParameterException $e ) {
-				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
+				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
 				$constraintStatus = null;
 			}
 			if ( $constraintStatus === null ) {
@@ -601,7 +601,7 @@ class DelegatingConstraintChecker {
 				$constraint->getConstraintTypeItemId()
 			);
 		} catch ( ConstraintParameterException $e ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getMessage() );
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
 		}
 		if ( $checkedContextTypes === null ) {
 			$checkedContextTypes = $checker->getDefaultContextTypes();

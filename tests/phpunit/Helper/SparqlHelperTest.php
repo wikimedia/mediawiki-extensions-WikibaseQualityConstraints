@@ -339,7 +339,7 @@ EOF;
 				$this->getMockBuilder( Constraint::class )->disableOriginalConstructor()->getMock(),
 				[],
 				CheckResult::STATUS_VIOLATION,
-				$exception->getMessage()
+				$exception->getViolationMessage()
 			);
 			$this->assertViolation( $checkResult, $messageKey );
 		}
