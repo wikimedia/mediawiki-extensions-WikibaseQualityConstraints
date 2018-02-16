@@ -212,6 +212,13 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$rangeCheckerHelper->getComparison( $this->getQuantityValue( 42.0 ), $this->getTimeValue( 1970 ) );
 	}
 
+	public function testIsFutureTime() {
+		$rangeCheckerHelper = $this->getRangeCheckerHelper();
+		$past = $this->getTimeValue( 2012, 10, 29 );
+
+		$this->assertFalse( $rangeCheckerHelper->isFutureTime( $past ) );
+	}
+
 	/**
 	 * @param int $year
 	 * @param int $month
