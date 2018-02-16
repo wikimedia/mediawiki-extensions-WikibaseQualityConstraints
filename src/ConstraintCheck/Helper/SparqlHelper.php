@@ -25,6 +25,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -409,10 +410,7 @@ EOF;
 					try {
 						$matches = $this->matchesRegularExpressionWithSparql( $text, $regex );
 					} catch ( ConstraintParameterException $e ) {
-						$matches = [
-							'type' => ConstraintParameterException::class,
-							'message' => $e->getMessage(),
-						];
+						$matches = $this->serializeConstraintParameterException( $e );
 					} catch ( SparqlHelperException $e ) {
 						// don’t cache this
 						return $cacheMap->toArray();
@@ -445,7 +443,7 @@ EOF;
 				return $matches;
 			} elseif ( is_array( $matches ) &&
 				$matches['type'] == ConstraintParameterException::class ) {
-				throw new ConstraintParameterException( $matches['message'] );
+				throw $this->deserializeConstraintParameterException( $matches );
 			} else {
 				throw new MWException(
 					'Value of unknown type in object cache (' .
@@ -459,6 +457,32 @@ EOF;
 			$this->dataFactory->increment( $key );
 			return $this->matchesRegularExpressionWithSparql( $text, $regex );
 		}
+	}
+
+	private function serializeConstraintParameterException( ConstraintParameterException $cpe ) {
+		$message = $cpe->getViolationMessage();
+		if ( $message instanceof ViolationMessage ) {
+			return [
+				'type' => ConstraintParameterException::class,
+				'violationMessage' => $this->violationMessageSerializer->serialize( $message ),
+			];
+		} else {
+			return [
+				'type' => ConstraintParameterException::class,
+				'message' => $message,
+			];
+		}
+	}
+
+	private function deserializeConstraintParameterException( array $serialization ) {
+		if ( array_key_exists( 'violationMessage', $serialization ) ) {
+			$message = $this->violationMessageDeserializer->deserialize(
+				$serialization['violationMessage']
+			);
+		} else {
+			$message = $serialization['message'];
+		}
+		return new ConstraintParameterException( $message );
 	}
 
 	/**

@@ -29,11 +29,14 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\Role;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
+use Wikimedia\TestingAccessWrapper;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper
@@ -299,6 +302,80 @@ EOF;
 				'prov:wasDerivedFrom/prv:P1'
 			],
 		];
+	}
+
+	public function testSerializeConstraintParameterException_ViolationMessage() {
+		$this->markTestSkipped( 'ConstraintParameterException of ViolationMessage not supported yet ' );
+		$cpe = new ConstraintParameterException(
+			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
+				->withInlineCode( '[', Role::CONSTRAINT_PARAMETER_VALUE )
+		);
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
+
+		$serialization = $sparqlHelper->serializeConstraintParameterException( $cpe );
+
+		$expected = [
+			'type' => ConstraintParameterException::class,
+			'violationMessage' => [
+				'k' => 'parameter-regex',
+				'a' => [
+					[ 't' => ViolationMessage::TYPE_INLINE_CODE, 'v' => '[', 'r' => Role::CONSTRAINT_PARAMETER_VALUE ],
+				],
+			],
+		];
+		$this->assertSame( $expected, $serialization );
+	}
+
+	public function testSerializeConstraintParameterException_string() {
+		$cpe = new ConstraintParameterException(
+			'<code><nowiki>[</nowiki></code> is not a valid regular expression'
+		);
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
+
+		$serialization = $sparqlHelper->serializeConstraintParameterException( $cpe );
+
+		$expected = [
+			'type' => ConstraintParameterException::class,
+			'message' => '<code><nowiki>[</nowiki></code> is not a valid regular expression',
+		];
+		$this->assertSame( $expected, $serialization );
+	}
+
+	public function testDeserializeConstraintParameterException_ViolationMessage() {
+		$this->markTestSkipped( 'ConstraintParameterException of ViolationMessage not supported yet ' );
+		$serialization = [
+			'type' => ConstraintParameterException::class,
+			'violationMessage' => [
+				'k' => 'parameter-regex',
+				'a' => [
+					[ 't' => ViolationMessage::TYPE_INLINE_CODE, 'v' => '[', 'r' => Role::CONSTRAINT_PARAMETER_VALUE ],
+				],
+			],
+		];
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
+
+		$cpe = $sparqlHelper->deserializeConstraintParameterException( $serialization );
+
+		$expected = new ConstraintParameterException(
+			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
+				->withInlineCode( '[', Role::CONSTRAINT_PARAMETER_VALUE )
+		);
+		$this->assertEquals( $expected, $cpe );
+	}
+
+	public function testDeserializeConstraintParameterException_string() {
+		$serialization = [
+			'type' => ConstraintParameterException::class,
+			'message' => '<code><nowiki>[</nowiki></code> is not a valid regular expression',
+		];
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
+
+		$cpe = $sparqlHelper->deserializeConstraintParameterException( $serialization );
+
+		$expected = new ConstraintParameterException(
+			'<code><nowiki>[</nowiki></code> is not a valid regular expression'
+		);
+		$this->assertEquals( $expected, $cpe );
 	}
 
 	public function testMatchesRegularExpressionWithSparql() {
