@@ -187,20 +187,4 @@ class RangeCheckerHelper {
 		return UnboundedQuantityValue::newFromNumber( $diff, $unit );
 	}
 
-	/**
-	 * @param string $timeString
-	 * @return TimeValue
-	 */
-	public function parseTime( $timeString ) {
-		return $this->timeParser->parse( $timeString );
-	}
-
-	/**
-	 * @param string $quantityString
-	 * @return QuantityValue|UnboundedQuantityValue
-	 */
-	public function parseQuantity( $quantityString ) {
-		return UnboundedQuantityValue::newFromNumber( $quantityString );
-	}
-
 }
