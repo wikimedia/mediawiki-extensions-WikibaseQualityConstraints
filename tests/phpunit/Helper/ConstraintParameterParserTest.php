@@ -104,7 +104,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$classId = $config->get( 'WBQualityConstraintsClassId' );
 		$parsed = $this->getConstraintParameterParser()->parseClassParameter(
 			[ $classId => [ $this->serializeItemId( 'Q100' ), $this->serializeItemId( 'Q101' ) ] ],
-			''
+			'Q1'
 		);
 		$this->assertEquals( [ 'Q100', 'Q101' ], $parsed );
 	}
@@ -112,7 +112,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	public function testParseClassParameter_Missing() {
 		$this->assertThrowsConstraintParameterException(
 			'parseClassParameter',
-			[ [], 'constraint' ],
+			[ [], 'Q21503250' ],
 			'wbqc-violation-message-parameter-needed'
 		);
 	}
@@ -128,7 +128,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						$this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( $classId ) ) )
 					]
 				],
-				'constraint'
+				'Q21503250'
 			],
 			'wbqc-violation-message-parameter-value'
 		);
@@ -148,7 +148,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						) )
 					]
 				],
-				'constraint'
+				'Q21503250'
 			],
 			'wbqc-violation-message-parameter-entity'
 		);
@@ -160,7 +160,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$instanceOfId = $config->get( 'WBQualityConstraintsInstanceOfRelationId' );
 		$parsed = $this->getConstraintParameterParser()->parseRelationParameter(
 			[ $relationId => [ $this->serializeItemId( $instanceOfId ) ] ],
-			''
+			'Q21503250'
 		);
 		$this->assertEquals( 'instance', $parsed );
 	}
@@ -168,7 +168,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	public function testParseRelationParameter_Missing() {
 		$this->assertThrowsConstraintParameterException(
 			'parseRelationParameter',
-			[ [], 'constraint' ],
+			[ [], 'Q21503250' ],
 			'wbqc-violation-message-parameter-needed'
 		);
 	}
@@ -184,7 +184,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						$this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( $relationId ) ) )
 					]
 				],
-				'constraint'
+				'Q21503250'
 			],
 			'wbqc-violation-message-parameter-value'
 		);
@@ -204,7 +204,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						) )
 					]
 				],
-				'constraint'
+				'Q21503250'
 			],
 			'wbqc-violation-message-parameter-entity'
 		);
@@ -224,7 +224,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						$this->serializeItemId( $subclassOfId )
 					]
 				],
-				'constraint'
+				'Q21503250'
 			],
 			'wbqc-violation-message-parameter-single'
 		);
@@ -239,7 +239,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				[
 					$relationId => [ $this->serializeItemId( 'Q1' ) ]
 				],
-				'constraint'
+				'Q21503250'
 			],
 			'wbqc-violation-message-parameter-oneof'
 		);
@@ -250,7 +250,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$parsed = $this->getConstraintParameterParser()->parsePropertyParameter(
 			[ $propertyId => [ $this->serializePropertyId( 'P100' ) ] ],
-			''
+			'Q21510856'
 		);
 		$this->assertEquals( new PropertyId( 'P100' ), $parsed );
 	}
@@ -258,7 +258,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	public function testParsePropertyParameter_Missing() {
 		$this->assertThrowsConstraintParameterException(
 			'parsePropertyParameter',
-			[ [], 'constraint' ],
+			[ [], 'Q21510856' ],
 			'wbqc-violation-message-parameter-needed'
 		);
 	}
@@ -274,7 +274,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						$this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( $propertyId ) ) )
 					]
 				],
-				'constraint'
+				'Q21510856'
 			],
 			'wbqc-violation-message-parameter-value'
 		);
@@ -294,7 +294,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						) )
 					]
 				],
-				'constraint'
+				'Q21510856'
 			],
 			'wbqc-violation-message-parameter-property'
 		);
@@ -311,7 +311,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						$this->serializeItemId( 'Q100' )
 					]
 				],
-				'constraint'
+				'Q21510856'
 			],
 			'wbqc-violation-message-parameter-property'
 		);
@@ -329,7 +329,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						$this->serializePropertyId( 'P101' )
 					]
 				],
-				'constraint'
+				'Q21510856'
 			],
 			'wbqc-violation-message-parameter-single'
 		);
@@ -347,7 +347,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
 				]
 			],
-			'',
+			'Q21510859',
 			false
 		);
 		$expected = [
@@ -363,14 +363,14 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertThrowsConstraintParameterException(
 			'parseItemsParameter',
 			[
-				[], 'constraint', true
+				[], 'Q21510859', true
 			],
 			'wbqc-violation-message-parameter-needed'
 		);
 	}
 
 	public function testParseItemsParameter_NotRequired() {
-		$parsed = $this->getConstraintParameterParser()->parseItemsParameter( [], 'constraint', false );
+		$parsed = $this->getConstraintParameterParser()->parseItemsParameter( [], 'Q21510859', false );
 		$this->assertEquals( [], $parsed );
 	}
 
@@ -388,7 +388,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						) )
 					]
 				],
-				'constraint',
+				'Q21510859',
 				true
 			],
 			'wbqc-violation-message-parameter-item'
@@ -409,7 +409,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 						) )
 					]
 				],
-				'constraint',
+				'Q21510859',
 				true
 			],
 			'wbqc-violation-message-parameter-item'
@@ -421,7 +421,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$parsed = $this->getConstraintParameterParser()->parsePropertiesParameter(
 			[ $propertyId => [ $this->serializePropertyId( 'P100' ), $this->serializePropertyId( 'P101' ) ] ],
-			''
+			'Q21510851'
 		);
 		$this->assertEquals( [ new PropertyId( 'P100' ), new PropertyId( 'P101' ) ], $parsed );
 	}
@@ -429,7 +429,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	public function testParsePropertiesParameter_Missing() {
 		$this->assertThrowsConstraintParameterException(
 			'parsePropertiesParameter',
-			[ [], 'constraint' ],
+			[ [], 'Q21510851' ],
 			'wbqc-violation-message-parameter-needed'
 		);
 	}
@@ -439,7 +439,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$parsed = $this->getConstraintParameterParser()->parsePropertiesParameter(
 			[ $propertyId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( new PropertyId( $propertyId ) ) ) ] ],
-			''
+			'Q21510851'
 		);
 		$this->assertEquals( [], $parsed );
 	}
@@ -457,7 +457,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
-			'',
+			'Q21510860',
 			'quantity'
 		);
 
@@ -476,7 +476,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
-			'',
+			'Q21510860',
 			'quantity'
 		);
 
@@ -495,7 +495,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 			],
-			'',
+			'Q21510860',
 			'quantity'
 		);
 
@@ -515,7 +515,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 				],
-				'',
+				'Q21510860',
 				'quantity'
 			],
 			'wbqc-violation-message-range-parameters-same'
@@ -535,7 +535,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 				],
-				'constraint',
+				'Q21510860',
 				'quantity'
 			],
 			'wbqc-violation-message-parameter-value-or-novalue'
@@ -556,7 +556,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $quantity ) ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $quantity ) ) ]
 				],
-				'constraint',
+				'Q21510860',
 				'quantity'
 			],
 			'wbqc-violation-message-range-parameters-same'
@@ -577,7 +577,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
-			'',
+			'Q21510860',
 			'time'
 		);
 
@@ -595,7 +595,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 			],
-			'',
+			'Q21510860',
 			'time'
 		);
 
@@ -613,7 +613,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 			],
-			'',
+			'Q21510860',
 			'time'
 		);
 
@@ -633,7 +633,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 				],
-				'',
+				'Q21510860',
 				'time'
 			],
 			'wbqc-violation-message-range-parameters-same'
@@ -661,7 +661,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $wikidataInception ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 			],
-			'',
+			'Q21510860',
 			'time'
 		);
 
@@ -685,7 +685,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$minimumId => [ $this->getSnakSerializer()->serialize( $minSnak ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( $maxSnak ) ]
 				],
-				'constraint',
+				'Q21510860',
 				'quantity'
 			],
 			'wbqc-violation-message-range-parameters-one-year'
@@ -706,7 +706,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$minimumId => [ $this->getSnakSerializer()->serialize( $minSnak ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( $maxSnak ) ]
 			],
-			'constraint',
+			'Q21510860',
 			'quantity'
 		);
 
@@ -719,7 +719,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				'parseRangeParameter',
 				[
 					[],
-					'constraint',
+					'Q21510860',
 					$type
 				],
 				'wbqc-violation-message-range-parameters-needed'
@@ -734,7 +734,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseNamespaceParameter(
 			[ $namespaceId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-			''
+			'Q21510852'
 		);
 
 		$this->assertEquals( 'File', $parsed );
@@ -743,7 +743,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	public function testParseNamespaceParameter_Missing() {
 		$parsed = $this->getConstraintParameterParser()->parseNamespaceParameter(
 			[],
-			''
+			'Q21510852'
 		);
 
 		$this->assertEquals( '', $parsed );
@@ -758,7 +758,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseNamespaceParameter',
 			[
 				[ $namespaceId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-				'constraint'
+				'Q21510852'
 			],
 			'wbqc-violation-message-parameter-string'
 		);
@@ -778,7 +778,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$this->getSnakSerializer()->serialize( $snak1 ),
 					$this->getSnakSerializer()->serialize( $snak2 )
 				] ],
-				'constraint'
+				'Q21510852'
 			],
 			'wbqc-violation-message-parameter-single'
 		);
@@ -791,7 +791,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 		$parsed = $this->getConstraintParameterParser()->parseFormatParameter(
 			[ $formatId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-			''
+			'Q21502404'
 		);
 
 		$this->assertEquals( '\d\.(\d{1,2}|-{1})\.(\d{1,2}|-{1})\.(\d{1,3}|-{1})', $parsed );
@@ -802,7 +802,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseFormatParameter',
 			[
 				[],
-				'constraint'
+				'Q21502404'
 			],
 			'wbqc-violation-message-parameter-needed'
 		);
@@ -817,7 +817,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'parseFormatParameter',
 			[
 				[ $formatId => [ $this->getSnakSerializer()->serialize( $snak ) ] ],
-				'constraint'
+				'Q21502404'
 			],
 			'wbqc-violation-message-parameter-string'
 		);
@@ -837,7 +837,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$this->getSnakSerializer()->serialize( $snak1 ),
 					$this->getSnakSerializer()->serialize( $snak2 )
 				] ],
-				'constraint'
+				'Q21502404'
 			],
 			'wbqc-violation-message-parameter-single'
 		);
@@ -1031,7 +1031,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[ $constraintScopeId => [
 				$this->getSnakSerializer()->serialize( $snak ),
 			] ],
-			''
+			'Q21502838'
 		);
 
 		$this->assertSame( [ Context::TYPE_STATEMENT ], $parsed );
@@ -1049,14 +1049,14 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$this->getSnakSerializer()->serialize( $snak1 ),
 				$this->getSnakSerializer()->serialize( $snak2 ),
 			] ],
-			''
+			'Q21502838'
 		);
 
 		$this->assertSame( [ Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ], $parsed );
 	}
 
 	public function testParseConstraintScopeParameter_Missing() {
-		$parsed = $this->getConstraintParameterParser()->parseConstraintScopeParameter( [], '' );
+		$parsed = $this->getConstraintParameterParser()->parseConstraintScopeParameter( [], 'Q21502838' );
 
 		$this->assertNull( $parsed );
 	}
@@ -1070,7 +1070,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[ $constraintScopeId => [
 				$this->getSnakSerializer()->serialize( $snak ),
 			] ],
-			'',
+			'Q21502838',
 			[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER ]
 		);
 
@@ -1088,7 +1088,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				[ $constraintScopeId => [
 					$this->getSnakSerializer()->serialize( $snak ),
 				] ],
-				'',
+				'Q21502838',
 				[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER ]
 			],
 			'wbqc-violation-message-invalid-scope'
@@ -1109,7 +1109,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$this->getSnakSerializer()->serialize( $snak1 ),
 					$this->getSnakSerializer()->serialize( $snak2 ),
 				] ],
-				'constraint'
+				'Q21502838'
 			],
 			'wbqc-violation-message-parameter-oneof'
 		);

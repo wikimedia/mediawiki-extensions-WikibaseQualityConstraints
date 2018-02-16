@@ -137,7 +137,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'One of' ) );
+			 ->will( $this->returnValue( 'Q21510859' ) );
 
 		return $mock;
 	}

@@ -86,7 +86,7 @@ class ValueOnlyCheckerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( [] ) );
 		$mock->expects( $this->any() )
 			->method( 'getConstraintTypeItemId' )
-			->will( $this->returnValue( 'ValueOnly' ) );
+			->will( $this->returnValue( 'Q21528958' ) );
 
 		return $mock;
 	}
