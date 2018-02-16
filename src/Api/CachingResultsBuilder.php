@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
+use DataValues\TimeValue;
 use IBufferingStatsdDataFactory;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -11,6 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraint
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -72,6 +74,11 @@ class CachingResultsBuilder implements ResultsBuilder {
 	private $dataFactory;
 
 	/**
+	 * @var TimeValueComparer
+	 */
+	private $timeValueComparer;
+
+	/**
 	 * @var callable
 	 */
 	private $microtime = 'microtime';
@@ -111,6 +118,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 		$this->ttlInSeconds = $ttlInSeconds;
 		$this->possiblyStaleConstraintTypes = $possiblyStaleConstraintTypes;
 		$this->dataFactory = $dataFactory;
+		$this->timeValueComparer = new TimeValueComparer();
 
 		$this->cachedStatuses = [
 			CheckResult::STATUS_VIOLATION,
@@ -224,6 +232,10 @@ class CachingResultsBuilder implements ResultsBuilder {
 						$results->getMetadata()->getDependencyMetadata()->getEntityIds()
 					),
 				];
+				$futureTime = $results->getMetadata()->getDependencyMetadata()->getFutureTime();
+				if ( $futureTime !== null ) {
+					$value['futureTime'] = $futureTime->getArrayValue();
+				}
 				$this->cache->set( $entityId, $value, $this->ttlInSeconds );
 			}
 		}
@@ -290,6 +302,16 @@ class CachingResultsBuilder implements ResultsBuilder {
 			return null;
 		}
 
+		if ( array_key_exists( 'futureTime', $value ) ) {
+			$futureTime = TimeValue::newFromArray( $value['futureTime'] );
+			if ( !$this->timeValueComparer->isFutureTime( $futureTime ) ) {
+				return null;
+			}
+			$futureTimeDependencyMetadata = DependencyMetadata::ofFutureTime( $futureTime );
+		} else {
+			$futureTimeDependencyMetadata = DependencyMetadata::blank();
+		}
+
 		$cachingMetadata = $ageInSeconds > 0 ?
 			CachingMetadata::ofMaximumAgeInSeconds( $ageInSeconds ) :
 			CachingMetadata::fresh();
@@ -300,19 +322,34 @@ class CachingResultsBuilder implements ResultsBuilder {
 
 		return new CachedCheckConstraintsResponse(
 			[ $entityId->getSerialization() => $value['results'] ],
-			array_reduce(
+			$this->mergeStoredMetadata( $cachingMetadata, $dependedEntityIds, $futureTimeDependencyMetadata )
+		);
+	}
+
+	/**
+	 * @param CachingMetadata $cachingMetadata
+	 * @param EntityId[] $dependedEntityIds
+	 * @param DependencyMetadata|null $futureTimeDependencyMetadata
+	 * @return Metadata
+	 */
+	private function mergeStoredMetadata(
+		CachingMetadata $cachingMetadata,
+		array $dependedEntityIds,
+		DependencyMetadata $futureTimeDependencyMetadata = null
+	) {
+		return Metadata::merge( [
+			Metadata::ofCachingMetadata( $cachingMetadata ),
+			Metadata::ofDependencyMetadata( array_reduce(
 				$dependedEntityIds,
-				function( Metadata $metadata, EntityId $entityId ) {
-					return Metadata::merge( [
+				function( DependencyMetadata $metadata, EntityId $entityId ) {
+					return DependencyMetadata::merge( [
 						$metadata,
-						Metadata::ofDependencyMetadata(
-							DependencyMetadata::ofEntityId( $entityId )
-						)
+						DependencyMetadata::ofEntityId( $entityId )
 					] );
 				},
-				Metadata::ofCachingMetadata( $cachingMetadata )
-			)
-		);
+				$futureTimeDependencyMetadata
+			) )
+		] );
 	}
 
 	/**
