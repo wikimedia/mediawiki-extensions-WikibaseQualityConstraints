@@ -6,7 +6,8 @@
 			"Beta16",
 			"ValterVB",
 			"Ontsed",
-			"Lucas2"
+			"Lucas2",
+			"Segaz3"
 		]
 	},
 	"wbqc-constraintreport": "Controllo vincoli",
@@ -83,12 +84,17 @@
 	"wbqc-violation-message-no-qualifiers": "Le dichiarazioni $1 non dovrebbero avere alcun qualificatore.",
 	"wbqc-violation-message-qualifiers": "$2 non è un qualificatore valido per $1 – {{PLURAL:$3|1=l'unico qualificatore valido è $5.|2=gli unici qualificatori validi sono $5 e $6.|gli unici qualificatori validi sono:$4}}",
 	"wbqc-violation-message-range-parameters-needed": "Proprietà con valori di tipo \"$1\" con vincolo \"$4\" necessitano di parametri \"$2\" e \"$3\".",
+	"wbqc-violation-message-range-parameters-same": "L'inizio ($1) e la fine ($2) di un intervallo non dovrebbe essere lo stesso.",
 	"wbqc-violation-message-range-quantity-closed": "Il valore per $1 ($2) dovrebbe essere compreso tra $3 e $4.",
 	"wbqc-violation-message-range-quantity-leftopen": "Il valore per $1 ($2) non dovrebbe essere superiore a $3.",
 	"wbqc-violation-message-range-quantity-rightopen": "Il valore per $1 ($2) non dovrebbe essere inferiore a $3.",
 	"wbqc-violation-message-range-time-closed": "Il valore per $1 ($2) dovrebbe essere compreso tra $3 e $4.",
+	"wbqc-violation-message-range-time-closed-leftnow": "Il valore per $1 ($2) dovrebbe essere nel futuro, ma non successivo al $3.",
+	"wbqc-violation-message-range-time-closed-rightnow": "Il valore per $1 ($2) dovrebbe essere nel passato, ma non precedente al $3.",
 	"wbqc-violation-message-range-time-leftopen": "Il valore per $1 ($2) non dovrebbe essere successivo a $3.",
+	"wbqc-violation-message-range-time-leftopen-rightnow": "Il valore per $1 ($2) non dovrebbe essere nel futuro.",
 	"wbqc-violation-message-range-time-rightopen": "Il valore per $1 ($2) non dovrebbe essere precedente a $3.",
+	"wbqc-violation-message-range-time-rightopen-leftnow": "Il valore per $1 ($2) non dovrebbe essere nel passato.",
 	"wbqc-violation-message-single-value": "Questa proprietà dovrebbe contenere un singolo valore. Cioè, ci dovrebbe essere solo una dichiarazione che utilizza questa proprietà.",
 	"wbqc-violation-message-symmetric": "$1 dovrebbe avere anche la dichiarazione simmetrica $2 $3.",
 	"wbqc-violation-message-type-instance": "Entità che usano la proprietà $1 dovrebbero essere istanza di {{PLURAL:$3|1=$5|2=$5 o $6|una delle seguenti classi}} (o di {{PLURAL:$3|1=una delle sue sottoclassi|2=una loro sottoclasse|una delle loro sottoclassi}}), ma $2 attualmente {{PLURAL:$3|1=non lo è.|2=non lo è.|non lo è: $4}}",

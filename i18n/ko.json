@@ -68,7 +68,7 @@
 	"wbqc-violation-message-format-clarification": "$1 ($2)의 값은 \"$4\"와(과) 일치해야 합니다. (정규식: $3)",
 	"wbqc-violation-message-multi-value": "이 프로퍼티는 여러 개의 값을 포함해야 합니다. 즉, 이 프로퍼티를 사용하는 하나 이상의 문이 있어야 합니다.",
 	"wbqc-violation-message-one-of": "$1의 값은 {{PLURAL:$2|1=$4여야 합니다.|2=$4 또는 $5여야 합니다.|다음 중 하나여야 합니다:$3}}",
-	"wbqc-violation-message-range-quantity-closed": "$1 ($2)의 값은 $3와 $4 ([$3; $4]) 사이여야 합니다.",
+	"wbqc-violation-message-range-quantity-closed": "$1 ($2)의 값은 $3와 $4 사이여야 합니다.",
 	"wbqc-violation-message-range-quantity-leftopen": "$1 ($2)의 값은 $3 ((−∞; $3])을(를) 넘을 수 없습니다.",
 	"wbqc-violation-message-range-quantity-rightopen": "$1 ($2)의 값은 $3 ([$3; ∞)) 만큼은 있어야 합니다.",
 	"wbqc-violation-message-range-time-closed": "$1 ($2)의 값은 $3와 $4 사이여야 합니다.",
