@@ -39,5 +39,6 @@
 	"wbqc-violation-message-range-quantity-rightopen": "De Wäert fir $1 ($2) soll net manner wéi $3 sinn.",
 	"wbqc-violation-message-range-time-closed": "De Wäert fir $1 ($2) soll tëscht $3 an $4 sinn.",
 	"wbqc-violation-message-range-time-leftopen": "De Wäert fir $1 ($2) soll net no $3 sinn.",
+	"wbqc-violation-message-range-time-leftopen-rightnow": "De Wäert fir $1 ($2) soll net an der Zukunft sinn.",
 	"wbqc-violation-message-range-time-rightopen": "De Wäert fir $1 ($2) soll net viru(n) $3 sinn."
 }
