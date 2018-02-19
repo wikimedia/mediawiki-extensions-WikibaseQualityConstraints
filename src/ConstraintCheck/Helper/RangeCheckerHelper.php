@@ -186,4 +186,8 @@ class RangeCheckerHelper {
 		return UnboundedQuantityValue::newFromNumber( $diff, $unit );
 	}
 
+	public function isFutureTime( TimeValue $timeValue ) {
+		return $this->timeValueComparer->isFutureTime( $timeValue );
+	}
+
 }
