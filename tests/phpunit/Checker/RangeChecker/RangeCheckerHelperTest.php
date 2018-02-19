@@ -212,16 +212,6 @@ class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
 		$rangeCheckHelper->getComparison( $this->getQuantityValue( 42.0 ), $this->getTimeValue( 1970 ) );
 	}
 
-	public function testParseTime_year() {
-		$rangeCheckHelper = $this->getRangeCheckerHelper();
-		$this->assertSame( '+1970-00-00T00:00:00Z', $rangeCheckHelper->parseTime( '1970' )->getTime() );
-	}
-
-	public function testParseTime_yearMonthDay() {
-		$rangeCheckHelper = $this->getRangeCheckerHelper();
-		$this->assertSame( '+1970-01-01T00:00:00Z', $rangeCheckHelper->parseTime( '1970-01-01' )->getTime() );
-	}
-
 	/**
 	 * @param int $year
 	 * @param int $month
