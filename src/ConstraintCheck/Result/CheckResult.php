@@ -207,11 +207,11 @@ class CheckResult {
 	}
 
 	/**
-	 * @param Metadata $cm
+	 * @param Metadata $metadata
 	 * @return self
 	 */
-	public function withMetadata( Metadata $cm ) {
-		$this->metadata = $cm;
+	public function withMetadata( Metadata $metadata ) {
+		$this->metadata = $metadata;
 		return $this;
 	}
 
