@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Exception;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 
 /**
  * Exception thrown when a constraint’s parameters are invalid.
@@ -17,6 +18,13 @@ class ConstraintParameterException extends Exception {
 	 */
 	public function __construct( $message ) {
 		parent::__construct( $message );
+	}
+
+	/**
+	 * @return ViolationMessage|string
+	 */
+	public function getViolationMessage() {
+		return $this->getMessage();
 	}
 
 }
