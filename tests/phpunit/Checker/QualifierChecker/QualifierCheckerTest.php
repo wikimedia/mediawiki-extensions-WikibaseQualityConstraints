@@ -101,7 +101,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'Qualifier' ) );
+			 ->will( $this->returnValue( 'Q21510863' ) );
 
 		return $mock;
 	}

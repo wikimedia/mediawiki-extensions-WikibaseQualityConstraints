@@ -301,7 +301,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'Type' ) );
+			 ->will( $this->returnValue( 'Q21503250' ) );
 
 		return $mock;
 	}

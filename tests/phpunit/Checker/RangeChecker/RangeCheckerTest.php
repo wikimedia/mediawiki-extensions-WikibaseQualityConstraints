@@ -414,7 +414,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'Range' ) );
+			 ->will( $this->returnValue( 'Q21510860' ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getPropertyId' )
 			 ->will( $this->returnValue( new PropertyId( $propertyId ) ) );

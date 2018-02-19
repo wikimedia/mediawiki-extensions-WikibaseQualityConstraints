@@ -86,7 +86,7 @@ class ReferenceCheckerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( [] ) );
 		$mock->expects( $this->any() )
 			->method( 'getConstraintTypeItemId' )
-			->will( $this->returnValue( 'Reference' ) );
+			->will( $this->returnValue( 'Q21528959' ) );
 
 		return $mock;
 	}
