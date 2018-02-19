@@ -31,6 +31,14 @@ class NowValue extends TimeValue {
 		return gmdate( '+Y-m-d\TH:i:s\Z' );
 	}
 
+	public function getTimezone() {
+		return 0;
+	}
+
+	public function getCalendarModel() {
+		return parent::CALENDAR_GREGORIAN;
+	}
+
 	public function getArrayValue() {
 		throw new LogicException( 'NowValue should never be serialized' );
 	}
