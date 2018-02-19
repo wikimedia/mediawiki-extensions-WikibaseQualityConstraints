@@ -273,6 +273,8 @@ class ViolationMessageRenderer {
 		$messageKeys = [
 			'string' => 'datatypes-type-string',
 			'monolingualtext' => 'datatypes-type-monolingualtext',
+			'time' => 'datatypes-type-time',
+			'quantity' => 'datatypes-type-quantity',
 			'wikibase-entityid' => 'wbqc-dataValueType-wikibase-entityid',
 		];
 
