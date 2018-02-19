@@ -23,16 +23,11 @@ class Constraint {
 
 	/**
 	 * @var string
-	 *
-	 * ItemId for the constraint (each Constraint will have
-	 * a representation as an item)
-	 * Currently contains the name since the constraints are
-	 * not migrated yet.
 	 */
 	private $constraintTypeItemId;
 
 	/**
-	 * @var array (key: string with parameter name (e.g. 'property'); value: string (e.g. 'P21'))
+	 * @var array
 	 */
 	private $constraintParameters;
 
@@ -64,10 +59,7 @@ class Constraint {
 	/**
 	 * @return string
 	 *
-	 * ItemId for the constraint (each Constraint will have
-	 * a representation as an item)
-	 * Currently contains the name since the constraints are
-	 * not migrated yet.
+	 * Item ID serialization of the constraint type item.
 	 */
 	public function getConstraintTypeItemId() {
 		return $this->constraintTypeItemId;
