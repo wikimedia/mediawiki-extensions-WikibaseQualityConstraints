@@ -33,6 +33,7 @@
 	"wbqc-violation-message-commons-link-not-well-formed": "De Commons Link soll gutt forméiert sinn.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "D'Nokucke fir den Nummraum \"$1\" ass nach net implementéiert.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Den Ënnerscheed tëscht $3 ($4) an $1 ($2) soll net méi wéi $5 sinn.",
+	"wbqc-violation-message-diff-within-range-rightopen": "Den Ënnerscheed tëscht $3 ($4) an $1 ($2) soll net méi kleng wéi $5 sinn.",
 	"wbqc-violation-message-qualifier": "D'Eegenschaft däerf nëmmen als Qualificateur benotzt ginn.",
 	"wbqc-violation-message-range-quantity-closed": "De Wäert fir $1 ($2) soll tëscht $3 an $4 sinn.",
 	"wbqc-violation-message-range-quantity-leftopen": "De Wäert fir $1 ($2) soll net méi wéi $3 sinn.",
@@ -40,5 +41,6 @@
 	"wbqc-violation-message-range-time-closed": "De Wäert fir $1 ($2) soll tëscht $3 an $4 sinn.",
 	"wbqc-violation-message-range-time-leftopen": "De Wäert fir $1 ($2) soll net no $3 sinn.",
 	"wbqc-violation-message-range-time-leftopen-rightnow": "De Wäert fir $1 ($2) soll net an der Zukunft sinn.",
-	"wbqc-violation-message-range-time-rightopen": "De Wäert fir $1 ($2) soll net viru(n) $3 sinn."
+	"wbqc-violation-message-range-time-rightopen": "De Wäert fir $1 ($2) soll net viru(n) $3 sinn.",
+	"wbqc-violation-message-range-time-rightopen-leftnow": "De Wäert fir $1 ($2) däerf net an der Vergaangenheet sinn."
 }
