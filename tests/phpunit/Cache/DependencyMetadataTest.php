@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Cache;
 
+use DataValues\TimeValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
@@ -32,7 +33,21 @@ class DependencyMetadataTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( [ $q42 ], $dm->getEntityIds() );
 	}
 
-	public function testMerge() {
+	public function testOfFutureTime() {
+		$future = new TimeValue(
+			'+2117-02-15T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+		$dm = DependencyMetadata::ofFutureTime( $future );
+
+		$this->assertSame( $future, $dm->getFutureTime() );
+	}
+
+	public function testMerge_entityIds() {
 		$q42 = new ItemId( 'Q42' );
 		$p31 = new PropertyId( 'P31' );
 		$dm = DependencyMetadata::merge( [
@@ -47,6 +62,63 @@ class DependencyMetadataTest extends \PHPUnit_Framework_TestCase {
 		sort( $expectedEntityIds );
 		sort( $actualEntityIds );
 		$this->assertSame( $expectedEntityIds, $actualEntityIds );
+	}
+
+	public function testMerge_futureTime() {
+		$nearFuture = new TimeValue(
+			'+2027-02-15T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+		$intermediateFuture = new TimeValue(
+			'+2117-02-15T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+		$farFuture = new TimeValue(
+			'+3017-02-15T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+
+		$dm = DependencyMetadata::merge( [
+			DependencyMetadata::blank(),
+			DependencyMetadata::ofFutureTime( $intermediateFuture ),
+			DependencyMetadata::ofFutureTime( $nearFuture ),
+			DependencyMetadata::blank(),
+			DependencyMetadata::ofFutureTime( $farFuture ),
+		] );
+
+		$this->assertSame( $nearFuture, $dm->getFutureTime() );
+	}
+
+	public function testMerge_differentFields() {
+		$q42 = new ItemId( 'Q42' );
+		$future = new TimeValue(
+			'+2117-02-15T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+
+		$dm = DependencyMetadata::merge( [
+			DependencyMetadata::ofEntityId( $q42 ),
+			DependencyMetadata::ofFutureTime( $future ),
+		] );
+
+		$this->assertSame( [ $q42 ], $dm->getEntityIds() );
+		$this->assertSame( $future, $dm->getFutureTime() );
 	}
 
 	public function testMerge_blank() {

@@ -2,7 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
 
+use DataValues\TimeValue;
 use Wikibase\DataModel\Entity\EntityId;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -19,6 +21,11 @@ class DependencyMetadata {
 	private $entityIds = [];
 
 	/**
+	 * @var TimeValue|null
+	 */
+	private $timeValue = null;
+
+	/**
 	 * @return self Indication that a value does not depend on anything else.
 	 */
 	public static function blank() {
@@ -26,12 +33,25 @@ class DependencyMetadata {
 	}
 
 	/**
+	 * Track that a value depends on a certain entity ID.
 	 * @param EntityId $entityId An entity ID from which the value was derived.
-	 * @return self Indication that a value is was derived from the entity with the given ID.
+	 * @return self Indication that a value was derived from the entity with the given ID.
 	 */
 	public static function ofEntityId( EntityId $entityId ) {
 		$ret = new self;
 		$ret->entityIds[] = $entityId;
+		return $ret;
+	}
+
+	/**
+	 * Track that a value depends on a certain time value being a future date, not a past one.
+	 * @param TimeValue $timeValue A point in time on which the value might start to become invalid.
+	 * @return self Indication that a value will only remain valid
+	 * as long as the given time value is in the future, not in the past.
+	 */
+	public static function ofFutureTime( TimeValue $timeValue ) {
+		$ret = new self;
+		$ret->timeValue = $timeValue;
 		return $ret;
 	}
 
@@ -44,8 +64,24 @@ class DependencyMetadata {
 		$ret = new self;
 		foreach ( $metadatas as $metadata ) {
 			$ret->entityIds = array_merge( $ret->entityIds, $metadata->entityIds );
+			$ret->timeValue = self::minTimeValue( $ret->timeValue, $metadata->timeValue );
 		}
 		return $ret;
+	}
+
+	/**
+	 * @param TimeValue|null $t1
+	 * @param TimeValue|null $t2
+	 * @return TimeValue|null
+	 */
+	private static function minTimeValue( TimeValue $t1 = null, TimeValue $t2 = null ) {
+		if ( $t1 === null ) {
+			return $t2;
+		}
+		if ( $t2 === null ) {
+			return $t1;
+		}
+		return ( new TimeValueComparer() )->getMinimum( $t1, $t2 );
 	}
 
 	/**
@@ -54,6 +90,14 @@ class DependencyMetadata {
 	 */
 	public function getEntityIds() {
 		return $this->entityIds;
+	}
+
+	/**
+	 * @return TimeValue|null A point in time which was in the future when the value was first determined.
+	 * The value should be invalidated once this point in time is no longer in the future.
+	 */
+	public function getFutureTime() {
+		return $this->timeValue;
 	}
 
 }
