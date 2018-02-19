@@ -93,7 +93,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$this->constraint,
 				[],
 				CheckResult::STATUS_VIOLATION,
-				$exception->getMessage()
+				$exception->getViolationMessage()
 			);
 			$this->assertViolation( $checkResult, $messageKey );
 		}
