@@ -128,6 +128,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
+		$this->assertNull( $checkResult->getMetadata()->getDependencyMetadata()->getFutureTime() );
 	}
 
 	public function testRangeConstraintTimeWithinRangeToNow() {
@@ -137,6 +138,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 		$this->assertCompliance( $checkResult );
+		$this->assertNull( $checkResult->getMetadata()->getDependencyMetadata()->getFutureTime() );
 	}
 
 	public function testRangeConstraintTimeWithinYearRange() {
@@ -311,6 +313,9 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed-rightnow' );
+		$futureTime = $checkResult->getMetadata()->getDependencyMetadata()->getFutureTime();
+		$this->assertNotNull( $futureTime );
+		$this->assertSame( $misspelledNineteenEightyFour->getTime(), $futureTime->getTime() );
 	}
 
 	public function testRangeConstraintOutsideOpenRangeToNow() {
@@ -328,6 +333,9 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-leftopen-rightnow' );
+		$futureTime = $checkResult->getMetadata()->getDependencyMetadata()->getFutureTime();
+		$this->assertNotNull( $futureTime );
+		$this->assertSame( $misspelledNineteenEightyFour->getTime(), $futureTime->getTime() );
 	}
 
 	public function testRangeConstraintOutsideClosedRangeFromNow() {
@@ -351,6 +359,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-closed-leftnow' );
+		$this->assertNull( $checkResult->getMetadata()->getDependencyMetadata()->getFutureTime() );
 	}
 
 	public function testRangeConstraintOutsideOpenRangeFromNow() {
@@ -368,6 +377,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-range-time-rightopen-leftnow' );
+		$this->assertNull( $checkResult->getMetadata()->getDependencyMetadata()->getFutureTime() );
 	}
 
 	public function testRangeConstraintDeprecatedStatement() {
