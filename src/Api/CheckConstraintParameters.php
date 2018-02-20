@@ -9,14 +9,18 @@ use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
+use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
+use Wikibase\Lib\SnakFormatter;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 
 /**
@@ -47,6 +51,11 @@ class CheckConstraintParameters extends ApiBase {
 	private $delegatingConstraintChecker;
 
 	/**
+	 * @var ViolationMessageRenderer
+	 */
+	private $violationMessageRenderer;
+
+	/**
 	 * @var StatementGuidParser
 	 */
 	private $statementGuidParser;
@@ -69,12 +78,30 @@ class CheckConstraintParameters extends ApiBase {
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$repo = WikibaseRepo::getDefaultInstance();
 		$helperFactory = $repo->getApiHelperFactory( RequestContext::getMain() );
+		$language = $repo->getUserLanguage();
+
+		$languageFallbackLabelDescriptionLookupFactory = $repo->getLanguageFallbackLabelDescriptionLookupFactory();
+		$labelDescriptionLookup = $languageFallbackLabelDescriptionLookupFactory->newLabelDescriptionLookup( $language );
+		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
+		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
+		$formatterOptions = new FormatterOptions();
+		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
+		$valueFormatterFactory = $repo->getValueFormatterFactory();
+		$dataValueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		$violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
+			$entityIdHtmlLinkFormatter,
+			$dataValueFormatter,
+			$config
+		);
+
 		return new self(
 			$main,
 			$name,
 			$prefix,
 			$helperFactory,
 			$constraintReportFactory->getConstraintChecker(),
+			$violationMessageRenderer,
 			$repo->getStatementGuidParser(),
 			MediaWikiServices::getInstance()->getStatsdDataFactory()
 		);
@@ -95,6 +122,7 @@ class CheckConstraintParameters extends ApiBase {
 		$prefix,
 		ApiHelperFactory $apiHelperFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
+		ViolationMessageRenderer $violationMessageRenderer,
 		StatementGuidParser $statementGuidParser,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
@@ -102,6 +130,7 @@ class CheckConstraintParameters extends ApiBase {
 
 		$this->apiErrorReporter = $apiHelperFactory->getErrorReporter( $this );
 		$this->delegatingConstraintChecker = $delegatingConstraintChecker;
+		$this->violationMessageRenderer = $violationMessageRenderer;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->dataFactory = $dataFactory;
 	}
@@ -277,7 +306,9 @@ class CheckConstraintParameters extends ApiBase {
 	 */
 	private function formatConstraintParameterException( ConstraintParameterException $e ) {
 		return [
-			self::KEY_MESSAGE_HTML => $e->getMessage(),
+			self::KEY_MESSAGE_HTML => $this->violationMessageRenderer->render(
+				$e->getViolationMessage()
+			),
 		];
 	}
 
