@@ -20,31 +20,37 @@ else
 fi
 
 database=wikidb
+dbprefix="$(sed -En -- 's/^[^#/]*\$wgDBprefix *= *(['"'"'"])([0-9a-zA-Z_]+)\1 *;.*/\2/p' "$localSettings")"
 
-while getopts d: opt; do
+while getopts d:p: opt; do
     case $opt in
         d) database=$OPTARG;;
+        p) dbprefix=$OPTARG;;
         :|\?) exit 2;;
     esac
 done
 
-if ! mysql -- "$database" &>/dev/null <<< 'SELECT 1 FROM wbs_entity_mapping'; then
-    printf >&2 '%s: database "%s" not found, inaccessible, or has no wbs_entity_mapping table.\n' "$0" "$database"
+mappingTable="${dbprefix}wbs_entity_mapping"
+
+if ! mysql -- "$database" &>/dev/null <<< "SELECT 1 FROM $mappingTable"; then
+    printf >&2 '%s: database "%s" not found, inaccessible, or has no %s table.\n' "$0" "$database" "$mappingTable"
     if [[ $database = wikidb ]]; then
         printf >&2 '(You can specify the database with the -d option: %s -d DATABASE.)\n' "$0"
     elif ! [[ -f ~/.my.cnf ]]; then
         printf >&2 '(Please store your login credentials in ~/.my.cnf so that command line access without -u or -p is possible.)\n'
+    elif ! [[ $dbprefix ]]; then
+        printf >&2 '(You can specify the prefix for table names in the database with the -p option: %s -d %s -p PREFIX.)\n' "$0" "$database"
     fi
     exit 1
 fi
 
 # disable existing configuration
-sed -i '
+sed -i "
   # delete existing lines added by this script
-  /# exported from wbs_entity_mapping$/d
-  # comment out existing lines overridden by this script ("&" in replacement refers to matched string, i.e. existing line)
-  s/^\$wgWBQualityConstraints.*Id =.*$/# & # overridden by wbs_entity_mapping export/
-' -- "$localSettings"
+  /# exported from $mappingTable$/d
+  # comment out existing lines overridden by this script ('&' in replacement refers to matched string, i.e. existing line)
+  s/^\$wgWBQualityConstraints.*Id =.*$/# & # overridden by $mappingTable export/
+" -- "$localSettings"
 
 {
     printf '\n'
@@ -61,11 +67,11 @@ sed -i '
       (.key + " " + .value.value)' \
        -- "$extensionJson" |
         while read -r confName originalId; do
-            localId=$(mysql --column-names=false -- "$database" <<< "SELECT wbs_local_id FROM wbs_entity_mapping WHERE wbs_original_id = '$originalId'")
+            localId=$(mysql --column-names=false -- "$database" <<< "SELECT wbs_local_id FROM $mappingTable WHERE wbs_original_id = '$originalId'")
             if ! [[ $localId =~ [PQ][0-9]* ]]; then
                 printf >&2 '%s: invalid local ID(s) for original ID %q: %q\n' "$0" "$originalId" "$localId"
                 exit 1
             fi
-            printf '$wg%s = "%s"; # exported from wbs_entity_mapping\n' "$confName" "$localId"
+            printf '$wg%s = "%s"; # exported from %s\n' "$confName" "$localId" "$mappingTable"
         done
 } >> "$localSettings"
