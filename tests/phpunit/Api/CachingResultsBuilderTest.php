@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
+use DataValues\TimeValue;
 use HashBagOStuff;
 use NullStatsdDataFactory;
 use TimeAdjustableWANObjectCache;
@@ -255,6 +256,91 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 	}
 
+	public function testGetAndStoreResults_WithoutFutureTime() {
+		$expectedResults = new CachedCheckConstraintsResponse(
+			[ 'Q100' => 'garbage data, should not matter' ],
+			Metadata::ofDependencyMetadata( DependencyMetadata::blank() )
+		);
+		$q100 = new ItemId( 'Q100' );
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS
+		];
+		$resultsBuilder = $this->getMock( ResultsBuilder::class );
+		$resultsBuilder->expects( $this->once() )
+			->method( 'getResults' )
+			->with( [ $q100 ], [], null, $statuses )
+			->willReturn( $expectedResults );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$resultsCache = new ResultsCache( $cache );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadRevisionInformation' )
+			->willReturn( [] );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$resultsBuilder,
+			$resultsCache,
+			$metaDataAccessor,
+			new ItemIdParser(),
+			86400,
+			[],
+			new NullStatsdDataFactory()
+		);
+
+		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
+		$cachedResults = $resultsCache->get( $q100 );
+
+		$this->assertNotNull( $cachedResults );
+		$this->assertArrayNotHasKey( 'futureTime', $cachedResults );
+	}
+
+	public function testGetAndStoreResults_WithFutureTime() {
+		$timeValue = new TimeValue(
+			'+2012-10-29T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+		$expectedResults = new CachedCheckConstraintsResponse(
+			[ 'Q100' => 'garbage data, should not matter' ],
+			Metadata::ofDependencyMetadata( DependencyMetadata::ofFutureTime( $timeValue ) )
+		);
+		$q100 = new ItemId( 'Q100' );
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS
+		];
+		$resultsBuilder = $this->getMock( ResultsBuilder::class );
+		$resultsBuilder->expects( $this->once() )
+			->method( 'getResults' )
+			->with( [ $q100 ], [], null, $statuses )
+			->willReturn( $expectedResults );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$resultsCache = new ResultsCache( $cache );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadRevisionInformation' )
+			->willReturn( [] );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$resultsBuilder,
+			$resultsCache,
+			$metaDataAccessor,
+			new ItemIdParser(),
+			86400,
+			[],
+			new NullStatsdDataFactory()
+		);
+
+		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
+		$cachedResults = $resultsCache->get( $q100 );
+
+		$this->assertNotNull( $cachedResults );
+		$this->assertArrayHasKey( 'futureTime', $cachedResults );
+		$this->assertEquals( $timeValue->getArrayValue(), $cachedResults['futureTime'] );
+	}
+
 	public function testGetStoredResults_CacheMiss() {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
@@ -391,6 +477,84 @@ class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
 		asort( $actual );
 		$this->assertSame( $expected, $actual );
 		$this->assertFalse( $results->getMetadata()->getCachingMetadata()->isCached() );
+	}
+
+	public function testGetResults_FutureDateStillInFuture() {
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadRevisionInformation' )
+			->willReturn( [] );
+		$resultsCache = new ResultsCache( new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ) );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			$resultsCache,
+			$metaDataAccessor,
+			new ItemIdParser(),
+			86400,
+			[],
+			new NullStatsdDataFactory()
+		);
+
+		$q5 = new ItemId( 'Q5' );
+		$expectedResults = 'garbage data, should not matter';
+		$futureTimestamp = '+20018-02-16T00:00:00Z';
+		$value = [
+			'results' => $expectedResults,
+			'latestRevisionIds' => [],
+			'futureTime' => [
+				'time' => $futureTimestamp,
+				'timezone' => 0,
+				'before' => 0,
+				'after' => 0,
+				'precision' => TimeValue::PRECISION_DAY,
+				'calendarmodel' => TimeValue::CALENDAR_GREGORIAN,
+			],
+		];
+		$resultsCache->set( $q5, $value );
+
+		$response = $cachingResultsBuilder->getStoredResults( $q5 );
+
+		$this->assertNotNull( $response );
+		$this->assertSame( [ 'Q5' => $expectedResults ], $response->getArray() );
+		$dependencyMetadata = $response->getMetadata()->getDependencyMetadata();
+		$this->assertNotNull( $dependencyMetadata->getFutureTime() );
+		$this->assertSame( $futureTimestamp, $dependencyMetadata->getFutureTime()->getTime() );
+	}
+
+	public function testGetResults_FutureDateNowInPast() {
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadRevisionInformation' )
+			->willReturn( [] );
+		$resultsCache = new ResultsCache( new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ) );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			$resultsCache,
+			$metaDataAccessor,
+			new ItemIdParser(),
+			86400,
+			[],
+			new NullStatsdDataFactory()
+		);
+
+		$q5 = new ItemId( 'Q5' );
+		$expectedResults = 'garbage data, should not matter';
+		$pastTimestamp = '+2018-02-14T00:00:00Z';
+		$value = [
+			'results' => $expectedResults,
+			'latestRevisionIds' => [],
+			'futureTime' => [
+				'time' => $pastTimestamp,
+				'timezone' => 0,
+				'before' => 0,
+				'after' => 0,
+				'precision' => TimeValue::PRECISION_DAY,
+				'calendarmodel' => TimeValue::CALENDAR_GREGORIAN,
+			],
+		];
+		$resultsCache->set( $q5, $value );
+
+		$response = $cachingResultsBuilder->getStoredResults( $q5 );
+
+		$this->assertNull( $response );
 	}
 
 	public function testGetResults_ConstraintIds() {
