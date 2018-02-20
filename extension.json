@@ -316,7 +316,7 @@
 		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
-			"description": "The property ID of the 'relation' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
+			"description": "The property ID of the 'class' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
 			"public": true
 		},
 		"WBQualityConstraintsRelationId": {
