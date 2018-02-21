@@ -305,7 +305,6 @@ EOF;
 	}
 
 	public function testSerializeConstraintParameterException_ViolationMessage() {
-		$this->markTestSkipped( 'ConstraintParameterException of ViolationMessage not supported yet ' );
 		$cpe = new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
 				->withInlineCode( '[', Role::CONSTRAINT_PARAMETER_VALUE )
@@ -342,7 +341,6 @@ EOF;
 	}
 
 	public function testDeserializeConstraintParameterException_ViolationMessage() {
-		$this->markTestSkipped( 'ConstraintParameterException of ViolationMessage not supported yet ' );
 		$serialization = [
 			'type' => ConstraintParameterException::class,
 			'violationMessage' => [
