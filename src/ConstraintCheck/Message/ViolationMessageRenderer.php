@@ -272,7 +272,7 @@ class ViolationMessageRenderer {
 	private function renderDataValueType( $dataValueType, $role ) {
 		$messageKeys = [
 			'string' => 'datatypes-type-string',
-			'monolingualtext' => 'datatypes-monolingualtext',
+			'monolingualtext' => 'datatypes-type-monolingualtext',
 			'wikibase-entityid' => 'wbqc-dataValueType-wikibase-entityid',
 		];
 
