@@ -8,7 +8,6 @@ use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
-use Language;
 use Wikibase\DataModel\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;
@@ -21,6 +20,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
@@ -85,7 +85,7 @@ class ConstraintParameterParser {
 			} else {
 				$msg = 'wbqc-violation-message-parameters-error-unknown';
 			}
-			throw new ConstraintParameterException( wfMessage( $msg )->escaped() );
+			throw new ConstraintParameterException( new ViolationMessage( $msg ) );
 		}
 	}
 
@@ -98,9 +98,8 @@ class ConstraintParameterParser {
 	private function requireSingleParameter( array $parameters, $parameterId ) {
 		if ( count( $parameters[$parameterId] ) !== 1 ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-single' )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-single' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 	}
@@ -115,9 +114,8 @@ class ConstraintParameterParser {
 	private function requireValueParameter( Snak $snak, $parameterId ) {
 		if ( !( $snak instanceof PropertyValueSnak ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-value' )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 	}
@@ -137,12 +135,9 @@ class ConstraintParameterParser {
 			return $value->getEntityId();
 		} else {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-entity' )
-					->rawParams(
-						$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
-						$this->constraintParameterRenderer->formatDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
-					)
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-entity' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
 	}
@@ -158,10 +153,9 @@ class ConstraintParameterParser {
 		$classId = $this->config->get( 'WBQualityConstraintsClassId' );
 		if ( !array_key_exists( $classId, $constraintParameters ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ) )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $classId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+					->withEntityId( new PropertyId( $classId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -183,10 +177,9 @@ class ConstraintParameterParser {
 		$relationId = $this->config->get( 'WBQualityConstraintsRelationId' );
 		if ( !array_key_exists( $relationId, $constraintParameters ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ) )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $relationId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+					->withEntityId( new PropertyId( $relationId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -204,14 +197,16 @@ class ConstraintParameterParser {
 				return 'instanceOrSubclass';
 			default:
 				throw new ConstraintParameterException(
-					wfMessage( 'wbqc-violation-message-parameter-oneof' )
-						->rawParams( $this->constraintParameterRenderer->formatPropertyId( $relationId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-						->numParams( 3 )
-						->rawParams( $this->constraintParameterRenderer->formatItemIdList(
-							[ $instanceId, $subclassId, $instanceOrSubclassId ],
+					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
+						->withEntityId( new PropertyId( $relationId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withEntityIdList(
+							[
+								new ItemId( $instanceId ),
+								new ItemId( $subclassId ),
+								new ItemId( $instanceOrSubclassId ),
+							],
 							Role::CONSTRAINT_PARAMETER_VALUE
-						) )
-						->escaped()
+						)
 				);
 		}
 	}
@@ -234,12 +229,9 @@ class ConstraintParameterParser {
 			}
 		}
 		throw new ConstraintParameterException(
-			wfMessage( 'wbqc-violation-message-parameter-property' )
-				->rawParams(
-					$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
-					$this->constraintParameterRenderer->formatDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
-				)
-				->escaped()
+			( new ViolationMessage( 'wbqc-violation-message-parameter-property' ) )
+				->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+				->withDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
 		);
 	}
 
@@ -255,10 +247,9 @@ class ConstraintParameterParser {
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		if ( !array_key_exists( $propertyId, $constraintParameters ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ) )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $propertyId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+					->withEntityId( new PropertyId( $propertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -274,12 +265,9 @@ class ConstraintParameterParser {
 			return ItemIdSnakValue::fromItemId( $dataValue->getEntityId() );
 		} else {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-item' )
-					->rawParams(
-						$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
-						$this->constraintParameterRenderer->formatDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
-					)
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-item' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
 	}
@@ -297,10 +285,9 @@ class ConstraintParameterParser {
 		if ( !array_key_exists( $qualifierId, $constraintParameters ) ) {
 			if ( $required ) {
 				throw new ConstraintParameterException(
-					wfMessage( 'wbqc-violation-message-parameter-needed' )
-						->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ) )
-						->rawParams( $this->constraintParameterRenderer->formatPropertyId( $qualifierId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-						->escaped()
+					( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
+						->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+						->withEntityId( new PropertyId( $qualifierId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 				);
 			} else {
 				return [];
@@ -336,10 +323,9 @@ class ConstraintParameterParser {
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		if ( !array_key_exists( $propertyId, $constraintParameters ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ) )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $propertyId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+					->withEntityId( new PropertyId( $propertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -371,9 +357,8 @@ class ConstraintParameterParser {
 			return null;
 		} else {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-value-or-novalue' )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-value-or-novalue' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 	}
@@ -428,13 +413,10 @@ class ConstraintParameterParser {
 				break;
 			default:
 				throw new ConstraintParameterException(
-					wfMessage( 'wbqc-violation-message-value-needed-of-types-2' )
-						->rawParams(
-							$this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ),
-							wfMessage( 'datatypes-type-quantity' )->escaped(),
-							wfMessage( 'datatypes-type-time' )->escaped()
-						)
-						->escaped()
+					( new ViolationMessage( 'wbqc-violation-message-value-needed-of-types-2' ) )
+						->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+						->withDataValueType( 'quantity' )
+						->withDataValueType( 'time' )
 				);
 		}
 		$minimumId = $this->config->get( 'WBQualityConstraintsMinimum' . $configKey . 'Id' );
@@ -443,14 +425,11 @@ class ConstraintParameterParser {
 			!array_key_exists( $maximumId, $constraintParameters )
 		) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-range-parameters-needed' )
-					->rawParams(
-						wfMessage( 'datatypes-type-' . $type )->escaped(),
-						$this->constraintParameterRenderer->formatPropertyId( $minimumId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
-						$this->constraintParameterRenderer->formatPropertyId( $maximumId, Role::CONSTRAINT_PARAMETER_PROPERTY )
-					)
-					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-range-parameters-needed' ) )
+					->withDataValueType( $type )
+					->withEntityId( new PropertyId( $minimumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new PropertyId( $maximumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 			);
 		}
 
@@ -463,19 +442,15 @@ class ConstraintParameterParser {
 		$yearUnit = $this->config->get( 'WBQualityConstraintsYearUnit' );
 		if ( $this->exactlyOneQuantityWithUnit( $min, $max, $yearUnit ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-range-parameters-one-year' )
-					->escaped()
+				new ViolationMessage( 'wbqc-violation-message-range-parameters-one-year' )
 			);
 		}
 		if ( $min === null && $max === null ||
 			$min !== null && $max !== null && $min->equals( $max ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-range-parameters-same' )
-					->rawParams(
-						$this->constraintParameterRenderer->formatPropertyId( $minimumId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
-						$this->constraintParameterRenderer->formatPropertyId( $maximumId, Role::CONSTRAINT_PARAMETER_PROPERTY )
-					)
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-range-parameters-same' ) )
+					->withEntityId( new PropertyId( $minimumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new PropertyId( $maximumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -497,12 +472,9 @@ class ConstraintParameterParser {
 			return $value->getValue();
 		} else {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-string' )
-					->rawParams(
-						$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
-						$this->constraintParameterRenderer->formatDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
-					)
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-string' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
 	}
@@ -535,10 +507,9 @@ class ConstraintParameterParser {
 		$formatId = $this->config->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		if ( !array_key_exists( $formatId, $constraintParameters ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-needed' )
-					->rawParams( $this->constraintParameterRenderer->formatItemId( $constraintTypeItemId, Role::CONSTRAINT_TYPE_ITEM ) )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $formatId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+					->withEntityId( new PropertyId( $formatId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -588,11 +559,9 @@ class ConstraintParameterParser {
 			return 'mandatory';
 		} else {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-oneof' )
-					->rawParams( $this->constraintParameterRenderer->formatPropertyId( $constraintStatusId, Role::CONSTRAINT_PARAMETER_PROPERTY ) )
-					->numParams( 1 )
-					->rawParams( $this->constraintParameterRenderer->formatItemIdList( [ $mandatoryId ], Role::CONSTRAINT_PARAMETER_VALUE ) )
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
+					->withEntityId( new PropertyId( $constraintStatusId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityIdList( [ new ItemId( $mandatoryId ) ], Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
 	}
@@ -607,12 +576,9 @@ class ConstraintParameterParser {
 	private function requireMonolingualTextParameter( DataValue $dataValue, $parameterId ) {
 		if ( !( $dataValue instanceof MonolingualTextValue ) ) {
 			throw new ConstraintParameterException(
-				wfMessage( 'wbqc-violation-message-parameter-monolingualtext' )
-					->rawParams(
-						$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY ),
-						$this->constraintParameterRenderer->formatDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
-					)
-					->escaped()
+				( new ViolationMessage( 'wbqc-violation-message-parameter-monolingualtext' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
 	}
@@ -639,15 +605,9 @@ class ConstraintParameterParser {
 			$code = $value->getLanguageCode();
 			if ( array_key_exists( $code, $result ) ) {
 				throw new ConstraintParameterException(
-					wfMessage( 'wbqc-violation-message-parameter-single-per-language' )
-						->rawParams(
-							$this->constraintParameterRenderer->formatPropertyId( $parameterId, Role::CONSTRAINT_PARAMETER_PROPERTY )
-						)
-						->plaintextParams(
-							Language::fetchLanguageName( $code ),
-							$code
-						)
-						->escaped()
+					( new ViolationMessage( 'wbqc-violation-message-parameter-single-per-language' ) )
+						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withLanguage( $code )
 				);
 			}
 
@@ -710,25 +670,16 @@ class ConstraintParameterParser {
 					break;
 				default:
 					throw new ConstraintParameterException(
-						wfMessage( 'wbqc-violation-message-parameter-oneof' )
-							->rawParams(
-								$this->constraintParameterRenderer->formatPropertyId(
-									$constraintScopeId,
-									Role::CONSTRAINT_PARAMETER_PROPERTY
-								)
+						( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
+							->withEntityId( new PropertyId( $constraintScopeId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+							->withEntityIdList(
+								[
+									new ItemId( $mainSnakId ),
+									new ItemId( $qualifiersId ),
+									new ItemId( $referencesId ),
+								],
+								Role::CONSTRAINT_PARAMETER_VALUE
 							)
-							->numParams( 3 )
-							->rawParams(
-								$this->constraintParameterRenderer->formatItemIdList(
-									[
-										$mainSnakId,
-										$qualifiersId,
-										$referencesId,
-									],
-									Role::CONSTRAINT_PARAMETER_VALUE
-								)
-							)
-							->escaped()
 					);
 			}
 		}
@@ -738,25 +689,10 @@ class ConstraintParameterParser {
 			if ( $invalidScopes !== [] ) {
 				$invalidScope = array_pop( $invalidScopes );
 				throw new ConstraintParameterException(
-					wfMessage( 'wbqc-violation-message-invalid-scope' )
-						->rawParams(
-							$this->constraintParameterRenderer->formatConstraintScope(
-								$invalidScope,
-								Role::CONSTRAINT_PARAMETER_VALUE
-							),
-							$this->constraintParameterRenderer->formatItemId(
-								$constraintTypeItemId,
-								Role::CONSTRAINT_TYPE_ITEM
-							)
-						)
-						->numParams( count( $validScopes ) )
-						->rawParams(
-							$this->constraintParameterRenderer->formatConstraintScopeList(
-								$validScopes,
-								Role::CONSTRAINT_PARAMETER_VALUE
-							)
-						)
-						->escaped()
+					( new ViolationMessage( 'wbqc-violation-message-invalid-scope' ) )
+						->withConstraintScope( $invalidScope, Role::CONSTRAINT_PARAMETER_VALUE )
+						->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+						->withConstraintScopeList( $validScopes, Role::CONSTRAINT_PARAMETER_VALUE )
 				);
 			}
 		}
