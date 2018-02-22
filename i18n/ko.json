@@ -61,7 +61,7 @@
 	"wbqc-violation-message-sparql-error": "SPARQL 쿼리에서 오류가 발생했습니다.",
 	"wbqc-violation-message-commons-link-no-existent": "공용 링크가 존재해야 합니다.",
 	"wbqc-violation-message-commons-link-not-well-formed": "공용 링크가 올바르게 구성되어야 합니다.",
-	"wbqc-violation-message-diff-within-range": "$3 ($4)와 $1 ($2) 사이의 차이는 $5와 $6 ([$5; $6]) 사이여야 합니다.",
+	"wbqc-violation-message-diff-within-range": "$3 ($4)와 $1 ($2) 사이의 차이는 $5와 $6 사이여야 합니다.",
 	"wbqc-violation-message-diff-within-range-leftopen": "$3 ($4)와 $1 ($2) 사이의 차이는 $5 ((−∞; $5])을(를) 넘을 수 없습니다.",
 	"wbqc-violation-message-diff-within-range-rightopen": "$3 ($4)와 $1 ($2) 사이의 차이는 $5 ([$5; ∞)) 만큼이어야 합니다.",
 	"wbqc-violation-message-format": "$1 ($2)의 값은 $3 정규식과 일치해야 합니다.",

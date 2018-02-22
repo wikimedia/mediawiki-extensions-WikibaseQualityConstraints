@@ -5,7 +5,8 @@
 			"Macofe",
 			"Csbotero",
 			"KATRINE1992",
-			"2axterix2"
+			"2axterix2",
+			"MarcoAurelio"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restricción",
@@ -51,7 +52,7 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La verificación para el espacio de nombres \"$1\" todavía no está implementada.",
 	"wbqc-violation-message-conflicts-with-property": "Las entidades no deben incluir declaraciones para $1 y $2 a la vez.",
 	"wbqc-violation-message-conflicts-with-claim": "Esta propiedad no debe usarse cuando haya otra declaración usando la propiedad con uno de los valores definidos en los parámetros.",
-	"wbqc-violation-message-diff-within-range": "La diferencia entre el valor de esta propiedad y el valor de la propiedad definida en los parámetros no debe ser menor que el mínimo ni mayor que el máximo definidos en los parámetros.",
+	"wbqc-violation-message-diff-within-range": "La diferencia entre $3 ($4) y $1 ($2) debe ser de entre $5 y $6.",
 	"wbqc-violation-message-diff-within-range-property-must-exist": "La propiedad definida en los parámetros debe existir.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propiedad definida en los parámetros debe tener un valor del mismo tipo que esta propiedad.",
 	"wbqc-violation-message-format": "El valor de $1 ($2) debería coincidir con la expresión regular $3.",
