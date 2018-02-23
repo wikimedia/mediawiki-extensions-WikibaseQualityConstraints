@@ -376,6 +376,51 @@ EOF;
 		$this->assertEquals( $expected, $cpe );
 	}
 
+	public function testCleanupConstraintParameterExceptions() {
+		$cacheMapArray = [
+			'c3b707957a9c347115381629877006e3d0cc9af770144bf201bd522ed46e04a8' => true,
+			'invalid regex, serialized ViolationMessage' => [
+				'type' => ConstraintParameterException::class,
+				'violationMessage' => [
+					'k' => 'parameter-regex',
+					'a' => [
+						[ 't' => ViolationMessage::TYPE_INLINE_CODE, 'v' => '[', 'r' => Role::CONSTRAINT_PARAMETER_VALUE ],
+					],
+				]
+			],
+			'1641e23412937b9010417205590e56564f75c736531a7d66f134ad53f00722a8' => false,
+			'invalid regex, plain message' => [
+				'type' => ConstraintParameterException::class,
+				'message' => 'a plain text, non-localizable violation message',
+			],
+			2 => false, // numeric key
+			'unknown ViolationMessage serialization' => [
+				'type' => ConstraintParameterException::class,
+				'violationMessage' => '"parameter-regex",c,[,constraint-parameter-value',
+			],
+			'e81bdc1899da712226eba67ad46d32cf0cb7b3d06a0fea78ae57422d4790b694' => 'non-bool value',
+			'other serialization' => [
+				'type' => self::class,
+				'foo' => 'bar',
+			],
+		];
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
+
+		$actual = $sparqlHelper->cleanupConstraintParameterExceptions( $cacheMapArray );
+
+		$expectedKeys = [
+			'c3b707957a9c347115381629877006e3d0cc9af770144bf201bd522ed46e04a8',
+			'invalid regex, serialized ViolationMessage',
+			'1641e23412937b9010417205590e56564f75c736531a7d66f134ad53f00722a8',
+			// not 'invalid regex, plain message'
+			2,
+			'unknown ViolationMessage serialization',
+			'e81bdc1899da712226eba67ad46d32cf0cb7b3d06a0fea78ae57422d4790b694',
+			'other serialization',
+		];
+		$this->assertSame( $expectedKeys, array_keys( $actual ) );
+	}
+
 	public function testMatchesRegularExpressionWithSparql() {
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
