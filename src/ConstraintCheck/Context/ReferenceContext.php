@@ -44,6 +44,17 @@ class ReferenceContext extends ApiV2Context {
 		return array_values( $snaks->getArrayCopy() );
 	}
 
+	public function getCursor() {
+		return new ReferenceContextCursor(
+			$this->entity->getId()->getSerialization(),
+			$this->statement->getPropertyId()->getSerialization(),
+			$this->statement->getGuid(),
+			$this->snak->getHash(),
+			$this->snak->getPropertyId()->getSerialization(),
+			$this->reference->getHash()
+		);
+	}
+
 	protected function &getMainArray( array &$container ) {
 		$statementArray = &$this->getStatementArray(
 			$container,

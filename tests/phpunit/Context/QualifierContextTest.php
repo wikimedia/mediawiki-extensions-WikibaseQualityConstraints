@@ -11,6 +11,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContextCursor;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
@@ -88,6 +89,17 @@ class QualifierContextTest extends \PHPUnit\Framework\TestCase {
 		$snakGroup = $context->getSnakGroup();
 
 		$this->assertSame( [ $qualifier1, $qualifier2 ], $snakGroup );
+	}
+
+	public function testGetCursor() {
+		$entity = NewItem::withId( 'Q1' )->build();
+		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
+		$context = new QualifierContext( $entity, $statement, $snak );
+
+		$cursor = $context->getCursor();
+
+		$this->assertInstanceOf( QualifierContextCursor::class, $cursor );
 	}
 
 	public function testStoreCheckResultInArray() {

@@ -13,6 +13,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContextCursor;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
@@ -111,6 +112,19 @@ class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 		$snakGroup = $context->getSnakGroup();
 
 		$this->assertSame( [ $referenceSnak1, $referenceSnak2 ], $snakGroup );
+	}
+
+	public function testGetCursor() {
+		$entity = NewItem::withId( 'Q1' )->build();
+		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
+		$reference = new Reference( [ $snak ] );
+		$statement->getReferences()->addReference( $reference );
+		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
+
+		$cursor = $context->getCursor();
+
+		$this->assertInstanceOf( ReferenceContextCursor::class, $cursor );
 	}
 
 	public function testStoreCheckResultInArray() {

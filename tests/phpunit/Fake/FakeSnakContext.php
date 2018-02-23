@@ -39,6 +39,10 @@ class FakeSnakContext extends AbstractContext {
 		return [ $this->snak ];
 	}
 
+	public function getCursor() {
+		return new AppendingContextCursor();
+	}
+
 	/**
 	 * @param array|null $result
 	 * @param array[] &$container

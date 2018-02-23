@@ -47,6 +47,15 @@ class MainSnakContext extends ApiV2Context {
 			->getMainSnaks();
 	}
 
+	public function getCursor() {
+		return new MainSnakContextCursor(
+			$this->entity->getId()->getSerialization(),
+			$this->statement->getPropertyId()->getSerialization(),
+			$this->statement->getGuid(),
+			$this->statement->getMainSnak()->getHash()
+		);
+	}
+
 	protected function &getMainArray( array &$container ) {
 		$statementArray = &$this->getStatementArray(
 			$container,

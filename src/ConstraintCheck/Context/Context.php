@@ -90,6 +90,13 @@ interface Context {
 	public function getSnakGroup();
 
 	/**
+	 * Get the cursor that can be used to address check results for this context.
+	 *
+	 * @return ContextCursor
+	 */
+	public function getCursor();
+
+	/**
 	 * Store the check result serialization $result
 	 * at the appropriate location for this context in $container.
 	 *
