@@ -40,7 +40,6 @@ class CheckResultTest extends \PHPUnit\Framework\TestCase {
 		$checkResult->withMetadata( $metadata );
 
 		$this->assertSame( $context, $checkResult->getContext() );
-		$this->assertSame( $entityId, $checkResult->getEntityId() );
 		$this->assertSame( $snak->getType(), $checkResult->getSnakType() );
 		$this->assertSame( $snak->getDataValue(), $checkResult->getDataValue() );
 		$this->assertSame( $constraint, $checkResult->getConstraint() );

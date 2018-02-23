@@ -534,7 +534,7 @@ class DelegatingConstraintChecker {
 			$result = $this->handleScope( $checker, $context, $constraint );
 
 			if ( $result !== null ) {
-				$this->addMetadata( $result );
+				$this->addMetadata( $context, $result );
 				return $result;
 			}
 
@@ -549,7 +549,7 @@ class DelegatingConstraintChecker {
 			}
 			$endTime = microtime( true );
 
-			$this->addMetadata( $result );
+			$this->addMetadata( $context, $result );
 
 			try {
 				$constraintStatus = $this->constraintParameterParser
@@ -615,11 +615,11 @@ class DelegatingConstraintChecker {
 		return null;
 	}
 
-	private function addMetadata( CheckResult $result ) {
+	private function addMetadata( Context $context, CheckResult $result ) {
 		$result->withMetadata( Metadata::merge( [
 			$result->getMetadata(),
 			Metadata::ofDependencyMetadata( DependencyMetadata::merge( [
-				DependencyMetadata::ofEntityId( $result->getEntityId() ),
+				DependencyMetadata::ofEntityId( $context->getEntity()->getId() ),
 				DependencyMetadata::ofEntityId( $result->getConstraint()->getPropertyId() ),
 			] ) ),
 		] ) );

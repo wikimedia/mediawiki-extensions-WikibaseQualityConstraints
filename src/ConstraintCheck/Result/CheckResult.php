@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 
 use DataValues\DataValue;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -126,13 +125,6 @@ class CheckResult {
 	 */
 	public function getContext() {
 		return $this->context;
-	}
-
-	/**
-	 * @return EntityId
-	 */
-	public function getEntityId() {
-		return $this->context->getEntity()->getId();
 	}
 
 	/**
