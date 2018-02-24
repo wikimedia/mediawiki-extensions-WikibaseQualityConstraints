@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class TimeValueComparerTest extends \PHPUnit_Framework_TestCase {
+class TimeValueComparerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider provideComparisons

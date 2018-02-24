@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class CachingConstraintLookupTest extends \PHPUnit_Framework_TestCase {
+class CachingConstraintLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testQuery_CalledOnce() {
 		$p2 = new PropertyId( 'P2' );

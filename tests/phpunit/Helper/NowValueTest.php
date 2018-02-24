@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class NowValueTest extends \PHPUnit_Framework_TestCase {
+class NowValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetTime() {
 		$now = new NowValue();

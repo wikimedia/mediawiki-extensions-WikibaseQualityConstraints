@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class CachedBoolTest extends \PHPUnit_Framework_TestCase {
+class CachedBoolTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetBool() {
 		$bool = true;

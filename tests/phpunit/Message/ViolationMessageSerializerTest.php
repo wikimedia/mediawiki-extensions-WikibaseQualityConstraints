@@ -22,7 +22,7 @@ use Wikimedia\TestingAccessWrapper;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ViolationMessageSerializerTest extends \PHPUnit_Framework_TestCase {
+class ViolationMessageSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serialize

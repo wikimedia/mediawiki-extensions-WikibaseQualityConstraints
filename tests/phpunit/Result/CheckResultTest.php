@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests\CheckResult;
 
 use LogicException;
-use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -23,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class CheckResultTest extends PHPUnit_Framework_TestCase {
+class CheckResultTest extends \PHPUnit\Framework\TestCase {
 
 	public function testConstructAndGetters() {
 		$propertyId = new PropertyId( 'P1' );

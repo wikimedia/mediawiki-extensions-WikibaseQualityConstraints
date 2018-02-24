@@ -19,7 +19,7 @@ use WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class WikibaseQualityConstraintsHooksTest extends \PHPUnit_Framework_TestCase {
+class WikibaseQualityConstraintsHooksTest extends \PHPUnit\Framework\TestCase {
 
 	use DefaultConfig;
 

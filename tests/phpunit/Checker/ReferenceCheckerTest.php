@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ReferenceCheckerTest extends \PHPUnit_Framework_TestCase {
+class ReferenceCheckerTest extends \PHPUnit\Framework\TestCase {
 
 	use ResultAssertions;
 

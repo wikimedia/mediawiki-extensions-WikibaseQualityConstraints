@@ -13,7 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class CachedQueryResultsTest extends \PHPUnit_Framework_TestCase {
+class CachedQueryResultsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetArray() {
 		$array = [ 'boolean' => true ];

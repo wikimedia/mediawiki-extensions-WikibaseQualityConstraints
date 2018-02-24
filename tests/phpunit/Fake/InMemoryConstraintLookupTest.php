@@ -12,7 +12,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
  *
  * @license GNU GPL v2+
  */
-class InMemoryConstraintLookupTest extends \PHPUnit_Framework_TestCase {
+class InMemoryConstraintLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testQuery_NewLookup_ReturnsEmptyArrayForProperty() {
 		$lookup = new InMemoryConstraintLookup( [] );

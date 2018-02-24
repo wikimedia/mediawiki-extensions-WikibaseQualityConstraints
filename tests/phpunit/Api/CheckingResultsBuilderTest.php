@@ -33,7 +33,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
  *
  * @license GNU GPL v2+
  */
-class CheckingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
+class CheckingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	const NONEXISTENT_ITEM = 'Q99';
 	const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';

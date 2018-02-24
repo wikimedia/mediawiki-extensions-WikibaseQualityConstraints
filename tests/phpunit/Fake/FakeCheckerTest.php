@@ -13,7 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
  *
  * @license GNU GPL v2+
  */
-class FakeCheckerTest extends \PHPUnit_Framework_TestCase {
+class FakeCheckerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCheckConstraint_ResultContainsPassedContext() {
 		$checker = new FakeChecker();

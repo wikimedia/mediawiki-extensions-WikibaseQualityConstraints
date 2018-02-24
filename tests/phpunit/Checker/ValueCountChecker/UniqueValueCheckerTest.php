@@ -29,7 +29,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @author Olga Bode
  * @license GNU GPL v2+
  */
-class UniqueValueCheckerTest extends \PHPUnit_Framework_TestCase {
+class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
 	use ConstraintParameters, SparqlHelperMock;
 

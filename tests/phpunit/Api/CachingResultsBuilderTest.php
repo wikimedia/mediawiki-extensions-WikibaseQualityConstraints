@@ -29,7 +29,7 @@ include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/
  *
  * @license GNU GPL v2+
  */
-class CachingResultsBuilderTest extends \PHPUnit_Framework_TestCase {
+class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetAndStoreResults_SameResults() {
 		$expectedResults = new CachedCheckConstraintsResponse(

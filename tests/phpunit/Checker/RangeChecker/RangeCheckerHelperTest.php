@@ -9,7 +9,6 @@ use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
-use PHPUnit_Framework_TestCase;
 use Wikibase\Lib\Units\CSVUnitStorage;
 use Wikibase\Lib\Units\UnitConverter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
@@ -23,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class RangeCheckerHelperTest extends PHPUnit_Framework_TestCase {
+class RangeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 
 	use DefaultConfig;
 

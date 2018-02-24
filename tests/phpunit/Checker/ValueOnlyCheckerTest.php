@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ValueOnlyCheckerTest extends \PHPUnit_Framework_TestCase {
+class ValueOnlyCheckerTest extends \PHPUnit\Framework\TestCase {
 
 	use ResultAssertions;
 

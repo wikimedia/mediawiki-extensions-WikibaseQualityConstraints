@@ -21,7 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class LoggingHelperTest extends \PHPUnit_Framework_TestCase {
+class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider provideConstraintCheckDurationsAndLogLevels

@@ -18,7 +18,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class MainSnakContextTest extends \PHPUnit_Framework_TestCase {
+class MainSnakContextTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();

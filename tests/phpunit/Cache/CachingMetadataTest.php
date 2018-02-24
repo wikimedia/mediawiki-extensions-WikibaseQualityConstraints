@@ -17,7 +17,7 @@ use Wikimedia\Assert\ParameterTypeException;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class CachingMetadataTest extends \PHPUnit_Framework_TestCase {
+class CachingMetadataTest extends \PHPUnit\Framework\TestCase {
 
 	public function testFresh() {
 		$cm = CachingMetadata::fresh();

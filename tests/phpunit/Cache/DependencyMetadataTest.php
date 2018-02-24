@@ -18,7 +18,7 @@ use Wikimedia\Assert\ParameterElementTypeException;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class DependencyMetadataTest extends \PHPUnit_Framework_TestCase {
+class DependencyMetadataTest extends \PHPUnit\Framework\TestCase {
 
 	public function testBlank() {
 		$dm = DependencyMetadata::blank();

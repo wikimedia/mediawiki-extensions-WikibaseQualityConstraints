@@ -21,7 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ItemIdSnakValueTest extends \PHPUnit_Framework_TestCase {
+class ItemIdSnakValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testFromItemId() {
 		$itemId = new ItemId( 'Q1' );

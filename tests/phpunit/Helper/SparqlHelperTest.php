@@ -46,7 +46,7 @@ use Wikimedia\TestingAccessWrapper;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class SparqlHelperTest extends \PHPUnit_Framework_TestCase {
+class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 
 	use DefaultConfig, ResultAssertions;
 

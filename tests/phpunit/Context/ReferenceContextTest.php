@@ -24,7 +24,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ReferenceContextTest extends \PHPUnit_Framework_TestCase {
+class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();

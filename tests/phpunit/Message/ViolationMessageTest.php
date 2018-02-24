@@ -22,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Role;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ViolationMessageTest extends \PHPUnit_Framework_TestCase {
+class ViolationMessageTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetMessageKey() {
 		$messageKey = 'wbqc-violation-message-single-value';

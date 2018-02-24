@@ -25,7 +25,7 @@ use Wikimedia\TestingAccessWrapper;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ViolationMessageDeserializerTest extends \PHPUnit_Framework_TestCase {
+class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	private function getViolationMessageDeserializer(
 		EntityIdParser $entityIdParser = null,

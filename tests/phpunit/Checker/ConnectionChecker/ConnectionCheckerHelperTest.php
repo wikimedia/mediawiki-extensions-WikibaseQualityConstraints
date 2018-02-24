@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\ConnectionChecker;
 
-use PHPUnit_Framework_TestCase;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -22,7 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
  * @author BP2014N1
  * @license GNU GPL v2+
  */
-class ConnectionCheckerHelperTest extends PHPUnit_Framework_TestCase {
+class ConnectionCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @var StatementList

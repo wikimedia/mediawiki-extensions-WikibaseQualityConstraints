@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\Api\ResultsCache;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ResultsCacheTest extends \PHPUnit_Framework_TestCase {
+class ResultsCacheTest extends \PHPUnit\Framework\TestCase {
 
 	private $originalWgLang;
 

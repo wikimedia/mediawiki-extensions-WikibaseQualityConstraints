@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class CachedArrayTest extends \PHPUnit_Framework_TestCase {
+class CachedArrayTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetArray() {
 		$array = [ 'array' => true ];

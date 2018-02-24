@@ -27,7 +27,7 @@ use Wikimedia\TestingAccessWrapper;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ViolationMessageRendererTest extends \PHPUnit_Framework_TestCase {
+class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Create a new ViolationMessageRenderer
