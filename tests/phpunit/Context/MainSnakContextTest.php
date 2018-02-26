@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Context;
 
-use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -19,7 +18,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class MainSnakContextTest extends TestCase {
+class MainSnakContextTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();

@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Cache;
 
-use PHPUnit\Framework\TestCase;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 
@@ -14,7 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class CachedEntityIdsTest extends TestCase {
+class CachedEntityIdsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetArray() {
 		$array = [ 'boolean' => true ];

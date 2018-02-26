@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Cache;
 
 use DataValues\TimeValue;
-use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
@@ -19,7 +18,7 @@ use Wikimedia\Assert\ParameterElementTypeException;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class DependencyMetadataTest extends TestCase {
+class DependencyMetadataTest extends \PHPUnit\Framework\TestCase {
 
 	public function testBlank() {
 		$dm = DependencyMetadata::blank();

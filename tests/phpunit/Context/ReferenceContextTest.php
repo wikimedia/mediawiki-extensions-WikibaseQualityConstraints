@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Context;
 
-use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\ReferenceList;
@@ -25,7 +24,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ReferenceContextTest extends TestCase {
+class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();

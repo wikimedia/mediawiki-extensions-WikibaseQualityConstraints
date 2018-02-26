@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Context;
 
-use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
@@ -23,7 +22,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class QualifierContextTest extends TestCase {
+class QualifierContextTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();

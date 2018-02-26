@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Wikibase\Change;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -20,7 +19,7 @@ use WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class WikibaseQualityConstraintsHooksTest extends TestCase {
+class WikibaseQualityConstraintsHooksTest extends \PHPUnit\Framework\TestCase {
 
 	use DefaultConfig;
 

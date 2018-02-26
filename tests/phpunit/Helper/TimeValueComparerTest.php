@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
 
 use DataValues\TimeValue;
-use PHPUnit\Framework\TestCase;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer;
 
@@ -15,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class TimeValueComparerTest extends TestCase {
+class TimeValueComparerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider provideComparisons

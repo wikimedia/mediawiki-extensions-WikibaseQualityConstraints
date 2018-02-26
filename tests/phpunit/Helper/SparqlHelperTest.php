@@ -13,7 +13,6 @@ use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use HashConfig;
 use NullStatsdDataFactory;
-use PHPUnit\Framework\TestCase;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -47,7 +46,7 @@ use Wikimedia\TestingAccessWrapper;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class SparqlHelperTest extends TestCase {
+class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 
 	use DefaultConfig, ResultAssertions;
 

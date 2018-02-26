@@ -8,7 +8,6 @@ use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
@@ -26,7 +25,7 @@ use Wikimedia\TestingAccessWrapper;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ViolationMessageDeserializerTest extends TestCase {
+class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	private function getViolationMessageDeserializer(
 		EntityIdParser $entityIdParser = null,
