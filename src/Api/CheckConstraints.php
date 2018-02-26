@@ -332,11 +332,11 @@ class CheckConstraints extends ApiBase {
 				],
 				ApiBase::PARAM_ISMULTI => true,
 				ApiBase::PARAM_ALL => true,
-				ApiBase::PARAM_DFLT => /* implode( '|', [
+				ApiBase::PARAM_DFLT => implode( '|', [
 					CheckResult::STATUS_VIOLATION,
 					CheckResult::STATUS_WARNING,
 					CheckResult::STATUS_BAD_PARAMETERS,
-				] )*/ '*',
+				] ),
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 		];
