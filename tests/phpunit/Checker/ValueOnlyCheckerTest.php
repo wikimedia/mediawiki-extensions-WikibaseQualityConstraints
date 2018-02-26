@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -17,7 +18,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ValueOnlyCheckerTest extends \PHPUnit\Framework\TestCase {
+class ValueOnlyCheckerTest extends TestCase {
 
 	use ResultAssertions;
 

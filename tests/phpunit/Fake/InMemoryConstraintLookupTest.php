@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Fake;
 
+use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 
@@ -12,7 +13,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
  *
  * @license GNU GPL v2+
  */
-class InMemoryConstraintLookupTest extends \PHPUnit\Framework\TestCase {
+class InMemoryConstraintLookupTest extends TestCase {
 
 	public function testQuery_NewLookup_ReturnsEmptyArrayForProperty() {
 		$lookup = new InMemoryConstraintLookup( [] );

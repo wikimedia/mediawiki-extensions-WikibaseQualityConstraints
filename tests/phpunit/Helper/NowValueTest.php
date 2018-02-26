@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
 
 use DataValues\TimeValue;
 use LogicException;
+use PHPUnit\Framework\TestCase;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 
 /**
@@ -14,7 +15,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class NowValueTest extends \PHPUnit\Framework\TestCase {
+class NowValueTest extends TestCase {
 
 	public function testGetTime() {
 		$now = new NowValue();

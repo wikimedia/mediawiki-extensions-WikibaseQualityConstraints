@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
+use PHPUnit\Framework\TestCase;
 use Title;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
@@ -33,7 +34,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
  *
  * @license GNU GPL v2+
  */
-class CheckingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
+class CheckingResultsBuilderTest extends TestCase {
 
 	const NONEXISTENT_ITEM = 'Q99';
 	const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';

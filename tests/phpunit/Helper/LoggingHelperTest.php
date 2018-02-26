@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
 
 use HashConfig;
 use IBufferingStatsdDataFactory;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\Tests\NewItem;
@@ -21,7 +22,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
+class LoggingHelperTest extends TestCase {
 
 	/**
 	 * @dataProvider provideConstraintCheckDurationsAndLogLevels

@@ -9,6 +9,7 @@ use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
+use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -25,7 +26,7 @@ use WikibaseQuality\ConstraintReport\Role;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
+class ViolationMessageSerializationTest extends TestCase {
 
 	/**
 	 * @var ViolationMessageSerializer

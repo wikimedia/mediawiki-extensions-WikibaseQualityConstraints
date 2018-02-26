@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintDeserializer;
@@ -16,7 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintSerializer;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ConstraintSerializationTest extends \PHPUnit\Framework\TestCase {
+class ConstraintSerializationTest extends TestCase {
 
 	/**
 	 * @dataProvider provideConstraints

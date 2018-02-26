@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Cache;
 
+use PHPUnit\Framework\TestCase;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
@@ -14,7 +15,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class CachedBoolTest extends \PHPUnit\Framework\TestCase {
+class CachedBoolTest extends TestCase {
 
 	public function testGetBool() {
 		$bool = true;

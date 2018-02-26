@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\ValueCountChecker;
 
+use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
@@ -15,7 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHel
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ValueCountCheckerHelperTest extends \PHPUnit\Framework\TestCase {
+class ValueCountCheckerHelperTest extends TestCase {
 
 	/**
 	 * @dataProvider getPropertyCountProvider

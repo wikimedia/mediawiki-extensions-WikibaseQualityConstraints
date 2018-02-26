@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use HashBagOStuff;
 use Language;
+use PHPUnit\Framework\TestCase;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -17,7 +18,7 @@ use WikibaseQuality\ConstraintReport\Api\ResultsCache;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class ResultsCacheTest extends \PHPUnit\Framework\TestCase {
+class ResultsCacheTest extends TestCase {
 
 	private $originalWgLang;
 

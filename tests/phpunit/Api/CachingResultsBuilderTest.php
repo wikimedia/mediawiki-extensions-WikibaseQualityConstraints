@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 use DataValues\TimeValue;
 use HashBagOStuff;
 use NullStatsdDataFactory;
+use PHPUnit\Framework\TestCase;
 use TimeAdjustableWANObjectCache;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
@@ -29,7 +30,7 @@ include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/
  *
  * @license GNU GPL v2+
  */
-class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
+class CachingResultsBuilderTest extends TestCase {
 
 	public function testGetAndStoreResults_SameResults() {
 		$expectedResults = new CachedCheckConstraintsResponse(

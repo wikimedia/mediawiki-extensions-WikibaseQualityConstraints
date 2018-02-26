@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Fake;
 
+use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -13,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
  *
  * @license GNU GPL v2+
  */
-class FakeCheckerTest extends \PHPUnit\Framework\TestCase {
+class FakeCheckerTest extends TestCase {
 
 	public function testCheckConstraint_ResultContainsPassedContext() {
 		$checker = new FakeChecker();

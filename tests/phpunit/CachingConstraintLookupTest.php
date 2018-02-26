@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
@@ -14,7 +15,7 @@ use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
  * @author Lucas Werkmeister
  * @license GNU GPL v2+
  */
-class CachingConstraintLookupTest extends \PHPUnit\Framework\TestCase {
+class CachingConstraintLookupTest extends TestCase {
 
 	public function testQuery_CalledOnce() {
 		$p2 = new PropertyId( 'P2' );
