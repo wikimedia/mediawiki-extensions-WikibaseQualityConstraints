@@ -47,6 +47,7 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			new ItemIdParser(),
 			86400,
 			$possiblyStaleConstraintTypes,
+			10000,
 			new LoggingHelper(
 				new NullStatsdDataFactory(),
 				new NullLogger(),
@@ -71,6 +72,7 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 				new ItemIdParser(),
 				86400,
 				[],
+				10000,
 				new LoggingHelper(
 					new NullStatsdDataFactory(),
 					new NullLogger(),

@@ -69,6 +69,11 @@ class CachingResultsBuilder implements ResultsBuilder {
 	private $possiblyStaleConstraintTypes;
 
 	/**
+	 * @var int
+	 */
+	private $maxRevisionIds;
+
+	/**
 	 * @var LoggingHelper
 	 */
 	private $loggingHelper;
@@ -100,6 +105,8 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 * @param int $ttlInSeconds Time-to-live of the cached values, in seconds.
 	 * @param string[] $possiblyStaleConstraintTypes item IDs of constraint types
 	 * where cached results may always be stale, regardless of invalidation logic
+	 * @param int $maxRevisionIds The maximum number of revision IDs to check;
+	 * if a check result depends on more entity IDs than this number, it is not cached.
 	 * @param LoggingHelper $loggingHelper
 	 */
 	public function __construct(
@@ -109,6 +116,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 		EntityIdParser $entityIdParser,
 		$ttlInSeconds,
 		array $possiblyStaleConstraintTypes,
+		$maxRevisionIds,
 		LoggingHelper $loggingHelper
 	) {
 		$this->resultsBuilder = $resultsBuilder;
@@ -117,6 +125,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 		$this->entityIdParser = $entityIdParser;
 		$this->ttlInSeconds = $ttlInSeconds;
 		$this->possiblyStaleConstraintTypes = $possiblyStaleConstraintTypes;
+		$this->maxRevisionIds = $maxRevisionIds;
 		$this->loggingHelper = $loggingHelper;
 		$this->timeValueComparer = new TimeValueComparer();
 
@@ -360,6 +369,11 @@ class CachingResultsBuilder implements ResultsBuilder {
 		if ( $entityIds === [] ) {
 			$this->loggingHelper->logEmptyDependencyMetadata();
 			return [];
+		}
+		if ( count( $entityIds ) >= $this->maxRevisionIds ) {
+			// one of those entities will probably be edited soon, so might as well skip caching
+			$this->loggingHelper->logHugeDependencyMetadata( $entityIds, $this->maxRevisionIds );
+			return null;
 		}
 
 		$revisionInformations = $this->wikiPageEntityMetaDataAccessor->loadRevisionInformation(

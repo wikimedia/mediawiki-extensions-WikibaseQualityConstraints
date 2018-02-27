@@ -184,6 +184,11 @@
 			"description": "The time-to-live, in seconds, of cached results of the wbcheckconstraints API action. Ignored if WBQualityConstraintsCacheCheckConstraintsResults is not true.",
 			"public": true
 		},
+		"WBQualityConstraintsCacheCheckConstraintsMaximumRevisionIds": {
+			"value": 10000,
+			"description": "The maximum number of revision IDs to load when checking whether a cached wbcheckconstraints result is still fresh. Results that depend on more entity IDs than this limit are not cached.",
+			"public": true
+		},
 		"WBQualityConstraintsInstanceOfId": {
 			"value": "P31",
 			"description": "The property ID of the 'instance of' property (data type: item), which specifies the class(es) of an item.",

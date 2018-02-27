@@ -159,6 +159,7 @@ class CheckConstraints extends ApiBase {
 					$config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
 					$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
 				],
+				$config->get( 'WBQualityConstraintsCacheCheckConstraintsMaximumRevisionIds' ),
 				$loggingHelper
 			);
 		}
