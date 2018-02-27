@@ -90,12 +90,12 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				$constraintIds,
 				[ $this, 'defaultResults' ]
 			);
-			/** @var CheckResult[] $results */
-			$results = array_filter( $results, $this->statusSelected( $statusesFlipped ) );
 			foreach ( $results as $result ) {
 				$metadatas[] = $result->getMetadata();
-				$resultArray = $this->checkResultToArray( $result );
-				$result->getContext()->storeCheckResultInArray( $resultArray, $response );
+				if ( $this->statusSelected( $statusesFlipped, $result ) ) {
+					$resultArray = $this->checkResultToArray( $result );
+					$result->getContext()->storeCheckResultInArray( $resultArray, $response );
+				}
 			}
 		}
 		foreach ( $claimIds as $claimId ) {
@@ -104,11 +104,12 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				$constraintIds,
 				[ $this, 'defaultResults' ]
 			);
-			$results = array_filter( $results, $this->statusSelected( $statusesFlipped ) );
 			foreach ( $results as $result ) {
 				$metadatas[] = $result->getMetadata();
-				$resultArray = $this->checkResultToArray( $result );
-				$result->getContext()->storeCheckResultInArray( $resultArray, $response );
+				if ( $this->statusSelected( $statusesFlipped, $result ) ) {
+					$resultArray = $this->checkResultToArray( $result );
+					$result->getContext()->storeCheckResultInArray( $resultArray, $response );
+				}
 			}
 		}
 		return new CachedCheckConstraintsResponse(
@@ -123,11 +124,9 @@ class CheckingResultsBuilder implements ResultsBuilder {
 			[];
 	}
 
-	public function statusSelected( array $statusesFlipped ) {
-		return function( CheckResult $result ) use ( $statusesFlipped ) {
-			return array_key_exists( $result->getStatus(), $statusesFlipped ) ||
-				$result instanceof NullResult;
-		};
+	public function statusSelected( array $statusesFlipped, CheckResult $result ) {
+		return array_key_exists( $result->getStatus(), $statusesFlipped ) ||
+			$result instanceof NullResult;
 	}
 
 	public function checkResultToArray( CheckResult $checkResult ) {

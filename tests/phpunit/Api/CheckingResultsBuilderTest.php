@@ -264,6 +264,51 @@ class CheckingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( CheckResult::STATUS_VIOLATION, $statementResults[0]['status'] );
 	}
 
+	public function testGetResults_FilterStatuses_DependencyMetadata() {
+		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'checkAgainstConstraintsOnEntityId' ] );
+		$delegatingConstraintChecker = $mock->getMock();
+		$context = new MainSnakContext(
+			new Item( new ItemId( 'Q1' ) ),
+			new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+		);
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
+			->willReturn( [
+				( new CheckResult(
+					$context,
+					new Constraint(
+						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
+						new PropertyId( 'P1' ),
+						'Q1',
+						[]
+					),
+					[],
+					CheckResult::STATUS_COMPLIANCE
+				) )->withMetadata( Metadata::ofDependencyMetadata(
+					DependencyMetadata::ofEntityId( new ItemId( 'Q100' ) ) ) ),
+				( new NullResult( $context ) )
+			] );
+
+		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
+			[ new ItemId( 'Q1' ) ],
+			[],
+			[],
+			[ CheckResult::STATUS_VIOLATION ]
+		);
+
+		$this->assertCount(
+			0,
+			$result->getArray()['Q1']['claims']['P1'][0]['mainsnak']['results'],
+			'check results should have been filtered by status'
+		);
+		$this->assertEquals(
+			[ new ItemId( 'Q100' ) ],
+			$result->getMetadata()->getDependencyMetadata()->getEntityIds(),
+			'dependency metadata should still be there even though the check results were filtered'
+		);
+	}
+
 	public function testCheckResultToArray_NullResult() {
 		$checkResult = new NullResult(
 			new FakeSnakContext( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
