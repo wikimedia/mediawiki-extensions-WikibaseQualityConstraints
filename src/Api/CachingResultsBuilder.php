@@ -226,11 +226,15 @@ class CachingResultsBuilder implements ResultsBuilder {
 
 		if ( $this->canStoreResults( $entityIds, $claimIds, $constraintIds, $statuses ) ) {
 			foreach ( $entityIds as $entityId ) {
+				$latestRevisionIds = $this->getLatestRevisionIds(
+					$results->getMetadata()->getDependencyMetadata()->getEntityIds()
+				);
+				if ( $latestRevisionIds === null ) {
+					continue;
+				}
 				$value = [
 					'results' => $results->getArray()[$entityId->getSerialization()],
-					'latestRevisionIds' => $this->getLatestRevisionIds(
-						$results->getMetadata()->getDependencyMetadata()->getEntityIds()
-					),
+					'latestRevisionIds' => $latestRevisionIds,
 				];
 				$futureTime = $results->getMetadata()->getDependencyMetadata()->getFutureTime();
 				if ( $futureTime !== null ) {
@@ -354,7 +358,8 @@ class CachingResultsBuilder implements ResultsBuilder {
 
 	/**
 	 * @param EntityId[] $entityIds
-	 * @return int[]
+	 * @return int[]|null array from entity ID serializations to revision ID,
+	 * or null to indicate that not all revision IDs could be loaded
 	 */
 	private function getLatestRevisionIds( array $entityIds ) {
 		if ( $entityIds === [] ) {
@@ -365,11 +370,22 @@ class CachingResultsBuilder implements ResultsBuilder {
 			$entityIds,
 			EntityRevisionLookup::LATEST_FROM_REPLICA
 		);
+		if ( $this->hasFalseElements( $revisionInformations ) ) {
+			return null;
+		}
 		$latestRevisionIds = [];
 		foreach ( $revisionInformations as $serialization => $revisionInformation ) {
 			$latestRevisionIds[$serialization] = $revisionInformation->page_latest;
 		}
 		return $latestRevisionIds;
+	}
+
+	/**
+	 * @param array $array
+	 * @return bool
+	 */
+	private function hasFalseElements( array $array ) {
+		return in_array( false, $array, true );
 	}
 
 	public function updateCachingMetadata( &$element, $key, CachingMetadata $cachingMetadata ) {

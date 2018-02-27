@@ -341,6 +341,47 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals( $timeValue->getArrayValue(), $cachedResults['futureTime'] );
 	}
 
+	public function testGetAndStoreResults_DontStoreWithoutRevisionInformation() {
+		$q100 = new ItemId( 'Q100' );
+		$expectedResults = new CachedCheckConstraintsResponse(
+			[ 'Q100' => 'garbage data, should not matter' ],
+			Metadata::ofDependencyMetadata( DependencyMetadata::ofEntityId( $q100 ) )
+		);
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS
+		];
+		$resultsBuilder = $this->getMock( ResultsBuilder::class );
+		$resultsBuilder->expects( $this->once() )
+			->method( 'getResults' )
+			->with( [ $q100 ], [], null, $statuses )
+			->willReturn( $expectedResults );
+		$cache = $this->getMockBuilder( WANObjectCache::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$cache->expects( $this->never() )->method( 'set' );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->expects( $this->once() )
+			->method( 'loadRevisionInformation' )
+			->with(
+				[ $q100 ],
+				EntityRevisionLookup::LATEST_FROM_REPLICA
+			)
+			->willReturn( [ 'Q100' => false ] );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$resultsBuilder,
+			new ResultsCache( $cache ),
+			$metaDataAccessor,
+			new ItemIdParser(),
+			86400,
+			[],
+			new NullStatsdDataFactory()
+		);
+
+		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
+	}
+
 	public function testGetStoredResults_CacheMiss() {
 		$cachingResultsBuilder = new CachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
@@ -433,6 +474,40 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$cachingMetadata = $response->getMetadata()->getCachingMetadata();
 		$this->assertTrue( $cachingMetadata->isCached() );
 		$this->assertSame( 1337, $cachingMetadata->getMaximumAgeInSeconds() );
+	}
+
+	public function testGetStoredResults_WithoutRevisionInformation() {
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor
+			->method( 'loadRevisionInformation' )
+			->willReturn( [
+				'Q5' => 100,
+				'Q10' => false,
+			] );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$resultsCache = new ResultsCache( $cache );
+		$cachingResultsBuilder = new CachingResultsBuilder(
+			$this->getMock( ResultsBuilder::class ),
+			$resultsCache,
+			$metaDataAccessor,
+			new ItemIdParser(),
+			86400,
+			[],
+			new NullStatsdDataFactory()
+		);
+		$q5 = new ItemId( 'Q5' );
+		$value = [
+			'results' => 'garbage data, should not matter',
+			'latestRevisionIds' => [
+				'Q5' => 100,
+				'Q10' => 99,
+			],
+		];
+		$resultsCache->set( $q5, $value );
+
+		$response = $cachingResultsBuilder->getStoredResults( $q5 );
+
+		$this->assertNull( $response );
 	}
 
 	public function testGetResults_EmptyCache() {
