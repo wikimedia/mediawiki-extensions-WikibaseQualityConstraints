@@ -37,11 +37,11 @@ class ResultsCacheTest extends \PHPUnit\Framework\TestCase {
 		$resultsCache = new ResultsCache( WANObjectCache::newEmpty() );
 
 		$this->assertSame(
-			'local:WikibaseQualityConstraints:checkConstraints:v2:Q5:en',
+			'local:WikibaseQualityConstraints:checkConstraints:v2.1:Q5:en',
 			$resultsCache->makeKey( new ItemId( 'Q5' ), 'en' )
 		);
 		$this->assertSame(
-			'local:WikibaseQualityConstraints:checkConstraints:v2:P31:de',
+			'local:WikibaseQualityConstraints:checkConstraints:v2.1:P31:de',
 			$resultsCache->makeKey( new PropertyId( 'P31' ), 'de' )
 		);
 	}
@@ -60,7 +60,7 @@ class ResultsCacheTest extends \PHPUnit\Framework\TestCase {
 
 		$key = $resultsCache->makeKey( new ItemId( 'Q5' ), 'qqx' );
 
-		$this->assertSame( 'local:WikibaseQualityConstraints:checkConstraints:v2:Q5:qqx', $key );
+		$this->assertSame( 'local:WikibaseQualityConstraints:checkConstraints:v2.1:Q5:qqx', $key );
 	}
 
 	public function testGet() {

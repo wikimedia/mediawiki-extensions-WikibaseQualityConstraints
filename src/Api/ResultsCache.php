@@ -42,7 +42,7 @@ class ResultsCache {
 		return $this->cache->makeKey(
 			'WikibaseQualityConstraints', // extension
 			'checkConstraints', // action
-			'v2', // API response format version
+			'v2.1', // API response format version; .1: T188384
 			$entityId->getSerialization(),
 			$languageCode
 		);
