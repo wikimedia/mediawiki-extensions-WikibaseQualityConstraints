@@ -62,10 +62,14 @@ class DependencyMetadata {
 	public static function merge( array $metadatas ) {
 		Assert::parameterElementType( self::class, $metadatas, '$metadatas' );
 		$ret = new self;
+		$entityIds = [];
 		foreach ( $metadatas as $metadata ) {
-			$ret->entityIds = array_merge( $ret->entityIds, $metadata->entityIds );
+			foreach ( $metadata->entityIds as $entityId ) {
+				$entityIds[$entityId->getSerialization()] = $entityId;
+			}
 			$ret->timeValue = self::minTimeValue( $ret->timeValue, $metadata->timeValue );
 		}
+		$ret->entityIds = array_values( $entityIds );
 		return $ret;
 	}
 

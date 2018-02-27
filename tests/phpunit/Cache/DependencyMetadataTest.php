@@ -64,6 +64,34 @@ class DependencyMetadataTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expectedEntityIds, $actualEntityIds );
 	}
 
+	public function testMerge_entityIds_deduplicate() {
+		$q42 = new ItemId( 'Q42' );
+		$p31 = new PropertyId( 'P31' );
+		$dm = DependencyMetadata::merge( [
+			DependencyMetadata::ofEntityId( $q42 ),
+			DependencyMetadata::blank(),
+			DependencyMetadata::ofEntityId( $p31 ),
+			DependencyMetadata::ofEntityId( $q42 ),
+			DependencyMetadata::ofEntityId( $q42 ),
+			DependencyMetadata::ofEntityId( $p31 ),
+			DependencyMetadata::ofEntityId( $p31 ),
+			DependencyMetadata::ofEntityId( $q42 ),
+			DependencyMetadata::blank(),
+			DependencyMetadata::ofEntityId( $p31 ),
+			DependencyMetadata::ofEntityId( $q42 ),
+			DependencyMetadata::ofEntityId( $p31 ),
+			DependencyMetadata::ofEntityId( $p31 ),
+			DependencyMetadata::ofEntityId( $p31 ),
+			DependencyMetadata::ofEntityId( $q42 ),
+		] );
+
+		$expectedEntityIds = [ $q42, $p31 ];
+		$actualEntityIds = $dm->getEntityIds();
+		sort( $expectedEntityIds );
+		sort( $actualEntityIds );
+		$this->assertSame( $expectedEntityIds, $actualEntityIds );
+	}
+
 	public function testMerge_futureTime() {
 		$nearFuture = new TimeValue(
 			'+2027-02-15T00:00:00Z',
