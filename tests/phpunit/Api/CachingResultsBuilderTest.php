@@ -4,7 +4,9 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use DataValues\TimeValue;
 use HashBagOStuff;
+use HashConfig;
 use NullStatsdDataFactory;
+use Psr\Log\NullLogger;
 use TimeAdjustableWANObjectCache;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
@@ -20,6 +22,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraint
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/WANObjectCacheTest.php';
@@ -44,7 +47,14 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			new ItemIdParser(),
 			86400,
 			$possiblyStaleConstraintTypes,
-			new NullStatsdDataFactory()
+			new LoggingHelper(
+				new NullStatsdDataFactory(),
+				new NullLogger(),
+				new HashConfig( [
+					'WBQualityConstraintsCheckDurationInfoSeconds' => 5,
+					'WBQualityConstraintsCheckDurationWarningSeconds' => 10,
+				] )
+			)
 		);
 	}
 
@@ -61,7 +71,14 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 				new ItemIdParser(),
 				86400,
 				[],
-				new NullStatsdDataFactory()
+				new LoggingHelper(
+					new NullStatsdDataFactory(),
+					new NullLogger(),
+					new HashConfig( [
+						'WBQualityConstraintsCheckDurationInfoSeconds' => 5,
+						'WBQualityConstraintsCheckDurationWarningSeconds' => 10,
+					] )
+				)
 			] )
 			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();

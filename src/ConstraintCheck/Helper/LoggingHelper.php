@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use Config;
 use IBufferingStatsdDataFactory;
 use Psr\Log\LoggerInterface;
+use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
@@ -130,6 +131,46 @@ class LoggingHelper {
 				'resultStatus' => $result->getStatus(),
 				'resultParameters' => $result->getParameters(),
 				'resultMessage' => $resultMessage,
+			]
+		);
+	}
+
+	/**
+	 * Log a cache hit for a complete constraint check result for the given entity ID.
+	 *
+	 * @param EntityId $entityId
+	 */
+	public function logCheckConstraintsCacheHit( EntityId $entityId ) {
+		$this->dataFactory->increment(
+			'wikibase.quality.constraints.cache.entity.hit'
+		);
+	}
+
+	/**
+	 * Log cache misses for a complete constraint check result for the given entity IDs.
+	 *
+	 * @param EntityId[] $entityIds
+	 */
+	public function logCheckConstraintsCacheMisses( array $entityIds ) {
+		$this->dataFactory->updateCount(
+			'wikibase.quality.constraints.cache.entity.miss',
+			count( $entityIds )
+		);
+	}
+
+	/**
+	 * Log that the dependency metadata for a check result had an empty set of entity IDs.
+	 * This should never happen – at least the entity being checked should always be contained.
+	 */
+	public function logEmptyDependencyMetadata() {
+		$this->logger->log(
+			'warning',
+			'Dependency metadata for constraint check result had empty set of entity IDs.',
+			[
+				'loggingMethod' => __METHOD__,
+				// callers of this method don’t have much information to pass to us,
+				// so for now we don’t log any other structured data
+				// and hope that the request URL provides enough information
 			]
 		);
 	}
