@@ -31,6 +31,42 @@ include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/
  */
 class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 
+	private function getCachingResultsBuilder(
+		ResultsBuilder $resultsBuilder,
+		ResultsCache $resultsCache,
+		WikiPageEntityMetaDataAccessor $metaDataAccessor,
+		array $possiblyStaleConstraintTypes = []
+	) {
+		return new CachingResultsBuilder(
+			$resultsBuilder,
+			$resultsCache,
+			$metaDataAccessor,
+			new ItemIdParser(),
+			86400,
+			$possiblyStaleConstraintTypes,
+			new NullStatsdDataFactory()
+		);
+	}
+
+	private function getCachingResultsBuilderMock(
+		ResultsBuilder $resultsBuilder,
+		ResultsCache $resultsCache,
+		WikiPageEntityMetaDataAccessor $metaDataAccessor
+	) {
+		return $this->getMockBuilder( CachingResultsBuilder::class )
+			->setConstructorArgs( [
+				$resultsBuilder,
+				$resultsCache,
+				$metaDataAccessor,
+				new ItemIdParser(),
+				86400,
+				[],
+				new NullStatsdDataFactory()
+			] )
+			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
+			->getMock();
+	}
+
 	public function testGetAndStoreResults_SameResults() {
 		$expectedResults = new CachedCheckConstraintsResponse(
 			[ 'Q100' => 'garbage data, should not matter' ],
@@ -46,14 +82,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadRevisionInformation' )
 			->willReturn( [] );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$results = $cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
@@ -78,14 +110,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$cache->expects( $this->never() )->method( 'set' );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadRevisionInformation ' );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			new ResultsCache( $cache ),
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [], [ 'fake' ], null, $statuses );
@@ -109,14 +137,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$cache->expects( $this->never() )->method( 'set' );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadRevisionInformation ' );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			new ResultsCache( $cache ),
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], [ 'fake' ], $statuses );
@@ -143,14 +167,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadRevisionInformation' )
 			->willReturn( [] );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
@@ -207,14 +227,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 				}
 				return $metadata;
 			} );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
@@ -243,14 +259,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$cache->expects( $this->never() )->method( 'set' );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadRevisionInformation ' );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			new ResultsCache( $cache ),
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
@@ -277,14 +289,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadRevisionInformation' )
 			->willReturn( [] );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
@@ -323,14 +331,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadRevisionInformation' )
 			->willReturn( [] );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
@@ -369,28 +373,20 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 				EntityRevisionLookup::LATEST_FROM_REPLICA
 			)
 			->willReturn( [ 'Q100' => false ] );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$resultsBuilder,
 			new ResultsCache( $cache ),
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 	}
 
 	public function testGetStoredResults_CacheMiss() {
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
 		);
 
 		$response = $cachingResultsBuilder->getStoredResults( new ItemId( 'Q1' ) );
@@ -407,14 +403,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			] );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 		$q5 = new ItemId( 'Q5' );
 		$value = [
@@ -443,14 +435,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$now = 9001;
 		$cache->setTime( $now - 1337 );
 		$resultsCache = new ResultsCache( $cache );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 		$cachingResultsBuilder->setMicrotimeFunction( function () use ( $now ) {
 			return $now;
@@ -486,14 +474,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			] );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 		$q5 = new ItemId( 'Q5' );
 		$value = [
@@ -514,18 +498,11 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
 		$statuses = [ 'garbage status', 'other status' ];
 
-		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->setConstructorArgs( [
-				$this->getMock( ResultsBuilder::class ),
-				new ResultsCache( WANObjectCache::newEmpty() ),
-				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-				new ItemIdParser(),
-				86400,
-				[],
-				new NullStatsdDataFactory()
-			] )
-			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
-			->getMock();
+		$cachingResultsBuilder = $this->getCachingResultsBuilderMock(
+			$this->getMock( ResultsBuilder::class ),
+			new ResultsCache( WANObjectCache::newEmpty() ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
+		);
 		$cachingResultsBuilder->method( 'getStoredResults' )->willReturn( null );
 		$cachingResultsBuilder->method( 'getAndStoreResults' )
 			->with( $entityIds, [], null, $statuses )
@@ -559,14 +536,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$metaDataAccessor->method( 'loadRevisionInformation' )
 			->willReturn( [] );
 		$resultsCache = new ResultsCache( new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ) );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$q5 = new ItemId( 'Q5' );
@@ -600,14 +573,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$metaDataAccessor->method( 'loadRevisionInformation' )
 			->willReturn( [] );
 		$resultsCache = new ResultsCache( new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ) );
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			$resultsCache,
-			$metaDataAccessor,
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$metaDataAccessor
 		);
 
 		$q5 = new ItemId( 'Q5' );
@@ -641,18 +610,11 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			[ 'Q5' => 'garbage of Q5', 'Q10' => 'some garbage of Q10' ],
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
 		);
-		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->setConstructorArgs( [
-				$this->getMock( ResultsBuilder::class ),
-				new ResultsCache( WANObjectCache::newEmpty() ),
-				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-				new ItemIdParser(),
-				86400,
-				[],
-				new NullStatsdDataFactory()
-			] )
-			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
-			->getMock();
+		$cachingResultsBuilder = $this->getCachingResultsBuilderMock(
+			$this->getMock( ResultsBuilder::class ),
+			new ResultsCache( WANObjectCache::newEmpty() ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
+		);
 		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
 		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
 			->with( $entityIds, $statementIds, $constraintIds, $statuses )
@@ -679,18 +641,11 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			[ 'Q5' => 'some garbage of Q5' ],
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
 		);
-		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->setConstructorArgs( [
-				$this->getMock( ResultsBuilder::class ),
-				new ResultsCache( WANObjectCache::newEmpty() ),
-				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-				new ItemIdParser(),
-				86400,
-				[],
-				new NullStatsdDataFactory()
-			] )
-			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
-			->getMock();
+		$cachingResultsBuilder = $this->getCachingResultsBuilderMock(
+			$this->getMock( ResultsBuilder::class ),
+			new ResultsCache( WANObjectCache::newEmpty() ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
+		);
 		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
 		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
 			->with( $entityIds, $statementIds, $constraintIds, $statuses )
@@ -715,18 +670,11 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
-		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->setConstructorArgs( [
-				$this->getMock( ResultsBuilder::class ),
-				new ResultsCache( WANObjectCache::newEmpty() ),
-				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-				new ItemIdParser(),
-				86400,
-				[],
-				new NullStatsdDataFactory()
-			] )
-			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
-			->getMock();
+		$cachingResultsBuilder = $this->getCachingResultsBuilderMock(
+			$this->getMock( ResultsBuilder::class ),
+			new ResultsCache( WANObjectCache::newEmpty() ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
+		);
 		$cachingResultsBuilder->expects( $this->exactly( 2 ) )->method( 'getStoredResults' )
 			->willReturnCallback( function ( EntityId $entityId ) {
 				$serialization = $entityId->getSerialization();
@@ -760,18 +708,11 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
-		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->setConstructorArgs( [
-				$this->getMock( ResultsBuilder::class ),
-				new ResultsCache( WANObjectCache::newEmpty() ),
-				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-				new ItemIdParser(),
-				86400,
-				[],
-				new NullStatsdDataFactory()
-			] )
-			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
-			->getMock();
+		$cachingResultsBuilder = $this->getCachingResultsBuilderMock(
+			$this->getMock( ResultsBuilder::class ),
+			new ResultsCache( WANObjectCache::newEmpty() ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
+		);
 		$cachingResultsBuilder->expects( $this->exactly( 2 ) )->method( 'getStoredResults' )
 			->willReturnCallback( function ( EntityId $entityId ) {
 				if ( $entityId->getSerialization() === 'Q5' ) {
@@ -820,18 +761,11 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 			[ 'Q5' => 'some garbage of Q5' ],
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
 		);
-		$cachingResultsBuilder = $this->getMockBuilder( CachingResultsBuilder::class )
-			->setConstructorArgs( [
-				$this->getMock( ResultsBuilder::class ),
-				new ResultsCache( WANObjectCache::newEmpty() ),
-				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-				new ItemIdParser(),
-				86400,
-				[],
-				new NullStatsdDataFactory()
-			] )
-			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
-			->getMock();
+		$cachingResultsBuilder = $this->getCachingResultsBuilderMock(
+			$this->getMock( ResultsBuilder::class ),
+			new ResultsCache( WANObjectCache::newEmpty() ),
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
+		);
 		$cachingResultsBuilder->expects( $this->never() )->method( 'getStoredResults' );
 		$cachingResultsBuilder->expects( $this->once() )->method( 'getAndStoreResults' )
 			->with( $entityIds, [], null, $statuses )
@@ -847,14 +781,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateCachingMetadata_CachedToplevel() {
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
 		);
 		$cm1 = CachingMetadata::ofMaximumAgeInSeconds( 20 );
 		$cm2 = CachingMetadata::ofMaximumAgeInSeconds( 40 );
@@ -870,14 +800,10 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateCachingMetadata_CachedNested() {
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			new ResultsCache( WANObjectCache::newEmpty() ),
-			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-			new ItemIdParser(),
-			86400,
-			[],
-			new NullStatsdDataFactory()
+			$this->getMock( WikiPageEntityMetaDataAccessor::class )
 		);
 		$cm1 = CachingMetadata::ofMaximumAgeInSeconds( 20 );
 		$cm2 = CachingMetadata::ofMaximumAgeInSeconds( 40 );
@@ -892,14 +818,11 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateCachingMetadata_AddToConstraint() {
-		$cachingResultsBuilder = new CachingResultsBuilder(
+		$cachingResultsBuilder = $this->getCachingResultsBuilder(
 			$this->getMock( ResultsBuilder::class ),
 			new ResultsCache( WANObjectCache::newEmpty() ),
 			$this->getMock( WikiPageEntityMetaDataAccessor::class ),
-			new ItemIdParser(),
-			86400,
-			[ 'Q1' ],
-			new NullStatsdDataFactory()
+			[ 'Q1' ]
 		);
 		$cm = CachingMetadata::ofMaximumAgeInSeconds( 10 );
 		$array = [
