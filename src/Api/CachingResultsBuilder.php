@@ -357,6 +357,10 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 * @return int[]
 	 */
 	private function getLatestRevisionIds( array $entityIds ) {
+		if ( $entityIds === [] ) {
+			return [];
+		}
+
 		$revisionInformations = $this->wikiPageEntityMetaDataAccessor->loadRevisionInformation(
 			$entityIds,
 			EntityRevisionLookup::LATEST_FROM_REPLICA
