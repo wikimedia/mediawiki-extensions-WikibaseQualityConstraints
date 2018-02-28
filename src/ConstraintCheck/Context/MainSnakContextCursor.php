@@ -45,6 +45,22 @@ class MainSnakContextCursor extends ApiV2ContextCursor {
 		$this->snakHash = $snakHash;
 	}
 
+	public function getType() {
+		return Context::TYPE_STATEMENT;
+	}
+
+	public function getStatementGuid() {
+		return $this->statementGuid;
+	}
+
+	public function getSnakPropertyId() {
+		return $this->statementPropertyId;
+	}
+
+	public function getSnakHash() {
+		return $this->snakHash;
+	}
+
 	protected function &getMainArray( array &$container ) {
 		$statementArray = &$this->getStatementArray(
 			$container,
