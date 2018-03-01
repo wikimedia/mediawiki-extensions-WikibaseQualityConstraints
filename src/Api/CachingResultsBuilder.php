@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use DataValues\TimeValue;
-use IBufferingStatsdDataFactory;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\Store\EntityRevisionLookup;
@@ -12,6 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraint
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
@@ -69,9 +69,9 @@ class CachingResultsBuilder implements ResultsBuilder {
 	private $possiblyStaleConstraintTypes;
 
 	/**
-	 * @var IBufferingStatsdDataFactory
+	 * @var LoggingHelper
 	 */
-	private $dataFactory;
+	private $loggingHelper;
 
 	/**
 	 * @var TimeValueComparer
@@ -100,7 +100,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 * @param int $ttlInSeconds Time-to-live of the cached values, in seconds.
 	 * @param string[] $possiblyStaleConstraintTypes item IDs of constraint types
 	 * where cached results may always be stale, regardless of invalidation logic
-	 * @param IBufferingStatsdDataFactory $dataFactory
+	 * @param LoggingHelper $loggingHelper
 	 */
 	public function __construct(
 		ResultsBuilder $resultsBuilder,
@@ -109,7 +109,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 		EntityIdParser $entityIdParser,
 		$ttlInSeconds,
 		array $possiblyStaleConstraintTypes,
-		IBufferingStatsdDataFactory $dataFactory
+		LoggingHelper $loggingHelper
 	) {
 		$this->resultsBuilder = $resultsBuilder;
 		$this->cache = $cache;
@@ -117,7 +117,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 		$this->entityIdParser = $entityIdParser;
 		$this->ttlInSeconds = $ttlInSeconds;
 		$this->possiblyStaleConstraintTypes = $possiblyStaleConstraintTypes;
-		$this->dataFactory = $dataFactory;
+		$this->loggingHelper = $loggingHelper;
 		$this->timeValueComparer = new TimeValueComparer();
 
 		$this->cachedStatuses = [
@@ -147,9 +147,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 			foreach ( $entityIds as $entityId ) {
 				$storedResults = $this->getStoredResults( $entityId );
 				if ( $storedResults !== null ) {
-					$this->dataFactory->increment(
-						'wikibase.quality.constraints.cache.entity.hit'
-					);
+					$this->loggingHelper->logCheckConstraintsCacheHit( $entityId );
 					$results += $storedResults->getArray();
 					$metadatas[] = $storedResults->getMetadata();
 					$storedEntityIds[] = $entityId;
@@ -158,10 +156,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 			$entityIds = array_values( array_diff( $entityIds, $storedEntityIds ) );
 		}
 		if ( $entityIds !== [] || $claimIds !== [] ) {
-			$this->dataFactory->updateCount(
-				'wikibase.quality.constraints.cache.entity.miss',
-				count( $entityIds )
-			);
+			$this->loggingHelper->logCheckConstraintsCacheMisses( $entityIds );
 			$response = $this->getAndStoreResults( $entityIds, $claimIds, $constraintIds, $statuses );
 			$results += $response->getArray();
 			$metadatas[] = $response->getMetadata();
@@ -363,6 +358,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 	 */
 	private function getLatestRevisionIds( array $entityIds ) {
 		if ( $entityIds === [] ) {
+			$this->loggingHelper->logEmptyDependencyMetadata();
 			return [];
 		}
 

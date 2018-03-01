@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use ApiBase;
 use ApiMain;
 use IBufferingStatsdDataFactory;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
@@ -20,6 +21,7 @@ use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
@@ -98,6 +100,11 @@ class CheckConstraints extends ApiBase {
 		$titleParser = MediaWikiServices::getInstance()->getTitleParser();
 		$unitConverter = $repo->getUnitConverter();
 		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
+		$loggingHelper = new LoggingHelper(
+			$dataFactory,
+			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
+			$config
+		);
 		$constraintParameterRenderer = new ConstraintParameterRenderer(
 			$entityIdHtmlLinkFormatter,
 			$valueFormatter,
@@ -152,7 +159,7 @@ class CheckConstraints extends ApiBase {
 					$config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
 					$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
 				],
-				$dataFactory
+				$loggingHelper
 			);
 		}
 
