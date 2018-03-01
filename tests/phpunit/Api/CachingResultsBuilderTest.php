@@ -195,7 +195,7 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 		$cachedResults = $resultsCache->get( $q100 );
 
-		$this->assertNotNull( $cachedResults );
+		$this->assertNotFalse( $cachedResults );
 		$this->assertArrayHasKey( 'results', $cachedResults );
 		$this->assertSame( $expectedResults->getArray()['Q100'], $cachedResults['results'] );
 	}
@@ -255,7 +255,7 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 		$cachedResults = $resultsCache->get( $q100 );
 
-		$this->assertNotNull( $cachedResults );
+		$this->assertNotFalse( $cachedResults );
 		$this->assertArrayHasKey( 'latestRevisionIds', $cachedResults );
 		$this->assertSame( $revisionIds, $cachedResults['latestRevisionIds'] );
 	}
@@ -317,7 +317,7 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 		$cachedResults = $resultsCache->get( $q100 );
 
-		$this->assertNotNull( $cachedResults );
+		$this->assertNotFalse( $cachedResults );
 		$this->assertArrayNotHasKey( 'futureTime', $cachedResults );
 	}
 
@@ -359,7 +359,7 @@ class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$cachingResultsBuilder->getAndStoreResults( [ $q100 ], [], null, $statuses );
 		$cachedResults = $resultsCache->get( $q100 );
 
-		$this->assertNotNull( $cachedResults );
+		$this->assertNotFalse( $cachedResults );
 		$this->assertArrayHasKey( 'futureTime', $cachedResults );
 		$this->assertEquals( $timeValue->getArrayValue(), $cachedResults['futureTime'] );
 	}
