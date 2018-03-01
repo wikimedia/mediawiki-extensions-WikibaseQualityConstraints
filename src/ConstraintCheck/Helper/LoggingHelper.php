@@ -175,4 +175,29 @@ class LoggingHelper {
 		);
 	}
 
+	/**
+	 * Log that the dependency metadata for a check result has a very large set of entity IDs.
+	 *
+	 * @param EntityId[] $entityIds
+	 * @param int $maxRevisionIds
+	 */
+	public function logHugeDependencyMetadata( array $entityIds, $maxRevisionIds ) {
+		$this->logger->log(
+			'warning',
+			'Dependency metadata for constraint check result has huge set of entity IDs ' .
+			'(count ' . count( $entityIds ) . ', limit ' . $maxRevisionIds . '); ' .
+			'caching disabled for this check result.',
+			[
+				'loggingMethod' => __METHOD__,
+				'entityIds' => array_map(
+					function ( EntityId $entityId ) {
+						return $entityId->getSerialization();
+					},
+					$entityIds
+				),
+				'maxRevisionIds' => $maxRevisionIds,
+			]
+		);
+	}
+
 }
