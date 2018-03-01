@@ -27,6 +27,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
@@ -455,7 +456,7 @@ EOF;
 				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message ⧼${messageKey}⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
-				$this->getMock( Context::class ),
+				$this->getMock( ContextCursor::class ),
 				$this->getMockBuilder( Constraint::class )->disableOriginalConstructor()->getMock(),
 				[],
 				CheckResult::STATUS_VIOLATION,

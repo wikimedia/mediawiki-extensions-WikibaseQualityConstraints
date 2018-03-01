@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\CheckResult;
 
-use LogicException;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -13,6 +12,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\Tests\Fake\AppendingContextCursor;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 
 /**
@@ -24,7 +24,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
  */
 class CheckResultTest extends \PHPUnit\Framework\TestCase {
 
-	public function testConstructAndGetters() {
+	public function testConstructAndGetters_Context() {
 		$propertyId = new PropertyId( 'P1' );
 		$entityId = new ItemId( 'Q1' );
 		$snak = new PropertyValueSnak( $propertyId, new StringValue( 'Foo' ) );
@@ -39,7 +39,7 @@ class CheckResultTest extends \PHPUnit\Framework\TestCase {
 		$checkResult = new CheckResult( $context, $constraint, $parameters, $status, $message );
 		$checkResult->withMetadata( $metadata );
 
-		$this->assertSame( $context, $checkResult->getContext() );
+		$this->assertEquals( $context->getCursor(), $checkResult->getContextCursor() );
 		$this->assertSame( $snak->getType(), $checkResult->getSnakType() );
 		$this->assertSame( $snak->getDataValue(), $checkResult->getDataValue() );
 		$this->assertSame( $constraint, $checkResult->getConstraint() );
@@ -50,17 +50,30 @@ class CheckResultTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $metadata, $checkResult->getMetadata() );
 	}
 
-	public function testWithWrongSnakType() {
+	public function testConstructAndGetters_Cursor() {
 		$propertyId = new PropertyId( 'P1' );
-		$snak = new PropertyNoValueSnak( $propertyId );
-		$context = new FakeSnakContext( $snak );
-		$checkResult = new CheckResult(
-			$context,
-			new Constraint( '1', $propertyId, 'Q100', [] )
-		);
+		$entityId = new ItemId( 'Q1' );
+		$snak = new PropertyValueSnak( $propertyId, new StringValue( 'Foo' ) );
+		$constraintId = '1';
+		$parameters = [ 'test' => 'parameters' ];
+		$constraint = new Constraint( $constraintId, new PropertyId( 'P1' ), 'Q100', $parameters );
+		$status = CheckResult::STATUS_COMPLIANCE;
+		$message = 'All right';
+		$context = new AppendingContextCursor();
+		$metadata = Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 42 ) );
 
-		$this->setExpectedException( LogicException::class );
-		$checkResult->getDataValue();
+		$checkResult = new CheckResult( $context, $constraint, $parameters, $status, $message );
+		$checkResult->withMetadata( $metadata );
+
+		$this->assertSame( $context, $checkResult->getContextCursor() );
+		$this->assertSame( null, $checkResult->getSnakType() );
+		$this->assertSame( null, $checkResult->getDataValue() );
+		$this->assertSame( $constraint, $checkResult->getConstraint() );
+		$this->assertSame( $constraintId, $checkResult->getConstraintId() );
+		$this->assertSame( $parameters, $checkResult->getParameters() );
+		$this->assertSame( $status, $checkResult->getStatus() );
+		$this->assertSame( $message, $checkResult->getMessage() );
+		$this->assertSame( $metadata, $checkResult->getMetadata() );
 	}
 
 	public function testAddParameter() {
