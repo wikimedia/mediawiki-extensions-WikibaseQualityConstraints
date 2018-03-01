@@ -165,7 +165,9 @@ class CachingResultsBuilder implements ResultsBuilder {
 			$entityIds = array_values( array_diff( $entityIds, $storedEntityIds ) );
 		}
 		if ( $entityIds !== [] || $claimIds !== [] ) {
-			$this->loggingHelper->logCheckConstraintsCacheMisses( $entityIds );
+			if ( $entityIds !== [] ) {
+				$this->loggingHelper->logCheckConstraintsCacheMisses( $entityIds );
+			}
 			$response = $this->getAndStoreResults( $entityIds, $claimIds, $constraintIds, $statuses );
 			$results += $response->getArray();
 			$metadatas[] = $response->getMetadata();
