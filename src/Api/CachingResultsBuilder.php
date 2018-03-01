@@ -370,7 +370,7 @@ class CachingResultsBuilder implements ResultsBuilder {
 			$this->loggingHelper->logEmptyDependencyMetadata();
 			return [];
 		}
-		if ( count( $entityIds ) >= $this->maxRevisionIds ) {
+		if ( count( $entityIds ) > $this->maxRevisionIds ) {
 			// one of those entities will probably be edited soon, so might as well skip caching
 			$this->loggingHelper->logHugeDependencyMetadata( $entityIds, $this->maxRevisionIds );
 			return null;
