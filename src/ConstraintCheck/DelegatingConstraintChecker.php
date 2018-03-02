@@ -655,12 +655,12 @@ class DelegatingConstraintChecker {
 			$orderB = array_key_exists( $statusB, $order ) ? $order[ $statusB ] : $order[ 'other' ];
 
 			if ( $orderA === $orderB ) {
-				$pidA = $a->getContext()->getSnak()->getPropertyId()->getSerialization();
-				$pidB = $b->getContext()->getSnak()->getPropertyId()->getSerialization();
+				$pidA = $a->getContextCursor()->getSnakPropertyId();
+				$pidB = $b->getContextCursor()->getSnakPropertyId();
 
 				if ( $pidA === $pidB ) {
-					$hashA = $a->getContext()->getSnak()->getHash();
-					$hashB = $b->getContext()->getSnak()->getHash();
+					$hashA = $a->getContextCursor()->getSnakHash();
+					$hashB = $b->getContextCursor()->getSnakHash();
 
 					if ( $hashA === $hashB ) {
 						if ( $a instanceof NullResult ) {

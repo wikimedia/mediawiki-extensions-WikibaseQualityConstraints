@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use Config;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
@@ -94,7 +95,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				$metadatas[] = $result->getMetadata();
 				if ( $this->statusSelected( $statusesFlipped, $result ) ) {
 					$resultArray = $this->checkResultToArray( $result );
-					$result->getContext()->storeCheckResultInArray( $resultArray, $response );
+					$result->getContextCursor()->storeCheckResultInArray( $resultArray, $response );
 				}
 			}
 		}
@@ -108,7 +109,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 				$metadatas[] = $result->getMetadata();
 				if ( $this->statusSelected( $statusesFlipped, $result ) ) {
 					$resultArray = $this->checkResultToArray( $result );
-					$result->getContext()->storeCheckResultInArray( $resultArray, $response );
+					$result->getContextCursor()->storeCheckResultInArray( $resultArray, $response );
 				}
 			}
 		}
@@ -136,7 +137,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 
 		$constraintId = $checkResult->getConstraint()->getConstraintId();
 		$typeItemId = $checkResult->getConstraint()->getConstraintTypeItemId();
-		$constraintPropertyId = $checkResult->getContext()->getSnak()->getPropertyId();
+		$constraintPropertyId = new PropertyId( $checkResult->getContextCursor()->getSnakPropertyId() );
 
 		$title = $this->entityTitleLookup->getTitleForId( $constraintPropertyId );
 		$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
@@ -167,8 +168,8 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		if ( $message ) {
 			$result['message-html'] = $this->violationMessageRenderer->render( $message );
 		}
-		if ( $checkResult->getContext()->getType() === Context::TYPE_STATEMENT ) {
-			$result['claim'] = $checkResult->getContext()->getSnakStatement()->getGuid();
+		if ( $checkResult->getContextCursor()->getType() === Context::TYPE_STATEMENT ) {
+			$result['claim'] = $checkResult->getContextCursor()->getStatementGuid();
 		}
 		$cachingMetadataArray = $checkResult->getMetadata()->getCachingMetadata()->toArray();
 		if ( $cachingMetadataArray !== null ) {
