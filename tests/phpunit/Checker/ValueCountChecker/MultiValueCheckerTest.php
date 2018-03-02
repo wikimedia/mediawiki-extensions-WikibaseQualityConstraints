@@ -48,7 +48,9 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 
 	public function testMultiValueConstraint_One() {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$item = NewItem::withStatement( $statement )->build();
+		$item = NewItem::withId( 'Q1' )
+			->andStatement( $statement )
+			->build();
 		$context = new MainSnakContext( $item, $statement );
 
 		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
@@ -59,7 +61,10 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 	public function testMultiValueConstraint_Two() {
 		$statement1 = NewStatement::noValueFor( 'P1' )->build();
 		$statement2 = NewStatement::noValueFor( 'P1' )->build();
-		$item = NewItem::withStatement( $statement1 )->andStatement( $statement2 )->build();
+		$item = NewItem::withId( 'Q1' )
+			->andStatement( $statement1 )
+			->andStatement( $statement2 )
+			->build();
 		$context = new MainSnakContext( $item, $statement1 );
 
 		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
@@ -72,7 +77,10 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 		$statement2 = NewStatement::noValueFor( 'P1' )
 			->withDeprecatedRank()
 			->build();
-		$item = NewItem::withStatement( $statement1 )->andStatement( $statement2 )->build();
+		$item = NewItem::withId( 'Q1' )
+			->andStatement( $statement1 )
+			->andStatement( $statement2 )
+			->build();
 		$context = new MainSnakContext( $item, $statement1 );
 
 		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
@@ -86,7 +94,9 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 		$statement = NewStatement::someValueFor( 'P10' )->build();
 		$statement->getQualifiers()->addSnak( $qualifier1 );
 		$statement->getQualifiers()->addSnak( $qualifier2 );
-		$item = NewItem::withStatement( $statement )->build();
+		$item = NewItem::withId( 'Q1' )
+			->andStatement( $statement )
+			->build();
 		$context = new QualifierContext( $item, $statement, $qualifier1 );
 
 		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
@@ -100,7 +110,9 @@ class MultiValueCheckerTest extends \MediaWikiTestCase {
 		$reference = new Reference( [ $referenceSnak1, $referenceSnak2 ] );
 		$statement = NewStatement::someValueFor( 'P10' )->build();
 		$statement->getReferences()->addReference( $reference );
-		$item = NewItem::withStatement( $statement )->build();
+		$item = NewItem::withId( 'Q1' )
+			->andStatement( $statement )
+			->build();
 		$context = new ReferenceContext( $item, $statement, $reference, $referenceSnak1 );
 
 		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );

@@ -522,7 +522,8 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$minuendStatement = NewStatement::forProperty( 'P2' )
 			->withValue( UnboundedQuantityValue::newFromNumber( 1500, $yearUnit ) )
 			->build();
-		$entity = NewItem::withStatement( $subtrahendStatement )
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $subtrahendStatement )
 			->andStatement( $minuendStatement )
 			->build();
 		$constraint = $this->getConstraintMock( array_merge(
@@ -548,7 +549,9 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			null,
 			'Q1$c5f1968c-c8f9-4edd-9f2d-f12c93cd8b2b'
 		);
-		$entity = NewItem::withStatement( $statement )->build();
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $statement )
+			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
 		$checkResult = $this->checker->checkConstraint( new QualifierContext( $entity, $statement, $qualifier2 ), $constraint );
@@ -566,7 +569,9 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			new ReferenceList( [ $reference ] ),
 			'Q1$80a5fb6c-8b14-4f18-a60e-2c853d5dfbd1'
 		);
-		$entity = NewItem::withStatement( $statement )->build();
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $statement )
+			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
 		$checkResult = $this->checker->checkConstraint( new ReferenceContext( $entity, $statement, $reference, $snak2 ), $constraint );
