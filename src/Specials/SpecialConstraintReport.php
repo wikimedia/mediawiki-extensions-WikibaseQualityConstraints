@@ -167,7 +167,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$config
 		);
 		$this->violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
-			$this->entityIdLabelFormatter,
+			$this->entityIdLinkFormatter,
 			$this->dataValueFormatter,
 			$config
 		);
