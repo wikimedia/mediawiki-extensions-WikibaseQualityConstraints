@@ -53,6 +53,22 @@ class QualifierContextCursor extends ApiV2ContextCursor {
 		$this->snakPropertyId = $snakPropertyId;
 	}
 
+	public function getType() {
+		return Context::TYPE_QUALIFIER;
+	}
+
+	public function getStatementGuid() {
+		return $this->statementGuid;
+	}
+
+	public function getSnakPropertyId() {
+		return $this->snakPropertyId;
+	}
+
+	public function getSnakHash() {
+		return $this->snakHash;
+	}
+
 	protected function &getMainArray( array &$container ) {
 		$statementArray = &$this->getStatementArray(
 			$container,

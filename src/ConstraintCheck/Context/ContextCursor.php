@@ -11,6 +11,34 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 interface ContextCursor {
 
 	/**
+	 * The type of the associated context.
+	 *
+	 * @return string one of the Context::TYPE_* constants
+	 */
+	public function getType();
+
+	/**
+	 * The GUID of the main statement of the associated context.
+	 *
+	 * @return string
+	 */
+	public function getStatementGuid();
+
+	/**
+	 * The property ID serialization of the snak of the associated context.
+	 *
+	 * @return string
+	 */
+	public function getSnakPropertyId();
+
+	/**
+	 * The hash of the snak of the associated context.
+	 *
+	 * @return string
+	 */
+	public function getSnakHash();
+
+	/**
 	 * Store the check result serialization $result
 	 * at the appropriate location for this context in $container.
 	 *
