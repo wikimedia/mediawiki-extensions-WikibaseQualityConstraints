@@ -8,6 +8,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use LogicException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 
 /**
@@ -125,6 +126,13 @@ class CheckResult {
 	 */
 	public function getContext() {
 		return $this->context;
+	}
+
+	/**
+	 * @return ContextCursor
+	 */
+	public function getContextCursor() {
+		return $this->getContext()->getCursor();
 	}
 
 	/**

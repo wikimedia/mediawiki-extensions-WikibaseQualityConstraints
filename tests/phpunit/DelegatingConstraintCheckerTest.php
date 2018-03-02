@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
 
+use DataValues\StringValue;
 use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
@@ -11,6 +12,10 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Snak\SnakList;
+use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -593,17 +598,20 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 	public function testPropertiesWithViolatingQualifiers() {
 		$q1 = new ItemId( 'Q1' );
+		$p2 = new PropertyId( 'P2' );
+		$qualifierNotToCheck = new PropertyValueSnak( $p2, new StringValue( 'do not check this ' ) );
+		$qualifierToCheck = new PropertyValueSnak( $p2, new StringValue( 'do check this ' ) );
 		$entityLookup = new InMemoryEntityLookup();
 		$entityLookup->addEntity(
 			NewItem::withId( $q1 )
-				->andStatement(
-					NewStatement::forProperty( 'P1' )
-						->withQualifier( 'P2', 'do not check this' )
-				)
-				->andStatement(
-					NewStatement::forProperty( 'P11' )
-						->withQualifier( 'P2', 'do check this' )
-				)
+				->andStatement( new Statement(
+					new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+					new SnakList( [ $qualifierNotToCheck ] )
+				) )
+				->andStatement( new Statement(
+					new PropertyNoValueSnak( new PropertyId( 'P11' ) ),
+					new SnakList( [ $qualifierToCheck ] )
+				) )
 				->build()
 		);
 		$delegatingConstraintChecker = new DelegatingConstraintChecker(
@@ -631,8 +639,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$this->assertCount( 1, $results );
 		$this->assertSame(
-			'do check this',
-			$results[0]->getContext()->getSnak()->getDataValue()->getValue()
+			$qualifierToCheck->getHash(),
+			$results[0]->getContextCursor()->getSnakHash()
 		);
 	}
 
