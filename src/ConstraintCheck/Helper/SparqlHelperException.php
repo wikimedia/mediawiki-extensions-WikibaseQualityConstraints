@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use RuntimeException;
 
 /**
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  */
 class SparqlHelperException extends RuntimeException {
 

@@ -21,7 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRen
  *
  * @group medium
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  */
 class CheckConstraintParametersTest extends ApiTestCase {
 

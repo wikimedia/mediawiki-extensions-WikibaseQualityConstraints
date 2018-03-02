@@ -50,7 +50,7 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
  *
  * @group medium
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  */
 class CheckConstraintsTest extends ApiTestCase {
 
