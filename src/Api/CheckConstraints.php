@@ -145,7 +145,6 @@ class CheckConstraints extends ApiBase {
 			$wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
 				$repo->getEntityNamespaceLookup()
 			);
-			$entityRevisionLookup = $repo->getEntityRevisionLookup();
 			$entityIdParser = $repo->getEntityIdParser();
 			$resultsBuilder = new CachingResultsBuilder(
 				$resultsBuilder,
@@ -189,7 +188,7 @@ class CheckConstraints extends ApiBase {
 	public function __construct(
 		ApiMain $main,
 		$name,
-		$prefix = '',
+		$prefix,
 		EntityIdParser $entityIdParser,
 		StatementGuidValidator $statementGuidValidator,
 		ApiHelperFactory $apiHelperFactory,
@@ -309,9 +308,8 @@ class CheckConstraints extends ApiBase {
 	}
 
 	/**
-	 * Returns an array of allowed parameters
-	 *
-	 * @return array @codeCoverageIgnore
+	 * @return array[]
+	 * @codeCoverageIgnore
 	 */
 	public function getAllowedParams() {
 		return [
@@ -353,7 +351,7 @@ class CheckConstraints extends ApiBase {
 	/**
 	 * Returns usage examples for this module
 	 *
-	 * @return array
+	 * @return string[]
 	 * @codeCoverageIgnore
 	 */
 	public function getExamplesMessages() {
