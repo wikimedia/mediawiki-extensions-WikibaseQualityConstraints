@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\QualifierChecker;
 
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use Wikibase\Repo\Tests\NewItem;
@@ -40,8 +42,10 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	 * @dataProvider provideContextTypes
 	 */
 	public function testQualifierConstraint( $type, $messageKey ) {
+		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
 		$context = $this->getMock( Context::class );
 		$context->method( 'getType' )->willReturn( $type );
+		$context->method( 'getSnak' )->willReturn( $snak );
 		$checker = new QualifierChecker();
 		$constraint = $this->getConstraintMock( [] );
 
