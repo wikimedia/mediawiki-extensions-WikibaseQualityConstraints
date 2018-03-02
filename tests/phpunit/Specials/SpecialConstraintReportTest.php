@@ -272,10 +272,16 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			havingTextContents( '(wbqc-constraintreport-result-table-header-status)' )
 		);
 
-		$matchers['column claim'] = both(
+		$matchers['column property'] = both(
 			tagMatchingOutline( '<th role="columnheader button"/>' )
 		)->andAlso(
-			havingTextContents( '(wbqc-constraintreport-result-table-header-claim)' )
+			havingTextContents( '(wbqc-constraintreport-result-table-header-property)' )
+		);
+
+		$matchers['column message'] = both(
+			tagMatchingOutline( '<th role="columnheader button"/>' )
+		)->andAlso(
+			havingTextContents( '(wbqc-constraintreport-result-table-header-message)' )
 		);
 
 		$matchers['column constraint'] = both(

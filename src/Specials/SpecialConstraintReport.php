@@ -361,7 +361,11 @@ class SpecialConstraintReport extends SpecialPage {
 					true
 				),
 				new HtmlTableHeaderBuilder(
-					$this->msg( 'wbqc-constraintreport-result-table-header-claim' )->escaped(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-property' )->escaped(),
+					true
+				),
+				new HtmlTableHeaderBuilder(
+					$this->msg( 'wbqc-constraintreport-result-table-header-message' )->escaped(),
 					true
 				),
 				new HtmlTableHeaderBuilder(
@@ -379,39 +383,25 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	private function appendToResultTable( HtmlTableBuilder $table, EntityId $entityId, CheckResult $result ) {
+		$message = $result->getMessage();
+		if ( $message === null ) {
+			// no row for this result
+			return $table;
+		}
+
 		// Status column
-		$statusColumn = $this->buildTooltipElement(
-			$this->formatStatus( $result->getStatus() ),
-			$result->getMessage() !== null ?
-				$this->violationMessageRenderer->render( $result->getMessage() ) :
-				null,
-			'[?]'
-		);
+		$statusColumn = $this->formatStatus( $result->getStatus() );
 
-		// Claim column
-		$property = $this->entityIdLabelFormatter->formatEntityId(
-			new PropertyId( $result->getContextCursor()->getSnakPropertyId() )
-		);
-		$value = null;
-		$snakType = $result->getSnakType();
-		if ( $snakType === 'value' ) {
-			$dataValue = $result->getDataValue();
-			if ( $dataValue !== null ) {
-				$value = $this->constraintParameterRenderer->formatValue( $dataValue );
-			}
-		} elseif ( $snakType !== null ) {
-			$value = htmlspecialchars( $snakType );
-		}
-		if ( $value === null ) {
-			// incomplete CheckResult – this should never happen
-			$value = $this->msg( 'unknown-error' )->escaped();
-		}
-
-		$claimColumn = $this->getClaimLink(
+		// Property column
+		$propertyId = new PropertyId( $result->getContextCursor()->getSnakPropertyId() );
+		$propertyColumn = $this->getClaimLink(
 			$entityId,
-			new PropertyId( $result->getContextCursor()->getSnakPropertyId() ),
-			$property . ': ' . $value
+			$propertyId,
+			$this->entityIdLabelFormatter->formatEntityId( $propertyId )
 		);
+
+		// Message column
+		$messageColumn = $this->violationMessageRenderer->render( $message );
 
 		// Constraint column
 		$constraintTypeItemId = $result->getConstraint()->getConstraintTypeItemId();
@@ -421,7 +411,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$constraintTypeLabel = htmlspecialchars( $constraintTypeItemId );
 		}
 		$constraintLink = $this->getClaimLink(
-			new PropertyId( $result->getContextCursor()->getSnakPropertyId() ),
+			$propertyId,
 			new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
 			$constraintTypeLabel
 		);
@@ -440,7 +430,12 @@ class SpecialConstraintReport extends SpecialPage {
 					true
 				),
 				new HtmlTableCellBuilder(
-					$claimColumn,
+					$propertyColumn,
+					[],
+					true
+				),
+				new HtmlTableCellBuilder(
+					$messageColumn,
 					[],
 					true
 				),
@@ -499,53 +494,6 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 
 		return Html::rawElement( 'p', [], implode( ', ', $statusElements ) );
-	}
-
-	/**
-	 * Builds a html div element with given content and a tooltip with given tooltip content
-	 * If $tooltipContent is null, no tooltip will be created
-	 *
-	 * @param string $content (sanitized HTML)
-	 * @param string $tooltipContent (sanitized HTML)
-	 * @param string $indicator
-	 *
-	 * @throws InvalidArgumentException
-	 *
-	 * @return string HTML
-	 */
-	protected function buildTooltipElement( $content, $tooltipContent, $indicator ) {
-		if ( !is_string( $content ) ) {
-			throw new InvalidArgumentException( '$content has to be string.' );
-		}
-		if ( $tooltipContent && ( !is_string( $tooltipContent ) ) ) {
-			throw new InvalidArgumentException( '$tooltipContent, if provided, has to be string.' );
-		}
-
-		if ( empty( $tooltipContent ) ) {
-			return $content;
-		}
-
-		$tooltip = Html::rawElement(
-			'div',
-			[
-				'class' => 'wbqc-tooltip'
-			],
-			$tooltipContent
-		);
-
-		$tooltipIndicator = Html::rawElement(
-			'span',
-			[
-				'class' => 'wbqc-indicator'
-			],
-			htmlspecialchars( $indicator ) . $tooltip
-		);
-
-		return Html::rawElement(
-			'span',
-			[],
-			sprintf( '%s %s', $content, $tooltipIndicator )
-		);
 	}
 
 	/**
