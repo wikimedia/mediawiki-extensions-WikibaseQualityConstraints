@@ -378,16 +378,12 @@ class CachingResultsBuilder implements ResultsBuilder {
 			return null;
 		}
 
-		$revisionInformations = $this->wikiPageEntityMetaDataAccessor->loadRevisionInformation(
+		$latestRevisionIds = $this->wikiPageEntityMetaDataAccessor->loadLatestRevisionIds(
 			$entityIds,
 			EntityRevisionLookup::LATEST_FROM_REPLICA
 		);
-		if ( $this->hasFalseElements( $revisionInformations ) ) {
+		if ( $this->hasFalseElements( $latestRevisionIds ) ) {
 			return null;
-		}
-		$latestRevisionIds = [];
-		foreach ( $revisionInformations as $serialization => $revisionInformation ) {
-			$latestRevisionIds[$serialization] = $revisionInformation->page_latest;
 		}
 		return $latestRevisionIds;
 	}
