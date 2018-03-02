@@ -392,10 +392,19 @@ class SpecialConstraintReport extends SpecialPage {
 		$property = $this->entityIdLabelFormatter->formatEntityId(
 			new PropertyId( $result->getContextCursor()->getSnakPropertyId() )
 		);
-		if ( $result->getSnakType() === 'value' ) {
-			$value = $this->constraintParameterRenderer->formatValue( $result->getDataValue() );
-		} else {
-			$value = htmlspecialchars( $result->getSnakType() );
+		$value = null;
+		$snakType = $result->getSnakType();
+		if ( $snakType === 'value' ) {
+			$dataValue = $result->getDataValue();
+			if ( $dataValue !== null ) {
+				$value = $this->constraintParameterRenderer->formatValue( $dataValue );
+			}
+		} elseif ( $snakType !== null ) {
+			$value = htmlspecialchars( $snakType );
+		}
+		if ( $value === null ) {
+			// incomplete CheckResult – this should never happen
+			$value = $this->msg( 'unknown-error' )->escaped();
 		}
 
 		$claimColumn = $this->getClaimLink(

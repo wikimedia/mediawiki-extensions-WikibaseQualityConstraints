@@ -7,7 +7,6 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
-use LogicException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 
@@ -73,9 +72,9 @@ class CheckResult {
 	private $constraint;
 
 	/**
-	 * @var Context
+	 * @var ContextCursor
 	 */
-	private $context;
+	private $contextCursor;
 
 	/**
 	 * @var array[]
@@ -99,7 +98,17 @@ class CheckResult {
 	private $metadata;
 
 	/**
-	 * @param Context $context
+	 * @var string|null
+	 */
+	private $snakType;
+
+	/**
+	 * @var DataValue|null
+	 */
+	private $dataValue;
+
+	/**
+	 * @param Context|ContextCursor $contextCursor
 	 * @param Constraint $constraint
 	 * @param array[] $parameters (string => string[]) parsed constraint parameters
 	 * ($constraint->getParameters() contains the unparsed parameters)
@@ -107,13 +116,27 @@ class CheckResult {
 	 * @param string|ViolationMessage|null $message sanitized HTML string or ViolationMessage object
 	 */
 	public function __construct(
-		Context $context,
+		$contextCursor,
 		Constraint $constraint,
 		array $parameters = [],
 		$status = self::STATUS_TODO,
 		$message = null
 	) {
-		$this->context = $context;
+		if ( $contextCursor instanceof Context ) {
+			$context = $contextCursor;
+			$this->contextCursor = $context->getCursor();
+			$this->snakType = $context->getSnak()->getType();
+			$mainSnak = $context->getSnak();
+			if ( $mainSnak instanceof PropertyValueSnak ) {
+				$this->dataValue = $mainSnak->getDataValue();
+			} else {
+				$this->dataValue = null;
+			}
+		} else {
+			$this->contextCursor = $contextCursor;
+			$this->snakType = null;
+			$this->dataValue = null;
+		}
 		$this->constraint = $constraint;
 		$this->parameters = $parameters;
 		$this->status = $status;
@@ -122,38 +145,24 @@ class CheckResult {
 	}
 
 	/**
-	 * @return Context
-	 */
-	public function getContext() {
-		return $this->context;
-	}
-
-	/**
 	 * @return ContextCursor
 	 */
 	public function getContextCursor() {
-		return $this->getContext()->getCursor();
+		return $this->contextCursor;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null only available if the CheckResult was created from a full Context
 	 */
 	public function getSnakType() {
-		return $this->context->getSnak()->getType();
+		return $this->snakType;
 	}
 
 	/**
-	 * @return DataValue
-	 * @throws LogicException
+	 * @return DataValue|null only available if the CheckResult was created from a full Context
 	 */
 	public function getDataValue() {
-		$mainSnak = $this->context->getSnak();
-
-		if ( $mainSnak instanceof PropertyValueSnak ) {
-			return $mainSnak->getDataValue();
-		}
-
-		throw new LogicException( 'Cannot get DataValue, Snak is of type ' . $this->getSnakType() . '.' );
+		return $this->dataValue;
 	}
 
 	/**
