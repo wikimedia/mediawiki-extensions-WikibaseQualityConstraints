@@ -15,7 +15,7 @@ use Wikimedia\Assert\ParameterTypeException;
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CachingMetadataTest extends \PHPUnit\Framework\TestCase {
 

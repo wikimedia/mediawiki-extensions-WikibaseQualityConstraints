@@ -13,7 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHel
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ValueCountCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 

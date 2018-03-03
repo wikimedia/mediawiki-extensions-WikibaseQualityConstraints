@@ -13,7 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
  * even if no constraints are defined for them.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class NullResult extends CheckResult {
 

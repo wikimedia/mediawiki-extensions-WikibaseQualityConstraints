@@ -6,7 +6,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
  * An array (of unspecified nature) along with information whether and how it was cached.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CachedArray {
 

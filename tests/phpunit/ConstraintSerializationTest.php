@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintSerializer;
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ConstraintSerializationTest extends \PHPUnit\Framework\TestCase {
 

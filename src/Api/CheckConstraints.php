@@ -33,7 +33,7 @@ use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
  * API module that performs constraint check of entities, claims and constraint ID
  *
  * @author Olga Bode
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CheckConstraints extends ApiBase {
 

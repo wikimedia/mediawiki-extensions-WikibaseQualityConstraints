@@ -7,7 +7,7 @@ use LogicException;
  * Enum of possible roles of a value for ConstraintParameterRenderer.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class Role {
 

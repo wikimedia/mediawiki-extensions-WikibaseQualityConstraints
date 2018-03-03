@@ -31,7 +31,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CheckingResultsBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CheckingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 

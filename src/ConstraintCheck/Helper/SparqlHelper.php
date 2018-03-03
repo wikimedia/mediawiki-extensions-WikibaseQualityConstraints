@@ -34,7 +34,7 @@ use WikibaseQuality\ConstraintReport\Role;
  * Class for running a SPARQL query on some endpoint and getting the results.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class SparqlHelper {
 

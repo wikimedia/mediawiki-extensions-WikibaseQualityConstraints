@@ -23,7 +23,7 @@ use WikibaseQuality\ConstraintReport\Role;
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
 

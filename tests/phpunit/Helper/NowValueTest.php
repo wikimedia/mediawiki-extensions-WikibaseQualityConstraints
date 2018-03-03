@@ -12,7 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class NowValueTest extends \PHPUnit\Framework\TestCase {
 

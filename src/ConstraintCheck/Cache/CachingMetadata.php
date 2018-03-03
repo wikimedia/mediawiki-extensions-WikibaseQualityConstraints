@@ -8,7 +8,7 @@ use Wikimedia\Assert\Assert;
  * Information about whether and how a value was cached.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CachingMetadata {
 

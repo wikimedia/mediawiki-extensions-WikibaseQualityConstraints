@@ -11,7 +11,7 @@ use Wikimedia\Assert\Assert;
 /**
  * A constraint check context for the main snak of a statement.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class MainSnakContext extends ApiV2Context {
 

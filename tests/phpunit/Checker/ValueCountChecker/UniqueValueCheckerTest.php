@@ -27,7 +27,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @group WikibaseQualityConstraints
  *
  * @author Olga Bode
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 

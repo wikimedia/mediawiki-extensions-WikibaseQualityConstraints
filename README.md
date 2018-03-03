@@ -161,7 +161,7 @@ To add a new constraint type, the following steps are necessary:
     ```php
     /**
      * @author YOUR NAME HERE
-     * @license GNU GPL v2+
+     * @license GPL-2.0-or-later
      */
     ```
   * Any services you need (`Config`, `EntityLookup`, …) should be injected as constructor parameters.
@@ -215,7 +215,7 @@ To add a new constraint type, the following steps are necessary:
      * @group WikibaseQualityConstraints
      *
      * @author YOUR NAME HERE
-     * @license GNU GPL v2+
+     * @license GPL-2.0-or-later
      */
     ```
   * It should have at least one test for compliance with a constraint,

@@ -12,7 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CachedBoolTest extends \PHPUnit\Framework\TestCase {
 

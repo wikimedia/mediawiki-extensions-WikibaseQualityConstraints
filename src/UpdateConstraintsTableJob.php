@@ -20,7 +20,7 @@ use Wikimedia\Assert\Assert;
  * when changes were made on a property.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class UpdateConstraintsTableJob extends Job {
 

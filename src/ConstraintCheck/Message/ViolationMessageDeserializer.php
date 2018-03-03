@@ -17,7 +17,7 @@ use Wikimedia\Assert\Assert;
 /**
  * A deserializer for {@link ViolationMessage}s.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ViolationMessageDeserializer implements Deserializer {
 

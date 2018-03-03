@@ -30,7 +30,7 @@ include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CachingResultsBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CachingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 

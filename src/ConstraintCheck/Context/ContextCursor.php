@@ -6,7 +6,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
  * A context cursor encapsulates the location
  * where a check result serialization for a certain Context should be stored.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 interface ContextCursor {
 

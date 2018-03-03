@@ -8,7 +8,7 @@ use Wikimedia\Assert\Assert;
  * Collection of information about a value.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class Metadata {
 

@@ -35,7 +35,7 @@ use WikibaseQuality\ConstraintReport\Role;
  * which may include rendering them into violation messages.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ConstraintParameterParser {
 

@@ -20,7 +20,7 @@ use WikibaseQuality\ConstraintReport\Role;
 
 /**
  * @author BP2014N1
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class FormatChecker implements ConstraintChecker {
 

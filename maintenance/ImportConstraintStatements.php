@@ -18,7 +18,7 @@ require_once $basePath . "/maintenance/Maintenance.php";
 /**
  * Runs {@link UpdateConstraintsTableJob} once for every property.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ImportConstraintStatements extends Maintenance {
 

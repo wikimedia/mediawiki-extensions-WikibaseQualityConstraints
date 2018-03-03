@@ -17,7 +17,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
  * and a list of 'references' each having a 'hash' and 'snaks'
  * which are keyed by property ID and then hold a list of snaks.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 abstract class ApiV2ContextCursor implements ContextCursor {
 

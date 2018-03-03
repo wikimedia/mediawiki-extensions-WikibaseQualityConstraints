@@ -9,7 +9,7 @@ use Wikibase\DataModel\Statement\Statement;
 /**
  * A constraint check context for a qualifier of a statement.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class QualifierContext extends ApiV2Context {
 

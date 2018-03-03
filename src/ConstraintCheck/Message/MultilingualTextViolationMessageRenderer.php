@@ -20,7 +20,7 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
  * Currently, the only such message key is 'wbqc-violation-message-format-clarification'
  * (falling back to 'wbqc-violation-message-format').
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer {
 

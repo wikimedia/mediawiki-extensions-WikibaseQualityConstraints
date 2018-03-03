@@ -10,7 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ValueOnlyChecker implements ConstraintChecker {
 

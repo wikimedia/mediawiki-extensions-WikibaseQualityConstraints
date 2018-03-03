@@ -23,7 +23,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContextCur
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 

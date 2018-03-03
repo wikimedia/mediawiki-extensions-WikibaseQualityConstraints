@@ -34,7 +34,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * their 'cached' information is also updated.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CachingResultsBuilder implements ResultsBuilder {
 

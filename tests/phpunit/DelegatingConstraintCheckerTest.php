@@ -43,7 +43,7 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  * @group Database
  *
  * @author BP2014N1
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 

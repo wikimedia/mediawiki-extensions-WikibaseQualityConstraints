@@ -9,7 +9,7 @@ use Wikibase\DataModel\Entity\PropertyId;
  * (by storing the constraint array per property ID in a big array).
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CachingConstraintLookup implements ConstraintLookup {
 

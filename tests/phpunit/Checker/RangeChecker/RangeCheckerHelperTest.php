@@ -20,7 +20,7 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
  * @group WikibaseQualityConstraints
  *
  * @author BP2014N1
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class RangeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 

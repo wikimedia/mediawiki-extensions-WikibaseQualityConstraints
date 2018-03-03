@@ -10,7 +10,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 /**
  * Constraint checker implementation that always returns results with a static status.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class FakeChecker implements ConstraintChecker {
 

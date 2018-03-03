@@ -11,7 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContextCur
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class QualifierContextCursorTest extends \PHPUnit_Framework_TestCase {
 

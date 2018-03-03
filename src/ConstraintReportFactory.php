@@ -51,7 +51,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSer
  * Factory for {@link DelegatingConstraintChecker}
  * and {@link ConstraintRepository}.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ConstraintReportFactory {
 

@@ -23,7 +23,7 @@ use Wikibase\Repo\Tests\NewStatement;
  * @group WikibaseQualityConstraints
  *
  * @author BP2014N1
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 

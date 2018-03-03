@@ -9,7 +9,7 @@ use Wikibase\DataModel\Snak\Snak;
  * Class for helper functions for value count checkers.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ValueCountCheckerHelper {
 

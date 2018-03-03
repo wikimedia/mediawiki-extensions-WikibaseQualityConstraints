@@ -19,7 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ItemIdSnakValueTest extends \PHPUnit\Framework\TestCase {
 

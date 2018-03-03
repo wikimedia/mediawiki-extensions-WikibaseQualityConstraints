@@ -12,7 +12,7 @@ use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CachingConstraintLookupTest extends \PHPUnit\Framework\TestCase {
 

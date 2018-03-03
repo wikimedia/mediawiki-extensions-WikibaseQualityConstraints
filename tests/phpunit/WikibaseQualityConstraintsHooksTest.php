@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks;
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class WikibaseQualityConstraintsHooksTest extends \PHPUnit\Framework\TestCase {
 

@@ -17,7 +17,7 @@ use Wikibase\Repo\Parsers\TimeParserFactory;
  * Class for helper functions for range checkers.
  *
  * @author BP2014N1
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class RangeCheckerHelper {
 

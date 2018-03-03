@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Fake;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class AppendingContextCursor implements ContextCursor {
 

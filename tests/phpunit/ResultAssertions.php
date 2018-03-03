@@ -20,7 +20,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * in order to use the existing test cases.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 trait ResultAssertions {
 

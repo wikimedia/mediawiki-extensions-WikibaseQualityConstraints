@@ -14,7 +14,7 @@ use LogicException;
  * It cannot be serialized and does not support any operations
  * other than {@link getTime} and {@link equals}.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class NowValue extends TimeValue {
 

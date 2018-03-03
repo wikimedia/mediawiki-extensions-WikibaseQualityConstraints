@@ -12,7 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * Checks a constraint on some constraint checking context.
  * Most implementations only support one constraint type.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 interface ConstraintChecker {
 

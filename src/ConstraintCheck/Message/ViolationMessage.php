@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
  * A ViolationMessage object is immutable:
  * operations like {@link withEntityId} return a modified copy.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ViolationMessage {
 

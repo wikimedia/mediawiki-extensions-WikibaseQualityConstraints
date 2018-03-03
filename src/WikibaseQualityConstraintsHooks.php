@@ -21,7 +21,7 @@ use WikiPage;
 /**
  * Container for hook callbacks registered in extension.json.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 final class WikibaseQualityConstraintsHooks {
 

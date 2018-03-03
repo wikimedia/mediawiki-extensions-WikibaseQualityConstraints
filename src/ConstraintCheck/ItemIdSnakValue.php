@@ -15,7 +15,7 @@ use Wikibase\DataModel\Snak\Snak;
  * A value that can either be an item ID, some value (unknown value), or no value.
  *
  * @author Lucas Werkmeister
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ItemIdSnakValue {
 

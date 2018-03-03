@@ -10,7 +10,7 @@ use Wikimedia\Assert\Assert;
 /**
  * Simple constraint lookup implentation backed by an array.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class InMemoryConstraintLookup implements ConstraintLookup {
 

@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
  * Used for getting information about the result of a constraint check
  *
  * @author BP2014N1
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class CheckResult {
 
