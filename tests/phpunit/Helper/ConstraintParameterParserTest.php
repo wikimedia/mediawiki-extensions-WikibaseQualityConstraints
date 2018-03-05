@@ -444,7 +444,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertEquals( [], $parsed );
 	}
 
-	public function testParseRangeParameter_Quantity_Bounded() {
+	public function testParseQuantityRange_Bounded() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
@@ -452,97 +452,92 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$min = UnboundedQuantityValue::newFromNumber( 13.37 );
 		$max = UnboundedQuantityValue::newFromNumber( 42 );
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$parsed = $this->getConstraintParameterParser()->parseQuantityRangeParameter(
 			[
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
-			'Q21510860',
-			'quantity'
+			'Q21510860'
 		);
 
 		$this->assertEquals( [ $min, $max ], $parsed );
 	}
 
-	public function testParseRangeParameter_Quantity_LeftOpen() {
+	public function testParseQuantityRange_LeftOpen() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new PropertyId( 'P1' );
 		$max = UnboundedQuantityValue::newFromNumber( 42 );
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$parsed = $this->getConstraintParameterParser()->parseQuantityRangeParameter(
 			[
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
-			'Q21510860',
-			'quantity'
+			'Q21510860'
 		);
 
 		$this->assertEquals( [ null, $max ], $parsed );
 	}
 
-	public function testParseRangeParameter_Quantity_RightOpen() {
+	public function testParseQuantityRange_RightOpen() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new PropertyId( 'P1' );
 		$min = UnboundedQuantityValue::newFromNumber( 13.37 );
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$parsed = $this->getConstraintParameterParser()->parseQuantityRangeParameter(
 			[
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 			],
-			'Q21510860',
-			'quantity'
+			'Q21510860'
 		);
 
 		$this->assertEquals( [ $min, null ], $parsed );
 	}
 
-	public function testParseRangeParameter_Quantity_FullyOpen() {
+	public function testParseQuantityRange_FullyOpen() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new PropertyId( 'P1' );
 
 		$this->assertThrowsConstraintParameterException(
-			'parseRangeParameter',
+			'parseQuantityRangeParameter',
 			[
 				[
 					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 				],
-				'Q21510860',
-				'quantity'
+				'Q21510860'
 			],
 			'wbqc-violation-message-range-parameters-same'
 		);
 	}
 
-	public function testParseRangeParameter_Quantity_SomeValue() {
+	public function testParseQuantityRange_SomeValue() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new PropertyId( 'P1' );
 
 		$this->assertThrowsConstraintParameterException(
-			'parseRangeParameter',
+			'parseQuantityRangeParameter',
 			[
 				[
 					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 				],
-				'Q21510860',
-				'quantity'
+				'Q21510860'
 			],
 			'wbqc-violation-message-parameter-value-or-novalue'
 		);
 	}
 
-	public function testParseRangeParameter_Quantity_Same() {
+	public function testParseQuantityRange_Same() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
@@ -550,20 +545,19 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$quantity = UnboundedQuantityValue::newFromNumber( 13.37 );
 
 		$this->assertThrowsConstraintParameterException(
-			'parseRangeParameter',
+			'parseQuantityRangeParameter',
 			[
 				[
 					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $quantity ) ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $quantity ) ) ]
 				],
-				'Q21510860',
-				'quantity'
+				'Q21510860'
 			],
 			'wbqc-violation-message-range-parameters-same'
 		);
 	}
 
-	public function testParseRangeParameter_Time_Bounded() {
+	public function testParseTimeRange_Bounded() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
@@ -572,75 +566,71 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$min = new TimeValue( '+1789-05-08T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_YEAR, $calendar );
 		$max = new TimeValue( '+1955-02-05T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_YEAR, $calendar );
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$parsed = $this->getConstraintParameterParser()->parseTimeRangeParameter(
 			[
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $min ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $max ) ) ]
 			],
-			'Q21510860',
-			'time'
+			'Q21510860'
 		);
 
 		$this->assertEquals( [ $min, $max ], $parsed );
 	}
 
-	public function testParseRangeParameter_Time_Past() {
+	public function testParseTimeRange_Past() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new PropertyId( 'P1' );
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$parsed = $this->getConstraintParameterParser()->parseTimeRangeParameter(
 			[
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 			],
-			'Q21510860',
-			'time'
+			'Q21510860'
 		);
 
 		$this->assertEquals( [ null, new NowValue() ], $parsed );
 	}
 
-	public function testParseRangeParameter_Time_Future() {
+	public function testParseTimeRange_Future() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new PropertyId( 'P1' );
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$parsed = $this->getConstraintParameterParser()->parseTimeRangeParameter(
 			[
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertyNoValueSnak( $propertyId ) ) ]
 			],
-			'Q21510860',
-			'time'
+			'Q21510860'
 		);
 
 		$this->assertEquals( [ new NowValue(), null ], $parsed );
 	}
 
-	public function testParseRangeParameter_Time_BothNow() {
+	public function testParseTimeRange_BothNow() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new PropertyId( 'P1' );
 
 		$this->assertThrowsConstraintParameterException(
-			'parseRangeParameter',
+			'parseTimeRangeParameter',
 			[
 				[
 					$minimumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 				],
-				'Q21510860',
-				'time'
+				'Q21510860'
 			],
 			'wbqc-violation-message-range-parameters-same'
 		);
 	}
 
-	public function testParseRangeParameter_Time_Wikidata() {
+	public function testParseTimeRange_Wikidata() {
 		// range: from the inception of Wikidata until now
 		// (NowValue uses the same date internally, but that should not result in a “same range endpoints” error)
 		$config = $this->getDefaultConfig();
@@ -656,19 +646,18 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			TimeValue::CALENDAR_GREGORIAN
 		);
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$parsed = $this->getConstraintParameterParser()->parseTimeRangeParameter(
 			[
 				$minimumId => [ $this->getSnakSerializer()->serialize( new PropertyValueSnak( $propertyId, $wikidataInception ) ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( new PropertySomeValueSnak( $propertyId ) ) ]
 			],
-			'Q21510860',
-			'time'
+			'Q21510860'
 		);
 
 		$this->assertEquals( [ $wikidataInception, new NowValue() ], $parsed );
 	}
 
-	public function testParseRangeParameter_Quantity_OneYear() {
+	public function testParseQuantityRange_OneYear() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
@@ -679,20 +668,19 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$maxSnak = new PropertyValueSnak( new PropertyId( $maximumId ), $max );
 
 		$this->assertThrowsConstraintParameterException(
-			'parseRangeParameter',
+			'parseQuantityRangeParameter',
 			[
 				[
 					$minimumId => [ $this->getSnakSerializer()->serialize( $minSnak ) ],
 					$maximumId => [ $this->getSnakSerializer()->serialize( $maxSnak ) ]
 				],
-				'Q21510860',
-				'quantity'
+				'Q21510860'
 			],
 			'wbqc-violation-message-range-parameters-one-year'
 		);
 	}
 
-	public function testParseRangeParameterQuantity_OneYear_LeftOpen() {
+	public function testParseQuantityRange_OneYear_LeftOpen() {
 		$config = $this->getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
@@ -701,26 +689,24 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$minSnak = new PropertyNoValueSnak( new PropertyId( $minimumId ) );
 		$maxSnak = new PropertyValueSnak( new PropertyId( $maximumId ), $max );
 
-		$parsed = $this->getConstraintParameterParser()->parseRangeParameter(
+		$parsed = $this->getConstraintParameterParser()->parseQuantityRangeParameter(
 			[
 				$minimumId => [ $this->getSnakSerializer()->serialize( $minSnak ) ],
 				$maximumId => [ $this->getSnakSerializer()->serialize( $maxSnak ) ]
 			],
-			'Q21510860',
-			'quantity'
+			'Q21510860'
 		);
 
 		$this->assertEquals( [ null, $max ], $parsed );
 	}
 
-	public function testParseRangeParameter_MissingParameters() {
-		foreach ( [ 'quantity', 'time' ] as $type ) {
+	public function testParseRange_MissingParameters() {
+		foreach ( [ 'parseQuantityRangeParameter', 'parseTimeRangeParameter' ] as $method ) {
 			$this->assertThrowsConstraintParameterException(
-				'parseRangeParameter',
+				$method,
 				[
 					[],
-					'Q21510860',
-					$type
+					'Q21510860'
 				],
 				'wbqc-violation-message-range-parameters-needed'
 			);
