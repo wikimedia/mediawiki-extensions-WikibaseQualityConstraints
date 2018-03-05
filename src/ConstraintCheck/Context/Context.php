@@ -96,18 +96,4 @@ interface Context {
 	 */
 	public function getCursor();
 
-	/**
-	 * Store the check result serialization $result
-	 * at the appropriate location for this context in $container.
-	 *
-	 * Mainly used in the API, where $container is part of the API response.
-	 *
-	 * If $result is null, don’t actually store it,
-	 * but still populate the appropriate location for this context in $container.
-	 *
-	 * @param array|null $result
-	 * @param array[] &$container
-	 */
-	public function storeCheckResultInArray( array $result = null, array &$container );
-
 }

@@ -43,14 +43,4 @@ class FakeSnakContext extends AbstractContext {
 		return new AppendingContextCursor();
 	}
 
-	/**
-	 * @param array|null $result
-	 * @param array[] &$container
-	 */
-	public function storeCheckResultInArray( array $result = null, array &$container ) {
-		if ( $result !== null ) {
-			$container[] = $result;
-		}
-	}
-
 }

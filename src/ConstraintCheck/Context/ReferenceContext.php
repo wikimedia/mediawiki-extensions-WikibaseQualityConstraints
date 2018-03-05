@@ -12,7 +12,7 @@ use Wikibase\DataModel\Statement\Statement;
  *
  * @license GPL-2.0-or-later
  */
-class ReferenceContext extends ApiV2Context {
+class ReferenceContext extends AbstractContext {
 
 	/**
 	 * @var Statement
@@ -53,52 +53,6 @@ class ReferenceContext extends ApiV2Context {
 			$this->snak->getPropertyId()->getSerialization(),
 			$this->reference->getHash()
 		);
-	}
-
-	protected function &getMainArray( array &$container ) {
-		$statementArray = &$this->getStatementArray(
-			$container,
-			$this->entity->getId()->getSerialization(),
-			$this->statement->getPropertyId()->getSerialization(),
-			$this->statement->getGuid()
-		);
-
-		if ( !array_key_exists( 'references', $statementArray ) ) {
-			$statementArray['references'] = [];
-		}
-		$referencesArray = &$statementArray['references'];
-
-		foreach ( $referencesArray as &$potentialReferenceArray ) {
-			if ( $potentialReferenceArray['hash'] === $this->reference->getHash() ) {
-				$referenceArray = &$potentialReferenceArray;
-				break;
-			}
-		}
-		if ( !isset( $referenceArray ) ) {
-			$referenceArray = [ 'hash' => $this->reference->getHash(), 'snaks' => [] ];
-			$referencesArray[] = &$referenceArray;
-		}
-
-		$snaksArray = &$referenceArray['snaks'];
-
-		$propertyId = $this->getSnak()->getPropertyId()->getSerialization();
-		if ( !array_key_exists( $propertyId, $snaksArray ) ) {
-			$snaksArray[$propertyId] = [];
-		}
-		$propertyArray = &$snaksArray[$propertyId];
-
-		foreach ( $propertyArray as &$potentialSnakArray ) {
-			if ( $potentialSnakArray['hash'] === $this->getSnak()->getHash() ) {
-				$snakArray = &$potentialSnakArray;
-				break;
-			}
-		}
-		if ( !isset( $snakArray ) ) {
-			$snakArray = [ 'hash' => $this->getSnak()->getHash() ];
-			$propertyArray[] = &$snakArray;
-		}
-
-		return $snakArray;
 	}
 
 }

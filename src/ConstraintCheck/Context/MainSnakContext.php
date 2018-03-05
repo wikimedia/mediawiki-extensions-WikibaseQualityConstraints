@@ -13,7 +13,7 @@ use Wikimedia\Assert\Assert;
  *
  * @license GPL-2.0-or-later
  */
-class MainSnakContext extends ApiV2Context {
+class MainSnakContext extends AbstractContext {
 
 	/**
 	 * @var Statement
@@ -54,22 +54,6 @@ class MainSnakContext extends ApiV2Context {
 			$this->statement->getGuid(),
 			$this->statement->getMainSnak()->getHash()
 		);
-	}
-
-	protected function &getMainArray( array &$container ) {
-		$statementArray = &$this->getStatementArray(
-			$container,
-			$this->entity->getId()->getSerialization(),
-			$this->statement->getPropertyId()->getSerialization(),
-			$this->statement->getGuid()
-		);
-
-		if ( !array_key_exists( 'mainsnak', $statementArray ) ) {
-			$statementArray['mainsnak'] = [ 'hash' => $this->statement->getMainSnak()->getHash() ];
-		}
-		$mainsnakArray = &$statementArray['mainsnak'];
-
-		return $mainsnakArray;
 	}
 
 }

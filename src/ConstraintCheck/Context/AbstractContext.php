@@ -46,6 +46,6 @@ abstract class AbstractContext implements Context {
 		return null;
 	}
 
-	// unimplemented: storeCheckResultInArray
+	// unimplemented: getCursor
 
 }
