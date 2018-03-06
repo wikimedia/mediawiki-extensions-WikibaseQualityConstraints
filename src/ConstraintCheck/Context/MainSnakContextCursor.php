@@ -45,8 +45,19 @@ class MainSnakContextCursor extends ApiV2ContextCursor {
 		$this->snakHash = $snakHash;
 	}
 
+	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
 	public function getType() {
 		return Context::TYPE_STATEMENT;
+	}
+
+	public function getEntityId() {
+		return $this->entityId;
+	}
+
+	public function getStatementPropertyId() {
+		return $this->statementPropertyId;
 	}
 
 	public function getStatementGuid() {
@@ -62,15 +73,11 @@ class MainSnakContextCursor extends ApiV2ContextCursor {
 	}
 
 	protected function &getMainArray( array &$container ) {
-		$statementArray = &$this->getStatementArray(
-			$container,
-			$this->entityId,
-			$this->statementPropertyId,
-			$this->statementGuid
-		);
+		$statementArray = &$this->getStatementArray( $container );
 
 		if ( !array_key_exists( 'mainsnak', $statementArray ) ) {
-			$statementArray['mainsnak'] = [ 'hash' => $this->snakHash ];
+			$snakHash = $this->getSnakHash();
+			$statementArray['mainsnak'] = [ 'hash' => $snakHash ];
 		}
 		$mainsnakArray = &$statementArray['mainsnak'];
 

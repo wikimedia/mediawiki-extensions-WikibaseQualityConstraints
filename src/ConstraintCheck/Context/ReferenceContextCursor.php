@@ -61,8 +61,19 @@ class ReferenceContextCursor extends ApiV2ContextCursor {
 		$this->referenceHash = $referenceHash;
 	}
 
+	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
 	public function getType() {
 		return Context::TYPE_REFERENCE;
+	}
+
+	public function getEntityId() {
+		return $this->entityId;
+	}
+
+	public function getStatementPropertyId() {
+		return $this->statementPropertyId;
 	}
 
 	public function getStatementGuid() {
@@ -77,45 +88,47 @@ class ReferenceContextCursor extends ApiV2ContextCursor {
 		return $this->snakHash;
 	}
 
+	public function getReferenceHash() {
+		return $this->referenceHash;
+	}
+
 	protected function &getMainArray( array &$container ) {
-		$statementArray = &$this->getStatementArray(
-			$container,
-			$this->entityId,
-			$this->statementPropertyId,
-			$this->statementGuid
-		);
+		$statementArray = &$this->getStatementArray( $container );
 
 		if ( !array_key_exists( 'references', $statementArray ) ) {
 			$statementArray['references'] = [];
 		}
 		$referencesArray = &$statementArray['references'];
 
+		$referenceHash = $this->getReferenceHash();
 		foreach ( $referencesArray as &$potentialReferenceArray ) {
-			if ( $potentialReferenceArray['hash'] === $this->referenceHash ) {
+			if ( $potentialReferenceArray['hash'] === $referenceHash ) {
 				$referenceArray = &$potentialReferenceArray;
 				break;
 			}
 		}
 		if ( !isset( $referenceArray ) ) {
-			$referenceArray = [ 'hash' => $this->referenceHash, 'snaks' => [] ];
+			$referenceArray = [ 'hash' => $referenceHash, 'snaks' => [] ];
 			$referencesArray[] = &$referenceArray;
 		}
 
 		$snaksArray = &$referenceArray['snaks'];
 
-		if ( !array_key_exists( $this->snakPropertyId, $snaksArray ) ) {
-			$snaksArray[$this->snakPropertyId] = [];
+		$snakPropertyId = $this->getSnakPropertyId();
+		if ( !array_key_exists( $snakPropertyId, $snaksArray ) ) {
+			$snaksArray[$snakPropertyId] = [];
 		}
-		$propertyArray = &$snaksArray[$this->snakPropertyId];
+		$propertyArray = &$snaksArray[$snakPropertyId];
 
+		$snakHash = $this->getSnakHash();
 		foreach ( $propertyArray as &$potentialSnakArray ) {
-			if ( $potentialSnakArray['hash'] === $this->snakHash ) {
+			if ( $potentialSnakArray['hash'] === $snakHash ) {
 				$snakArray = &$potentialSnakArray;
 				break;
 			}
 		}
 		if ( !isset( $snakArray ) ) {
-			$snakArray = [ 'hash' => $this->snakHash ];
+			$snakArray = [ 'hash' => $snakHash ];
 			$propertyArray[] = &$snakArray;
 		}
 
