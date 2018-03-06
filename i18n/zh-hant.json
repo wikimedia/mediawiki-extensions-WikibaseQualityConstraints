@@ -9,9 +9,12 @@
 	"wbqc-constraintreport-form-submit-label": "檢查",
 	"wbqc-constraintreport-status-todo": "待辦事項",
 	"wbqc-constraintreport-result-table-header-status": "狀態",
+	"wbqc-constraintreport-result-table-header-constraint": "限制",
 	"wbqc-constraintreport-no-parameter": "無",
 	"wbqc-constrainttypehelp-short": "說明",
 	"wbqc-constraintdiscuss-short": "討論",
 	"wbqc-dataValueType-wikibase-entityid": "實體 ID",
-	"wbqc-violation-header-parameters": "參數："
+	"wbq-subextension-name-wbqc": "限制",
+	"wbqc-violation-header-parameters": "參數：",
+	"wbqc-violations-group": "限制"
 }
