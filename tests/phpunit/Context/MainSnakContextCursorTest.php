@@ -127,4 +127,15 @@ class MainSnakContextCursorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( $expected, $actual );
 	}
 
+	/**
+	 * only getter that isn’t covered by testStoreCheckResultInArray
+	 */
+	public function testGetSnakPropertyId() {
+		$statementGuid = 'P1$13ea0742-0190-4d88-b7b0-baee67573818';
+		$statementSnakHash = 'c77761897897f63f151c4a1deb8bd3ad23ac51c6';
+		$cursor = new MainSnakContextCursor( 'Q1', 'P1', $statementGuid, $statementSnakHash );
+
+		$this->assertSame( $cursor->getStatementPropertyId(), $cursor->getSnakPropertyId() );
+	}
+
 }

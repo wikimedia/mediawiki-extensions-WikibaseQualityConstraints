@@ -18,6 +18,20 @@ interface ContextCursor {
 	public function getType();
 
 	/**
+	 * The ID of the entity of the associated context.
+	 *
+	 * @return string {@link EntityId::getSerialization() entity ID serialization}
+	 */
+	public function getEntityId();
+
+	/**
+	 * The property ID of the main statement of the associated context.
+	 *
+	 * @return string {@link PropertyId::getSerialization() property ID serialization}
+	 */
+	public function getStatementPropertyId();
+
+	/**
 	 * The GUID of the main statement of the associated context.
 	 *
 	 * @return string

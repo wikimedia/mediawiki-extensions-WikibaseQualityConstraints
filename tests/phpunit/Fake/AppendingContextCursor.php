@@ -13,6 +13,14 @@ class AppendingContextCursor implements ContextCursor {
 		return 'statement';
 	}
 
+	public function getEntityId() {
+		return 'Q1';
+	}
+
+	public function getStatementPropertyId() {
+		return 'P1';
+	}
+
 	public function getStatementGuid() {
 		return 'Q1$fa6a039b-d27f-4849-9039-5b364314d97b';
 	}

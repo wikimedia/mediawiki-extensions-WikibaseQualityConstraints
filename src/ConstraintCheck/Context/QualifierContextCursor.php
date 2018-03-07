@@ -53,8 +53,19 @@ class QualifierContextCursor extends ApiV2ContextCursor {
 		$this->snakPropertyId = $snakPropertyId;
 	}
 
+	/**
+	 * @codeCoverageIgnore This method is purely declarative.
+	 */
 	public function getType() {
 		return Context::TYPE_QUALIFIER;
+	}
+
+	public function getEntityId() {
+		return $this->entityId;
+	}
+
+	public function getStatementPropertyId() {
+		return $this->statementPropertyId;
 	}
 
 	public function getStatementGuid() {
@@ -70,31 +81,28 @@ class QualifierContextCursor extends ApiV2ContextCursor {
 	}
 
 	protected function &getMainArray( array &$container ) {
-		$statementArray = &$this->getStatementArray(
-			$container,
-			$this->entityId,
-			$this->statementPropertyId,
-			$this->statementGuid
-		);
+		$statementArray = &$this->getStatementArray( $container );
 
 		if ( !array_key_exists( 'qualifiers', $statementArray ) ) {
 			$statementArray['qualifiers'] = [];
 		}
 		$qualifiersArray = &$statementArray['qualifiers'];
 
-		if ( !array_key_exists( $this->snakPropertyId, $qualifiersArray ) ) {
-			$qualifiersArray[$this->snakPropertyId] = [];
+		$snakPropertyId = $this->getSnakPropertyId();
+		if ( !array_key_exists( $snakPropertyId, $qualifiersArray ) ) {
+			$qualifiersArray[$snakPropertyId] = [];
 		}
-		$propertyArray = &$qualifiersArray[$this->snakPropertyId];
+		$propertyArray = &$qualifiersArray[$snakPropertyId];
 
+		$snakHash = $this->getSnakHash();
 		foreach ( $propertyArray as &$potentialQualifierArray ) {
-			if ( $potentialQualifierArray['hash'] === $this->snakHash ) {
+			if ( $potentialQualifierArray['hash'] === $snakHash ) {
 				$qualifierArray = &$potentialQualifierArray;
 				break;
 			}
 		}
 		if ( !isset( $qualifierArray ) ) {
-			$qualifierArray = [ 'hash' => $this->snakHash ];
+			$qualifierArray = [ 'hash' => $snakHash ];
 			$propertyArray[] = &$qualifierArray;
 		}
 

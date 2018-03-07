@@ -25,17 +25,13 @@ abstract class ApiV2ContextCursor implements ContextCursor {
 	 * Returns the statement subcontainer.
 	 *
 	 * @param array[] &$container
-	 * @param string $entityId
-	 * @param string $statementPropertyId
-	 * @param string $statementGuid
 	 * @return array
 	 */
-	protected function &getStatementArray(
-		array &$container,
-		$entityId,
-		$statementPropertyId,
-		$statementGuid
-	) {
+	protected function &getStatementArray( array &$container ) {
+		$entityId = $this->getEntityId();
+		$statementPropertyId = $this->getStatementPropertyId();
+		$statementGuid = $this->getStatementGuid();
+
 		if ( !array_key_exists( $entityId, $container ) ) {
 			$container[$entityId] = [];
 		}
