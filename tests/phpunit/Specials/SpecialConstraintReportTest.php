@@ -293,13 +293,25 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers['value status - warning'] = both(
 			tagMatchingOutline( '<span class="wbqc-status wbqc-status-warning"/>' )
 		)->andAlso(
-			havingTextContents( '(wbqc-constraintreport-status-warning)' )
+			havingChild(
+				both(
+					withTagName( 'label' )
+				)->andAlso(
+					havingTextContents( '(wbqc-constraintreport-status-warning)' )
+				)
+			)
 		);
 
 		$matchers['value status - compliance'] = both(
 			tagMatchingOutline( '<span class="wbqc-status wbqc-status-compliance"/>' )
 		)->andAlso(
-			havingTextContents( '(wbqc-constraintreport-status-compliance)' )
+			havingChild(
+				both(
+					withTagName( 'label' )
+				)->andAlso(
+					havingTextContents( '(wbqc-constraintreport-status-compliance)' )
+				)
+			)
 		);
 
 		$cases[ 'valid input - existing item' ] = [ '$id', [], $userLanguage, $matchers ];
