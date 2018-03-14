@@ -341,13 +341,6 @@ class CheckingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( 'Q1', $constraint['typeLabel'] );
 		$this->assertSame( 'http://wiki.test/P1#P2302', $constraint['link'] );
 		$this->assertSame( 'http://wiki.test/Talk:P1', $constraint['discussLink'] );
-		if ( $this->getDefaultConfig()->get( 'WBQualityConstraintsIncludeDetailInApi' ) ) {
-			$this->assertSame( [], $constraint['detail'] );
-			$this->assertNull( $constraint['detailHTML'] );
-		} else {
-			$this->assertArrayNotHasKey( 'detail', $constraint );
-			$this->assertArrayNotHasKey( 'detailHTML', $constraint );
-		}
 	}
 
 	public function testCheckResultToArray_Result() {
