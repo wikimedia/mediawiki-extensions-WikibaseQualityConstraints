@@ -225,6 +225,13 @@
 		for ( hash in results.references ) {
 			for ( index in results.references[ hash ] ) {
 				reference = results.references[ hash ][ index ];
+				mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( function () {
+					var $referenceToggler = $statement
+						.find( '.wikibase-statementview-references-heading .ui-toggler-toggle-collapsed' );
+					if ( $referenceToggler.length > 0 ) {
+						$referenceToggler.data( 'toggler' ).toggle();
+					}
+				} );
 				addResultsToSnak(
 					reference.results,
 					$statement.find(
