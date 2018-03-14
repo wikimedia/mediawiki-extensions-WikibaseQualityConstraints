@@ -151,13 +151,6 @@ class CheckingResultsBuilder implements ResultsBuilder {
 			'link' => $link,
 			'discussLink' => $title->getTalkPage()->getFullURL(),
 		];
-		if ( $this->config->get( 'WBQualityConstraintsIncludeDetailInApi' ) ) {
-			$parameters = $checkResult->getParameters();
-			$constraint += [
-				'detail' => $parameters,
-				'detailHTML' => $this->constraintParameterRenderer->formatParameters( $parameters ),
-			];
-		}
 
 		$result = [
 			'status' => $checkResult->getStatus(),
