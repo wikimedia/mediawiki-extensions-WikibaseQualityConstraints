@@ -396,31 +396,16 @@ class ConstraintParameterParser {
 
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $minimumId
+	 * @param string $maximumId
 	 * @param string $constraintTypeItemId used in error messages
 	 * @param string $type 'quantity' or 'time' (can be data type or data value type)
 	 *
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
-	 * @return DataValue[] a pair of two data values, either of which may be null to signify an open range
+	 * @return DataValue[] if the parameter is invalid or missing
 	 */
-	public function parseRangeParameter( array $constraintParameters, $constraintTypeItemId, $type ) {
+	private function parseRangeParameter( array $constraintParameters, $minimumId, $maximumId, $constraintTypeItemId, $type ) {
 		$this->checkError( $constraintParameters );
-		switch ( $type ) {
-			case 'quantity':
-				$configKey = 'Quantity';
-				break;
-			case 'time':
-				$configKey = 'Date';
-				break;
-			default:
-				throw new ConstraintParameterException(
-					( new ViolationMessage( 'wbqc-violation-message-value-needed-of-types-2' ) )
-						->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-						->withDataValueType( 'quantity' )
-						->withDataValueType( 'time' )
-				);
-		}
-		$minimumId = $this->config->get( 'WBQualityConstraintsMinimum' . $configKey . 'Id' );
-		$maximumId = $this->config->get( 'WBQualityConstraintsMaximum' . $configKey . 'Id' );
 		if ( !array_key_exists( $minimumId, $constraintParameters ) ||
 			!array_key_exists( $maximumId, $constraintParameters )
 		) {
@@ -435,7 +420,7 @@ class ConstraintParameterParser {
 
 		$this->requireSingleParameter( $constraintParameters, $minimumId );
 		$this->requireSingleParameter( $constraintParameters, $maximumId );
-		$parseFunction = $configKey === 'Date' ? 'parseValueOrNoValueOrNowParameter' : 'parseValueOrNoValueParameter';
+		$parseFunction = $type === 'time' ? 'parseValueOrNoValueOrNowParameter' : 'parseValueOrNoValueParameter';
 		$min = $this->$parseFunction( $constraintParameters[$minimumId][0], $minimumId );
 		$max = $this->$parseFunction( $constraintParameters[$maximumId][0], $maximumId );
 
@@ -455,6 +440,40 @@ class ConstraintParameterParser {
 		}
 
 		return [ $min, $max ];
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
+	 *
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return DataValue[] a pair of two data values, either of which may be null to signify an open range
+	 */
+	public function parseQuantityRangeParameter( array $constraintParameters, $constraintTypeItemId ) {
+		return $this->parseRangeParameter(
+			$constraintParameters,
+			$this->config->get( 'WBQualityConstraintsMinimumQuantityId' ),
+			$this->config->get( 'WBQualityConstraintsMaximumQuantityId' ),
+			$constraintTypeItemId,
+			'quantity'
+		);
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
+	 *
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return DataValue[] a pair of two data values, either of which may be null to signify an open range
+	 */
+	public function parseTimeRangeParameter( array $constraintParameters, $constraintTypeItemId ) {
+		return $this->parseRangeParameter(
+			$constraintParameters,
+			$this->config->get( 'WBQualityConstraintsMinimumDateId' ),
+			$this->config->get( 'WBQualityConstraintsMaximumDateId' ),
+			$constraintTypeItemId,
+			'time'
+		);
 	}
 
 	/**

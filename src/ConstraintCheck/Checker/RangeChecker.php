@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use DataValues\DataValue;
 use DataValues\TimeValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -108,7 +109,7 @@ class RangeChecker implements ConstraintChecker {
 
 		$dataValue = $snak->getDataValue();
 
-		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
+		list( $min, $max ) = $this->parseRangeParameter(
 			$constraintParameters,
 			$constraint->getConstraintTypeItemId(),
 			$dataValue->getType()
@@ -148,6 +149,36 @@ class RangeChecker implements ConstraintChecker {
 
 		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
 			->withMetadata( Metadata::ofDependencyMetadata( $dependencyMetadata ) );
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
+	 * @param string $type 'quantity' or 'time' (can be data type or data value type)
+	 *
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return DataValue[] a pair of two data values, either of which may be null to signify an open range
+	 */
+	private function parseRangeParameter( array $constraintParameters, $constraintTypeItemId, $type ) {
+		switch ( $type ) {
+			case 'quantity':
+				return $this->constraintParameterParser->parseQuantityRangeParameter(
+					$constraintParameters,
+					$constraintTypeItemId
+				);
+			case 'time':
+				return $this->constraintParameterParser->parseTimeRangeParameter(
+					$constraintParameters,
+					$constraintTypeItemId
+				);
+		}
+
+		throw new ConstraintParameterException(
+			( new ViolationMessage( 'wbqc-violation-message-value-needed-of-types-2' ) )
+				->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+				->withDataValueType( 'quantity' )
+				->withDataValueType( 'time' )
+		);
 	}
 
 	/**
@@ -198,7 +229,7 @@ class RangeChecker implements ConstraintChecker {
 			// we don’t have a data value here, so get the type from the property instead
 			// (the distinction between data type and data value type is irrelevant for 'quantity' and 'time')
 			$type = $this->propertyDataTypeLookup->getDataTypeIdForProperty( $constraint->getPropertyId() );
-			$this->constraintParameterParser->parseRangeParameter(
+			$this->parseRangeParameter(
 				$constraintParameters,
 				$constraint->getConstraintTypeItemId(),
 				$type

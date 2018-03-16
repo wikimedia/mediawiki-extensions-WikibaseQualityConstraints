@@ -85,10 +85,9 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	 * @return array [ DataValue|null $min, DataValue|null $max, PropertyId $property, array $parameters ]
 	 */
 	private function parseConstraintParameters( Constraint $constraint ) {
-		list( $min, $max ) = $this->constraintParameterParser->parseRangeParameter(
+		list( $min, $max ) = $this->constraintParameterParser->parseQuantityRangeParameter(
 			$constraint->getConstraintParameters(),
-			$constraint->getConstraintTypeItemId(),
-			'quantity'
+			$constraint->getConstraintTypeItemId()
 		);
 		$property = $this->constraintParameterParser->parsePropertyParameter(
 			$constraint->getConstraintParameters(),
@@ -211,10 +210,9 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$constraintParameters = $constraint->getConstraintParameters();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parseRangeParameter(
+			$this->constraintParameterParser->parseQuantityRangeParameter(
 				$constraintParameters,
-				$constraint->getConstraintTypeItemId(),
-				'quantity'
+				$constraint->getConstraintTypeItemId()
 			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
