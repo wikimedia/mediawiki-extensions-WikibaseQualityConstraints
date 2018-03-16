@@ -238,6 +238,10 @@ class CachingResultsBuilder implements ResultsBuilder {
 				if ( $latestRevisionIds === null ) {
 					continue;
 				}
+				if ( !array_key_exists( $entityId->getSerialization(), $results->getArray() ) ) {
+					// T189842 – don’t store buggy results; TODO: fix that task properly
+					continue;
+				}
 				$value = [
 					'results' => $results->getArray()[$entityId->getSerialization()],
 					'latestRevisionIds' => $latestRevisionIds,
