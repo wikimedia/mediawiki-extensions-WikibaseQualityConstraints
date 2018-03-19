@@ -257,4 +257,4 @@ To add a new constraint type, the following steps are necessary:
       so that you can use `json_encode( $this->…Parameter( … ) )`
       (perhaps with `array_merge` if there are multiple parameters).
 
-An example commit that performs all of these steps is [Change Ica05406e14] (https://gerrit.wikimedia.org/r/382715).
+An example commit that performs all of these steps is [Change Ica05406e14](https://gerrit.wikimedia.org/r/382715).
