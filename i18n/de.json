@@ -134,5 +134,5 @@
 	"wbqc-violation-message-unique-value": "Der Wert dieser Eigenschaft darf nicht in einem anderen Objekt vorhanden sein, er ist aber auch auf {{PLURAL:$1|1=$3 vorhanden.|2=$3 und $4 vorhanden.|den folgenden Objekten vorhanden: $2.}}",
 	"wbqc-violation-message-valueOnly": "Diese Eigenschaft sollte nur für den Hauptwert einer Aussage verwendet werden, nicht für Qualifikatoren oder Einzelnachweise.",
 	"wbqc-violation-message-reference": "Die Eigenschaft sollte nur in Einzelnachweisen verwendet werden, nicht für den Hauptwert einer Aussage oder für einen Qualifikator.",
-	"wbqc-exception-message": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert."
+	"wbqc-violation-message-exception": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert."
 }

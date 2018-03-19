@@ -125,5 +125,5 @@
 	"wbqc-violation-message-unique-value": "De waarde van deze eigenschap zou niet moeten voorkomen op andere items, maar komt wel voor op  {{PLURAL:$1|1=$3.|2=$3 en $4.|de volgende items: $2}}",
 	"wbqc-violation-message-valueOnly": "Deze eigenschap zou alleen als waarde moeten worden gebruikt, niet voor kwalificaties of bronnen.",
 	"wbqc-violation-message-reference": "Deze eigenschap zou alleen in bronnen moeten worden gebruikt, niet als waarde of voor kwalificaties.",
-	"wbqc-exception-message": "Deze entiteit is gemarkeerd als een uitzondering op deze beperking."
+	"wbqc-violation-message-exception": "Deze entiteit is gemarkeerd als een uitzondering op deze beperking."
 }

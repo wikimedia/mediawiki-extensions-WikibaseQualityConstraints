@@ -429,7 +429,7 @@ class DelegatingConstraintChecker {
 			}
 
 			if ( in_array( $entity->getId(), $exceptions ) ) {
-				$message = wfMessage( 'wbqc-exception-message' )->escaped();
+				$message = new ViolationMessage( 'wbqc-violation-message-exception' );
 				$result[] = new CheckResult( $context, $constraint, [], CheckResult::STATUS_EXCEPTION, $message );
 				continue;
 			}
