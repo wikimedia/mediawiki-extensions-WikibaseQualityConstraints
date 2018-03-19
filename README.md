@@ -45,11 +45,19 @@ composer.local.json._
 
 * Run `composer install`.
 
-* If not already done, add the following lines to your `LocalSettings.php` to enable Wikibase:
+* If not already done, add the following lines to your `LocalSettings.php` to enable Wikibase and
+Wikibase Quality:
 ```php
 $wgEnableWikibaseRepo = true;
 $wgEnableWikibaseClient = false;
+require_once "$IP/extensions/Wikibase/repo/Wikibase.php";
 require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";
+wfLoadExtension( 'WikibaseQuality' );
+```
+
+* You have to add also the following line to your `LocalSettings.php` to enable Wikibase Quality Constraints:
+```php
+wfLoadExtension( 'WikibaseQualityConstraints' );
 ```
 
 * Run `php maintenance/update.php --quick`.
@@ -74,6 +82,7 @@ require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";
 ### Gadget
 
 The extension includes a gadget that checks constraints on entity pages and displays violations on statements.
+Note that you must have the [Gadgets] extension installed before you can use this gadget.
 The gadget is loaded via ResourceLoader and can be used with the following definition in MediaWiki:Gadgets-definition:
 
 ```mediawiki
@@ -97,6 +106,8 @@ MediaWiki:Gadget-checkConstraints should be created, e. g. with the following 
 
 The gadget can also be loaded directly as a standalone script, e. g. as a user script,
 by simply including `modules/gadget.js` in `common.js` and `modules/gadget.css` in `common.css`.
+
+[Gadgets]: https://www.mediawiki.org/wiki/Extension:Gadgets
 
 ### Data import
 
@@ -246,4 +257,4 @@ To add a new constraint type, the following steps are necessary:
       so that you can use `json_encode( $this->…Parameter( … ) )`
       (perhaps with `array_merge` if there are multiple parameters).
 
-An example commit that performs all of these steps is [Change Ica05406e14](https://gerrit.wikimedia.org/r/382715).
+An example commit that performs all of these steps is [Change Ica05406e14] (https://gerrit.wikimedia.org/r/382715).
