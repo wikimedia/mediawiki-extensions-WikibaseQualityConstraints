@@ -11,6 +11,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext;
 /**
  * A constraint check context for a snak not connected to any statement.
  * This is a minimal Context implementation for tests.
+ *
+ * @license GPL-2.0-or-later
  */
 class FakeSnakContext extends AbstractContext {
 

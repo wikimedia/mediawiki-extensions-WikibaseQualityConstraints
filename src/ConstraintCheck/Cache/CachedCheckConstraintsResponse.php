@@ -5,6 +5,8 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
 /**
  * A response of the CheckConstraints API action,
  * along with information whether and how it was cached.
+ *
+ * @license GPL-2.0-or-later
  */
 class CachedCheckConstraintsResponse extends CachedArray {
 
