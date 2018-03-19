@@ -230,13 +230,6 @@ class CheckConstraints extends ApiBase {
 				$statuses
 			)->getArray()
 		);
-		// ensure that result contains the given entity IDs even if they have no statements
-		foreach ( $entityIds as $entityId ) {
-			$this->getResult()->addArrayType(
-				[ $this->getModuleName(), $entityId->getSerialization() ],
-				'assoc'
-			);
-		}
 		$this->resultBuilder->markSuccess( 1 );
 	}
 
