@@ -5,10 +5,10 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 use DomainException;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
 
 /**
- * A blank CheckResult that only holds a context, but no actual result.
+ * A blank CheckResult that only holds a context cursor, but no actual result.
  * Used for contexts that should appear in the API output
  * even if no constraints are defined for them.
  *
@@ -24,14 +24,14 @@ class NullResult extends CheckResult {
 	 */
 	const NULL_PROPERTY_ID = 'P2147483647';
 
-	public function __construct( Context $context ) {
+	public function __construct( ContextCursor $contextCursor ) {
 		$constraint = new Constraint(
 			'null',
 			new PropertyId( self::NULL_PROPERTY_ID ),
 			'none',
 			[]
 		);
-		parent::__construct( $context, $constraint );
+		parent::__construct( $contextCursor, $constraint );
 	}
 
 	public function getConstraint() {
