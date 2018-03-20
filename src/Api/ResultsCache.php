@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
-use Language;
 use MediaWiki\MediaWikiServices;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
@@ -29,7 +28,7 @@ class ResultsCache {
 	public static function getDefaultInstance() {
 		return new self(
 			MediaWikiServices::getInstance()->getMainWANObjectCache(),
-			'v2.1' // .1: T188384
+			'v2.2' // .1: T188384; .2: T189593
 		);
 	}
 
@@ -44,23 +43,14 @@ class ResultsCache {
 
 	/**
 	 * @param EntityId $entityId
-	 * @param string|null $languageCode defaults to user language
 	 * @return string cache key
 	 */
-	public function makeKey( EntityId $entityId, $languageCode = null ) {
-		global $wgLang, $wgContLang;
-		if ( $languageCode === null ) {
-			$languageCode = $wgLang->getCode();
-		}
-		if ( !Language::isKnownLanguageTag( $languageCode ) && $languageCode !== 'qqx' ) {
-			$languageCode = $wgContLang->getCode();
-		}
+	public function makeKey( EntityId $entityId ) {
 		return $this->cache->makeKey(
 			'WikibaseQualityConstraints', // extension
 			'checkConstraints', // action
 			$this->formatVersion, // API response format version
-			$entityId->getSerialization(),
-			$languageCode
+			$entityId->getSerialization()
 		);
 	}
 
@@ -91,13 +81,7 @@ class ResultsCache {
 	 * @return bool
 	 */
 	public function delete( EntityId $key ) {
-		$ok = true;
-		$languageCodes = array_keys( Language::fetchLanguageNames( null, 'all' ) );
-		$languageCodes[] = 'qqx';
-		foreach ( $languageCodes as $languageCode ) {
-			$ok = $this->cache->delete( $this->makeKey( $key, $languageCode ) ) && $ok;
-		}
-		return $ok;
+		return $this->cache->delete( $this->makeKey( $key ) );
 	}
 
 }

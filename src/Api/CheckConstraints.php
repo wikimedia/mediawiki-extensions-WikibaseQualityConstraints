@@ -20,14 +20,20 @@ use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintSerializer;
 
 /**
  * API module that performs constraint check of entities, claims and constraint ID
@@ -63,9 +69,14 @@ class CheckConstraints extends ApiBase {
 	private $errorReporter;
 
 	/**
-	 * @var ResultsBuilder
+	 * @var ResultsSource
 	 */
-	private $resultsBuilder;
+	private $resultsSource;
+
+	/**
+	 * @var CheckResultsRenderer
+	 */
+	private $checkResultsRenderer;
 
 	/**
 	 * @var IBufferingStatsdDataFactory
@@ -133,22 +144,42 @@ class CheckConstraints extends ApiBase {
 			$dataFactory
 		);
 
-		$resultsBuilder = new CheckingResultsBuilder(
-			$constraintReportFactory->getConstraintChecker(),
+		$checkResultsRenderer = new CheckResultsRenderer(
 			$repo->getEntityTitleLookup(),
 			$entityIdLabelFormatter,
-			$constraintParameterRenderer,
 			new MultilingualTextViolationMessageRenderer( $entityIdHtmlLinkFormatter, $valueFormatter, $config ),
 			$config
+		);
+		$resultsSource = new CheckingResultsSource(
+			$constraintReportFactory->getConstraintChecker()
 		);
 		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
 			$wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
 				$repo->getEntityNamespaceLookup()
 			);
 			$entityIdParser = $repo->getEntityIdParser();
-			$resultsBuilder = new CachingResultsBuilder(
-				$resultsBuilder,
+			$checkResultSerializer = new CheckResultSerializer(
+				new ConstraintSerializer(
+					false // this API doesn’t expose the constraint parameters
+				),
+				new ContextCursorSerializer(),
+				new ViolationMessageSerializer(),
+				false // unnecessary to serialize individual result dependencies
+			);
+			$checkResultDeserializer = new CheckResultDeserializer(
+				new ConstraintDeserializer(),
+				new ContextCursorDeserializer(),
+				new ViolationMessageDeserializer(
+					$entityIdParser,
+					$repo->getDataValueFactory()
+				),
+				$entityIdParser
+			);
+			$resultsSource = new CachingResultsSource(
+				$resultsSource,
 				ResultsCache::getDefaultInstance(),
+				$checkResultSerializer,
+				$checkResultDeserializer,
 				$wikiPageEntityMetaDataAccessor,
 				$entityIdParser,
 				$config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),
@@ -170,7 +201,8 @@ class CheckConstraints extends ApiBase {
 			$repo->getEntityIdParser(),
 			$repo->getStatementGuidValidator(),
 			$repo->getApiHelperFactory( RequestContext::getMain() ),
-			$resultsBuilder,
+			$resultsSource,
+			$checkResultsRenderer,
 			$dataFactory
 		);
 	}
@@ -182,7 +214,8 @@ class CheckConstraints extends ApiBase {
 	 * @param EntityIdParser $entityIdParser
 	 * @param StatementGuidValidator $statementGuidValidator
 	 * @param ApiHelperFactory $apiHelperFactory
-	 * @param ResultsBuilder $resultsBuilder
+	 * @param ResultsSource $resultsSource
+	 * @param CheckResultsRenderer $checkResultsRenderer
 	 * @param IBufferingStatsdDataFactory $dataFactory
 	 */
 	public function __construct(
@@ -192,7 +225,8 @@ class CheckConstraints extends ApiBase {
 		EntityIdParser $entityIdParser,
 		StatementGuidValidator $statementGuidValidator,
 		ApiHelperFactory $apiHelperFactory,
-		ResultsBuilder $resultsBuilder,
+		ResultsSource $resultsSource,
+		CheckResultsRenderer $checkResultsRenderer,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
 		parent::__construct( $main, $name, $prefix );
@@ -200,7 +234,8 @@ class CheckConstraints extends ApiBase {
 		$this->statementGuidValidator = $statementGuidValidator;
 		$this->resultBuilder = $apiHelperFactory->getResultBuilder( $this );
 		$this->errorReporter = $apiHelperFactory->getErrorReporter( $this );
-		$this->resultsBuilder = $resultsBuilder;
+		$this->resultsSource = $resultsSource;
+		$this->checkResultsRenderer = $checkResultsRenderer;
 		$this->dataFactory = $dataFactory;
 	}
 
@@ -223,11 +258,13 @@ class CheckConstraints extends ApiBase {
 		$this->getResult()->addValue(
 			null,
 			$this->getModuleName(),
-			$this->resultsBuilder->getResults(
-				$entityIds,
-				$claimIds,
-				$constraintIDs,
-				$statuses
+			$this->checkResultsRenderer->render(
+				$this->resultsSource->getResults(
+					$entityIds,
+					$claimIds,
+					$constraintIDs,
+					$statuses
+				)
 			)->getArray()
 		);
 		$this->resultBuilder->markSuccess( 1 );
