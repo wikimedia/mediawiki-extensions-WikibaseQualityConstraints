@@ -22,15 +22,13 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 abstract class ApiV2ContextCursor implements ContextCursor {
 
 	/**
-	 * Returns the statement subcontainer.
+	 * Returns the 'claims' subcontainer.
 	 *
 	 * @param array[] &$container
 	 * @return array
 	 */
-	protected function &getStatementArray( array &$container ) {
+	protected function &getClaimsArray( array &$container ) {
 		$entityId = $this->getEntityId();
-		$statementPropertyId = $this->getStatementPropertyId();
-		$statementGuid = $this->getStatementGuid();
 
 		if ( !array_key_exists( $entityId, $container ) ) {
 			$container[$entityId] = [];
@@ -40,7 +38,22 @@ abstract class ApiV2ContextCursor implements ContextCursor {
 		if ( !array_key_exists( 'claims', $entityContainer ) ) {
 			$entityContainer['claims'] = [];
 		}
-		$claimsContainer = &$entityContainer['claims'];
+		$claimsArray = &$entityContainer['claims'];
+
+		return $claimsArray;
+	}
+
+	/**
+	 * Returns the statement subcontainer.
+	 *
+	 * @param array[] &$container
+	 * @return array
+	 */
+	protected function &getStatementArray( array &$container ) {
+		$statementPropertyId = $this->getStatementPropertyId();
+		$statementGuid = $this->getStatementGuid();
+
+		$claimsContainer = &$this->getClaimsArray( $container );
 
 		if ( !array_key_exists( $statementPropertyId, $claimsContainer ) ) {
 			$claimsContainer[$statementPropertyId] = [];
