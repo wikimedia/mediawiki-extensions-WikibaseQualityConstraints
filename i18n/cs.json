@@ -120,5 +120,5 @@
 	"wbqc-violation-message-unique-value": "Hodnota této vlastnosti nesmí být použita v žádné jiné položce, použitá je ale i v {{PLURAL:$1|1=položce $3.|2=položkách $3 a $4.|následujících položkách: $2}}",
 	"wbqc-violation-message-valueOnly": "Tato vlastnost by se měla používat pouze jako hlavní hodnota výroku, nikoli jako vymezení či v referencích.",
 	"wbqc-violation-message-reference": "Tato vlastnost by se měla používat pouze v referencích, nikoli jako hlavní hodnota výroku či jako vymezení.",
-	"wbqc-exception-message": "Tato vlastnost je u tohoto omezení uvedena jako známá výjimka, takže tak byla označena."
+	"wbqc-violation-message-exception": "Tato vlastnost je u tohoto omezení uvedena jako známá výjimka, takže tak byla označena."
 }

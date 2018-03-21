@@ -38,7 +38,7 @@ class ViolationMessageTest extends \PHPUnit\Framework\TestCase {
 
 	public function testConstruct_unrelatedMessageKey() {
 		$this->setExpectedException( InvalidArgumentException::class );
-		new ViolationMessage( 'wbqc-exception-message' );
+		new ViolationMessage( 'wbqc-constraintreport' );
 	}
 
 	public function testWithEntityId() {
