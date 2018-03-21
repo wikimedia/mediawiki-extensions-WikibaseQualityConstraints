@@ -26,7 +26,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
-use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\Fake\AppendingContextCursor;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CheckingResultsBuilder
@@ -287,7 +287,7 @@ class CheckingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 					CheckResult::STATUS_COMPLIANCE
 				) )->withMetadata( Metadata::ofDependencyMetadata(
 					DependencyMetadata::ofEntityId( new ItemId( 'Q100' ) ) ) ),
-				( new NullResult( $context ) )
+				( new NullResult( $context->getCursor() ) )
 			] );
 
 		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
@@ -310,9 +310,7 @@ class CheckingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckResultToArray_NullResult() {
-		$checkResult = new NullResult(
-			new FakeSnakContext( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
-		);
+		$checkResult = new NullResult( new AppendingContextCursor() );
 
 		$result = $this->getResultsBuilder()->checkResultToArray( $checkResult );
 

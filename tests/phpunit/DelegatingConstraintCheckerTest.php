@@ -386,8 +386,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId(
 			$entity->getId(),
 			null,
-			function( $context ) {
-				return [ new NullResult( $context ) ];
+			function( Context $context ) {
+				return [ new NullResult( $context->getCursor() ) ];
 			}
 		);
 

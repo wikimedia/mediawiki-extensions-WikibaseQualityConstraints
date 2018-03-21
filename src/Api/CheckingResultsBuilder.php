@@ -121,7 +121,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 
 	public function defaultResults( Context $context ) {
 		return $context->getType() === Context::TYPE_STATEMENT ?
-			[ new NullResult( $context ) ] :
+			[ new NullResult( $context->getCursor() ) ] :
 			[];
 	}
 
