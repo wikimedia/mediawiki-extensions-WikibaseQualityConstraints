@@ -11,6 +11,7 @@ use Wikibase\Lib\Store\EntityTitleLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -89,7 +90,8 @@ class CheckingResultsBuilder implements ResultsBuilder {
 			$results = $this->delegatingConstraintChecker->checkAgainstConstraintsOnEntityId(
 				$entityId,
 				$constraintIds,
-				[ $this, 'defaultResults' ]
+				[ $this, 'defaultResultsPerContext' ],
+				[ $this, 'defaultResultsPerEntity' ]
 			);
 			foreach ( $results as $result ) {
 				$metadatas[] = $result->getMetadata();
@@ -103,7 +105,7 @@ class CheckingResultsBuilder implements ResultsBuilder {
 			$results = $this->delegatingConstraintChecker->checkAgainstConstraintsOnClaimId(
 				$claimId,
 				$constraintIds,
-				[ $this, 'defaultResults' ]
+				[ $this, 'defaultResultsPerContext' ]
 			);
 			foreach ( $results as $result ) {
 				$metadatas[] = $result->getMetadata();
@@ -119,10 +121,14 @@ class CheckingResultsBuilder implements ResultsBuilder {
 		);
 	}
 
-	public function defaultResults( Context $context ) {
+	public function defaultResultsPerContext( Context $context ) {
 		return $context->getType() === Context::TYPE_STATEMENT ?
 			[ new NullResult( $context->getCursor() ) ] :
 			[];
+	}
+
+	public function defaultResultsPerEntity( EntityId $entityId ) {
+		return [ new NullResult( new EntityContextCursor( $entityId->getSerialization() ) ) ];
 	}
 
 	public function statusSelected( array $statusesFlipped, CheckResult $result ) {

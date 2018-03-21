@@ -54,6 +54,7 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
  */
 class CheckConstraintsTest extends ApiTestCase {
 
+	const EMPTY_ITEM = 'Q98';
 	const NONEXISTENT_ITEM = 'Q99';
 	const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
 
@@ -81,6 +82,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		self::$oldModuleDeclaration = $wgAPIModules['wbcheckconstraints'];
 
 		self::$entityLookup = new InMemoryEntityLookup();
+		self::$entityLookup->addEntity( new Item( new ItemId( self::EMPTY_ITEM ) ) );
 
 		$wgAPIModules['wbcheckconstraints']['factory'] = function ( $main, $name ) {
 			$repo = WikibaseRepo::getDefaultInstance();
@@ -182,12 +184,26 @@ class CheckConstraintsTest extends ApiTestCase {
 		parent::tearDownAfterClass();
 	}
 
-	public function testReportForNonexistentItemIsEmpty() {
+	public function testReportForEmptyItemIsEmpty() {
+		$entityId = self::EMPTY_ITEM;
 		$result = $this->doRequest(
-			[ CheckConstraints::PARAM_ID => self::NONEXISTENT_ITEM ]
+			[ CheckConstraints::PARAM_ID => $entityId ]
 		);
 
-		$this->assertEmpty( $result['wbcheckconstraints'][self::NONEXISTENT_ITEM] );
+		$this->assertArrayHasKey( $entityId, $result['wbcheckconstraints'] );
+		$this->assertArrayHasKey( 'claims', $result['wbcheckconstraints'][$entityId] );
+		$this->assertEmpty( $result['wbcheckconstraints'][$entityId]['claims'] );
+	}
+
+	public function testReportForNonexistentItemIsEmpty() {
+		$entityId = self::NONEXISTENT_ITEM;
+		$result = $this->doRequest(
+			[ CheckConstraints::PARAM_ID => $entityId ]
+		);
+
+		$this->assertArrayHasKey( $entityId, $result['wbcheckconstraints'] );
+		$this->assertArrayHasKey( 'claims', $result['wbcheckconstraints'][$entityId] );
+		$this->assertEmpty( $result['wbcheckconstraints'][$entityId]['claims'] );
 	}
 
 	public function testReportForNonexistentClaimIsEmpty() {

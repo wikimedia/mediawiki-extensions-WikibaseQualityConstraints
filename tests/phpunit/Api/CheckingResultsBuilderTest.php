@@ -166,6 +166,42 @@ class CheckingResultsBuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEmpty( $result );
 	}
 
+	public function testGetResults_Empty_WithDefaultResults() {
+		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
+		$delegatingConstraintChecker = $mock->getMock();
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
+			->willReturnCallback( function(
+				EntityId $entityId,
+				array $constraintIds = null,
+				callable $defaultResultsPerContext = null,
+				callable $defaultResultsPerEntity = null
+			) {
+				if ( $defaultResultsPerEntity !== null ) {
+					return $defaultResultsPerEntity( $entityId );
+				} else {
+					return [];
+				}
+			} );
+		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
+			->willReturn( [] );
+
+		$result = $this->getResultsBuilder( $delegatingConstraintChecker )->getResults(
+			[ new ItemId( self::NONEXISTENT_ITEM ) ],
+			[ self::NONEXISTENT_CLAIM ],
+			[],
+			[ CheckResult::STATUS_TODO ]
+		)->getArray();
+
+		$expected = [
+			self::NONEXISTENT_ITEM => [
+				'claims' => [],
+			],
+		];
+		$this->assertSame( $expected, $result );
+	}
+
 	public function testGetResults_DependencyMetadata() {
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()

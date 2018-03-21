@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
 use DataValues\StringValue;
 use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\Property;
@@ -22,6 +23,7 @@ use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
@@ -392,6 +394,22 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		);
 
 		$this->assertCount( 2, $result );
+	}
+
+	public function testCheckOnEntityIdNoStatements() {
+		$entity = NewItem::withId( 'Q2' )->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId(
+			$entity->getId(),
+			null,
+			null,
+			function( EntityId $entityId ) {
+				return [ new NullResult( new EntityContextCursor( $entityId->getSerialization() ) ) ];
+			}
+		);
+
+		$this->assertCount( 1, $result );
 	}
 
 	public function testCheckOnEntityIdUnknownConstraint() {
