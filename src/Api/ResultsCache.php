@@ -16,14 +16,30 @@ use Wikibase\DataModel\Entity\EntityId;
  */
 class ResultsCache {
 
+	/**
+	 * @var WANObjectCache
+	 */
 	private $cache;
 
+	/**
+	 * @var string
+	 */
+	private $formatVersion;
+
 	public static function getDefaultInstance() {
-		return new self( MediaWikiServices::getInstance()->getMainWANObjectCache() );
+		return new self(
+			MediaWikiServices::getInstance()->getMainWANObjectCache(),
+			'v2.1' // .1: T188384
+		);
 	}
 
-	public function __construct( WANObjectCache $cache ) {
+	/**
+	 * @param WANObjectCache $cache
+	 * @param string $formatVersion The version of the API response format.
+	 */
+	public function __construct( WANObjectCache $cache, $formatVersion ) {
 		$this->cache = $cache;
+		$this->formatVersion = $formatVersion;
 	}
 
 	/**
@@ -42,7 +58,7 @@ class ResultsCache {
 		return $this->cache->makeKey(
 			'WikibaseQualityConstraints', // extension
 			'checkConstraints', // action
-			'v2.1', // API response format version; .1: T188384
+			$this->formatVersion, // API response format version
 			$entityId->getSerialization(),
 			$languageCode
 		);
