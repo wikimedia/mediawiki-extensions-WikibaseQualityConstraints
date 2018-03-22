@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @license GPL-2.0-or-later
+ */
+
 if ( function_exists( 'wfLoadExtension' ) ) {
 	wfLoadExtension( 'WikibaseQualityConstraints', __DIR__ . '/extension.json' );
 	// Keep i18n globals so mergeMessageFileList.php doesn't break

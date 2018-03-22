@@ -7,6 +7,8 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
  *
  * (Note that list entries may also be null,
  * in case it was not possible to parse an entity ID from the SPARQL response.)
+ *
+ * @license GPL-2.0-or-later
  */
 class CachedEntityIds extends CachedArray {
 
