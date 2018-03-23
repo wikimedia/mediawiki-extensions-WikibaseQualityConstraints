@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class EntityContextCursorTest extends \PHPUnit_Framework_TestCase {
+class EntityContextCursorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testStoreCheckResultInArray() {
 		$entityId = 'Q1';
