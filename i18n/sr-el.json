@@ -4,5 +4,7 @@
 			"Obsuser"
 		]
 	},
-	"wbqc-issues-short": "Problemi"
+	"wbqc-issues-short": "Problemi",
+	"wbqc-issues-long": "Ova izjava ima neke probleme.",
+	"wbqc-potentialissues-long": "Ova izjava ima neke moguće probleme."
 }

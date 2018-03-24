@@ -14,6 +14,7 @@
 	"wbqc-constraintreport-status-deprecated": "Застарело",
 	"wbqc-constraintreport-status-warning": "Упозорење",
 	"wbqc-issues-short": "Проблеми",
+	"wbqc-issues-long": "Ова изјава има неке проблеме.",
 	"wbqc-potentialissues-short": "Могући проблеми",
 	"wbqc-potentialissues-long": "Ова изјава име неке могуће проблеме.",
 	"apihelp-wbcheckconstraints-description": "Извођење провера забране на ентитету који одаберете и враћање резултата.",
