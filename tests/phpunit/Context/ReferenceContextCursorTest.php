@@ -13,7 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContextCur
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class ReferenceContextCursorTest extends \PHPUnit_Framework_TestCase {
+class ReferenceContextCursorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testStoreCheckResultInArray() {
 		$statement1Guid = 'P1$13ea0742-0190-4d88-b7b0-baee67573818';
