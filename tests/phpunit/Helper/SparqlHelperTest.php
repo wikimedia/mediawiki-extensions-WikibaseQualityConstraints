@@ -305,7 +305,7 @@ EOF;
 		];
 	}
 
-	public function testSerializeConstraintParameterException_ViolationMessage() {
+	public function testSerializeConstraintParameterException() {
 		$cpe = new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
 				->withInlineCode( '[', Role::CONSTRAINT_PARAMETER_VALUE )
@@ -326,22 +326,7 @@ EOF;
 		$this->assertSame( $expected, $serialization );
 	}
 
-	public function testSerializeConstraintParameterException_string() {
-		$cpe = new ConstraintParameterException(
-			'<code><nowiki>[</nowiki></code> is not a valid regular expression'
-		);
-		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
-
-		$serialization = $sparqlHelper->serializeConstraintParameterException( $cpe );
-
-		$expected = [
-			'type' => ConstraintParameterException::class,
-			'message' => '<code><nowiki>[</nowiki></code> is not a valid regular expression',
-		];
-		$this->assertSame( $expected, $serialization );
-	}
-
-	public function testDeserializeConstraintParameterException_ViolationMessage() {
+	public function testDeserializeConstraintParameterException() {
 		$serialization = [
 			'type' => ConstraintParameterException::class,
 			'violationMessage' => [
@@ -360,66 +345,6 @@ EOF;
 				->withInlineCode( '[', Role::CONSTRAINT_PARAMETER_VALUE )
 		);
 		$this->assertEquals( $expected, $cpe );
-	}
-
-	public function testDeserializeConstraintParameterException_string() {
-		$serialization = [
-			'type' => ConstraintParameterException::class,
-			'message' => '<code><nowiki>[</nowiki></code> is not a valid regular expression',
-		];
-		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
-
-		$cpe = $sparqlHelper->deserializeConstraintParameterException( $serialization );
-
-		$expected = new ConstraintParameterException(
-			'<code><nowiki>[</nowiki></code> is not a valid regular expression'
-		);
-		$this->assertEquals( $expected, $cpe );
-	}
-
-	public function testCleanupConstraintParameterExceptions() {
-		$cacheMapArray = [
-			'c3b707957a9c347115381629877006e3d0cc9af770144bf201bd522ed46e04a8' => true,
-			'invalid regex, serialized ViolationMessage' => [
-				'type' => ConstraintParameterException::class,
-				'violationMessage' => [
-					'k' => 'parameter-regex',
-					'a' => [
-						[ 't' => ViolationMessage::TYPE_INLINE_CODE, 'v' => '[', 'r' => Role::CONSTRAINT_PARAMETER_VALUE ],
-					],
-				]
-			],
-			'1641e23412937b9010417205590e56564f75c736531a7d66f134ad53f00722a8' => false,
-			'invalid regex, plain message' => [
-				'type' => ConstraintParameterException::class,
-				'message' => 'a plain text, non-localizable violation message',
-			],
-			2 => false, // numeric key
-			'unknown ViolationMessage serialization' => [
-				'type' => ConstraintParameterException::class,
-				'violationMessage' => '"parameter-regex",c,[,constraint-parameter-value',
-			],
-			'e81bdc1899da712226eba67ad46d32cf0cb7b3d06a0fea78ae57422d4790b694' => 'non-bool value',
-			'other serialization' => [
-				'type' => self::class,
-				'foo' => 'bar',
-			],
-		];
-		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
-
-		$actual = $sparqlHelper->cleanupConstraintParameterExceptions( $cacheMapArray );
-
-		$expectedKeys = [
-			'c3b707957a9c347115381629877006e3d0cc9af770144bf201bd522ed46e04a8',
-			'invalid regex, serialized ViolationMessage',
-			'1641e23412937b9010417205590e56564f75c736531a7d66f134ad53f00722a8',
-			// not 'invalid regex, plain message'
-			2,
-			'unknown ViolationMessage serialization',
-			'e81bdc1899da712226eba67ad46d32cf0cb7b3d06a0fea78ae57422d4790b694',
-			'other serialization',
-		];
-		$this->assertSame( $expectedKeys, array_keys( $actual ) );
 	}
 
 	public function testMatchesRegularExpressionWithSparql() {
