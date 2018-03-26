@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckResults;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
@@ -84,7 +85,12 @@ class CheckingResultsSource implements ResultsSource {
 	}
 
 	public function defaultResultsPerEntity( EntityId $entityId ) {
-		return [ new NullResult( new EntityContextCursor( $entityId->getSerialization() ) ) ];
+		return [
+			( new NullResult( new EntityContextCursor( $entityId->getSerialization() ) ) )
+				->withMetadata( Metadata::ofDependencyMetadata(
+					DependencyMetadata::ofEntityId( $entityId )
+				) )
+		];
 	}
 
 	public function statusSelected( array $statusesFlipped, CheckResult $result ) {
