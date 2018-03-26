@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use HashBagOStuff;
-use Language;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -37,38 +36,21 @@ class ResultsCacheTest extends \PHPUnit\Framework\TestCase {
 		$resultsCache = new ResultsCache( WANObjectCache::newEmpty(), 'v2' );
 
 		$this->assertSame(
-			'local:WikibaseQualityConstraints:checkConstraints:v2:Q5:en',
-			$resultsCache->makeKey( new ItemId( 'Q5' ), 'en' )
+			'local:WikibaseQualityConstraints:checkConstraints:v2:Q5',
+			$resultsCache->makeKey( new ItemId( 'Q5' ) )
 		);
 		$this->assertSame(
-			'local:WikibaseQualityConstraints:checkConstraints:v2:P31:de',
-			$resultsCache->makeKey( new PropertyId( 'P31' ), 'de' )
+			'local:WikibaseQualityConstraints:checkConstraints:v2:P31',
+			$resultsCache->makeKey( new PropertyId( 'P31' ) )
 		);
-	}
-
-	public function testMakeKey_GarbageLanguageCode() {
-		$resultsCache = new ResultsCache( WANObjectCache::newEmpty(), 'v2' );
-		$languageCode = 'ifThisLanguageCodeAppearedInTheCacheKeyHowCouldWeEverHopeToPurgeIt';
-
-		$key = $resultsCache->makeKey( new ItemId( 'Q5' ), $languageCode );
-
-		$this->assertNotContains( $languageCode, $key );
-	}
-
-	public function testMakeKey_qqx() {
-		$resultsCache = new ResultsCache( WANObjectCache::newEmpty(), 'v2' );
-
-		$key = $resultsCache->makeKey( new ItemId( 'Q5' ), 'qqx' );
-
-		$this->assertSame( 'local:WikibaseQualityConstraints:checkConstraints:v2:Q5:qqx', $key );
 	}
 
 	public function testMakeKey_differentFormatVersion() {
 		$resultsCache = new ResultsCache( WANObjectCache::newEmpty(), 'v3' );
 
-		$key = $resultsCache->makeKey( new ItemId( 'Q5' ), 'en' );
+		$key = $resultsCache->makeKey( new ItemId( 'Q5' ) );
 
-		$this->assertSame( 'local:WikibaseQualityConstraints:checkConstraints:v3:Q5:en', $key );
+		$this->assertSame( 'local:WikibaseQualityConstraints:checkConstraints:v3:Q5', $key );
 	}
 
 	public function testGet() {
@@ -107,20 +89,6 @@ class ResultsCacheTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expectedValue, $actualValue );
 	}
 
-	public function testGetSet_DifferentLanguageCode() {
-		global $wgLang;
-		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
-		$q5 = new ItemId( 'Q5' );
-		$resultsCache = new ResultsCache( $cache, 'v2' );
-
-		$wgLang = Language::factory( 'en' );
-		$resultsCache->set( $q5, 'cached results' );
-		$wgLang = Language::factory( 'de' );
-		$result = $resultsCache->get( $q5 );
-
-		$this->assertFalse( $result );
-	}
-
 	public function testDelete() {
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$q5 = new ItemId( 'Q5' );
@@ -131,35 +99,6 @@ class ResultsCacheTest extends \PHPUnit\Framework\TestCase {
 		$resultsCache->delete( $q5 );
 
 		$this->assertFalse( $cache->get( $resultsCache->makeKey( $q5 ) ) );
-	}
-
-	public function testDelete_SeveralLanguageCodes() {
-		global $wgLang;
-		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
-		$q5 = new ItemId( 'Q5' );
-		$resultsCache = new ResultsCache( $cache, 'v2' );
-
-		$wgLang = Language::factory( 'en' );
-		$resultsCache->set( $q5, 'cached results' );
-		$wgLang = Language::factory( 'de' );
-		$resultsCache->set( $q5, 'gecachte Ergebnisse' );
-		$wgLang = Language::factory( 'pt-br' );
-		$resultsCache->set( $q5, 'resultados armazenados na cache' );
-		$wgLang = Language::factory( 'qqx' );
-		$resultsCache->set( $q5, '⧼cached-results⧽' );
-		$wgLang = Language::factory( 'bar' );
-
-		$resultsCache->delete( $q5 );
-
-		$this->assertFalse( $resultsCache->get( $q5 ) );
-		$wgLang = Language::factory( 'qqx' );
-		$this->assertFalse( $resultsCache->get( $q5 ) );
-		$wgLang = Language::factory( 'pt-br' );
-		$this->assertFalse( $resultsCache->get( $q5 ) );
-		$wgLang = Language::factory( 'de' );
-		$this->assertFalse( $resultsCache->get( $q5 ) );
-		$wgLang = Language::factory( 'en' );
-		$this->assertFalse( $resultsCache->get( $q5 ) );
 	}
 
 }

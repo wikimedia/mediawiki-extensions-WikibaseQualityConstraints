@@ -22,12 +22,13 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraints;
+use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
+use WikibaseQuality\ConstraintReport\Api\CheckResultsRenderer;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
-use WikibaseQuality\ConstraintReport\Api\CheckingResultsBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
@@ -158,11 +159,12 @@ class CheckConstraintsTest extends ApiTestCase {
 				$entityIdParser,
 				new StatementGuidValidator( $entityIdParser ),
 				$repo->getApiHelperFactory( RequestContext::getMain() ),
-				new CheckingResultsBuilder(
-					$constraintChecker,
+				new CheckingResultsSource(
+					$constraintChecker
+				),
+				new CheckResultsRenderer(
 					$repo->getEntityTitleLookup(),
 					$entityIdFormatter,
-					$constraintParameterRenderer,
 					new ViolationMessageRenderer( $entityIdFormatter, $valueFormatter, $config ),
 					$config
 				),
