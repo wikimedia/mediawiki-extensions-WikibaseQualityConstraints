@@ -7,6 +7,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContextCursor;
@@ -116,6 +117,16 @@ class ContextCursorSerializationTest extends \PHPUnit\Framework\TestCase {
 				'h' => $snakHash,
 				'P' => $snakPropertyId,
 				'r' => $referenceHash,
+			],
+		];
+
+		yield 'entity context' => [
+			new EntityContextCursor(
+				$entityId
+			),
+			[
+				't' => '\entity',
+				'i' => $entityId,
 			],
 		];
 	}
