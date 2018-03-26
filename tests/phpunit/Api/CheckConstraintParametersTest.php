@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 use ApiTestCase;
 use NullStatsdDataFactory;
 use RequestContext;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -44,6 +45,16 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	 */
 	private $checkConstraintParametersOnConstraintId;
 
+	/**
+	 * @var ViolationMessage
+	 */
+	private $testMessage;
+
+	/**
+	 * @var string HTML
+	 */
+	private $testMessageHtml;
+
 	public function setUp() {
 		global $wgAPIModules;
 
@@ -55,6 +66,10 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$this->checkConstraintParametersOnConstraintId = function( $constraintId ) {
 			$this->assertTrue( false, 'checkConstraintParametersOnConstraintId method should not be called by this test.' );
 		};
+
+		$this->testMessage = ( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
+			->withEntityId( new PropertyId( 'P1' ) );
+		$this->testMessageHtml = $this->testMessage->getMessageKey();
 
 		$wgAPIModules['wbcheckconstraintparameters']['factory'] = function ( $main, $name, $prefix = '' ) {
 			$repo = WikibaseRepo::getDefaultInstance();
@@ -188,7 +203,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 
 	public function testReportForBadConstraint() {
 		$this->checkConstraintParametersOnConstraintId = function( $constraintId ) {
-			return [ new ConstraintParameterException( 'test message' ) ];
+			return [ new ConstraintParameterException( $this->testMessage ) ];
 		};
 
 		$result = $this->doRequest(
@@ -203,7 +218,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 					self::P1_BAD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_OKAY,
 						CheckConstraintParameters::KEY_PROBLEMS => [
-							[ CheckConstraintParameters::KEY_MESSAGE_HTML => 'test message' ]
+							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ]
 						]
 					]
 				]
@@ -220,7 +235,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				case self::P1_GOOD:
 					return [];
 				case self::P1_BAD:
-					return [ new ConstraintParameterException( 'test message' ) ];
+					return [ new ConstraintParameterException( $this->testMessage ) ];
 			}
 		};
 
@@ -244,7 +259,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 					self::P1_BAD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_OKAY,
 						CheckConstraintParameters::KEY_PROBLEMS => [
-							[ CheckConstraintParameters::KEY_MESSAGE_HTML => 'test message' ]
+							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ]
 						]
 					]
 				]
@@ -259,7 +274,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				case self::P1:
 					return [
 						self::P1_GOOD => [],
-						self::P1_BAD => [ new ConstraintParameterException( 'test message' ) ]
+						self::P1_BAD => [ new ConstraintParameterException( $this->testMessage ) ]
 					];
 				case self::P2:
 					return [
@@ -285,7 +300,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 					self::P1_BAD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_OKAY,
 						CheckConstraintParameters::KEY_PROBLEMS => [
-							[ CheckConstraintParameters::KEY_MESSAGE_HTML => 'test message' ]
+							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ]
 						]
 					]
 				],
@@ -302,7 +317,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 
 	public function testReportForConstraintAndProperty() {
 		$this->checkConstraintParametersOnConstraintId = function( $constraintid ) {
-			return [ new ConstraintParameterException( 'test message' ) ];
+			return [ new ConstraintParameterException( $this->testMessage ) ];
 		};
 		$this->checkConstraintParametersOnPropertyId = function( $propertyId ) {
 			return [
@@ -323,7 +338,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 					self::P1_BAD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_OKAY,
 						CheckConstraintParameters::KEY_PROBLEMS => [
-							[ CheckConstraintParameters::KEY_MESSAGE_HTML => 'test message' ]
+							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ]
 						]
 					]
 				],
