@@ -11,6 +11,9 @@ use WikibaseQuality\ConstraintReport\ConstraintSerializer;
 /**
  * A serializer for {@link CheckResult}s.
  * Note that serializing the {@link CheckResult::getParameters parameters} is not (yet?) supported.
+ * Also, caching metadata for {@link NullResult}s is never serialized,
+ * since it doesn’t make sense for those results to be cached
+ * (though they can carry dependency metadata, which is serialized correctly).
  *
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
@@ -23,6 +26,7 @@ class CheckResultSerializer {
 	const KEY_VIOLATION_MESSAGE = 'm';
 	const KEY_CACHING_METADATA = 'CM';
 	const KEY_DEPENDENCY_METADATA = 'DM';
+	const KEY_NULL_RESULT = '0';
 
 	const KEY_CACHING_METADATA_MAX_AGE = 'a';
 
@@ -74,20 +78,29 @@ class CheckResultSerializer {
 	 */
 	public function serialize( CheckResult $checkResult ) {
 		$contextCursor = $checkResult->getContextCursor();
-		$constraint = $checkResult->getConstraint();
-		$violationMessage = $checkResult->getMessage();
-		$cachingMetadata = $checkResult->getMetadata()->getCachingMetadata();
 
 		$serialization = [
 			self::KEY_CONTEXT_CURSOR => $this->contextCursorSerializer->serialize( $contextCursor ),
-			self::KEY_CONSTRAINT => $this->constraintSerializer->serialize( $constraint ),
-			self::KEY_CHECK_RESULT_STATUS => $checkResult->getStatus(),
-			self::KEY_CACHING_METADATA => $this->serializeCachingMetadata( $cachingMetadata ),
 		];
 
-		if ( $violationMessage !== null ) {
-			$serialization[self::KEY_VIOLATION_MESSAGE] =
-				$this->violationMessageSerializer->serialize( $violationMessage );
+		if ( $checkResult instanceof NullResult ) {
+			$serialization[self::KEY_NULL_RESULT] = 1;
+		} else {
+			$constraint = $checkResult->getConstraint();
+			$cachingMetadata = $checkResult->getMetadata()->getCachingMetadata();
+			$violationMessage = $checkResult->getMessage();
+
+			$serialization[self::KEY_CONSTRAINT] =
+				$this->constraintSerializer->serialize( $constraint );
+			$serialization[self::KEY_CHECK_RESULT_STATUS] =
+				$checkResult->getStatus();
+			$serialization[self::KEY_CACHING_METADATA] =
+				$this->serializeCachingMetadata( $cachingMetadata );
+
+			if ( $violationMessage !== null ) {
+				$serialization[self::KEY_VIOLATION_MESSAGE] =
+					$this->violationMessageSerializer->serialize( $violationMessage );
+			}
 		}
 
 		if ( $this->serializeDependencyMetadata ) {
