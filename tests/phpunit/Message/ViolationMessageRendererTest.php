@@ -69,19 +69,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::__construct
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 */
-	public function testRender_string() {
-		$message = 'A <em>pre-rendered</em> message.';
-		$renderer = $this->newViolationMessageRenderer();
-
-		$rendered = $renderer->render( $message );
-
-		$this->assertSame( $message, $rendered );
-	}
-
-	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
 	 */
 	public function testRender_simpleMessage() {

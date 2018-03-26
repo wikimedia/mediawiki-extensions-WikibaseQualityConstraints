@@ -8,7 +8,6 @@ use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -105,10 +104,7 @@ class LoggingHelper {
 			return;
 		}
 
-		$resultMessage = $result->getMessage();
-		if ( $resultMessage instanceof ViolationMessage ) {
-			$resultMessage = $resultMessage->getMessageKey();
-		}
+		$resultMessage = $result->getMessage()->getMessageKey();
 
 		$this->logger->log(
 			$logLevel,

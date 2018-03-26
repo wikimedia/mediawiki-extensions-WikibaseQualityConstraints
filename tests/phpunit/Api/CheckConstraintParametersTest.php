@@ -97,12 +97,8 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				->setMethods( [ 'render' ] )
 				->getMock();
 			$violationMessageRenderer->method( 'render' )
-				->willReturnCallback( function( $violationMessage ) {
-					if ( $violationMessage instanceof ViolationMessage ) {
-						return $violationMessage->getMessageKey();
-					} else {
-						return $violationMessage;
-					}
+				->willReturnCallback( function( ViolationMessage $violationMessage ) {
+					return $violationMessage->getMessageKey();
 				} );
 
 			return new CheckConstraintParameters(

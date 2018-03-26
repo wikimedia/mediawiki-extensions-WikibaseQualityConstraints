@@ -74,16 +74,11 @@ class ViolationMessageRenderer {
 	}
 
 	/**
-	 * @param ViolationMessage|string $violationMessage
+	 * @param ViolationMessage $violationMessage
 	 * (temporarily, pre-rendered strings are allowed and returned without changes)
 	 * @return string
 	 */
-	public function render( $violationMessage ) {
-		if ( is_string( $violationMessage ) ) {
-			// TODO remove this once all checkers produce ViolationMessage objects
-			return $violationMessage;
-		}
-
+	public function render( ViolationMessage $violationMessage ) {
 		$messageKey = $violationMessage->getMessageKey();
 		$paramsLists = [ [] ];
 		foreach ( $violationMessage->getArguments() as $argument ) {
