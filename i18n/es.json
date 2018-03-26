@@ -49,6 +49,7 @@
 	"apihelp-wbcheckconstraints-description": "Realiza comprobaciones de restricciones en cualquier entidad y devuelve el resultado.",
 	"apihelp-wbcheckconstraints-summary": "Realiza comprobaciones de restricciones en cualquier entidad y devuelve el resultado.",
 	"apihelp-wbcheckconstraints-param-id": "Lista de identificadores de las entidades de las que se obtendrán datos. Separa los valores con «|» u otra alternativa.",
+	"apihelp-wbcheckconstraints-param-status": "Filtro opcional para devolver solo resultados de la comprobación con los estados seleccionados.\n\nObserva que solo se almacenan en antememoria los resultados con los estados «violation», «warning» y «bad-parameters», de modo que las solicitudes que seleccionen otros estados no se beneficiarán de la antememoria.",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "La declaración satisface la restricción.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "La declaración viola la restricción.",
 	"apihelp-wbcheckconstraints-paramvalue-status-todo": "La restricción no está implementada.",
