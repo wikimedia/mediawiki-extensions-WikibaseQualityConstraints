@@ -37,6 +37,10 @@ class ContextCursorDeserializer {
 					$serialization['P'],
 					$serialization['r']
 				);
+			case '\entity':
+				return new EntityContextCursor(
+					$serialization['i']
+				);
 			default:
 				throw new InvalidArgumentException(
 					'Unknown serialization type ' . $serialization['t']

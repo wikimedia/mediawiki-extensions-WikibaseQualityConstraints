@@ -14,6 +14,13 @@ class ContextCursorSerializer {
 	 * @return array
 	 */
 	public function serialize( ContextCursor $cursor ) {
+		if ( $cursor instanceof EntityContextCursor ) {
+			return [
+				't' => '\entity',
+				'i' => $cursor->getEntityId(),
+			];
+		}
+
 		$type = $cursor->getType();
 		$serialization = [
 			't' => $type,
