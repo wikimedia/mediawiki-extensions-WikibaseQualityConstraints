@@ -3,6 +3,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use DataValues\DataValue;
+use MessageLocalizer;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
@@ -36,6 +37,11 @@ class ConstraintParameterRenderer {
 	private $dataValueFormatter;
 
 	/**
+	 * @var MessageLocalizer
+	 */
+	private $messageLocalizer;
+
+	/**
 	 * @var Config
 	 */
 	private $config;
@@ -43,15 +49,18 @@ class ConstraintParameterRenderer {
 	/**
 	 * @param EntityIdFormatter $entityIdFormatter should return HTML
 	 * @param ValueFormatter $dataValueFormatter should return HTML
+	 * @param MessageLocalizer $messageLocalizer
 	 * @param Config $config used to look up item IDs of constraint scopes (Context::TYPE_* constants)
 	 */
 	public function __construct(
 		EntityIdFormatter $entityIdFormatter,
 		ValueFormatter $dataValueFormatter,
+		MessageLocalizer $messageLocalizer,
 		Config $config
 	) {
 		$this->entityIdLabelFormatter = $entityIdFormatter;
 		$this->dataValueFormatter = $dataValueFormatter;
+		$this->messageLocalizer = $messageLocalizer;
 		$this->config = $config;
 	}
 
@@ -148,9 +157,13 @@ class ConstraintParameterRenderer {
 			case $value->isValue():
 				return $this->formatEntityId( $value->getItemId() );
 			case $value->isSomeValue():
-				return wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped();
+				return $this->messageLocalizer
+					->msg( 'wikibase-snakview-snaktypeselector-somevalue' )
+					->escaped();
 			case $value->isNoValue():
-				return wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped();
+				return $this->messageLocalizer
+					->msg( 'wikibase-snakview-snaktypeselector-novalue' )
+					->escaped();
 		}
 	}
 

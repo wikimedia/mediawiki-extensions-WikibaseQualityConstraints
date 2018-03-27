@@ -12,6 +12,7 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintParameterRenderer
@@ -35,6 +36,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 		$constraintParameterRenderer = new ConstraintParameterRenderer(
 			new PlainEntityIdFormatter(),
 			$valueFormatter,
+			new TestMessageLocalizer(),
 			$this->getDefaultConfig()
 		);
 
@@ -53,6 +55,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 		$constraintParameterRenderer = new ConstraintParameterRenderer(
 			$entityIdFormatter,
 			new StringFormatter(),
+			new TestMessageLocalizer(),
 			$this->getDefaultConfig()
 		);
 
@@ -65,7 +68,12 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 		$itemId = new ItemId( 'Q1234' );
 		$value = ItemIdSnakValue::fromItemId( $itemId );
 		$constraintParameterRenderer = $this->getMockBuilder( ConstraintParameterRenderer::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [
+				new PlainEntityIdFormatter(),
+				new StringFormatter(),
+				new TestMessageLocalizer(),
+				$this->getDefaultConfig()
+			] )
 			->setMethods( [ 'formatEntityId' ] )
 			->getMock();
 		$constraintParameterRenderer->expects( $this->once() )
@@ -81,7 +89,12 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 	public function testFormatItemIdSnakValue_SomeValue() {
 		$value = ItemIdSnakValue::someValue();
 		$constraintParameterRenderer = $this->getMockBuilder( ConstraintParameterRenderer::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [
+				new PlainEntityIdFormatter(),
+				new StringFormatter(),
+				new TestMessageLocalizer(),
+				$this->getDefaultConfig()
+			] )
 			->setMethods( [ 'formatEntityId' ] )
 			->getMock();
 		$constraintParameterRenderer->expects( $this->never() )->method( 'formatEntityId' );
@@ -95,7 +108,12 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 	public function testFormatItemIdSnakValue_NoValue() {
 		$value = ItemIdSnakValue::noValue();
 		$constraintParameterRenderer = $this->getMockBuilder( ConstraintParameterRenderer::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [
+				new PlainEntityIdFormatter(),
+				new StringFormatter(),
+				new TestMessageLocalizer(),
+				$this->getDefaultConfig()
+			] )
 			->setMethods( [ 'formatEntityId' ] )
 			->getMock();
 		$constraintParameterRenderer->expects( $this->never() )->method( 'formatEntityId' );

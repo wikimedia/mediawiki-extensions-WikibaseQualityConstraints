@@ -6,6 +6,7 @@ use Config;
 use IBufferingStatsdDataFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use RequestContext;
 use TitleParser;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -164,6 +165,7 @@ class ConstraintReportFactory {
 					SnakFormatter::FORMAT_HTML,
 					new FormatterOptions()
 				),
+				RequestContext::getMain(),
 				$config
 			);
 			$violationMessageDeserializer = new ViolationMessageDeserializer(

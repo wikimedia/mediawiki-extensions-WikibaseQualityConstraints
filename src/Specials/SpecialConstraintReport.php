@@ -164,11 +164,13 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->constraintParameterRenderer = new ConstraintParameterRenderer(
 			$this->entityIdLabelFormatter,
 			$this->dataValueFormatter,
+			$this->getContext(),
 			$config
 		);
 		$this->violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
 			$this->entityIdLinkFormatter,
 			$this->dataValueFormatter,
+			$this->getContext(),
 			$config
 		);
 

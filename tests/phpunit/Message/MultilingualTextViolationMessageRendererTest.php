@@ -9,6 +9,7 @@ use DataValues\StringValue;
 use HashConfig;
 use Language;
 use Message;
+use MessageLocalizer;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
@@ -18,6 +19,7 @@ use Wikibase\Lib\UnDeserializableValueFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\Role;
+use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 use Wikimedia\TestingAccessWrapper;
 
 /**
@@ -34,6 +36,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 	 *
 	 * @param EntityIdFormatter|null $entityIdFormatter
 	 * @param ValueFormatter|null $dataValueFormatter
+	 * @param MessageLocalizer|null $messageLocalizer
 	 * @param Config|null $config
 	 * @param int $maxListLength
 	 * @return MultilingualTextViolationMessageRenderer
@@ -41,6 +44,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 	private function newMultilingualTextViolationMessageRenderer(
 		EntityIdFormatter $entityIdFormatter = null,
 		ValueFormatter $dataValueFormatter = null,
+		MessageLocalizer $messageLocalizer = null,
 		Config $config = null,
 		$maxListLength = 10
 	) {
@@ -49,6 +53,9 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 		}
 		if ( $dataValueFormatter === null ) {
 			$dataValueFormatter = new UnDeserializableValueFormatter();
+		}
+		if ( $messageLocalizer === null ) {
+			$messageLocalizer = new TestMessageLocalizer();
 		}
 		if ( $config === null ) {
 			$config = new HashConfig( [
@@ -60,6 +67,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 		return new MultilingualTextViolationMessageRenderer(
 			$entityIdFormatter,
 			$dataValueFormatter,
+			$messageLocalizer,
 			$config,
 			$maxListLength
 		);

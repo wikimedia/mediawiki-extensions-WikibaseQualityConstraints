@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 use Config;
 use DataValues\MultilingualTextValue;
 use Message;
+use MessageLocalizer;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 
@@ -32,10 +33,17 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 	public function __construct(
 		EntityIdFormatter $entityIdFormatter,
 		ValueFormatter $dataValueFormatter,
+		MessageLocalizer $messageLocalizer,
 		Config $config,
 		$maxListLength = 10
 	) {
-		parent::__construct( $entityIdFormatter, $dataValueFormatter, $config, $maxListLength );
+		parent::__construct(
+			$entityIdFormatter,
+			$dataValueFormatter,
+			$messageLocalizer,
+			$config,
+			$maxListLength
+		);
 
 		$this->alternativeMessageKeys = [
 			'wbqc-violation-message-format-clarification' => 'wbqc-violation-message-format',
@@ -71,11 +79,13 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 		$regularParams = call_user_func_array( 'array_merge', $paramsLists );
 
 		if ( $multilingualTextParams === null ) {
-			return ( new Message( $this->alternativeMessageKeys[$violationMessage->getMessageKey()] ) )
+			return $this->messageLocalizer
+				->msg( $this->alternativeMessageKeys[$violationMessage->getMessageKey()] )
 				->params( $regularParams )
 				->escaped();
 		} else {
-			return ( new Message( $violationMessage->getMessageKey() ) )
+			return $this->messageLocalizer
+				->msg( $violationMessage->getMessageKey() )
 				->params( $regularParams )
 				->params( $multilingualTextParams )
 				->escaped();

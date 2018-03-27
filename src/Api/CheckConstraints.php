@@ -119,6 +119,7 @@ class CheckConstraints extends ApiBase {
 		$constraintParameterRenderer = new ConstraintParameterRenderer(
 			$entityIdHtmlLinkFormatter,
 			$valueFormatter,
+			$main,
 			$config
 		);
 		$constraintReportFactory = new ConstraintReportFactory(
@@ -147,7 +148,12 @@ class CheckConstraints extends ApiBase {
 		$checkResultsRenderer = new CheckResultsRenderer(
 			$repo->getEntityTitleLookup(),
 			$entityIdLabelFormatter,
-			new MultilingualTextViolationMessageRenderer( $entityIdHtmlLinkFormatter, $valueFormatter, $config ),
+			new MultilingualTextViolationMessageRenderer(
+				$entityIdHtmlLinkFormatter,
+				$valueFormatter,
+				$main,
+				$config
+			),
 			$config
 		);
 		$resultsSource = new CheckingResultsSource(

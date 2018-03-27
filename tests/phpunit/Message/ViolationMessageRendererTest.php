@@ -19,6 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\Role;
+use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 use Wikimedia\TestingAccessWrapper;
 
 /**
@@ -61,6 +62,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		return new ViolationMessageRenderer(
 			$entityIdFormatter,
 			$dataValueFormatter,
+			new TestMessageLocalizer(),
 			$config,
 			$maxListLength
 		);
