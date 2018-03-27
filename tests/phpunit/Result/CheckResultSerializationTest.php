@@ -23,6 +23,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSer
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintSerializer;
 use WikibaseQuality\ConstraintReport\Role;
@@ -104,15 +105,19 @@ class CheckResultSerializationTest extends TestCase {
 
 		$deserialized = $deserializer->deserialize( $serialization );
 
-		$expected = ( new CheckResult(
-			$checkResult->getContextCursor(),
-			$checkResult->getConstraint(),
-			$checkResult->getParameters(),
-			$checkResult->getStatus(),
-			$checkResult->getMessage()
-		) )->withMetadata(
-			Metadata::ofCachingMetadata( $checkResult->getMetadata()->getCachingMetadata() )
-		);
+		if ( $checkResult instanceof NullResult ) {
+			$expected = new NullResult( $checkResult->getContextCursor() );
+		} else {
+			$expected = ( new CheckResult(
+				$checkResult->getContextCursor(),
+				$checkResult->getConstraint(),
+				$checkResult->getParameters(),
+				$checkResult->getStatus(),
+				$checkResult->getMessage()
+			) )->withMetadata(
+				Metadata::ofCachingMetadata( $checkResult->getMetadata()->getCachingMetadata() )
+			);
+		}
 		$this->assertEquals( $expected, $deserialized );
 	}
 
@@ -208,6 +213,28 @@ class CheckResultSerializationTest extends TestCase {
 						[ 't' => ViolationMessage::TYPE_ENTITY_ID, 'v' => 'P1793', 'r' => Role::CONSTRAINT_PARAMETER_PROPERTY ],
 					],
 				],
+				CheckResultSerializer::KEY_DEPENDENCY_METADATA => [
+					CheckResultSerializer::KEY_DEPENDENCY_METADATA_ENTITY_IDS => [ 'Q42' ],
+					CheckResultSerializer::KEY_DEPENDENCY_METADATA_FUTURE_TIME => $futureTime->getArrayValue(),
+				],
+			]
+		];
+
+		yield 'NullResult' => [
+			( new NullResult( $contextCursor ) )->withMetadata(
+				Metadata::ofDependencyMetadata( DependencyMetadata::merge( [
+					DependencyMetadata::ofEntityId( new ItemId( 'Q42' ) ),
+					DependencyMetadata::ofFutureTime( $futureTime ),
+				] ) ) ),
+			[
+				CheckResultSerializer::KEY_CONTEXT_CURSOR => [
+					't' => Context::TYPE_STATEMENT,
+					'i' => $contextCursor->getEntityId(),
+					'p' => $contextCursor->getSnakPropertyId(),
+					'g' => $contextCursor->getStatementGuid(),
+					'h' => $contextCursor->getSnakHash(),
+				],
+				CheckResultSerializer::KEY_NULL_RESULT => 1,
 				CheckResultSerializer::KEY_DEPENDENCY_METADATA => [
 					CheckResultSerializer::KEY_DEPENDENCY_METADATA_ENTITY_IDS => [ 'Q42' ],
 					CheckResultSerializer::KEY_DEPENDENCY_METADATA_FUTURE_TIME => $futureTime->getArrayValue(),

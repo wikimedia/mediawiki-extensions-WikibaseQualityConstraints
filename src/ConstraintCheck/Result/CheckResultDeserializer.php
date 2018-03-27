@@ -60,25 +60,38 @@ class CheckResultDeserializer {
 			$serialization[CheckResultSerializer::KEY_CONTEXT_CURSOR]
 		);
 
-		$constraint = $this->constraintDeserializer->deserialize(
-			$serialization[CheckResultSerializer::KEY_CONSTRAINT]
-		);
-
-		$parameters = []; // serialization of parameters not supported yet
-
-		$status = $serialization[CheckResultSerializer::KEY_CHECK_RESULT_STATUS];
-
-		if ( array_key_exists( CheckResultSerializer::KEY_VIOLATION_MESSAGE, $serialization ) ) {
-			$violationMessage = $this->violationMessageDeserializer->deserialize(
-				$serialization[CheckResultSerializer::KEY_VIOLATION_MESSAGE]
-			);
+		if ( array_key_exists( CheckResultSerializer::KEY_NULL_RESULT, $serialization ) ) {
+			$result = new NullResult( $contextCursor );
+			$cachingMetadata = CachingMetadata::fresh();
 		} else {
-			$violationMessage = null;
-		}
+			$constraint = $this->constraintDeserializer->deserialize(
+				$serialization[CheckResultSerializer::KEY_CONSTRAINT]
+			);
 
-		$cachingMetadata = $this->deserializeCachingMetadata(
-			$serialization[CheckResultSerializer::KEY_CACHING_METADATA]
-		);
+			$parameters = []; // serialization of parameters not supported yet
+
+			$status = $serialization[CheckResultSerializer::KEY_CHECK_RESULT_STATUS];
+
+			if ( array_key_exists( CheckResultSerializer::KEY_VIOLATION_MESSAGE, $serialization ) ) {
+				$violationMessage = $this->violationMessageDeserializer->deserialize(
+					$serialization[CheckResultSerializer::KEY_VIOLATION_MESSAGE]
+				);
+			} else {
+				$violationMessage = null;
+			}
+
+			$result = new CheckResult(
+				$contextCursor,
+				$constraint,
+				$parameters,
+				$status,
+				$violationMessage
+			);
+
+			$cachingMetadata = $this->deserializeCachingMetadata(
+				$serialization[CheckResultSerializer::KEY_CACHING_METADATA]
+			);
+		}
 
 		if ( array_key_exists( CheckResultSerializer::KEY_DEPENDENCY_METADATA, $serialization ) ) {
 			$dependencyMetadata = $this->deserializeDependencyMetadata(
@@ -88,13 +101,7 @@ class CheckResultDeserializer {
 			$dependencyMetadata = DependencyMetadata::blank();
 		}
 
-		return ( new CheckResult(
-			$contextCursor,
-			$constraint,
-			$parameters,
-			$status,
-			$violationMessage
-		) )->withMetadata(
+		return $result->withMetadata(
 			Metadata::merge( [
 				Metadata::ofCachingMetadata( $cachingMetadata ),
 				Metadata::ofDependencyMetadata( $dependencyMetadata ),
