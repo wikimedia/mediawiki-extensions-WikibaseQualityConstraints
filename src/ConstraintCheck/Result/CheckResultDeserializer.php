@@ -8,6 +8,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintDeserializer;
 
@@ -72,13 +73,7 @@ class CheckResultDeserializer {
 
 			$status = $serialization[CheckResultSerializer::KEY_CHECK_RESULT_STATUS];
 
-			if ( array_key_exists( CheckResultSerializer::KEY_VIOLATION_MESSAGE, $serialization ) ) {
-				$violationMessage = $this->violationMessageDeserializer->deserialize(
-					$serialization[CheckResultSerializer::KEY_VIOLATION_MESSAGE]
-				);
-			} else {
-				$violationMessage = null;
-			}
+			$violationMessage = $this->getViolationMessageFromSerialization( $serialization );
 
 			$result = new CheckResult(
 				$contextCursor,
@@ -93,13 +88,7 @@ class CheckResultDeserializer {
 			);
 		}
 
-		if ( array_key_exists( CheckResultSerializer::KEY_DEPENDENCY_METADATA, $serialization ) ) {
-			$dependencyMetadata = $this->deserializeDependencyMetadata(
-				$serialization[CheckResultSerializer::KEY_DEPENDENCY_METADATA]
-			);
-		} else {
-			$dependencyMetadata = DependencyMetadata::blank();
-		}
+		$dependencyMetadata = $this->getDependencyMetadataFromSerialization( $serialization );
 
 		return $result->withMetadata(
 			Metadata::merge( [
@@ -107,6 +96,34 @@ class CheckResultDeserializer {
 				Metadata::ofDependencyMetadata( $dependencyMetadata ),
 			] )
 		);
+	}
+
+	/**
+	 * @param array $serialization
+	 * @return null|ViolationMessage
+	 */
+	private function getViolationMessageFromSerialization( array $serialization ) {
+		if ( array_key_exists( CheckResultSerializer::KEY_VIOLATION_MESSAGE, $serialization ) ) {
+			return $this->violationMessageDeserializer->deserialize(
+				$serialization[CheckResultSerializer::KEY_VIOLATION_MESSAGE]
+			);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * @param array $serialization
+	 * @return DependencyMetadata
+	 */
+	private function getDependencyMetadataFromSerialization( array $serialization ) {
+		if ( array_key_exists( CheckResultSerializer::KEY_DEPENDENCY_METADATA, $serialization ) ) {
+			return $this->deserializeDependencyMetadata(
+				$serialization[CheckResultSerializer::KEY_DEPENDENCY_METADATA]
+			);
+		} else {
+			return DependencyMetadata::blank();
+		}
 	}
 
 	/**
