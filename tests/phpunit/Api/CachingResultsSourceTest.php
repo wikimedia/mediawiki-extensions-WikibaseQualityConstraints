@@ -23,12 +23,14 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 
 include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/WANObjectCacheTest.php';
 
@@ -71,7 +73,12 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 		$mock->method( 'serialize' )
 			->willReturnCallback( function( CheckResult $checkResult ) {
-				return [ 'CheckResult for ' . $checkResult->getContextCursor()->getEntityId() ];
+				$entityId = $checkResult->getContextCursor()->getEntityId();
+				if ( $checkResult instanceof NullResult ) {
+					return [ 'NullResult for ' . $entityId ];
+				} else {
+					return [ 'CheckResult for ' . $entityId ];
+				}
 			} );
 		return $mock;
 	}
@@ -85,8 +92,13 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 		$mock->method( 'deserialize' )
 			->willReturnCallback( function( $serialization ) {
-				$id = str_replace( 'CheckResult for ', '', $serialization[0] );
-				return $this->getCheckResult( $id );
+				if ( strpos( $serialization[0], 'NullResult for ' ) === 0 ) {
+					$id = str_replace( 'NullResult for ', '', $serialization[0] );
+					return new NullResult( new EntityContextCursor( $id ) );
+				} else {
+					$id = str_replace( 'CheckResult for ', '', $serialization[0] );
+					return $this->getCheckResult( $id );
+				}
 			} );
 		return $mock;
 	}
@@ -501,6 +513,42 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$cachingResultsSource->getAndStoreResults( [ $q100 ], [], null, $statuses );
 	}
 
+	public function testGetAndStoreResults_NullResult() {
+		$q100 = new ItemId( 'Q100' );
+		$expectedResults = new CachedCheckResults(
+			[ new NullResult( new EntityContextCursor( 'Q100' ) ) ],
+			Metadata::ofDependencyMetadata( DependencyMetadata::ofEntityId( $q100 ) )
+		);
+		$statuses = [
+			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_BAD_PARAMETERS
+		];
+		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource->expects( $this->once() )
+			->method( 'getResults' )
+			->with( [ $q100 ], [], null, $statuses )
+			->willReturn( $expectedResults );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$resultsCache = new ResultsCache( $cache, 'v2' );
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadLatestRevisionIds' )
+			->willReturn( [] );
+		$cachingResultsSource = $this->getCachingResultsSource(
+			$resultsSource,
+			$resultsCache,
+			$metaDataAccessor
+		);
+
+		$cachingResultsSource->getAndStoreResults( [ $q100 ], [], null, $statuses );
+		$cachedResults = $resultsCache->get( $q100 );
+
+		$this->assertNotFalse( $cachedResults );
+		$this->assertArrayHasKey( 'results', $cachedResults );
+		$this->assertCount( 1, $cachedResults['results'] );
+		$this->assertSame( [ 'NullResult for Q100' ], $cachedResults['results'][0] );
+	}
+
 	public function testGetStoredResults_CacheMiss() {
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$this->getMock( ResultsSource::class ),
@@ -653,6 +701,36 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$resultCachingMetadata = $response->getArray()[0]->getMetadata()->getCachingMetadata();
 		$this->assertTrue( $resultCachingMetadata->isCached() );
 		$this->assertSame( 1337, $resultCachingMetadata->getMaximumAgeInSeconds() );
+	}
+
+	public function testGetStoredResults_NullResult() {
+		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor->method( 'loadLatestRevisionIds' )
+			->willReturn( [
+				'Q5' => 100,
+			] );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$resultsCache = new ResultsCache( $cache, 'v2' );
+		$cachingResultsSource = $this->getCachingResultsSource(
+			$this->getMock( ResultsSource::class ),
+			$resultsCache,
+			$metaDataAccessor
+		);
+		$q5 = new ItemId( 'Q5' );
+		$value = [
+			'results' => [ [ 'NullResult for Q5' ] ],
+			'latestRevisionIds' => [
+				'Q5' => 100,
+			],
+		];
+		$resultsCache->set( $q5, $value );
+
+		$response = $cachingResultsSource->getStoredResults( $q5 );
+		$results = $response->getArray();
+
+		$this->assertCount( 1, $results );
+		$expected = new NullResult( new EntityContextCursor( 'Q5' ) );
+		$this->assertEquals( $expected, $results[0] );
 	}
 
 	public function testGetResults_EmptyCache() {

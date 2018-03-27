@@ -17,6 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 
 /**
  * A ResultsSource that wraps another ResultsSource,
@@ -97,6 +98,8 @@ class CachingResultsSource implements ResultsSource {
 	 */
 	private $cachedStatuses;
 
+	private $cachedStatusesFlipped;
+
 	/**
 	 * @param ResultsSource $resultsSource The ResultsSource that cache misses are delegated to.
 	 * @param ResultsCache $cache The cache where results can be stored.
@@ -140,6 +143,7 @@ class CachingResultsSource implements ResultsSource {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS,
 		];
+		$this->cachedStatusesFlipped = array_flip( $this->cachedStatuses );
 	}
 
 	public function getResults(
@@ -150,6 +154,7 @@ class CachingResultsSource implements ResultsSource {
 	) {
 		$results = [];
 		$metadatas = [];
+		$statusesFlipped = array_flip( $statuses );
 		if ( $this->canUseStoredResults( $entityIds, $claimIds, $constraintIds, $statuses ) ) {
 			$storedEntityIds = [];
 			foreach ( $entityIds as $entityId ) {
@@ -157,7 +162,7 @@ class CachingResultsSource implements ResultsSource {
 				if ( $storedResults !== null ) {
 					$this->loggingHelper->logCheckConstraintsCacheHit( $entityId );
 					foreach ( $storedResults->getArray() as $checkResult ) {
-						if ( in_array( $checkResult->getStatus(), $statuses ) ) {
+						if ( $this->statusSelected( $statusesFlipped, $checkResult ) ) {
 							$results[] = $checkResult;
 						}
 					}
@@ -210,6 +215,20 @@ class CachingResultsSource implements ResultsSource {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Check whether a check result should be used,
+	 * either because it has the right status
+	 * or because it is a NullResult whose metadata should be preserved.
+	 *
+	 * @param string[] $statusesFlipped
+	 * @param CheckResult $result
+	 * @return bool
+	 */
+	private function statusSelected( array $statusesFlipped, CheckResult $result ) {
+		return array_key_exists( $result->getStatus(), $statusesFlipped ) ||
+			$result instanceof NullResult;
 	}
 
 	/**
@@ -290,10 +309,9 @@ class CachingResultsSource implements ResultsSource {
 			if ( $checkResult->getContextCursor()->getEntityId() !== $entityId->getSerialization() ) {
 				continue;
 			}
-			if ( !in_array( $checkResult->getStatus(), $this->cachedStatuses ) ) {
-				continue;
+			if ( $this->statusSelected( $this->cachedStatusesFlipped, $checkResult ) ) {
+				$resultSerializations[] = $this->checkResultSerializer->serialize( $checkResult );
 			}
-			$resultSerializations[] = $this->checkResultSerializer->serialize( $checkResult );
 		}
 
 		$value = [
@@ -417,6 +435,10 @@ class CachingResultsSource implements ResultsSource {
 	 * @return bool
 	 */
 	private function isPossiblyStaleResult( CheckResult $result ) {
+		if ( $result instanceof NullResult ) {
+			return false;
+		}
+
 		return in_array(
 			$result->getConstraint()->getConstraintTypeItemId(),
 			$this->possiblyStaleConstraintTypes
