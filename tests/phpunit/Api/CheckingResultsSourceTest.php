@@ -161,6 +161,10 @@ class CheckingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertCount( 1, $result );
 		$this->assertSame( self::NONEXISTENT_ITEM, $result[0]->getContextCursor()->getEntityId() );
+		$this->assertEquals(
+			[ new ItemId( self::NONEXISTENT_ITEM ) ],
+			$result[0]->getMetadata()->getDependencyMetadata()->getEntityIds()
+		);
 	}
 
 	public function testGetResults_DependencyMetadata() {
