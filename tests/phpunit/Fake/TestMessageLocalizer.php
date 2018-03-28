@@ -8,6 +8,8 @@ use MessageSpecifier;
 
 /**
  * A simple {@link MessageLocalizer} implementation for use in tests.
+ * By default, it sets the message language to 'qqx',
+ * to make the tests independent of the wiki configuration.
  *
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
@@ -22,7 +24,7 @@ class TestMessageLocalizer implements MessageLocalizer {
 	/**
 	 * @param string|null $languageCode
 	 */
-	public function __construct( $languageCode = null ) {
+	public function __construct( $languageCode = 'qqx' ) {
 		$this->languageCode = $languageCode;
 	}
 

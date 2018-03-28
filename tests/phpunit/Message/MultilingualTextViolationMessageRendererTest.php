@@ -100,9 +100,8 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'Q1', 'ftp://mirror.example/', '<code>https?://[^/]+/.*</code>' )
-			->escaped();
+		$expected = '(wbqc-violation-message-format: Q1, ' .
+			'ftp://mirror.example/, <code>https?://[^/]+/.*</code>)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -122,9 +121,8 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'Q1', 'ftp://mirror.example/', '<code>https?://[^/]+/.*</code>', 'clarification' )
-			->escaped();
+		$expected = '(wbqc-violation-message-format-clarification: Q1, ' .
+			'ftp://mirror.example/, <code>https?://[^/]+/.*</code>, clarification)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -146,9 +144,8 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'de-at' ) ] );
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'Q1', 'ftp://mirror.example/', '<code>https?://[^/]+/.*</code>', 'Erklärung' )
-			->escaped();
+		$expected = '(wbqc-violation-message-format-clarification: Q1, ' .
+			'ftp://mirror.example/, <code>https?://[^/]+/.*</code>, Erklärung)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -170,9 +167,8 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'pt' ) ] );
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $alternativeMessageKey )
-			->rawParams( 'Q1', 'ftp://mirror.example/', '<code>https?://[^/]+/.*</code>' )
-			->escaped();
+		$expected = '(wbqc-violation-message-format: Q1, ' .
+			'ftp://mirror.example/, <code>https?://[^/]+/.*</code>)';
 		$this->assertSame( $expected, $rendered );
 	}
 

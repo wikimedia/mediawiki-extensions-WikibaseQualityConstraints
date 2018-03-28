@@ -91,7 +91,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$this->assertSame( wfMessage( $messageKey )->escaped(), $rendered );
+		$this->assertSame( '(' . $messageKey . ')', $rendered );
 	}
 
 	/**
@@ -107,9 +107,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'P1' )
-			->escaped();
+		$expected = '(wbqc-violation-message-no-qualifiers: P1)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -126,10 +124,9 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->numParams( 2 )
-			->rawParams( '<ul><li>Q1</li><li>P2</li></ul>', 'Q1', 'P2' )
-			->escaped();
+		$expected = '(wbqc-violation-message-unique-value: 2, ' .
+			'<ul><li>Q1</li><li>P2</li></ul>, ' .
+			'Q1, P2)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -148,15 +145,9 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams(
-				'P1',
-				'P2',
-				'<span class="wikibase-snakview-variation-somevaluesnak">' .
-					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
-					'</span>'
-			)
-			->escaped();
+		$expected = '(wbqc-violation-message-conflicts-with-claim: P1, P2, ' .
+			'<span class="wikibase-snakview-variation-somevaluesnak">' .
+			'(wikibase-snakview-snaktypeselector-somevalue)</span>)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -174,11 +165,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'P1' )
-			->numParams( 1 )
-			->rawParams( '<ul><li>Q1</li></ul>', 'Q1' )
-			->escaped();
+		$expected = '(wbqc-violation-message-one-of: P1, 1, <ul><li>Q1</li></ul>, Q1)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -197,9 +184,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'P1', 'a string', 'a string' )
-			->escaped();
+		$expected = '(wbqc-violation-message-range-quantity-rightopen: P1, a string, a string)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -217,9 +202,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'Q1', wfMessage( 'datatypes-type-string' )->escaped() )
-			->escaped();
+		$expected = '(wbqc-violation-message-value-needed-of-type: Q1, (datatypes-type-string))';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -238,9 +221,8 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'Q1', 'ftp://mirror.example/', '<code>https?://[^/]+/.*</code>' )
-			->escaped();
+		$expected = '(wbqc-violation-message-format: Q1, ' .
+			'ftp://mirror.example/, <code>https?://[^/]+/.*</code>)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -257,9 +239,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'Q1' )
-			->escaped();
+		$expected = '(wbqc-violation-message-invalid-scope: Q1)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -278,11 +258,8 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'Q2', 'Q10' )
-			->numParams( 2 )
-			->rawParams( '<ul><li>Q1</li><li>Q3</li></ul>', 'Q1', 'Q3' )
-			->escaped();
+		$expected = '(wbqc-violation-message-invalid-scope: Q2, Q10, 2, ' .
+			'<ul><li>Q1</li><li>Q3</li></ul>, Q1, Q3)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -300,10 +277,8 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$rendered = $renderer->render( $message );
 
-		$expected = wfMessage( $messageKey )
-			->rawParams( 'P1' )
-			->plaintextParams( 'português', 'pt' )
-			->escaped();
+		$expected = '(wbqc-violation-message-parameter-single-per-language: ' .
+			'P1, português, pt)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -409,7 +384,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame(
 			[
 				Message::numParam( 2 ),
-				Message::rawParam( '<ul><li>Q1</li><li>P2</li><li>...</li></ul>' ),
+				Message::rawParam( '<ul><li>Q1</li><li>P2</li><li>(ellipsis)</li></ul>' ),
 				Message::rawParam( 'Q1' ),
 				Message::rawParam( 'P2' ),
 			],
@@ -588,7 +563,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame(
 			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-somevaluesnak">' .
-					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
+					'(wikibase-snakview-snaktypeselector-somevalue)' .
 					'</span>'
 			) ],
 			$params
@@ -613,7 +588,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame(
 			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-novaluesnak">' .
-				wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped() .
+				'(wikibase-snakview-snaktypeselector-novalue)' .
 				'</span>'
 			) ],
 			$params
@@ -756,7 +731,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 			->renderDataValueType( $dataValueType, $role );
 
 		$this->assertSame(
-			[ Message::rawParam( wfMessage( 'datatypes-type-string' )->escaped() ) ],
+			[ Message::rawParam( '(datatypes-type-string)' ) ],
 			$params
 		);
 	}
@@ -773,7 +748,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 			->renderDataValueType( $dataValueType, $role );
 
 		$this->assertSame(
-			[ Message::rawParam( wfMessage( 'wbqc-dataValueType-wikibase-entityid' )->escaped() ) ],
+			[ Message::rawParam( '(wbqc-dataValueType-wikibase-entityid)' ) ],
 			$params
 		);
 	}
@@ -894,7 +869,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame(
 			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-somevaluesnak">' .
-					wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
+					'(wikibase-snakview-snaktypeselector-somevalue)' .
 					'</span>'
 			) ],
 			$params

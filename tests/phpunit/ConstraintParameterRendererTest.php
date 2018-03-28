@@ -102,7 +102,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 
 		$formatted = $constraintParameterRenderer->formatItemIdSnakValue( $value );
 
-		$this->assertSame( 'unknown value', $formatted );
+		$this->assertSame( '(wikibase-snakview-snaktypeselector-somevalue)', $formatted );
 	}
 
 	public function testFormatItemIdSnakValue_NoValue() {
@@ -121,7 +121,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 
 		$formatted = $constraintParameterRenderer->formatItemIdSnakValue( $value );
 
-		$this->assertSame( 'no value', $formatted );
+		$this->assertSame( '(wikibase-snakview-snaktypeselector-novalue)', $formatted );
 	}
 
 }
