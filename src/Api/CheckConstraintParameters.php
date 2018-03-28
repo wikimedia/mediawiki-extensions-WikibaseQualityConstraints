@@ -92,6 +92,7 @@ class CheckConstraintParameters extends ApiBase {
 		$violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
 			$entityIdHtmlLinkFormatter,
 			$dataValueFormatter,
+			$main,
 			$config
 		);
 

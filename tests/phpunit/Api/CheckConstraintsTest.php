@@ -38,6 +38,7 @@ use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
 use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use ValueFormatters\FormatterOptions;
+use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 use Wikimedia\Assert\Assert;
 use Language;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -128,6 +129,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			$constraintParameterRenderer = new ConstraintParameterRenderer(
 				$entityIdFormatter,
 				$valueFormatter,
+				new TestMessageLocalizer(),
 				$config
 			);
 			$constraintParameterParser = new ConstraintParameterParser(
@@ -165,7 +167,12 @@ class CheckConstraintsTest extends ApiTestCase {
 				new CheckResultsRenderer(
 					$repo->getEntityTitleLookup(),
 					$entityIdFormatter,
-					new ViolationMessageRenderer( $entityIdFormatter, $valueFormatter, $config ),
+					new ViolationMessageRenderer(
+						$entityIdFormatter,
+						$valueFormatter,
+						new TestMessageLocalizer(),
+						$config
+					),
 					$config
 				),
 				$dataFactory

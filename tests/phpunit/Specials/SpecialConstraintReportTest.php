@@ -24,6 +24,7 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
+use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
@@ -74,6 +75,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 				SnakFormatter::FORMAT_HTML,
 				new FormatterOptions()
 			),
+			new TestMessageLocalizer(),
 			$config
 		);
 		$constraintReportFactory = new ConstraintReportFactory(

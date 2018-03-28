@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Language;
 use LogicException;
 use Message;
+use MessageLocalizer;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
@@ -36,6 +37,11 @@ class ViolationMessageRenderer {
 	private $dataValueFormatter;
 
 	/**
+	 * @var MessageLocalizer
+	 */
+	protected $messageLocalizer;
+
+	/**
 	 * @var Config
 	 */
 	private $config;
@@ -48,6 +54,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param EntityIdFormatter $entityIdFormatter
 	 * @param ValueFormatter $dataValueFormatter
+	 * @param MessageLocalizer $messageLocalizer
 	 * @param Config $config
 	 * @param int $maxListLength The maximum number of elements to be rendered in a list parameter.
 	 * Longer lists are truncated to this length and then rendered with an ellipsis in the HMTL list.
@@ -55,11 +62,13 @@ class ViolationMessageRenderer {
 	public function __construct(
 		EntityIdFormatter $entityIdFormatter,
 		ValueFormatter $dataValueFormatter,
+		MessageLocalizer $messageLocalizer,
 		Config $config,
 		$maxListLength = 10
 	) {
 		$this->entityIdFormatter = $entityIdFormatter;
 		$this->dataValueFormatter = $dataValueFormatter;
+		$this->messageLocalizer = $messageLocalizer;
 		$this->config = $config;
 		$this->maxListLength = $maxListLength;
 	}
@@ -82,7 +91,8 @@ class ViolationMessageRenderer {
 			$paramsLists[] = $params;
 		}
 		$allParams = call_user_func_array( 'array_merge', $paramsLists );
-		return ( new Message( $messageKey ) )
+		return $this->messageLocalizer
+			->msg( $messageKey )
 			->params( $allParams )
 			->escaped();
 	}
@@ -100,6 +110,14 @@ class ViolationMessageRenderer {
 		return '<span class="wbqc-role wbqc-role-' . htmlspecialchars( $role ) . '">' .
 			$value .
 			'</span>';
+	}
+
+	/**
+	 * @param string $key message key
+	 * @return string HTML
+	 */
+	protected function msgEscaped( $key ) {
+		return $this->messageLocalizer->msg( $key )->escaped();
 	}
 
 	/**
@@ -174,7 +192,7 @@ class ViolationMessageRenderer {
 			$renderedParams
 		);
 		if ( isset( $truncated ) ) {
-			$renderedElements[] = wfMessage( 'ellipsis' )->escaped();
+			$renderedElements[] = $this->msgEscaped( 'ellipsis' );
 		}
 
 		return array_merge(
@@ -223,14 +241,14 @@ class ViolationMessageRenderer {
 			case $value->isSomeValue():
 				return [ Message::rawParam( $this->addRole(
 					'<span class="wikibase-snakview-variation-somevaluesnak">' .
-						wfMessage( 'wikibase-snakview-snaktypeselector-somevalue' )->escaped() .
+						$this->msgEscaped( 'wikibase-snakview-snaktypeselector-somevalue' ) .
 						'</span>',
 					$role
 				) ) ];
 			case $value->isNoValue():
 				return [ Message::rawParam( $this->addRole(
 					'<span class="wikibase-snakview-variation-novaluesnak">' .
-						wfMessage( 'wikibase-snakview-snaktypeselector-novalue' )->escaped() .
+					$this->msgEscaped( 'wikibase-snakview-snaktypeselector-novalue' ) .
 						'</span>',
 					$role
 				) ) ];
@@ -280,7 +298,7 @@ class ViolationMessageRenderer {
 
 		if ( array_key_exists( $dataValueType, $messageKeys ) ) {
 			return [ Message::rawParam( $this->addRole(
-				wfMessage( $messageKeys[$dataValueType] )->escaped(),
+				$this->msgEscaped( $messageKeys[$dataValueType] ),
 				$role
 			) ) ];
 		} else {
