@@ -8,6 +8,7 @@ use SpecialPageTestBase;
 use Wikibase\DataModel\Services\Statement\GuidGenerator;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use DataValues\StringValue;
+use MockMessageLocalizer;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\Property;
@@ -24,7 +25,6 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
-use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
@@ -75,7 +75,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 				SnakFormatter::FORMAT_HTML,
 				new FormatterOptions()
 			),
-			new TestMessageLocalizer(),
+			new MockMessageLocalizer(),
 			$config
 		);
 		$constraintReportFactory = new ConstraintReportFactory(

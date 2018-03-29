@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\StringValue;
 use Language;
+use MockMessageLocalizer;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
@@ -12,7 +13,6 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
-use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintParameterRenderer
@@ -36,7 +36,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 		$constraintParameterRenderer = new ConstraintParameterRenderer(
 			new PlainEntityIdFormatter(),
 			$valueFormatter,
-			new TestMessageLocalizer(),
+			new MockMessageLocalizer(),
 			$this->getDefaultConfig()
 		);
 
@@ -55,7 +55,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 		$constraintParameterRenderer = new ConstraintParameterRenderer(
 			$entityIdFormatter,
 			new StringFormatter(),
-			new TestMessageLocalizer(),
+			new MockMessageLocalizer(),
 			$this->getDefaultConfig()
 		);
 
@@ -71,7 +71,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 			->setConstructorArgs( [
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
-				new TestMessageLocalizer(),
+				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			] )
 			->setMethods( [ 'formatEntityId' ] )
@@ -92,7 +92,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 			->setConstructorArgs( [
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
-				new TestMessageLocalizer(),
+				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			] )
 			->setMethods( [ 'formatEntityId' ] )
@@ -111,7 +111,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 			->setConstructorArgs( [
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
-				new TestMessageLocalizer(),
+				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			] )
 			->setMethods( [ 'formatEntityId' ] )
