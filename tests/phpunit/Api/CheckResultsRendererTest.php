@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
+use MockMessageLocalizer;
 use Title;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
@@ -27,7 +28,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\Fake\AppendingContextCursor;
-use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CheckResultsRenderer
@@ -63,7 +63,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 			new ViolationMessageRenderer(
 				$entityIdFormatter,
 				$valueFormatter,
-				new TestMessageLocalizer(),
+				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			),
 			$this->getDefaultConfig()

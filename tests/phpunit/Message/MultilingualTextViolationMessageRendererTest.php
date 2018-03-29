@@ -10,6 +10,7 @@ use HashConfig;
 use Language;
 use Message;
 use MessageLocalizer;
+use MockMessageLocalizer;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
@@ -19,7 +20,6 @@ use Wikibase\Lib\UnDeserializableValueFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\Role;
-use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 use Wikimedia\TestingAccessWrapper;
 
 /**
@@ -55,7 +55,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 			$dataValueFormatter = new UnDeserializableValueFormatter();
 		}
 		if ( $messageLocalizer === null ) {
-			$messageLocalizer = new TestMessageLocalizer();
+			$messageLocalizer = new MockMessageLocalizer();
 		}
 		if ( $config === null ) {
 			$config = new HashConfig( [

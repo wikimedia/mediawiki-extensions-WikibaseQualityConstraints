@@ -6,6 +6,7 @@ use ApiTestCase;
 use DataValues\UnknownValue;
 use HashConfig;
 use MediaWiki\Logger\LoggerFactory;
+use MockMessageLocalizer;
 use NullStatsdDataFactory;
 use RequestContext;
 use Wikibase\DataModel\Entity\Item;
@@ -38,7 +39,6 @@ use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
 use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use ValueFormatters\FormatterOptions;
-use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 use Wikimedia\Assert\Assert;
 use Language;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
@@ -129,7 +129,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			$constraintParameterRenderer = new ConstraintParameterRenderer(
 				$entityIdFormatter,
 				$valueFormatter,
-				new TestMessageLocalizer(),
+				new MockMessageLocalizer(),
 				$config
 			);
 			$constraintParameterParser = new ConstraintParameterParser(
@@ -170,7 +170,7 @@ class CheckConstraintsTest extends ApiTestCase {
 					new ViolationMessageRenderer(
 						$entityIdFormatter,
 						$valueFormatter,
-						new TestMessageLocalizer(),
+						new MockMessageLocalizer(),
 						$config
 					),
 					$config

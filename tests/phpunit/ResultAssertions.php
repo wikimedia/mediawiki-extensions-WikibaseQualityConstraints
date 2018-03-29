@@ -4,12 +4,12 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use HashConfig;
 use Language;
+use MockMessageLocalizer;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\UnDeserializableValueFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 
 /**
  * Assertions on the status of a {@link CheckResult}.
@@ -34,7 +34,7 @@ trait ResultAssertions {
 		$renderer = new ViolationMessageRenderer(
 			new PlainEntityIdFormatter(),
 			new UnDeserializableValueFormatter(),
-			new TestMessageLocalizer(),
+			new MockMessageLocalizer(),
 			new HashConfig( [
 				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
 				'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',

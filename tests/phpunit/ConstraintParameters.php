@@ -7,6 +7,7 @@ use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
+use MockMessageLocalizer;
 use Serializers\Serializer;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -22,7 +23,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\Repo\Parsers\TimeParserFactory;
 use Wikibase\Repo\WikibaseRepo;
-use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 
 /**
  * @author Lucas Werkmeister
@@ -70,7 +70,7 @@ trait ConstraintParameters {
 			$this->renderer = new ConstraintParameterRenderer(
 				$entityIdFormatter,
 				$valueFormatter,
-				new TestMessageLocalizer(),
+				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			);
 		}

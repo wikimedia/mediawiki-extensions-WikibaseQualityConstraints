@@ -7,6 +7,7 @@ use DataValues\StringValue;
 use HashConfig;
 use InvalidArgumentException;
 use Message;
+use MockMessageLocalizer;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
@@ -19,7 +20,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\Role;
-use WikibaseQuality\ConstraintReport\Tests\Fake\TestMessageLocalizer;
 use Wikimedia\TestingAccessWrapper;
 
 /**
@@ -62,7 +62,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		return new ViolationMessageRenderer(
 			$entityIdFormatter,
 			$dataValueFormatter,
-			new TestMessageLocalizer(),
+			new MockMessageLocalizer(),
 			$config,
 			$maxListLength
 		);
