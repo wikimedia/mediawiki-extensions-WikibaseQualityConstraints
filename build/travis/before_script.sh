@@ -61,8 +61,8 @@ echo "define( 'WB_EXPERIMENTAL_FEATURES', true );" >> LocalSettings.php
 echo 'require_once __DIR__ . "/extensions/Wikibase/repo/Wikibase.php";' >> LocalSettings.php
 echo 'require_once __DIR__ . "/extensions/Wikibase/repo/ExampleSettings.php";' >> LocalSettings.php
 echo 'require_once __DIR__ . "/extensions/Wikibase/client/WikibaseClient.php";' >> LocalSettings.php
-echo 'require_once __DIR__ . "/extensions/WikibaseQuality/WikibaseQuality.php";' >> LocalSettings.php
-echo 'require_once __DIR__ . "/extensions/WikibaseQualityConstraints/WikibaseQualityConstraints.php";' >> LocalSettings.php
+echo 'wfLoadExtension( "WikibaseQuality" );' >> LocalSettings.php
+echo 'wfLoadExtension( "WikibaseQualityConstraints" );' >> LocalSettings.php
 echo '$wgWBClientSettings["siteGlobalID"] = "enwiki";' >> LocalSettings.php
 
 php maintenance/update.php --quick
