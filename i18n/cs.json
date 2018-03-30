@@ -43,6 +43,7 @@
 	"wbqc-parameterissues-long": "Tyto nedostatky jsou problémy definice omezení na vlastnosti, nikoli tohoto výroku.",
 	"wbqc-constrainttypehelp-short": "Nápověda",
 	"wbqc-constrainttypehelp-long": "Stránka s nápovědou pro tento typ omezení",
+	"wbqc-constraintdiscuss-short": "Diskuse",
 	"wbqc-constraintdiscuss-long": "Diskusní stránka k tomuto omezení",
 	"wbqc-cached-generic": "Tato odpověď pochází z cache a nemusí být aktuální.",
 	"wbqc-cached-minutes": "Tato odpověď pochází z cache a může být až {{PLURAL:$1|minutu|$1&nbsp;minuty|$1&nbsp;minut}} neaktuální.",
