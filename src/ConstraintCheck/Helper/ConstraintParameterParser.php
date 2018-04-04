@@ -8,6 +8,7 @@ use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
+use LogicException;
 use Wikibase\DataModel\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;
@@ -55,21 +56,31 @@ class ConstraintParameterParser {
 	private $constraintParameterRenderer;
 
 	/**
+	 * @var string[]
+	 */
+	private $conceptBaseUris;
+
+	/**
 	 * @param Config $config
 	 *   contains entity IDs used in constraint parameters (constraint statement qualifiers)
 	 * @param DeserializerFactory $factory
 	 *   used to parse constraint statement qualifiers into constraint parameters
 	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 *   used to render incorrect parameters for error messages
+	 * @param string[] $conceptBaseUris
+	 *   mapping from repository names to base URIs of concept URIs,
+	 *   used to obtain the full unit string from an entity ID given in constraint parameters
 	 */
 	public function __construct(
 		Config $config,
 		DeserializerFactory $factory,
-		ConstraintParameterRenderer $constraintParameterRenderer
+		ConstraintParameterRenderer $constraintParameterRenderer,
+		array $conceptBaseUris
 	) {
 		$this->config = $config;
 		$this->snakDeserializer = $factory->newSnakDeserializer();
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
+		$this->conceptBaseUris = $conceptBaseUris;
 	}
 
 	/**
@@ -717,6 +728,78 @@ class ConstraintParameterParser {
 		}
 
 		return $contextTypes;
+	}
+
+	/**
+	 * Turn an item ID into a full unit string (using the concept URI).
+	 *
+	 * @param ItemId $unitId
+	 * @return string unit
+	 */
+	private function parseUnitParameter( ItemId $unitId ) {
+		$unitRepositoryName = $unitId->getRepositoryName();
+		if ( !array_key_exists( $unitRepositoryName, $this->conceptBaseUris ) ) {
+			throw new LogicException(
+				'No base URI for concept URI for repository: ' . $unitRepositoryName
+			);
+		}
+		$baseUri = $this->conceptBaseUris[$unitRepositoryName];
+		return $baseUri . $unitId->getSerialization();
+	}
+
+	/**
+	 * Turn an ItemIdSnakValue into a single unit parameter.
+	 *
+	 * @param ItemIdSnakValue $item
+	 * @return UnitsParameter
+	 * @throws ConstraintParameterException
+	 */
+	private function parseUnitItem( ItemIdSnakValue $item ) {
+		switch ( true ) {
+			case $item->isValue():
+				$unit = $this->parseUnitParameter( $item->getItemId() );
+				return new UnitsParameter(
+					[ $item->getItemId() ],
+					[ UnboundedQuantityValue::newFromNumber( 1, $unit ) ],
+					false
+				);
+			case $item->isSomeValue():
+				$qualifierId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+				throw new ConstraintParameterException(
+					( new ViolationMessage( 'wbqc-violation-message-parameter-value-or-novalue' ) )
+						->withEntityId( new PropertyId( $qualifierId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+				);
+			case $item->isNoValue():
+				return new UnitsParameter( [], [], true );
+		}
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return UnitsParameter
+	 */
+	public function parseUnitsParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$items = $this->parseItemsParameter( $constraintParameters, $constraintTypeItemId, true );
+		$unitItems = [];
+		$unitQuantities = [];
+		$unitlessAllowed = false;
+
+		foreach ( $items as $item ) {
+			$unit = $this->parseUnitItem( $item );
+			$unitItems = array_merge( $unitItems, $unit->getUnitItemIds() );
+			$unitQuantities = array_merge( $unitQuantities, $unit->getUnitQuantities() );
+			$unitlessAllowed = $unitlessAllowed || $unit->getUnitlessAllowed();
+		}
+
+		if ( $unitQuantities === [] && !$unitlessAllowed ) {
+			throw new LogicException(
+				'The "units" parameter is required, and yet we seem to be missing any allowed unit'
+			);
+		}
+
+		return new UnitsParameter( $unitItems, $unitQuantities, $unitlessAllowed );
 	}
 
 }

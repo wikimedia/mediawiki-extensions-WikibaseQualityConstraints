@@ -135,7 +135,8 @@ class CheckConstraintsTest extends ApiTestCase {
 			$constraintParameterParser = new ConstraintParameterParser(
 				$config,
 				$repo->getBaseDataModelDeserializerFactory(),
-				$constraintParameterRenderer
+				$constraintParameterRenderer,
+				$repo->getConceptBaseUris()
 			);
 			$dataFactory = new NullStatsdDataFactory();
 			$constraintChecker = new DelegatingConstraintChecker(

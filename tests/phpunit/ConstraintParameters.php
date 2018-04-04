@@ -55,7 +55,8 @@ trait ConstraintParameters {
 			$this->parser = new ConstraintParameterParser(
 				$this->getDefaultConfig(),
 				WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory(),
-				$this->getConstraintParameterRenderer()
+				$this->getConstraintParameterRenderer(),
+				[ '' => 'http://wikibase.example/entity/' ]
 			);
 		}
 

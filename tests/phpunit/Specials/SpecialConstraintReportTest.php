@@ -87,7 +87,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			new ConstraintParameterParser(
 				$config,
 				$wikibaseRepo->getBaseDataModelDeserializerFactory(),
-				$constraintParameterRenderer
+				$constraintParameterRenderer,
+				$wikibaseRepo->getConceptBaseUris()
 			),
 			new ViolationMessageSerializer(),
 			$this->getMockBuilder( ViolationMessageDeserializer::class )
