@@ -53,7 +53,7 @@
 	"apihelp-wbcheckconstraints-param-id": "Lista de ID das entidades para obter os dados. Separar valores com '|' ou alternativa.",
 	"apihelp-wbcheckconstraints-param-claimid": "Uma lista GUID identificando uma reivindicação para verificar um relatório de restrição. Separar valores com '|'.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Filtro opcional para devolver só as restrições que têm o identificador de restrição especificado.",
-	"apihelp-wbcheckconstraints-param-status": "O filtro opcional para retornar apenas verifica os resultados com os status selecionados.\n\nTenha em atenção que apenas os resultados dos estados de \"violação\", \"aviso\" e \"parâmetros defeituosos\" são armazenados em cache, de modo que apenas os pedidos que são limitados a esses status beneficiam do cache.",
+	"apihelp-wbcheckconstraints-param-status": "Filtro opcional para devolver só resultados com os estados selecionados.\n\nNote que só são armazenados na cache os resultados para os estados 'violation' (violação), 'warning' (aviso) e 'bad-parameters' (parâmetros incorretos), por isso os pedidos que selecionarem outros estados além destes três não beneficiam do armazenamento na cache.",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "A declaração satisfaz a restrição.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "A declaração viola a restrição.",
 	"apihelp-wbcheckconstraints-paramvalue-status-exception": "A entidade da declaração é uma exceção conhecida à restrição.",
