@@ -76,8 +76,10 @@ final class WikibaseQualityConstraintsHooks {
 		$entityContentFactory = $repo->getEntityContentFactory();
 		if ( $entityContentFactory->isEntityContentModel( $wikiPage->getContentModel() ) ) {
 			$entityId = $entityContentFactory->getEntityIdForTitle( $wikiPage->getTitle() );
-			$resultsCache = ResultsCache::getDefaultInstance();
-			$resultsCache->delete( $entityId );
+			if ( $entityId !== null ) {
+				$resultsCache = ResultsCache::getDefaultInstance();
+				$resultsCache->delete( $entityId );
+			}
 		}
 	}
 
