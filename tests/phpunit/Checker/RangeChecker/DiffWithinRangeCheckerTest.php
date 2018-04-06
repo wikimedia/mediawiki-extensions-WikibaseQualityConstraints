@@ -402,12 +402,12 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testDiffWithinRangeConstraintWithOnlyDeprecatedStatement() {
 		$deprecatedStatement = NewStatement::forProperty( 'P569' )
-			->withValue( self::$t1900 )
+			->withValue( self::$t1800 )
 			->withRank( Statement::RANK_DEPRECATED );
 		$entity = self::$i1970
 			->andStatement( $deprecatedStatement ) // should be ignored
@@ -416,7 +416,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testDiffWithinRangeConstraintWithOnlyOtherSnakTypes() {
@@ -430,7 +430,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
 
-		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-property-must-exist' );
+		$this->assertCompliance( $checkResult );
 	}
 
 	public function testDiffWithinRangeConstraintWrongTypeOfProperty() {

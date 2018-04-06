@@ -114,7 +114,6 @@
 	"wbqc-violation-message-diff-within-range": "The difference between $3 ($4) and $1 ($2) should be between $5 and $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "The difference between $3 ($4) and $1 ($2) should be no more than $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "The difference between $3 ($4) and $1 ($2) should be no less than $5.",
-	"wbqc-violation-message-diff-within-range-property-must-exist": "The property defined in the parameters must exist.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "The property defined in the parameters must have a value of the same type as this property.",
 	"wbqc-violation-message-format": "The value for $1 ($2) should match the regex $3.",
 	"wbqc-violation-message-format-clarification": "The value for $1 ($2) should match “$4” (regex: $3).",
