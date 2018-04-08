@@ -9,6 +9,8 @@ use HTMLForm;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
+use OOUI\IconWidget;
+use OOUI\LabelWidget;
 use SpecialPage;
 use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
@@ -184,7 +186,10 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return array
 	 */
 	private function getModules() {
-		return [ 'SpecialConstraintReportPage' ];
+		return [
+			'SpecialConstraintReportPage',
+			'wikibase.quality.constraints.icon',
+		];
 	}
 
 	/**
@@ -223,6 +228,7 @@ class SpecialConstraintReport extends SpecialPage {
 			return;
 		}
 
+		$out->enableOOUI();
 		$out->addModules( $this->getModules() );
 
 		$this->setHeaders();
@@ -552,14 +558,38 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private function formatStatus( $status ) {
 		$messageName = "wbqc-constraintreport-status-" . strtolower( $status );
+		$statusIcons = [
+			CheckResult::STATUS_WARNING => [
+				'icon' => 'non-mandatory-constraint-violation',
+			],
+			CheckResult::STATUS_VIOLATION => [
+				'icon' => 'mandatory-constraint-violation',
+			],
+			CheckResult::STATUS_BAD_PARAMETERS => [
+				'icon' => 'alert',
+				'flags' => 'warning',
+			],
+		];
+
+		if ( array_key_exists( $status, $statusIcons ) ) {
+			$iconWidget = new IconWidget( $statusIcons[$status] );
+			$iconHtml = $iconWidget->toString() . ' ';
+		} else {
+			$iconHtml = '';
+		}
+
+		$labelWidget = new LabelWidget( [
+			'label' => $this->msg( $messageName )->text(),
+		] );
+		$labelHtml = $labelWidget->toString();
 
 		$formattedStatus =
-			Html::element(
+			Html::rawElement(
 				'span',
 				[
 					'class' => 'wbqc-status wbqc-status-' . $status
 				],
-				$this->msg( $messageName )->text()
+				$iconHtml . $labelHtml
 			);
 
 		return $formattedStatus;
