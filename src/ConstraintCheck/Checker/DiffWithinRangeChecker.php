@@ -201,9 +201,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, $parameters, $status, $message );
 		}
 
-		$message = new ViolationMessage( 'wbqc-violation-message-diff-within-range-property-must-exist' );
-		$status = CheckResult::STATUS_VIOLATION;
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {
