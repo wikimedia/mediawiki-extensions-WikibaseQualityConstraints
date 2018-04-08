@@ -6,7 +6,8 @@
 			"Okras",
 			"Redredsonia",
 			"Kaganer",
-			"Michgrig"
+			"Michgrig",
+			"Happy13241"
 		]
 	},
 	"wbqc-constraintreport-form-section": "Проверьте ограничения для сущности",
@@ -25,7 +26,6 @@
 	"wbqc-constraintreport-status-warning": "Предупреждение",
 	"wbqc-constraintreport-status-not-in-scope": "Вне области действия",
 	"wbqc-constraintreport-result-table-header-status": "Состояние",
-	"wbqc-constraintreport-result-table-header-claim": "Утверждение",
 	"wbqc-constraintreport-result-table-header-constraint": "Ограничение",
 	"wbqc-constraintreport-result-link-to-claim": "перейти к утверждению",
 	"wbqc-constraintreport-result-link-to-constraint": "перейти к ограничению",
@@ -38,6 +38,7 @@
 	"wbqc-constrainttypehelp-short": "Помощь",
 	"wbqc-constraintdiscuss-short": "Обсудить",
 	"wbqc-dataValueType-wikibase-entityid": "Идентификатор сущности",
+	"apihelp-wbcheckconstraints-param-status": "Дополнительный фильтр для возврата результатов проверки только с выбранными состояниями.\n\nОбратите внимание: кешируются только результаты для статусов «нарушение», «предупреждение» и «плохие параметры», поэтому запросы, которые выбирают любые статусы за пределами этих трех, не используют кеширование.",
 	"wbq-subextension-name-wbqc": "Ограничения",
 	"wbqc-violation-header-parameters": "Параметры:",
 	"wbqc-violations-group": "Ограничения"

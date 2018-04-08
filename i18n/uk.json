@@ -5,7 +5,8 @@
 			"Dars",
 			"Piramidion",
 			"SimondR",
-			"Avatar6"
+			"Avatar6",
+			"Ahonc"
 		]
 	},
 	"wbqc-constraintreport": "Звіт про обмеження",
@@ -27,7 +28,6 @@
 	"wbqc-constraintreport-status-deprecated": "Застаріло",
 	"wbqc-constraintreport-status-warning": "Попередження",
 	"wbqc-constraintreport-result-table-header-status": "Статус",
-	"wbqc-constraintreport-result-table-header-claim": "Запис",
 	"wbqc-constraintreport-result-table-header-constraint": "Обмеження",
 	"wbqc-constraintreport-result-link-to-claim": "перейти до запису",
 	"wbqc-constraintreport-result-link-to-constraint": "перейти до обмеження",
@@ -90,11 +90,10 @@
 	"wbqc-violation-message-diff-within-range": "Різниця між $3 ($4) та $1 ($2) повинна бути в діапазоні між $5 та $6 ([$5; $6]).",
 	"wbqc-violation-message-diff-within-range-leftopen": "Різниця між $3 ($4) та $1 ($2) не повинна перевищувати $5 ((−∞; $5]).",
 	"wbqc-violation-message-diff-within-range-rightopen": "Різниця між $3 ($4) та $1 ($2) не повинна бути нижчою $5 ([$5; ∞)).",
-	"wbqc-violation-message-diff-within-range-property-must-exist": "Властивість, визначена у параметрах, повинна існувати.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Властивість, визначена в параметрах, повинна мати значення того ж типу, що й ця властивість.",
 	"wbqc-violation-message-format": "Значення для $1 ($2) повинно відповідати регулярному виразу $3.",
 	"wbqc-violation-message-format-clarification": "Значення для $1 ($2) повинно відповідати «$4» (регулярний вираз: $3).",
-	"wbqc-violation-message-inverse": "$1 має також містити зворотнє твердження $2 $3.",
+	"wbqc-violation-message-inverse": "$1 має також містити зворотне твердження $2 $3.",
 	"wbqc-violation-message-item": "Сутність із $1 повинна також мати {{PLURAL:$3|0=твердження $2.|1=твердження $2 $5.|твердження для $2 з одним з таких значень: $4}}",
 	"wbqc-violation-message-mandatory-qualifier": "Цьому $1 твердженню бракує уточнення $2.",
 	"wbqc-violation-message-multi-value": "Це властивість повинна містити кілька значень. Тобто, там має бути більше, ніж одне твердження з використанням цієї властивості.",

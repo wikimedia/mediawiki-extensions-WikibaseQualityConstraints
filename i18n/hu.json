@@ -87,8 +87,14 @@
 	"wbqc-violation-message-diff-within-range": "$3 ($4) és $1 ($2) közötti különbségnek $5 és $6 között kell lennie.",
 	"wbqc-violation-message-diff-within-range-leftopen": "$3 ($4) és $1 ($2) közötti különbség nem lehet nagyobb mint $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "$3 ($4) és $1 ($2) közötti különbség nem lehet kisebb mint $5.",
-	"wbqc-violation-message-diff-within-range-property-must-exist": "A paraméterekben megadott tulajdonságnak léteznie kell.",
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "A paraméterekben megadott tulajdonságnak ugyanolyan értéktípusúnak kell lennie, mint ez a tulajdonság.",
+	"wbqc-violation-message-format": "A(z) $1 értékének ($2) illeszkednie kell a következő reguláris kifejezésre: $3.",
+	"wbqc-violation-message-format-clarification": "A(z) $1 értékének ($2) illeszkednie kell a következő formátumra: „$4” (reguláris kifejezés: $3).",
+	"wbqc-violation-message-item": "A(z) $1 tulajdonság használóinak rendelkezniük kell {{PLURAL:$3|0=egy $2 állítással is.|1=egy $2 $5 állítással is.|egy állítással a(z) $2 tulajdonsághoz is a következő értékek egyikével:$4}}",
+	"wbqc-violation-message-mandatory-qualifier": "Ehhez a(z) $1 állításhoz hiányzik egy $2 minősítő.",
+	"wbqc-violation-message-multi-value": "Ennek a tulajdonságnak többféle értékkel kell rendelkeznie, vagyis egynél több állításnak kell ezt a tulajdonságot használnia.",
+	"wbqc-violation-message-one-of": "A(z) $1 tulajdonság értékének a {{PLURAL:$2|következőnek|következők egyikének}} kell lennie: {{PLURAL:$2|1=$4.|2=$4 vagy $5.|$3}}",
 	"wbqc-violation-message-qualifier": "A tulajdonságot csak minősítőként lehet használni.",
 	"wbqc-violation-message-no-qualifiers": "$1 utasításnak nem lehet semmilyen minősítője.",
-	"wbqc-violation-message-qualifiers": "$2 nem érvényes minősítő ehhez: $1 - csak a következő {{PLURAL:$3|1=minősítő engedélyezett:  $5.|2=minősítők engedélyezettek: $5 és $6.|minősítők engedélyezettek: $4}}"
+	"wbqc-violation-message-qualifiers": "$2 nem érvényes minősítő ehhez: $1 – csak a következő {{PLURAL:$3|1=minősítő engedélyezett:  $5.|2=minősítők engedélyezettek: $5 és $6.|minősítők engedélyezettek: $4}}"
 }

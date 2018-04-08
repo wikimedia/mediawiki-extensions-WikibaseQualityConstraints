@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Amire80"
+			"Amire80",
+			"Guycn2"
 		]
 	},
 	"wbqc-constraintreport": "דו\"ח אילוצים",
@@ -24,7 +25,7 @@
 	"wbqc-constraintreport-status-warning": "אזהרה",
 	"wbqc-constraintreport-status-not-in-scope": "לא בטווח",
 	"wbqc-constraintreport-result-table-header-status": "מצב",
-	"wbqc-constraintreport-result-table-header-claim": "טענה",
+	"wbqc-constraintreport-result-table-header-message": "הודעה",
 	"wbqc-constraintreport-result-table-header-constraint": "אילוץ",
 	"wbqc-constraintreport-result-link-to-claim": "ללכת אל טענה",
 	"wbqc-constraintreport-result-link-to-constraint": "ללכת על אילוץ",
@@ -88,7 +89,6 @@
 	"wbqc-violation-message-diff-within-range": "ההבדל בין $3 (כעת: $4) ו{{GRAMMAR:תחילית|$1}} (כעת: $2) אמור להיות בין $5 לבין $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "ההבדל בין $3 (כעת: $4) ו{{GRAMMAR:תחילית|$1}} (כעת: $2) אמור להיות לא יותר מ־$5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "ההבדל בין $3 (כעת: $4) ו{{GRAMMAR:תחילית|$1}} (כעת: $2) אמור להיות לא פחות מ־$5.",
-	"wbqc-violation-message-diff-within-range-property-must-exist": "המאפיין שמוגדר בפרמטרים צריך להתקיים.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "למאפיין שהוגדר בפרמטרים צריך להיות ערך מאותו הסוג כמו למאפיין הזה.",
 	"wbqc-violation-message-format": "הערך של $1 (כעת: $2) אמור להתאים לביטוי הרגולרי $3.",
 	"wbqc-violation-message-format-clarification": "הערך $2 עבור המאפיין $1  אמור להתאים לתבנית \"$4\" (ביטוי רגולרי: $3)",
