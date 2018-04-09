@@ -28,6 +28,8 @@
 	"wbqc-constraintreport-status-deprecated": "Zavržené",
 	"wbqc-constraintreport-status-warning": "Upozornění",
 	"wbqc-constraintreport-result-table-header-status": "Stav",
+	"wbqc-constraintreport-result-table-header-property": "Vlastnost",
+	"wbqc-constraintreport-result-table-header-message": "Hlášení",
 	"wbqc-constraintreport-result-table-header-constraint": "Omezení",
 	"wbqc-constraintreport-result-link-to-claim": "přejít na tvrzení",
 	"wbqc-constraintreport-result-link-to-constraint": "přejít na omezení",

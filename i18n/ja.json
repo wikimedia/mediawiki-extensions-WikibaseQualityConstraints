@@ -6,7 +6,25 @@
 			"Afaz"
 		]
 	},
-	"wbqc-constraintreport-explanation-part-one": "この特別ページでは、任意の実体に制約チェックを行えます。実体は稼働中のシステムから取得することができるので、制約違反があった場合はこの一覧から即座に削除されます。",
+	"wbqc-constraintreport": "制約チェック",
+	"wbqc-desc": "項目およびプロパティの制約をチェックし、結果を特別ページに表示",
+	"wbqc-constraintreport-explanation-part-one": "この特別ページでは、任意のエンティティに制約チェックを行えます。エンティティは稼働中のシステムから取得されているため、制約違反を修正した場合はこの一覧から即座に除去されます。",
+	"wbqc-constraintreport-explanation-part-two": "文が編集されるたびにプロパティ制約はチェックされます。これは通常、数分以内に実行されます。",
+	"wbqc-constraintreport-form-section": "制約チェックの実行",
+	"wbqc-constraintreport-form-submit-label": "実行",
+	"wbqc-constraintreport-form-entityid-label": "エンティティIDを入力",
+	"wbqc-constraintreport-result-headline": "結果表示：",
+	"wbqc-constraintreport-invalid-entity-id": "無効なエンティティIDです。",
+	"wbqc-constraintreport-not-existent-entity": "エンティティが存在しません。",
+	"wbqc-constraintreport-empty-result": "このエンティティには制約が定義されていません。",
+	"wbqc-constraintreport-status-violation": "違反",
+	"wbqc-constraintreport-status-compliance": "適合",
+	"wbqc-constraintreport-status-exception": "例外",
+	"wbqc-constraintreport-status-warning": "警告",
+	"wbqc-constraintreport-status-not-in-scope": "チェックせず",
+	"wbqc-constraintreport-result-table-header-status": "状態",
+	"wbqc-constraintreport-result-table-header-property": "プロパティ",
+	"wbqc-constraintreport-result-table-header-constraint": "制約",
 	"wbqc-constraintreport-no-parameter": "なし",
 	"wbqc-issues-short": "問題点",
 	"wbqc-issues-long": "この文には問題点が含まれています",
@@ -16,5 +34,6 @@
 	"wbqc-constrainttypehelp-long": "この制約のヘルプページ",
 	"wbqc-constraintdiscuss-short": "議論",
 	"wbqc-constraintdiscuss-long": "この制約についての議論ページ",
+	"wbqc-dataValueType-wikibase-entityid": "エンティティID",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "名前空間「$1」は実装されていません。間違っていないか確認して下さい。"
 }

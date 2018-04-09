@@ -13,6 +13,8 @@
 	"wbqc-constraintreport-status-violation": "Violació",
 	"wbqc-constraintreport-status-exception": "Excepció",
 	"wbqc-constraintreport-result-table-header-status": "Estat",
+	"wbqc-constraintreport-result-table-header-property": "Propietat",
+	"wbqc-constraintreport-result-table-header-message": "Missatge",
 	"wbqc-dataValueType-wikibase-entityid": "Id. d’entitat",
 	"wbqc-violation-header-parameters": "Paràmetres:",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La verificació de l'espai de noms \"$1\" encara no ha sigut implementada.",

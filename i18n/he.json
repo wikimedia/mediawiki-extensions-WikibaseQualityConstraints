@@ -25,6 +25,7 @@
 	"wbqc-constraintreport-status-warning": "אזהרה",
 	"wbqc-constraintreport-status-not-in-scope": "לא בטווח",
 	"wbqc-constraintreport-result-table-header-status": "מצב",
+	"wbqc-constraintreport-result-table-header-property": "מאפיין",
 	"wbqc-constraintreport-result-table-header-message": "הודעה",
 	"wbqc-constraintreport-result-table-header-constraint": "אילוץ",
 	"wbqc-constraintreport-result-link-to-claim": "ללכת אל טענה",

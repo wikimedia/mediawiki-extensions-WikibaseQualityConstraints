@@ -33,6 +33,8 @@
 	"wbqc-constraintreport-status-warning": "Attention",
 	"wbqc-constraintreport-status-not-in-scope": "Hors périmètre",
 	"wbqc-constraintreport-result-table-header-status": "État",
+	"wbqc-constraintreport-result-table-header-property": "Propriété",
+	"wbqc-constraintreport-result-table-header-message": "Message",
 	"wbqc-constraintreport-result-table-header-constraint": "Contrainte",
 	"wbqc-constraintreport-result-link-to-claim": "aller à la déclaration",
 	"wbqc-constraintreport-result-link-to-constraint": "aller à la contrainte",

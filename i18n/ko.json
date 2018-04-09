@@ -25,6 +25,8 @@
 	"wbqc-constraintreport-status-deprecated": "사용되지 않음",
 	"wbqc-constraintreport-status-warning": "경고",
 	"wbqc-constraintreport-result-table-header-status": "상태",
+	"wbqc-constraintreport-result-table-header-property": "속성",
+	"wbqc-constraintreport-result-table-header-message": "메시지",
 	"wbqc-constraintreport-result-table-header-constraint": "제약 조건",
 	"wbqc-issues-short": "이슈",
 	"wbqc-issues-long": "이 문에 일부 문제가 있습니다.",

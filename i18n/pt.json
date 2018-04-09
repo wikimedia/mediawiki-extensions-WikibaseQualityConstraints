@@ -27,6 +27,8 @@
 	"wbqc-constraintreport-status-warning": "Aviso",
 	"wbqc-constraintreport-status-not-in-scope": "Fora do âmbito",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
+	"wbqc-constraintreport-result-table-header-property": "Propriedade",
+	"wbqc-constraintreport-result-table-header-message": "Mensagem",
 	"wbqc-constraintreport-result-table-header-constraint": "Restrição",
 	"wbqc-constraintreport-result-link-to-claim": "ir para a alegação",
 	"wbqc-constraintreport-result-link-to-constraint": "ir para a restrição",
