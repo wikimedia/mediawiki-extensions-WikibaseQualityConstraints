@@ -148,5 +148,6 @@
 	"wbqc-violation-message-unique-value": "Message for violation of the Unique Value constraint, when other items are found. Parameters:\n* $1 is the number of other items with the same value.\n* $2 is an HTML list of all other items found with the same value.\n* $3, $4 etc. are the individual other items with the same value.",
 	"wbqc-violation-message-valueOnly": "Message for a violation of the “used for values only” constraint, when a property intended for the main value only was used in a qualifier or reference.",
 	"wbqc-violation-message-reference": "Message for a violation of the “used as reference” constraint, when a property intended for references only was used for the main value or in a qualifier.",
+	"wbqc-violation-message-noBounds": "Message for a violation of the “no bounds” constraint, when a property intended to have unbounded quantities as its value. Parameters:\n* $1 is the property which has the constraint.",
 	"wbqc-violation-message-exception": "Message for a constraint check result on an entity that has been marked as an exception to the constraint. This message only appears on [[Special:ConstraintReport]]; the gadget does not show exception reports."
 }

@@ -16,6 +16,7 @@ use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -387,6 +388,8 @@ class ConstraintReportFactory {
 					=> new ValueOnlyChecker(),
 				$this->config->get( 'WBQualityConstraintsUsedAsReferenceConstraintId' )
 					=> new ReferenceChecker(),
+				$this->config->get( 'WBQualityConstraintsNoBoundsConstraintId' )
+					=> new NoBoundsChecker(),
 			];
 		}
 
