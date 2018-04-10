@@ -3,9 +3,12 @@
 		"authors": [
 			"Glavkos",
 			"KATRINE1992",
-			"Xaris333"
+			"Xaris333",
+			"Nikosgranturismogt"
 		]
 	},
+	"wbqc-constraintreport-result-table-header-property": "Ιδιότητα",
+	"wbqc-constraintreport-result-table-header-message": "Μήνυμα",
 	"wbqc-issues-short": "Ζητήματα.",
 	"wbqc-issues-long": "Αυτή η δήλωση έχει μερικά ζητήματα.",
 	"wbqc-potentialissues-short": "Πιθανά ζητήματα.",

@@ -3,7 +3,8 @@
 		"authors": [
 			"Otokoume",
 			"Sujiniku",
-			"Afaz"
+			"Afaz",
+			"Kkairri"
 		]
 	},
 	"wbqc-constraintreport": "制約チェック",
@@ -35,5 +36,6 @@
 	"wbqc-constraintdiscuss-short": "議論",
 	"wbqc-constraintdiscuss-long": "この制約についての議論ページ",
 	"wbqc-dataValueType-wikibase-entityid": "エンティティID",
-	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "名前空間「$1」は実装されていません。間違っていないか確認して下さい。"
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "名前空間「$1」は実装されていません。間違っていないか確認して下さい。",
+	"wbqc-violation-message-type-instance": "$1のプロパティを使うエンティティは、{{PLURAL:$3|1=$5|2=$5または$6|以下に挙げるクラスのいずれか}}（またはそれを上位クラスにもつもの）のインスタンスでなければなりませんが、$2は現在{{PLURAL:$3|1=そのようになっていません。|2=そのようになっていません。|そのようになっていません: $4}}"
 }

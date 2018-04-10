@@ -12,6 +12,8 @@
 	"wbqc-constraintreport-status-todo": "করণীয়",
 	"wbqc-constraintreport-status-warning": "সতর্কীকরণ",
 	"wbqc-constraintreport-result-table-header-status": "অবস্থা",
+	"wbqc-constraintreport-result-table-header-property": "বৈশিষ্ট্য",
+	"wbqc-constraintreport-result-table-header-message": "বার্তা",
 	"wbqc-constraintreport-result-table-header-constraint": "সীমাবদ্ধতা",
 	"wbqc-constraintreport-result-link-to-claim": "দাবি করতে চলুন",
 	"wbqc-constraintreport-result-link-to-constraint": "সীমাবদ্ধতায় যান",

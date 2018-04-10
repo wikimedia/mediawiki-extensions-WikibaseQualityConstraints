@@ -7,6 +7,8 @@
 	},
 	"wbqc-constraintreport-not-existent-entity": "Yhteisöä ei ole!",
 	"wbqc-constraintreport-result-table-header-status": "Tila",
+	"wbqc-constraintreport-result-table-header-property": "Ominaisuus",
+	"wbqc-constraintreport-result-table-header-message": "Viesti",
 	"wbqc-potentialissues-short": "Mahdollisia ongelmia",
 	"wbqc-constrainttypehelp-short": "Ohje",
 	"wbqc-violation-message-commons-link-no-existent": "Commons-linkki täytyy olla.",
