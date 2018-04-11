@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Mr. Ibrahem",
-			"Azouz.anis"
+			"Azouz.anis",
+			"ديفيد"
 		]
 	},
 	"wbqc-constraintreport": "تقارير القيود",
@@ -25,6 +26,8 @@
 	"wbqc-constraintreport-status-warning": "تحذير",
 	"wbqc-constraintreport-status-not-in-scope": "ليس في نطاق",
 	"wbqc-constraintreport-result-table-header-status": "الحالة",
+	"wbqc-constraintreport-result-table-header-property": "الخاصية",
+	"wbqc-constraintreport-result-table-header-message": "الرسالة",
 	"wbqc-constraintreport-result-table-header-constraint": "محددات",
 	"wbqc-constraintreport-result-link-to-claim": "اذهب إلى الادعاء",
 	"wbqc-constraintreport-result-link-to-constraint": "اذهب إلى المحددات",
@@ -51,7 +54,7 @@
 	"apihelp-wbcheckconstraints-param-id": "معرف العناصر للحصول على البيانات منه. قيم منفصلة بـ '|'.",
 	"apihelp-wbcheckconstraints-param-claimid": "قائمة غويد تحدد إدعاء للتحقق من تقرير المحددات. قيم منفصلة مع '|'.",
 	"apihelp-wbcheckconstraints-param-constraintid": "مرشح اختياري لإرجاع المحددات/القيود التي تحتوي على معرف القيد المحدد فقط.",
-	"apihelp-wbcheckconstraints-param-status": "مرشح اختياري لعرض نتائج الفحص مع الحالات المحددة فقط.\n\nNote that only results for the 'violation', 'warning' and 'bad-parameters' statuses are cached, so only requests that are limited to exactly those statuses benefit from caching.",
+	"apihelp-wbcheckconstraints-param-status": "مرشح اختياري لعرض نتائج الفحص مع الحالات المحددة فقط.\n\nلاحظ أنه يتم تخزين نتائج حالة 'المخالفات' و'التحذير' و'الوسائط السيئة' فقط في ذاكرة التخزين المؤقت; لذلك لا تستفيد الطلبات التي تحدد أية حالات خارج تلك الثلاثة من التخزين المؤقت.",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "البيان يطابق القيد.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "البيان ينتهك القيد.",
 	"apihelp-wbcheckconstraints-paramvalue-status-exception": "الكيان موضوع البيان هو استثناء معروف لدى القيد.",

@@ -4,7 +4,8 @@
 			"Kingu",
 			"Jeblad",
 			"Danmichaelo",
-			"Jon Harald Søby"
+			"Jon Harald Søby",
+			"Imre Eilertsen"
 		]
 	},
 	"wbqc-constraintreport": "Rapporterte begrensinger",
@@ -22,6 +23,8 @@
 	"wbqc-constraintreport-status-bad-parameters": "Ugyldige parametre",
 	"wbqc-constraintreport-status-warning": "Advarsel",
 	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-constraintreport-result-table-header-property": "Egenskap",
+	"wbqc-constraintreport-result-table-header-message": "Melding",
 	"wbqc-constraintreport-result-table-header-constraint": "Begrensing",
 	"wbqc-constraintreport-result-link-to-claim": "gå til påstand",
 	"wbqc-constraintreport-result-link-to-constraint": "gå til begrensing",
