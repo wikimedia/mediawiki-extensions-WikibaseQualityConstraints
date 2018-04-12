@@ -11,6 +11,7 @@ use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -36,7 +37,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			$constraint,
 			[ 'test' => 'params' ],
 			CheckResult::STATUS_VIOLATION,
-			'test message'
+			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);
 
 		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
@@ -73,7 +74,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 						'statementGuid' => $statement->getGuid(),
 						'resultStatus' => CheckResult::STATUS_VIOLATION,
 						'resultParameters' => [ 'test' => 'params' ],
-						'resultMessage' => 'test message',
+						'resultMessage' => 'wbqc-violation-message-single-value',
 					]
 				)
 			);
@@ -109,7 +110,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			$constraint,
 			[ 'test' => 'params' ],
 			CheckResult::STATUS_VIOLATION,
-			'test message'
+			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);
 
 		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );

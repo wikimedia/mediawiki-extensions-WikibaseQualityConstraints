@@ -196,14 +196,15 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 			),
 			[ 'parameters' => [] ],
 			'status',
-			'<strong>message</strong>'
+			( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
+				->withEntityId( new PropertyId( 'P1' ) )
 		);
 
 		$result = $this->getResultsRenderer()->checkResultToArray( $checkResult );
 
 		$this->assertSame( 'status', $result['status'] );
 		$this->assertSame( 'P1', $result['property'] );
-		$this->assertSame( '<strong>message</strong>', $result['message-html'] );
+		$this->assertSame( '(wbqc-violation-message-no-qualifiers: P1)', $result['message-html'] );
 		$this->assertSame( 'Q1$1deb7c9e-8de4-4bc2-baab-add9d4f538c3', $result['claim'] );
 		$this->assertArrayNotHasKey( 'cached', $result );
 	}

@@ -11,6 +11,7 @@ use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\AppendingContextCursor;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
@@ -32,7 +33,7 @@ class CheckResultTest extends \PHPUnit\Framework\TestCase {
 		$parameters = [ 'test' => 'parameters' ];
 		$constraint = new Constraint( $constraintId, new PropertyId( 'P1' ), 'Q100', $parameters );
 		$status = CheckResult::STATUS_COMPLIANCE;
-		$message = 'All right';
+		$message = new ViolationMessage( 'wbqc-violation-message-single-value' );
 		$context = new FakeSnakContext( $snak, new Item( $entityId ) );
 		$metadata = Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 42 ) );
 
@@ -58,7 +59,7 @@ class CheckResultTest extends \PHPUnit\Framework\TestCase {
 		$parameters = [ 'test' => 'parameters' ];
 		$constraint = new Constraint( $constraintId, new PropertyId( 'P1' ), 'Q100', $parameters );
 		$status = CheckResult::STATUS_COMPLIANCE;
-		$message = 'All right';
+		$message = new ViolationMessage( 'wbqc-violation-message-single-value' );
 		$context = new AppendingContextCursor();
 		$metadata = Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 42 ) );
 
