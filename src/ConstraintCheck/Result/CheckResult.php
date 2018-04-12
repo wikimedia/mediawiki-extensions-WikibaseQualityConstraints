@@ -88,7 +88,7 @@ class CheckResult {
 	private $status;
 
 	/**
-	 * @var string|ViolationMessage|null
+	 * @var ViolationMessage|null
 	 */
 	private $message;
 
@@ -113,14 +113,14 @@ class CheckResult {
 	 * @param array[] $parameters (string => string[]) parsed constraint parameters
 	 * ($constraint->getParameters() contains the unparsed parameters)
 	 * @param string $status One of the self::STATUS_… constants
-	 * @param string|ViolationMessage|null $message sanitized HTML string or ViolationMessage object
+	 * @param ViolationMessage|null $message
 	 */
 	public function __construct(
 		$contextCursor,
 		Constraint $constraint,
 		array $parameters = [],
 		$status = self::STATUS_TODO,
-		$message = null
+		ViolationMessage $message = null
 	) {
 		if ( $contextCursor instanceof Context ) {
 			$context = $contextCursor;
@@ -209,7 +209,7 @@ class CheckResult {
 	}
 
 	/**
-	 * @return string|ViolationMessage|null sanitized HTML string or ViolationMessage object
+	 * @return ViolationMessage|null
 	 */
 	public function getMessage() {
 		return $this->message;

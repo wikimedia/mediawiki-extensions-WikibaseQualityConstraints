@@ -14,27 +14,22 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 class ConstraintParameterException extends Exception {
 
 	/**
-	 * @var ViolationMessage|string
+	 * @var ViolationMessage
 	 */
 	private $violationMessage;
 
 	/**
-	 * @param ViolationMessage|string $violationMessage
+	 * @param ViolationMessage $violationMessage
 	 */
-	public function __construct( $violationMessage ) {
-		if ( $violationMessage instanceof ViolationMessage ) {
-			$message = '⧼' . $violationMessage->getMessageKey() . '⧽';
-		} else {
-			$message = $violationMessage;
-		}
+	public function __construct( ViolationMessage $violationMessage ) {
+		$message = '⧼' . $violationMessage->getMessageKey() . '⧽';
 		parent::__construct( $message );
 
-		// TODO remove support for string $violationMessage (see ViolationMessageRenderer::render())
 		$this->violationMessage = $violationMessage;
 	}
 
 	/**
-	 * @return ViolationMessage|string
+	 * @return ViolationMessage
 	 */
 	public function getViolationMessage() {
 		return $this->violationMessage;

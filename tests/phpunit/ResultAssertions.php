@@ -7,7 +7,6 @@ use Language;
 use MockMessageLocalizer;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\UnDeserializableValueFormatter;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
@@ -73,46 +72,17 @@ trait ResultAssertions {
 			'Check should not comply'
 		);
 		$resultMessage = $result->getMessage();
-		if ( $resultMessage instanceof ViolationMessage ) {
-			$resultMessageKey = $resultMessage->getMessageKey();
-			$this->assertNotNull(
-				Language::getMessageFor( $resultMessageKey, 'en' ),
-				"Message should not refer to a non-existing message key (⧼{$resultMessageKey}⧽)."
-			);
-		} else {
-			$this->assertStringNotMatchesFormat(
-				"⧼%a⧽",
-				$resultMessage,
-				"Message should not refer to a non-existing message key ($resultMessage)."
-			);
-		}
+		$resultMessageKey = $resultMessage->getMessageKey();
+		$this->assertNotNull(
+			Language::getMessageFor( $resultMessageKey, 'en' ),
+			"Message should not refer to a non-existing message key (⧼{$resultMessageKey}⧽)."
+		);
 		if ( $messageKey !== null ) {
-			if ( $resultMessage instanceof ViolationMessage ) {
-				$this->assertSame(
-					$messageKey,
-					$resultMessage->getMessageKey(),
-					"Violation message should be ⧼${messageKey}⧽."
-				);
-			} else {
-				$message = wfMessage( $messageKey );
-				$messagePlain = $message->plain();
-				$pos = stripos( $messagePlain, '{{PLURAL:' );
-				if ( $pos === false ) {
-					// turn parameters into “match all” and match full message
-					$pattern = preg_replace( '/\$[0-9]+/', '%a', $message->escaped() );
-				} else {
-					// no chance to match after {{PLURAL}} processing, take pattern up to that and append “match all”
-					$pattern = substr( $messagePlain, 0, $pos );
-					$pattern = preg_replace( '/\$[0-9]+/', '%a', $pattern );
-					$pattern = htmlspecialchars( $pattern, ENT_QUOTES, 'UTF-8', false ); // simulate ->escaped()
-					$pattern .= '%a';
-				}
-				$this->assertStringMatchesFormat(
-					$pattern,
-					$resultMessage,
-					"Violation message should be ⧼${messageKey}⧽."
-				);
-			}
+			$this->assertSame(
+				$messageKey,
+				$resultMessageKey,
+				"Violation message should be ⧼${messageKey}⧽."
+			);
 		}
 	}
 

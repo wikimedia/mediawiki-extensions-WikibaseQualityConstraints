@@ -74,19 +74,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::__construct
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::render
-	 */
-	public function testRender_string() {
-		$message = 'A <em>pre-rendered</em> message.';
-		$renderer = $this->newMultilingualTextViolationMessageRenderer();
-
-		$rendered = $renderer->render( $message );
-
-		$this->assertSame( $message, $rendered );
-	}
-
-	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::render
 	 */
 	public function testRender_fallback() {
