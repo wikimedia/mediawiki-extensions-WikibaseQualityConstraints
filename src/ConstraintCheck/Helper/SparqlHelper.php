@@ -398,7 +398,6 @@ EOF;
 
 				$key = 'wikibase.quality.constraints.regex.cache.refresh';
 				$this->dataFactory->increment( $key );
-				$cacheMapArray = $this->cleanupConstraintParameterExceptions( $cacheMapArray );
 				$cacheMap = MapCacheLRU::newFromArray( $cacheMapArray, $cacheMapSize );
 				if ( $cacheMap->has( $textHash ) ) {
 					$key = 'wikibase.quality.constraints.regex.cache.refresh.hit';
@@ -460,55 +459,17 @@ EOF;
 	}
 
 	private function serializeConstraintParameterException( ConstraintParameterException $cpe ) {
-		$message = $cpe->getViolationMessage();
-		if ( $message instanceof ViolationMessage ) {
-			return [
-				'type' => ConstraintParameterException::class,
-				'violationMessage' => $this->violationMessageSerializer->serialize( $message ),
-			];
-		} else {
-			return [
-				'type' => ConstraintParameterException::class,
-				'message' => $message,
-			];
-		}
-	}
-
-	private function isViolationMessageSerialization( array $serialization ) {
-		return array_key_exists( 'violationMessage', $serialization );
+		return [
+			'type' => ConstraintParameterException::class,
+			'violationMessage' => $this->violationMessageSerializer->serialize( $cpe->getViolationMessage() ),
+		];
 	}
 
 	private function deserializeConstraintParameterException( array $serialization ) {
-		if ( $this->isViolationMessageSerialization( $serialization ) ) {
-			$message = $this->violationMessageDeserializer->deserialize(
-				$serialization['violationMessage']
-			);
-		} else {
-			$message = $serialization['message'];
-		}
+		$message = $this->violationMessageDeserializer->deserialize(
+			$serialization['violationMessage']
+		);
 		return new ConstraintParameterException( $message );
-	}
-
-	/**
-	 * Remove old-style (plain message instead of serialized ViolationMessage)
-	 * ConstraintParameterException serializations from the cache map.
-	 *
-	 * @param array $cacheMapArray {@link MapCacheLRU::toArray}
-	 * @return array
-	 */
-	private function cleanupConstraintParameterExceptions( array $cacheMapArray ) {
-		$cleanedCacheMapArray = [];
-		foreach ( $cacheMapArray as $key => $value ) {
-			if (
-				is_array( $value ) &&
-				$value['type'] === ConstraintParameterException::class &&
-				!$this->isViolationMessageSerialization( $value )
-			) {
-				continue;
-			}
-			$cleanedCacheMapArray[$key] = $value;
-		}
-		return $cleanedCacheMapArray;
 	}
 
 	/**
