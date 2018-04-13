@@ -144,5 +144,6 @@
 	"wbqc-violation-message-unique-value": "O valor da propriedade não pode estar presente em nenhum outro objeto, mas também está presente {{PLURAL:$1|1=em $3.|2=em $3 e $4.|nos seguintes objetos: $2}}",
 	"wbqc-violation-message-valueOnly": "Esta propriedade só deve ser usada para o valor principal de uma declaração, não para qualificadores nem referências.",
 	"wbqc-violation-message-reference": "A propriedade só deve ser usada em referências e não para o valor principal de uma declaração nem para um qualificador.",
+	"wbqc-violation-message-noBounds": "Os valores para $1 não devem ter limites.",
 	"wbqc-violation-message-exception": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal."
 }
