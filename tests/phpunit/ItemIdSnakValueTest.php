@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
 use DataValues\StringValue;
 use DomainException;
 use InvalidArgumentException;
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -22,6 +23,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
  * @license GPL-2.0-or-later
  */
 class ItemIdSnakValueTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	public function testFromItemId() {
 		$itemId = new ItemId( 'Q1' );

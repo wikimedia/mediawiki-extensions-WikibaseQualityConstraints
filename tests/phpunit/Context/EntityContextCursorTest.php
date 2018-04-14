@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Context;
 
 use LogicException;
+use PHPUnit4And6Compat;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
 
 /**
@@ -15,6 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor
  * @license GPL-2.0-or-later
  */
 class EntityContextCursorTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	public function testStoreCheckResultInArray() {
 		$entityId = 'Q1';

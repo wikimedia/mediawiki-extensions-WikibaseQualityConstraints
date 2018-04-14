@@ -8,6 +8,7 @@ use HashConfig;
 use InvalidArgumentException;
 use Message;
 use MockMessageLocalizer;
+use PHPUnit4And6Compat;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
@@ -29,6 +30,7 @@ use Wikimedia\TestingAccessWrapper;
  * @license GPL-2.0-or-later
  */
 class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	/**
 	 * Create a new ViolationMessageRenderer

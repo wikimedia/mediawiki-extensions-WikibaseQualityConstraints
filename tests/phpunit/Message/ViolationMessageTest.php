@@ -7,6 +7,7 @@ use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -23,6 +24,7 @@ use WikibaseQuality\ConstraintReport\Role;
  * @license GPL-2.0-or-later
  */
 class ViolationMessageTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	public function testGetMessageKey() {
 		$messageKey = 'wbqc-violation-message-single-value';

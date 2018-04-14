@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\TypeChecker;
 
 use NullStatsdDataFactory;
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Statement\Statement;
@@ -29,6 +30,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @license GPL-2.0-or-later
  */
 class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	use ConstraintParameters;
 

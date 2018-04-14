@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -25,6 +26,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
  * @license GPL-2.0-or-later
  */
 class CheckingResultsSourceTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	const NONEXISTENT_ITEM = 'Q99';
 	const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';

@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Cache;
 
 use InvalidArgumentException;
+use PHPUnit4And6Compat;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
@@ -18,6 +19,7 @@ use Wikimedia\Assert\ParameterTypeException;
  * @license GPL-2.0-or-later
  */
 class CachingMetadataTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	public function testFresh() {
 		$cm = CachingMetadata::fresh();

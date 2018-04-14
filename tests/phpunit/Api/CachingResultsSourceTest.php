@@ -6,6 +6,7 @@ use DataValues\TimeValue;
 use HashBagOStuff;
 use HashConfig;
 use NullStatsdDataFactory;
+use PHPUnit4And6Compat;
 use Psr\Log\NullLogger;
 use TimeAdjustableWANObjectCache;
 use WANObjectCache;
@@ -40,6 +41,7 @@ include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/
  * @license GPL-2.0-or-later
  */
 class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	/**
 	 * @param string $entityId entity ID serialization
@@ -208,7 +210,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 		$cache->expects( $this->never() )->method( 'set' );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
-		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds ' );
+		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$resultsSource,
 			new ResultsCache( $cache, 'v2' ),
@@ -235,7 +237,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 		$cache->expects( $this->never() )->method( 'set' );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
-		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds ' );
+		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$resultsSource,
 			new ResultsCache( $cache, 'v2' ),
@@ -389,7 +391,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 		$cache->expects( $this->never() )->method( 'set' );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
-		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds ' );
+		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$resultsSource,
 			new ResultsCache( $cache, 'v2' ),
