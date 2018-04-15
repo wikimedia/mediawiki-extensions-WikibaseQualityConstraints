@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
@@ -21,6 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
  * @license GPL-2.0-or-later
  */
 class NoBoundsCheckerTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	use ResultAssertions;
 

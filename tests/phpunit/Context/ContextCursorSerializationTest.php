@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Context;
 
 use InvalidArgumentException;
+use PHPUnit4And6Compat;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
@@ -22,6 +23,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContextCur
  * @license GPL-2.0-or-later
  */
 class ContextCursorSerializationTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	/**
 	 * @dataProvider provideContextCursors

@@ -6,6 +6,7 @@ use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use InvalidArgumentException;
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -23,6 +24,7 @@ use Wikimedia\TestingAccessWrapper;
  * @license GPL-2.0-or-later
  */
 class ViolationMessageSerializerTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serialize

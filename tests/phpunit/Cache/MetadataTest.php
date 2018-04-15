@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Cache;
 
 use DataValues\TimeValue;
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
@@ -19,6 +20,7 @@ use Wikimedia\Assert\ParameterElementTypeException;
  * @license GPL-2.0-or-later
  */
 class MetadataTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	public function testBlank() {
 		$m = Metadata::blank();

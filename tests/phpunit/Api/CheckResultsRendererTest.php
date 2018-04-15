@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use MockMessageLocalizer;
+use PHPUnit4And6Compat;
 use Title;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
@@ -37,6 +38,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\AppendingContextCursor;
 class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 
 	use DefaultConfig;
+	use PHPUnit4And6Compat;
 
 	private function getResultsRenderer() {
 		$entityIdFormatter = new PlainEntityIdFormatter();

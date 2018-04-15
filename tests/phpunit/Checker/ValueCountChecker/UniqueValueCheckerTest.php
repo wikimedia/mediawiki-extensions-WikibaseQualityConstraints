@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\ValueCountChecker;
 
 use DataValues\StringValue;
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -30,6 +31,7 @@ use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
  * @license GPL-2.0-or-later
  */
 class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	use ConstraintParameters, SparqlHelperMock;
 
@@ -199,7 +201,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameter' )
+			 ->method( 'getConstraintParameters' )
 			 ->will( $this->returnValue( $parameters ) );
 		$mock->expects( $this->any() )
 			 ->method( 'getConstraintTypeItemId' )
