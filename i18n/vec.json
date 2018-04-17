@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Cusolotto"
+		]
+	},
+	"wbqc-constraintreport-result-table-header-property": "Proprietà",
+	"wbqc-constraintreport-result-table-header-message": "Mesagio"
+}

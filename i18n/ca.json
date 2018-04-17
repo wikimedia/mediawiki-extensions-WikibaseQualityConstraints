@@ -19,6 +19,12 @@
 	"wbqc-dataValueType-wikibase-entityid": "Id. d’entitat",
 	"wbqc-violation-header-parameters": "Paràmetres:",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La verificació de l'espai de noms \"$1\" encara no ha sigut implementada.",
-	"wbqc-violation-message-multi-value": "Aquesta propietat ha de tenir múltiples valors. És a dir, hi ha d'haver més d'una concessió utilitzant-la.",
-	"wbqc-violation-message-range-quantity-closed": "El valor de $1 ($2) ha d'estar entre $3 i $4."
+	"wbqc-violation-message-inverse": "$1 també hauria de tenir la declaració inversa $2 $3.",
+	"wbqc-violation-message-mandatory-qualifier": "Falta el qualificador $2 d'aquesta declaració $1.",
+	"wbqc-violation-message-multi-value": "Aquesta propietat hauria de contenir múltiples valors; és a dir, hi hauria d'haver més d'una declaració que utilitzés aquesta propietat.",
+	"wbqc-violation-message-range-quantity-closed": "El valor de $1 ($2) ha d'estar entre $3 i $4.",
+	"wbqc-violation-message-single-value": "Aquesta propietat només hauria de contenir un sol valor; és a dir, només hi hauria d'haver una declaració que fes servir aquesta propietat.",
+	"wbqc-violation-message-valueType-instance": "Els valors de les declaracions de $1 haurien de ser instàncies d'una de les següents classes (o alguna de les seves subclasses), però $2 ara mateix no ho és: $4",
+	"wbqc-violation-message-unique-value": "El valor d'aquesta propietat no pot estar present en cap altre element, però també està present als elements següents: $2",
+	"wbqc-violation-message-valueOnly": "Aquesta propietat només hauria de ser utilitzada pel valor principal d'una declaració, no pas per qualificadors o referències."
 }
