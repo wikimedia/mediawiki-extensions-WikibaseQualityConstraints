@@ -152,6 +152,9 @@
 	"wbqc-violation-message-valueOnly": "This property should only be used for the main value of a statement, not for qualifiers or references.",
 	"wbqc-violation-message-reference": "The property should only be used in references, not for the main value of a statement or for a qualifier.",
 	"wbqc-violation-message-noBounds": "Values for $1 should not have any bounds.",
+	"wbqc-violation-message-units-none": "The value for $1 should not have a unit.",
+	"wbqc-violation-message-units": "The value for $1 should have {{PLURAL:$2|1=the unit $4.|2=the unit $4 or $5.|one of the following units: $3}}",
+	"wbqc-violation-message-units-or-none": "The value for $1 should have {{PLURAL:$2|1=the unit $4|2=the unit $4 or $5|one of the following units}} or be unitless{{PLURAL:$2|1=.|2=.|: $3}}",
 
 	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such."
 }
