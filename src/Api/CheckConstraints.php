@@ -131,7 +131,8 @@ class CheckConstraints extends ApiBase {
 			new ConstraintParameterParser(
 				$config,
 				$repo->getBaseDataModelDeserializerFactory(),
-				$constraintParameterRenderer
+				$constraintParameterRenderer,
+				$repo->getConceptBaseUris()
 			),
 			new ViolationMessageSerializer(),
 			new ViolationMessageDeserializer(

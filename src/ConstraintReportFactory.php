@@ -182,7 +182,8 @@ class ConstraintReportFactory {
 				new ConstraintParameterParser(
 					$config,
 					$wikibaseRepo->getBaseDataModelDeserializerFactory(),
-					$constraintParameterRenderer
+					$constraintParameterRenderer,
+					$wikibaseRepo->getConceptBaseUris()
 				),
 				new ViolationMessageSerializer(),
 				$violationMessageDeserializer,

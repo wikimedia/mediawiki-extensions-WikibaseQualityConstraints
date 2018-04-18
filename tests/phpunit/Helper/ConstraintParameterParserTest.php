@@ -1101,4 +1101,77 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		);
 	}
 
+	public function testParseUnitsParameter_NoUnitsAllowed() {
+		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$snak = new PropertyNoValueSnak( new PropertyId( $qualifierId ) );
+
+		$unitsParameter = $this->getConstraintParameterParser()
+			->parseUnitsParameter(
+				[ $qualifierId => [
+					$this->getSnakSerializer()->serialize( $snak ),
+				] ],
+				'Q21514353'
+			);
+
+		$this->assertEmpty( $unitsParameter->getUnitItemIds() );
+		$this->assertEmpty( $unitsParameter->getUnitQuantities() );
+		$this->assertTrue( $unitsParameter->getUnitlessAllowed() );
+	}
+
+	public function testParseUnitsParameter_SomeUnitsAllowed() {
+		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$pid = new PropertyId( $qualifierId );
+		$unitId1 = new ItemId( 'Q11573' );
+		$unitId2 = new ItemId( 'Q37110097' );
+		$unit1 = 'http://wikibase.example/entity/Q11573';
+		$unit2 = 'http://wikibase.example/entity/Q37110097';
+		$snak1 = new PropertyValueSnak( $pid, new EntityIdValue( $unitId1 ) );
+		$snak2 = new PropertyValueSnak( $pid, new EntityIdValue( $unitId2 ) );
+
+		$unitsParameter = $this->getConstraintParameterParser()
+			->parseUnitsParameter(
+				[ $qualifierId => [
+					$this->getSnakSerializer()->serialize( $snak1 ),
+					$this->getSnakSerializer()->serialize( $snak2 ),
+				] ],
+				'Q21514353'
+			);
+
+		$this->assertEquals( [ $unitId1, $unitId2 ], $unitsParameter->getUnitItemIds() );
+		$unitQuantities = $unitsParameter->getUnitQuantities();
+		$this->assertCount( 2, $unitQuantities );
+		$this->assertSame( $unit1, $unitQuantities[0]->getUnit() );
+		$this->assertSame( $unit2, $unitQuantities[1]->getUnit() );
+		$this->assertFalse( $unitsParameter->getUnitlessAllowed() );
+	}
+
+	public function testParseUnitsParameter_SomeUnitsAndUnitlessAllowed() {
+		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$pid = new PropertyId( $qualifierId );
+		$unitId1 = new ItemId( 'Q11573' );
+		$unitId2 = new ItemId( 'Q37110097' );
+		$unit1 = 'http://wikibase.example/entity/Q11573';
+		$unit2 = 'http://wikibase.example/entity/Q37110097';
+		$snak1 = new PropertyValueSnak( $pid, new EntityIdValue( $unitId1 ) );
+		$snak2 = new PropertyValueSnak( $pid, new EntityIdValue( $unitId2 ) );
+		$snak3 = new PropertyNoValueSnak( $pid );
+
+		$unitsParameter = $this->getConstraintParameterParser()
+			->parseUnitsParameter(
+				[ $qualifierId => [
+					$this->getSnakSerializer()->serialize( $snak1 ),
+					$this->getSnakSerializer()->serialize( $snak2 ),
+					$this->getSnakSerializer()->serialize( $snak3 ),
+				] ],
+				'Q21514353'
+			);
+
+		$this->assertEquals( [ $unitId1, $unitId2 ], $unitsParameter->getUnitItemIds() );
+		$unitQuantities = $unitsParameter->getUnitQuantities();
+		$this->assertCount( 2, $unitQuantities );
+		$this->assertSame( $unit1, $unitQuantities[0]->getUnit() );
+		$this->assertSame( $unit2, $unitQuantities[1]->getUnit() );
+		$this->assertTrue( $unitsParameter->getUnitlessAllowed() );
+	}
+
 }
