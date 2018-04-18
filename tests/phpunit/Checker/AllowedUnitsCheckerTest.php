@@ -195,6 +195,22 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-units-or-none' );
 	}
 
+	public function testAllowedUnitsConstraint_SomeUnit_NotAllowed_OnlyNone() {
+		$checker = $this->getAllowedUnitsChecker();
+		$snak = new PropertyValueSnak(
+			new PropertyId( 'P1' ),
+			UnboundedQuantityValue::newFromNumber( 0, 'http://wikibase.example/entity/Q2' )
+		);
+		$context = new FakeSnakContext( $snak );
+		$constraint = $this->getConstraintMock( $this->itemsParameter( [
+			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+		] ) );
+
+		$checkResult = $checker->checkConstraint( $context, $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-units-none' );
+	}
+
 	public function testAllowedUnitsConstraint_DeprecatedStatement() {
 		$checker = $this->getAllowedUnitsChecker();
 		$statement = NewStatement::forProperty( 'P1' )

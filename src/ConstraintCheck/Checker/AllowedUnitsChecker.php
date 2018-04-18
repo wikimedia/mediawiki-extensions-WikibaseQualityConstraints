@@ -113,12 +113,17 @@ class AllowedUnitsChecker implements ConstraintChecker {
 		}
 
 		if ( $status === CheckResult::STATUS_VIOLATION ) {
-			$messageKey = $unitsParameter->getUnitlessAllowed() ?
-				'wbqc-violation-message-units-or-none' :
-				'wbqc-violation-message-units';
-			$message = ( new ViolationMessage( $messageKey ) )
-				->withEntityId( $snak->getPropertyId(), Role::CONSTRAINT_PROPERTY )
-				->withEntityIdList( $unitsParameter->getUnitItemIds(), Role::CONSTRAINT_PARAMETER_VALUE );
+			if ( $unitsParameter->getUnitItemIds() === [] ) {
+				$message = ( new ViolationMessage( 'wbqc-violation-message-units-none' ) )
+					->withEntityId( $snak->getPropertyId(), Role::CONSTRAINT_PROPERTY );
+			} else {
+				$messageKey = $unitsParameter->getUnitlessAllowed() ?
+					'wbqc-violation-message-units-or-none' :
+					'wbqc-violation-message-units';
+				$message = ( new ViolationMessage( $messageKey ) )
+					->withEntityId( $snak->getPropertyId(), Role::CONSTRAINT_PROPERTY )
+					->withEntityIdList( $unitsParameter->getUnitItemIds(), Role::CONSTRAINT_PARAMETER_VALUE );
+			}
 		} else {
 			$message = null;
 		}
