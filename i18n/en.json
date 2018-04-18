@@ -154,7 +154,7 @@
 	"wbqc-violation-message-noBounds": "Values for $1 should not have any bounds.",
 	"wbqc-violation-message-units-none": "The value for $1 should not have a unit.",
 	"wbqc-violation-message-units": "The value for $1 should have {{PLURAL:$2|1=the unit $4.|2=the unit $4 or $5.|one of the following units: $3}}",
-	"wbqc-violation-message-units-or-none": "The value for $1 should have {{PLURAL:$2|1=the unit $4|2=the unit $4 or $5|one of the following units}} or be unitless{{PLURAL:$2|1=.|2=.|: $3}}",
+	"wbqc-violation-message-units-or-none": "The value for $1 should have {{PLURAL:$2|1=the unit $4|2=the unit $4 or $5|one of the following units}} or be {{PLURAL:$2|1=unitless.|2=unitless.|unitless: $3}}",
 
 	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such."
 }
