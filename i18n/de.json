@@ -135,5 +135,6 @@
 	"wbqc-violation-message-valueOnly": "Diese Eigenschaft sollte nur für den Hauptwert einer Aussage verwendet werden, nicht für Qualifikatoren oder Einzelnachweise.",
 	"wbqc-violation-message-reference": "Die Eigenschaft sollte nur in Einzelnachweisen verwendet werden, nicht für den Hauptwert einer Aussage oder für einen Qualifikator.",
 	"wbqc-violation-message-noBounds": "Werte für $1 sollten keine Begrenzungen haben.",
+	"wbqc-violation-message-units-none": "Der Wert für $1 sollte keine Einheit haben.",
 	"wbqc-violation-message-exception": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert."
 }
