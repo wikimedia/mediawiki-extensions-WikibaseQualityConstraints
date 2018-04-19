@@ -151,5 +151,8 @@
 	"wbqc-violation-message-valueOnly": "Cette propriété ne doit être utilisée que pour la valeur principale d'une expression, non pour des qualificateurs ou des références.",
 	"wbqc-violation-message-reference": "La propriété ne doit être utilisée que dans les références, et non comme valeur principale d'une déclaration ou pour un qualificatif.",
 	"wbqc-violation-message-noBounds": "Les valeurs pour $1 ne doivent pas avoir de limites.",
+	"wbqc-violation-message-units-none": "La valeur pour $1 ne doit pas avoir d’unité.",
+	"wbqc-violation-message-units": "La valeur pour $1 doit avoir {{PLURAL:$2|1=l’unité $4.|2=l’unité $4 ou $5.|une des unités suivantes : $3}}",
+	"wbqc-violation-message-units-or-none": "La valeur pour $1 doit avoir {{PLURAL:$2|1=l’unité $4|2=l’unité $4 ou $5|une des unités suivantes}} ou être {{PLURAL:$2|1=sans unité.|2=sans unité.|sans unité : $3}}",
 	"wbqc-violation-message-exception": "Cette entrée est une exception connue pour cette contrainte et a été marquée comme telle."
 }

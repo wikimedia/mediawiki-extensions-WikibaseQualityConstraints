@@ -136,5 +136,7 @@
 	"wbqc-violation-message-reference": "Die Eigenschaft sollte nur in Einzelnachweisen verwendet werden, nicht für den Hauptwert einer Aussage oder für einen Qualifikator.",
 	"wbqc-violation-message-noBounds": "Werte für $1 sollten keine Begrenzungen haben.",
 	"wbqc-violation-message-units-none": "Der Wert für $1 sollte keine Einheit haben.",
+	"wbqc-violation-message-units": "Der Wert für $1 sollte {{PLURAL:$2|1=die Einheit $4 haben.|2=die Einheit $4 oder $5 haben.|eine der folgenden Einheiten haben: $3}}",
+	"wbqc-violation-message-units-or-none": "Der Wert für $1 sollte {{PLURAL:$2|1=die Einheit $4|2=die Einheit $4 oder $5|eine der folgenden Einheiten}} haben oder {{PLURAL:$2|1=ohne Einheit sein.|2=ohne Einheit sein.|ohne Einheit sein: $3}}",
 	"wbqc-violation-message-exception": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert."
 }

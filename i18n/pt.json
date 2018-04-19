@@ -145,5 +145,8 @@
 	"wbqc-violation-message-valueOnly": "Esta propriedade só deve ser usada para o valor principal de uma declaração, não para qualificadores nem referências.",
 	"wbqc-violation-message-reference": "A propriedade só deve ser usada em referências e não para o valor principal de uma declaração nem para um qualificador.",
 	"wbqc-violation-message-noBounds": "Os valores para $1 não devem ter limites.",
+	"wbqc-violation-message-units-none": "O valor de $1 não deve ter uma unidade.",
+	"wbqc-violation-message-units": "O valor de $1 deve ter {{PLURAL:$2|1=a unidade $4.|2=a unidade $4 ou $5.|uma das seguintes unidades: $3}}",
+	"wbqc-violation-message-units-or-none": "O valor de $1 deve ter {{PLURAL:$2|1=a unidade $4|2=a unidade $4 ou $5|uma das seguintes unidades}} ou {{PLURAL:$2|1=não ter unidade nenhuma.|2=não ter unidade nenhuma.|não ter unidade nenhuma: $3}}",
 	"wbqc-violation-message-exception": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal."
 }

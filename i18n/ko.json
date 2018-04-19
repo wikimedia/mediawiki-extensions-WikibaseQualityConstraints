@@ -5,7 +5,8 @@
 			"Alex00728",
 			"Kwj2772",
 			"아라",
-			"Ykhwong"
+			"Ykhwong",
+			"Doyoon1995"
 		]
 	},
 	"wbqc-constraintreport": "제약 보고서",
@@ -78,5 +79,8 @@
 	"wbqc-violation-message-range-time-leftopen": "$1 ($2)의 값은 $3 이후가 될 수 없습니다.",
 	"wbqc-violation-message-range-time-rightopen": "$1 ($2)의 값은 $3 이전이 될 수 없습니다.",
 	"wbqc-violation-message-single-value": "이 프로퍼티는 하나의 값만 포함해야 합니다. 즉, 이 프로퍼티를 사용하는 문이 하나만 있어야 합니다.",
-	"wbqc-violation-message-unique-value": "이 속성의 값은 어떠한 항목에도 존재해서는 안 됩니다. {{PLURAL:$1|1=$3|2=$3와 $4|$2 항목들}}에도 존재합니다."
+	"wbqc-violation-message-unique-value": "이 속성의 값은 어떠한 항목에도 존재해서는 안 됩니다. {{PLURAL:$1|1=$3|2=$3와 $4|$2 항목들}}에도 존재합니다.",
+	"wbqc-violation-message-units-none": "$1의 값은 단위를 포함하지 않아야 합니다.",
+	"wbqc-violation-message-units": "$1의 값은 {{PLURAL:$2|1=$4여야 합니다.|2=$4 또는 $5여야 합니다.|다음 중 하나여야 합니다: $3}}",
+	"wbqc-violation-message-units-or-none": "$1의 값은 {{PLURAL:$2|1=$4를 단위|2=$4 또는 $5를 단위|다음 중 하나를 단위}}로 하거나 {{PLURAL:$2|1=단위가 없어야 합니다.|2=단위가 없어야 합니다.|단위가 없어야 합니다: $3}}"
 }

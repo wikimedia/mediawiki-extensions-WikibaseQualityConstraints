@@ -101,5 +101,8 @@
 	"wbqc-violation-message-type-instanceOrSubclass": "Entità che usano la proprietà $1 dovrebbero essere istanza o sottoclasse di {{PLURAL:$3|1=$5|2=$5 o $6|una delle seguenti classi}} (o di {{PLURAL:$3|1=una delle sue sottoclassi|2=una loro sottoclasse|una delle loro sottoclassi}}), ma $2 attualmente {{PLURAL:$3|1=non lo è.|2=non lo è.|non lo è: $4}}",
 	"wbqc-violation-message-valueType-instanceOrSubclass": "I valori della dichiarazione $1 dovrebbero essere istanza o sottoclasse di {{PLURAL:$3|1=$5|2=$5 o $6|una delle seguenti classi}} (o di {{PLURAL:$3|1=una delle sue sottoclassi|2=una loro sottoclasse|una delle loro sottoclassi}}), ma $2 attualmente {{PLURAL:$3|1=non lo è.|2=non lo è.|non lo è: $4}}",
 	"wbqc-violation-message-unique-value": "Il valore di questa proprietà non deve essere presente in nessun altro elemento, ma è presente anche {{PLURAL:$1|1=in $3.|2=in $3 e $4.|nei seguenti elementi: $2}}",
-	"wbqc-violation-message-reference": "La proprietà deve essere utilizzata solo nei riferimenti, non per il valore principale di una dichiarazione o per un qualificatore."
+	"wbqc-violation-message-reference": "La proprietà deve essere utilizzata solo nei riferimenti, non per il valore principale di una dichiarazione o per un qualificatore.",
+	"wbqc-violation-message-units-none": "Il valore di $1 non dovrebbe avere un'unità.",
+	"wbqc-violation-message-units": "Il valore per $1 deve avere {{PLURAL:$2|1=l'unità $4.|2=l'unità $4 o $5.|una delle seguenti unità:$3}}",
+	"wbqc-violation-message-units-or-none": "Il valore per $1 deve avere {{PLURAL:$2|1=l'unità $4.|2=l'unità $4 o $5.|una delle seguenti unità:$3}} o essere {{PLURAL:$2|1=adimensionale.|2=adimensionale.|adimensionale: $3}}"
 }
