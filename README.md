@@ -256,5 +256,8 @@ To add a new constraint type, the following steps are necessary:
       otherwise there should ideally be methods to create the parameters in the `ConstraintParameters` trait
       so that you can use `json_encode( $this->…Parameter( … ) )`
       (perhaps with `array_merge` if there are multiple parameters).
+* Ask someone with grafana-admin access to update the “constraint types” panel
+  in the [wikidata-quality board](https://grafana.wikimedia.org/dashboard/db/wikidata-quality)
+  to add the new constraint type.
 
-An example commit that performs all of these steps is [Change Ica05406e14](https://gerrit.wikimedia.org/r/382715).
+An example commit that performs almost all of these steps is [Change Ica05406e14](https://gerrit.wikimedia.org/r/382715).
