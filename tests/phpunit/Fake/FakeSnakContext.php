@@ -37,7 +37,7 @@ class FakeSnakContext extends AbstractContext {
 		return 'statement';
 	}
 
-	public function getSnakGroup() {
+	public function getSnakGroup( $groupingMode ) {
 		return [ $this->snak ];
 	}
 

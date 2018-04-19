@@ -31,6 +31,18 @@ interface Context {
 	 * @var string
 	 */
 	const TYPE_REFERENCE = 'reference';
+	/**
+	 * Grouping mode to include the snaks of all non-deprecated statements.
+	 * @see getSnakGroup()
+	 * @var string
+	 */
+	const GROUP_NON_DEPRECATED = 'non-deprecated';
+	/**
+	 * Grouping mode to include the snaks of the best-rank statement(s) per property.
+	 * @see getSnakGroup()
+	 * @var string
+	 */
+	const GROUP_BEST_RANK = 'best-rank';
 
 	/**
 	 * The snak that is being checked.
@@ -76,7 +88,7 @@ interface Context {
 
 	/**
 	 * The group of snaks that the snak being checked resides in.
-	 * For a statement context, this is the main snaks of non-deprecated statements;
+	 * For a statement context, this is the main snaks of other statements;
 	 * for a qualifier context, the qualifiers of the same statement;
 	 * and for a reference context, the snaks of the same reference.
 	 *
@@ -84,10 +96,16 @@ interface Context {
 	 * possibly more than once in the case of a statement context,
 	 * since an entity can have several statements with the same main snak.
 	 *
+	 * For a statement context, the $groupingMode argument specifies
+	 * how the rank of the other statements is considered.
+	 * It has no effect with other types of contexts.
+	 *
+	 * @param $groupingMode string One of the self::GROUP_* constants.
+	 *
 	 * @return Snak[] not a SnakList because for a statement context,
 	 * the returned value might contain the same snak several times.
 	 */
-	public function getSnakGroup();
+	public function getSnakGroup( $groupingMode );
 
 	/**
 	 * Get the cursor that can be used to address check results for this context.

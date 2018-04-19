@@ -154,7 +154,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		list( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
 		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
-		foreach ( $context->getSnakGroup() as $otherSnak ) {
+		foreach ( $context->getSnakGroup( Context::GROUP_NON_DEPRECATED ) as $otherSnak ) {
 			if (
 				!$property->equals( $otherSnak->getPropertyId() ) ||
 				!$otherSnak instanceof PropertyValueSnak

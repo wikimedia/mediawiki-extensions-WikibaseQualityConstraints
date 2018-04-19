@@ -84,7 +84,10 @@ class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( null, $context->getSnakStatement() );
 	}
 
-	public function testGetSnakGroup() {
+	/**
+	 * @dataProvider provideGroupingModes
+	 */
+	public function testGetSnakGroup( $groupingMode ) {
 		$referenceSnak1 = new PropertyNoValueSnak( new PropertyId( 'P100' ) );
 		$referenceSnak2 = new PropertySomeValueSnak( new PropertyId( 'P200' ) );
 		$referenceSnak3 = new PropertyNoValueSnak( new PropertyId( 'P300' ) );
@@ -108,9 +111,16 @@ class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 			->build();
 		$context = new ReferenceContext( $entity, $statement1, $reference1, $referenceSnak1 );
 
-		$snakGroup = $context->getSnakGroup();
+		$snakGroup = $context->getSnakGroup( $groupingMode );
 
 		$this->assertSame( [ $referenceSnak1, $referenceSnak2 ], $snakGroup );
+	}
+
+	public function provideGroupingModes() {
+		return [
+			[ Context::GROUP_NON_DEPRECATED ],
+			[ Context::GROUP_BEST_RANK ],
+		];
 	}
 
 	public function testGetCursor() {

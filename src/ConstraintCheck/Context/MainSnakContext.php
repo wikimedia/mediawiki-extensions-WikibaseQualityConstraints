@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
+use LogicException;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
@@ -39,12 +40,35 @@ class MainSnakContext extends AbstractContext {
 		return $this->statement;
 	}
 
-	public function getSnakGroup() {
+	public function getSnakGroup( $groupingMode ) {
 		/** @var StatementList $statements */
 		$statements = $this->entity->getStatements();
-		return $statements
-			->getByRank( [ Statement::RANK_NORMAL, Statement::RANK_PREFERRED ] )
-			->getMainSnaks();
+		switch ( $groupingMode ) {
+			case Context::GROUP_NON_DEPRECATED:
+				$statements = $statements->getByRank( [
+					Statement::RANK_NORMAL,
+					Statement::RANK_PREFERRED,
+				] );
+				break;
+			case Context::GROUP_BEST_RANK:
+				$statements = $this->getBestStatementsPerPropertyId( $statements );
+				break;
+			default:
+				throw new LogicException( 'Unknown $groupingMode ' . $groupingMode );
+		}
+		return $statements->getMainSnaks();
+	}
+
+	private function getBestStatementsPerPropertyId( StatementList $statements ) {
+		$allBestStatements = new StatementList();
+		foreach ( $statements->getPropertyIds() as $propertyId ) {
+			$bestStatements = $statements->getByPropertyId( $propertyId )
+				->getBestStatements();
+			foreach ( $bestStatements as $bestStatement ) {
+				$allBestStatements->addStatement( $bestStatement );
+			}
+		}
+		return $allBestStatements;
 	}
 
 	public function getCursor() {

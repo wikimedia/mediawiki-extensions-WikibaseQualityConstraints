@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Context;
 
+use LogicException;
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -19,6 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContextCurs
  * @license GPL-2.0-or-later
  */
 class MainSnakContextTest extends \PHPUnit\Framework\TestCase {
+	use PHPUnit4And6Compat;
 
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();
@@ -63,7 +66,7 @@ class MainSnakContextTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $statement, $context->getSnakStatement() );
 	}
 
-	public function testGetSnakGroup() {
+	public function testGetSnakGroup_NonDeprecated() {
 		$statement1 = NewStatement::noValueFor( 'P1' )->build();
 		$statement2 = NewStatement::noValueFor( 'P1' )->build();
 		$statement3 = NewStatement::noValueFor( 'P2' )
@@ -76,9 +79,44 @@ class MainSnakContextTest extends \PHPUnit\Framework\TestCase {
 			->build();
 		$context = new MainSnakContext( $entity, $statement1 );
 
-		$snakGroup = $context->getSnakGroup();
+		$snakGroup = $context->getSnakGroup( Context::GROUP_NON_DEPRECATED );
 
 		$this->assertSame( [ $statement1->getMainSnak(), $statement2->getMainSnak() ], $snakGroup );
+	}
+
+	public function testGetSnakGroup_BestRank() {
+		$statement1 = NewStatement::noValueFor( 'P1' )
+			->withPreferredRank()
+			->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )
+			->withNormalRank()
+			->build();
+		$statement3 = NewStatement::noValueFor( 'P2' )
+			->withNormalRank()
+			->build();
+		$statement4 = NewStatement::noValueFor( 'P3' )
+			->withDeprecatedRank()
+			->build();
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $statement1 )
+			->andStatement( $statement2 )
+			->andStatement( $statement3 )
+			->andStatement( $statement4 )
+			->build();
+		$context = new MainSnakContext( $entity, $statement1 );
+
+		$snakGroup = $context->getSnakGroup( Context::GROUP_BEST_RANK );
+
+		$this->assertSame( [ $statement1->getMainSnak(), $statement3->getMainSnak() ], $snakGroup );
+	}
+
+	public function testGetSnakGroup_UnknownMode() {
+		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$entity = NewItem::withId( 'Q1' )->andStatement( $statement )->build();
+		$context = new MainSnakContext( $entity, $statement );
+
+		$this->setExpectedException( LogicException::class );
+		$context->getSnakGroup( 'unknown-mode' );
 	}
 
 	public function testGetCursor() {
