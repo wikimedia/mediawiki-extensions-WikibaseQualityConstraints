@@ -65,7 +65,7 @@ class SingleValueChecker implements ConstraintChecker {
 		$parameters = [];
 
 		$propertyCount = $this->valueCountCheckerHelper->getPropertyCount(
-			$context->getSnakGroup(),
+			$context->getSnakGroup( Context::GROUP_NON_DEPRECATED ),
 			$propertyId
 		);
 

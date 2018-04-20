@@ -72,7 +72,10 @@ class QualifierContextTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( null, $context->getSnakStatement() );
 	}
 
-	public function testGetSnakGroup() {
+	/**
+	 * @dataProvider provideGroupingModes
+	 */
+	public function testGetSnakGroup( $groupingMode ) {
 		$qualifier1 = new PropertyNoValueSnak( new PropertyId( 'P10' ) );
 		$qualifier2 = new PropertySomeValueSnak( new PropertyId( 'P20' ) );
 		$statement = new Statement(
@@ -85,9 +88,16 @@ class QualifierContextTest extends \PHPUnit\Framework\TestCase {
 			->build();
 		$context = new QualifierContext( $entity, $statement, $qualifier1 );
 
-		$snakGroup = $context->getSnakGroup();
+		$snakGroup = $context->getSnakGroup( $groupingMode );
 
 		$this->assertSame( [ $qualifier1, $qualifier2 ], $snakGroup );
+	}
+
+	public function provideGroupingModes() {
+		return [
+			[ Context::GROUP_NON_DEPRECATED ],
+			[ Context::GROUP_BEST_RANK ],
+		];
 	}
 
 	public function testGetCursor() {
