@@ -23,7 +23,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class MultiValueCheckerTest extends \MediaWikiTestCase {
+class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
 	use ResultAssertions;
 
