@@ -325,6 +325,12 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 				'constraint_parameters' => '{}'
 			],
 			[
+				'constraint_guid' => 'P1$e5da3fee-1097-49fa-a776-d4e96fe35c0b',
+				'pid' => 1,
+				'constraint_type_qid' => $this->getConstraintTypeItemId( 'NoBounds' ),
+				'constraint_parameters' => '{}',
+			],
+			[
 				'constraint_guid' => 'P1$1e2d6650-4249-4ea4-9271-9c95e19b1f41',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'AllowedUnits' ),
