@@ -8,7 +8,14 @@ module.exports = function ( grunt ) {
 
 	grunt.initConfig( {
 		eslint: {
-			all: '.'
+			all: [
+				'*.js',
+				'**/*.js',
+				'!modules/gadget-skip.js',
+				'!tests/coverage/**',
+				'!node_modules/**',
+				'!vendor/**'
+			]
 		},
 		banana: {
 			options: {
@@ -20,6 +27,7 @@ module.exports = function ( grunt ) {
 		jsonlint: {
 			all: [
 				'**/*.json',
+				'!tests/coverage/**',
 				'!node_modules/**',
 				'!vendor/**'
 			]
@@ -28,6 +36,7 @@ module.exports = function ( grunt ) {
 			all: [
 				'**/*.css',
 				'**/*.less',
+				'!tests/coverage/**',
 				'!node_modules/**',
 				'!vendor/**'
 			]
