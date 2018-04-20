@@ -19,6 +19,7 @@ use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleBestValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
@@ -397,6 +398,8 @@ class ConstraintReportFactory {
 						$this->constraintParameterParser,
 						$this->unitConverter
 					),
+				$this->config->get( 'WBQualityConstraintsSingleBestValueConstraintId' )
+					=> new SingleBestValueChecker(),
 			];
 		}
 
