@@ -140,6 +140,8 @@
 	"wbqc-violation-message-range-time-rightopen": "The value for $1 ($2) should not be before $3.",
 	"wbqc-violation-message-range-time-rightopen-leftnow": "The value for $1 ($2) should not be in the past.",
 	"wbqc-violation-message-single-value": "This property should only contain a single value. That is, there should only be one statement using this property.",
+	"wbqc-violation-message-single-best-value-no-preferred": "This property should contain a single “best” value. Of the current multiple values, one should be marked with “preferred” rank.",
+	"wbqc-violation-message-single-best-value-multi-preferred": "This property should contain a single “best” value. There should not be more than one value with “preferred” rank.",
 	"wbqc-violation-message-symmetric": "$1 should also have the symmetric statement $2 $3.",
 	"wbqc-violation-message-type-instance": "Entities using the $1 property should be instances of {{PLURAL:$3|1=$5|2=$5 or $6|one of the following classes}} (or of {{PLURAL:$3|1=a subclass of it|2=a subclass of them|one of their subclasses}}), but $2 currently {{PLURAL:$3|1=isn't.|2=isn't.|isn't: $4}}",
 	"wbqc-violation-message-type-subclass": "Entities using the $1 property should be subclasses of {{PLURAL:$3|1=$5|2=$5 or $6|one of the following classes}} (or of {{PLURAL:$3|1=a subclass of it|2=a subclass of them|one of their subclasses}}), but $2 currently {{PLURAL:$3|1=isn't.|2=isn't.|isn't: $4}}",

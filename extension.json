@@ -324,6 +324,11 @@
 			"description": "The item ID for the 'allowed units constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should only have certain units.",
 			"public": true
 		},
+		"WBQualityConstraintsSingleBestValueConstraintId": {
+			"value": "Q52060874",
+			"description": "The item ID for the 'single best value constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should have a single, distinguished best value per item.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'class' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
