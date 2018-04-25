@@ -132,6 +132,8 @@
 	"wbqc-violation-message-range-time-rightopen": "قيمة $1 ($2) لا ينبغي أن تكون قبل $3.",
 	"wbqc-violation-message-range-time-rightopen-leftnow": "قيمة $1 ($2) لا ينبغي أن تكون في الماضي.",
 	"wbqc-violation-message-single-value": "هذه الخاصية يجب أن تحتوي على قيمة واحدة فقط. وهذا يعني أنه يجب أن يكون هناك بيان واحد فقط مستخدم في هذه الخاصية.",
+	"wbqc-violation-message-single-best-value-no-preferred": "This property should contain a single “best” value. Of the current multiple values, one should be marked with “preferred” rank.\nيجب أن تحتوي هذه الخاصية على قيمة \"أفضل\" واحدة، من بين القيم المتعددة الحالية، يجب تعليم واحدة بالترتيب \"المفضل\".",
+	"wbqc-violation-message-single-best-value-multi-preferred": "يجب أن تحتوي هذه الخاصية على قيمة \"أفضل\" واحدة، يجب ألا يكون هناك أكثر من قيمة واحدة مع الترتيب \"المفضل\".",
 	"wbqc-violation-message-symmetric": "$1 ينبغي أن يكون لها أيضا بيان متماثل $2 $3.",
 	"wbqc-violation-message-type-instance": "الكيانات التي تستخدم خاصية $1 ينبغي أن تكون حالة خاصة من {{PLURAL:$3|1=$5|2=$5 أو $6|واحدة من الفئات التالية}} (أو  {{PLURAL:$3|1=فئة فرعية منها|2=فئة فرعية منها|فئة فرعية من فئاتها الفرعية}})، لكن حالياً $2 {{PLURAL:$3|1=ليست كذلك|2=ليست كذلك|ليست كذلك: $4}}",
 	"wbqc-violation-message-type-subclass": "الكيانات التي تستخدم خاصية $1 ينبغي أن تكون فئة فرعية من من {{PLURAL:$3|1=$5|2=$5 أو $6|واحدة من الفئات التالية}} (أو  {{PLURAL:$3|1=فئة فرعية منها|2=فئة فرعية منها|فئة فرعية من فئاتها الفرعية}})، لكن حالياً $2 {{PLURAL:$3|1=ليست كذلك|2=ليست كذلك|ليست كذلك: $4}}",
