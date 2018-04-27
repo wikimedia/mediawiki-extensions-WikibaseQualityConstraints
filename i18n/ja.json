@@ -121,7 +121,7 @@
 	"wbqc-violation-message-unique-value": "このプロパティの値は他の項目の値と重複してはなりませんが、{{PLURAL:$1|1=$3に同じ値があります。|2=$3と$4に同じ値があります。|以下の項目にに同じ値があります。$2}}",
 	"wbqc-violation-message-valueOnly": "このプロパティは文の値にのみ使用できます。修飾子や情報源には使用できません。",
 	"wbqc-violation-message-reference": "このプロパティは情報源にのみ使用できます。文の値や修飾子には使用できません。",
-	"wbqc-violation-message-noBounds": "$1の値は範囲制限をもちません。",
+	"wbqc-violation-message-noBounds": "$1の値は増減の幅をもちません。",
 	"wbqc-violation-message-units-none": "$1の値は単位を使用しません。",
 	"wbqc-violation-message-units": "$1の値は{{PLURAL:$2|1=$4を単位として使用します。|2=$4または$5を単位として使用します。|以下のいずれかの単位を使用します。 $3}}",
 	"wbqc-violation-message-units-or-none": "$1の値は単位をしないか、または{{PLURAL:$2|1=$4を単位として使用します。|2=$4または$5を単位として使用します。|以下のいずれかの単位を使用します。$3}}",
