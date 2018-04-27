@@ -19,8 +19,15 @@ else
     exit 1
 fi
 
+function localSetting {
+    local name=${1:?name missing}
+    sed -En -- 's/^[^#/]*\$'"$name"' *= *(['"'"'"])([^'"'"'"]+)\1 *;.*/\2/p' "$localSettings"
+}
+
 database=wikidb
-dbprefix="$(sed -En -- 's/^[^#/]*\$wgDBprefix *= *(['"'"'"])([0-9a-zA-Z_]+)\1 *;.*/\2/p' "$localSettings")"
+dbprefix=$(localSetting wgDBprefix)
+dbuser=$(localSetting wgDBuser)
+dbpassword=$(localSetting wgDBpassword)
 
 while getopts d:p: opt; do
     case $opt in
@@ -30,16 +37,26 @@ while getopts d:p: opt; do
     esac
 done
 
+function sql {
+    mysql \
+        --defaults-extra-file=<(printf '[client]\nuser=%s\npassword=%s\n' "$dbuser" "$dbpassword") \
+        --column-names=false \
+        -- \
+        "$database"
+}
+
 mappingTable="${dbprefix}wbs_entity_mapping"
 
-if ! mysql -- "$database" &>/dev/null <<< "SELECT 1 FROM $mappingTable"; then
+if ! sql &>/dev/null <<< "SELECT 1 FROM $mappingTable"; then
     printf >&2 '%s: database "%s" not found, inaccessible, or has no %s table.\n' "$0" "$database" "$mappingTable"
     if [[ $database = wikidb ]]; then
         printf >&2 '(You can specify the database with the -d option: %s -d DATABASE.)\n' "$0"
-    elif ! [[ -f ~/.my.cnf ]]; then
-        printf >&2 '(Please store your login credentials in ~/.my.cnf so that command line access without -u or -p is possible.)\n'
-    elif ! [[ $dbprefix ]]; then
-        printf >&2 '(You can specify the prefix for table names in the database with the -p option: %s -d %s -p PREFIX.)\n' "$0" "$database"
+    fi
+    if [[ -z $dbuser || -z $dbpassword ]]; then
+        printf >&2 '(Database user and/or password could not be read from LocalSettings.php, consider storing them in ~/.mylogin.cnf so that command line access without -u or -p is possible.)\n'
+    fi
+    if [[ -z $dbprefix ]]; then
+        printf >&2 '(No database prefix found in LocalSettings.php; if your wiki has a prefix for table names set somewhere else, you can specify it with the -p option: %s -d %s -p PREFIX.)\n' "$0" "$database"
     fi
     exit 1
 fi
@@ -67,7 +84,7 @@ sed -i "
       (.key + " " + .value.value)' \
        -- "$extensionJson" |
         while read -r confName originalId; do
-            localId=$(mysql --column-names=false -- "$database" <<< "SELECT wbs_local_id FROM $mappingTable WHERE wbs_original_id = '$originalId'")
+            localId=$(sql <<< "SELECT wbs_local_id FROM $mappingTable WHERE wbs_original_id = '$originalId'")
             if ! [[ $localId =~ [PQ][0-9]* ]]; then
                 printf >&2 '%s: invalid local ID(s) for original ID %q: %q\n' "$0" "$originalId" "$localId"
                 exit 1
