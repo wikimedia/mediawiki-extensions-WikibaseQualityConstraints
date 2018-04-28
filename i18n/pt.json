@@ -133,6 +133,8 @@
 	"wbqc-violation-message-range-time-rightopen": "O valor de $1 ($2) não deve ser antes de $3.",
 	"wbqc-violation-message-range-time-rightopen-leftnow": "O  valor de $1 ($2) não deve estar no passado.",
 	"wbqc-violation-message-single-value": "Esta propriedade só deve conter um único valor. Por outras palavras, só deveria haver uma declaração a usar esta propriedade.",
+	"wbqc-violation-message-single-best-value-no-preferred": "Esta propriedade só deve conter um único valor, o \"melhor\". Dos vários valores atuais, só um pode ser marcado com a classificação \"preferido\".",
+	"wbqc-violation-message-single-best-value-multi-preferred": "Esta propriedade só deve conter um único valor, o \"melhor\". Não deve haver mais do que um valor com a classificação \"preferido\".",
 	"wbqc-violation-message-symmetric": "$1 também deveria ter a declaração simétrica $2 $3.",
 	"wbqc-violation-message-type-instance": "As entidades que usam a propriedade $1 deveriam ser instâncias de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
 	"wbqc-violation-message-type-subclass": "As entidades que usam a propriedade $1 deveriam ser subclasses de {{PLURAL:$3|1=$5|2=$5 ou $6|uma das seguintes classes}} (ou de {{PLURAL:$3|1=uma subclasse dela|2=uma subclasse delas|uma das subclasses delas}}), mas neste momento $2 {{PLURAL:$3|1=não é.|2=não é.|não é: $4}}",
