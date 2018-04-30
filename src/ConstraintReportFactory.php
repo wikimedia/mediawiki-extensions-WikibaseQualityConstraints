@@ -404,8 +404,7 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsAllowedEntityTypesConstraintId' )
 					=> new EntityTypeChecker(
 						$this->constraintParameterParser,
-						$this->constraintParameterRenderer,
-						$this->config->get( 'WBQualityConstraintsEntityTypeMapping' )
+						$this->constraintParameterRenderer
 					),
 			];
 		}

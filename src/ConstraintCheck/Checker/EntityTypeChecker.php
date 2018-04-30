@@ -29,19 +29,12 @@ class EntityTypeChecker implements ConstraintChecker {
 	 */
 	private $constraintParameterRenderer;
 
-	/**
-	 * @var string[]
-	 */
-	private $entityTypeMapping;
-
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
-		ConstraintParameterRenderer $constraintParameterRenderer,
-		array $entityTypeMapping
+		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;
-		$this->entityTypeMapping = $entityTypeMapping;
 	}
 
 	/**
@@ -71,20 +64,17 @@ class EntityTypeChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
-		$entityTypeItems = $this->parseConstraintParameters( $constraint );
+		$constraintParameters = $constraint->getConstraintParameters();
+		$entityTypes = $this->constraintParameterParser->parseEntityTypesParameter(
+			$constraintParameters,
+			$constraint->getConstraintTypeItemId()
+		);
+		$parameters['item'] = $entityTypes->getEntityTypes();
 
-		$entityTypes = [];
-		foreach ( $entityTypeItems as $entityTypeItem ) {
-			if ( array_key_exists( $entityTypeItem, $this->entityTypeMapping ) ) {
-				$entityTypes[] = $this->entityTypeMapping[$entityTypeItem];
-			}
-		}
-		$parameters['item'] = $entityTypes;
-
-		if ( !in_array( $context->getEntity()->getType(), $entityTypes ) ) {
+		if ( !in_array( $context->getEntity()->getType(), $entityTypes->getEntityTypes() ) ) {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-entityType' ) )
 				->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY )
-				->withItemIdSnakValueList( $entityTypeItems, Role::CONSTRAINT_PARAMETER_VALUE );
+				->withEntityIdList( $entityTypes->getEntityTypeItemIds(), Role::CONSTRAINT_PARAMETER_VALUE );
 
 			return new CheckResult(
 				$context,
@@ -98,36 +88,13 @@ class EntityTypeChecker implements ConstraintChecker {
 		return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE );
 	}
 
-	/**
-	 * @param Constraint $constraint
-	 * @return string[]
-	 */
-	private function parseConstraintParameters( Constraint $constraint ) {
-		$entityTypeItems = [];
-		$parsedConstraintParams = $this->constraintParameterParser->parseItemsParameter(
-			$constraint->getConstraintParameters(),
-			$constraint->getConstraintTypeItemId(),
-			true
-		);
-
-		foreach ( $parsedConstraintParams as $constraintParam ) {
-			if ( !$constraintParam->isValue() ) {
-				continue;
-			}
-			$entityTypeItems[] = $constraintParam->getItemId()->getSerialization();
-		}
-
-		return $entityTypeItems;
-	}
-
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parseItemsParameter(
+			$this->constraintParameterParser->parseEntityTypesParameter(
 				$constraintParameters,
-				$constraint->getConstraintTypeItemId(),
-				true
+				$constraint->getConstraintTypeItemId()
 			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;

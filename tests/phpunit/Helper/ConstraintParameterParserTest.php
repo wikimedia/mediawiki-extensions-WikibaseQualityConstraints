@@ -1174,4 +1174,50 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertTrue( $unitsParameter->getUnitlessAllowed() );
 	}
 
+	public function testParseEntityTypesParameter_Item() {
+		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$entityTypeMapping = $this->getDefaultConfig()->get( 'WBQualityConstraintsEntityTypeMapping' );
+		$itemId = new ItemId( array_flip( $entityTypeMapping )['item'] );
+		$snak = new PropertyValueSnak( new PropertyId( $qualifierId ), new EntityIdValue( $itemId ) );
+
+		$entityTypesParameter = $this->getConstraintParameterParser()
+			->parseEntityTypesParameter(
+				[ $qualifierId => [
+					$this->getSnakSerializer()->serialize( $snak ),
+				] ],
+				'Q52004125'
+			);
+
+		$this->assertSame( [ 'item' ], $entityTypesParameter->getEntityTypes() );
+		$this->assertEquals( [ $itemId ], $entityTypesParameter->getEntityTypeItemIds() );
+	}
+
+	public function testParseEntityTypesParameter_Missing() {
+		$this->assertThrowsConstraintParameterException(
+			'parseEntityTypesParameter',
+			[
+				[],
+				'Q52004125',
+			],
+			'wbqc-violation-message-parameter-needed'
+		);
+	}
+
+	public function testParseEntityTypesParameter_UnknownItem() {
+		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$itemId = new ItemId( 'Q1' );
+		$snak = new PropertyValueSnak( new PropertyId( $qualifierId ), new EntityIdValue( $itemId ) );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseEntityTypesParameter',
+			[
+				[ $qualifierId => [
+					$this->getSnakSerializer()->serialize( $snak ),
+				] ],
+				'Q52004125',
+			],
+			'wbqc-violation-message-parameter-oneof'
+		);
+	}
+
 }
