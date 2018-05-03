@@ -26,7 +26,7 @@
 	"wbqc-constraintreport-status-warning": "Предупреждение",
 	"wbqc-constraintreport-status-not-in-scope": "Вне области действия",
 	"wbqc-constraintreport-result-table-header-status": "Состояние",
-	"wbqc-constraintreport-result-table-header-property": "Имущество",
+	"wbqc-constraintreport-result-table-header-property": "Свойство",
 	"wbqc-constraintreport-result-table-header-message": "Сообщение",
 	"wbqc-constraintreport-result-table-header-constraint": "Ограничение",
 	"wbqc-constraintreport-result-link-to-claim": "перейти к утверждению",

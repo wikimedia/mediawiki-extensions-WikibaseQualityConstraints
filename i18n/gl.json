@@ -27,6 +27,8 @@
 	"wbqc-constraintreport-status-warning": "Aviso",
 	"wbqc-constraintreport-status-not-in-scope": "Fóra do ámbito",
 	"wbqc-constraintreport-result-table-header-status": "Estado",
+	"wbqc-constraintreport-result-table-header-property": "Propiedade",
+	"wbqc-constraintreport-result-table-header-message": "Mensaxe",
 	"wbqc-constraintreport-result-table-header-constraint": "Restrición",
 	"wbqc-constraintreport-result-link-to-claim": "ir a afirmación",
 	"wbqc-constraintreport-result-link-to-constraint": "ir a restrición",
