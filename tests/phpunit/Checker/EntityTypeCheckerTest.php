@@ -29,13 +29,19 @@ class EntityTypeCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $entityTypeChecker;
 
+	private $itemEntityType;
+
+	private $propertyEntityType;
+
 	protected function setUp() {
 		parent::setUp();
 		$this->entityTypeChecker = new EntityTypeChecker(
 			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer(),
-			[ 'Q12' => 'item', 'Q32' => 'property' ]
+			$this->getConstraintParameterRenderer()
 		);
+		$entityTypeMapping = $this->getDefaultConfig()->get( 'WBQualityConstraintsEntityTypeMapping' );
+		$this->itemEntityType = array_flip( $entityTypeMapping )['item'];
+		$this->propertyEntityType = array_flip( $entityTypeMapping )['property'];
 	}
 
 	public function testEntityTypeConstraintValid() {
@@ -45,7 +51,7 @@ class EntityTypeCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->entityTypeChecker->checkConstraint(
 			new FakeSnakContext( $statement->getMainSnak() ),
-			$this->getConstraintMock( $this->itemsParameter( [ 'Q12' ] ) )
+			$this->getConstraintMock( $this->itemsParameter( [ $this->itemEntityType ] ) )
 		);
 
 		$this->assertCompliance( $result );
@@ -58,7 +64,7 @@ class EntityTypeCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->entityTypeChecker->checkConstraint(
 			new FakeSnakContext( $statement->getMainSnak() ),
-			$this->getConstraintMock( $this->itemsParameter( [ 'Q32' ] ) )
+			$this->getConstraintMock( $this->itemsParameter( [ $this->propertyEntityType ] ) )
 		);
 
 		$this->assertViolation( $result, 'wbqc-violation-message-entityType' );

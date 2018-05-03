@@ -802,4 +802,69 @@ class ConstraintParameterParser {
 		return new UnitsParameter( $unitItems, $unitQuantities, $unitlessAllowed );
 	}
 
+	/**
+	 * Turn an ItemIdSnakValue into a single entity type parameter.
+	 *
+	 * @param ItemIdSnakValue $item
+	 * @return EntityTypesParameter
+	 * @throws ConstraintParameterException
+	 */
+	private function parseEntityTypeItem( ItemIdSnakValue $item ) {
+		$entityTypeMapping = $this->config->get( 'WBQualityConstraintsEntityTypeMapping' );
+		$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+
+		if ( !$item->isValue() ) {
+			throw new ConstraintParameterException(
+				( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+			);
+		}
+
+		$itemId = $item->getItemId()->getSerialization();
+		if ( !array_key_exists( $itemId, $entityTypeMapping ) ) {
+			$entityTypeItemIds = array_map(
+				function ( $itemId ) {
+					return new ItemId( $itemId );
+				},
+				array_keys( $entityTypeMapping )
+			);
+			throw new ConstraintParameterException(
+				( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityIdList( $entityTypeItemIds, Role::CONSTRAINT_PARAMETER_VALUE )
+			);
+		}
+
+		return new EntityTypesParameter( [ $entityTypeMapping[$itemId] ], [ $item->getItemId() ] );
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return EntityTypesParameter
+	 */
+	public function parseEntityTypesParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$entityTypes = [];
+		$entityTypeItemIds = [];
+		$items = $this->parseItemsParameter( $constraintParameters, $constraintTypeItemId, true );
+
+		foreach ( $items as $item ) {
+			$entityType = $this->parseEntityTypeItem( $item );
+			$entityTypes = array_merge( $entityTypes, $entityType->getEntityTypes() );
+			$entityTypeItemIds = array_merge( $entityTypeItemIds, $entityType->getEntityTypeItemIds() );
+		}
+
+		if ( empty( $entityTypes ) ) {
+			// @codeCoverageIgnoreStart
+			throw new LogicException(
+				'The "entity types" parameter is required, ' .
+				'and yet we seem to be missing any allowed entity type'
+			);
+			// @codeCoverageIgnoreEnd
+		}
+
+		return new EntityTypesParameter( $entityTypes, $entityTypeItemIds );
+	}
+
 }
