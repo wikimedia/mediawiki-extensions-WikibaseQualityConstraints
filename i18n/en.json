@@ -158,6 +158,7 @@
 	"wbqc-violation-message-units": "The value for $1 should have {{PLURAL:$2|1=the unit $4.|2=the unit $4 or $5.|one of the following units: $3}}",
 	"wbqc-violation-message-units-or-none": "The value for $1 should have {{PLURAL:$2|1=the unit $4|2=the unit $4 or $5|one of the following units}} or be {{PLURAL:$2|1=unitless.|2=unitless.|unitless: $3}}",
 	"wbqc-violation-message-entityType": "The property $1 should not be used on this type of entity, the only valid {{PLURAL:$2|1=entity type is $4.|2=entity types are $4 and $5.|entity types are: $3}}",
+	"wbqc-violation-message-none-of": "The value for $1 should not be {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following:$3}}",
 
 	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such."
 }

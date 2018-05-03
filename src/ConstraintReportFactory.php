@@ -19,6 +19,7 @@ use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\EntityTypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoneOfChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleBestValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -403,6 +404,11 @@ class ConstraintReportFactory {
 					=> new SingleBestValueChecker(),
 				$this->config->get( 'WBQualityConstraintsAllowedEntityTypesConstraintId' )
 					=> new EntityTypeChecker(
+						$this->constraintParameterParser,
+						$this->constraintParameterRenderer
+					),
+				$this->config->get( 'WBQualityConstraintsNoneOfConstraintId' )
+					=> new NoneOfChecker(
 						$this->constraintParameterParser,
 						$this->constraintParameterRenderer
 					),
