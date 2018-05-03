@@ -329,6 +329,11 @@
 			"description": "The item ID for the 'single best value constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should have a single, distinguished best value per item.",
 			"public": true
 		},
+		"WBQualityConstraintsAllowedEntityTypesConstraintId": {
+			"value": "Q52004125",
+			"description": "The item ID for the 'allowed entity types constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property can be used only in certain entity types (e.g. only items).",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'class' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
@@ -432,6 +437,15 @@
 		"WBQualityConstraintsSecondUnit": {
 			"value": "http://www.wikidata.org/entity/Q11574",
 			"description": "The unit used for a quantity that represents a difference between two dates, in seconds. Note that for entity units, the full concept URI must be used, not just the entity ID.",
+			"public": true
+		},
+		"WBQualityConstraintsEntityTypeMapping": {
+			"value": {
+				"Q29934200": "item",
+				"Q18616576": "property",
+				"Q51885771": "lexeme"
+			},
+			"description": "Mapping of items describing entity types to the entity type",
 			"public": true
 		}
 	},
