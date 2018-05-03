@@ -810,7 +810,6 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException
 	 */
 	private function parseEntityTypeItem( ItemIdSnakValue $item ) {
-		$entityTypeMapping = $this->config->get( 'WBQualityConstraintsEntityTypeMapping' );
 		$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 
 		if ( !$item->isValue() ) {
@@ -820,22 +819,31 @@ class ConstraintParameterParser {
 			);
 		}
 
-		$itemId = $item->getItemId()->getSerialization();
-		if ( !array_key_exists( $itemId, $entityTypeMapping ) ) {
-			$entityTypeItemIds = array_map(
-				function ( $itemId ) {
-					return new ItemId( $itemId );
-				},
-				array_keys( $entityTypeMapping )
-			);
-			throw new ConstraintParameterException(
-				( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-					->withEntityIdList( $entityTypeItemIds, Role::CONSTRAINT_PARAMETER_VALUE )
-			);
+		$itemId = $item->getItemId();
+		switch ( $itemId->getSerialization() ) {
+			case $this->config->get( 'WBQualityConstraintsWikibaseItemId' ):
+				$entityType = 'item';
+				break;
+			case $this->config->get( 'WBQualityConstraintsWikibasePropertyId' ):
+				$entityType = 'property';
+				break;
+			case $this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ):
+				$entityType = 'lexeme';
+				break;
+			default:
+				$allowed = [
+					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseItemId' ) ),
+					new ItemId( $this->config->get( 'WBQualityConstraintsWikibasePropertyId' ) ),
+					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ) ),
+				];
+				throw new ConstraintParameterException(
+					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
+						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withEntityIdList( $allowed, Role::CONSTRAINT_PARAMETER_VALUE )
+				);
 		}
 
-		return new EntityTypesParameter( [ $entityTypeMapping[$itemId] ], [ $item->getItemId() ] );
+		return new EntityTypesParameter( [ $entityType ], [ $itemId ] );
 	}
 
 	/**

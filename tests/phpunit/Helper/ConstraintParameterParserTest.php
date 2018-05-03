@@ -1176,8 +1176,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 	public function testParseEntityTypesParameter_Item() {
 		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-		$entityTypeMapping = $this->getDefaultConfig()->get( 'WBQualityConstraintsEntityTypeMapping' );
-		$itemId = new ItemId( array_flip( $entityTypeMapping )['item'] );
+		$itemId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsWikibaseItemId' ) );
 		$snak = new PropertyValueSnak( new PropertyId( $qualifierId ), new EntityIdValue( $itemId ) );
 
 		$entityTypesParameter = $this->getConstraintParameterParser()

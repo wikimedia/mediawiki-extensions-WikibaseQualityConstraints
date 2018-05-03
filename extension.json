@@ -424,6 +424,21 @@
 			"description": "The item ID of the 'constraint checked on references' item, which, when used in a 'constraint scope' qualifier of a 'property constraint' statement on a property, indicates that the constraint should be checked on the reference snaks of a statement.",
 			"public": true
 		},
+		"WBQualityConstraintsWikibaseItemId": {
+			"value": "Q29934200",
+			"description": "The item ID of the 'wikibase item' item, which represents the 'item' entity type for 'allowed entity types' constraints.",
+			"public": true
+		},
+		"WBQualityConstraintsWikibasePropertyId": {
+			"value": "Q18616576",
+			"description": "The item ID of the 'wikibase property' item, which represents the 'property' entity type for 'allowed entity types' constraints.",
+			"public": true
+		},
+		"WBQualityConstraintsWikibaseLexemeId": {
+			"value": "Q51885771",
+			"description": "The item ID of the 'wikibase lexeme' item, which represents the 'lexeme' entity type for 'allowed entity types' constraints.",
+			"public": true
+		},
 		"WBQualityConstraintsPropertiesWithViolatingQualifiers": {
 			"value": [],
 			"description": "Property IDs of statements whose qualifiers are expected to violate constraints, and where constraints checks are therefore skipped, as if the subject entity was an exception to the constraints defined on the qualifier properties.",
@@ -437,15 +452,6 @@
 		"WBQualityConstraintsSecondUnit": {
 			"value": "http://www.wikidata.org/entity/Q11574",
 			"description": "The unit used for a quantity that represents a difference between two dates, in seconds. Note that for entity units, the full concept URI must be used, not just the entity ID.",
-			"public": true
-		},
-		"WBQualityConstraintsEntityTypeMapping": {
-			"value": {
-				"Q29934200": "item",
-				"Q18616576": "property",
-				"Q51885771": "lexeme"
-			},
-			"description": "Mapping of items describing entity types to the entity type",
 			"public": true
 		}
 	},
