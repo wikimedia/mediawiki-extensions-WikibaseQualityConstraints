@@ -430,7 +430,7 @@
 			"public": true
 		},
 		"WBQualityConstraintsWikibasePropertyId": {
-			"value": "Q18616576",
+			"value": "Q29934218",
 			"description": "The item ID of the 'wikibase property' item, which represents the 'property' entity type for 'allowed entity types' constraints.",
 			"public": true
 		},
