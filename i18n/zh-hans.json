@@ -148,5 +148,7 @@
 	"wbqc-violation-message-units-none": "$1的值不应拥有单位。",
 	"wbqc-violation-message-units": "$1的值应拥有{{PLURAL:$2|1=单位$4。|2=单位$4或$5之一。|以下单位之一：$3}}",
 	"wbqc-violation-message-units-or-none": "$1的值应拥有{{PLURAL:$2|1=单位$4|2=单位$4或$5之一|以下单位之一}}，或者{{PLURAL:$2|1=没有单位。|2=没有单位。|没有单位：$3}}",
+	"wbqc-violation-message-entityType": "属性$1不应用于此种类型的实体，有效的实体{{PLURAL:$2|1=仅为$4。|2=仅为$4和$5。|只有：$3}}",
+	"wbqc-violation-message-none-of": "$1的值不应为{{PLURAL:$2|1=$4。|2=$4或$5之一。|以下值之一：$3}}",
 	"wbqc-violation-message-exception": "此实体是该约束的已知例外，并已如此标记。"
 }

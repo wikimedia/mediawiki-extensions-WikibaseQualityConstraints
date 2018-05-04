@@ -141,5 +141,6 @@
 	"wbqc-violation-message-units": "Der Wert für $1 sollte {{PLURAL:$2|1=die Einheit $4 haben.|2=die Einheit $4 oder $5 haben.|eine der folgenden Einheiten haben: $3}}",
 	"wbqc-violation-message-units-or-none": "Der Wert für $1 sollte {{PLURAL:$2|1=die Einheit $4|2=die Einheit $4 oder $5|eine der folgenden Einheiten}} haben oder {{PLURAL:$2|1=ohne Einheit sein.|2=ohne Einheit sein.|ohne Einheit sein: $3}}",
 	"wbqc-violation-message-entityType": "Die Eigenschaft $1 sollte nicht auf diesem Objekttyp verwendet werden, {{PLURAL:$2|1=der einzig gültige Objekttyp ist $4.|2=die einzig gültigen Objekttypen sind $4 und $5.|die einzig gültigen Objekttypen sind: $3}}",
+	"wbqc-violation-message-none-of": "Der Wert für $1 sollte nicht {{PLURAL:$2|1=$4 sein.|2=entweder $4 oder $5 sein.|einer der folgenden sein: $3}}",
 	"wbqc-violation-message-exception": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert."
 }
