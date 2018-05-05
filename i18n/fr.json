@@ -156,7 +156,7 @@
 	"wbqc-violation-message-units-none": "La valeur pour $1 ne doit pas avoir d’unité.",
 	"wbqc-violation-message-units": "La valeur pour $1 doit avoir {{PLURAL:$2|1=l’unité $4.|2=l’unité $4 ou $5.|une des unités suivantes : $3}}",
 	"wbqc-violation-message-units-or-none": "La valeur pour $1 doit avoir {{PLURAL:$2|1=l’unité $4|2=l’unité $4 ou $5|une des unités suivantes}} ou être {{PLURAL:$2|1=sans unité.|2=sans unité.|sans unité : $3}}",
-	"wbqc-violation-message-entityType": "La propriété $1 ne doit pas être utilisée sur ce type d’entité, {{PLURAL:$2|1=le seul type d’entité valide est $4.|2=les seuls types d’entité valides sont $4 et $5.|les seuls types d’entité valide sont : $3}}",
+	"wbqc-violation-message-entityType": "La propriété $1 ne doit pas être utilisée sur ce type d’entité, {{PLURAL:$2|1=le seul type d’entité valide est $4.|2=les seuls types d’entités valides sont $4 et $5.|les seuls types d’entités valides sont : $3}}",
 	"wbqc-violation-message-none-of": "La valeur pour $1 ne doit pas être {{PLURAL:$2|1=$4.|2=$4 ou $5.|une des suivantes : $3}}",
 	"wbqc-violation-message-exception": "Cette entrée est une exception connue pour cette contrainte et a été marquée comme telle."
 }
