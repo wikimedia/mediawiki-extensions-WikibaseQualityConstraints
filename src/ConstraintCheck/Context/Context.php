@@ -100,7 +100,7 @@ interface Context {
 	 * how the rank of the other statements is considered.
 	 * It has no effect with other types of contexts.
 	 *
-	 * @param $groupingMode string One of the self::GROUP_* constants.
+	 * @param string $groupingMode One of the self::GROUP_* constants.
 	 *
 	 * @return Snak[] not a SnakList because for a statement context,
 	 * the returned value might contain the same snak several times.
