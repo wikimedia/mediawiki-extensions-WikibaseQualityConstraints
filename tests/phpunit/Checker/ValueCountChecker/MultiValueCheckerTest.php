@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\ValueCountChecker;
 
+use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -13,6 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -25,12 +27,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  */
 class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
-	use ResultAssertions;
-
-	/**
-	 * @var Constraint
-	 */
-	private $constraint;
+	use ConstraintParameters, PHPUnit4And6Compat, ResultAssertions;
 
 	/**
 	 * @var MultiValueChecker
@@ -40,10 +37,7 @@ class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->constraint = $this->getMockBuilder( Constraint::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$this->checker = new MultiValueChecker();
+		$this->checker = new MultiValueChecker( $this->getConstraintParameterParser() );
 	}
 
 	public function testMultiValueConstraint_One() {
@@ -52,8 +46,9 @@ class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			->andStatement( $statement )
 			->build();
 		$context = new MainSnakContext( $item, $statement );
+		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-multi-value' );
 	}
@@ -66,8 +61,9 @@ class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			->andStatement( $statement2 )
 			->build();
 		$context = new MainSnakContext( $item, $statement1 );
+		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -82,10 +78,53 @@ class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			->andStatement( $statement2 )
 			->build();
 		$context = new MainSnakContext( $item, $statement1 );
+		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-multi-value' );
+	}
+
+	public function testMultiValueConstraint_TwoAndWithSameSeparator() {
+		$statement1 = NewStatement::noValueFor( 'P1' )
+			->withQualifier( 'P2', 'foo' )
+			->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )
+			->withQualifier( 'P2', 'foo' )
+			->build();
+		$item = NewItem::withId( 'Q1' )
+			->andStatement( $statement1 )
+			->andStatement( $statement2 )
+			->build();
+		$context = new MainSnakContext( $item, $statement1 );
+		$constraint = $this->getConstraintMock(
+			$this->separatorsParameter( [ 'P2' ] )
+		);
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testMultiValueConstraint_TwoButWithDifferentSeparator() {
+		$statement1 = NewStatement::noValueFor( 'P1' )
+			->withQualifier( 'P2', 'foo' )
+			->build();
+		$statement2 = NewStatement::noValueFor( 'P1' )
+			->withQualifier( 'P2', 'bar' )
+			->build();
+		$item = NewItem::withId( 'Q1' )
+			->andStatement( $statement1 )
+			->andStatement( $statement2 )
+			->build();
+		$context = new MainSnakContext( $item, $statement1 );
+		$constraint = $this->getConstraintMock(
+			$this->separatorsParameter( [ 'P2' ] )
+		);
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-multi-value-separators' );
 	}
 
 	public function testMultiValueConstraint_One_Qualifier() {
@@ -98,8 +137,9 @@ class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			->andStatement( $statement )
 			->build();
 		$context = new QualifierContext( $item, $statement, $qualifier1 );
+		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-multi-value' );
 	}
@@ -114,8 +154,9 @@ class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			->andStatement( $statement )
 			->build();
 		$context = new ReferenceContext( $item, $statement, $reference, $referenceSnak1 );
+		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -127,16 +168,39 @@ class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 		$entity = NewItem::withId( 'Q1' )
 			->build();
 		$context = new MainSnakContext( $entity, $statement );
+		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( $context, $this->constraint );
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
 
 		$this->assertDeprecation( $checkResult );
 	}
 
 	public function testCheckConstraintParameters() {
-		$result = $this->checker->checkConstraintParameters( $this->constraint );
+		$constraint = $this->getConstraintMock();
+
+		$result = $this->checker->checkConstraintParameters( $constraint );
 
 		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * @param array $parameters
+	 *
+	 * @return Constraint
+	 */
+	private function getConstraintMock( array $parameters = [] ) {
+		$mock = $this
+			->getMockBuilder( Constraint::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$mock->expects( $this->any() )
+			->method( 'getConstraintParameters' )
+			->will( $this->returnValue( $parameters ) );
+		$mock->expects( $this->any() )
+			->method( 'getConstraintTypeItemId' )
+			->will( $this->returnValue( 'Q21510857' ) );
+
+		return $mock;
 	}
 
 }

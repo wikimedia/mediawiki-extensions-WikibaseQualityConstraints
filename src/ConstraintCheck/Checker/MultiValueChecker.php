@@ -5,6 +5,8 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -17,11 +19,19 @@ use Wikibase\DataModel\Statement\Statement;
 class MultiValueChecker implements ConstraintChecker {
 
 	/**
+	 * @var ConstraintParameterParser
+	 */
+	private $constraintParameterParser;
+
+	/**
 	 * @var ValueCountCheckerHelper
 	 */
 	private $valueCountCheckerHelper;
 
-	public function __construct() {
+	public function __construct(
+		ConstraintParameterParser $constraintParameterParser
+	) {
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 	}
 
@@ -60,17 +70,27 @@ class MultiValueChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
-		$propertyId = $context->getSnak()->getPropertyId();
-
 		$parameters = [];
 
+		$separators = $this->constraintParameterParser->parseSeparatorsParameter(
+			$constraint->getConstraintParameters()
+		);
+		$parameters['separator'] = $separators;
+
+		$propertyId = $context->getSnak()->getPropertyId();
 		$propertyCount = $this->valueCountCheckerHelper->getPropertyCount(
-			$context->getSnakGroup( Context::GROUP_NON_DEPRECATED ),
+			$context->getSnakGroup( Context::GROUP_NON_DEPRECATED, $separators ),
 			$propertyId
 		);
 
 		if ( $propertyCount <= 1 ) {
-			$message = new ViolationMessage( 'wbqc-violation-message-multi-value' );
+			$message = ( new ViolationMessage(
+					$separators === [] ?
+						'wbqc-violation-message-multi-value' :
+						'wbqc-violation-message-multi-value-separators'
+				) )
+				->withEntityId( $propertyId )
+				->withEntityIdList( $separators );
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = null;
@@ -81,8 +101,14 @@ class MultiValueChecker implements ConstraintChecker {
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {
-		// no parameters
-		return [];
+		$constraintParameters = $constraint->getConstraintParameters();
+		$exceptions = [];
+		try {
+			$this->constraintParameterParser->parseSeparatorsParameter( $constraintParameters );
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		return $exceptions;
 	}
 
 }

@@ -363,9 +363,9 @@ class ConstraintReportFactory {
 						$this->config
 					),
 				$this->config->get( 'WBQualityConstraintsSingleValueConstraintId' )
-					=> new SingleValueChecker(),
+					=> new SingleValueChecker( $this->constraintParameterParser ),
 				$this->config->get( 'WBQualityConstraintsMultiValueConstraintId' )
-					=> new MultiValueChecker(),
+					=> new MultiValueChecker( $this->constraintParameterParser ),
 				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' )
 					=> new UniqueValueChecker(
 						$this->constraintParameterRenderer,
@@ -401,7 +401,7 @@ class ConstraintReportFactory {
 						$this->unitConverter
 					),
 				$this->config->get( 'WBQualityConstraintsSingleBestValueConstraintId' )
-					=> new SingleBestValueChecker(),
+					=> new SingleBestValueChecker( $this->constraintParameterParser ),
 				$this->config->get( 'WBQualityConstraintsAllowedEntityTypesConstraintId' )
 					=> new EntityTypeChecker(
 						$this->constraintParameterParser,
