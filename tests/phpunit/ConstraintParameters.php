@@ -356,4 +356,18 @@ trait ConstraintParameters {
 		) ];
 	}
 
+	public function separatorsParameter( array $separators ) {
+		$separatorId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSeparatorId' );
+		return [
+			$separatorId => array_map(
+				function( $separator ) use ( $separatorId ) {
+					$value = new EntityIdValue( new PropertyId( $separator ) );
+					$snak = new PropertyValueSnak( new PropertyId( $separatorId ), $value );
+					return $this->getSnakSerializer()->serialize( $snak );
+				},
+				$separators
+			)
+		];
+	}
+
 }
