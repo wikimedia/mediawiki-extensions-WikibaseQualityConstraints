@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -97,15 +98,18 @@ interface Context {
 	 * since an entity can have several statements with the same main snak.
 	 *
 	 * For a statement context, the $groupingMode argument specifies
-	 * how the rank of the other statements is considered.
-	 * It has no effect with other types of contexts.
+	 * how the rank of the other statements is considered,
+	 * and statements which have different qualifiers for the properties listed in $separators
+	 * than the current snak are not included in the current snak group.
+	 * Both of these parameters have no effect with other types of contexts.
 	 *
 	 * @param string $groupingMode One of the self::GROUP_* constants.
+	 * @param PropertyId[] $separators Properties that can separate different snak groups.
 	 *
 	 * @return Snak[] not a SnakList because for a statement context,
 	 * the returned value might contain the same snak several times.
 	 */
-	public function getSnakGroup( $groupingMode );
+	public function getSnakGroup( $groupingMode, array $separators = [] );
 
 	/**
 	 * Get the cursor that can be used to address check results for this context.
