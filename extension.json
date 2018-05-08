@@ -409,6 +409,11 @@
 			"description": "The property ID of the 'constraint scope' property (data type: item), which specifies the context(s) in which a constraint is checked.",
 			"public": true
 		},
+		"WBQualityConstraintsSeparatorId": {
+			"value": "P4155",
+			"description": "The property ID of the 'separator' property (data type: property), which specifies the allowed separator(s) for “single value” and “single best value” constraints.",
+			"public": true
+		},
 		"WBQualityConstraintsConstraintCheckedOnMainValueId": {
 			"value": "Q46466787",
 			"description": "The item ID of the 'constraint checked on main value' item, which, when used in a 'constraint scope' qualifier of a 'property constraint' statement on a property, indicates that the constraint should be checked on the main snak of a statement.",

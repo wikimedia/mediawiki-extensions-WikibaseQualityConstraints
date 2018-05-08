@@ -875,4 +875,26 @@ class ConstraintParameterParser {
 		return new EntityTypesParameter( $entityTypes, $entityTypeItemIds );
 	}
 
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @throws ConstraintParameterException if the parameter is invalid
+	 * @return PropertyId[]
+	 */
+	public function parseSeparatorsParameter( array $constraintParameters ) {
+		$separatorId = $this->config->get( 'WBQualityConstraintsSeparatorId' );
+
+		if ( !array_key_exists( $separatorId, $constraintParameters ) ) {
+			return [];
+		}
+
+		$parameters = $constraintParameters[$separatorId];
+		$separators = [];
+
+		foreach ( $parameters as $parameter ) {
+			$separators[] = $this->parsePropertyIdParameter( $parameter, $separatorId );
+		}
+
+		return $separators;
+	}
+
 }

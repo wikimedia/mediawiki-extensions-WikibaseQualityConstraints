@@ -1219,4 +1219,32 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		);
 	}
 
+	public function testParseSeparatorsParameter_NoSeparators() {
+		$separatorsParameter = $this->getConstraintParameterParser()
+			->parseSeparatorsParameter(
+				[]
+			);
+
+		$this->assertEmpty( $separatorsParameter );
+	}
+
+	public function testParseSeparatorsParameter_ThreeSeparators() {
+		$separatorId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSeparatorId' );
+
+		$separatorsParameter = $this->getConstraintParameterParser()
+			->parseSeparatorsParameter( [ $separatorId => [
+				$this->serializePropertyId( 'P1' ),
+				$this->serializePropertyId( 'P2' ),
+				$this->serializePropertyId( 'P4' ),
+			] ]
+		);
+
+		$expected = [
+			new PropertyId( 'P1' ),
+			new PropertyId( 'P2' ),
+			new PropertyId( 'P4' ),
+		];
+		$this->assertEquals( $expected, $separatorsParameter );
+	}
+
 }
