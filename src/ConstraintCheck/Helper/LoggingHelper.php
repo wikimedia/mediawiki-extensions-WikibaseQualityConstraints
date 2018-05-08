@@ -104,7 +104,12 @@ class LoggingHelper {
 			return;
 		}
 
-		$resultMessage = $result->getMessage()->getMessageKey();
+		$resultMessage = $result->getMessage();
+		if ( $resultMessage !== null ) {
+			$resultMessageKey = $resultMessage->getMessageKey();
+		} else {
+			$resultMessageKey = null;
+		}
 
 		$this->logger->log(
 			$logLevel,
@@ -126,7 +131,7 @@ class LoggingHelper {
 				'statementGuid' => $context->getSnakStatement()->getGuid(),
 				'resultStatus' => $result->getStatus(),
 				'resultParameters' => $result->getParameters(),
-				'resultMessage' => $resultMessage,
+				'resultMessage' => $resultMessageKey,
 			]
 		);
 	}
