@@ -125,5 +125,6 @@
 	"wbqc-violation-message-units-none": "Hodnota vlastnosti $1 by neměla mít jednotku.",
 	"wbqc-violation-message-units": "Hodnota vlastnosti $1 by měla mít {{PLURAL:$2|1=jednotku $4.|2=jednotku $4 nebo $5.|jednu z následujících jednotek: $3}}",
 	"wbqc-violation-message-units-or-none": "Hodnota vlastnosti $1 by měla mít {{PLURAL:$2|1=jednotku $4.|2=jednotku $4 nebo $5.|jednu z následujících jednotek}} nebo nemít žádnou {{PLURAL:$2|1=jednotku.|2=jednotku.|jednotku: $3}}",
+	"wbqc-violation-message-none-of": "Hodnota vlastnosti $1 by neměla být {{PLURAL:$2|1=$4.|2=$4 ani $5.|žádná z následujících:$3}}",
 	"wbqc-violation-message-exception": "Tato vlastnost je u tohoto omezení uvedena jako známá výjimka, takže tak byla označena."
 }
