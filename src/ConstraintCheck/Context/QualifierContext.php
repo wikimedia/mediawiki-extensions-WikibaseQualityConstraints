@@ -31,7 +31,7 @@ class QualifierContext extends AbstractContext {
 		return self::TYPE_QUALIFIER;
 	}
 
-	public function getSnakGroup( $groupingMode ) {
+	public function getSnakGroup( $groupingMode, array $separators = [] ) {
 		$snaks = $this->statement->getQualifiers();
 		return array_values( $snaks->getArrayCopy() );
 	}

@@ -39,7 +39,7 @@ class ReferenceContext extends AbstractContext {
 		return self::TYPE_REFERENCE;
 	}
 
-	public function getSnakGroup( $groupingMode ) {
+	public function getSnakGroup( $groupingMode, array $separators = [] ) {
 		$snaks = $this->reference->getSnaks();
 		return array_values( $snaks->getArrayCopy() );
 	}
