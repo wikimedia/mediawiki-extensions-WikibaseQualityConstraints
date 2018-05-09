@@ -8,20 +8,15 @@ use SpecialPageTestBase;
 use Wikibase\DataModel\Services\Statement\GuidGenerator;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use DataValues\StringValue;
-use MockMessageLocalizer;
-use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\Property;
-use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\Lib\SnakFormatter;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
@@ -69,25 +64,14 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	protected function newSpecialPage() {
 		$config = $this->getDefaultConfig();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
-		$constraintParameterRenderer = new ConstraintParameterRenderer(
-			new PlainEntityIdFormatter(),
-			$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
-				SnakFormatter::FORMAT_HTML,
-				new FormatterOptions()
-			),
-			new MockMessageLocalizer(),
-			$config
-		);
 		$constraintReportFactory = new ConstraintReportFactory(
 			$wikibaseRepo->getEntityLookup(),
 			$wikibaseRepo->getPropertyDataTypeLookup(),
 			$wikibaseRepo->getStatementGuidParser(),
 			$config,
-			$constraintParameterRenderer,
 			new ConstraintParameterParser(
 				$config,
 				$wikibaseRepo->getBaseDataModelDeserializerFactory(),
-				$constraintParameterRenderer,
 				$wikibaseRepo->getConceptBaseUris()
 			),
 			new ViolationMessageSerializer(),

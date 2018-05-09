@@ -39,8 +39,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new ItemChecker(
 			new JsonFileEntityLookup( __DIR__ ),
 			$this->getConstraintParameterParser(),
-			new ConnectionCheckerHelper(),
-			$this->getConstraintParameterRenderer()
+			new ConnectionCheckerHelper()
 		);
 	}
 

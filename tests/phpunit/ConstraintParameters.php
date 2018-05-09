@@ -7,20 +7,16 @@ use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
-use MockMessageLocalizer;
 use Serializers\Serializer;
-use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\Repo\Parsers\TimeParserFactory;
 use Wikibase\Repo\WikibaseRepo;
 
@@ -38,11 +34,6 @@ trait ConstraintParameters {
 	private $parser;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $renderer;
-
-	/**
 	 * @var Serializer
 	 */
 	private $snakSerializer;
@@ -55,28 +46,11 @@ trait ConstraintParameters {
 			$this->parser = new ConstraintParameterParser(
 				$this->getDefaultConfig(),
 				WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory(),
-				$this->getConstraintParameterRenderer(),
 				[ '' => 'http://wikibase.example/entity/' ]
 			);
 		}
 
 		return $this->parser;
-	}
-
-	public function getConstraintParameterRenderer() {
-		if ( $this->renderer === null ) {
-			$valueFormatter = $this->getMock( ValueFormatter::class );
-			$valueFormatter->method( 'format' )->willReturn( '?' );
-			$entityIdFormatter = new PlainEntityIdFormatter();
-			$this->renderer = new ConstraintParameterRenderer(
-				$entityIdFormatter,
-				$valueFormatter,
-				new MockMessageLocalizer(),
-				$this->getDefaultConfig()
-			);
-		}
-
-		return $this->renderer;
 	}
 
 	/**

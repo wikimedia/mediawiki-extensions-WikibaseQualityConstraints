@@ -52,7 +52,6 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			) );
 		$this->formatChecker = new FormatChecker(
 			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer(),
 			$this->getDefaultConfig(),
 			$sparqlHelper
 		);
@@ -287,7 +286,6 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer(),
 			$this->getDefaultConfig(),
 			null
 		);
@@ -310,7 +308,6 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$sparqlHelper->expects( $this->never() )->method( 'matchesRegularExpression' );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer(),
 			new HashConfig( [ 'WBQualityConstraintsCheckFormatConstraint' => false ] ),
 			$sparqlHelper
 		);

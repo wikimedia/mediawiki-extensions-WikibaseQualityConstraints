@@ -15,7 +15,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
 /**
@@ -30,11 +29,6 @@ class FormatChecker implements ConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @var SparqlHelper
 	 */
 	private $sparqlHelper;
@@ -46,18 +40,15 @@ class FormatChecker implements ConstraintChecker {
 
 	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 * @param Config $config
 	 * @param SparqlHelper|null $sparqlHelper
 	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
-		ConstraintParameterRenderer $constraintParameterRenderer,
 		Config $config,
 		SparqlHelper $sparqlHelper = null
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->config = $config;
 		$this->sparqlHelper = $sparqlHelper;
 	}

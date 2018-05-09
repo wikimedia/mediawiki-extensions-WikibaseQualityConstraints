@@ -34,8 +34,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->checker = new MandatoryQualifiersChecker(
-			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer()
+			$this->getConstraintParameterParser()
 		);
 	}
 

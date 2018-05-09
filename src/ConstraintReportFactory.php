@@ -6,13 +6,10 @@ use Config;
 use IBufferingStatsdDataFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use RequestContext;
 use TitleParser;
-use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
-use Wikibase\Lib\SnakFormatter;
 use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
@@ -102,11 +99,6 @@ class ConstraintReportFactory {
 	private $config;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
@@ -157,22 +149,8 @@ class ConstraintReportFactory {
 
 		if ( $instance === null ) {
 			$wikibaseRepo = WikibaseRepo::getDefaultInstance();
-			$entityIdFormatter = $wikibaseRepo->getEntityIdHtmlLinkFormatterFactory()->getEntityIdFormatter(
-				$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup(
-					$wikibaseRepo->getUserLanguage()
-				)
-			);
 			$config = MediaWikiServices::getInstance()->getMainConfig();
 			$titleParser = MediaWikiServices::getInstance()->getTitleParser();
-			$constraintParameterRenderer = new ConstraintParameterRenderer(
-				$entityIdFormatter,
-				$wikibaseRepo->getValueFormatterFactory()->getValueFormatter(
-					SnakFormatter::FORMAT_HTML,
-					new FormatterOptions()
-				),
-				RequestContext::getMain(),
-				$config
-			);
 			$violationMessageDeserializer = new ViolationMessageDeserializer(
 				$wikibaseRepo->getEntityIdParser(),
 				$wikibaseRepo->getDataValueFactory()
@@ -182,11 +160,9 @@ class ConstraintReportFactory {
 				$wikibaseRepo->getPropertyDataTypeLookup(),
 				$wikibaseRepo->getStatementGuidParser(),
 				$config,
-				$constraintParameterRenderer,
 				new ConstraintParameterParser(
 					$config,
 					$wikibaseRepo->getBaseDataModelDeserializerFactory(),
-					$constraintParameterRenderer,
 					$wikibaseRepo->getConceptBaseUris()
 				),
 				new ViolationMessageSerializer(),
@@ -207,7 +183,6 @@ class ConstraintReportFactory {
 		PropertyDataTypeLookup $propertyDataTypeLookup,
 		StatementGuidParser $statementGuidParser,
 		Config $config,
-		ConstraintParameterRenderer $constraintParameterRenderer,
 		ConstraintParameterParser $constraintParameterParser,
 		ViolationMessageSerializer $violationMessageSerializer,
 		ViolationMessageDeserializer $violationMessageDeserializer,
@@ -221,7 +196,6 @@ class ConstraintReportFactory {
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->violationMessageSerializer = $violationMessageSerializer;
 		$this->violationMessageDeserializer = $violationMessageDeserializer;
@@ -281,7 +255,6 @@ class ConstraintReportFactory {
 			$typeCheckerHelper = new TypeCheckerHelper(
 				$this->lookup,
 				$this->config,
-				$this->constraintParameterRenderer,
 				$sparqlHelper,
 				$this->dataFactory
 			);
@@ -291,60 +264,51 @@ class ConstraintReportFactory {
 					=> new ConflictsWithChecker(
 						$this->lookup,
 						$this->constraintParameterParser,
-						$connectionCheckerHelper,
-						$this->constraintParameterRenderer
+						$connectionCheckerHelper
 					),
 				$this->config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' )
 					=> new ItemChecker(
 						$this->lookup,
 						$this->constraintParameterParser,
-						$connectionCheckerHelper,
-						$this->constraintParameterRenderer
+						$connectionCheckerHelper
 					),
 				$this->config->get( 'WBQualityConstraintsValueRequiresClaimConstraintId' )
 					=> new TargetRequiredClaimChecker(
 						$this->lookup,
 						$this->constraintParameterParser,
-						$connectionCheckerHelper,
-						$this->constraintParameterRenderer
+						$connectionCheckerHelper
 					),
 				$this->config->get( 'WBQualityConstraintsSymmetricConstraintId' )
 					=> new SymmetricChecker(
 						$this->lookup,
-						$connectionCheckerHelper,
-						$this->constraintParameterRenderer
+						$connectionCheckerHelper
 					),
 				$this->config->get( 'WBQualityConstraintsInverseConstraintId' )
 					=> new InverseChecker(
 						$this->lookup,
 						$this->constraintParameterParser,
-						$connectionCheckerHelper,
-						$this->constraintParameterRenderer
+						$connectionCheckerHelper
 					),
 				$this->config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' )
 					=> new QualifierChecker(),
 				$this->config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' )
 					=> new QualifiersChecker(
-						$this->constraintParameterParser,
-						$this->constraintParameterRenderer
+						$this->constraintParameterParser
 					),
 				$this->config->get( 'WBQualityConstraintsMandatoryQualifierConstraintId' )
 					=> new MandatoryQualifiersChecker(
-						$this->constraintParameterParser,
-						$this->constraintParameterRenderer
+						$this->constraintParameterParser
 					),
 				$this->config->get( 'WBQualityConstraintsRangeConstraintId' )
 					=> new RangeChecker(
 						$this->propertyDataTypeLookup,
 						$this->constraintParameterParser,
-						$rangeCheckerHelper,
-						$this->constraintParameterRenderer
+						$rangeCheckerHelper
 					),
 				$this->config->get( 'WBQualityConstraintsDifferenceWithinRangeConstraintId' )
 					=> new DiffWithinRangeChecker(
 						$this->constraintParameterParser,
 						$rangeCheckerHelper,
-						$this->constraintParameterRenderer,
 						$this->config
 					),
 				$this->config->get( 'WBQualityConstraintsTypeConstraintId' )
@@ -358,7 +322,6 @@ class ConstraintReportFactory {
 					=> new ValueTypeChecker(
 						$this->lookup,
 						$this->constraintParameterParser,
-						$this->constraintParameterRenderer,
 						$typeCheckerHelper,
 						$this->config
 					),
@@ -368,26 +331,22 @@ class ConstraintReportFactory {
 					=> new MultiValueChecker(),
 				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' )
 					=> new UniqueValueChecker(
-						$this->constraintParameterRenderer,
 						$sparqlHelper
 					),
 				$this->config->get( 'WBQualityConstraintsFormatConstraintId' )
 					=> new FormatChecker(
 						$this->constraintParameterParser,
-						$this->constraintParameterRenderer,
 						$this->config,
 						$sparqlHelper
 					),
 				$this->config->get( 'WBQualityConstraintsCommonsLinkConstraintId' )
 					=> new CommonsLinkChecker(
 						$this->constraintParameterParser,
-						$this->constraintParameterRenderer,
 						$this->titleParser
 					),
 				$this->config->get( 'WBQualityConstraintsOneOfConstraintId' )
 					=> new OneOfChecker(
-						$this->constraintParameterParser,
-						$this->constraintParameterRenderer
+						$this->constraintParameterParser
 					),
 				$this->config->get( 'WBQualityConstraintsUsedForValuesOnlyConstraintId' )
 					=> new ValueOnlyChecker(),
@@ -404,13 +363,11 @@ class ConstraintReportFactory {
 					=> new SingleBestValueChecker(),
 				$this->config->get( 'WBQualityConstraintsAllowedEntityTypesConstraintId' )
 					=> new EntityTypeChecker(
-						$this->constraintParameterParser,
-						$this->constraintParameterRenderer
+						$this->constraintParameterParser
 					),
 				$this->config->get( 'WBQualityConstraintsNoneOfConstraintId' )
 					=> new NoneOfChecker(
-						$this->constraintParameterParser,
-						$this->constraintParameterRenderer
+						$this->constraintParameterParser
 					),
 			];
 		}

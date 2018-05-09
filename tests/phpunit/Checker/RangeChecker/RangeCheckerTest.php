@@ -60,8 +60,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new RangeChecker(
 			$dataTypeLookup,
 			$this->getConstraintParameterParser(),
-			$rangeCheckerHelper,
-			$this->getConstraintParameterRenderer()
+			$rangeCheckerHelper
 		);
 	}
 

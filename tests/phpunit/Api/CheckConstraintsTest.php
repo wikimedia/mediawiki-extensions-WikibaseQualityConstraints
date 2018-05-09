@@ -41,7 +41,6 @@ use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use ValueFormatters\FormatterOptions;
 use Wikimedia\Assert\Assert;
 use Language;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CheckConstraints
@@ -126,16 +125,9 @@ class CheckConstraintsTest extends ApiTestCase {
 				'WBQualityConstraintsIncludeDetailInApi' => true,
 			] );
 			$entityIdParser = new ItemIdParser();
-			$constraintParameterRenderer = new ConstraintParameterRenderer(
-				$entityIdFormatter,
-				$valueFormatter,
-				new MockMessageLocalizer(),
-				$config
-			);
 			$constraintParameterParser = new ConstraintParameterParser(
 				$config,
 				$repo->getBaseDataModelDeserializerFactory(),
-				$constraintParameterRenderer,
 				$repo->getConceptBaseUris()
 			);
 			$dataFactory = new NullStatsdDataFactory();

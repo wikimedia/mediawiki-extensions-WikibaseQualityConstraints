@@ -17,7 +17,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -31,11 +30,6 @@ class ValueTypeChecker implements ConstraintChecker {
 	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
-
-	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
 
 	/**
 	 * @var EntityLookup
@@ -55,13 +49,11 @@ class ValueTypeChecker implements ConstraintChecker {
 	public function __construct(
 		EntityLookup $lookup,
 		ConstraintParameterParser $constraintParameterParser,
-		ConstraintParameterRenderer $constraintParameterRenderer,
 		TypeCheckerHelper $typeCheckerHelper,
 		Config $config
 	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $constraintParameterParser;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->typeCheckerHelper = $typeCheckerHelper;
 		$this->config = $config;
 	}

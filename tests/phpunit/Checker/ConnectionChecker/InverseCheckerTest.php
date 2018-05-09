@@ -53,8 +53,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new InverseChecker(
 			$this->lookup,
 			$this->getConstraintParameterParser(),
-			$this->connectionCheckerHelper,
-			$this->getConstraintParameterRenderer()
+			$this->connectionCheckerHelper
 		);
 	}
 

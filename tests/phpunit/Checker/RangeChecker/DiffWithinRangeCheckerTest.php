@@ -157,7 +157,6 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new DiffWithinRangeChecker(
 			$this->getConstraintParameterParser(),
 			$rangeCheckerHelper,
-			$this->getConstraintParameterRenderer(),
 			$config
 		);
 	}

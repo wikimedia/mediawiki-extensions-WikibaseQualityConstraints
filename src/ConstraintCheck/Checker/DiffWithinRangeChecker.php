@@ -14,7 +14,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -35,11 +34,6 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	private $rangeCheckerHelper;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @var Config
 	 */
 	private $config;
@@ -47,12 +41,10 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
 		RangeCheckerHelper $rangeCheckerHelper,
-		ConstraintParameterRenderer $constraintParameterRenderer,
 		Config $config
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->config = $config;
 	}
 

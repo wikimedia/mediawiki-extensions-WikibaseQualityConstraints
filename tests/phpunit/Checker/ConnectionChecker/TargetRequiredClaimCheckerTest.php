@@ -54,8 +54,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new TargetRequiredClaimChecker(
 			$this->lookup,
 			$this->getConstraintParameterParser(),
-			$this->connectionCheckerHelper,
-			$this->getConstraintParameterRenderer()
+			$this->connectionCheckerHelper
 		);
 	}
 

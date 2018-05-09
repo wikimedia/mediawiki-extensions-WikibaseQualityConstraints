@@ -58,7 +58,6 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			new TypeCheckerHelper(
 				$this->lookup,
 				$this->getDefaultConfig(),
-				$this->getConstraintParameterRenderer(),
 				null,
 				new NullStatsdDataFactory()
 			),

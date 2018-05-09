@@ -47,7 +47,6 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		return new TypeCheckerHelper(
 			$entityLookup ?: new JsonFileEntityLookup( __DIR__ ),
 			$this->getDefaultConfig(),
-			$this->getConstraintParameterRenderer(),
 			$sparqlHelper,
 			new NullStatsdDataFactory()
 		);
