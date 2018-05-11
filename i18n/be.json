@@ -26,6 +26,7 @@
 	"wbqc-violation-message-commons-link-no-existent": "Павінна існаваць спасылка на Вікісховішча.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Спасылка на Вікісховішча павінна быць карэктнай.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Праверка для прасторы \"$1\" яшчэ не рэалізавана.",
+	"wbqc-violation-message-conflicts-with-property": "Сутнасць не павінна мець сцверджанні адначасова для $1 і $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Сутнасць не павінна мець сцверджання $1, калі яна ўжо мае сцверджанне $2 са значэннем $3.",
 	"wbqc-violation-message-diff-within-range": "Розніца паміж $3 ($4) і $1 ($2) павінна знаходзіцца паміж $5 і $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Розніца паміж $3 ($4) і $1 ($2) павінна быць не больш за $5.",
