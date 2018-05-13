@@ -110,11 +110,13 @@
 	"wbqc-violation-message-range-time-rightopen": "$1の値（$2）は、$3より前になってはなりません。",
 	"wbqc-violation-message-range-time-rightopen-leftnow": "$1の値（$2）は過去の値であってはなりません。",
 	"wbqc-violation-message-single-value": "このプロパティには複数の値を設定してはなりません。つまり、このプロパティを使用できる文は1つだけです。",
+	"wbqc-violation-message-single-best-value-no-preferred": "このプロパティには「最良値」が含まれている必要があります。現在の複数の値の中で、いずれか1つを「推奨」ランクに設定する必要があります。",
+	"wbqc-violation-message-single-best-value-multi-preferred": "このプロパティには「最良値」が含まれている必要があります。「推奨」ランクをただ1つの値にだけ設定する必要があります。",
 	"wbqc-violation-message-symmetric": "$1は対称関係の文「$2：$3」をもつ必要があります。",
-	"wbqc-violation-message-type-instance": "$1を使うエンティティは{{PLURAL:$3|1=$5|2=$5または$6|以下のクラスのいずれか}}（または{{PLURAL:$3|1=そのサブクラス}}）のインスタンスでなければなりませんが、$2は現在{{PLURAL:$3|1=そうなっていません。|2=そうなっていません。|そうなっていません。$4}}",
+	"wbqc-violation-message-type-instance": "$1を使うエンティティは{{PLURAL:$3|1=$5|2=$5または$6|以下のクラスのいずれか}}（または{{PLURAL:$3|その下位クラス}}）のインスタンスでなければなりませんが、$2は現在{{PLURAL:$3|1=そうなっていません。|2=そうなっていません。|そうなっていません。$4}}",
 	"wbqc-violation-message-type-subclass": "$1を使うエンティティは{{PLURAL:$3|1=$5|2=$5または$6|以下のクラスのいずれか}}（または{{PLURAL:$3|その下位クラス}}）の下位クラスでなければなりませんが、$2は現在{{PLURAL:$3|1=そうなっていません。|2=そうなっていません。|そうなっていません。$4}}",
 	"wbqc-violation-message-type-instanceOrSubclass": "$1を使うエンティティは{{PLURAL:$3|1=$5|2=$5または$6|以下のクラスのいずれか}}（または{{PLURAL:$3|その下位クラス}}）のインスタンスまたは下位クラスでなければなりませんが、$2は現在{{PLURAL:$3|1=そうなっていません。|2=そうなっていません。|そうなっていません。$4}}",
-	"wbqc-violation-message-valueType-instance": "$1の値は{{PLURAL:$3|1=$5|2=$5または$6|以下のクラスのいずれか}}（または{{PLURAL:$3|1=そのサブクラス}}）のインスタンスでなければなりませんが、$2は現在{{PLURAL:$3|1=そうなっていません。|2=そうなっていません。|そうなっていません。$4}}",
+	"wbqc-violation-message-valueType-instance": "$1の値は{{PLURAL:$3|1=$5|2=$5または$6|以下のクラスのいずれか}}（または{{PLURAL:$3|その下位クラス}}）のインスタンスでなければなりませんが、$2は現在{{PLURAL:$3|1=そうなっていません。|2=そうなっていません。|そうなっていません。$4}}",
 	"wbqc-violation-message-valueType-subclass": "$1の値は{{PLURAL:$3|1=$5|2=$5または$6|以下のクラスのいずれか}}（または{{PLURAL:$3|その下位クラス}}）の下位クラスでなければなりませんが、$2は現在{{PLURAL:$3|1=そうなっていません。|2=そうなっていません。|そうなっていません。$4}}",
 	"wbqc-violation-message-valueType-instanceOrSubclass": "$1の値は{{PLURAL:$3|1=$5|2=$5または$6|以下のクラスのいずれか}}（または{{PLURAL:$3|その下位クラス}}）のインスタンスまたは下位クラスでなければなりませんが、$2は現在{{PLURAL:$3|1=そうなっていません。|2=そうなっていません。|そうなっていません。$4}}",
 	"wbqc-violation-message-target-required-claim": "$1には{{PLURAL:$3|0=$2の文が必要です。|1=「$2：$5」である文が必要です。|$2の値が以下のいずれかである文が必要です。$4}}",
@@ -125,5 +127,7 @@
 	"wbqc-violation-message-units-none": "$1の値は単位を使用しません。",
 	"wbqc-violation-message-units": "$1の値は{{PLURAL:$2|1=$4を単位として使用します。|2=$4または$5を単位として使用します。|以下のいずれかの単位を使用します。 $3}}",
 	"wbqc-violation-message-units-or-none": "$1の値は単位をしないか、または{{PLURAL:$2|1=$4を単位として使用します。|2=$4または$5を単位として使用します。|以下のいずれかの単位を使用します。$3}}",
+	"wbqc-violation-message-entityType": "$1はこの種類のエンティティに使用してはなりません。有効な{{PLURAL:$2|1=エンティティの種類は$4です。|2=エンティティの種類は$4または$5です。|エンティティの種類は以下になります。$3}}",
+	"wbqc-violation-message-none-of": "$1の値は{{PLURAL:$2|1=$4であってはなりません。|2=$4または$5であってはなりません。|以下のいずれかであってはなりません。$3}}",
 	"wbqc-violation-message-exception": "このエンティティは、この制約の既知の例外です。"
 }
