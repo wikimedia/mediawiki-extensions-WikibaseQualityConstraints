@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -101,6 +102,11 @@ class ConflictsWithChecker implements ConstraintChecker {
 		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), false );
 		$parameters['items'] = $items;
 
+		/** @var StatementList $statementList */
+		$statementList = $context->getEntity()
+			->getStatements()
+			->getByRank( [ Statement::RANK_PREFERRED, Statement::RANK_NORMAL ] );
+
 		/*
 		 * 'Conflicts with' can be defined with
 		 *   a) a property only
@@ -108,7 +114,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 		 */
 		if ( $items === [] ) {
 			$offendingStatement = $this->connectionCheckerHelper->findStatementWithProperty(
-				$context->getEntity()->getStatements(),
+				$statementList,
 				$propertyId
 			);
 			if ( $offendingStatement !== null ) {
@@ -122,7 +128,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 			}
 		} else {
 			$offendingStatement = $this->connectionCheckerHelper->findStatementWithPropertyAndItemIdSnakValues(
-				$context->getEntity()->getStatements(),
+				$statementList,
 				$propertyId,
 				$items
 			);
