@@ -140,6 +140,50 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $checkResult );
 	}
 
+	public function testConflictsWithConstraintPropertyButDeprecated() {
+		$notConflictingStatement = NewStatement::noValueFor( 'P1' )
+			->withDeprecatedRank()
+			->build();
+		$statement = NewStatement::noValueFor( 'P2' )
+			->build();
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $notConflictingStatement )
+			->andStatement( $statement )
+			->build();
+
+		$constraint = $this->getConstraintMock(
+			$this->propertyParameter( 'P1' )
+		);
+		$context = new MainSnakContext( $entity, $statement );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
+	public function testConflictsWithConstraintPropertyAndItemButDeprecated() {
+		$notConflictingStatement = NewStatement::forProperty( 'P1' )
+			->withValue( new ItemId( 'Q10' ) )
+			->withDeprecatedRank()
+			->build();
+		$statement = NewStatement::noValueFor( 'P2' )
+			->build();
+		$entity = NewItem::withId( 'Q1' )
+			->andStatement( $notConflictingStatement )
+			->andStatement( $statement )
+			->build();
+
+		$constraint = $this->getConstraintMock( array_merge(
+			$this->propertyParameter( 'P1' ),
+			$this->itemsParameter( [ 'Q10' ] )
+		) );
+		$context = new MainSnakContext( $entity, $statement );
+
+		$checkResult = $this->checker->checkConstraint( $context, $constraint );
+
+		$this->assertCompliance( $checkResult );
+	}
+
 	public function testConflictsWithConstraintDeprecatedStatement() {
 		$statement = NewStatement::noValueFor( 'P1' )
 				   ->withDeprecatedRank()
