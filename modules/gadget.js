@@ -4,6 +4,15 @@
 	var entityId,
 		cachedStatuses = 'violation|warning|bad-parameters';
 
+	/**
+	 * Create a popup button according to the parameters and append it to the container.
+	 *
+	 * @param {jQuery} $content Content to be shown in the popup.
+	 * @param {jQuery} $container The container to which the button is appended.
+	 * @param {string} icon Identifier for an icon as provided by OOUI.
+	 * @param {string} iconTitleMessageKey The message key of the title attribute of the icon.
+	 * @param {string} [flags] Optional custom flags the {@link OO.ui.PopupButtonWidget} can understand.
+	 */
 	function buildPopup( $content, $container, icon, iconTitleMessageKey, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: icon,
@@ -25,6 +34,13 @@
 		$container.append( widget.$element );
 	}
 
+	/**
+	 * Get a message indicating the given cached status.
+	 *
+	 * @param {*} cached A value indicating the cached status.
+	 * Typically an object with a `maximumAgeInSeconds` member.
+	 * @returns {string} HTML
+	 */
 	function getCachedMessage( cached ) {
 		var maximumAgeInMinutes,
 			maximumAgeInHours,
@@ -52,6 +68,12 @@
 		}
 	}
 
+	/**
+	 * Build a panel for a single constraint check result.
+	 *
+	 * @param {Object} result The constraint check result.
+	 * @returns {wikibase.quality.constraints.ui.ConstraintReportPanel}
+	 */
 	function buildReport( result ) {
 		var config = {
 			status: result.status,
@@ -64,6 +86,13 @@
 		return new wb.quality.constraints.ui.ConstraintReportPanel( config );
 	}
 
+	/**
+	 * Build a panel for a single constraint parameter check result.
+	 * This is to `wbcheckconstraintparameters` what {@link buildReport} is to `wbcheckconstraints`.
+	 *
+	 * @param {Object} problem The constraint parameter check result.
+	 * @returns {OO.ui.PanelLayout}
+	 */
 	function buildParameterReport( problem ) {
 		var $report, $heading, $body;
 
@@ -81,6 +110,16 @@
 		} );
 	}
 
+	/**
+	 * Build a list of constraint reports from a list of panels,
+	 * but return it only if the list is nonempty and contains uncollapsed items.
+	 *
+	 * @param {wikibase.quality.constraints.ui.ConstraintReportPanel[]} reports
+	 * A list of individual report panels as returned by {@link buildReport}.
+	 * @returns {wikibase.quality.constraints.ui.ConstraintReportList|null}
+	 * The list if it contains at least one uncollapsed panel,
+	 * otherwise null.
+	 */
 	function buildReportList( reports ) {
 		var list = wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
 			reports,
@@ -116,6 +155,15 @@
 		}
 	}
 
+	/**
+	 * Extract the constraint check results for a certain statement from the full API response.
+	 *
+	 * @param {Object} entityData The constraint check results for a single entity.
+	 * @param {string} propertyId The serialization of the property ID of the statement.
+	 * @param {string} statementId The ID of the statement.
+	 * @returns {Object|null} An object containing lists of constraint check results,
+	 * or null if the results could not be extracted.
+	 */
 	function extractResultsForStatement( entityData, propertyId, statementId ) {
 		var statements, index, statement, results = {}, qualifierPID, referenceIndex, referenceHash, referencePID;
 		if ( 'claims' in entityData ) {
@@ -201,6 +249,12 @@
 		}
 	}
 
+	/**
+	 * Add constraint check results to a certain statement.
+	 *
+	 * @param {Object} entityData The constraint check results for a single entity.
+	 * @param {jQuery} $statement The statement.
+	 */
 	function addReportsToStatement( entityData, $statement ) {
 		var match = $statement[ 0 ].className.match(
 				/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
@@ -258,6 +312,12 @@
 		}
 	}
 
+	/**
+	 * Add constraint parameter check results for all constraint statements listed in the reports.
+	 *
+	 * @param {Object} parameterReports A map from constraint ID (i.e., constraint statement ID)
+	 * to results for that parameter (overall status and list of problems).
+	 */
 	function addParameterReports( parameterReports ) {
 		var constraintId,
 			status,
@@ -297,6 +357,11 @@
 		}
 	}
 
+	/**
+	 * Get options for the {@link mediaWiki.Api()} constructor.
+	 *
+	 * @returns {Object} The options.
+	 */
 	function mwApiOptions() {
 		var gadgetState = mw.loader.getState( 'wikibase.quality.constraints.gadget' );
 		return {
