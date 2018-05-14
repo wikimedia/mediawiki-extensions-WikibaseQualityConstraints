@@ -2,9 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -17,11 +20,19 @@ use Wikibase\DataModel\Statement\Statement;
 class SingleValueChecker implements ConstraintChecker {
 
 	/**
+	 * @var ConstraintParameterParser
+	 */
+	private $constraintParameterParser;
+
+	/**
 	 * @var ValueCountCheckerHelper
 	 */
 	private $valueCountCheckerHelper;
 
-	public function __construct() {
+	public function __construct(
+		ConstraintParameterParser $constraintParameterParser
+	) {
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 	}
 
@@ -53,6 +64,7 @@ class SingleValueChecker implements ConstraintChecker {
 	 * @param Context $context
 	 * @param Constraint $constraint
 	 *
+	 * @throws ConstraintParameterException
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
@@ -60,17 +72,21 @@ class SingleValueChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
-		$propertyId = $context->getSnak()->getPropertyId();
-
 		$parameters = [];
 
+		$separators = $this->constraintParameterParser->parseSeparatorsParameter(
+			$constraint->getConstraintParameters()
+		);
+		$parameters['separator'] = $separators;
+
+		$propertyId = $context->getSnak()->getPropertyId();
 		$propertyCount = $this->valueCountCheckerHelper->getPropertyCount(
-			$context->getSnakGroup( Context::GROUP_NON_DEPRECATED ),
+			$context->getSnakGroup( Context::GROUP_NON_DEPRECATED, $separators ),
 			$propertyId
 		);
 
 		if ( $propertyCount > 1 ) {
-			$message = new ViolationMessage( 'wbqc-violation-message-single-value' );
+			$message = $this->getViolationMessage( $separators, $propertyId );
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = null;
@@ -80,9 +96,30 @@ class SingleValueChecker implements ConstraintChecker {
 		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
+	/**
+	 * @param PropertyId[] $separators
+	 * @param PropertyId $propertyId
+	 * @return ViolationMessage
+	 */
+	private function getViolationMessage( array $separators, PropertyId $propertyId ) {
+		$messageKey = $separators === [] ?
+			'wbqc-violation-message-single-value' :
+			'wbqc-violation-message-single-value-separators';
+
+		return ( new ViolationMessage( $messageKey ) )
+			->withEntityId( $propertyId )
+			->withEntityIdList( $separators );
+	}
+
 	public function checkConstraintParameters( Constraint $constraint ) {
-		// no parameters
-		return [];
+		$constraintParameters = $constraint->getConstraintParameters();
+		$exceptions = [];
+		try {
+			$this->constraintParameterParser->parseSeparatorsParameter( $constraintParameters );
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		return $exceptions;
 	}
 
 }

@@ -2,10 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -17,11 +20,19 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 class SingleBestValueChecker implements ConstraintChecker {
 
 	/**
+	 * @var ConstraintParameterParser
+	 */
+	private $constraintParameterParser;
+
+	/**
 	 * @var ValueCountCheckerHelper
 	 */
 	private $valueCountCheckerHelper;
 
-	public function __construct() {
+	public function __construct(
+		ConstraintParameterParser $constraintParameterParser
+	) {
+		$this->constraintParameterParser = $constraintParameterParser;
 		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 	}
 
@@ -60,12 +71,16 @@ class SingleBestValueChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
-		$propertyId = $context->getSnak()->getPropertyId();
-
 		$parameters = [];
 
+		$separators = $this->constraintParameterParser->parseSeparatorsParameter(
+			$constraint->getConstraintParameters()
+		);
+		$parameters['separator'] = $separators;
+
+		$propertyId = $context->getSnak()->getPropertyId();
 		$bestRankCount = $this->valueCountCheckerHelper->getPropertyCount(
-			$context->getSnakGroup( Context::GROUP_BEST_RANK ),
+			$context->getSnakGroup( Context::GROUP_BEST_RANK, $separators ),
 			$propertyId
 		);
 
@@ -74,12 +89,12 @@ class SingleBestValueChecker implements ConstraintChecker {
 				$context->getSnakGroup( Context::GROUP_NON_DEPRECATED ),
 				$propertyId
 			);
-			if ( $bestRankCount === $nonDeprecatedCount ) {
-				$messageKey = 'wbqc-violation-message-single-best-value-no-preferred';
-			} else {
-				$messageKey = 'wbqc-violation-message-single-best-value-multi-preferred';
-			}
-			$message = new ViolationMessage( $messageKey );
+			$message = $this->getViolationMessage(
+				$bestRankCount,
+				$nonDeprecatedCount,
+				$separators,
+				$propertyId
+			);
 			$status = CheckResult::STATUS_VIOLATION;
 		} else {
 			$message = null;
@@ -90,8 +105,46 @@ class SingleBestValueChecker implements ConstraintChecker {
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {
-		// no parameters
-		return [];
+		$constraintParameters = $constraint->getConstraintParameters();
+		$exceptions = [];
+		try {
+			$this->constraintParameterParser->parseSeparatorsParameter( $constraintParameters );
+		} catch ( ConstraintParameterException $e ) {
+			$exceptions[] = $e;
+		}
+		return $exceptions;
+	}
+
+	/**
+	 * @param int $bestRankCount
+	 * @param int $nonDeprecatedCount
+	 * @param PropertyId[] $separators
+	 * @param PropertyId $propertyId
+	 * @return ViolationMessage
+	 */
+	private function getViolationMessage(
+		$bestRankCount,
+		$nonDeprecatedCount,
+		$separators,
+		$propertyId
+	) {
+		if ( $bestRankCount === $nonDeprecatedCount ) {
+			if ( $separators === [] ) {
+				$messageKey = 'wbqc-violation-message-single-best-value-no-preferred';
+			} else {
+				$messageKey = 'wbqc-violation-message-single-best-value-no-preferred-separators';
+			}
+		} else {
+			if ( $separators === [] ) {
+				$messageKey = 'wbqc-violation-message-single-best-value-multi-preferred';
+			} else {
+				$messageKey = 'wbqc-violation-message-single-best-value-multi-preferred-separators';
+			}
+		}
+
+		return ( new ViolationMessage( $messageKey ) )
+			->withEntityId( $propertyId )
+			->withEntityIdList( $separators );
 	}
 
 }
