@@ -173,6 +173,14 @@
 		}
 	}
 
+	/**
+	 * Add a popup for the given results to the given snak,
+	 * if there are any results to display.
+	 *
+	 * @param {Array} results A list of constraint check results.
+	 * @param {jQuery} $snak The snak to which the results apply.
+	 * @returns {boolean} Whether any results were added to the snak or not.
+	 */
 	function addResultsToSnak( results, $snak ) {
 		var reports = results.map( buildReport ),
 			list = buildReportList( reports ),
@@ -187,6 +195,9 @@
 				( haveMandatoryViolations ? '' : 'non-' ) + 'mandatory-constraint-violation',
 				haveMandatoryViolations ? 'wbqc-issues-long' : 'wbqc-potentialissues-long'
 			);
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -200,7 +211,8 @@
 			index,
 			qualifier,
 			hash,
-			reference;
+			reference,
+			hasResults;
 
 		if ( results === null ) {
 			return;
@@ -225,14 +237,7 @@
 		for ( hash in results.references ) {
 			for ( index in results.references[ hash ] ) {
 				reference = results.references[ hash ][ index ];
-				mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( function () {
-					var $referenceToggler = $statement
-						.find( '.wikibase-statementview-references-heading .ui-toggler-toggle-collapsed' );
-					if ( $referenceToggler.length > 0 ) {
-						$referenceToggler.data( 'toggler' ).toggle();
-					}
-				} );
-				addResultsToSnak(
+				hasResults = addResultsToSnak(
 					reference.results,
 					$statement.find(
 						'.wikibase-statementview-references ' +
@@ -240,6 +245,15 @@
 						'.wikibase-snakview-' + reference.hash
 					)
 				);
+				if ( hasResults ) {
+					mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( function () {
+						var $referenceToggler = $statement
+							.find( '.wikibase-statementview-references-heading .ui-toggler-toggle-collapsed' );
+						if ( $referenceToggler.length > 0 ) {
+							$referenceToggler.data( 'toggler' ).toggle();
+						}
+					} );
+				}
 			}
 		}
 	}
