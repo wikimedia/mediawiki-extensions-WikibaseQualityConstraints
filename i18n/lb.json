@@ -69,7 +69,7 @@
 	"wbqc-violation-message-range-time-leftopen-rightnow": "De Wäert fir $1 ($2) soll net an der Zukunft sinn.",
 	"wbqc-violation-message-range-time-rightopen": "De Wäert fir $1 ($2) soll net viru(n) $3 sinn.",
 	"wbqc-violation-message-range-time-rightopen-leftnow": "De Wäert fir $1 ($2) däerf net an der Vergaangenheet sinn.",
-	"wbqc-violation-message-single-value": "Dës Eegenschaft soll nëmmen een eenzege Wäert hunn. Also dierft et och just eng Ausso ginn déi dës Eegenschaft benotzt.",
+	"wbqc-violation-message-single-value": "Dës Eegenschaft soll nëmmen een eenzege Wäert hunn.",
 	"wbqc-violation-message-reference": "D'Eegenschaft soll nëmmen a Referenze benotzt ginn an net als Haaptwäert vun enger Ausso oder als Qualificateur.",
 	"wbqc-violation-message-units-none": "De Wäert fir $1 däerf keng Eenheet hunn."
 }
