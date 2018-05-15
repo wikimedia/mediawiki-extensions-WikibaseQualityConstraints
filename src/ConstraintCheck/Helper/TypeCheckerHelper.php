@@ -18,7 +18,6 @@ use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
 /**
@@ -40,11 +39,6 @@ class TypeCheckerHelper {
 	private $config;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @var SparqlHelper
 	 */
 	private $sparqlHelper;
@@ -57,20 +51,17 @@ class TypeCheckerHelper {
 	/**
 	 * @param EntityLookup $lookup
 	 * @param Config $config
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
 	 * @param SparqlHelper|null $sparqlHelper
 	 * @param IBufferingStatsdDataFactory $dataFactory
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		Config $config,
-		ConstraintParameterRenderer $constraintParameterRenderer,
 		SparqlHelper $sparqlHelper = null,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
 		$this->entityLookup = $lookup;
 		$this->config = $config;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->sparqlHelper = $sparqlHelper;
 		$this->dataFactory = $dataFactory;
 	}

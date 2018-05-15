@@ -36,8 +36,7 @@ class NoneOfCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->noneOfChecker = new NoneOfChecker(
-			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer()
+			$this->getConstraintParameterParser()
 		);
 	}
 

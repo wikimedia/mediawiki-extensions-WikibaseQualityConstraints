@@ -16,7 +16,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -41,21 +40,14 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 	 */
 	private $connectionCheckerHelper;
 
-	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
 	public function __construct(
 		EntityLookup $lookup,
 		ConstraintParameterParser $constraintParameterParser,
-		ConnectionCheckerHelper $connectionCheckerHelper,
-		ConstraintParameterRenderer $constraintParameterRenderer
+		ConnectionCheckerHelper $connectionCheckerHelper
 	) {
 		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**

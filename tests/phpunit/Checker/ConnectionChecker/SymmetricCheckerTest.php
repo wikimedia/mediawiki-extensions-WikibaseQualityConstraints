@@ -54,8 +54,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new SymmetricChecker(
 			$this->lookup,
-			$this->connectionCheckerHelper,
-			$this->getConstraintParameterRenderer()
+			$this->connectionCheckerHelper
 		);
 	}
 

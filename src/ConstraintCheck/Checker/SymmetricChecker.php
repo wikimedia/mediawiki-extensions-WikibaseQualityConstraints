@@ -14,7 +14,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -34,19 +33,12 @@ class SymmetricChecker implements ConstraintChecker {
 	 */
 	private $connectionCheckerHelper;
 
-	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
 	public function __construct(
 		EntityLookup $lookup,
-		ConnectionCheckerHelper $connectionCheckerHelper,
-		ConstraintParameterRenderer $constraintParameterRenderer
+		ConnectionCheckerHelper $connectionCheckerHelper
 	) {
 		$this->entityLookup = $lookup;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**

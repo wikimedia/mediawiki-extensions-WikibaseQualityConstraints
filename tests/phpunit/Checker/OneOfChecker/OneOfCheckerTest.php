@@ -38,8 +38,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->oneOfChecker = new OneOfChecker(
-			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer()
+			$this->getConstraintParameterParser()
 		);
 	}
 

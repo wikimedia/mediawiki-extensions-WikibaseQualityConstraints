@@ -89,7 +89,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			new EntityRetrievingDataTypeLookup( $this->lookup ),
 			new StatementGuidParser( $entityIdParser ),
 			$config,
-			$this->getConstraintParameterRenderer(),
 			$this->getConstraintParameterParser(),
 			new ViolationMessageSerializer(),
 			$this->getMockBuilder( ViolationMessageDeserializer::class )

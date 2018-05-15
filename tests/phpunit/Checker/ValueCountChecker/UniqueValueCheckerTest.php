@@ -64,7 +64,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
 		$mock = $this->getSparqlHelperMockFindEntities( $statement, [ new ItemId( 'Q42' ) ] );
 
-		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $mock );
+		$this->checker = new UniqueValueChecker( $mock );
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 
@@ -81,7 +81,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
 		$mock = $this->getSparqlHelperMockFindEntities( $statement, [ new PropertyId( 'P42' ) ] );
 
-		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $mock );
+		$this->checker = new UniqueValueChecker( $mock );
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q6' ) );
 
@@ -98,7 +98,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
 		$mock = $this->getSparqlHelperMockFindEntities( $statement, [] );
 
-		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $mock );
+		$this->checker = new UniqueValueChecker( $mock );
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
@@ -120,7 +120,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			'qualifier',
 			[ new ItemId( 'Q42' ) ]
 		);
-		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $sparqlHelper );
+		$this->checker = new UniqueValueChecker( $sparqlHelper );
 		$context = new QualifierContext( $entity, $statement, $snak );
 		$constraint = $this->getConstraintMock( [] );
 
@@ -143,7 +143,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			'reference',
 			[]
 		);
-		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), $sparqlHelper );
+		$this->checker = new UniqueValueChecker( $sparqlHelper );
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
 		$constraint = $this->getConstraintMock( [] );
 
@@ -156,7 +156,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statement->setGuid( "Q1$56e6a474-4431-fb24-cc15-1d580e467559" );
 
-		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), null );
+		$this->checker = new UniqueValueChecker( null );
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
@@ -168,7 +168,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUniqueValueConstraintDeprecatedStatement() {
-		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), null );
+		$this->checker = new UniqueValueChecker( null );
 		$statement = NewStatement::noValueFor( 'P1' )
 				   ->withDeprecatedRank()
 				   ->build();
@@ -182,7 +182,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckConstraintParameters() {
-		$this->checker = new UniqueValueChecker( $this->getConstraintParameterRenderer(), null );
+		$this->checker = new UniqueValueChecker( null );
 		$constraint = $this->getConstraintMock( [] );
 
 		$result = $this->checker->checkConstraintParameters( $constraint );

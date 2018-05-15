@@ -56,11 +56,9 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$this->checker = new ValueTypeChecker(
 			$this->lookup,
 			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer(),
 			new TypeCheckerHelper(
 				$this->lookup,
 				$this->getDefaultConfig(),
-				$this->getConstraintParameterRenderer(),
 				null,
 				new NullStatsdDataFactory()
 			),

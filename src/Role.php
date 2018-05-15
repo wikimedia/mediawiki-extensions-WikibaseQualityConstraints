@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 use LogicException;
 
 /**
- * Enum of possible roles of a value for ConstraintParameterRenderer.
+ * Enum of possible roles of a value for a {@link ViolationMessage} parameter.
  *
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later

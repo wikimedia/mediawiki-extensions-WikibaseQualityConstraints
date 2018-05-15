@@ -45,7 +45,6 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->commonsLinkChecker = new CommonsLinkChecker(
 			$this->getConstraintParameterParser(),
-			$this->getConstraintParameterRenderer(),
 			$this->getTitleParserMock()
 		);
 		$this->tablesUsed[] = 'page';

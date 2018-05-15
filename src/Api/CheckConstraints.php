@@ -31,7 +31,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintDeserializer;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\ConstraintSerializer;
 
@@ -116,22 +115,14 @@ class CheckConstraints extends ApiBase {
 			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 			$config
 		);
-		$constraintParameterRenderer = new ConstraintParameterRenderer(
-			$entityIdHtmlLinkFormatter,
-			$valueFormatter,
-			$main,
-			$config
-		);
 		$constraintReportFactory = new ConstraintReportFactory(
 			$repo->getEntityLookup(),
 			$repo->getPropertyDataTypeLookup(),
 			$repo->getStatementGuidParser(),
 			$config,
-			$constraintParameterRenderer,
 			new ConstraintParameterParser(
 				$config,
 				$repo->getBaseDataModelDeserializerFactory(),
-				$constraintParameterRenderer,
 				$repo->getConceptBaseUris()
 			),
 			new ViolationMessageSerializer(),

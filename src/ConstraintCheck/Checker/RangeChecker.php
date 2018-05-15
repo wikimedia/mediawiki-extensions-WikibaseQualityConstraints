@@ -19,7 +19,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -44,21 +43,14 @@ class RangeChecker implements ConstraintChecker {
 	 */
 	private $rangeCheckerHelper;
 
-	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
 	public function __construct(
 		PropertyDataTypeLookup $propertyDataTypeLookup,
 		ConstraintParameterParser $constraintParameterParser,
-		RangeCheckerHelper $rangeCheckerHelper,
-		ConstraintParameterRenderer $constraintParameterRenderer
+		RangeCheckerHelper $rangeCheckerHelper
 	) {
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->rangeCheckerHelper = $rangeCheckerHelper;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**

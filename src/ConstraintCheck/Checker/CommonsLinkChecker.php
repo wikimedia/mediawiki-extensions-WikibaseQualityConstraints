@@ -15,7 +15,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Constraint;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
 /**
@@ -30,22 +29,15 @@ class CommonsLinkChecker implements ConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @var TitleParser
 	 */
 	private $titleParser;
 
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
-		ConstraintParameterRenderer $constraintParameterRenderer,
 		TitleParser $titleParser
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->titleParser = $titleParser;
 	}
 

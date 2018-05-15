@@ -11,7 +11,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -22,24 +21,16 @@ use Wikibase\DataModel\Statement\Statement;
 class UniqueValueChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @var SparqlHelper|null
 	 */
 	private $sparqlHelper;
 
 	/**
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer used in error messages
 	 * @param SparqlHelper|null $sparqlHelper Helper to run SPARQL queries, or null if SPARQL is not available.
 	 */
 	public function __construct(
-		ConstraintParameterRenderer $constraintParameterRenderer,
 		SparqlHelper $sparqlHelper = null
 	) {
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->sparqlHelper = $sparqlHelper;
 	}
 

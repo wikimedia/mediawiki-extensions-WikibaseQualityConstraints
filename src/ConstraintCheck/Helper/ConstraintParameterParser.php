@@ -22,7 +22,6 @@ use Wikibase\DataModel\Snak\Snak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 
 /**
@@ -51,11 +50,6 @@ class ConstraintParameterParser {
 	private $snakDeserializer;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @var string[]
 	 */
 	private $conceptBaseUris;
@@ -65,8 +59,6 @@ class ConstraintParameterParser {
 	 *   contains entity IDs used in constraint parameters (constraint statement qualifiers)
 	 * @param DeserializerFactory $factory
 	 *   used to parse constraint statement qualifiers into constraint parameters
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer
-	 *   used to render incorrect parameters for error messages
 	 * @param string[] $conceptBaseUris
 	 *   mapping from repository names to base URIs of concept URIs,
 	 *   used to obtain the full unit string from an entity ID given in constraint parameters
@@ -74,12 +66,10 @@ class ConstraintParameterParser {
 	public function __construct(
 		Config $config,
 		DeserializerFactory $factory,
-		ConstraintParameterRenderer $constraintParameterRenderer,
 		array $conceptBaseUris
 	) {
 		$this->config = $config;
 		$this->snakDeserializer = $factory->newSnakDeserializer();
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 		$this->conceptBaseUris = $conceptBaseUris;
 	}
 

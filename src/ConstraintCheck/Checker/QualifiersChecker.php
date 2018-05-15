@@ -10,7 +10,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -26,20 +25,12 @@ class QualifiersChecker implements ConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param ConstraintParameterRenderer $constraintParameterRenderer should return HTML
 	 */
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser,
-		ConstraintParameterRenderer $constraintParameterRenderer
+		ConstraintParameterParser $constraintParameterParser
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
-		$this->constraintParameterRenderer = $constraintParameterRenderer;
 	}
 
 	/**
