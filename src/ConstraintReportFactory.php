@@ -14,6 +14,7 @@ use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\EntityTypeChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\IntegerChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoneOfChecker;
@@ -369,6 +370,8 @@ class ConstraintReportFactory {
 					=> new NoneOfChecker(
 						$this->constraintParameterParser
 					),
+				$this->config->get( 'WBQualityConstraintsIntegerConstraintId' )
+					=> new IntegerChecker(),
 			];
 		}
 

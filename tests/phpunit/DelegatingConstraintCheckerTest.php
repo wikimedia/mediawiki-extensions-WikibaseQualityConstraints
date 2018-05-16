@@ -343,6 +343,12 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'SingleBestValue' ),
 				'constraint_parameters' => '{}'
 			],
+			[
+				'constraint_guid' => 'P1$398c030c-2ed8-4194-9fb1-3e38610f6a31',
+				'pid' => 1,
+				'constraint_type_qid' => $this->getConstraintTypeItemId( 'Integer' ),
+				'constraint_parameters' => '{}'
+			],
 		];
 		$this->constraintCount = count( array_filter(
 			$constraints,
