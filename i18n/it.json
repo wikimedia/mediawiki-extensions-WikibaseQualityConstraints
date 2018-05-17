@@ -109,5 +109,6 @@
 	"wbqc-violation-message-units-none": "Il valore di $1 non dovrebbe avere un'unità.",
 	"wbqc-violation-message-units": "Il valore per $1 deve avere {{PLURAL:$2|1=l'unità $4.|2=l'unità $4 o $5.|una delle seguenti unità:$3}}",
 	"wbqc-violation-message-units-or-none": "Il valore per $1 deve avere {{PLURAL:$2|1=l'unità $4.|2=l'unità $4 o $5.|una delle seguenti unità:$3}} o essere {{PLURAL:$2|1=adimensionale.|2=adimensionale.|adimensionale: $3}}",
-	"wbqc-violation-message-none-of": "Il valore per $1 non dovrebbe essere {{PLURAL:$2|1=$4.|2=$4 o $5.|uno dei seguenti:$3}}"
+	"wbqc-violation-message-none-of": "Il valore per $1 non dovrebbe essere {{PLURAL:$2|1=$4.|2=$4 o $5.|uno dei seguenti:$3}}",
+	"wbqc-violation-message-integer": "I valori per $1 dovrebbero essere interi, ma $2 ha una parte frazionaria."
 }
