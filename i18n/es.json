@@ -91,7 +91,7 @@
 	"wbqc-violation-message-format": "El valor de $1 ($2) debería coincidir con la expresión regular $3.",
 	"wbqc-violation-message-inverse": "$1 también debería tener la declaración inversa $2 $3.",
 	"wbqc-violation-message-item": "Las entidades que incluyan $1 deben contar también con {{PLURAL:$3|0=una declaración $2.|1=una declaración $2 $5.|una declaración para $2 con uno de los valores siguientes: $4}}",
-	"wbqc-violation-message-multi-value": "Esta propiedad debería contener varios valores. Es decir, deberían haber más de una declaración utilizando esta propiedad.",
+	"wbqc-violation-message-multi-value": "Esta propiedad debe contener varios valores.",
 	"wbqc-violation-message-one-of": "El valor de la propiedad debe ser uno de los elementos definidos en los parámetros.",
 	"wbqc-violation-message-qualifier": "La propiedad solo debería usarse como un calificador.",
 	"wbqc-violation-message-no-qualifiers": "Las declaraciones $1 no deberían tener calificadores.",
