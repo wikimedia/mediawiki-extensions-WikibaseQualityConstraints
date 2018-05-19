@@ -37,6 +37,9 @@
 			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters::newFromGlobalState"
 		}
 	},
+	"Actions": {
+		"constraintsrdf": [ "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintsRdf", "newFromGlobalState" ]
+	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
 		"remoteExtPath": "WikibaseQualityConstraints"

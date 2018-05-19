@@ -25,7 +25,8 @@
 		"serialization/serialization": "^3.2.1|^4.0.0",
 		"wikibase/data-model": "~4.2|~5.0|~6.0|~7.0",
 		"wikibase/data-model-serialization": "^2.0.0",
-		"wikibase/data-model-services": "~2.0|~3.0"
+		"wikibase/data-model-services": "~2.0|~3.0",
+		"wikimedia/purtle": "^1.0.7"
 	},
 	"require-dev": {
 		"jakub-onderka/php-console-highlighter": "0.3.2",
