@@ -124,7 +124,7 @@
 	"wbqc-violation-message-valueType-subclass": "Hodnoty tvrzení vlastnosti $1 by měly být podtřídami {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-valueType-instanceOrSubclass": "Hodnoty tvrzení vlastnosti $1 by měly být instancemi nebo podtřídami {{PLURAL:$3|1=třídy $5|2=tříd $5 nebo $6|jedné z následujících tříd}} (nebo {{PLURAL:$3|její podtřídy|jejich podtříd}}), což ale $2 {{PLURAL:$3|1=není.|2=není.|není: $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 by také měla mít {{PLURAL:$3|0=tvrzení vlastnosti $2.|1=tvrzení vlastnosti $2 s hodnotou $5.|tvrzení vlasnosti $2 s jednou z následujících hodnot:$4}}",
-	"wbqc-violation-message-unique-value": "Hodnota této vlastnosti nesmí být použita v žádné jiné položce, použitá je ale i v {{PLURAL:$1|1=položce $3.|2=položkách $3 a $4.|následujících položkách: $2}}",
+	"wbqc-violation-message-unique-value": "Hodnota této vlastnosti by neměla být použita v žádné jiné položce, použitá je ale i v {{PLURAL:$1|1=položce $3.|2=položkách $3 a $4.|následujících položkách: $2}}",
 	"wbqc-violation-message-valueOnly": "Tato vlastnost by se měla používat pouze jako hlavní hodnota výroku, nikoli jako vymezení či v referencích.",
 	"wbqc-violation-message-reference": "Tato vlastnost by se měla používat pouze v referencích, nikoli jako hlavní hodnota výroku či jako vymezení.",
 	"wbqc-violation-message-noBounds": "Hodnota vlastnosti $1 by neměla mít meze.",
