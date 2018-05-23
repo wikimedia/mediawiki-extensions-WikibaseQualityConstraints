@@ -22,7 +22,6 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
@@ -107,35 +106,13 @@ class CheckConstraints extends ApiBase {
 		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
 		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
-		$titleParser = MediaWikiServices::getInstance()->getTitleParser();
-		$unitConverter = $repo->getUnitConverter();
 		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 		$loggingHelper = new LoggingHelper(
 			$dataFactory,
 			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 			$config
 		);
-		$constraintReportFactory = new ConstraintReportFactory(
-			$repo->getEntityLookup(),
-			$repo->getPropertyDataTypeLookup(),
-			$repo->getStatementGuidParser(),
-			$config,
-			new ConstraintParameterParser(
-				$config,
-				$repo->getBaseDataModelDeserializerFactory(),
-				$repo->getConceptBaseUris()
-			),
-			new ViolationMessageSerializer(),
-			new ViolationMessageDeserializer(
-				$repo->getEntityIdParser(),
-				$repo->getDataValueFactory()
-			),
-			$repo->getRdfVocabulary(),
-			$repo->getEntityIdParser(),
-			$titleParser,
-			$unitConverter,
-			$dataFactory
-		);
+		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 
 		$checkResultsRenderer = new CheckResultsRenderer(
 			$repo->getEntityTitleLookup(),
