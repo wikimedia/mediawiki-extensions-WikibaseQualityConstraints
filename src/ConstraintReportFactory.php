@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use Config;
+use DataValues\DataValueFactory;
 use IBufferingStatsdDataFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
@@ -10,9 +11,16 @@ use TitleParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
+use Wikibase\Lib\Store\EntityNamespaceLookup;
+use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
+use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
 use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
+use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
+use WikibaseQuality\ConstraintReport\Api\ResultsCache;
+use WikibaseQuality\ConstraintReport\Api\ResultsSource;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CitationNeededChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\EntityTypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\IntegerChecker;
@@ -21,6 +29,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoneOfChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleBestValueChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
@@ -51,6 +61,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 
 /**
  * Factory for {@link DelegatingConstraintChecker}
@@ -76,6 +88,31 @@ class ConstraintReportFactory {
 	 * @var ConstraintRepository|null
 	 */
 	private $constraintRepository;
+
+	/**
+	 * @var LoggingHelper|null
+	 */
+	private $loggingHelper;
+
+	/**
+	 * @var CheckResultSerializer|null
+	 */
+	private $checkResultSerializer;
+
+	/**
+	 * @var CheckResultDeserializer|null
+	 */
+	private $checkResultDeserializer;
+
+	/**
+	 * @var WikiPageEntityMetaDataAccessor|null
+	 */
+	private $wikiPageEntityMetaDataAccessor;
+
+	/**
+	 * @var ResultsSource|null
+	 */
+	private $resultsSource;
 
 	// services used by this factory
 
@@ -135,6 +172,16 @@ class ConstraintReportFactory {
 	private $unitConverter;
 
 	/**
+	 * @var DataValueFactory
+	 */
+	private $dataValueFactory;
+
+	/**
+	 * @var EntityNamespaceLookup
+	 */
+	private $entityNamespaceLookup;
+
+	/**
 	 * @var IBufferingStatsdDataFactory
 	 */
 	private $dataFactory;
@@ -172,6 +219,8 @@ class ConstraintReportFactory {
 				$wikibaseRepo->getEntityIdParser(),
 				$titleParser,
 				$wikibaseRepo->getUnitConverter(),
+				$wikibaseRepo->getDataValueFactory(),
+				$wikibaseRepo->getEntityNamespaceLookup(),
 				MediaWikiServices::getInstance()->getStatsdDataFactory()
 			);
 		}
@@ -191,6 +240,8 @@ class ConstraintReportFactory {
 		EntityIdParser $entityIdParser,
 		TitleParser $titleParser,
 		UnitConverter $unitConverter = null,
+		DataValueFactory $dataValueFactory,
+		EntityNamespaceLookup $entityNamespaceLookup,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
 		$this->lookup = $lookup;
@@ -204,6 +255,8 @@ class ConstraintReportFactory {
 		$this->entityIdParser = $entityIdParser;
 		$this->titleParser = $titleParser;
 		$this->unitConverter = $unitConverter;
+		$this->dataValueFactory = $dataValueFactory;
+		$this->entityNamespaceLookup = $entityNamespaceLookup;
 		$this->dataFactory = $dataFactory;
 	}
 
@@ -389,6 +442,111 @@ class ConstraintReportFactory {
 		}
 
 		return $this->constraintRepository;
+	}
+
+	/**
+	 * @return LoggingHelper
+	 */
+	public function getLoggingHelper() {
+		if ( $this->loggingHelper === null ) {
+			$this->loggingHelper = new LoggingHelper(
+				$this->dataFactory,
+				LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
+				$this->config
+			);
+		}
+
+		return $this->loggingHelper;
+	}
+
+	/**
+	 * @return CheckResultSerializer
+	 */
+	public function getCheckResultSerializer() {
+		if ( $this->checkResultSerializer === null ) {
+			$this->checkResultSerializer = new CheckResultSerializer(
+				new ConstraintSerializer(
+					false // constraint parameters are not exposed
+				),
+				new ContextCursorSerializer(),
+				new ViolationMessageSerializer(),
+				false // unnecessary to serialize individual result dependencies
+			);
+		}
+
+		return $this->checkResultSerializer;
+	}
+
+	/**
+	 * @return CheckResultDeserializer
+	 */
+	public function getCheckResultDeserializer() {
+		if ( $this->checkResultDeserializer === null ) {
+			$this->checkResultDeserializer = new CheckResultDeserializer(
+				new ConstraintDeserializer(),
+				new ContextCursorDeserializer(),
+				new ViolationMessageDeserializer(
+					$this->entityIdParser,
+					$this->dataValueFactory
+				),
+				$this->entityIdParser
+			);
+		}
+
+		return $this->checkResultDeserializer;
+	}
+
+	/**
+	 * @return WikiPageEntityMetaDataAccessor
+	 */
+	public function getWikiPageEntityMetaDataAccessor() {
+		if ( $this->wikiPageEntityMetaDataAccessor === null ) {
+			$this->wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
+				$this->entityNamespaceLookup
+			);
+		}
+
+		return $this->wikiPageEntityMetaDataAccessor;
+	}
+
+	/**
+	 * @return ResultsSource
+	 */
+	public function getResultsSource() {
+		if ( $this->resultsSource === null ) {
+			$this->resultsSource = new CheckingResultsSource(
+				$this->getConstraintChecker()
+			);
+
+			if ( $this->config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
+				$this->resultsSource = new CachingResultsSource(
+					$this->resultsSource,
+					ResultsCache::getDefaultInstance(),
+					$this->getCheckResultSerializer(),
+					$this->getCheckResultDeserializer(),
+					$this->getWikiPageEntityMetaDataAccessor(),
+					$this->entityIdParser,
+					$this->config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),
+					$this->getPossiblyStaleConstraintTypes(),
+					$this->config->get( 'WBQualityConstraintsCacheCheckConstraintsMaximumRevisionIds' ),
+					$this->getLoggingHelper()
+				);
+			}
+		}
+
+		return $this->resultsSource;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getPossiblyStaleConstraintTypes() {
+		return [
+			$this->config->get( 'WBQualityConstraintsCommonsLinkConstraintId' ),
+			$this->config->get( 'WBQualityConstraintsTypeConstraintId' ),
+			$this->config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
+			$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
+		];
 	}
 
 }

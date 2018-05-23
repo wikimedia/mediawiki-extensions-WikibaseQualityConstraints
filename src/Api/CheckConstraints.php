@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use ApiBase;
 use ApiMain;
 use IBufferingStatsdDataFactory;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
@@ -14,24 +13,14 @@ use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
 use Wikibase\Lib\SnakFormatter;
-use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
-use WikibaseQuality\ConstraintReport\ConstraintDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
-use WikibaseQuality\ConstraintReport\ConstraintSerializer;
 
 /**
  * API module that performs constraint check of entities, claims and constraint ID
@@ -107,11 +96,6 @@ class CheckConstraints extends ApiBase {
 		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
-		$loggingHelper = new LoggingHelper(
-			$dataFactory,
-			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
-			$config
-		);
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 
 		$checkResultsRenderer = new CheckResultsRenderer(
@@ -125,49 +109,7 @@ class CheckConstraints extends ApiBase {
 			),
 			$config
 		);
-		$resultsSource = new CheckingResultsSource(
-			$constraintReportFactory->getConstraintChecker()
-		);
-		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
-			$wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
-				$repo->getEntityNamespaceLookup()
-			);
-			$entityIdParser = $repo->getEntityIdParser();
-			$checkResultSerializer = new CheckResultSerializer(
-				new ConstraintSerializer(
-					false // this API doesn’t expose the constraint parameters
-				),
-				new ContextCursorSerializer(),
-				new ViolationMessageSerializer(),
-				false // unnecessary to serialize individual result dependencies
-			);
-			$checkResultDeserializer = new CheckResultDeserializer(
-				new ConstraintDeserializer(),
-				new ContextCursorDeserializer(),
-				new ViolationMessageDeserializer(
-					$entityIdParser,
-					$repo->getDataValueFactory()
-				),
-				$entityIdParser
-			);
-			$resultsSource = new CachingResultsSource(
-				$resultsSource,
-				ResultsCache::getDefaultInstance(),
-				$checkResultSerializer,
-				$checkResultDeserializer,
-				$wikiPageEntityMetaDataAccessor,
-				$entityIdParser,
-				$config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),
-				[
-					$config->get( 'WBQualityConstraintsCommonsLinkConstraintId' ),
-					$config->get( 'WBQualityConstraintsTypeConstraintId' ),
-					$config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
-					$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
-				],
-				$config->get( 'WBQualityConstraintsCacheCheckConstraintsMaximumRevisionIds' ),
-				$loggingHelper
-			);
-		}
+		$resultsSource = $constraintReportFactory->getResultsSource();
 
 		return new CheckConstraints(
 			$main,

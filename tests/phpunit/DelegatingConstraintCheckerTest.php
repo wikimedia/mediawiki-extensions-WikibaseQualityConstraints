@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use DataValues\DataValueFactory;
+use DataValues\Deserializers\DataValueDeserializer;
 use DataValues\StringValue;
 use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
@@ -17,6 +19,7 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Lib\Store\EntityNamespaceLookup;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -95,6 +98,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$entityIdParser,
 			$titleParser,
 			null,
+			new DataValueFactory( new DataValueDeserializer() ),
+			new EntityNamespaceLookup( [] ),
 			new NullStatsdDataFactory()
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();

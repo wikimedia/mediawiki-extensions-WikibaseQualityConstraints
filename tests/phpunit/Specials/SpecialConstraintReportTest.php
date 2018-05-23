@@ -2,10 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Specials;
 
+use DataValues\DataValueFactory;
+use DataValues\Deserializers\DataValueDeserializer;
 use MediaWiki\MediaWikiServices;
 use NullStatsdDataFactory;
 use SpecialPageTestBase;
 use Wikibase\DataModel\Services\Statement\GuidGenerator;
+use Wikibase\Lib\Store\EntityNamespaceLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\Item;
@@ -82,6 +85,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getEntityIdParser(),
 			MediaWikiServices::getInstance()->getTitleParser(),
 			null,
+			new DataValueFactory( new DataValueDeserializer() ),
+			new EntityNamespaceLookup( [] ),
 			new NullStatsdDataFactory()
 		);
 
