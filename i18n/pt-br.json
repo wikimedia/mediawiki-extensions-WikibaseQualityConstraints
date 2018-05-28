@@ -3,7 +3,8 @@
 		"authors": [
 			"Felipe L. Ewald",
 			"Eduardo Addad de Oliveira",
-			"Hamilton Abreu"
+			"Hamilton Abreu",
+			"Vagnerrondon"
 		]
 	},
 	"wbqc-constraintreport": "Relatório de restrição",
@@ -156,5 +157,6 @@
 	"wbqc-violation-message-entityType": "A propriedade $1 não deve ser usada neste tipo de entidade; {{PLURAL:$2|1=o único tipo de entidade válido é $4.|2=os únicos tipos de entidade válidos são $4 e $5.|os únicos tipos de entidade válidos são: $3}}",
 	"wbqc-violation-message-none-of": "O valor de $1 não deveria ser {{PLURAL:$2|1=$4.|2=$4 ou $5.|um dos seguintes:$3}}",
 	"wbqc-violation-message-integer": "Os valores de $1 devem ser inteiros, mas $2 tem uma parte fracionária.",
+	"wbqc-violation-message-integer-bounds": "Os valores para $1 devem ser inteiros, mas os valores de $2 têm uma parte fracionária.",
 	"wbqc-violation-message-exception": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal."
 }

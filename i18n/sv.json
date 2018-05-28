@@ -68,10 +68,18 @@
 	"wbqc-violation-message-format": "Värdet för $1 ($2) bör matcha det reguljära uttrycket $3.",
 	"wbqc-violation-message-no-qualifiers": "$1-uttalanden bör inte har några bestämningsord.",
 	"wbqc-violation-message-qualifiers": "$2 är inte ett giltigt bestämningsord för $1 – {{PLURAL:$3|1=det enda giltiga bestämningsordet är $5.|2=de enda giltiga bestämningsorden är $5 och $6.|de enda giltiga bestämningsorden är:$4}}",
+	"wbqc-violation-message-range-parameters-same": "Start- ($1) och slutpunkten ($2) för ett intervall måste inte vara densamma.",
 	"wbqc-violation-message-range-quantity-closed": "Värdet för $1 ($2) bör vara mellan $3 och $4.",
 	"wbqc-violation-message-range-quantity-leftopen": "Värdet för $1 ($2) bör inte vara mer än $3.",
 	"wbqc-violation-message-range-quantity-rightopen": "Värdet för $1 ($2) bör inte vara mer än $3.",
 	"wbqc-violation-message-range-time-closed": "Värdet för $1 ($2) bör vara mellan $3 och $4.",
+	"wbqc-violation-message-range-time-closed-leftnow": "Värdet för $1 ($2) bör vara i framtiden, men inte efter $3.",
+	"wbqc-violation-message-range-time-closed-rightnow": "Värdet för $1 ($2) bör vara i det förflutna, men inte före $3.",
 	"wbqc-violation-message-range-time-leftopen": "Värdet för $1 ($2) bör inte vara efter $3.",
-	"wbqc-violation-message-range-time-rightopen": "Värdet för $1 ($2) bör inte vara innan $3."
+	"wbqc-violation-message-range-time-leftopen-rightnow": "Värdet för $1 ($2) bör vara i framtiden.",
+	"wbqc-violation-message-range-time-rightopen": "Värdet för $1 ($2) bör inte vara innan $3.",
+	"wbqc-violation-message-range-time-rightopen-leftnow": "Värdet för $1 ($2) bör vara i det förflutna.",
+	"wbqc-violation-message-single-value": "Denna egenskap bör endast innehåll ett enda värde.",
+	"wbqc-violation-message-single-value-separators": "Denna egenskap bör endast ha ett enda värde med samma {{PLURAL:$2|1=$4 bestämningsord.|grupp bestämningsord för dessa egenskaper: $3}}",
+	"wbqc-violation-message-target-required-claim": "$1 bör ha {{PLURAL:$3|0=uttalandet $2.|1=uttalandet $2 $5.|ett uttalande för $2 med en av följande värden:$4}}"
 }
