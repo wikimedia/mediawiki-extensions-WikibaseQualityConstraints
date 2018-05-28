@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use DataValues\DecimalValue;
+use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -41,37 +42,69 @@ class IntegerChecker implements ConstraintChecker {
 	}
 
 	public function checkConstraint( Context $context, Constraint $constraint ) {
+		$snak = $context->getSnak();
+
 		if ( $context->getSnak()->getType() !== 'value' ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 		}
 
-		/** @var PropertyValueSnak $snak */
-		$snak = $context->getSnak();
+		$violationMessage = $this->checkSnak( $snak );
 
-		if ( $snak->getDataValue() instanceof DecimalValue ) {
-			return $this->checkDecimalValue( $snak->getDataValue(), $context, $constraint );
-		} elseif ( $snak->getDataValue() instanceof UnboundedQuantityValue ) {
-			return $this->checkDecimalValue( $snak->getDataValue()->getAmount(), $context, $constraint );
-		}
-
-		return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
-	}
-
-	private function checkDecimalValue( DecimalValue $decimalValue, Context $context, Constraint $constraint ) {
-		if ( $decimalValue->getTrimmed()->getFractionalPart() === '' ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
-		}
-
-		$message = ( new ViolationMessage( 'wbqc-violation-message-integer' ) )
-			->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY )
-			->withDataValue( $decimalValue );
 		return new CheckResult(
 			$context,
 			$constraint,
 			[],
-			CheckResult::STATUS_VIOLATION,
-			$message
+			$violationMessage === null ?
+				CheckResult::STATUS_COMPLIANCE :
+				CheckResult::STATUS_VIOLATION,
+			$violationMessage
 		);
+	}
+
+	/**
+	 * @param PropertyValueSnak $snak
+	 * @return ViolationMessage|null
+	 */
+	public function checkSnak( PropertyValueSnak $snak ) {
+		$dataValue = $snak->getDataValue();
+
+		if ( $dataValue instanceof DecimalValue ) {
+			if ( !$this->isInteger( $dataValue ) ) {
+				return $this->getViolationMessage( 'wbqc-violation-message-integer', $snak );
+			}
+		} elseif ( $dataValue instanceof UnboundedQuantityValue ) {
+			if ( !$this->isInteger( $dataValue->getAmount() ) ) {
+				return $this->getViolationMessage( 'wbqc-violation-message-integer', $snak );
+			} elseif (
+				$dataValue instanceof QuantityValue && (
+					!$this->isInteger( $dataValue->getLowerBound() ) ||
+					!$this->isInteger( $dataValue->getUpperBound() )
+				)
+			) {
+				return $this->getViolationMessage( 'wbqc-violation-message-integer-bounds', $snak );
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param DecimalValue $decimalValue
+	 * @return bool
+	 */
+	private function isInteger( DecimalValue $decimalValue ) {
+		return $decimalValue->getTrimmed()->getFractionalPart() === '';
+	}
+
+	/**
+	 * @param string $messageKey
+	 * @param PropertyValueSnak $snak
+	 * @return ViolationMessage
+	 */
+	private function getViolationMessage( $messageKey, PropertyValueSnak $snak ) {
+		return ( new ViolationMessage( $messageKey ) )
+			->withEntityId( $snak->getPropertyId(), Role::CONSTRAINT_PROPERTY )
+			->withDataValue( $snak->getDataValue() );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

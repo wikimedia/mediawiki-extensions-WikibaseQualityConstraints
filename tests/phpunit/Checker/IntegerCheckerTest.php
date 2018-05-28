@@ -53,6 +53,14 @@ class IntegerCheckerTest extends \PHPUnit\Framework\TestCase {
 		$quantityValueDecimal = new QuantityValue( $decimalValue, '1', $decimalValue, $decimalValue );
 		$quantitySnakDecimal = new PropertyValueSnak( $p1, $quantityValueDecimal );
 
+		$quantityValueDecimalWithDecimalBounds = new QuantityValue(
+			$decimalValue,
+			'1',
+			new DecimalValue( 725.13 ),
+			new DecimalValue( 725.07 )
+		);
+		$quantitySnakDecimalWithDecimalBounds = new PropertyValueSnak( $p1, $quantityValueDecimalWithDecimalBounds );
+
 		$quantityValueInteger = new QuantityValue( $integerValue, '1', $integerValue, $integerValue );
 		$quantitySnakInteger = new PropertyValueSnak( $p1, $quantityValueInteger );
 
@@ -78,11 +86,12 @@ class IntegerCheckerTest extends \PHPUnit\Framework\TestCase {
 
 		return [
 			[ $quantitySnakDecimal, 'wbqc-violation-message-integer' ],
+			[ $quantitySnakDecimalWithDecimalBounds, 'wbqc-violation-message-integer' ],
 			[ $unboundedQuantitySnakDecimal, 'wbqc-violation-message-integer' ],
 			[ $quantitySnakInteger, null ],
 			[ $unboundedQuantitySnakInteger, null ],
 			[ $unboundedQuantitySnakDecimalInteger, null ],
-			[ $quantitySnakIntegerWithDecimalBounds, null ],
+			[ $quantitySnakIntegerWithDecimalBounds, 'wbqc-violation-message-integer-bounds' ],
 		];
 	}
 
