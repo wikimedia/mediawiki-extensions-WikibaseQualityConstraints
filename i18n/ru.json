@@ -7,7 +7,8 @@
 			"Redredsonia",
 			"Kaganer",
 			"Michgrig",
-			"Happy13241"
+			"Happy13241",
+			"Ole Yves"
 		]
 	},
 	"wbqc-constraintreport-form-section": "Проверьте ограничения для сущности",
@@ -44,6 +45,7 @@
 	"wbq-subextension-name-wbqc": "Ограничения",
 	"wbqc-violation-header-parameters": "Параметры:",
 	"wbqc-violations-group": "Ограничения",
+	"wbqc-violation-message-sparql-error": "Запрос SPARQL выдал ошибку.",
 	"wbqc-violation-message-no-qualifiers": "Для утверждения «$1» квалификаторы не предусмотрены.",
 	"wbqc-violation-message-qualifiers": "«$2» — некорректный квалификатор для «$1»; {{PLURAL:$3|1=корректным будет только «$5».|2=корректными будут только «$5» и «$6».|корректные квалификаторы:$4}}",
 	"wbqc-violation-message-valueType-instance": "Значение утверждения «$1» должно быть разновидностью {{PLURAL:$3|1=«$5|2=«$5» или «$6»|одного из следующих классов}} (или {{PLURAL:$3|1=его подклассов|2=их подклассов|одного из их подклассов}}), однако «$2» сейчас {{PLURAL:$3|1=таковым не является.|2=таковым не является.|не относится ни к одному из них: $4}}"
