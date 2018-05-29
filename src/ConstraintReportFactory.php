@@ -59,10 +59,12 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSer
  */
 class ConstraintReportFactory {
 
+	// services created by this factory
+
 	/**
-	 * @var ConstraintRepository|null
+	 * @var DelegatingConstraintChecker|null
 	 */
-	private $constraintRepository;
+	private $delegatingConstraintChecker;
 
 	/**
 	 * @var ConstraintChecker[]|null
@@ -70,9 +72,11 @@ class ConstraintReportFactory {
 	private $constraintCheckerMap;
 
 	/**
-	 * @var DelegatingConstraintChecker|null
+	 * @var ConstraintRepository|null
 	 */
-	private $delegatingConstraintChecker;
+	private $constraintRepository;
+
+	// services used by this factory
 
 	/**
 	 * @var EntityLookup
