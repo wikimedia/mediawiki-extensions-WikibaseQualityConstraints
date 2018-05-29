@@ -85,11 +85,6 @@ class ConstraintReportFactory {
 	private $propertyDataTypeLookup;
 
 	/**
-	 * @var array[]|null
-	 */
-	private $constraintParameterMap;
-
-	/**
 	 * @var StatementGuidParser
 	 */
 	private $statementGuidParser;
@@ -376,36 +371,6 @@ class ConstraintReportFactory {
 		}
 
 		return $this->constraintCheckerMap;
-	}
-
-	/**
-	 * @return array[]
-	 */
-	public function getConstraintParameterMap() {
-		if ( $this->constraintParameterMap === null ) {
-			$this->constraintParameterMap = [
-				'Commons link' => [ 'namespace' ],
-				'Conflicts with' => [ 'property', 'item' ],
-				'Diff within range' => [ 'property', 'minimum_quantity', 'maximum_quantity' ],
-				'Format' => [ 'pattern' ],
-				'Inverse' => [ 'property' ],
-				'Item' => [ 'property', 'item' ],
-				'Mandatory qualifiers' => [ 'property' ],
-				'Multi value' => [],
-				'One of' => [ 'item' ],
-				'Qualifier' => [],
-				'Qualifiers' => [ 'property' ],
-				'Range' => [ 'minimum_quantity', 'maximum_quantity', 'minimum_date', 'maximum_date' ],
-				'Single value' => [],
-				'Symmetric' => [],
-				'Target required claim' => [ 'property', 'item' ],
-				'Type' => [ 'class', 'relation' ],
-				'Unique value' => [],
-				'Value type' => [ 'class', 'relation' ]
-			];
-		}
-
-		return $this->constraintParameterMap;
 	}
 
 	/**
