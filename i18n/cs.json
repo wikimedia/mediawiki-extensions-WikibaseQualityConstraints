@@ -134,5 +134,6 @@
 	"wbqc-violation-message-entityType": "Vlastnost $1 by se neměla používat na tomto typu entity, {{PLURAL:$2|1=jediným platným typem entity je $4.|2=jedinými platnými typy entit jsou $4 a $5.|jedinými platnými typy entity jsou: $3}}",
 	"wbqc-violation-message-none-of": "Hodnota vlastnosti $1 by neměla být {{PLURAL:$2|1=$4.|2=$4 ani $5.|žádná z následujících:$3}}",
 	"wbqc-violation-message-integer": "Hodnoty vlastnosti $1 by měly být celá čísla, ale $2 má desetinnou část.",
+	"wbqc-violation-message-integer-bounds": "Hodnoty vlastnosti $1 by měly být celá čísla, ale $2 má meze s desetinnou částí.",
 	"wbqc-violation-message-exception": "Tato vlastnost je u tohoto omezení uvedena jako známá výjimka, takže tak byla označena."
 }
