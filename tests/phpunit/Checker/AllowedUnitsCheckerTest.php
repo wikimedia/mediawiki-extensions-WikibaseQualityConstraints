@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
@@ -16,7 +16,9 @@ use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker

@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\OneOfChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\Repo\Tests\NewItem;

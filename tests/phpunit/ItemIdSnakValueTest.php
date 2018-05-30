@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
+namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\StringValue;
 use DomainException;

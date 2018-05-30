@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -11,6 +11,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker

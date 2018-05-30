@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\QualifierChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker\QualifierChecker;
 
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;

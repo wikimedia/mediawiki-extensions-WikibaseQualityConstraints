@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\ConnectionChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker\ConnectionChecker;
 
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Snak\PropertyValueSnak;

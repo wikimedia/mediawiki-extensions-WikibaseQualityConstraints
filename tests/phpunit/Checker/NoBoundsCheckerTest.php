@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
@@ -12,6 +12,7 @@ use Wikibase\DataModel\Snak\Snak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker

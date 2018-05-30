@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\OneOfChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker\OneOfChecker;
 
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;

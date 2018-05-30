@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\RangeChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker\RangeChecker;
 
 use DataValues\DataValue;
 use DataValues\DecimalValue;

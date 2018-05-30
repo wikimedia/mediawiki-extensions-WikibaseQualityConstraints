@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\CheckResult;
+namespace WikibaseQuality\ConstraintReport\Tests\Result;
 
 use DataValues\DataValueFactory;
 use DataValues\Deserializers\DataValueDeserializer;

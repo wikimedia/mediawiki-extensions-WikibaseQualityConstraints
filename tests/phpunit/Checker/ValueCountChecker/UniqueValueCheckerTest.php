@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\ValueCountChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker\ValueCountChecker;
 
 use DataValues\StringValue;
 use PHPUnit4And6Compat;

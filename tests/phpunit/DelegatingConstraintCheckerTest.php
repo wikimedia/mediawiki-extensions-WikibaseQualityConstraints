@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
+namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\StringValue;
 use NullStatsdDataFactory;
@@ -32,10 +32,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSer
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
-use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
-use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**

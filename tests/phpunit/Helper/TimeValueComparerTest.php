@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\ConstraintChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
 use DataValues\TimeValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;

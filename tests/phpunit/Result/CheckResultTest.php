@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\CheckResult;
+namespace WikibaseQuality\ConstraintReport\Tests\Result;
 
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\Item;

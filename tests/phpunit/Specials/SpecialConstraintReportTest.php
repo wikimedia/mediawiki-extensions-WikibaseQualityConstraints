@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\Specials\SpecialConstraintReport;
+namespace WikibaseQuality\ConstraintReport\Tests\Specials;
 
 use MediaWiki\MediaWikiServices;
 use NullStatsdDataFactory;

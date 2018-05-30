@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\ValueCountChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker\ValueCountChecker;
 
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;

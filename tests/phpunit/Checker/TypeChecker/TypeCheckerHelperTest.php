@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport\Tests\TypeChecker;
+namespace WikibaseQuality\ConstraintReport\Tests\Checker\TypeChecker;
 
 use NullStatsdDataFactory;
 use PHPUnit4And6Compat;
