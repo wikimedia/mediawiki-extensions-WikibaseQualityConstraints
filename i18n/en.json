@@ -165,6 +165,7 @@
 	"wbqc-violation-message-none-of": "The value for $1 should not be {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following:$3}}",
 	"wbqc-violation-message-integer": "Values for $1 should be integer, but $2 has a fractional part.",
 	"wbqc-violation-message-integer-bounds": "Values for $1 should be integer, but the bounds of $2 have a fractional part.",
+	"wbqc-violation-message-citationNeeded": "Statements for $1 should have at least one reference.",
 
 	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such."
 }

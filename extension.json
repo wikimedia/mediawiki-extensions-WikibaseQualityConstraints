@@ -334,6 +334,11 @@
 			"description": "The item ID for the 'allowed entity types constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property can be used only in certain entity types (e.g. only items).",
 			"public": true
 		},
+		"WBQualityConstraintsCitationNeededConstraintId": {
+			"value": "Q54554025",
+			"description": "The item ID of the 'citation needed constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should have at least one reference for its values.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'class' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
