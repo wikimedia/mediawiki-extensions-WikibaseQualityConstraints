@@ -8,7 +8,6 @@ use HashConfig;
 use NullStatsdDataFactory;
 use PHPUnit4And6Compat;
 use Psr\Log\NullLogger;
-use TimeAdjustableWANObjectCache;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
@@ -600,9 +599,10 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 				'Q10' => 99,
 			] );
 
-		$cache = new TimeAdjustableWANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$now = 9001;
-		$cache->setTime( $now - 1337 );
+		$mockTime = $now - 1337;
+		$cache->setMockTime( $mockTime );
 		$resultsCache = new ResultsCache( $cache, 'v2' );
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$this->getMock( ResultsSource::class ),
@@ -670,9 +670,10 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 				'Q10' => 99,
 			] );
 
-		$cache = new TimeAdjustableWANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$now = 9001;
-		$cache->setTime( $now - 1337 );
+		$mockTime = $now - 1337;
+		$cache->setMockTime( $mockTime );
 		$resultsCache = new ResultsCache( $cache, 'v2' );
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$this->getMock( ResultsSource::class ),
