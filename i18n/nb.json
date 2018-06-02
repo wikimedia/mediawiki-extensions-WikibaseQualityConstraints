@@ -78,5 +78,5 @@
 	"wbqc-violation-message-valueType-instance": "Verdier i $1-utsagn bør være forekomster av {{PLURAL:$3|1=$5|2=$5 eller $6|en av følgende klasser: $4}} (eller {{PLURAL:$3|en underklasse}}), men $2 er ikke det",
 	"wbqc-violation-message-valueType-subclass": "Verdier i $1-utsagn bør være underklasser av {{PLURAL:$3|1=$5|2=$5 eller $6|en av følgende klasser: $4}} (eller {{PLURAL:$3|en underklasse}}),  men $2 er ikke det",
 	"wbqc-violation-message-target-required-claim": "$1 bør ha {{PLURAL:$3|0=et $2-utsagn.|1=$2 $5.|et $2-utsagn med en av følgende verdier:$4}}",
-	"wbqc-violation-message-unique-value": "Denne verdien må ikke finnes på andre elementer, men finnes på {{PLURAL:$1|1=$3.|2=$3 og $4.|følgende elementer: $2}}"
+	"wbqc-violation-message-unique-value": "Denne verdien skal ikke finnes for andre elementer, men finnes på {{PLURAL:$1|1=$3.|2=$3 og $4.|følgende elementer: $2}}"
 }
