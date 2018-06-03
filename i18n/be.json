@@ -32,6 +32,7 @@
 	"wbqc-violation-message-parameter-single": "Параметр \"$1\" павінен мець толькі адзінае значэнне.",
 	"wbqc-violation-message-parameter-single-per-language": "Параметр \"$1\" павінен мець толькі адно значэнне для кожнай мовы, але мае множныя значэнні для $2 ($3).",
 	"wbqc-violation-message-parameter-oneof": "Параметр \"$1\" павінен быць {{PLURAL:$2|1=$4.|2=$4 або $5.|адным з наступных:$3}}",
+	"wbqc-violation-message-sparql-error": "Запыт SPARQL выдаў памылку.",
 	"wbqc-violation-message-invalid-scope": "$1 не з’яўляецца дапушчальнай вобласцю дзеяння для тыпу абмежавання $2; {{PLURAL:$3|дапушчальнай вобласцю дзеяння|дапушчальнымі абласцямі дзеяння|дапушчальнымі абласцямі дзеяння}} для гэтага тыпу абмежавання {{PLURAL:$3|з’яўляецца толькі $5.|2=з’яўляюцца $5 і $6.|з’яўляюцца: $4}}",
 	"wbqc-violation-message-commons-link-no-existent": "Павінна існаваць спасылка на Вікісховішча.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Спасылка на Вікісховішча павінна быць карэктнай.",
