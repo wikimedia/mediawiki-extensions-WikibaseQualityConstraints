@@ -148,5 +148,6 @@
 	"wbqc-violation-message-none-of": "Der Wert für $1 sollte nicht {{PLURAL:$2|1=$4 sein.|2=entweder $4 oder $5 sein.|einer der folgenden sein: $3}}",
 	"wbqc-violation-message-integer": "Werte für $1 sollten Ganzzahlen sein, $2 hat jedoch einen Bruchteil.",
 	"wbqc-violation-message-integer-bounds": "Werte für $1 sollten Ganzzahlen sein, aber die Begrenzungen von $2 haben einen Bruchteil.",
+	"wbqc-violation-message-citationNeeded": "Aussagen für $1 sollten mindestens einen Einzelnachweis haben.",
 	"wbqc-violation-message-exception": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert."
 }

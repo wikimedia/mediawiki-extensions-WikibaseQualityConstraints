@@ -90,5 +90,6 @@
 	"wbqc-violation-message-units-or-none": "$1의 값은 {{PLURAL:$2|1=$4를 단위|2=$4 또는 $5를 단위|다음 중 하나를 단위}}로 하거나 {{PLURAL:$2|1=단위가 없어야 합니다.|2=단위가 없어야 합니다.|단위가 없어야 합니다: $3}}",
 	"wbqc-violation-message-none-of": "$1의 값은 {{PLURAL:$2|1=$4이(가) 될 수 없습니다.|2=$4 또는 $5이(가) 될 수 없습니다.|다음 중 하나가 될 수 없습니다:$3}}",
 	"wbqc-violation-message-integer": "$1의 값은 정수여야 하지만 $2에 소수부가 있습니다.",
-	"wbqc-violation-message-integer-bounds": "$1의 값은 정수여야 하지만 $2의 경계에 소수부가 있습니다."
+	"wbqc-violation-message-integer-bounds": "$1의 값은 정수여야 하지만 $2의 경계에 소수부가 있습니다.",
+	"wbqc-violation-message-citationNeeded": "$1의 문은 적어도 하나의 참조를 갖는 것이 좋습니다."
 }
