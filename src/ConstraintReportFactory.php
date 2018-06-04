@@ -13,6 +13,7 @@ use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CitationNeededChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\EntityTypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\IntegerChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
@@ -371,6 +372,8 @@ class ConstraintReportFactory {
 					),
 				$this->config->get( 'WBQualityConstraintsIntegerConstraintId' )
 					=> new IntegerChecker(),
+				$this->config->get( 'WBQualityConstraintsCitationNeededConstraintId' )
+					=> new CitationNeededChecker(),
 			];
 		}
 
