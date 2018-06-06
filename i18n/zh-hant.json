@@ -3,7 +3,8 @@
 		"authors": [
 			"Liuxinyu970226",
 			"Assoc",
-			"Laundry Machine"
+			"Laundry Machine",
+			"LNDDYL"
 		]
 	},
 	"wbqc-constraintreport-form-submit-label": "檢查",
@@ -11,10 +12,14 @@
 	"wbqc-constraintreport-result-table-header-status": "狀態",
 	"wbqc-constraintreport-result-table-header-constraint": "限制",
 	"wbqc-constraintreport-no-parameter": "無",
+	"wbqc-potentialissues-short": "潛在問題",
+	"wbqc-potentialissues-long": "此聲明存在一些潛在問題。",
 	"wbqc-constrainttypehelp-short": "說明",
 	"wbqc-constraintdiscuss-short": "討論",
 	"wbqc-dataValueType-wikibase-entityid": "實體 ID",
 	"wbq-subextension-name-wbqc": "限制",
 	"wbqc-violation-header-parameters": "參數：",
-	"wbqc-violations-group": "限制"
+	"wbqc-violations-group": "限制",
+	"wbqc-violation-message-item": "$1 的實體也應該有{{PLURAL:$3|0=聲明 $2。 |1=聲明 $2 $5。 |聲明 $2，且包含下列值之一：$4}}",
+	"wbqc-violation-message-target-required-claim": "$1 應該有{{PLURAL:$3|0=聲明 $2。 |1=聲明 $2 $5。 |聲明 $2，且包含下列值之一：$4}}"
 }

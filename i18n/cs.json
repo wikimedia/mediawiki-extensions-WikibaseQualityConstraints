@@ -135,5 +135,6 @@
 	"wbqc-violation-message-none-of": "Hodnota vlastnosti $1 by neměla být {{PLURAL:$2|1=$4.|2=$4 ani $5.|žádná z následujících:$3}}",
 	"wbqc-violation-message-integer": "Hodnoty vlastnosti $1 by měly být celá čísla, ale $2 má desetinnou část.",
 	"wbqc-violation-message-integer-bounds": "Hodnoty vlastnosti $1 by měly být celá čísla, ale $2 má meze s desetinnou částí.",
+	"wbqc-violation-message-citationNeeded": "Tvrzení vlastnosti $1 by měla mít alespoň jednu referenci.",
 	"wbqc-violation-message-exception": "Tato vlastnost je u tohoto omezení uvedena jako známá výjimka, takže tak byla označena."
 }

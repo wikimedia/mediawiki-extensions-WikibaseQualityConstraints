@@ -155,5 +155,6 @@
 	"wbqc-violation-message-none-of": "Вредноста за $1 не треба да биде {{PLURAL:$2|1=$4.|2=$4 или $5.|една од следниве: $3}}",
 	"wbqc-violation-message-integer": "Вредностите за $1 треба да бидат целобројни, но $2 е дробна.",
 	"wbqc-violation-message-integer-bounds": "Вредностите за $1 треба да бидат целобројни, но границите на $2 имаат дробен дел.",
+	"wbqc-violation-message-citationNeeded": "Исказите за $1 треба да имаат барем еден навод.",
 	"wbqc-violation-message-exception": "Оваа единица е познат исклучок од условов и е означена како таква."
 }
