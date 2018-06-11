@@ -18,6 +18,9 @@
 	"ExtensionMessagesFiles": {
 		"WikibaseQualityConstraintsAlias": "WikibaseQualityConstraints.alias.php"
 	},
+	"ServiceWiringFiles": [
+		"src/ServiceWiring.php"
+	],
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema",
 		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange",
