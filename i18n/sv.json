@@ -81,5 +81,6 @@
 	"wbqc-violation-message-range-time-rightopen-leftnow": "Värdet för $1 ($2) bör vara i det förflutna.",
 	"wbqc-violation-message-single-value": "Denna egenskap bör endast innehåll ett enda värde.",
 	"wbqc-violation-message-single-value-separators": "Denna egenskap bör endast ha ett enda värde med samma {{PLURAL:$2|1=$4 bestämningsord.|grupp bestämningsord för dessa egenskaper: $3}}",
-	"wbqc-violation-message-target-required-claim": "$1 bör ha {{PLURAL:$3|0=uttalandet $2.|1=uttalandet $2 $5.|ett uttalande för $2 med en av följande värden:$4}}"
+	"wbqc-violation-message-target-required-claim": "$1 bör ha {{PLURAL:$3|0=uttalandet $2.|1=uttalandet $2 $5.|ett uttalande för $2 med en av följande värden:$4}}",
+	"wbqc-violation-message-citationNeeded": "Uttalanden för $1 bör ha minst en referens."
 }
