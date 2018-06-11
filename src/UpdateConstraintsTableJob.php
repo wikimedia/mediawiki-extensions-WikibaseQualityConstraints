@@ -34,7 +34,7 @@ class UpdateConstraintsTableJob extends Job {
 			$params,
 			$params['propertyId'],
 			MediaWikiServices::getInstance()->getMainConfig(),
-			ConstraintReportFactory::getDefaultInstance()->getConstraintRepository(),
+			ConstraintsServices::getConstraintRepository(),
 			$repo->getEntityLookup(),
 			$repo->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);

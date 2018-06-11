@@ -25,4 +25,20 @@ class ConstraintsServices {
 		return self::getService( $services, 'WBQC_LoggingHelper' );
 	}
 
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return ConstraintRepository
+	 */
+	public static function getConstraintRepository( MediaWikiServices $services = null ) {
+		return self::getService( $services, 'WBQC_ConstraintRepository' );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return ConstraintLookup
+	 */
+	public static function getConstraintLookup( MediaWikiServices $services = null ) {
+		return self::getService( $services, 'WBQC_ConstraintLookup' );
+	}
+
 }
