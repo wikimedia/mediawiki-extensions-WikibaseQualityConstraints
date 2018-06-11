@@ -5,6 +5,8 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use MediaWiki\MediaWikiServices;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
@@ -23,6 +25,8 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 			[ LoggingHelper::class ],
 			[ ConstraintRepository::class ],
 			[ ConstraintLookup::class ],
+			[ CheckResultSerializer::class ],
+			[ CheckResultDeserializer::class ],
 		];
 	}
 
