@@ -352,7 +352,7 @@ EOF;
 	public function testMatchesRegularExpressionWithSparql() {
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
-		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\"$") AS ?matches) {}';
+		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^(?:\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\")$") AS ?matches) {}';
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$sparqlHelper->expects( $this->once() )
@@ -368,7 +368,7 @@ EOF;
 	public function testMatchesRegularExpressionWithSparqlBadRegex() {
 		$text = '';
 		$regex = '(.{2,5)?';
-		$query = 'SELECT (REGEX("", "^(.{2,5)?$") AS ?matches) {}';
+		$query = 'SELECT (REGEX("", "^(?:(.{2,5)?)$") AS ?matches) {}';
 		$sparqlHelper = $this->getSparqlHelper();
 		$messageKey = 'wbqc-violation-message-parameter-regex';
 

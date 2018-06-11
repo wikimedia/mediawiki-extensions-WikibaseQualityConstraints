@@ -485,7 +485,7 @@ EOF;
 	 */
 	public function matchesRegularExpressionWithSparql( $text, $regex ) {
 		$textStringLiteral = $this->stringLiteral( $text );
-		$regexStringLiteral = $this->stringLiteral( '^' . $regex . '$' );
+		$regexStringLiteral = $this->stringLiteral( '^(?:' . $regex . ')$' );
 
 		$query = <<<EOF
 SELECT (REGEX($textStringLiteral, $regexStringLiteral) AS ?matches) {}
