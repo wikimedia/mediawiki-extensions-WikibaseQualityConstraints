@@ -70,6 +70,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
+		$this->setService( ConstraintsServices::CONSTRAINT_PARAMETER_PARSER, $this->getConstraintParameterParser() );
 
 		$this->lookup = new InMemoryEntityLookup();
 		$entityIdParser = new DispatchingEntityIdParser( [
@@ -91,7 +92,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			new EntityRetrievingDataTypeLookup( $this->lookup ),
 			new StatementGuidParser( $entityIdParser ),
 			$config,
-			$this->getConstraintParameterParser(),
 			$rdfVocabulary,
 			$entityIdParser,
 			$titleParser,

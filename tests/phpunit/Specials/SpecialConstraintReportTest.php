@@ -17,7 +17,6 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
@@ -77,11 +76,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getPropertyDataTypeLookup(),
 			$wikibaseRepo->getStatementGuidParser(),
 			$config,
-			new ConstraintParameterParser(
-				$config,
-				$wikibaseRepo->getBaseDataModelDeserializerFactory(),
-				$wikibaseRepo->getConceptBaseUris()
-			),
 			$wikibaseRepo->getRdfVocabulary(),
 			$wikibaseRepo->getEntityIdParser(),
 			MediaWikiServices::getInstance()->getTitleParser(),

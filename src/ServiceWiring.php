@@ -7,6 +7,7 @@ use MediaWiki\MediaWikiServices;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
@@ -72,6 +73,19 @@ return [
 		return new ViolationMessageDeserializer(
 			$entityIdParser,
 			$dataValueFactory
+		);
+	},
+
+	ConstraintsServices::CONSTRAINT_PARAMETER_PARSER => function( MediaWikiServices $services ) {
+		// TODO in the future, get DeserializerFactory and concept base URIs from $services?
+		$repo = WikibaseRepo::getDefaultInstance();
+		$deserializerFactory = $repo->getBaseDataModelDeserializerFactory();
+		$conceptBaseUris = $repo->getConceptBaseUris();
+
+		return new ConstraintParameterParser(
+			$services->getMainConfig(),
+			$deserializerFactory,
+			$conceptBaseUris
 		);
 	},
 ];
