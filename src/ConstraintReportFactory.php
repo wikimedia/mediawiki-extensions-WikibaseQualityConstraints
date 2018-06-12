@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport;
 use Config;
 use DataValues\DataValueFactory;
 use IBufferingStatsdDataFactory;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use TitleParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -54,7 +53,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
@@ -88,11 +86,6 @@ class ConstraintReportFactory {
 	 * @var ConstraintRepository|null
 	 */
 	private $constraintRepository;
-
-	/**
-	 * @var LoggingHelper|null
-	 */
-	private $loggingHelper;
 
 	/**
 	 * @var CheckResultSerializer|null
@@ -271,11 +264,7 @@ class ConstraintReportFactory {
 				new CachingConstraintLookup( $this->getConstraintRepository() ),
 				$this->constraintParameterParser,
 				$this->statementGuidParser,
-				new LoggingHelper(
-					$this->dataFactory,
-					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
-					$this->config
-				),
+				ConstraintsServices::getLoggingHelper(),
 				$this->config->get( 'WBQualityConstraintsCheckQualifiers' ),
 				$this->config->get( 'WBQualityConstraintsCheckReferences' ),
 				$this->config->get( 'WBQualityConstraintsPropertiesWithViolatingQualifiers' )
@@ -445,21 +434,6 @@ class ConstraintReportFactory {
 	}
 
 	/**
-	 * @return LoggingHelper
-	 */
-	public function getLoggingHelper() {
-		if ( $this->loggingHelper === null ) {
-			$this->loggingHelper = new LoggingHelper(
-				$this->dataFactory,
-				LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
-				$this->config
-			);
-		}
-
-		return $this->loggingHelper;
-	}
-
-	/**
 	 * @return CheckResultSerializer
 	 */
 	public function getCheckResultSerializer() {
@@ -529,7 +503,7 @@ class ConstraintReportFactory {
 					$this->config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),
 					$this->getPossiblyStaleConstraintTypes(),
 					$this->config->get( 'WBQualityConstraintsCacheCheckConstraintsMaximumRevisionIds' ),
-					$this->getLoggingHelper()
+					ConstraintsServices::getLoggingHelper()
 				);
 			}
 		}
