@@ -2,8 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\PropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\ConstraintsServices;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Constraint
@@ -16,6 +18,16 @@ use WikibaseQuality\ConstraintReport\ConstraintRepository;
  * @license GPL-2.0-or-later
  */
 class ConstraintTest extends \MediaWikiTestCase {
+
+	protected function setUp() {
+		parent::setUp();
+		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
+	}
+
+	protected function tearDown() {
+		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
+		parent::tearDown();
+	}
 
 	public function testConstructAndGetters() {
 		$repo = new ConstraintRepository();

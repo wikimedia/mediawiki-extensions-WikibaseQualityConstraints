@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use DataValues\DataValueFactory;
 use DataValues\Deserializers\DataValueDeserializer;
 use DataValues\StringValue;
+use MediaWiki\MediaWikiServices;
 use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
 use Wikibase\DataModel\Entity\EntityId;
@@ -35,6 +36,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSer
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
@@ -69,6 +71,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
+		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
+
 		$this->lookup = new InMemoryEntityLookup();
 		$entityIdParser = new DispatchingEntityIdParser( [
 			'/^Q/' => function( $serialization ) {
@@ -106,6 +110,11 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		// specify database tables used by this test
 		$this->tablesUsed[] = 'wbqc_constraints';
+	}
+
+	protected function tearDown() {
+		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
+		parent::tearDown();
 	}
 
 	/**

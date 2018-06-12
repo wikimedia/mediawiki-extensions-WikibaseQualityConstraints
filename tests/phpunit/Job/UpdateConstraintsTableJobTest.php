@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
+use MediaWiki\MediaWikiServices;
 use MediaWikiTestCase;
 use Title;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -19,6 +20,7 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob;
 use Wikibase\Repo\WikibaseRepo;
@@ -40,7 +42,13 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		$this->tablesUsed[] = 'wbqc_constraints';
+	}
+
+	protected function tearDown() {
+		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
+		parent::tearDown();
 	}
 
 	public function addDBData() {
