@@ -83,11 +83,6 @@ class ConstraintReportFactory {
 	private $constraintCheckerMap;
 
 	/**
-	 * @var ConstraintRepository|null
-	 */
-	private $constraintRepository;
-
-	/**
 	 * @var CheckResultSerializer|null
 	 */
 	private $checkResultSerializer;
@@ -261,7 +256,7 @@ class ConstraintReportFactory {
 			$this->delegatingConstraintChecker = new DelegatingConstraintChecker(
 				$this->lookup,
 				$this->getConstraintCheckerMap(),
-				new CachingConstraintLookup( $this->getConstraintRepository() ),
+				ConstraintsServices::getConstraintLookup(),
 				$this->constraintParameterParser,
 				$this->statementGuidParser,
 				ConstraintsServices::getLoggingHelper(),
@@ -420,17 +415,6 @@ class ConstraintReportFactory {
 		}
 
 		return $this->constraintCheckerMap;
-	}
-
-	/**
-	 * @return ConstraintRepository
-	 */
-	public function getConstraintRepository() {
-		if ( $this->constraintRepository === null ) {
-			$this->constraintRepository = new ConstraintRepository();
-		}
-
-		return $this->constraintRepository;
 	}
 
 	/**

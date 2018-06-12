@@ -14,4 +14,13 @@ return [
 			$services->getMainConfig()
 		);
 	},
+
+	'WBQC_ConstraintRepository' => function( MediaWikiServices $services ) {
+		return new ConstraintRepository();
+	},
+
+	'WBQC_ConstraintLookup' => function( MediaWikiServices $services ) {
+		$constraintRepository = ConstraintsServices::getConstraintRepository( $services );
+		return new CachingConstraintLookup( $constraintRepository );
+	},
 ];
