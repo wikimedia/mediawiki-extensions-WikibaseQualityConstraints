@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeseriali
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 
 return [
-	'WBQC_LoggingHelper' => function( MediaWikiServices $services ) {
+	ConstraintsServices::LOGGING_HELPER => function( MediaWikiServices $services ) {
 		return new LoggingHelper(
 			$services->getStatsdDataFactory(),
 			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
@@ -22,16 +22,16 @@ return [
 		);
 	},
 
-	'WBQC_ConstraintRepository' => function( MediaWikiServices $services ) {
+	ConstraintsServices::CONSTRAINT_REPOSITORY => function( MediaWikiServices $services ) {
 		return new ConstraintRepository();
 	},
 
-	'WBQC_ConstraintLookup' => function( MediaWikiServices $services ) {
+	ConstraintsServices::CONSTRAINT_LOOKUP => function( MediaWikiServices $services ) {
 		$constraintRepository = ConstraintsServices::getConstraintRepository( $services );
 		return new CachingConstraintLookup( $constraintRepository );
 	},
 
-	'WBQC_CheckResultSerializer' => function( MediaWikiServices $services ) {
+	ConstraintsServices::CHECK_RESULT_SERIALIZER => function( MediaWikiServices $services ) {
 		return new CheckResultSerializer(
 			new ConstraintSerializer(
 				false // constraint parameters are not exposed
@@ -42,7 +42,7 @@ return [
 		);
 	},
 
-	'WBQC_CheckResultDeserializer' => function( MediaWikiServices $services ) {
+	ConstraintsServices::CHECK_RESULT_DESERIALIZER => function( MediaWikiServices $services ) {
 		// TODO in the future, get EntityIdParser and DataValueFactory from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$entityIdParser = $repo->getEntityIdParser();
