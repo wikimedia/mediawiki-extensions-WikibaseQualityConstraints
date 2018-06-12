@@ -12,6 +12,12 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerialize
  */
 class ConstraintsServices {
 
+	const LOGGING_HELPER = 'WBQC_LoggingHelper';
+	const CONSTRAINT_REPOSITORY = 'WBQC_ConstraintRepository';
+	const CONSTRAINT_LOOKUP = 'WBQC_ConstraintLookup';
+	const CHECK_RESULT_SERIALIZER = 'WBQC_CheckResultSerializer';
+	const CHECK_RESULT_DESERIALIZER = 'WBQC_CheckResultDeserializer';
+
 	private static function getService( MediaWikiServices $services = null, $name ) {
 		if ( $services === null ) {
 			$services = MediaWikiServices::getInstance();
@@ -24,7 +30,7 @@ class ConstraintsServices {
 	 * @return LoggingHelper
 	 */
 	public static function getLoggingHelper( MediaWikiServices $services = null ) {
-		return self::getService( $services, 'WBQC_LoggingHelper' );
+		return self::getService( $services, self::LOGGING_HELPER );
 	}
 
 	/**
@@ -32,7 +38,7 @@ class ConstraintsServices {
 	 * @return ConstraintRepository
 	 */
 	public static function getConstraintRepository( MediaWikiServices $services = null ) {
-		return self::getService( $services, 'WBQC_ConstraintRepository' );
+		return self::getService( $services, self::CONSTRAINT_REPOSITORY );
 	}
 
 	/**
@@ -40,7 +46,7 @@ class ConstraintsServices {
 	 * @return ConstraintLookup
 	 */
 	public static function getConstraintLookup( MediaWikiServices $services = null ) {
-		return self::getService( $services, 'WBQC_ConstraintLookup' );
+		return self::getService( $services, self::CONSTRAINT_LOOKUP );
 	}
 
 	/**
@@ -48,7 +54,7 @@ class ConstraintsServices {
 	 * @return CheckResultSerializer
 	 */
 	public static function getCheckResultSerializer( MediaWikiServices $services = null ) {
-		return self::getService( $services, 'WBQC_CheckResultSerializer' );
+		return self::getService( $services, self::CHECK_RESULT_SERIALIZER );
 	}
 
 	/**
@@ -56,7 +62,7 @@ class ConstraintsServices {
 	 * @return CheckResultDeserializer
 	 */
 	public static function getCheckResultDeserializer( MediaWikiServices $services = null ) {
-		return self::getService( $services, 'WBQC_CheckResultDeserializer' );
+		return self::getService( $services, self::CHECK_RESULT_DESERIALIZER );
 	}
 
 }
