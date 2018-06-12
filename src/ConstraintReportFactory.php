@@ -55,8 +55,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 
 /**
  * Factory for {@link DelegatingConstraintChecker}
@@ -116,16 +114,6 @@ class ConstraintReportFactory {
 	private $constraintParameterParser;
 
 	/**
-	 * @var ViolationMessageSerializer
-	 */
-	private $violationMessageSerializer;
-
-	/**
-	 * @var ViolationMessageDeserializer
-	 */
-	private $violationMessageDeserializer;
-
-	/**
 	 * @var RdfVocabulary
 	 */
 	private $rdfVocabulary;
@@ -173,10 +161,6 @@ class ConstraintReportFactory {
 			$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 			$config = MediaWikiServices::getInstance()->getMainConfig();
 			$titleParser = MediaWikiServices::getInstance()->getTitleParser();
-			$violationMessageDeserializer = new ViolationMessageDeserializer(
-				$wikibaseRepo->getEntityIdParser(),
-				$wikibaseRepo->getDataValueFactory()
-			);
 			$instance = new self(
 				$wikibaseRepo->getEntityLookup(),
 				$wikibaseRepo->getPropertyDataTypeLookup(),
@@ -187,8 +171,6 @@ class ConstraintReportFactory {
 					$wikibaseRepo->getBaseDataModelDeserializerFactory(),
 					$wikibaseRepo->getConceptBaseUris()
 				),
-				new ViolationMessageSerializer(),
-				$violationMessageDeserializer,
 				$wikibaseRepo->getRdfVocabulary(),
 				$wikibaseRepo->getEntityIdParser(),
 				$titleParser,
@@ -208,8 +190,6 @@ class ConstraintReportFactory {
 		StatementGuidParser $statementGuidParser,
 		Config $config,
 		ConstraintParameterParser $constraintParameterParser,
-		ViolationMessageSerializer $violationMessageSerializer,
-		ViolationMessageDeserializer $violationMessageDeserializer,
 		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser,
 		TitleParser $titleParser,
@@ -223,8 +203,6 @@ class ConstraintReportFactory {
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
 		$this->constraintParameterParser = $constraintParameterParser;
-		$this->violationMessageSerializer = $violationMessageSerializer;
-		$this->violationMessageDeserializer = $violationMessageDeserializer;
 		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
 		$this->titleParser = $titleParser;
@@ -269,8 +247,8 @@ class ConstraintReportFactory {
 					$this->entityIdParser,
 					$this->propertyDataTypeLookup,
 					MediaWikiServices::getInstance()->getMainWANObjectCache(),
-					$this->violationMessageSerializer,
-					$this->violationMessageDeserializer,
+					ConstraintsServices::getViolationMessageSerializer(),
+					ConstraintsServices::getViolationMessageDeserializer(),
 					$this->dataFactory
 				);
 			} else {
