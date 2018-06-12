@@ -28,8 +28,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoneOfChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleBestValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
@@ -59,8 +57,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 
 /**
  * Factory for {@link DelegatingConstraintChecker}
@@ -81,16 +77,6 @@ class ConstraintReportFactory {
 	 * @var ConstraintChecker[]|null
 	 */
 	private $constraintCheckerMap;
-
-	/**
-	 * @var CheckResultSerializer|null
-	 */
-	private $checkResultSerializer;
-
-	/**
-	 * @var CheckResultDeserializer|null
-	 */
-	private $checkResultDeserializer;
 
 	/**
 	 * @var WikiPageEntityMetaDataAccessor|null
@@ -418,43 +404,6 @@ class ConstraintReportFactory {
 	}
 
 	/**
-	 * @return CheckResultSerializer
-	 */
-	public function getCheckResultSerializer() {
-		if ( $this->checkResultSerializer === null ) {
-			$this->checkResultSerializer = new CheckResultSerializer(
-				new ConstraintSerializer(
-					false // constraint parameters are not exposed
-				),
-				new ContextCursorSerializer(),
-				new ViolationMessageSerializer(),
-				false // unnecessary to serialize individual result dependencies
-			);
-		}
-
-		return $this->checkResultSerializer;
-	}
-
-	/**
-	 * @return CheckResultDeserializer
-	 */
-	public function getCheckResultDeserializer() {
-		if ( $this->checkResultDeserializer === null ) {
-			$this->checkResultDeserializer = new CheckResultDeserializer(
-				new ConstraintDeserializer(),
-				new ContextCursorDeserializer(),
-				new ViolationMessageDeserializer(
-					$this->entityIdParser,
-					$this->dataValueFactory
-				),
-				$this->entityIdParser
-			);
-		}
-
-		return $this->checkResultDeserializer;
-	}
-
-	/**
 	 * @return WikiPageEntityMetaDataAccessor
 	 */
 	public function getWikiPageEntityMetaDataAccessor() {
@@ -480,8 +429,8 @@ class ConstraintReportFactory {
 				$this->resultsSource = new CachingResultsSource(
 					$this->resultsSource,
 					ResultsCache::getDefaultInstance(),
-					$this->getCheckResultSerializer(),
-					$this->getCheckResultDeserializer(),
+					ConstraintsServices::getCheckResultSerializer(),
+					ConstraintsServices::getCheckResultDeserializer(),
 					$this->getWikiPageEntityMetaDataAccessor(),
 					$this->entityIdParser,
 					$this->config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),
