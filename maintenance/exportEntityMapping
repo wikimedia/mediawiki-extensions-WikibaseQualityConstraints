@@ -24,7 +24,7 @@ function localSetting {
     sed -En -- 's/^[^#/]*\$'"$name"' *= *(['"'"'"])([^'"'"'"]+)\1 *;.*/\2/p' "$localSettings"
 }
 
-database=wikidb
+database=$(localSetting wgDBname)
 dbprefix=$(localSetting wgDBprefix)
 dbuser=$(localSetting wgDBuser)
 dbpassword=$(localSetting wgDBpassword)
