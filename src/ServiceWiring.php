@@ -58,4 +58,20 @@ return [
 			$entityIdParser
 		);
 	},
+
+	ConstraintsServices::VIOLATION_MESSAGE_SERIALIZER => function( MediaWikiServices $services ) {
+		return new ViolationMessageSerializer();
+	},
+
+	ConstraintsServices::VIOLATION_MESSAGE_DESERIALIZER => function( MediaWikiServices $services ) {
+		// TODO in the future, get EntityIdParser and DataValueFactory from $services?
+		$repo = WikibaseRepo::getDefaultInstance();
+		$entityIdParser = $repo->getEntityIdParser();
+		$dataValueFactory = $repo->getDataValueFactory();
+
+		return new ViolationMessageDeserializer(
+			$entityIdParser,
+			$dataValueFactory
+		);
+	},
 ];

@@ -18,8 +18,6 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
@@ -84,10 +82,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 				$wikibaseRepo->getBaseDataModelDeserializerFactory(),
 				$wikibaseRepo->getConceptBaseUris()
 			),
-			new ViolationMessageSerializer(),
-			$this->getMockBuilder( ViolationMessageDeserializer::class )
-				->disableOriginalConstructor()
-				->getMock(),
 			$wikibaseRepo->getRdfVocabulary(),
 			$wikibaseRepo->getEntityIdParser(),
 			MediaWikiServices::getInstance()->getTitleParser(),

@@ -4,6 +4,8 @@ namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 
@@ -17,6 +19,8 @@ class ConstraintsServices {
 	const CONSTRAINT_LOOKUP = 'WBQC_ConstraintLookup';
 	const CHECK_RESULT_SERIALIZER = 'WBQC_CheckResultSerializer';
 	const CHECK_RESULT_DESERIALIZER = 'WBQC_CheckResultDeserializer';
+	const VIOLATION_MESSAGE_SERIALIZER = 'WBQC_ViolationMessageSerializer';
+	const VIOLATION_MESSAGE_DESERIALIZER = 'WBQC_ViolationMessageDeserializer';
 
 	private static function getService( MediaWikiServices $services = null, $name ) {
 		if ( $services === null ) {
@@ -63,6 +67,22 @@ class ConstraintsServices {
 	 */
 	public static function getCheckResultDeserializer( MediaWikiServices $services = null ) {
 		return self::getService( $services, self::CHECK_RESULT_DESERIALIZER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return ViolationMessageSerializer
+	 */
+	public static function getViolationMessageSerializer( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::VIOLATION_MESSAGE_SERIALIZER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return ViolationMessageDeserializer
+	 */
+	public static function getViolationMessageDeserializer( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::VIOLATION_MESSAGE_DESERIALIZER );
 	}
 
 }
