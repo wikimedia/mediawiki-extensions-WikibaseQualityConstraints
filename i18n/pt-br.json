@@ -158,5 +158,6 @@
 	"wbqc-violation-message-none-of": "O valor de $1 não deveria ser {{PLURAL:$2|1=$4.|2=$4 ou $5.|um dos seguintes:$3}}",
 	"wbqc-violation-message-integer": "Os valores de $1 devem ser inteiros, mas $2 tem uma parte fracionária.",
 	"wbqc-violation-message-integer-bounds": "Os valores para $1 devem ser inteiros, mas os valores de $2 têm uma parte fracionária.",
+	"wbqc-violation-message-citationNeeded": "Declarações para $1 devem ter pelo menos uma referência.",
 	"wbqc-violation-message-exception": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal."
 }
