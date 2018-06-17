@@ -265,7 +265,7 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 		$results = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entityId );
 
-		if ( count( $results ) > 0 ) {
+		if ( $results !== [] ) {
 			$out->addHTML(
 				$this->buildResultHeader( $entityId )
 				. $this->buildSummary( $results )

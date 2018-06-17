@@ -96,7 +96,7 @@ class ConstraintParameterRenderer {
 	 * @return string HTML
 	 */
 	public function formatParameters( $parameters ) {
-		if ( $parameters === null || count( $parameters ) == 0 ) {
+		if ( $parameters === null || $parameters === [] ) {
 			return null;
 		}
 
