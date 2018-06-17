@@ -15,6 +15,7 @@
 	"wbqc-violation-message-parameter-single": "Parameteren «$1» kan berre ha éin einskild verdi.",
 	"wbqc-violation-message-conflicts-with-property": "Ei eining skal aldri ha utsegner for både $1 og $2.",
 	"wbqc-violation-message-item": "Ei eining med $1 bør dessutan ha {{PLURAL:$3|0=ei $2-utsegn.|1=ei $2-utsegn $5.|ei $2-utsegn med ein av desse verdiane: $4}}",
+	"wbqc-violation-message-mandatory-qualifier": "Denne $1-utsegna manglar kvalifikatoren $2.",
 	"wbqc-violation-message-multi-value": "Denne eigenskapen skal ha meir enn éin verdi.",
 	"wbqc-violation-message-type-instance": "Einingar som nyttar eigenskapen $1 bør vera førekomstar av {{PLURAL:$3|1=$5|2=$5 eller $6|ein av klassane under}} (eller av {{PLURAL:$3|1=ein av underklassane hans|2=ein av underklassane deira|ein av underklassane deira}}), men $2 {{PLURAL:$3|1=er ikkje det.|2=er ikkje det.|er ikkje det: $4}}",
 	"wbqc-violation-message-type-instanceOrSubclass": "Einingar som nyttar eigenskapen $1 bør vera førekomstar eller underklassar av {{PLURAL:$3|1=$5|2=$5 eller $6|ein av klassane under}} (eller av {{PLURAL:$3|1=ein av underklassane hans|2=ein av underklassane deira|ein av underklassane deira}}), men $2 {{PLURAL:$3|1=er ikkje det.|2=er ikkje det.|er ikkje det: $4}}"

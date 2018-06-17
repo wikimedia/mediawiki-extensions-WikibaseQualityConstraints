@@ -29,6 +29,8 @@
 	"wbqc-constraintreport-status-warning": "Waarschuwing",
 	"wbqc-constraintreport-status-not-in-scope": "Niet in bereik",
 	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-constraintreport-result-table-header-property": "Eigenschap",
+	"wbqc-constraintreport-result-table-header-message": "Bericht",
 	"wbqc-constraintreport-result-table-header-constraint": "Beperking",
 	"wbqc-constraintreport-result-link-to-claim": "naar verklaring gaan",
 	"wbqc-constraintreport-result-link-to-constraint": "naar beperking gaan",
@@ -95,7 +97,7 @@
 	"wbqc-violation-message-inverse": "$1 zou ook een omgekeerde verklaring $2 $3 moeten hebben.",
 	"wbqc-violation-message-item": "Een entiteit met $1 zou ook {{PLURAL:$3|0=een verklaring $2 moeten bevatten.|1=een verklaring $2 $5 moeten bevatten.|een verklaring voor $2 met een van de volgende waarden bevatten:$4}}",
 	"wbqc-violation-message-mandatory-qualifier": "Deze $1-verklaring mist een $2-kwalificatie.",
-	"wbqc-violation-message-multi-value": "Deze eigenschap zou meerdere waarden moeten bevatten. Dat betekent dat er meer dan één verklaring met deze eigenschap moet bestaan.",
+	"wbqc-violation-message-multi-value": "Deze eigenschap zou meerdere waarden moeten bevatten.",
 	"wbqc-violation-message-one-of": "De waarde voor $1 zou {{PLURAL:$2|1=$4 moeten zijn.|2=$4 of $5 moeten zijn.|een van de volgende waarden moeten zijn:$3}}",
 	"wbqc-violation-message-qualifier": "De eigenschap mag alleen als kwalificatie worden gebruikt.",
 	"wbqc-violation-message-no-qualifiers": "$1-verklaringen zouden geen kwalificaties moeten hebben.",
@@ -123,5 +125,6 @@
 	"wbqc-violation-message-unique-value": "De waarde van deze eigenschap zou niet moeten voorkomen op andere items, maar komt wel voor op  {{PLURAL:$1|1=$3.|2=$3 en $4.|de volgende items: $2}}",
 	"wbqc-violation-message-valueOnly": "Deze eigenschap zou alleen als waarde moeten worden gebruikt, niet voor kwalificaties of bronnen.",
 	"wbqc-violation-message-reference": "Deze eigenschap zou alleen in bronnen moeten worden gebruikt, niet als waarde of voor kwalificaties.",
+	"wbqc-violation-message-citationNeeded": "Verklaringen voor $1 zouden tenminste een bron moeten bevatten.",
 	"wbqc-violation-message-exception": "Deze entiteit is gemarkeerd als een uitzondering op deze beperking."
 }

@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Subi",
-			"Mikel Ibaiba"
+			"Mikel Ibaiba",
+			"Fitoschido"
 		]
 	},
 	"wbqc-constraintreport-explanation-part-two": "Mugaketak esaldien jabetzaren arabera aztertzen dira, aldi bakoitzean hauek aldatu egiten dira, gehienetan minutu gutxitan.",
@@ -13,6 +14,7 @@
 	"wbqc-issues-short": "Arazoak",
 	"wbqc-badparameters-short": "Parametro txarrak",
 	"wbqc-parameterissues-short": "Aurreratutako kontuak",
+	"wbqc-constrainttypehelp-short": "Laguntza",
 	"apihelp-wbcheckconstraintparameters-extended-description": "<var>property</var> eta <var>constraintid</var>, bata edo biak, parametroak zehaztu behar dira: aukeratutako mugaketa guztiak parametroek aztertuko dituzte.",
 	"apihelp-wbcheckconstraints-example-3": "Q2 artikuluan murrizketa zehatz bat egiaztatu.",
 	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Jabetzeko murrizte guztien murrizte parametroak aztertu.",
