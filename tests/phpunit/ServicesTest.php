@@ -4,6 +4,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use MediaWiki\MediaWikiServices;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
@@ -31,6 +32,7 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 			[ CheckResultDeserializer::class ],
 			[ ViolationMessageSerializer::class ],
 			[ ViolationMessageDeserializer::class ],
+			[ ConstraintParameterParser::class ],
 		];
 	}
 

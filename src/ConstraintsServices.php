@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
@@ -21,6 +22,7 @@ class ConstraintsServices {
 	const CHECK_RESULT_DESERIALIZER = 'WBQC_CheckResultDeserializer';
 	const VIOLATION_MESSAGE_SERIALIZER = 'WBQC_ViolationMessageSerializer';
 	const VIOLATION_MESSAGE_DESERIALIZER = 'WBQC_ViolationMessageDeserializer';
+	const CONSTRAINT_PARAMETER_PARSER = 'WBQC_ConstraintParameterParser';
 
 	private static function getService( MediaWikiServices $services = null, $name ) {
 		if ( $services === null ) {
@@ -83,6 +85,14 @@ class ConstraintsServices {
 	 */
 	public static function getViolationMessageDeserializer( MediaWikiServices $services = null ) {
 		return self::getService( $services, self::VIOLATION_MESSAGE_DESERIALIZER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return ConstraintParameterParser
+	 */
+	public static function getConstraintParameterParser( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::CONSTRAINT_PARAMETER_PARSER );
 	}
 
 }
