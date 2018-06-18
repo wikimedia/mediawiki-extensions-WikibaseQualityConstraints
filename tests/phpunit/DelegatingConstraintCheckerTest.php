@@ -851,7 +851,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 					'',
 					new PropertyId( 'P1' ),
 					'Q1',
-					$this->scopeParameter( [ Context::TYPE_STATEMENT ] )
+					$this->constraintScopeParameter( [ Context::TYPE_STATEMENT ] )
 				)
 			] ),
 			$this->getConstraintParameterParser(),

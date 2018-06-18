@@ -295,15 +295,15 @@ trait ConstraintParameters {
 	}
 
 	/**
-	 * @param string[] $scopes Context::TYPE_* constants
+	 * @param string[] $contextTypes Context::TYPE_* constants
 	 * @return array
 	 */
-	public function scopeParameter( array $scopes ) {
+	public function constraintScopeParameter( array $contextTypes ) {
 		$config = $this->getDefaultConfig();
 		$constraintScopeParameterId = $config->get( 'WBQualityConstraintsConstraintScopeId' );
 		$itemIds = [];
-		foreach ( $scopes as $scope ) {
-			switch ( $scope ) {
+		foreach ( $contextTypes as $contextType ) {
+			switch ( $contextType ) {
 				case Context::TYPE_STATEMENT:
 					$itemIds[] = $config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
 					break;
@@ -314,7 +314,7 @@ trait ConstraintParameters {
 					$itemIds[] = $config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
 					break;
 				default:
-					$this->assertTrue( false, 'unknown context type ' . $scope );
+					$this->assertTrue( false, 'unknown context type ' . $contextType );
 			}
 		}
 		return [ $constraintScopeParameterId => array_map(
