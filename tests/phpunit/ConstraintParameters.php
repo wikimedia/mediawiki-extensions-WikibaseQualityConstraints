@@ -344,4 +344,32 @@ trait ConstraintParameters {
 		];
 	}
 
+	public function propertyScopeParameter( array $contextTypes ) {
+		$config = $this->getDefaultConfig();
+		$parameterId = $config->get( 'WBQualityConstraintsPropertyScopeId' );
+		return [
+			$parameterId => array_map(
+				function( $contextType ) use ( $config, $parameterId ) {
+					switch ( $contextType ) {
+						case Context::TYPE_STATEMENT:
+							$itemId = $config->get( 'WBQualityConstraintsAsMainValueId' );
+							break;
+						case Context::TYPE_QUALIFIER:
+							$itemId = $config->get( 'WBQualityConstraintsAsQualifiersId' );
+							break;
+						case Context::TYPE_REFERENCE:
+							$itemId = $config->get( 'WBQualityConstraintsAsReferencesId' );
+							break;
+						default:
+							$this->assertTrue( false, 'unknown context type ' . $contextType );
+					}
+					$value = new EntityIdValue( new ItemId( $itemId ) );
+					$snak = new PropertyValueSnak( new PropertyId( $parameterId ), $value );
+					return $this->getSnakSerializer()->serialize( $snak );
+				},
+				$contextTypes
+			)
+		];
+	}
+
 }

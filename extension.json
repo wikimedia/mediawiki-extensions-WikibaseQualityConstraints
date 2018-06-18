@@ -465,6 +465,26 @@
 			"description": "The item ID of the 'wikibase lexeme' item, which represents the 'lexeme' entity type for 'allowed entity types' constraints.",
 			"public": true
 		},
+		"WBQualityConstraintsPropertyScopeId": {
+			"value": "P5314",
+			"description": "The property ID of the 'property scope' property, which specifies the scope parameter of a 'scope' constraint.",
+			"public": true
+		},
+		"WBQualityConstraintsAsMainValueId": {
+			"value": "Q54828448",
+			"description": "The item ID of the 'as main value' item, which, when used in a 'property scope' parameter of a 'scope' constraint, signifies that a property may be used for the main snaks of statements.",
+			"public": true
+		},
+		"WBQualityConstraintsAsQualifiersId": {
+			"value": "Q54828449",
+			"description": "The item ID of the 'as qualifiers' item, which, when used in a 'property scope' parameter of a 'scope' constraint, signifies that a property may be used for qualifiers of statements.",
+			"public": true
+		},
+		"WBQualityConstraintsAsReferencesId": {
+			"value": "Q54828450",
+			"description": "The item ID of the 'as references' item, which, when used in a 'property scope' parameter of a 'scope' constraint, signifies that a property may be used for references of statements.",
+			"public": true
+		},
 		"WBQualityConstraintsPropertiesWithViolatingQualifiers": {
 			"value": [],
 			"description": "Property IDs of statements whose qualifiers are expected to violate constraints, and where constraints checks are therefore skipped, as if the subject entity was an exception to the constraints defined on the qualifier properties.",

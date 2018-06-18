@@ -277,18 +277,26 @@ class ConstraintParameterParser {
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @param bool $required whether the parameter is required (error if absent) or not ([] if absent)
+	 * @param string|null $parameterId the property ID to use, defaults to 'qualifier of property constraint'
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return ItemIdSnakValue[] array of values
 	 */
-	public function parseItemsParameter( array $constraintParameters, $constraintTypeItemId, $required ) {
+	public function parseItemsParameter(
+		array $constraintParameters,
+		$constraintTypeItemId,
+		$required,
+		$parameterId = null
+	) {
 		$this->checkError( $constraintParameters );
-		$qualifierId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-		if ( !array_key_exists( $qualifierId, $constraintParameters ) ) {
+		if ( $parameterId === null ) {
+			$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		}
+		if ( !array_key_exists( $parameterId, $constraintParameters ) ) {
 			if ( $required ) {
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 						->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-						->withEntityId( new PropertyId( $qualifierId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 				);
 			} else {
 				return [];
@@ -296,11 +304,11 @@ class ConstraintParameterParser {
 		}
 
 		$values = [];
-		foreach ( $constraintParameters[$qualifierId] as $parameter ) {
+		foreach ( $constraintParameters[$parameterId] as $parameter ) {
 			$snak = $this->snakDeserializer->deserialize( $parameter );
 			switch ( true ) {
 				case $snak instanceof PropertyValueSnak:
-					$values[] = $this->parseItemIdParameter( $snak, $qualifierId );
+					$values[] = $this->parseItemIdParameter( $snak, $parameterId );
 					break;
 				case $snak instanceof PropertySomeValueSnak:
 					$values[] = ItemIdSnakValue::someValue();
@@ -885,6 +893,76 @@ class ConstraintParameterParser {
 		}
 
 		return $separators;
+	}
+
+	/**
+	 * Turn an ItemIdSnakValue into a single context type parameter.
+	 *
+	 * @param ItemIdSnakValue $item
+	 * @param string $parameterId used in error messages
+	 * @return string one of the Context::TYPE_* constants
+	 * @throws ConstraintParameterException
+	 */
+	private function parseContextTypeItem( ItemIdSnakValue $item, $parameterId ) {
+		if ( !$item->isValue() ) {
+			throw new ConstraintParameterException(
+				( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+			);
+		}
+
+		$itemId = $item->getItemId();
+		switch ( $itemId->getSerialization() ) {
+			case $this->config->get( 'WBQualityConstraintsAsMainValueId' ):
+				return Context::TYPE_STATEMENT;
+			case $this->config->get( 'WBQualityConstraintsAsQualifiersId' ):
+				return Context::TYPE_QUALIFIER;
+			case $this->config->get( 'WBQualityConstraintsAsReferencesId' ):
+				return Context::TYPE_REFERENCE;
+			default:
+				$allowed = [
+					new ItemId( $this->config->get( 'WBQualityConstraintsAsMainValueId' ) ),
+					new ItemId( $this->config->get( 'WBQualityConstraintsAsQualifiersId' ) ),
+					new ItemId( $this->config->get( 'WBQualityConstraintsAsReferencesId' ) ),
+				];
+				throw new ConstraintParameterException(
+					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
+						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withEntityIdList( $allowed, Role::CONSTRAINT_PARAMETER_VALUE )
+				);
+		}
+	}
+
+	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
+	 * @throws ConstraintParameterException if the parameter is invalid or missing
+	 * @return string[] list of Context::TYPE_* constants
+	 */
+	public function parsePropertyScopeParameter( array $constraintParameters, $constraintTypeItemId ) {
+		$contextTypes = [];
+		$parameterId = $this->config->get( 'WBQualityConstraintsPropertyScopeId' );
+		$items = $this->parseItemsParameter(
+			$constraintParameters,
+			$constraintTypeItemId,
+			true,
+			$parameterId
+		);
+
+		foreach ( $items as $item ) {
+			$contextTypes[] = $this->parseContextTypeItem( $item, $parameterId );
+		}
+
+		if ( empty( $contextTypes ) ) {
+			// @codeCoverageIgnoreStart
+			throw new LogicException(
+				'The "property scope" parameter is required, ' .
+				'and yet we seem to be missing any allowed scope'
+			);
+			// @codeCoverageIgnoreEnd
+		}
+
+		return $contextTypes;
 	}
 
 }
