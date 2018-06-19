@@ -345,6 +345,11 @@
 			"description": "The item ID of the 'citation needed constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should have at least one reference for its values.",
 			"public": true
 		},
+		"WBQualityConstraintsPropertyScopeConstraintId": {
+			"value": "Q53869507",
+			"description": "The item ID of the 'property scope constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should only be used in some locations (main value, qualifiers, and/or references, but not all of them).",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'class' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
