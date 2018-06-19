@@ -58,6 +58,8 @@ class ViolationMessageSerializer implements Serializer {
 			ViolationMessage::TYPE_INLINE_CODE => 'serializeStringByIdentity',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'serializeConstraintScope',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'serializeConstraintScopeList',
+			ViolationMessage::TYPE_PROPERTY_SCOPE => 'serializePropertyScope',
+			ViolationMessage::TYPE_PROPERTY_SCOPE_LIST => 'serializePropertyScopeList',
 			ViolationMessage::TYPE_LANGUAGE => 'serializeStringByIdentity',
 			ViolationMessage::TYPE_MULTILINGUAL_TEXT => 'serializeMultilingualText',
 		];
@@ -174,6 +176,35 @@ class ViolationMessageSerializer implements Serializer {
 	 */
 	private function serializeConstraintScopeList( array $scopeList ) {
 		return array_map( [ $this, 'serializeConstraintScope' ], $scopeList );
+	}
+
+	/**
+	 * @param string $scope one of the Context::TYPE_* constants
+	 * @return string the abbreviated scope
+	 */
+	private function serializePropertyScope( $scope ) {
+		switch ( $scope ) {
+			case Context::TYPE_STATEMENT:
+				return 's';
+			case Context::TYPE_QUALIFIER:
+				return 'q';
+			case Context::TYPE_REFERENCE:
+				return 'r';
+			default:
+				// @codeCoverageIgnoreStart
+				throw new LogicException(
+					'Unknown property scope ' . $scope
+				);
+				// @codeCoverageIgnoreEnd
+		}
+	}
+
+	/**
+	 * @param string[] $scopeList Context::TYPE_* constants
+	 * @return string[] abbreviated scopes
+	 */
+	private function serializePropertyScopeList( array $scopeList ) {
+		return array_map( [ $this, 'serializePropertyScope' ], $scopeList );
 	}
 
 	/**

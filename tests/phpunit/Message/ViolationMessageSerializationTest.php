@@ -104,6 +104,12 @@ class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
 					->withEntityId( new ItemId( 'Q1' ) )
 					->withConstraintScopeList( [ Context::TYPE_STATEMENT ] )
 			],
+			'entity ID + property scope + property scope list' => [
+				( new ViolationMessage( 'wbqc-violation-message-property-scope' ) )
+					->withEntityId( new PropertyId( 'P1' ) )
+					->withPropertyScope( Context::TYPE_STATEMENT )
+					->withPropertyScopeList( [ Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ] )
+			],
 			'entity ID + string value + inline code + multilingual text' => [
 				( new ViolationMessage( 'wbqc-violation-message-format-clarification' ) )
 					->withEntityId( new PropertyId( 'P1' ) )

@@ -293,6 +293,57 @@ class ViolationMessageSerializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializePropertyScope
+	 * @dataProvider providePropertyScopes
+	 */
+	public function testSerializePropertyScope( $scope, $abbreviation ) {
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializePropertyScope( $scope );
+
+		$this->assertSame( $abbreviation, $serialized );
+	}
+
+	public function providePropertyScopes() {
+		return [
+			[ Context::TYPE_STATEMENT, 's' ],
+			[ Context::TYPE_QUALIFIER, 'q' ],
+			[ Context::TYPE_REFERENCE, 'r' ],
+		];
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializePropertyScopeList
+	 */
+	public function testSerializePropertyScopeList() {
+		$scopeList = [
+			Context::TYPE_STATEMENT,
+			Context::TYPE_REFERENCE,
+			Context::TYPE_QUALIFIER,
+		];
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializePropertyScopeList( $scopeList );
+
+		$this->assertSame( [ 's', 'r', 'q' ], $serialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializePropertyScopeList
+	 */
+	public function testSerializePropertyScopeList_empty() {
+		$scopeList = [];
+		$serializer = new ViolationMessageSerializer();
+
+		$serialized = TestingAccessWrapper::newFromObject( $serializer )
+			->serializePropertyScopeList( $scopeList );
+
+		$this->assertSame( [], $serialized );
+	}
+
+	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeMultilingualText
 	 */
 	public function testSerializeMultilingualText() {

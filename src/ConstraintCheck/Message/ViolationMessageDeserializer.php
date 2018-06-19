@@ -77,6 +77,8 @@ class ViolationMessageDeserializer implements Deserializer {
 			ViolationMessage::TYPE_INLINE_CODE => 'deserializeStringByIdentity',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'deserializeConstraintScope',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'deserializeConstraintScopeList',
+			ViolationMessage::TYPE_PROPERTY_SCOPE => 'deserializePropertyScope',
+			ViolationMessage::TYPE_PROPERTY_SCOPE_LIST => 'deserializePropertyScopeList',
 			ViolationMessage::TYPE_LANGUAGE => 'deserializeStringByIdentity',
 			ViolationMessage::TYPE_MULTILINGUAL_TEXT => 'deserializeMultilingualText',
 		];
@@ -179,6 +181,35 @@ class ViolationMessageDeserializer implements Deserializer {
 	 */
 	private function deserializeConstraintScopeList( array $scopeAbbreviations ) {
 		return array_map( [ $this, 'deserializeConstraintScope' ], $scopeAbbreviations );
+	}
+
+	/**
+	 * @param string $scopeAbbreviation
+	 * @return string one of the Context::TYPE_* constants
+	 */
+	private function deserializePropertyScope( $scopeAbbreviation ) {
+		switch ( $scopeAbbreviation ) {
+			case 's':
+				return Context::TYPE_STATEMENT;
+			case 'q':
+				return Context::TYPE_QUALIFIER;
+			case 'r':
+				return Context::TYPE_REFERENCE;
+			default:
+				// @codeCoverageIgnoreStart
+				throw new LogicException(
+					'Unknown property scope abbreviation ' . $scopeAbbreviation
+				);
+				// @codeCoverageIgnoreEnd
+		}
+	}
+
+	/**
+	 * @param string[] $scopeAbbreviations
+	 * @return string[] Context::TYPE_* constants
+	 */
+	private function deserializePropertyScopeList( array $scopeAbbreviations ) {
+		return array_map( [ $this, 'deserializePropertyScope' ], $scopeAbbreviations );
 	}
 
 	/**

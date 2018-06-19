@@ -208,6 +208,48 @@ class ViolationMessageTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	public function testWithPropertyScope() {
+		$value = Context::TYPE_STATEMENT;
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-property-scope' ) )
+			->withEntityId( new PropertyId( 'P1' ) )
+			->withPropertyScope( $value, $role )
+			->withPropertyScopeList( [] );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_PROPERTY_SCOPE, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[1]
+		);
+	}
+
+	public function testWithPropertyScopeList() {
+		$value = [ Context::TYPE_STATEMENT, Context::TYPE_REFERENCE ];
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-property-scope' ) )
+			->withEntityId( new PropertyId( 'P1' ) )
+			->withPropertyScope( Context::TYPE_STATEMENT )
+			->withPropertyScopeList( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_PROPERTY_SCOPE_LIST, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[2]
+		);
+	}
+
+	public function testWithPropertyScopeList_empty() {
+		$value = [];
+		$role = Role::CONSTRAINT_PARAMETER_VALUE;
+		$message = ( new ViolationMessage( 'wbqc-violation-message-property-scope' ) )
+			->withEntityId( new PropertyId( 'P1' ) )
+			->withPropertyScope( Context::TYPE_STATEMENT )
+			->withPropertyScopeList( $value, $role );
+
+		$this->assertSame(
+			[ 'type' => ViolationMessage::TYPE_PROPERTY_SCOPE_LIST, 'role' => $role, 'value' => $value ],
+			$message->getArguments()[2]
+		);
+	}
+
 	public function testWithLanguage() {
 		$value = 'pt';
 		$role = null;

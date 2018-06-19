@@ -316,6 +316,58 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializePropertyScope
+	 * @dataProvider providePropertyScopeAbbreviations
+	 */
+	public function testDeserializePropertyScope( $abbreviation, $scope ) {
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializePropertyScope( $abbreviation );
+
+		$this->assertSame( $scope, $deserialized );
+	}
+
+	public function providePropertyScopeAbbreviations() {
+		return [
+			[ 's', Context::TYPE_STATEMENT ],
+			[ 'q', Context::TYPE_QUALIFIER ],
+			[ 'r', Context::TYPE_REFERENCE ],
+		];
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializePropertyScopeList
+	 */
+	public function testDeserializePropertyScopeList() {
+		$serializations = [ 's', 'r', 'q' ];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializePropertyScopeList( $serializations );
+
+		$expected = [
+			Context::TYPE_STATEMENT,
+			Context::TYPE_REFERENCE,
+			Context::TYPE_QUALIFIER,
+		];
+		$this->assertSame( $expected, $deserialized );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializePropertyScopeList
+	 */
+	public function testDeserializePropertyScopeList_empty() {
+		$serializations = [];
+		$deserializer = $this->getViolationMessageDeserializer();
+
+		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
+			->deserializePropertyScopeList( $serializations );
+
+		$this->assertSame( [], $deserialized );
+	}
+
+	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeMultilingualText
 	 */
 	public function testDeserializeMultilingualText() {
