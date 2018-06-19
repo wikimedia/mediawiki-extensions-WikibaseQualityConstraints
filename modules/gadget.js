@@ -303,6 +303,59 @@
 		return;
 	}
 
+	function fullCheck( api, lang ) {
+		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
+		return api.get( {
+			action: 'wbcheckconstraints',
+			format: 'json',
+			formatversion: 2,
+			uselang: lang,
+			id: entityId,
+			status: cachedStatuses
+		} ).then( function ( data ) {
+			$( '.wbqc-reports-button' ).remove();
+			$( '.wikibase-statementgroupview .wikibase-statementview' )
+				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
+		} );
+	}
+
+	function snakCheck( api, lang, entityId, statementId ) {
+		var isUpdated = false,
+			statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' );
+
+		api.get( {
+			action: 'wbcheckconstraints',
+			format: 'json',
+			formatversion: 2,
+			uselang: lang,
+			claimid: statementId,
+			status: cachedStatuses
+		} ).then( function ( data ) {
+			if ( isUpdated ) {
+				return;
+			}
+
+			$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
+				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
+		} );
+		fullCheck( api, lang ).then( function () {
+			isUpdated = true;
+		} );
+	}
+
+	function propertyParameterCheck( api, lang, entityId ) {
+		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadProperty' );
+		return api.get( {
+			action: 'wbcheckconstraintparameters',
+			format: 'json',
+			formatversion: 2,
+			uselang: lang,
+			propertyid: entityId
+		} ).then( function ( data ) {
+			addParameterReports( data.wbcheckconstraintparameters[ entityId ] );
+		} );
+	}
+
 	mw.loader.using( [
 		'mediawiki.api',
 		'oojs-ui-core',
@@ -313,46 +366,16 @@
 	] ).done( function () {
 		var api = new mw.Api( mwApiOptions() ),
 			lang = mw.config.get( 'wgUserLanguage' );
-		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
-		api.get( {
-			action: 'wbcheckconstraints',
-			format: 'json',
-			formatversion: 2,
-			uselang: lang,
-			id: entityId,
-			status: cachedStatuses
-		} ).then( function ( data ) {
-			$( '.wikibase-statementgroupview .wikibase-statementview' )
-				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
-		} );
+
+		fullCheck( api, lang );
 
 		if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
-			mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadProperty' );
-			api.get( {
-				action: 'wbcheckconstraintparameters',
-				format: 'json',
-				formatversion: 2,
-				uselang: lang,
-				propertyid: entityId
-			} ).then( function ( data ) {
-				addParameterReports( data.wbcheckconstraintparameters[ entityId ] );
-			} );
+			propertyParameterCheck( api, lang, entityId );
 		}
 
 		mw.hook( 'wikibase.statement.saved' ).add( function ( entityId, statementId ) {
 			mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
-			api.get( {
-				action: 'wbcheckconstraints',
-				format: 'json',
-				formatversion: 2,
-				uselang: lang,
-				claimid: statementId,
-				status: cachedStatuses
-			} ).then( function ( data ) {
-				var statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' );
-				$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
-					.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
-			} );
+			snakCheck( api, lang, entityId, statementId );
 		} );
 	} );
 }( mediaWiki, wikibase, jQuery, OO ) );
