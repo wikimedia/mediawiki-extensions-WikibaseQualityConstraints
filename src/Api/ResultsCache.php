@@ -58,7 +58,7 @@ class ResultsCache {
 	 * @param EntityId $key
 	 * @param mixed &$curTTL
 	 * @param array $checkKeys
-	 * @param float &$asOf
+	 * @param float &$asOf UNIX timestamp of cached value; null on failure [returned]
 	 * @return mixed
 	 */
 	public function get( EntityId $key, &$curTTL = null, array $checkKeys = [], &$asOf = null ) {
@@ -67,7 +67,7 @@ class ResultsCache {
 
 	/**
 	 * @param EntityId $key
-	 * @param $value
+	 * @param mixed $value
 	 * @param int $ttl
 	 * @param array $opts
 	 * @return bool
