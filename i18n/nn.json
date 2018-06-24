@@ -4,7 +4,13 @@
 			"Njardarlogar"
 		]
 	},
+	"wbqc-constraintreport": "Avgrensingsrapport",
+	"wbqc-constraintreport-form-section": "Gå gjennom avgrensingar for ei eining",
 	"wbqc-constraintreport-form-entityid-label": "Einings-ID:",
+	"wbqc-constraintreport-status-todo": "Uferdig",
+	"wbqc-constraintreport-status-warning": "Åtvaring",
+	"wbqc-constraintreport-result-table-header-property": "Eigenskap",
+	"wbqc-constraintreport-result-table-header-constraint": "Avgrensing",
 	"wbqc-issues-long": "Denne utsegna har nokre vanskar.",
 	"wbqc-potentialissues-short": "Moglege vanskar",
 	"wbqc-potentialissues-long": "Denne utsegna har nokre mogelege vanskar.",
@@ -18,5 +24,9 @@
 	"wbqc-violation-message-mandatory-qualifier": "Denne $1-utsegna manglar kvalifikatoren $2.",
 	"wbqc-violation-message-multi-value": "Denne eigenskapen skal ha meir enn éin verdi.",
 	"wbqc-violation-message-type-instance": "Einingar som nyttar eigenskapen $1 bør vera førekomstar av {{PLURAL:$3|1=$5|2=$5 eller $6|ein av klassane under}} (eller av {{PLURAL:$3|1=ein av underklassane hans|2=ein av underklassane deira|ein av underklassane deira}}), men $2 {{PLURAL:$3|1=er ikkje det.|2=er ikkje det.|er ikkje det: $4}}",
-	"wbqc-violation-message-type-instanceOrSubclass": "Einingar som nyttar eigenskapen $1 bør vera førekomstar eller underklassar av {{PLURAL:$3|1=$5|2=$5 eller $6|ein av klassane under}} (eller av {{PLURAL:$3|1=ein av underklassane hans|2=ein av underklassane deira|ein av underklassane deira}}), men $2 {{PLURAL:$3|1=er ikkje det.|2=er ikkje det.|er ikkje det: $4}}"
+	"wbqc-violation-message-type-instanceOrSubclass": "Einingar som nyttar eigenskapen $1 bør vera førekomstar eller underklassar av {{PLURAL:$3|1=$5|2=$5 eller $6|ein av klassane under}} (eller av {{PLURAL:$3|1=ein av underklassane hans|2=ein av underklassane deira|ein av underklassane deira}}), men $2 {{PLURAL:$3|1=er ikkje det.|2=er ikkje det.|er ikkje det: $4}}",
+	"wbqc-violation-message-target-required-claim": "$1 bør ha {{PLURAL:$3|0=ei $2-utsegn.|1=ei $2-utsegn med verdien $5.|ei $2-utsegn med ein av desse verdiane: $4}}",
+	"wbqc-violation-message-units-none": "Verdien til $1 bør ikkje ha ei eining.",
+	"wbqc-violation-message-units": "Verdien til $1 bør ha {{PLURAL:$2|1=eininga $4.|2=eininga $4 eller $5.|ein av desse einingane: $3}}",
+	"wbqc-violation-message-units-or-none": "Verdien til $1 bør ha {{PLURAL:$2|1=eininga $4.|2=eininga $4 eller $5.|ein av desse einingane}} eller vera utan {{PLURAL:$2|1=eining.|2=eining.|eining: $3}}"
 }

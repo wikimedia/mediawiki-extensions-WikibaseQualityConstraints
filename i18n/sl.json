@@ -1,9 +1,25 @@
 {
 	"@metadata": {
 		"authors": [
-			"HairyFotr"
+			"HairyFotr",
+			"Janezdrilc"
 		]
 	},
+	"wbqc-constraintreport-result-headline": "Rezultat za",
+	"wbqc-constraintreport-status-exception": "Izjema",
 	"wbqc-constraintreport-status-warning": "Opozorilo",
+	"wbqc-constraintreport-result-table-header-status": "Stanje",
+	"wbqc-constraintreport-result-table-header-property": "Lastnost",
+	"wbqc-constraintreport-result-table-header-message": "Sporočilo",
+	"wbqc-constraintreport-result-table-header-constraint": "Omejitev",
+	"wbqc-issues-short": "Težave",
+	"wbqc-potentialissues-short": "Možne težave",
+	"wbqc-potentialissues-long": "Ta izjava ima nekaj možnih težav.",
+	"wbqc-constrainttypehelp-short": "Pomoč",
+	"wbqc-constrainttypehelp-long": "Stran pomoči za to vrsto omejitev",
+	"wbqc-constraintdiscuss-short": "Pogovor",
+	"wbq-subextension-name-wbqc": "Omejitve",
+	"wbqc-violation-header-parameters": "Parametri:",
+	"wbqc-violations-group": "Omejitve",
 	"wbqc-violation-message-parameter-regex": "$1 ni veljaven regularni izraz."
 }
