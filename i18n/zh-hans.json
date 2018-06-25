@@ -157,6 +157,6 @@
 	"wbqc-violation-message-none-of": "$1的值不应为{{PLURAL:$2|1=$4。|2=$4或$5之一。|以下值之一：$3}}",
 	"wbqc-violation-message-integer": "用于$1的值应为整数，但$2有小数部分。",
 	"wbqc-violation-message-integer-bounds": "$1的值应为整数，但$2的界限有小数部分。",
-	"wbqc-violation-message-citationNeeded": "$1的描述应有至少一个参考资料。",
+	"wbqc-violation-message-citationNeeded": "$1的声明应有至少一个参考资料。",
 	"wbqc-violation-message-exception": "此实体是该约束的已知例外，并已如此标记。"
 }
