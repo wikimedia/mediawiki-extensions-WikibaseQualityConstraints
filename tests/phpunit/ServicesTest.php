@@ -4,8 +4,12 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use MediaWiki\MediaWikiServices;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
@@ -33,6 +37,10 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 			[ ViolationMessageSerializer::class ],
 			[ ViolationMessageDeserializer::class ],
 			[ ConstraintParameterParser::class ],
+			[ ConnectionCheckerHelper::class ],
+			[ RangeCheckerHelper::class ],
+			[ SparqlHelper::class ],
+			[ TypeCheckerHelper::class ],
 		];
 	}
 

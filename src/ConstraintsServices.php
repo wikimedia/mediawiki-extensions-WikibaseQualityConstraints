@@ -3,8 +3,12 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
@@ -23,6 +27,10 @@ class ConstraintsServices {
 	const VIOLATION_MESSAGE_SERIALIZER = 'WBQC_ViolationMessageSerializer';
 	const VIOLATION_MESSAGE_DESERIALIZER = 'WBQC_ViolationMessageDeserializer';
 	const CONSTRAINT_PARAMETER_PARSER = 'WBQC_ConstraintParameterParser';
+	const CONNECTION_CHECKER_HELPER = 'WBQC_ConnectionCheckerHelper';
+	const RANGE_CHECKER_HELPER = 'WBQC_RangeCheckerHelper';
+	const SPARQL_HELPER = 'WBQC_SparqlHelper';
+	const TYPE_CHECKER_HELPER = 'WBQC_TypeCheckerHelper';
 
 	private static function getService( MediaWikiServices $services = null, $name ) {
 		if ( $services === null ) {
@@ -93,6 +101,38 @@ class ConstraintsServices {
 	 */
 	public static function getConstraintParameterParser( MediaWikiServices $services = null ) {
 		return self::getService( $services, self::CONSTRAINT_PARAMETER_PARSER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return ConnectionCheckerHelper
+	 */
+	public static function getConnectionCheckerHelper( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::CONNECTION_CHECKER_HELPER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return RangeCheckerHelper
+	 */
+	public static function getRangeCheckerHelper( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::RANGE_CHECKER_HELPER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return SparqlHelper
+	 */
+	public static function getSparqlHelper( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::SPARQL_HELPER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return TypeCheckerHelper
+	 */
+	public static function getTypeCheckerHelper( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::TYPE_CHECKER_HELPER );
 	}
 
 }
