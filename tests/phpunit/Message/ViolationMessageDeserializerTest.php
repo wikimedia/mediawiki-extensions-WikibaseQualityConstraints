@@ -264,19 +264,19 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeConstraintScope
-	 * @dataProvider provideConstraintScopeAbbreviations
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeContextType
+	 * @dataProvider provideContextTypeAbbreviations
 	 */
-	public function testDeserializeConstraintScope( $abbreviation, $scope ) {
+	public function testDeserializeContextType( $abbreviation, $contextType ) {
 		$deserializer = $this->getViolationMessageDeserializer();
 
 		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
-			->deserializeConstraintScope( $abbreviation );
+			->deserializeContextType( $abbreviation );
 
-		$this->assertSame( $scope, $deserialized );
+		$this->assertSame( $contextType, $deserialized );
 	}
 
-	public function provideConstraintScopeAbbreviations() {
+	public function provideContextTypeAbbreviations() {
 		return [
 			[ 's', Context::TYPE_STATEMENT ],
 			[ 'q', Context::TYPE_QUALIFIER ],
@@ -285,14 +285,14 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeConstraintScopeList
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeContextTypeList
 	 */
-	public function testDeserializeConstraintScopeList() {
+	public function testDeserializeContextTypeList() {
 		$serializations = [ 's', 'r', 'q' ];
 		$deserializer = $this->getViolationMessageDeserializer();
 
 		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
-			->deserializeConstraintScopeList( $serializations );
+			->deserializeContextTypeList( $serializations );
 
 		$expected = [
 			Context::TYPE_STATEMENT,
@@ -303,66 +303,14 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeConstraintScopeList
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeContextTypeList
 	 */
-	public function testDeserializeConstraintScopeList_empty() {
+	public function testDeserializeContextTypeList_empty() {
 		$serializations = [];
 		$deserializer = $this->getViolationMessageDeserializer();
 
 		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
-			->deserializeConstraintScopeList( $serializations );
-
-		$this->assertSame( [], $deserialized );
-	}
-
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializePropertyScope
-	 * @dataProvider providePropertyScopeAbbreviations
-	 */
-	public function testDeserializePropertyScope( $abbreviation, $scope ) {
-		$deserializer = $this->getViolationMessageDeserializer();
-
-		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
-			->deserializePropertyScope( $abbreviation );
-
-		$this->assertSame( $scope, $deserialized );
-	}
-
-	public function providePropertyScopeAbbreviations() {
-		return [
-			[ 's', Context::TYPE_STATEMENT ],
-			[ 'q', Context::TYPE_QUALIFIER ],
-			[ 'r', Context::TYPE_REFERENCE ],
-		];
-	}
-
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializePropertyScopeList
-	 */
-	public function testDeserializePropertyScopeList() {
-		$serializations = [ 's', 'r', 'q' ];
-		$deserializer = $this->getViolationMessageDeserializer();
-
-		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
-			->deserializePropertyScopeList( $serializations );
-
-		$expected = [
-			Context::TYPE_STATEMENT,
-			Context::TYPE_REFERENCE,
-			Context::TYPE_QUALIFIER,
-		];
-		$this->assertSame( $expected, $deserialized );
-	}
-
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializePropertyScopeList
-	 */
-	public function testDeserializePropertyScopeList_empty() {
-		$serializations = [];
-		$deserializer = $this->getViolationMessageDeserializer();
-
-		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
-			->deserializePropertyScopeList( $serializations );
+			->deserializeContextTypeList( $serializations );
 
 		$this->assertSame( [], $deserialized );
 	}
