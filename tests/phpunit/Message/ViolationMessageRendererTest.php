@@ -59,6 +59,9 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
 				'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
 				'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
+				'WBQualityConstraintsAsMainValueId' => 'Q4',
+				'WBQualityConstraintsAsQualifiersId' => 'Q5',
+				'WBQualityConstraintsAsReferencesId' => 'Q6',
 			] );
 		}
 		return new ViolationMessageRenderer(
@@ -249,6 +252,43 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$expected = '(wbqc-violation-message-invalid-scope: Q2, Q10, 2, ' .
 			'<ul><li>Q1</li><li>Q3</li></ul>, Q1, Q3)';
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
+	public function testRender_propertyScope() {
+		$messageKey = 'wbqc-violation-message-invalid-scope';
+		$scope = Context::TYPE_STATEMENT;
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withPropertyScope( $scope );
+		$renderer = $this->newViolationMessageRenderer();
+
+		$rendered = $renderer->render( $message );
+
+		$expected = '(wbqc-violation-message-invalid-scope: Q4)';
+		$this->assertSame( $expected, $rendered );
+	}
+
+	/**
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
+	 */
+	public function testRender_propertyScopeList() {
+		$messageKey = 'wbqc-violation-message-invalid-scope';
+		$scopeList = [ Context::TYPE_STATEMENT, Context::TYPE_REFERENCE ];
+		$message = ( new ViolationMessage( $messageKey ) )
+			->withPropertyScope( Context::TYPE_QUALIFIER )
+			->withEntityId( new ItemId( 'Q10' ) )
+			->withPropertyScopeList( $scopeList );
+		$renderer = $this->newViolationMessageRenderer();
+
+		$rendered = $renderer->render( $message );
+
+		$expected = '(wbqc-violation-message-invalid-scope: Q5, Q10, 2, ' .
+			'<ul><li>Q4</li><li>Q6</li></ul>, Q4, Q6)';
 		$this->assertSame( $expected, $rendered );
 	}
 

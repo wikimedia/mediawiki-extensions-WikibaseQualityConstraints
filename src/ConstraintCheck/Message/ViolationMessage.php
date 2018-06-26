@@ -79,6 +79,18 @@ class ViolationMessage {
 	const TYPE_CONSTRAINT_SCOPE_LIST = 'S';
 
 	/**
+	 * Argument type for a single property scope.
+	 * Value type: string (one of the Context::TYPE_* constants)
+	 */
+	const TYPE_PROPERTY_SCOPE = 'p';
+
+	/**
+	 * Argument type for a list of property scopes.
+	 * Value type: string[]
+	 */
+	const TYPE_PROPERTY_SCOPE_LIST = 'P';
+
+	/**
 	 * Argument type for a language.
 	 * Value type: string (language code)
 	 */
@@ -277,6 +289,30 @@ class ViolationMessage {
 	 */
 	public function withConstraintScopeList( array $scopeList, $role = null ) {
 		return $this->withArgument( self::TYPE_CONSTRAINT_SCOPE_LIST, $role, $scopeList );
+	}
+
+	/**
+	 * Append a single property scope to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * @param string $scope one of the Context::TYPE_* constants
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withPropertyScope( $scope, $role = null ) {
+		return $this->withArgument( self::TYPE_PROPERTY_SCOPE, $role, $scope );
+	}
+
+	/**
+	 * Append a list of property scopes to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * @param string[] $scopeList Role::* constants
+	 * @param string|null $role one of the Role::* constants
+	 * @return ViolationMessage
+	 */
+	public function withPropertyScopeList( array $scopeList, $role = null ) {
+		return $this->withArgument( self::TYPE_PROPERTY_SCOPE_LIST, $role, $scopeList );
 	}
 
 	/**

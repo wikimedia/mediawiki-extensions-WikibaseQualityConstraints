@@ -130,6 +130,8 @@ class ViolationMessageRenderer {
 			ViolationMessage::TYPE_INLINE_CODE => 'renderInlineCode',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE => 'renderConstraintScope',
 			ViolationMessage::TYPE_CONSTRAINT_SCOPE_LIST => 'renderConstraintScopeList',
+			ViolationMessage::TYPE_PROPERTY_SCOPE => 'renderPropertyScope',
+			ViolationMessage::TYPE_PROPERTY_SCOPE_LIST => 'renderPropertyScopeList',
 			ViolationMessage::TYPE_LANGUAGE => 'renderLanguage',
 		];
 
@@ -356,6 +358,41 @@ class ViolationMessageRenderer {
 	 */
 	private function renderConstraintScopeList( array $scopeList, $role ) {
 		return $this->renderList( $scopeList, $role, [ $this, 'renderConstraintScope' ] );
+	}
+
+	/**
+	 * @param string $scope one of the Context::TYPE_* constants
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
+	 */
+	private function renderPropertyScope( $scope, $role ) {
+		switch ( $scope ) {
+			case Context::TYPE_STATEMENT:
+				$itemId = $this->config->get( 'WBQualityConstraintsAsMainValueId' );
+				break;
+			case Context::TYPE_QUALIFIER:
+				$itemId = $this->config->get( 'WBQualityConstraintsAsQualifiersId' );
+				break;
+			case Context::TYPE_REFERENCE:
+				$itemId = $this->config->get( 'WBQualityConstraintsAsReferencesId' );
+				break;
+			default:
+				// callers should never let this happen, but if it does happen,
+				// showing “unknown value” seems reasonable
+				// @codeCoverageIgnoreStart
+				return $this->renderItemIdSnakValue( ItemIdSnakValue::someValue(), $role );
+				// @codeCoverageIgnoreEnd
+		}
+		return $this->renderEntityId( new ItemId( $itemId ), $role );
+	}
+
+	/**
+	 * @param string[] $text Context::TYPE_* constants
+	 * @param string|null $role one of the Role::* constants
+	 * @return array[] list of parameters as accepted by Message::params()
+	 */
+	private function renderPropertyScopeList( array $scopeList, $role ) {
+		return $this->renderList( $scopeList, $role, [ $this, 'renderPropertyScope' ] );
 	}
 
 	/**
