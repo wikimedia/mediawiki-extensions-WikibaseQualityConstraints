@@ -242,19 +242,19 @@ class ViolationMessageSerializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeConstraintScope
-	 * @dataProvider provideConstraintScopes
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeContextType
+	 * @dataProvider provideContextTypes
 	 */
-	public function testSerializeConstraintScope( $scope, $abbreviation ) {
+	public function testSerializeContextType( $contextType, $abbreviation ) {
 		$serializer = new ViolationMessageSerializer();
 
 		$serialized = TestingAccessWrapper::newFromObject( $serializer )
-			->serializeConstraintScope( $scope );
+			->serializeContextType( $contextType );
 
 		$this->assertSame( $abbreviation, $serialized );
 	}
 
-	public function provideConstraintScopes() {
+	public function provideContextTypes() {
 		return [
 			[ Context::TYPE_STATEMENT, 's' ],
 			[ Context::TYPE_QUALIFIER, 'q' ],
@@ -263,10 +263,10 @@ class ViolationMessageSerializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeConstraintScopeList
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeContextTypeList
 	 */
-	public function testSerializeConstraintScopeList() {
-		$scopeList = [
+	public function testSerializeContextTypeList() {
+		$contextTypeList = [
 			Context::TYPE_STATEMENT,
 			Context::TYPE_REFERENCE,
 			Context::TYPE_QUALIFIER,
@@ -274,71 +274,20 @@ class ViolationMessageSerializerTest extends \PHPUnit\Framework\TestCase {
 		$serializer = new ViolationMessageSerializer();
 
 		$serialized = TestingAccessWrapper::newFromObject( $serializer )
-			->serializeConstraintScopeList( $scopeList );
+			->serializeContextTypeList( $contextTypeList );
 
 		$this->assertSame( [ 's', 'r', 'q' ], $serialized );
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeConstraintScopeList
+	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeContextTypeList
 	 */
-	public function testSerializeConstraintScopeList_empty() {
-		$scopeList = [];
+	public function testSerializeContextTypeList_empty() {
+		$contextTypeList = [];
 		$serializer = new ViolationMessageSerializer();
 
 		$serialized = TestingAccessWrapper::newFromObject( $serializer )
-			->serializeConstraintScopeList( $scopeList );
-
-		$this->assertSame( [], $serialized );
-	}
-
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializePropertyScope
-	 * @dataProvider providePropertyScopes
-	 */
-	public function testSerializePropertyScope( $scope, $abbreviation ) {
-		$serializer = new ViolationMessageSerializer();
-
-		$serialized = TestingAccessWrapper::newFromObject( $serializer )
-			->serializePropertyScope( $scope );
-
-		$this->assertSame( $abbreviation, $serialized );
-	}
-
-	public function providePropertyScopes() {
-		return [
-			[ Context::TYPE_STATEMENT, 's' ],
-			[ Context::TYPE_QUALIFIER, 'q' ],
-			[ Context::TYPE_REFERENCE, 'r' ],
-		];
-	}
-
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializePropertyScopeList
-	 */
-	public function testSerializePropertyScopeList() {
-		$scopeList = [
-			Context::TYPE_STATEMENT,
-			Context::TYPE_REFERENCE,
-			Context::TYPE_QUALIFIER,
-		];
-		$serializer = new ViolationMessageSerializer();
-
-		$serialized = TestingAccessWrapper::newFromObject( $serializer )
-			->serializePropertyScopeList( $scopeList );
-
-		$this->assertSame( [ 's', 'r', 'q' ], $serialized );
-	}
-
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializePropertyScopeList
-	 */
-	public function testSerializePropertyScopeList_empty() {
-		$scopeList = [];
-		$serializer = new ViolationMessageSerializer();
-
-		$serialized = TestingAccessWrapper::newFromObject( $serializer )
-			->serializePropertyScopeList( $scopeList );
+			->serializeContextTypeList( $contextTypeList );
 
 		$this->assertSame( [], $serialized );
 	}
