@@ -26,6 +26,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\IntegerChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoneOfChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\PropertyScopeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleBestValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -362,6 +363,10 @@ class ConstraintReportFactory {
 					=> new IntegerChecker(),
 				$this->config->get( 'WBQualityConstraintsCitationNeededConstraintId' )
 					=> new CitationNeededChecker(),
+				$this->config->get( 'WBQualityConstraintsPropertyScopeConstraintId' )
+					=> new PropertyScopeChecker(
+						ConstraintsServices::getConstraintParameterParser()
+					),
 			];
 		}
 

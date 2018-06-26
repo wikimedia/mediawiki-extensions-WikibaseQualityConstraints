@@ -360,6 +360,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'CitationNeeded' ),
 				'constraint_parameters' => '{}',
 			],
+			[
+				'constraint_guid' => 'P1$6161fca9-71a7-4d5b-9b86-4e717b35ea17',
+				'pid' => 1,
+				'constraint_type_qid' => $this->getConstraintTypeItemId( 'PropertyScope' ),
+				'constraint_parameters' => json_encode(
+					$this->propertyScopeParameter( [ Context::TYPE_STATEMENT ] )
+				),
+			],
 		];
 		$this->constraintCount = count( array_filter(
 			$constraints,

@@ -38,6 +38,9 @@ trait ResultAssertions {
 				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
 				'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
 				'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
+				'WBQualityConstraintsAsMainValueId' => 'Q4',
+				'WBQualityConstraintsAsQualifiersId' => 'Q5',
+				'WBQualityConstraintsAsReferencesId' => 'Q6',
 			] )
 		);
 		return $renderer->render(
