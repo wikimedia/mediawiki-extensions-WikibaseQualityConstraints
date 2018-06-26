@@ -1247,4 +1247,52 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertEquals( $expected, $separatorsParameter );
 	}
 
+	/**
+	 * @dataProvider provideContextTypeCombinations
+	 */
+	public function testParsePropertyScopeParameter( array $contextTypes ) {
+		$scope = $this->getConstraintParameterParser()
+			->parsePropertyScopeParameter(
+				$this->propertyScopeParameter( $contextTypes ),
+				'Q1'
+			);
+
+		$this->assertSame( $contextTypes, $scope );
+	}
+
+	public function provideContextTypeCombinations() {
+		return [
+			[ [ Context::TYPE_STATEMENT ] ],
+			[ [ Context::TYPE_QUALIFIER ] ],
+			[ [ Context::TYPE_REFERENCE ] ],
+			[ [ Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ] ],
+		];
+	}
+
+	public function testParsePropertyScopeParameter_missing() {
+		$this->assertThrowsConstraintParameterException(
+			'parsePropertyScopeParameter',
+			[ [], 'Q1' ],
+			'wbqc-violation-message-parameter-needed'
+		);
+	}
+
+	public function testParsePropertyScopeParameter_unknown() {
+		$parameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyScopeId' );
+		$constraintParameters = [
+			$parameterId => [ $this->getSnakSerializer()->serialize(
+				new PropertyValueSnak(
+					new PropertyId( $parameterId ),
+					new EntityIdValue( new ItemId( 'Q1' ) )
+				)
+			) ],
+		];
+
+		$this->assertThrowsConstraintParameterException(
+			'parsePropertyScopeParameter',
+			[ $constraintParameters, 'Q1' ],
+			'wbqc-violation-message-parameter-oneof'
+		);
+	}
+
 }
