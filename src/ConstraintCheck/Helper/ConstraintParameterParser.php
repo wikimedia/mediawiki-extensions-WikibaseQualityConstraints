@@ -674,42 +674,21 @@ class ConstraintParameterParser {
 	 * @return string[]|null Context::TYPE_* constants
 	 */
 	public function parseConstraintScopeParameter( array $constraintParameters, $constraintTypeItemId, array $validScopes = null ) {
-		$constraintScopeId = $this->config->get( 'WBQualityConstraintsConstraintScopeId' );
-		$mainSnakId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
-		$qualifiersId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' );
-		$referencesId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
+		$contextTypes = [];
+		$parameterId = $this->config->get( 'WBQualityConstraintsConstraintScopeId' );
+		$items = $this->parseItemsParameter(
+			$constraintParameters,
+			$constraintTypeItemId,
+			false,
+			$parameterId
+		);
 
-		if ( !array_key_exists( $constraintScopeId, $constraintParameters ) ) {
+		if ( $items === [] ) {
 			return null;
 		}
 
-		$contextTypes = [];
-		foreach ( $constraintParameters[$constraintScopeId] as $snakSerialization ) {
-			$scopeEntityId = $this->parseEntityIdParameter( $snakSerialization, $constraintScopeId );
-			switch ( $scopeEntityId->getSerialization() ) {
-				case $mainSnakId:
-					$contextTypes[] = Context::TYPE_STATEMENT;
-					break;
-				case $qualifiersId:
-					$contextTypes[] = Context::TYPE_QUALIFIER;
-					break;
-				case $referencesId:
-					$contextTypes[] = Context::TYPE_REFERENCE;
-					break;
-				default:
-					throw new ConstraintParameterException(
-						( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
-							->withEntityId( new PropertyId( $constraintScopeId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-							->withEntityIdList(
-								[
-									new ItemId( $mainSnakId ),
-									new ItemId( $qualifiersId ),
-									new ItemId( $referencesId ),
-								],
-								Role::CONSTRAINT_PARAMETER_VALUE
-							)
-					);
-			}
+		foreach ( $items as $item ) {
+			$contextTypes[] = $this->parseContextTypeItem( $item, 'constraint scope', $parameterId );
 		}
 
 		if ( $validScopes !== null ) {
@@ -899,11 +878,12 @@ class ConstraintParameterParser {
 	 * Turn an ItemIdSnakValue into a single context type parameter.
 	 *
 	 * @param ItemIdSnakValue $item
+	 * @param string $use 'constraint scope' or 'property scope'
 	 * @param string $parameterId used in error messages
 	 * @return string one of the Context::TYPE_* constants
 	 * @throws ConstraintParameterException
 	 */
-	private function parseContextTypeItem( ItemIdSnakValue $item, $parameterId ) {
+	private function parseContextTypeItem( ItemIdSnakValue $item, $use, $parameterId ) {
 		if ( !$item->isValue() ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
@@ -911,20 +891,26 @@ class ConstraintParameterParser {
 			);
 		}
 
+		if ( $use === 'constraint scope' ) {
+			$mainSnakId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
+			$qualifiersId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' );
+			$referencesId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
+		} else {
+			$mainSnakId = $this->config->get( 'WBQualityConstraintsAsMainValueId' );
+			$qualifiersId = $this->config->get( 'WBQualityConstraintsAsQualifiersId' );
+			$referencesId = $this->config->get( 'WBQualityConstraintsAsReferencesId' );
+		}
+
 		$itemId = $item->getItemId();
 		switch ( $itemId->getSerialization() ) {
-			case $this->config->get( 'WBQualityConstraintsAsMainValueId' ):
+			case $mainSnakId:
 				return Context::TYPE_STATEMENT;
-			case $this->config->get( 'WBQualityConstraintsAsQualifiersId' ):
+			case $qualifiersId:
 				return Context::TYPE_QUALIFIER;
-			case $this->config->get( 'WBQualityConstraintsAsReferencesId' ):
+			case $referencesId:
 				return Context::TYPE_REFERENCE;
 			default:
-				$allowed = [
-					new ItemId( $this->config->get( 'WBQualityConstraintsAsMainValueId' ) ),
-					new ItemId( $this->config->get( 'WBQualityConstraintsAsQualifiersId' ) ),
-					new ItemId( $this->config->get( 'WBQualityConstraintsAsReferencesId' ) ),
-				];
+				$allowed = [ $mainSnakId, $qualifiersId, $referencesId ];
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
 						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
@@ -950,7 +936,7 @@ class ConstraintParameterParser {
 		);
 
 		foreach ( $items as $item ) {
-			$contextTypes[] = $this->parseContextTypeItem( $item, $parameterId );
+			$contextTypes[] = $this->parseContextTypeItem( $item, 'property scope', $parameterId );
 		}
 
 		if ( empty( $contextTypes ) ) {
