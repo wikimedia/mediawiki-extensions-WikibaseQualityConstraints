@@ -129,5 +129,6 @@
 	"wbqc-violation-message-units-or-none": "$1の値は単位をしないか、または{{PLURAL:$2|1=$4を単位として使用します。|2=$4または$5を単位として使用します。|以下のいずれかの単位を使用します。$3}}",
 	"wbqc-violation-message-entityType": "$1はこの種類のエンティティに使用してはなりません。有効な{{PLURAL:$2|1=エンティティの種類は$4です。|2=エンティティの種類は$4または$5です。|エンティティの種類は以下になります。$3}}",
 	"wbqc-violation-message-none-of": "$1の値は{{PLURAL:$2|1=$4であってはなりません。|2=$4または$5であってはなりません。|以下のいずれかであってはなりません。$3}}",
+	"wbqc-violation-message-citationNeeded": "$1の文には少なくとも1つの出典が必要です。",
 	"wbqc-violation-message-exception": "このエンティティは、この制約の既知の例外です。"
 }
