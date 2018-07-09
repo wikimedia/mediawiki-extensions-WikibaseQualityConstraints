@@ -79,6 +79,15 @@ class CheckConstraintsRdf extends FormlessAction {
 	}
 
 	/**
+	 * @see Action::requiresUnblock
+	 *
+	 * @return bool Always false.
+	 */
+	public function requiresUnblock() {
+		return false;
+	}
+
+	/**
 	 * Cleanup GUID string so it's OK for RDF.
 	 * Should match what we're doing on RDF generation.
 	 * @param string $guid
