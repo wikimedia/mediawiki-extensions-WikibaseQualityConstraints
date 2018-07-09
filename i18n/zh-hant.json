@@ -28,6 +28,7 @@
 	"wbqc-constraintreport-result-table-header-property": "屬性",
 	"wbqc-constraintreport-result-table-header-message": "訊息",
 	"wbqc-constraintreport-result-table-header-constraint": "限制",
+	"wbqc-constraintreport-result-link-to-constraint": "轉到限制",
 	"wbqc-constraintreport-no-parameter": "無",
 	"wbqc-issues-short": "問題",
 	"wbqc-issues-long": "此聲明存在問題。",
@@ -51,11 +52,13 @@
 	"wbqc-violations-group": "限制",
 	"wbqc-violation-message-target-entity-must-exist": "目標項目必須存在。",
 	"wbqc-violation-message-value-entity-must-exist": "值項目必須存在。",
+	"wbqc-violation-message-parameter-single": "參數「$1」僅能有一個值。",
 	"wbqc-violation-message-parameter-regex": "$1 不是有效的正規表達式。",
 	"wbqc-violation-message-sparql-error": "SPARQL 查詢結果發生了錯誤。",
 	"wbqc-violation-message-parameters-error-unknown": "此限制的參數不能匯入。",
 	"wbqc-violation-message-parameters-error-toolong": "因過長緣故，此限制的參數不能匯入。",
 	"wbqc-violation-message-commons-link-no-existent": "共享資源連結應存在。",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "尚未實行對命名空間「$1」的檢查。",
 	"wbqc-violation-message-item": "$1 的實體也應該有{{PLURAL:$3|0=聲明 $2。 |1=聲明 $2 $5。 |聲明 $2，且包含下列值之一：$4}}",
 	"wbqc-violation-message-multi-value": "此屬性應包含多個值。",
 	"wbqc-violation-message-range-quantity-closed": "$1 的值（$2）應界於 $3 與 $4 之間。",
@@ -71,5 +74,7 @@
 	"wbqc-violation-message-single-value": "此屬性應僅包含一個值。",
 	"wbqc-violation-message-target-required-claim": "$1 應該有{{PLURAL:$3|0=聲明 $2。 |1=聲明 $2 $5。 |聲明 $2，且包含下列值之一：$4}}",
 	"wbqc-violation-message-noBounds": "$1 的值不應有界限。",
-	"wbqc-violation-message-units-none": "$1 的值不應有單位。"
+	"wbqc-violation-message-units-none": "$1 的值不應有單位。",
+	"wbqc-violation-message-integer": "用於 $1 的值應為整數，但 $2 含有小數部份。",
+	"wbqc-violation-message-integer-bounds": "用於 $1 的值應為整數，但 $2 的範圍含有小數部份。"
 }
