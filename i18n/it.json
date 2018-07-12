@@ -8,7 +8,8 @@
 			"Ontsed",
 			"Lucas2",
 			"Segaz3",
-			"Sarah Bernabei"
+			"Sarah Bernabei",
+			"Sakretsu"
 		]
 	},
 	"wbqc-constraintreport": "Controllo vincoli",
@@ -35,7 +36,7 @@
 	"wbqc-constraintreport-result-link-to-constraint": "vai al vincolo",
 	"wbqc-constraintreport-no-parameter": "nessuno",
 	"wbqc-potentialissues-short": "Problemi potenziali",
-	"wbqc-potentialissues-long": "Questa dichiarazione ha alcuni problemi potenziali",
+	"wbqc-potentialissues-long": "Questa dichiarazione ha alcuni potenziali problemi",
 	"wbqc-badparameters-short": "Parametri incorretti",
 	"wbqc-constrainttypehelp-short": "Aiuto",
 	"wbqc-cached-hours": "Questo risultato è memorizzato nella cache e potrebbe non essere aggiornato da {{PLURAL:$1|1=un'ora|$1&nbsp;ore}}.",
