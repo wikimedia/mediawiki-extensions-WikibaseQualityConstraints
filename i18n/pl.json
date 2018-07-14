@@ -30,5 +30,6 @@
 	"wbqc-violation-message-single-value": "Ta właściwość może mieć tylko jedną wartość. Oznacza to, że może być tylko jedno stwierdzenie używające tej właściwości.",
 	"wbqc-violation-message-target-required-claim": "$1 powinno mieć {{PLURAL:$3|0=deklarację $2.|1=deklarację $2 $5.|deklarację dla $2 z jedną z następujących wartości: $4}}",
 	"wbqc-violation-message-units-none": "Wartość $1 nie powinna mieć jednostki.",
-	"wbqc-violation-message-integer": "Wartości dla $1 powinny być liczbami całkowitymi, ale $2 ma część ułamkową."
+	"wbqc-violation-message-integer": "Wartości dla $1 powinny być liczbami całkowitymi, ale $2 ma część ułamkową.",
+	"wbqc-violation-message-property-scope": "Właściwość $1 nie powinna być używana w tej lokalizacji ($2). {{PLURAL:$3| Jedyna prawidłowa|Jedyne prawidłowe}} dla tej właściwości {{PLURAL:$3|to $5|to: $4}}"
 }
