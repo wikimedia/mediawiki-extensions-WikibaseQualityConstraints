@@ -7,5 +7,10 @@
 	"wbqc-constraintreport-status-deprecated": "פארעלטערט",
 	"wbqc-constraintreport-status-warning": "ווארענונג",
 	"wbqc-constraintreport-result-table-header-status": "סטאַטוס",
-	"wbqc-constraintreport-result-table-header-message": "מעלדונג"
+	"wbqc-constraintreport-result-table-header-message": "מעלדונג",
+	"wbqc-issues-short": "פראבלעמען",
+	"wbqc-issues-long": "דער אויסזאג האט עטלעכע פראבלעמען.",
+	"wbqc-potentialissues-short": "פאטענציאלע פראבלעמען",
+	"wbqc-parameterissues-short": "פארגעשריטענע פראגעס",
+	"wbqc-violation-message-mandatory-qualifier": "דער דאזיקער $1 אויסזאג פֿעלט א קוואליפֿיקאטאר $2."
 }

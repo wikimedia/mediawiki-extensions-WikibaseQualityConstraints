@@ -130,5 +130,6 @@
 	"wbqc-violation-message-entityType": "$1はこの種類のエンティティに使用してはなりません。有効な{{PLURAL:$2|1=エンティティの種類は$4です。|2=エンティティの種類は$4または$5です。|エンティティの種類は以下になります。$3}}",
 	"wbqc-violation-message-none-of": "$1の値は{{PLURAL:$2|1=$4であってはなりません。|2=$4または$5であってはなりません。|以下のいずれかであってはなりません。$3}}",
 	"wbqc-violation-message-citationNeeded": "$1の文には少なくとも1つの出典が必要です。",
+	"wbqc-violation-message-property-scope": "このプロパティ「$1」は、この場所（$2）では使えません。このプロパティが使えるのは、{{PLURAL:$3|$5だけです。|次の場所だけです: $4}}",
 	"wbqc-violation-message-exception": "このエンティティは、この制約の既知の例外です。"
 }
