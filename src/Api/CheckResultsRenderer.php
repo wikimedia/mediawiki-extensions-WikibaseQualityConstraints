@@ -82,8 +82,7 @@ class CheckResultsRenderer {
 
 		$title = $this->entityTitleLookup->getTitleForId( $constraintPropertyId );
 		$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
-		// TODO link to the statement when possible (T169224)
-		$link = $title->getFullURL() . '#' . $this->config->get( 'WBQualityConstraintsPropertyConstraintId' );
+		$link = $title->getFullURL() . '#' . $constraintId;
 
 		$constraint = [
 			'id' => $constraintId,

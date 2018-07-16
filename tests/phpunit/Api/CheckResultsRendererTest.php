@@ -175,7 +175,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $checkResult->getConstraintId(), $constraint['id'] );
 		$this->assertSame( 'Q1', $constraint['type'] );
 		$this->assertSame( 'Q1', $constraint['typeLabel'] );
-		$this->assertSame( 'http://wiki.test/P1#P2302', $constraint['link'] );
+		$this->assertSame( 'http://wiki.test/P1#P1$31d77e02-e1bd-423e-811e-7f6dd5da0b90', $constraint['link'] );
 		$this->assertSame( 'http://wiki.test/Talk:P1', $constraint['discussLink'] );
 	}
 
