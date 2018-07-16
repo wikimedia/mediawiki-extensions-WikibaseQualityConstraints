@@ -3,7 +3,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
-use Config;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
@@ -38,21 +37,14 @@ class CheckResultsRenderer {
 	 */
 	private $violationMessageRenderer;
 
-	/**
-	 * @var Config
-	 */
-	private $config;
-
 	public function __construct(
 		EntityTitleLookup $entityTitleLookup,
 		EntityIdFormatter $entityIdLabelFormatter,
-		ViolationMessageRenderer $violationMessageRenderer,
-		Config $config
+		ViolationMessageRenderer $violationMessageRenderer
 	) {
 		$this->entityTitleLookup = $entityTitleLookup;
 		$this->entityIdLabelFormatter = $entityIdLabelFormatter;
 		$this->violationMessageRenderer = $violationMessageRenderer;
-		$this->config = $config;
 	}
 
 	/**
