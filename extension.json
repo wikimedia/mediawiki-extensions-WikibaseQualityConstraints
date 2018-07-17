@@ -1,7 +1,10 @@
 {
 	"load_composer_autoloader": true,
 	"name": "WikibaseQualityConstraints",
-	"author": "BP2014N1",
+	"author": [
+		"BP2014N1",
+		"Lucas Werkmeister"
+	],
 	"url": "https://www.mediawiki.org/wiki/Extension:WikibaseQualityConstraints",
 	"descriptionmsg": "wbqc-desc",
 	"version": "1.0.0",
