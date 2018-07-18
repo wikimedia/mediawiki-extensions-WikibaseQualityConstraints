@@ -71,5 +71,6 @@
 	"wbqc-violation-message-range-time-rightopen-leftnow": "De Wäert fir $1 ($2) däerf net an der Vergaangenheet sinn.",
 	"wbqc-violation-message-single-value": "Dës Eegenschaft soll nëmmen een eenzege Wäert hunn.",
 	"wbqc-violation-message-reference": "D'Eegenschaft soll nëmmen a Referenze benotzt ginn an net als Haaptwäert vun enger Ausso oder als Qualificateur.",
-	"wbqc-violation-message-units-none": "De Wäert fir $1 däerf keng Eenheet hunn."
+	"wbqc-violation-message-units-none": "De Wäert fir $1 däerf keng Eenheet hunn.",
+	"wbqc-violation-message-property-scope": "D'Eegenschaft $1 soll op dëser Plaz ($2) net benotzt ginn. Déi eenzeg valabel {{PLURAL:$3|Plaz|Plaze}} fir dës Eegenschaft {{PLURAL:$3|ass $5.|sinn: $4.}}"
 }
