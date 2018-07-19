@@ -555,7 +555,7 @@ class DelegatingConstraintChecker {
 				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
 			} catch ( SparqlHelperException $e ) {
 				$message = new ViolationMessage( 'wbqc-violation-message-sparql-error' );
-				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, $message );
 			}
 			$endTime = microtime( true );
 
