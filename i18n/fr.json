@@ -10,7 +10,8 @@
 			"Urhixidur",
 			"Envlh",
 			"Verdy p",
-			"Pamputt"
+			"Pamputt",
+			"Framawiki"
 		]
 	},
 	"wbqc-constraintreport": "Rapport de contrainte",
@@ -42,7 +43,7 @@
 	"wbqc-issues-short": "Problèmes",
 	"wbqc-issues-long": "Cette déclaration a quelques problèmes.",
 	"wbqc-potentialissues-short": "Problèmes potentiels",
-	"wbqc-potentialissues-long": "Cette instruction présente quelques problèmes potentiels.",
+	"wbqc-potentialissues-long": "Cette instruction présente des problèmes potentiels.",
 	"wbqc-badparameters-short": "Mauvais paramètres",
 	"wbqc-badparameters-long": "Cette déclaration de contrainte a certains paramètres non valides.",
 	"wbqc-parameterissues-short": "Problèmes complexes",
