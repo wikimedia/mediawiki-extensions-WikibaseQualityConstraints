@@ -165,8 +165,7 @@ class CheckConstraintsTest extends ApiTestCase {
 						$valueFormatter,
 						new MockMessageLocalizer(),
 						$config
-					),
-					$config
+					)
 				),
 				$dataFactory
 			);

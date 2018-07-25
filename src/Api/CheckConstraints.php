@@ -106,8 +106,7 @@ class CheckConstraints extends ApiBase {
 				$valueFormatter,
 				$main,
 				$config
-			),
-			$config
+			)
 		);
 		$resultsSource = $constraintReportFactory->getResultsSource();
 

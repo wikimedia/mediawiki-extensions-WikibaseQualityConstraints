@@ -67,8 +67,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				$valueFormatter,
 				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
-			),
-			$this->getDefaultConfig()
+			)
 		);
 	}
 
