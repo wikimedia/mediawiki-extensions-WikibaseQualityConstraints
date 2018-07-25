@@ -83,40 +83,6 @@ final class WikibaseQualityConstraintsHooks {
 		}
 	}
 
-	/**
-	 * @param string $userName
-	 * @param int $timestamp UTC timestamp (seconds since the Epoch)
-	 * @return bool
-	 */
-	public static function isGadgetEnabledForUserName( $userName, $timestamp ) {
-		$initial = $userName[0];
-
-		if ( $initial === 'Z' ) {
-			$firstWeek = 0;
-		} elseif ( $initial >= 'W' && $initial < 'Z' ) {
-			$firstWeek = 1;
-		} elseif ( $initial >= 'T' && $initial < 'W' ) {
-			$firstWeek = 2;
-		} elseif ( $initial >= 'N' && $initial < 'T' ) {
-			$firstWeek = 3;
-		} elseif ( $initial >= 'E' && $initial < 'N' ) {
-			$firstWeek = 4;
-		} else {
-			$firstWeek = 5;
-		}
-
-		$threshold = gmmktime(
-			0, // hour
-			0, // minute
-			0, // second
-			3, // month; overflows to 3 or 4 depending on day
-			$firstWeek * 7 + 1, // day
-			2018 // year
-		);
-
-		return $timestamp >= $threshold;
-	}
-
 	public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
 		$repo = WikibaseRepo::getDefaultInstance();
 
@@ -138,9 +104,8 @@ final class WikibaseQualityConstraintsHooks {
 		if ( !$out->getUser()->isLoggedIn() ) {
 			return;
 		}
-		if ( self::isGadgetEnabledForUserName( $out->getUser()->getName(), time() ) ) {
-			$out->addModules( 'wikibase.quality.constraints.gadget' );
-		}
+
+		$out->addModules( 'wikibase.quality.constraints.gadget' );
 	}
 
 	/**
