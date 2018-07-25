@@ -28,7 +28,8 @@
 		"LoadExtensionSchemaUpdates": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema",
 		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange",
 		"ArticlePurge": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onArticlePurge",
-		"BeforePageDisplay": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onBeforePageDisplay"
+		"BeforePageDisplay": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onBeforePageDisplay",
+		"MakeGlobalVariablesScript": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::addVariables"
 	},
 	"SpecialPages": {
 		"ConstraintReport": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState"
@@ -114,6 +115,12 @@
 				"wikibase.quality.constraints.ui"
 			],
 			"skipFunction": "modules/gadget-skip.js"
+		},
+		"wikibase.quality.constraints.suggestions": {
+			"scripts": "modules/suggestions.js",
+			"dependencies": [
+				"jquery.wikibase.entityselector"
+			]
 		}
 	},
 	"JobClasses": {

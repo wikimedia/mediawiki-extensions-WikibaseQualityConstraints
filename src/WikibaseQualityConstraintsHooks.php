@@ -129,16 +129,31 @@ final class WikibaseQualityConstraintsHooks {
 		if ( !$lookup->isEntityNamespace( $title->getNamespace() ) ) {
 			return;
 		}
-		if ( !$out->getUser()->isLoggedIn() ) {
-			return;
-		}
 		if ( empty( $out->getJsConfigVars()['wbIsEditView'] ) ) {
 			return;
 		}
 
+		$out->addModules( 'wikibase.quality.constraints.suggestions' );
+
+		if ( !$out->getUser()->isLoggedIn() ) {
+			return;
+		}
 		if ( self::isGadgetEnabledForUserName( $out->getUser()->getName(), time() ) ) {
 			$out->addModules( 'wikibase.quality.constraints.gadget' );
 		}
+	}
+
+	/**
+	 * Hook: MakeGlobalVariablesScript
+	 * @param array &$vars
+	 * @param OutputPage $out
+	 */
+	public static function addVariables( &$vars, OutputPage $out ) {
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+
+		$vars['wbQualityConstraintsPropertyConstraintId'] = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
+		$vars['wbQualityConstraintsOneOfConstraintId'] = $config->get( 'WBQualityConstraintsOneOfConstraintId' );
+		$vars['wbQualityConstraintsQualifierOfPropertyConstraintId'] = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 	}
 
 }
