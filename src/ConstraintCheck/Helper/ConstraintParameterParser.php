@@ -807,11 +807,19 @@ class ConstraintParameterParser {
 			case $this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ):
 				$entityType = 'lexeme';
 				break;
+			case $this->config->get( 'WBQualityConstraintsWikibaseFormId' ):
+				$entityType = 'form';
+				break;
+			case $this->config->get( 'WBQualityConstraintsWikibaseSenseId' ):
+				$entityType = 'sense';
+				break;
 			default:
 				$allowed = [
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseItemId' ) ),
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibasePropertyId' ) ),
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ) ),
+					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseFormId' ) ),
+					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseSenseId' ) ),
 				];
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
