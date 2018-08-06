@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Specials;
 
 use DataValues\DataValueFactory;
 use DataValues\Deserializers\DataValueDeserializer;
+use HamcrestPHPUnitIntegration;
 use MediaWiki\MediaWikiServices;
 use NullStatsdDataFactory;
 use SpecialPageTestBase;
@@ -34,6 +35,7 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  * @license GPL-2.0-or-later
  */
 class SpecialConstraintReportTest extends SpecialPageTestBase {
+	use HamcrestPHPUnitIntegration;
 
 	use DefaultConfig;
 
@@ -168,12 +170,11 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		// assert matchers
 		list( $output, ) = $this->executeSpecialPage( $subPage, $request, $userLanguage );
 		foreach ( $matchers as $key => $matcher ) {
-			assertThat(
+			$this->assertThatHamcrest(
 				"Failed to assert output: $key",
 				$output,
 				is( htmlPiece( havingChild( $matcher ) ) )
 			);
-			$this->addToAssertionCount( 1 ); // To avoid risky tests warning
 		}
 	}
 
