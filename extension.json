@@ -473,6 +473,16 @@
 			"description": "The item ID of the 'wikibase lexeme' item, which represents the 'lexeme' entity type for 'allowed entity types' constraints.",
 			"public": true
 		},
+		"WBQualityConstraintsWikibaseFormId": {
+			"value": "Q54285143",
+			"description": "The item ID of the 'wikibase form' item, which represents the 'form' entity type for 'allowed entity types' constraints.",
+			"public": true
+		},
+		"WBQualityConstraintsWikibaseSenseId": {
+			"value": "Q54285715",
+			"description": "The item ID of the 'wikibase sense' item, which represents the 'sense' entity type for 'allowed entity types' constraints.",
+			"public": true
+		},
 		"WBQualityConstraintsPropertyScopeId": {
 			"value": "P5314",
 			"description": "The property ID of the 'property scope' property, which specifies the scope parameter of a 'scope' constraint.",
