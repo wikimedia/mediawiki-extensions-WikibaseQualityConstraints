@@ -69,7 +69,7 @@ class ConstraintRepository implements ConstraintLookup {
 	/**
 	 * @param LikeMatch $any should be IDatabase::anyChar()
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	private function uuidPattern( LikeMatch $any ) {
 		return array_merge(
