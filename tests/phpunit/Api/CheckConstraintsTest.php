@@ -96,7 +96,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				$termLookup,
 				$termBuffer
 			);
-			$language = new Language();
+			$language = Language::factory( 'en' );
 			$labelLookup = $fallbackLabelDescLookupFactory->newLabelDescriptionLookup( $language );
 			$entityIdFormatter = $factory->getEntityIdFormatter( $labelLookup );
 
