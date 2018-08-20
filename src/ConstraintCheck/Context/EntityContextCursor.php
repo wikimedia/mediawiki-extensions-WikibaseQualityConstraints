@@ -9,6 +9,8 @@ use LogicException;
  * not with any statement or something else within it.
  * It can only be used to partially populate a results container,
  * not to actually store a full check result.
+ * This is used by {@link CheckingResultsSource} to ensure
+ * that even entities with no statements are present in the results container.
  *
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
@@ -76,7 +78,7 @@ class EntityContextCursor extends ApiV2ContextCursor {
 	}
 
 	/**
-	 * Populate the result container up to the 'claims' level.
+	 * Populate the results container up to the 'claims' level.
 	 *
 	 * @param array|null $result must be null
 	 * @param array[] &$container
@@ -86,6 +88,8 @@ class EntityContextCursor extends ApiV2ContextCursor {
 			throw new LogicException( 'EntityContextCursor cannot store check results' );
 		}
 
+		// this ensures that the claims array is present in the $container,
+		// populating it if necessary, even though we ignore the return value
 		$this->getClaimsArray( $container );
 	}
 
