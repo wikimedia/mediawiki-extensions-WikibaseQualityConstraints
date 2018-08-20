@@ -183,7 +183,7 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * Returns array of modules that should be added
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	private function getModules() {
 		return [

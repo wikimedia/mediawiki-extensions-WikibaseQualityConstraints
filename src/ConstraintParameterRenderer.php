@@ -117,9 +117,9 @@ class ConstraintParameterRenderer {
 	/**
 	 * Cuts an array after n values and appends dots if needed.
 	 *
-	 * @param array $array
+	 * @param string[] $array
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	private function limitArrayLength( array $array ) {
 		if ( count( $array ) > self::MAX_PARAMETER_ARRAY_LENGTH ) {

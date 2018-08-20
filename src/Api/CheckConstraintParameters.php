@@ -303,7 +303,7 @@ class CheckConstraintParameters extends ApiBase {
 	 * Convert a ConstraintParameterException to an array structure for the API response.
 	 *
 	 * @param ConstraintParameterException $e
-	 * @return array
+	 * @return string[]
 	 */
 	private function formatConstraintParameterException( ConstraintParameterException $e ) {
 		return [
@@ -314,7 +314,7 @@ class CheckConstraintParameters extends ApiBase {
 	}
 
 	/**
-	 * @return array
+	 * @return array[]
 	 * @codeCoverageIgnore
 	 */
 	public function getAllowedParams() {
@@ -331,7 +331,7 @@ class CheckConstraintParameters extends ApiBase {
 	}
 
 	/**
-	 * @return array
+	 * @return string[]
 	 * @codeCoverageIgnore
 	 */
 	public function getExamplesMessages() {
