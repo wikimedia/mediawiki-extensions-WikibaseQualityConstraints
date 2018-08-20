@@ -50,11 +50,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	private static $idMap;
 
 	/**
-	 * @var array
-	 */
-	private static $claimGuids = [];
-
-	/**
 	 * @var bool
 	 */
 	private static $hasSetup;
@@ -124,7 +119,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$snak = new PropertyValueSnak( self::$idMap[ 'P1' ], $dataValue );
 			$statement = new Statement( $snak );
 			$statementGuid = $statementGuidGenerator->newGuid( self::$idMap[ 'Q1' ] );
-			self::$claimGuids[ 'P1' ] = $statementGuid;
 			$statement->setGuid( $statementGuid );
 			$itemQ1->getStatements()->addStatement( $statement );
 
