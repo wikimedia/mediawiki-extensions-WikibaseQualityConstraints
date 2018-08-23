@@ -44,10 +44,13 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 	}
 
 	public function testTwoProperties() {
-		$this->maintenance->propertyInfoLookup = new MockPropertyInfoLookup( [
-			'P1' => [],
-			'P3' => [],
-		] );
+		$this->maintenance->setupServices = function () {
+			$this->maintenance->propertyInfoLookup = new MockPropertyInfoLookup( [
+				'P1' => [],
+				'P3' => [],
+			] );
+		};
+
 		$call = 0;
 		$this->maintenance->newUpdateConstraintsTableJob = function ( $propertyIdSerialization ) use ( &$call ) {
 			$mock = $this->getMockBuilder( UpdateConstraintsTableJob::class )
