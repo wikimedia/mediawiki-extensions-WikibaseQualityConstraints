@@ -34,10 +34,10 @@ class ImportConstraintStatements extends Maintenance {
 	 */
 	private $newUpdateConstraintsTableJob;
 
+	private $setupServices;
+
 	public function __construct() {
 		parent::__construct();
-		$repo = WikibaseRepo::getDefaultInstance();
-		$this->propertyInfoLookup = $repo->getStore()->getPropertyInfoLookup();
 		$this->newUpdateConstraintsTableJob = function ( $propertyIdSerialization ) {
 			return UpdateConstraintsTableJob::newFromGlobalState(
 				Title::newMainPage(),
@@ -47,9 +47,17 @@ class ImportConstraintStatements extends Maintenance {
 
 		$this->addDescription( 'Imports property constraints from statements on properties' );
 		$this->requireExtension( 'WikibaseQualityConstraints' );
+
+		// Wikibase classes are not yet loaded, so setup services in a callback run in execute
+		// that can be overridden in tests.
+		$this->setupServices = function () {
+			$repo = WikibaseRepo::getDefaultInstance();
+			$this->propertyInfoLookup = $repo->getStore()->getPropertyInfoLookup();
+		};
 	}
 
 	public function execute() {
+		( $this->setupServices )();
 		if ( !$this->getConfig()->get( 'WBQualityConstraintsEnableConstraintsImportFromStatements' ) ) {
 			$this->error( 'Constraint statements are not enabled. Aborting.' );
 			return;
