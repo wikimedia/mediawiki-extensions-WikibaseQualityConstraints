@@ -32,8 +32,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeseriali
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 
-include_once __DIR__ . '/../../../../../tests/phpunit/includes/libs/objectcache/WANObjectCacheTest.php';
-
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CachingResultsSource
  *
