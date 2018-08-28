@@ -2,10 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use BetaFeatures;
 use Config;
 use DatabaseUpdater;
+use ExtensionRegistry;
 use JobQueueGroup;
 use JobSpecification;
+use User;
 use MediaWiki\MediaWikiServices;
 use OutputPage;
 use Skin;
@@ -121,6 +124,34 @@ final class WikibaseQualityConstraintsHooks {
 	}
 
 	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetBetaFeaturePreferences
+	 *
+	 * @param User $user
+	 * @param array[] &$prefs
+	 */
+	public static function onGetBetaFeaturePreferences( User $user, array &$prefs ) {
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		$extensionAssetsPath = $config->get( 'ExtensionAssetsPath' );
+		if ( $config->get( 'WBQualityConstraintsSuggestionsBetaFeature' ) ) {
+			$prefs['constraint-suggestions'] = [
+					'label-message' => 'wbqc-beta-feature-label-message',
+					'desc-message' => 'wbqc-beta-feature-description-message',
+					'screenshot' => [
+							'ltr' => "$extensionAssetsPath/WikibaseQualityConstraints/resources/ConstraintSuggestions-beta-features-ltr.svg",
+							'rtl' => "$extensionAssetsPath/WikibaseQualityConstraints/resources/ConstraintSuggestions-beta-features-rtl.svg",
+					],
+					'info-link'
+					=> 'https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Constraints_suggestions',
+					'discussion-link'
+					=> 'https://www.mediawiki.org/wiki/Help_talk:Constraints_suggestions',
+					'requirements' => [
+							'javascript' => true,
+					],
+			];
+		}
+	}
+
+	/**
 	 * Hook: MakeGlobalVariablesScript
 	 * @param array &$vars
 	 * @param OutputPage $out
@@ -133,6 +164,15 @@ final class WikibaseQualityConstraintsHooks {
 		$vars['wbQualityConstraintsAllowedQualifierConstraintId'] = $config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' );
 		$vars['wbQualityConstraintsPropertyId'] = $config->get( 'WBQualityConstraintsPropertyId' );
 		$vars['wbQualityConstraintsQualifierOfPropertyConstraintId'] = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+
+		$vars['wbQualityConstraintsSuggestionsGloballyEnabled'] = false;
+
+		if ( $config->get( 'WBQualityConstraintsSuggestionsBetaFeature' ) &&
+			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) &&
+			BetaFeatures::isFeatureEnabled( $out->getUser(), 'constraint-suggestions' )
+			) {
+			$vars['wbQualityConstraintsSuggestionsGloballyEnabled'] = true;
+		}
 	}
 
 }

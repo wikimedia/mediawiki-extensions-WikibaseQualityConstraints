@@ -82,7 +82,6 @@
 	"wbqc-violations-group": "Constraints",
 	"wbqc-violation-message": "Constraint check has pointed out a violation. Please click on icon for further information.",
 
-
 	"wbqc-violation-message-not-yet-implemented": "For technical reasons, the check for the constraint \"$1\" has not yet been implemented.",
 	"wbqc-violation-message-security-reason": "For security reasons, it is not possible to check the \"$1\" constraint at the moment. We are working on a solution.",
 	"wbqc-violation-message-value-needed-of-type": "Properties with constraint \"$1\" need to have values of type \"$2\".",
@@ -168,5 +167,8 @@
 	"wbqc-violation-message-citationNeeded": "Statements for $1 should have at least one reference.",
 	"wbqc-violation-message-property-scope": "The property $1 should not be used in this location ($2). The only valid {{PLURAL:$3|location|locations}} for this property {{PLURAL:$3|is $5.|are: $4}}",
 
-	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such."
+	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such.",
+
+	"wbqc-beta-feature-label-message": "Entity suggestions from constraint definitions",
+	"wbqc-beta-feature-description-message": "Enable entity suggestions derived from constraint definitions on property pages."
 }

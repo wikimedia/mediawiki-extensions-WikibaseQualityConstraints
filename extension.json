@@ -29,7 +29,8 @@
 		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange",
 		"ArticlePurge": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onArticlePurge",
 		"BeforePageDisplay": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onBeforePageDisplay",
-		"MakeGlobalVariablesScript": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::addVariables"
+		"MakeGlobalVariablesScript": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::addVariables",
+		"GetBetaFeaturePreferences": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onGetBetaFeaturePreferences"
 	},
 	"SpecialPages": {
 		"ConstraintReport": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState"
@@ -523,6 +524,11 @@
 		"WBQualityConstraintsSecondUnit": {
 			"value": "http://www.wikidata.org/entity/Q11574",
 			"description": "The unit used for a quantity that represents a difference between two dates, in seconds. Note that for entity units, the full concept URI must be used, not just the entity ID.",
+			"public": true
+		},
+		"WBQualityConstraintsSuggestionsBetaFeature": {
+			"value": false,
+			"description": "Make constraints suggestions for all properties a beta feature",
 			"public": true
 		}
 	},

@@ -113,6 +113,7 @@
 			constraintsPropertyId = mw.config.get( 'wbQualityConstraintsPropertyId' ),
 			constraintQualifierOfPropertyId = mw.config.get( 'wbQualityConstraintsQualifierOfPropertyConstraintId' ),
 			mainSnakPropertyId = getMainSnakPropertyId( data.element ),
+			isGloballyEnabled = mw.config.get( 'wbQualityConstraintsSuggestionsGloballyEnabled' ),
 			constraintId = null,
 			qualifierId = null,
 			filter = function ( term ) {
@@ -135,7 +136,11 @@
 			qualifierId = constraintQualifierOfPropertyId;
 		}
 
-		if ( mainSnakPropertyId !== propertyConstraintId || !constraintId || !qualifierId ) {
+		if ( !isGloballyEnabled && mainSnakPropertyId !== propertyConstraintId ) {
+			return;
+		}
+
+		if ( !constraintId || !qualifierId ) {
 			return;
 		}
 
