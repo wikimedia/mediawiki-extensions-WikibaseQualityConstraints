@@ -29,8 +29,20 @@ final class WikibaseQualityConstraintsHooks {
 	 * @param DatabaseUpdater $updater
 	 */
 	public static function onCreateSchema( DatabaseUpdater $updater ) {
-		$updater->addExtensionTable( 'wbqc_constraints', __DIR__ . '/../sql/create_wbqc_constraints.sql' );
-		$updater->addExtensionField( 'wbqc_constraints', 'constraint_id', __DIR__ . '/../sql/patch-wbqc_constraints-constraint_id.sql' );
+		$updater->addExtensionTable(
+			'wbqc_constraints',
+			__DIR__ . '/../sql/create_wbqc_constraints.sql'
+		);
+		$updater->addExtensionField(
+			'wbqc_constraints',
+			'constraint_id',
+			__DIR__ . '/../sql/patch-wbqc_constraints-constraint_id.sql'
+		);
+		$updater->addExtensionIndex(
+			'wbqc_constraints',
+			'wbqc_constraints_guid_uniq',
+			__DIR__ . '/../sql/patch-wbqc_constraints-wbqc_constraints_guid_uniq.sql'
+		);
 	}
 
 	public static function onWikibaseChange( Change $change ) {

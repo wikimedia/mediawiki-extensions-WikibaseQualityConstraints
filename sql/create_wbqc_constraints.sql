@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS /*_*/wbqc_constraints (
 
 CREATE INDEX /*i*/wbqc_constraints_pid_index ON /*_*/wbqc_constraints (pid);
 
-CREATE INDEX /*i*/wbqc_constraints_guid_index ON /*_*/wbqc_constraints (constraint_guid);
+CREATE UNIQUE INDEX /*i*/wbqc_constraints_guid_uniq ON /*_*/wbqc_constraints (constraint_guid);
