@@ -151,14 +151,12 @@ class SpecialConstraintReport extends SpecialPage {
 			$formatterOptions
 		);
 
-		$labelLookup = $fallbackLabelDescLookupFactory->newLabelDescriptionLookup( $language );
-
 		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter(
-			$labelLookup
+			$language
 		);
 
 		$this->entityIdLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter(
-			$labelLookup
+			$language
 		);
 
 		$this->constraintChecker = $constraintChecker;

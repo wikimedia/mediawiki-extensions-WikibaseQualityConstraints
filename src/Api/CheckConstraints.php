@@ -88,12 +88,10 @@ class CheckConstraints extends ApiBase {
 		$valueFormatterFactory = $repo->getValueFormatterFactory();
 		$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
-		$languageFallbackLabelDescriptionLookupFactory = $repo->getLanguageFallbackLabelDescriptionLookupFactory();
-		$labelDescriptionLookup = $languageFallbackLabelDescriptionLookupFactory->newLabelDescriptionLookup( $language );
 		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
-		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
+		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $language );
 		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
-		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $labelDescriptionLookup );
+		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $language );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
