@@ -51,6 +51,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
@@ -240,7 +241,7 @@ class ConstraintReportFactory {
 					$this->dataFactory
 				);
 			} else {
-				$sparqlHelper = null;
+				$sparqlHelper = new DummySparqlHelper();
 			}
 			$typeCheckerHelper = new TypeCheckerHelper(
 				$this->lookup,

@@ -51,13 +51,13 @@ class TypeCheckerHelper {
 	/**
 	 * @param EntityLookup $lookup
 	 * @param Config $config
-	 * @param SparqlHelper|null $sparqlHelper
+	 * @param SparqlHelper $sparqlHelper
 	 * @param IBufferingStatsdDataFactory $dataFactory
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		Config $config,
-		SparqlHelper $sparqlHelper = null,
+		SparqlHelper $sparqlHelper,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
 		$this->entityLookup = $lookup;
@@ -137,7 +137,7 @@ class TypeCheckerHelper {
 				Metadata::blank()
 			);
 		} catch ( OverflowException $e ) {
-			if ( $this->sparqlHelper !== null ) {
+			if ( !( $this->sparqlHelper instanceof DummySparqlHelper ) ) {
 				$this->dataFactory->increment(
 					'wikibase.quality.constraints.sparql.typeFallback'
 				);

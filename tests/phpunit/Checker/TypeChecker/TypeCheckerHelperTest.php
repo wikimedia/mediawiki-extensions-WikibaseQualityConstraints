@@ -16,6 +16,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -47,7 +48,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		return new TypeCheckerHelper(
 			$entityLookup ?: new JsonFileEntityLookup( __DIR__ ),
 			$this->getDefaultConfig(),
-			$sparqlHelper,
+			$sparqlHelper ?: new DummySparqlHelper(),
 			new NullStatsdDataFactory()
 		);
 	}

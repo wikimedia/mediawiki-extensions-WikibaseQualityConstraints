@@ -16,6 +16,7 @@ use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
@@ -287,7 +288,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
 			$this->getDefaultConfig(),
-			null
+			new DummySparqlHelper()
 		);
 
 		$result = $checker->checkConstraint(

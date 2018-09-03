@@ -14,6 +14,7 @@ use DataValues\StringValue;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
@@ -59,7 +60,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			new TypeCheckerHelper(
 				$this->lookup,
 				$this->getDefaultConfig(),
-				null,
+				new DummySparqlHelper(),
 				new NullStatsdDataFactory()
 			),
 			$this->getDefaultConfig()

@@ -7,6 +7,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
@@ -21,15 +22,15 @@ use Wikibase\DataModel\Statement\Statement;
 class UniqueValueChecker implements ConstraintChecker {
 
 	/**
-	 * @var SparqlHelper|null
+	 * @var SparqlHelper
 	 */
 	private $sparqlHelper;
 
 	/**
-	 * @param SparqlHelper|null $sparqlHelper Helper to run SPARQL queries, or null if SPARQL is not available.
+	 * @param SparqlHelper $sparqlHelper
 	 */
 	public function __construct(
-		SparqlHelper $sparqlHelper = null
+		SparqlHelper $sparqlHelper
 	) {
 		$this->sparqlHelper = $sparqlHelper;
 	}
@@ -70,7 +71,7 @@ class UniqueValueChecker implements ConstraintChecker {
 
 		$parameters = [];
 
-		if ( $this->sparqlHelper !== null ) {
+		if ( !( $this->sparqlHelper instanceof DummySparqlHelper ) ) {
 			if ( $context->getType() === 'statement' ) {
 				$result = $this->sparqlHelper->findEntitiesWithSameStatement(
 					$context->getSnakStatement(),
