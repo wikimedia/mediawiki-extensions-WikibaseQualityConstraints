@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Reza1615",
-			"Rtemis"
+			"Rtemis",
+			"Ladsgroup"
 		]
 	},
 	"wbqc-constraintreport": "محدوده گزارش",
@@ -21,15 +22,26 @@
 	"wbqc-constraintreport-status-todo": "برای انجام",
 	"wbqc-constraintreport-status-deprecated": "توصیه",
 	"wbqc-constraintreport-status-warning": "هشدار",
+	"wbqc-constraintreport-status-not-in-scope": "در محدوده نیست",
 	"wbqc-constraintreport-result-table-header-status": "وضعیت",
+	"wbqc-constraintreport-result-table-header-property": "ویژگی",
+	"wbqc-constraintreport-result-table-header-message": "پیام",
 	"wbqc-constraintreport-result-table-header-constraint": "محدودیت",
 	"wbqc-constraintreport-result-link-to-claim": "رفتن به اظهارات",
 	"wbqc-constraintreport-result-link-to-constraint": "رفتن به محدودیت",
 	"wbqc-constraintreport-no-parameter": "هیچ‌کدام",
 	"wbqc-issues-short": "موضوع‌ها",
+	"wbqc-issues-long": "این اظهار مشکلاتی دارد.",
+	"wbqc-potentialissues-short": "مشکلات بالقوه",
+	"wbqc-potentialissues-long": "این اظهار مشکلاتی دارد.",
+	"wbqc-badparameters-short": "پارامترهای بد",
+	"wbqc-parameterissues-short": "مشکلات پیشرفته",
 	"wbqc-constrainttypehelp-short": "کمک",
 	"wbqc-constraintdiscuss-short": "بحث",
+	"wbqc-dataValueType-wikibase-entityid": "شناسه موجودیت",
 	"wbq-subextension-name-wbqc": "محدودیت‌ها",
 	"wbqc-violation-header-parameters": "پارامترها:",
-	"wbqc-violations-group": "محدودیت‌ها"
+	"wbqc-violations-group": "محدودیت‌ها",
+	"wbqc-violation-message-commons-link-no-existent": "پیوند به انبار باید وجود داشته باشد.",
+	"wbqc-violation-message-citationNeeded": "اظهار $1 باید حداقل یک منبع داشته‌باشد."
 }
