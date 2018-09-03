@@ -33,7 +33,9 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 	}
 
 	public function testNoProperties() {
-		$this->maintenance->propertyInfoLookup = new MockPropertyInfoLookup( [] );
+		$this->maintenance->setupServices = function () {
+			$this->maintenance->propertyInfoLookup = new MockPropertyInfoLookup( [] );
+		};
 		$this->maintenance->newUpdateConstraintsTableJob = function () {
 			$this->fail( 'newUpdateConstraintsTableJob should not be called' );
 		};
