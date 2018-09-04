@@ -130,6 +130,8 @@ final class WikibaseQualityConstraintsHooks {
 
 		$vars['wbQualityConstraintsPropertyConstraintId'] = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
 		$vars['wbQualityConstraintsOneOfConstraintId'] = $config->get( 'WBQualityConstraintsOneOfConstraintId' );
+		$vars['wbQualityConstraintsAllowedQualifierConstraintId'] = $config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' );
+		$vars['wbQualityConstraintsPropertyId'] = $config->get( 'WBQualityConstraintsPropertyId' );
 		$vars['wbQualityConstraintsQualifierOfPropertyConstraintId'] = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 	}
 

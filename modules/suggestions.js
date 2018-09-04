@@ -15,7 +15,7 @@
 		return promise;
 	}
 
-	function getConstraintDefinition( repoApiUrl, propertyId, constraintsPropertyId, oneOfConstraintId, constraintQualifierOfPropertyId ) {
+	function getConstraintDefinition( repoApiUrl, propertyId, constraintsPropertyId, constraintId, constraintQualifierOfPropertyId ) {
 		return getJsonCached( repoApiUrl + '?action=wbgetclaims&format=json&entity=' + propertyId + '&property=' + constraintsPropertyId ).then(
 				function ( d ) {
 					var oneOfIds = [];
@@ -24,7 +24,7 @@
 					}
 
 					d.claims[ constraintsPropertyId ].forEach( function ( c ) {
-						if ( c.mainsnak.datavalue.value.id === oneOfConstraintId && c.qualifiers && c.qualifiers[ constraintQualifierOfPropertyId ] ) {
+						if ( c.mainsnak.datavalue.value.id === constraintId && c.qualifiers && c.qualifiers[ constraintQualifierOfPropertyId ] ) {
 							oneOfIds = oneOfIds.concat( c.qualifiers[ constraintQualifierOfPropertyId ]
 								.filter( function ( d ) { return d.datavalue; } )
 								.map( function ( d ) { return d.datavalue.value.id; } ) );
@@ -74,12 +74,47 @@
 		return $deferred.promise();
 	}
 
+	function isQualifierContext( element ) {
+		var $statementview, statementview;
+
+		try {
+			$statementview = element.closest( ':wikibase-statementview' );
+			statementview = $statementview.data( 'statementview' );
+
+			if ( !statementview ) {
+				return false;
+			}
+
+			return element.closest( statementview.$qualifiers ).length > 0;
+
+		} catch ( e ) {
+			return false;
+		}
+	}
+
+	function getMainSnakPropertyId( element ) {
+		var snakview, snakPropertyId;
+
+		try {
+			snakview = element.closest( '.wikibase-statementlistview' )
+				.find( '.wikibase-snakview.wb-edit' ).data( 'snakview' );
+			snakPropertyId = snakview ? snakview.propertyId() : null;
+		} catch ( e ) {
+			return null;
+		}
+
+		return snakPropertyId;
+	}
+
 	mw.hook( 'wikibase.entityselector.search' ).add( function ( data, addPromise ) {
-		var constraintsPropertyId = mw.config.get( 'wbQualityConstraintsPropertyConstraintId' ),
+		var propertyConstraintId = mw.config.get( 'wbQualityConstraintsPropertyConstraintId' ),
 			oneOfConstraintId = mw.config.get( 'wbQualityConstraintsOneOfConstraintId' ),
-			constraintQualifierOrPropertyId = mw.config.get( 'wbQualityConstraintsQualifierOfPropertyConstraintId' ),
-			snakview = data.element.closest( '.wikibase-snakview' ).data( 'snakview' ),
-			propertyId = snakview ? snakview.propertyId() : null,
+			allowedQualifierConstraintId = mw.config.get( 'wbQualityConstraintsAllowedQualifierConstraintId' ),
+			constraintsPropertyId = mw.config.get( 'wbQualityConstraintsPropertyId' ),
+			constraintQualifierOfPropertyId = mw.config.get( 'wbQualityConstraintsQualifierOfPropertyConstraintId' ),
+			mainSnakPropertyId = getMainSnakPropertyId( data.element ),
+			constraintId = null,
+			qualifierId = null,
 			filter = function ( term ) {
 				var filter = false;
 				data.term.split( ' ' ).forEach( function ( t ) {
@@ -90,16 +125,26 @@
 				return filter;
 			};
 
-		if ( propertyId !== constraintsPropertyId || data.options.type !== 'item' ) {
+		if ( isQualifierContext( data.element ) && data.options.type === 'property' ) {
+			constraintId = allowedQualifierConstraintId;
+			qualifierId = constraintsPropertyId;
+		}
+
+		if ( !isQualifierContext( data.element ) && data.options.type === 'item' ) {
+			constraintId = oneOfConstraintId;
+			qualifierId = constraintQualifierOfPropertyId;
+		}
+
+		if ( mainSnakPropertyId !== propertyConstraintId || !constraintId || !qualifierId ) {
 			return;
 		}
 
 		addPromise( getConstraintDefinition(
 				data.options.url,
-				propertyId,
-				constraintsPropertyId,
-				oneOfConstraintId,
-				constraintQualifierOrPropertyId
+				mainSnakPropertyId,
+				propertyConstraintId,
+				constraintId,
+				qualifierId
 		).then( function ( oneOfIds ) {
 			return createItemsFromIds( data.options.url, data.options.language, oneOfIds, filter );
 		} ) );
