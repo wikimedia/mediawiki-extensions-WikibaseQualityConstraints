@@ -316,6 +316,11 @@
 			"description": "The item ID of the 'commons link constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should be a valid link to Wikimedia Commons.",
 			"public": true
 		},
+		"WBQualityConstraintsContemporaryConstraintId": {
+			"value": "Q25796498",
+			"description": "The item ID of the 'contemporary constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the entities which are linked through this property should be contemporary according to their start and end time values.",
+			"public": true
+		},
 		"WBQualityConstraintsFormatConstraintId": {
 			"value": "Q21502404",
 			"description": "The item ID of the 'format constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the value of a given statement should conform to a given pattern.",
@@ -514,6 +519,16 @@
 		"WBQualityConstraintsPropertiesWithViolatingQualifiers": {
 			"value": [],
 			"description": "Property IDs of statements whose qualifiers are expected to violate constraints, and where constraints checks are therefore skipped, as if the subject entity was an exception to the constraints defined on the qualifier properties.",
+			"public": true
+		},
+		"WBQualityConstraintsStartTimePropertyIds": {
+			"value": ["P569", "P571", "P580", "P585"],
+			"description": "Property IDs of statements whose minimum value defines the start time of an entity, which is used by 'contemporary' contraints.",
+			"public": true
+		},
+		"WBQualityConstraintsEndTimePropertyIds": {
+			"value": ["P570", "P576", "P582", "P585"],
+			"description": "Property IDs of statements whose maximum value defines the end time of an entity, which is used by 'contemporary' contraints.",
 			"public": true
 		},
 		"WBQualityConstraintsYearUnit": {
