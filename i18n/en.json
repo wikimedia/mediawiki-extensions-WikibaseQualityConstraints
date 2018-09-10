@@ -111,6 +111,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Check for namespace \"$1\" is not yet implemented.",
 	"wbqc-violation-message-conflicts-with-property": "An entity should not have statements for both $1 and $2.",
 	"wbqc-violation-message-conflicts-with-claim": "An entity should not have a statement for $1 if it also has a statement for $2 with value $3.",
+	"wbqc-violation-message-contemporary-subject-earlier": "The entities $1 and $3 should be contemporary to be linked through $2, but the latest end value of $1 is $4 and the earliest start value of $3 is $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "The entities $1 and $3 should be contemporary to be linked through $2, but the latest end value of $3 is $4 and the earliest start value of $1 is $5.",
 	"wbqc-violation-message-diff-within-range": "The difference between $3 ($4) and $1 ($2) should be between $5 and $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "The difference between $3 ($4) and $1 ($2) should be no more than $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "The difference between $3 ($4) and $1 ($2) should be no less than $5.",

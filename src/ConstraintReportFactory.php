@@ -29,6 +29,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleBestValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ContemporaryChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
@@ -321,6 +322,12 @@ class ConstraintReportFactory {
 				$this->config->get( 'WBQualityConstraintsPropertyScopeConstraintId' )
 					=> new PropertyScopeChecker(
 						ConstraintsServices::getConstraintParameterParser()
+					),
+				$this->config->get( 'WBQualityConstraintsContemporaryConstraintId' )
+					=> new ContemporaryChecker(
+						$this->lookup,
+						ConstraintsServices::getRangeCheckerHelper(),
+						$this->config
 					),
 			];
 		}
