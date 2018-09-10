@@ -12,6 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -41,12 +42,12 @@ class FormatChecker implements ConstraintChecker {
 	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param Config $config
-	 * @param SparqlHelper|null $sparqlHelper
+	 * @param SparqlHelper $sparqlHelper
 	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
 		Config $config,
-		SparqlHelper $sparqlHelper = null
+		SparqlHelper $sparqlHelper
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->config = $config;
@@ -124,7 +125,10 @@ class FormatChecker implements ConstraintChecker {
 				return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		if ( $this->sparqlHelper !== null && $this->config->get( 'WBQualityConstraintsCheckFormatConstraint' ) ) {
+		if (
+			!( $this->sparqlHelper instanceof DummySparqlHelper ) &&
+			$this->config->get( 'WBQualityConstraintsCheckFormatConstraint' )
+		) {
 			if ( $this->sparqlHelper->matchesRegularExpression( $text, $format ) ) {
 				$message = null;
 				$status = CheckResult::STATUS_COMPLIANCE;

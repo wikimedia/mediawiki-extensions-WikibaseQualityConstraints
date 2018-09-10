@@ -17,6 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\SparqlHelperMock;
@@ -156,7 +157,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q1' ) ) ) );
 		$statement->setGuid( "Q1$56e6a474-4431-fb24-cc15-1d580e467559" );
 
-		$this->checker = new UniqueValueChecker( null );
+		$this->checker = new UniqueValueChecker( new DummySparqlHelper() );
 
 		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
 
@@ -168,7 +169,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUniqueValueConstraintDeprecatedStatement() {
-		$this->checker = new UniqueValueChecker( null );
+		$this->checker = new UniqueValueChecker( new DummySparqlHelper() );
 		$statement = NewStatement::noValueFor( 'P1' )
 				   ->withDeprecatedRank()
 				   ->build();
@@ -182,7 +183,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckConstraintParameters() {
-		$this->checker = new UniqueValueChecker( null );
+		$this->checker = new UniqueValueChecker( new DummySparqlHelper() );
 		$constraint = $this->getConstraintMock( [] );
 
 		$result = $this->checker->checkConstraintParameters( $constraint );
