@@ -7,8 +7,13 @@ use MediaWiki\MediaWikiServices;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
@@ -86,6 +91,58 @@ return [
 			$services->getMainConfig(),
 			$deserializerFactory,
 			$conceptBaseUris
+		);
+	},
+
+	ConstraintsServices::CONNECTION_CHECKER_HELPER => function( MediaWikiServices $services ) {
+		return new ConnectionCheckerHelper();
+	},
+
+	ConstraintsServices::RANGE_CHECKER_HELPER => function( MediaWikiServices $services ) {
+		// TODO in the future, get UnitConverter from $services?
+		$repo = WikibaseRepo::getDefaultInstance();
+		$unitConverter = $repo->getUnitConverter();
+
+		return new RangeCheckerHelper(
+			$services->getMainConfig(),
+			$unitConverter
+		);
+	},
+
+	ConstraintsServices::SPARQL_HELPER => function( MediaWikiServices $services ) {
+		$endpoint = $services->getMainConfig()->get( 'WBQualityConstraintsSparqlEndpoint' );
+		if ( $endpoint === '' ) {
+			return new DummySparqlHelper();
+		}
+
+		// TODO in the future, get RDFVocabulary, EntityIdParser and PropertyDataTypeLookup from $services?
+		$repo = WikibaseRepo::getDefaultInstance();
+		$rdfVocabulary = $repo->getRdfVocabulary();
+		$entityIdParser = $repo->getEntityIdParser();
+		$propertyDataTypeLookup = $repo->getPropertyDataTypeLookup();
+
+		return new SparqlHelper(
+			$services->getMainConfig(),
+			$rdfVocabulary,
+			$entityIdParser,
+			$propertyDataTypeLookup,
+			$services->getMainWANObjectCache(),
+			ConstraintsServices::getViolationMessageSerializer( $services ),
+			ConstraintsServices::getViolationMessageDeserializer( $services ),
+			$services->getStatsdDataFactory()
+		);
+	},
+
+	ConstraintsServices::TYPE_CHECKER_HELPER => function( MediaWikiServices $services ) {
+		// TODO in the future, get EntityLookup from $services?
+		$repo = WikibaseRepo::getDefaultInstance();
+		$entityLookup = $repo->getEntityLookup();
+
+		return new TypeCheckerHelper(
+			$entityLookup,
+			$services->getMainConfig(),
+			ConstraintsServices::getSparqlHelper( $services ),
+			$services->getStatsdDataFactory()
 		);
 	},
 ];

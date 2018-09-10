@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use DataValues\DataValueFactory;
-use IBufferingStatsdDataFactory;
 use MediaWiki\MediaWikiServices;
 use TitleParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -14,7 +13,6 @@ use Wikibase\Lib\Store\EntityNamespaceLookup;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
 use Wikibase\Lib\Units\UnitConverter;
-use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
@@ -50,11 +48,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 
 /**
@@ -110,11 +103,6 @@ class ConstraintReportFactory {
 	private $config;
 
 	/**
-	 * @var RdfVocabulary
-	 */
-	private $rdfVocabulary;
-
-	/**
 	 * @var EntityIdParser
 	 */
 	private $entityIdParser;
@@ -140,11 +128,6 @@ class ConstraintReportFactory {
 	private $entityNamespaceLookup;
 
 	/**
-	 * @var IBufferingStatsdDataFactory
-	 */
-	private $dataFactory;
-
-	/**
 	 * Returns the default instance.
 	 * IMPORTANT: Use only when it is not feasible to inject an instance properly.
 	 *
@@ -162,13 +145,11 @@ class ConstraintReportFactory {
 				$wikibaseRepo->getPropertyDataTypeLookup(),
 				$wikibaseRepo->getStatementGuidParser(),
 				$config,
-				$wikibaseRepo->getRdfVocabulary(),
 				$wikibaseRepo->getEntityIdParser(),
 				$titleParser,
 				$wikibaseRepo->getUnitConverter(),
 				$wikibaseRepo->getDataValueFactory(),
-				$wikibaseRepo->getEntityNamespaceLookup(),
-				MediaWikiServices::getInstance()->getStatsdDataFactory()
+				$wikibaseRepo->getEntityNamespaceLookup()
 			);
 		}
 
@@ -180,25 +161,21 @@ class ConstraintReportFactory {
 		PropertyDataTypeLookup $propertyDataTypeLookup,
 		StatementGuidParser $statementGuidParser,
 		Config $config,
-		RdfVocabulary $rdfVocabulary,
 		EntityIdParser $entityIdParser,
 		TitleParser $titleParser,
 		UnitConverter $unitConverter = null,
 		DataValueFactory $dataValueFactory,
-		EntityNamespaceLookup $entityNamespaceLookup,
-		IBufferingStatsdDataFactory $dataFactory
+		EntityNamespaceLookup $entityNamespaceLookup
 	) {
 		$this->lookup = $lookup;
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->config = $config;
-		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
 		$this->titleParser = $titleParser;
 		$this->unitConverter = $unitConverter;
 		$this->dataValueFactory = $dataValueFactory;
 		$this->entityNamespaceLookup = $entityNamespaceLookup;
-		$this->dataFactory = $dataFactory;
 	}
 
 	/**
@@ -227,58 +204,35 @@ class ConstraintReportFactory {
 	 */
 	private function getConstraintCheckerMap() {
 		if ( $this->constraintCheckerMap === null ) {
-			$connectionCheckerHelper = new ConnectionCheckerHelper();
-			$rangeCheckerHelper = new RangeCheckerHelper( $this->config, $this->unitConverter );
-			if ( $this->config->get( 'WBQualityConstraintsSparqlEndpoint' ) !== '' ) {
-				$sparqlHelper = new SparqlHelper(
-					$this->config,
-					$this->rdfVocabulary,
-					$this->entityIdParser,
-					$this->propertyDataTypeLookup,
-					MediaWikiServices::getInstance()->getMainWANObjectCache(),
-					ConstraintsServices::getViolationMessageSerializer(),
-					ConstraintsServices::getViolationMessageDeserializer(),
-					$this->dataFactory
-				);
-			} else {
-				$sparqlHelper = new DummySparqlHelper();
-			}
-			$typeCheckerHelper = new TypeCheckerHelper(
-				$this->lookup,
-				$this->config,
-				$sparqlHelper,
-				$this->dataFactory
-			);
-
 			$this->constraintCheckerMap = [
 				$this->config->get( 'WBQualityConstraintsConflictsWithConstraintId' )
 					=> new ConflictsWithChecker(
 						$this->lookup,
 						ConstraintsServices::getConstraintParameterParser(),
-						$connectionCheckerHelper
+						ConstraintsServices::getConnectionCheckerHelper()
 					),
 				$this->config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' )
 					=> new ItemChecker(
 						$this->lookup,
 						ConstraintsServices::getConstraintParameterParser(),
-						$connectionCheckerHelper
+						ConstraintsServices::getConnectionCheckerHelper()
 					),
 				$this->config->get( 'WBQualityConstraintsValueRequiresClaimConstraintId' )
 					=> new TargetRequiredClaimChecker(
 						$this->lookup,
 						ConstraintsServices::getConstraintParameterParser(),
-						$connectionCheckerHelper
+						ConstraintsServices::getConnectionCheckerHelper()
 					),
 				$this->config->get( 'WBQualityConstraintsSymmetricConstraintId' )
 					=> new SymmetricChecker(
 						$this->lookup,
-						$connectionCheckerHelper
+						ConstraintsServices::getConnectionCheckerHelper()
 					),
 				$this->config->get( 'WBQualityConstraintsInverseConstraintId' )
 					=> new InverseChecker(
 						$this->lookup,
 						ConstraintsServices::getConstraintParameterParser(),
-						$connectionCheckerHelper
+						ConstraintsServices::getConnectionCheckerHelper()
 					),
 				$this->config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' )
 					=> new QualifierChecker(),
@@ -294,26 +248,26 @@ class ConstraintReportFactory {
 					=> new RangeChecker(
 						$this->propertyDataTypeLookup,
 						ConstraintsServices::getConstraintParameterParser(),
-						$rangeCheckerHelper
+						ConstraintsServices::getRangeCheckerHelper()
 					),
 				$this->config->get( 'WBQualityConstraintsDifferenceWithinRangeConstraintId' )
 					=> new DiffWithinRangeChecker(
 						ConstraintsServices::getConstraintParameterParser(),
-						$rangeCheckerHelper,
+						ConstraintsServices::getRangeCheckerHelper(),
 						$this->config
 					),
 				$this->config->get( 'WBQualityConstraintsTypeConstraintId' )
 					=> new TypeChecker(
 						$this->lookup,
 						ConstraintsServices::getConstraintParameterParser(),
-						$typeCheckerHelper,
+						ConstraintsServices::getTypeCheckerHelper(),
 						$this->config
 					),
 				$this->config->get( 'WBQualityConstraintsValueTypeConstraintId' )
 					=> new ValueTypeChecker(
 						$this->lookup,
 						ConstraintsServices::getConstraintParameterParser(),
-						$typeCheckerHelper,
+						ConstraintsServices::getTypeCheckerHelper(),
 						$this->config
 					),
 				$this->config->get( 'WBQualityConstraintsSingleValueConstraintId' )
@@ -322,13 +276,13 @@ class ConstraintReportFactory {
 					=> new MultiValueChecker( ConstraintsServices::getConstraintParameterParser() ),
 				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' )
 					=> new UniqueValueChecker(
-						$sparqlHelper
+						ConstraintsServices::getSparqlHelper()
 					),
 				$this->config->get( 'WBQualityConstraintsFormatConstraintId' )
 					=> new FormatChecker(
 						ConstraintsServices::getConstraintParameterParser(),
 						$this->config,
-						$sparqlHelper
+						ConstraintsServices::getSparqlHelper()
 					),
 				$this->config->get( 'WBQualityConstraintsCommonsLinkConstraintId' )
 					=> new CommonsLinkChecker(

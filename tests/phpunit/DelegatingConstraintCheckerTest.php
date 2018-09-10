@@ -6,7 +6,6 @@ use DataValues\DataValueFactory;
 use DataValues\Deserializers\DataValueDeserializer;
 use DataValues\StringValue;
 use MediaWiki\MediaWikiServices;
-use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
@@ -92,13 +91,11 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			new EntityRetrievingDataTypeLookup( $this->lookup ),
 			new StatementGuidParser( $entityIdParser ),
 			$config,
-			$rdfVocabulary,
 			$entityIdParser,
 			$titleParser,
 			null,
 			new DataValueFactory( new DataValueDeserializer() ),
-			new EntityNamespaceLookup( [] ),
-			new NullStatsdDataFactory()
+			new EntityNamespaceLookup( [] )
 		);
 		$this->constraintChecker = $factory->getConstraintChecker();
 

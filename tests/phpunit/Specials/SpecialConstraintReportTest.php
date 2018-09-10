@@ -73,13 +73,11 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getPropertyDataTypeLookup(),
 			$wikibaseRepo->getStatementGuidParser(),
 			$config,
-			$wikibaseRepo->getRdfVocabulary(),
 			$wikibaseRepo->getEntityIdParser(),
 			MediaWikiServices::getInstance()->getTitleParser(),
 			null,
 			new DataValueFactory( new DataValueDeserializer() ),
-			new EntityNamespaceLookup( [] ),
-			new NullStatsdDataFactory()
+			new EntityNamespaceLookup( [] )
 		);
 
 		return new SpecialConstraintReport(
