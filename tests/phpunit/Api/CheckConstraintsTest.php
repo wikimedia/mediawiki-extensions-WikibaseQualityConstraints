@@ -36,14 +36,13 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
 use Wikibase\LanguageFallbackChainFactory;
 use Wikibase\Lib\SnakFormatter;
-use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
 use Wikibase\Lib\OutputFormatValueFormatterFactory;
 use ValueFormatters\FormatterOptions;
 use Wikimedia\Assert\Assert;
 use Language;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Api\CheckConstraints
+ * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraints
  *
  * @group API
  * @group Database
@@ -88,17 +87,10 @@ class CheckConstraintsTest extends ApiTestCase {
 		$wgAPIModules['wbcheckconstraints']['factory'] = function ( $main, $name ) {
 			$repo = WikibaseRepo::getDefaultInstance();
 			$factory = new EntityIdLabelFormatterFactory();
-			$termLookup = $repo->getTermLookup();
-			$termBuffer = $repo->getTermBuffer();
 			$languageFallbackChainFactory = new LanguageFallbackChainFactory();
-			$fallbackLabelDescLookupFactory = new LanguageFallbackLabelDescriptionLookupFactory(
-				$languageFallbackChainFactory,
-				$termLookup,
-				$termBuffer
-			);
+
 			$language = Language::factory( 'en' );
-			$labelLookup = $fallbackLabelDescLookupFactory->newLabelDescriptionLookup( $language );
-			$entityIdFormatter = $factory->getEntityIdFormatter( $labelLookup );
+			$entityIdFormatter = $factory->getEntityIdFormatter( $language );
 
 			$formatterOptions = new FormatterOptions();
 			$factoryFunctions = [];
