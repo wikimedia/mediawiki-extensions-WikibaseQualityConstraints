@@ -35,7 +35,7 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\Html\HtmlTableBuilder;
 use WikibaseQuality\Html\HtmlTableCellBuilder;
 use WikibaseQuality\Html\HtmlTableHeaderBuilder;
@@ -105,7 +105,6 @@ class SpecialConstraintReport extends SpecialPage {
 	private $dataFactory;
 
 	public static function newFromGlobalState() {
-		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
@@ -118,7 +117,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
-			$constraintReportFactory->getConstraintChecker(),
+			ConstraintsServices::getDelegatingConstraintChecker(),
 			$config,
 			$dataFactory
 		);

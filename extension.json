@@ -23,6 +23,7 @@
 	},
 	"ServiceWiringFiles": [
 		"src/ServiceWiring.php",
+		"src/ServiceWiring-ConstraintCheckers.php",
 		"src/ServiceWiring-Wikibase.php"
 	],
 	"Hooks": {

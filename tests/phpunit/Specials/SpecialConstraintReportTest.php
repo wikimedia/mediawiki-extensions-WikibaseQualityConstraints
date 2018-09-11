@@ -2,14 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Specials;
 
-use DataValues\DataValueFactory;
-use DataValues\Deserializers\DataValueDeserializer;
 use HamcrestPHPUnitIntegration;
 use MediaWiki\MediaWikiServices;
+use MultiConfig;
 use NullStatsdDataFactory;
 use SpecialPageTestBase;
 use Wikibase\DataModel\Services\Statement\GuidGenerator;
-use Wikibase\Lib\Store\EntityNamespaceLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\Item;
@@ -18,7 +16,6 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\DataModel\Entity\EntityId;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
@@ -58,6 +55,11 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		parent::setUp();
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		$this->tablesUsed[] = 'wbqc_constraints';
+		$config = new MultiConfig( [
+			$this->getDefaultConfig(),
+			MediaWikiServices::getInstance()->getMainConfig(),
+		] );
+		$this->setService( 'MainConfig', $config );
 	}
 
 	protected function tearDown() {
@@ -66,19 +68,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	protected function newSpecialPage() {
-		$config = $this->getDefaultConfig();
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
-		$constraintReportFactory = new ConstraintReportFactory(
-			$wikibaseRepo->getEntityLookup(),
-			$wikibaseRepo->getPropertyDataTypeLookup(),
-			$wikibaseRepo->getStatementGuidParser(),
-			$config,
-			$wikibaseRepo->getEntityIdParser(),
-			MediaWikiServices::getInstance()->getTitleParser(),
-			null,
-			new DataValueFactory( new DataValueDeserializer() ),
-			new EntityNamespaceLookup( [] )
-		);
 
 		return new SpecialConstraintReport(
 			$wikibaseRepo->getEntityLookup(),
@@ -88,8 +78,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
-			$constraintReportFactory->getConstraintChecker(),
-			$config,
+			ConstraintsServices::getDelegatingConstraintChecker(),
+			$this->getDefaultConfig(),
 			new NullStatsdDataFactory()
 		);
 	}

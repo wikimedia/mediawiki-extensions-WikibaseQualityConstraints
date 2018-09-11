@@ -21,7 +21,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintsServices;
 
 /**
  * API module that checks whether the parameters of a constraint statement are valid.
@@ -75,7 +75,6 @@ class CheckConstraintParameters extends ApiBase {
 	 * @return self
 	 */
 	public static function newFromGlobalState( ApiMain $main, $name, $prefix = '' ) {
-		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 		$repo = WikibaseRepo::getDefaultInstance();
 		$helperFactory = $repo->getApiHelperFactory( RequestContext::getMain() );
 		$language = $repo->getUserLanguage();
@@ -99,7 +98,7 @@ class CheckConstraintParameters extends ApiBase {
 			$name,
 			$prefix,
 			$helperFactory,
-			$constraintReportFactory->getConstraintChecker(),
+			ConstraintsServices::getDelegatingConstraintChecker(),
 			$violationMessageRenderer,
 			$repo->getStatementGuidParser(),
 			MediaWikiServices::getInstance()->getStatsdDataFactory()

@@ -2,11 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use DataValues\DataValueFactory;
-use DataValues\Deserializers\DataValueDeserializer;
 use DataValues\StringValue;
 use MediaWiki\MediaWikiServices;
-use Wikibase\DataModel\Entity\DispatchingEntityIdParser;
+use MultiConfig;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
@@ -19,8 +17,6 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\Lib\Store\EntityNamespaceLookup;
-use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -32,8 +28,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
+use WikibaseQuality\ConstraintReport\WikibaseServices;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
@@ -69,35 +65,21 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
+
 		$this->setService( ConstraintsServices::CONSTRAINT_PARAMETER_PARSER, $this->getConstraintParameterParser() );
 
-		$this->lookup = new InMemoryEntityLookup();
-		$entityIdParser = new DispatchingEntityIdParser( [
-			'/^Q/' => function( $serialization ) {
-				return new ItemId( $serialization );
-			},
-			'/^P/' => function( $serialization ) {
-				return new PropertyId( $serialization );
-			}
+		$config = new MultiConfig( [
+			$this->getDefaultConfig(),
+			MediaWikiServices::getInstance()->getMainConfig(),
 		] );
-		$config = $this->getDefaultConfig();
-		$rdfVocabulary = new RdfVocabulary(
-			[ '' => 'http://www.wikidata.org/entity/' ],
-			'http://www.wikidata.org/wiki/Special:EntityData/'
-		);
-		$titleParser = $this->getTitleParserMock();
-		$factory = new ConstraintReportFactory(
-			$this->lookup,
-			new EntityRetrievingDataTypeLookup( $this->lookup ),
-			new StatementGuidParser( $entityIdParser ),
-			$config,
-			$entityIdParser,
-			$titleParser,
-			null,
-			new DataValueFactory( new DataValueDeserializer() ),
-			new EntityNamespaceLookup( [] )
-		);
-		$this->constraintChecker = $factory->getConstraintChecker();
+		$this->setService( 'MainConfig', $config );
+
+		$this->lookup = new InMemoryEntityLookup();
+		$this->setService( WikibaseServices::ENTITY_LOOKUP, $this->lookup );
+		$dataTypeLookup = new EntityRetrievingDataTypeLookup( $this->lookup );
+		$this->setService( WikibaseServices::PROPERTY_DATA_TYPE_LOOKUP, $dataTypeLookup );
+
+		$this->constraintChecker = ConstraintsServices::getDelegatingConstraintChecker();
 
 		// specify database tables used by this test
 		$this->tablesUsed[] = 'wbqc_constraints';

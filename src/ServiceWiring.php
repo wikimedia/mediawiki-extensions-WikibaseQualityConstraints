@@ -7,6 +7,7 @@ use MediaWiki\MediaWikiServices;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
@@ -139,6 +140,86 @@ return [
 			$services->getMainConfig(),
 			ConstraintsServices::getSparqlHelper( $services ),
 			$services->getStatsdDataFactory()
+		);
+	},
+
+	ConstraintsServices::DELEGATING_CONSTRAINT_CHECKER => function( MediaWikiServices $services ) {
+		// TODO in the future, get StatementGuidParser from $services?
+		$repo = WikibaseRepo::getDefaultInstance();
+		$statementGuidParser = $repo->getStatementGuidParser();
+
+		$config = $services->getMainConfig();
+		$checkerMap = [
+			$config->get( 'WBQualityConstraintsConflictsWithConstraintId' )
+				=> ConstraintCheckerServices::getConflictsWithChecker( $services ),
+			$config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' )
+				=> ConstraintCheckerServices::getItemChecker( $services ),
+			$config->get( 'WBQualityConstraintsValueRequiresClaimConstraintId' )
+				=> ConstraintCheckerServices::getTargetRequiredClaimChecker( $services ),
+			$config->get( 'WBQualityConstraintsSymmetricConstraintId' )
+				=> ConstraintCheckerServices::getSymmetricChecker( $services ),
+			$config->get( 'WBQualityConstraintsInverseConstraintId' )
+				=> ConstraintCheckerServices::getInverseChecker( $services ),
+			$config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' )
+				=> ConstraintCheckerServices::getQualifierChecker( $services ),
+			$config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' )
+				=> ConstraintCheckerServices::getQualifiersChecker( $services ),
+			$config->get( 'WBQualityConstraintsMandatoryQualifierConstraintId' )
+				=> ConstraintCheckerServices::getMandatoryQualifiersChecker( $services ),
+			$config->get( 'WBQualityConstraintsRangeConstraintId' )
+				=> ConstraintCheckerServices::getRangeChecker( $services ),
+			$config->get( 'WBQualityConstraintsDifferenceWithinRangeConstraintId' )
+				=> ConstraintCheckerServices::getDiffWithinRangeChecker( $services ),
+			$config->get( 'WBQualityConstraintsTypeConstraintId' )
+				=> ConstraintCheckerServices::getTypeChecker( $services ),
+			$config->get( 'WBQualityConstraintsValueTypeConstraintId' )
+				=> ConstraintCheckerServices::getValueTypeChecker( $services ),
+			$config->get( 'WBQualityConstraintsSingleValueConstraintId' )
+				=> ConstraintCheckerServices::getSingleValueChecker( $services ),
+			$config->get( 'WBQualityConstraintsMultiValueConstraintId' )
+				=> ConstraintCheckerServices::getMultiValueChecker( $services ),
+			$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' )
+				=> ConstraintCheckerServices::getUniqueValueChecker( $services ),
+			$config->get( 'WBQualityConstraintsFormatConstraintId' )
+				=> ConstraintCheckerServices::getFormatChecker( $services ),
+			$config->get( 'WBQualityConstraintsCommonsLinkConstraintId' )
+				=> ConstraintCheckerServices::getCommonsLinkChecker( $services ),
+			$config->get( 'WBQualityConstraintsOneOfConstraintId' )
+				=> ConstraintCheckerServices::getOneOfChecker( $services ),
+			$config->get( 'WBQualityConstraintsUsedForValuesOnlyConstraintId' )
+				=> ConstraintCheckerServices::getValueOnlyChecker( $services ),
+			$config->get( 'WBQualityConstraintsUsedAsReferenceConstraintId' )
+				=> ConstraintCheckerServices::getReferenceChecker( $services ),
+			$config->get( 'WBQualityConstraintsNoBoundsConstraintId' )
+				=> ConstraintCheckerServices::getNoBoundsChecker( $services ),
+			$config->get( 'WBQualityConstraintsAllowedUnitsConstraintId' )
+				=> ConstraintCheckerServices::getAllowedUnitsChecker( $services ),
+			$config->get( 'WBQualityConstraintsSingleBestValueConstraintId' )
+				=> ConstraintCheckerServices::getSingleBestValueChecker( $services ),
+			$config->get( 'WBQualityConstraintsAllowedEntityTypesConstraintId' )
+				=> ConstraintCheckerServices::getEntityTypeChecker( $services ),
+			$config->get( 'WBQualityConstraintsNoneOfConstraintId' )
+				=> ConstraintCheckerServices::getNoneOfChecker( $services ),
+			$config->get( 'WBQualityConstraintsIntegerConstraintId' )
+				=> ConstraintCheckerServices::getIntegerChecker( $services ),
+			$config->get( 'WBQualityConstraintsCitationNeededConstraintId' )
+				=> ConstraintCheckerServices::getCitationNeededChecker( $services ),
+			$config->get( 'WBQualityConstraintsPropertyScopeConstraintId' )
+				=> ConstraintCheckerServices::getPropertyScopeChecker( $services ),
+			$config->get( 'WBQualityConstraintsContemporaryConstraintId' )
+				=> ConstraintCheckerServices::getContemporaryChecker( $services ),
+		];
+
+		return new DelegatingConstraintChecker(
+			WikibaseServices::getEntityLookup( $services ),
+			$checkerMap,
+			ConstraintsServices::getConstraintLookup( $services ),
+			ConstraintsServices::getConstraintParameterParser( $services ),
+			$statementGuidParser,
+			ConstraintsServices::getLoggingHelper( $services ),
+			$config->get( 'WBQualityConstraintsCheckQualifiers' ),
+			$config->get( 'WBQualityConstraintsCheckReferences' ),
+			$config->get( 'WBQualityConstraintsPropertiesWithViolatingQualifiers' )
 		);
 	},
 ];
