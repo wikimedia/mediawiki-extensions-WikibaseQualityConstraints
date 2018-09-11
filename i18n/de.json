@@ -95,6 +95,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Die Prüfung für den Namensraum „$1“ ist noch nicht implementiert.",
 	"wbqc-violation-message-conflicts-with-property": "Ein Objekt sollte keine Aussagen sowohl für $1 als auch $2 haben.",
 	"wbqc-violation-message-conflicts-with-claim": "Ein Objekt sollte keine Aussage für $1 haben, falls es auch eine Aussage für $2 mit dem Wert $3 hat.",
+	"wbqc-violation-message-contemporary-subject-earlier": "Die Objekte $1 und $3 sollten aktuell sein, um durch $2 verlinkt zu werden, aber der aktuellste Endwert von $1 ist $4 und der früheste Startwert von $3 ist $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "Die Objekte $1 und $3 sollten aktuell sein, um durch $2 verlinkt zu werden, aber der aktuellste Endwert von $3 ist $4 und der früheste Startwert von $1 ist $5.",
 	"wbqc-violation-message-diff-within-range": "Der Unterschied zwischen $3 ($4) und $1 ($2) sollte zwischen $5 und $6 liegen.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Der Unterschied zwischen $3 ($4) und $1 ($2) sollte nicht mehr als $5 betragen.",
 	"wbqc-violation-message-diff-within-range-rightopen": "Der Unterschied zwischen $3 ($4) und $1 ($2) sollte nicht weniger als $5 betragen.",
@@ -150,5 +152,7 @@
 	"wbqc-violation-message-integer-bounds": "Werte für $1 sollten Ganzzahlen sein, aber die Begrenzungen von $2 haben einen Bruchteil.",
 	"wbqc-violation-message-citationNeeded": "Aussagen für $1 sollten mindestens einen Einzelnachweis haben.",
 	"wbqc-violation-message-property-scope": "Die Eigenschaft $1 sollte nicht an diesem Ort verwendet werden ($2). {{PLURAL:$3|Der einzig gültige Ort|Die einzig gültigen Orte}} für diese Eigenschaft {{PLURAL:$3|ist $5.|sind: $4}}",
-	"wbqc-violation-message-exception": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert."
+	"wbqc-violation-message-exception": "Dieses Objekt ist eine bekannte Ausnahme für diese Beschränkung und wurde als solche markiert.",
+	"wbqc-beta-feature-label-message": "Objektvorschläge von Beschränkungsdefinitionen",
+	"wbqc-beta-feature-description-message": "Von Beschränkungsdefinitionen abgeleitete Objektvorschläge auf Eigenschaftsseiten aktivieren."
 }

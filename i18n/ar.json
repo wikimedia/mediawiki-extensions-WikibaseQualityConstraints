@@ -3,7 +3,8 @@
 		"authors": [
 			"Mr. Ibrahem",
 			"Azouz.anis",
-			"ديفيد"
+			"ديفيد",
+			"Meno25"
 		]
 	},
 	"wbqc-constraintreport": "تقارير القيود",
@@ -134,7 +135,7 @@
 	"wbqc-violation-message-range-time-rightopen-leftnow": "قيمة $1 ($2) لا ينبغي أن تكون في الماضي.",
 	"wbqc-violation-message-single-value": "هذه الخاصية يجب أن تحتوي على قيمة واحدة فقط.",
 	"wbqc-violation-message-single-value-separators": "يجب أن تحتوي هذه الخاصية على قيمة واحدة فقط لها نفس {{PLURAL:$2|1=$4 المؤهل.|مجموعة المؤهلات لهذه الخصائص: $3}}",
-	"wbqc-violation-message-single-best-value-no-preferred": "This property should contain a single “best” value. Of the current multiple values, one should be marked with “preferred” rank.\nيجب أن تحتوي هذه الخاصية على قيمة \"أفضل\" واحدة، من بين القيم المتعددة الحالية، يجب تعليم واحدة بالترتيب \"المفضل\".",
+	"wbqc-violation-message-single-best-value-no-preferred": "\nيجب أن تحتوي هذه الخاصية على قيمة \"أفضل\" واحدة، من بين القيم المتعددة الحالية، يجب تعليم واحدة بالترتيب \"المفضل\".",
 	"wbqc-violation-message-single-best-value-no-preferred-separators": "يجب أن تحتوي هذه الخاصية على قيمة  \"أفضل\" واحدة فقط لها نفس {{PLURAL:$2|1=$4 المؤهل.|مجموعة المؤهلات لهذه الخصائص: $3}} من القيم المتعددة الحالية، يجب وضع علامة واحدة على الترتيب \"المفضل\"",
 	"wbqc-violation-message-single-best-value-multi-preferred": "يجب أن تحتوي هذه الخاصية على قيمة \"أفضل\" واحدة، يجب ألا يكون هناك أكثر من قيمة واحدة مع الترتيب \"المفضل\".",
 	"wbqc-violation-message-single-best-value-multi-preferred-separators": "يجب أن تحتوي هذه الخاصية على قيمة  \"أفضل\" واحدة فقط لها نفس {{PLURAL:$2|1=$4 المؤهل.|مجموعة المؤهلات لهذه الخصائص: $3}} يجب ألا تكون هناك أكثر من قيمة واحدة للترتيب \"المفضل\"",
