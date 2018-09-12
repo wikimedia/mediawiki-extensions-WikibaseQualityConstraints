@@ -135,6 +135,8 @@ maintenance/exportEntityMapping
 
 ### Running the tests
 
+#### PHP
+
 There are two ways to run the tests of this extension:
 
 - Using the included configuration file:
@@ -157,6 +159,16 @@ There are two ways to run the tests of this extension:
 
   This runs the tests without coverage report
   and is therefore much faster.
+
+#### Javascript
+
+You can run the tests, combined with linting and few other tools for asserting code quality by
+
+```sh
+  # from this extension's folder
+  npm install
+  grunt test
+```
 
 ### Adding a new constraint type
 
