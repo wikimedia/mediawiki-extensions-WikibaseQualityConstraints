@@ -105,6 +105,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "A verificação para o espaço nominal \"$1\" ainda não foi implementada.",
 	"wbqc-violation-message-conflicts-with-property": "Uma entidade não deve ter declarações para $1 e $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Uma entidade não deve ter uma declaração para $1 se ela também tiver uma declaração de $2 com valor de $3.",
+	"wbqc-violation-message-contemporary-subject-earlier": "As entidades $1 e $3 devem ser contemporâneas para serem ligadas através de $2, mas o valor final mais recente de $1 é $4 e o valor inicial mais antigo de $3 é $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "As entidades $1 e $3 devem ser contemporâneas para serem ligadas através de $2, mas o valor final mais recente de $3 é $4 e o valor inicial mais antigo de $1 é $5.",
 	"wbqc-violation-message-diff-within-range": "A diferença entre $3 ($4) e $1 ($2) deveria estar compreendida entre $5 e $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "A diferença entre $3 ($4) e $1 ($2) deveria ser igual ou inferior a $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "A diferença entre $3 ($4) e $1 ($2) deveria ser igual ou superior a $5.",

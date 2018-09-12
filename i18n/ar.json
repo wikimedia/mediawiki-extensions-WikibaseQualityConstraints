@@ -105,6 +105,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "التحقق من نطاق \"$1\" لم يتم تنفيذه بعد.",
 	"wbqc-violation-message-conflicts-with-property": "لا ينبغي أن يكون لدى الكيان بيانات لكلا $1 و $2.",
 	"wbqc-violation-message-conflicts-with-claim": "لا ينبغي أن يكون لدى الكيان بيان لـ $1 إذا كان لديه أيضا بيان لـ $2 وقيمته $3.",
+	"wbqc-violation-message-contemporary-subject-earlier": "يجب أن يكون الكيانان $1 و$3 معاصرين ليتم ربطهما من خلال $2، لكن القيمة النهائية الأحدث لـ$1 $4 وأول قيمة لبدء $3 هي $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "يجب أن يكون الكيانان $1 و$3 معاصرين ليتم ربطهما من خلال $2، لكن القيمة النهائية الأخيرة لـ$3 هي $4 وأول قيمة لبدء $1 هي $5.",
 	"wbqc-violation-message-diff-within-range": "الفرق بين $3 ($4) و$1 ($2) يجب أن يكون بين $5 و $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "الفرق بين $3 ($4) و$1 ($2) ينبغي أن يكون أكثر من $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "الفرق بين $3 ($4) و $1 ($2) يجب أن لا يقل عن $5.",
@@ -160,5 +162,7 @@
 	"wbqc-violation-message-integer-bounds": "يجب أن تكون قيم $1 عددا صحيحا، لكن حدود $2 بها جزء كسري.",
 	"wbqc-violation-message-citationNeeded": "يجب أن تحتوي بيانات $1 على مرجع واحد على الأقل.",
 	"wbqc-violation-message-property-scope": "يجب عدم استخدام الخاصية $1 في هذا الموقع ($2); {{PLURAL:$3|الموقع الصالح الوحيد|المواقع الصالحة الوحيدة}} لهذه الخاصية {{PLURAL:$3|هو $5.|هي: $4}}",
-	"wbqc-violation-message-exception": "هذا الكيان استثناء معروف لدى القيد وتم وضع علامة عليه على هذا النحو."
+	"wbqc-violation-message-exception": "هذا الكيان استثناء معروف لدى القيد وتم وضع علامة عليه على هذا النحو.",
+	"wbqc-beta-feature-label-message": "اقتراحات الكيانات من تعريفات القيد",
+	"wbqc-beta-feature-description-message": "تمكين اقتراحات الكيانات المشتقة من تعريفات القيد في صفحات الخصائص."
 }
