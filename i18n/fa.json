@@ -20,6 +20,7 @@
 	"wbqc-constraintreport-status-compliance": "مطلوبیت",
 	"wbqc-constraintreport-status-exception": "استثنا",
 	"wbqc-constraintreport-status-todo": "برای انجام",
+	"wbqc-constraintreport-status-bad-parameters": "پارامترهای بد",
 	"wbqc-constraintreport-status-deprecated": "توصیه",
 	"wbqc-constraintreport-status-warning": "هشدار",
 	"wbqc-constraintreport-status-not-in-scope": "در محدوده نیست",
