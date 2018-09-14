@@ -1,4 +1,4 @@
-( function ( mw, wb, $, OO ) {
+module.exports = ( function ( mw, wb, $, OO ) {
 	'use strict';
 
 	var entityId,
@@ -375,13 +375,6 @@
 		};
 	}
 
-	entityId = mw.config.get( 'wbEntityId' );
-
-	if ( entityId === null || mw.config.get( 'wgMFMode' ) || !mw.config.get( 'wbIsEditView' ) ) {
-		// no entity, mobile frontend, or not editing (diff, oldid, …) – skip
-		return;
-	}
-
 	function fullCheck( api, lang ) {
 		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
 		return api.get( {
@@ -435,26 +428,47 @@
 		} );
 	}
 
-	mw.loader.using( [
-		'mediawiki.api',
-		'oojs-ui-core',
-		'oojs-ui-widgets',
-		'oojs-ui.styles.icons-alerts',
-		'wikibase.quality.constraints.icon',
-		'wikibase.quality.constraints.ui'
-	] ).done( function () {
-		var api = new mw.Api( mwApiOptions() ),
-			lang = mw.config.get( 'wgUserLanguage' );
+	function SELF() {
+		/**
+		 * Careful - sets variables used by functions in this module's root scope. Refactoring in progress
+		 */
+		this.defaultBehavior = function () {
+			entityId = mw.config.get( 'wbEntityId' );
 
-		fullCheck( api, lang );
+			if ( entityId === null || mw.config.get( 'wgMFMode' ) || !mw.config.get( 'wbIsEditView' ) ) {
+				// no entity, mobile frontend, or not editing (diff, oldid, …) – skip
+				return;
+			}
 
-		if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
-			propertyParameterCheck( api, lang, entityId );
-		}
+			mw.loader.using( [
+				'mediawiki.api',
+				'oojs-ui-core',
+				'oojs-ui-widgets',
+				'oojs-ui.styles.icons-alerts',
+				'wikibase.quality.constraints.icon',
+				'wikibase.quality.constraints.ui'
+			] ).done( function () {
+				var api = new mw.Api( mwApiOptions() ),
+					lang = mw.config.get( 'wgUserLanguage' );
 
-		mw.hook( 'wikibase.statement.saved' ).add( function ( entityId, statementId ) {
-			mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
-			snakCheck( api, lang, entityId, statementId );
-		} );
-	} );
+				fullCheck( api, lang );
+
+				if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
+					propertyParameterCheck( api, lang, entityId );
+				}
+
+				mw.hook( 'wikibase.statement.saved' ).add( function ( entityId, statementId ) {
+					mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
+					snakCheck( api, lang, entityId, statementId );
+				} );
+			} );
+		};
+	}
+
+	if ( typeof exports === 'undefined' ) {
+		( new SELF() ).defaultBehavior();
+	}
+
+	return SELF;
+
 }( mediaWiki, wikibase, jQuery, OO ) );
