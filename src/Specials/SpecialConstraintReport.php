@@ -15,9 +15,6 @@ use SpecialPage;
 use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\ValueFormatter;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -34,11 +31,14 @@ use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 use WikibaseQuality\Html\HtmlTableBuilder;
 use WikibaseQuality\Html\HtmlTableCellBuilder;
 use WikibaseQuality\Html\HtmlTableHeaderBuilder;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
  * Special page that displays all constraints that are defined on an Entity with additional information

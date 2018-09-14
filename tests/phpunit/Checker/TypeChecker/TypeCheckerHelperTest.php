@@ -4,13 +4,13 @@ namespace WikibaseQuality\ConstraintReport\Tests\TypeChecker;
 
 use NullStatsdDataFactory;
 use PHPUnit4And6Compat;
-use Wikibase\DataModel\Services\Lookup\EntityLookup;
-use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
-use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -19,7 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
+use WikibaseQuality\ConstraintReport\Tests\Helper\JsonFileEntityLookup;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper

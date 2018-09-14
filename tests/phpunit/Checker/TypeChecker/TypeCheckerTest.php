@@ -3,24 +3,24 @@
 namespace WikibaseQuality\ConstraintReport\Tests\TypeChecker;
 
 use NullStatsdDataFactory;
-use Wikibase\DataModel\Snak\PropertyNoValueSnak;
-use Wikibase\DataModel\Snak\Snak;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\Helper\JsonFileEntityLookup;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
-use Wikibase\Repo\Tests\NewItem;
-use Wikibase\Repo\Tests\NewStatement;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker

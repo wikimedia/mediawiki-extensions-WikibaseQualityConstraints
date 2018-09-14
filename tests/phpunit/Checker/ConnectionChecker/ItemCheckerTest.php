@@ -2,19 +2,19 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\ConnectionChecker;
 
-use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
+use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use Wikibase\Repo\Tests\NewItem;
-use Wikibase\Repo\Tests\NewStatement;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
