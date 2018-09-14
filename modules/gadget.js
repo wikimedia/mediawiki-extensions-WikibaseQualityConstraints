@@ -1,8 +1,7 @@
 module.exports = ( function ( mw, wb, $, OO ) {
 	'use strict';
 
-	var entityId,
-		cachedStatuses = 'violation|warning|bad-parameters';
+	var CACHED_STATUSES = 'violation|warning|bad-parameters';
 
 	/**
 	 * Create a popup button according to the parameters and append it to the container.
@@ -375,7 +374,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 		};
 	}
 
-	function fullCheck( api, lang ) {
+	function fullCheck( api, lang, entityId ) {
 		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
 		return api.get( {
 			action: 'wbcheckconstraints',
@@ -383,7 +382,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			formatversion: 2,
 			uselang: lang,
 			id: entityId,
-			status: cachedStatuses
+			status: CACHED_STATUSES
 		} ).then( function ( data ) {
 			$( '.wbqc-reports-button' ).remove();
 			$( '.wikibase-statementgroupview .wikibase-statementview' )
@@ -401,7 +400,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			formatversion: 2,
 			uselang: lang,
 			claimid: statementId,
-			status: cachedStatuses
+			status: CACHED_STATUSES
 		} ).then( function ( data ) {
 			if ( isUpdated ) {
 				return;
@@ -410,7 +409,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
 				.each( function () { addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 		} );
-		fullCheck( api, lang ).then( function () {
+		fullCheck( api, lang, entityId ).then( function () {
 			isUpdated = true;
 		} );
 	}
@@ -429,11 +428,8 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	}
 
 	function SELF() {
-		/**
-		 * Careful - sets variables used by functions in this module's root scope. Refactoring in progress
-		 */
 		this.defaultBehavior = function () {
-			entityId = mw.config.get( 'wbEntityId' );
+			var entityId = mw.config.get( 'wbEntityId' );
 
 			if ( entityId === null || mw.config.get( 'wgMFMode' ) || !mw.config.get( 'wbIsEditView' ) ) {
 				// no entity, mobile frontend, or not editing (diff, oldid, …) – skip
@@ -451,7 +447,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				var api = new mw.Api( mwApiOptions() ),
 					lang = mw.config.get( 'wgUserLanguage' );
 
-				fullCheck( api, lang );
+				fullCheck( api, lang, entityId );
 
 				if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
 					propertyParameterCheck( api, lang, entityId );
