@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use WikibaseQuality\ConstraintReport\Api\ResultsSource;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
@@ -33,6 +34,7 @@ class ConstraintsServices {
 	const SPARQL_HELPER = 'WBQC_SparqlHelper';
 	const TYPE_CHECKER_HELPER = 'WBQC_TypeCheckerHelper';
 	const DELEGATING_CONSTRAINT_CHECKER = 'WBQC_DelegatingConstraintChecker';
+	const RESULTS_SOURCE = 'WBQC_ResultsSource';
 
 	private static function getService( MediaWikiServices $services = null, $name ) {
 		if ( $services === null ) {
@@ -143,6 +145,14 @@ class ConstraintsServices {
 	 */
 	public static function getDelegatingConstraintChecker( MediaWikiServices $services = null ) {
 		return self::getService( $services, self::DELEGATING_CONSTRAINT_CHECKER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return ResultsSource
+	 */
+	public static function getResultsSource( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::RESULTS_SOURCE );
 	}
 
 }

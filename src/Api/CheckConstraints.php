@@ -20,7 +20,7 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintsServices;
 
 /**
  * API module that performs constraint check of entities, claims and constraint ID
@@ -94,7 +94,6 @@ class CheckConstraints extends ApiBase {
 		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $language );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
-		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 
 		$checkResultsRenderer = new CheckResultsRenderer(
 			$repo->getEntityTitleLookup(),
@@ -106,7 +105,7 @@ class CheckConstraints extends ApiBase {
 				$config
 			)
 		);
-		$resultsSource = $constraintReportFactory->getResultsSource();
+		$resultsSource = ConstraintsServices::getResultsSource();
 
 		return new CheckConstraints(
 			$main,

@@ -4,7 +4,11 @@ namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
+use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
+use WikibaseQuality\ConstraintReport\Api\ResultsCache;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -221,5 +225,43 @@ return [
 			$config->get( 'WBQualityConstraintsCheckReferences' ),
 			$config->get( 'WBQualityConstraintsPropertiesWithViolatingQualifiers' )
 		);
+	},
+
+	ConstraintsServices::RESULTS_SOURCE => function( MediaWikiServices $services ) {
+		$config = $services->getMainConfig();
+		$resultsSource = new CheckingResultsSource(
+			ConstraintsServices::getDelegatingConstraintChecker( $services )
+		);
+
+		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
+			$possiblyStaleConstraintTypes = [
+				$config->get( 'WBQualityConstraintsCommonsLinkConstraintId' ),
+				$config->get( 'WBQualityConstraintsTypeConstraintId' ),
+				$config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
+				$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
+			];
+			// TODO in the future, get EntityIdParser and WikiPageEntityMetaDataAccessor from $services?
+			$repo = WikibaseRepo::getDefaultInstance();
+			$entityIdParser = $repo->getEntityIdParser();
+			$entityNamespaceLookup = $repo->getEntityNamespaceLookup();
+			$wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
+				$entityNamespaceLookup
+			);
+
+			$resultsSource = new CachingResultsSource(
+				$resultsSource,
+				ResultsCache::getDefaultInstance(),
+				ConstraintsServices::getCheckResultSerializer( $services ),
+				ConstraintsServices::getCheckResultDeserializer( $services ),
+				$wikiPageEntityMetaDataAccessor,
+				$entityIdParser,
+				$config->get( 'WBQualityConstraintsCacheCheckConstraintsTTLSeconds' ),
+				$possiblyStaleConstraintTypes,
+				$config->get( 'WBQualityConstraintsCacheCheckConstraintsMaximumRevisionIds' ),
+				ConstraintsServices::getLoggingHelper( $services )
+			);
+		}
+
+		return $resultsSource;
 	},
 ];
