@@ -6,7 +6,8 @@
 			"Csbotero",
 			"KATRINE1992",
 			"2axterix2",
-			"MarcoAurelio"
+			"MarcoAurelio",
+			"Themasterriot"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restricción",
@@ -32,7 +33,7 @@
 	"wbqc-constraintreport-no-parameter": "ninguno",
 	"wbqc-issues-short": "Problemas",
 	"wbqc-issues-long": "Esta declaración presenta algunos problemas.",
-	"wbqc-potentialissues-short": "Potenciales incidencias",
+	"wbqc-potentialissues-short": "Problemas posibles",
 	"wbqc-potentialissues-long": "Esta oración tiene potenciales incidencias.",
 	"wbqc-badparameters-short": "Parámetros incorrectos",
 	"wbqc-badparameters-long": "Esta declaración de constante incluye algunos parámetros no válidos.",

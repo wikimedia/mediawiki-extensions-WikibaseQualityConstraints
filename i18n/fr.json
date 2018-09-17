@@ -113,7 +113,7 @@
 	"wbqc-violation-message-conflicts-with-property": "Une entité ne doit pas avoir de déclaration à la fois pour $1 et $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Une entité ne doit pas avoir une déclaration pour $1 si elle en a une pour $2 avec la valeur $3.",
 	"wbqc-violation-message-contemporary-subject-earlier": "Les entités $1 et $3 doivent être contemporaines pour pouvoir être liées via $2, mais la valeur de dernière fin de $1 est $4 et la valeur de premier début de $3 est $5.",
-	"wbqc-violation-message-contemporary-value-earlier": "Les entités $1 et $3 doivent être contemporaines pour être reliés via $2, mais la valeur de dernière fin de $3 est ^$4 et la valeur de premier début de $1 est $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "Les entités $1 et $3 doivent être contemporaines pour être reliés via $2, mais la valeur de dernière fin de $3 est $4 et la valeur de premier début de $1 est $5.",
 	"wbqc-violation-message-diff-within-range": "La différence entre $3 ($4) et $1 ($2) devrait être comprise entre $5 et $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "La différence entre $3 ($4) et $1 ($2) ne doit pas excéder $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "La différence entre $3 ($4) et $1 ($2) ne doit pas être inférieure à $5.",
