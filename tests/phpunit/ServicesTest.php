@@ -19,6 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerialize
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
+use WikibaseQuality\ConstraintReport\WikibaseServices;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintsServices
@@ -29,7 +30,7 @@ use WikibaseQuality\ConstraintReport\ConstraintsServices;
  */
 class ServicesTest extends \PHPUnit\Framework\TestCase {
 
-	public function provideServiceClasses() {
+	public function provideConstraintsServiceClasses() {
 		return [
 			[ LoggingHelper::class ],
 			[ ConstraintRepository::class ],
@@ -43,13 +44,23 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 			[ RangeCheckerHelper::class ],
 			[ SparqlHelper::class ],
 			[ TypeCheckerHelper::class ],
+		];
+	}
+
+	public function provideWikibaseServiceClasses() {
+		return [
 			[ EntityLookup::class ],
 			[ PropertyDataTypeLookup::class ],
 		];
 	}
 
+	public function provideAllServiceClasses() {
+		yield from $this->provideConstraintsServiceClasses();
+		yield from $this->provideWikibaseServiceClasses();
+	}
+
 	/**
-	 * @dataProvider provideServiceClasses
+	 * @dataProvider provideAllServiceClasses
 	 */
 	public function testServiceWiring( $serviceClass ) {
 		$serviceClassParts = explode( '\\', $serviceClass );
@@ -61,13 +72,25 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider provideServiceClasses
+	 * @dataProvider provideConstraintsServiceClasses
 	 */
 	public function testConstraintsServices( $serviceClass ) {
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$getterName = 'get' . end( $serviceClassParts );
 
 		$service = ConstraintsServices::$getterName();
+
+		$this->assertInstanceOf( $serviceClass, $service );
+	}
+
+	/**
+	 * @dataProvider provideWikibaseServiceClasses
+	 */
+	public function testWikibaseServices( $serviceClass ) {
+		$serviceClassParts = explode( '\\', $serviceClass );
+		$getterName = 'get' . end( $serviceClassParts );
+
+		$service = WikibaseServices::$getterName();
 
 		$this->assertInstanceOf( $serviceClass, $service );
 	}
