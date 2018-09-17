@@ -3,6 +3,8 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
@@ -31,6 +33,10 @@ class ConstraintsServices {
 	const RANGE_CHECKER_HELPER = 'WBQC_RangeCheckerHelper';
 	const SPARQL_HELPER = 'WBQC_SparqlHelper';
 	const TYPE_CHECKER_HELPER = 'WBQC_TypeCheckerHelper';
+
+	// TODO these services really belong in WikibaseRepo
+	const ENTITY_LOOKUP = 'WBQC_EntityLookup';
+	const PROPERTY_DATA_TYPE_LOOKUP = 'WBQC_PropertyDataTypeLookup';
 
 	private static function getService( MediaWikiServices $services = null, $name ) {
 		if ( $services === null ) {
@@ -133,6 +139,24 @@ class ConstraintsServices {
 	 */
 	public static function getTypeCheckerHelper( MediaWikiServices $services = null ) {
 		return self::getService( $services, self::TYPE_CHECKER_HELPER );
+	}
+
+	// the below services really belong in WikibaseRepo, but we need them wired up here for now
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return EntityLookup
+	 */
+	public static function getEntityLookup( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::ENTITY_LOOKUP );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return PropertyDataTypeLookup
+	 */
+	public static function getPropertyDataTypeLookup( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::PROPERTY_DATA_TYPE_LOOKUP );
 	}
 
 }

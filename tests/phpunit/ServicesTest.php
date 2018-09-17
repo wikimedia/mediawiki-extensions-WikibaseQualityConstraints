@@ -4,6 +4,8 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use MediaWiki\MediaWikiServices;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
@@ -41,6 +43,8 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 			[ RangeCheckerHelper::class ],
 			[ SparqlHelper::class ],
 			[ TypeCheckerHelper::class ],
+			[ EntityLookup::class ],
+			[ PropertyDataTypeLookup::class ],
 		];
 	}
 
