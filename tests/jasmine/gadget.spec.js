@@ -106,7 +106,114 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 			} );
 			sinon.assert.calledWith( global.mediaWiki.hook, 'wikibase.statement.saved' );
 			expect( hookAdded.calledOnce, 'to be true' );
+		} );
+	} );
 
+	describe( 'fullCheck', function () {
+		it( 'tracks usage', function () {
+			var gadget = new Gadget(),
+				lang = 'fr',
+				entityId = 'Q42',
+				api = {
+					get: sinon.stub()
+				},
+				apiPromise = {
+					then: sinon.stub()
+				};
+
+			global.mediaWiki.track = sinon.spy();
+			api.get.returns( apiPromise );
+
+			gadget.fullCheck( api, lang, entityId );
+
+			sinon.assert.calledWith( global.mediaWiki.track, 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
+		} );
+
+		it( 'calls api with correct parameters', function () {
+			var gadget = new Gadget(),
+				lang = 'fr',
+				entityId = 'Q42',
+				api = {
+					get: sinon.stub()
+				},
+				apiPromise = {
+					then: sinon.stub()
+				};
+
+			global.mediaWiki.track = sinon.spy();
+			api.get.returns( apiPromise );
+
+			gadget.fullCheck( api, lang, entityId );
+
+			sinon.assert.calledWith( api.get, {
+				action: 'wbcheckconstraints',
+				format: 'json',
+				formatversion: 2,
+				uselang: 'fr',
+				id: 'Q42',
+				status: 'violation|warning|bad-parameters' // "cachedStatuses"
+			} );
+		} );
+
+		it( 'uses api response to update DOM statements', function () {
+			var gadget = new Gadget(),
+				lang = 'fr',
+				entityId = 'Q42',
+				api = {
+					get: sinon.stub()
+				},
+				responseData = {
+					wbcheckconstraints: {
+						Q42: {
+							claims: {
+								P9: [ {
+									id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+									mainsnak: {
+										hash: '261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+										results: [ {
+											status: 'warning',
+											property: 'P9',
+											constraint: {
+												id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												type: 'Q1283',
+												typeLabel: 'MultiValueConstraintItem',
+												link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+											},
+											'message-html': 'This property should contain multiple values.',
+											claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+										} ]
+									}
+								} ]
+							}
+						}
+					}, success: 1
+				},
+				preExistingReportButtonsRemovedSpy = sinon.spy();
+
+			global.mediaWiki.track = sinon.spy();
+			api.get.withArgs( {
+				action: 'wbcheckconstraints',
+				format: 'json',
+				formatversion: 2,
+				uselang: 'fr',
+				id: 'Q42',
+				status: 'violation|warning|bad-parameters' // "cachedStatuses"
+			} ).returns( {
+				then: sinon.stub().yields( responseData )
+			} );
+			global.jQuery.withArgs( '.wbqc-reports-button' ).returns( {
+				remove: preExistingReportButtonsRemovedSpy
+			} );
+			global.jQuery.withArgs( '.wikibase-statementgroupview .wikibase-statementview' ).returns( {
+				each: sinon.stub().yields()
+			} );
+			gadget._addReportsToStatement = sinon.spy();
+
+			gadget.fullCheck( api, lang, entityId );
+
+			sinon.assert.called( preExistingReportButtonsRemovedSpy );
+			sinon.assert.calledWith( gadget._addReportsToStatement, responseData.wbcheckconstraints.Q42 );
 		} );
 	} );
 } );
