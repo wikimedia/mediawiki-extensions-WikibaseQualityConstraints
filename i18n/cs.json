@@ -82,6 +82,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Kontrola pro jmenný prostor „$1“ dosud nebyla implementována.",
 	"wbqc-violation-message-conflicts-with-property": "Entita nemůže mít současně tvrzení vlastností $1 a $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Entita nemůže mít tvrzení vlastnosti $1, pokud má současně tvrzení vlastnosti $2 s hodnotou $3.",
+	"wbqc-violation-message-contemporary-subject-earlier": "Entity $1 a $3 by měly být současníky, pokud mají být propojeny pomocí $2, ale nejpozdější hodnota konce $1 je $4 a nejdřívější hodnota počátku $3 je $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "Entity $1 a $3 by měly být současníky, pokud mají být propojeny pomocí $2, ale nejpozdější hodnota konce $3 je $4 a nejdřívější hodnota počátku $1 je $5.",
 	"wbqc-violation-message-diff-within-range": "Rozdíl mezi vlastnostmi $3 ($4) a $1 ($2) by se měl nacházet v intervalu od $5 do $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Rozdíl mezi vlastnostmi $3 ($4) a $1 ($2) by neměl být větší než $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "Rozdíl mezi vlastnostmi $3 ($4) a $1 ($2) by neměl být menší než $5.",
@@ -136,5 +138,6 @@
 	"wbqc-violation-message-integer": "Hodnoty vlastnosti $1 by měly být celá čísla, ale $2 má desetinnou část.",
 	"wbqc-violation-message-integer-bounds": "Hodnoty vlastnosti $1 by měly být celá čísla, ale $2 má meze s desetinnou částí.",
 	"wbqc-violation-message-citationNeeded": "Tvrzení vlastnosti $1 by měla mít alespoň jednu referenci.",
+	"wbqc-violation-message-property-scope": "Vlastnost $1 by neměla být používána na tomto místě ($2). {{PLURAL:$3|Jediným platným místem|Jedinými platnými místy}} pro tuto vlastnost {{PLURAL:$3|je $5.|jsou: $4}}",
 	"wbqc-violation-message-exception": "Tato vlastnost je u tohoto omezení uvedena jako známá výjimka, takže tak byla označena."
 }
