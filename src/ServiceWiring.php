@@ -135,20 +135,10 @@ return [
 
 	ConstraintsServices::TYPE_CHECKER_HELPER => function( MediaWikiServices $services ) {
 		return new TypeCheckerHelper(
-			ConstraintsServices::getEntityLookup( $services ),
+			WikibaseServices::getEntityLookup( $services ),
 			$services->getMainConfig(),
 			ConstraintsServices::getSparqlHelper( $services ),
 			$services->getStatsdDataFactory()
 		);
-	},
-
-	// the below services really belong in WikibaseRepo, but we need them wired up here for now
-
-	ConstraintsServices::ENTITY_LOOKUP => function( MediaWikiServices $services ) {
-		return WikibaseRepo::getDefaultInstance()->getEntityLookup();
-	},
-
-	ConstraintsServices::PROPERTY_DATA_TYPE_LOOKUP => function( MediaWikiServices $services ) {
-		return WikibaseRepo::getDefaultInstance()->getPropertyDataTypeLookup();
 	},
 ];

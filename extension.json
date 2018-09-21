@@ -22,7 +22,8 @@
 		"WikibaseQualityConstraintsAlias": "WikibaseQualityConstraints.alias.php"
 	},
 	"ServiceWiringFiles": [
-		"src/ServiceWiring.php"
+		"src/ServiceWiring.php",
+		"src/ServiceWiring-Wikibase.php"
 	],
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema",
