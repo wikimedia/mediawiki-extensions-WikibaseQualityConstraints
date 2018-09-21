@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
 
 /**
@@ -19,13 +18,6 @@ class ConstraintReportFactoryTest extends \MediaWikiTestCase {
 		$this->assertInstanceOf(
 			ConstraintReportFactory::class,
 			ConstraintReportFactory::getDefaultInstance()
-		);
-	}
-
-	public function testGetConstraintChecker() {
-		$this->assertInstanceOf(
-			DelegatingConstraintChecker::class,
-			ConstraintReportFactory::getDefaultInstance()->getConstraintChecker()
 		);
 	}
 

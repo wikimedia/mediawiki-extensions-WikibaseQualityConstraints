@@ -18,37 +18,6 @@ use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
 use WikibaseQuality\ConstraintReport\Api\ResultsSource;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CitationNeededChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\EntityTypeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\IntegerChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoneOfChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\PropertyScopeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ReferenceChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleBestValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ContemporaryChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifierChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\RangeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TypeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ConflictsWithChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\QualifiersChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\DiffWithinRangeChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 
 /**
@@ -60,16 +29,6 @@ use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 class ConstraintReportFactory {
 
 	// services created by this factory
-
-	/**
-	 * @var DelegatingConstraintChecker|null
-	 */
-	private $delegatingConstraintChecker;
-
-	/**
-	 * @var ConstraintChecker[]|null
-	 */
-	private $constraintCheckerMap;
 
 	/**
 	 * @var WikiPageEntityMetaDataAccessor|null
@@ -180,162 +139,6 @@ class ConstraintReportFactory {
 	}
 
 	/**
-	 * @return DelegatingConstraintChecker
-	 */
-	public function getConstraintChecker() {
-		if ( $this->delegatingConstraintChecker === null ) {
-			$this->delegatingConstraintChecker = new DelegatingConstraintChecker(
-				$this->lookup,
-				$this->getConstraintCheckerMap(),
-				ConstraintsServices::getConstraintLookup(),
-				ConstraintsServices::getConstraintParameterParser(),
-				$this->statementGuidParser,
-				ConstraintsServices::getLoggingHelper(),
-				$this->config->get( 'WBQualityConstraintsCheckQualifiers' ),
-				$this->config->get( 'WBQualityConstraintsCheckReferences' ),
-				$this->config->get( 'WBQualityConstraintsPropertiesWithViolatingQualifiers' )
-			);
-		}
-
-		return $this->delegatingConstraintChecker;
-	}
-
-	/**
-	 * @return ConstraintChecker[]
-	 */
-	private function getConstraintCheckerMap() {
-		if ( $this->constraintCheckerMap === null ) {
-			$this->constraintCheckerMap = [
-				$this->config->get( 'WBQualityConstraintsConflictsWithConstraintId' )
-					=> new ConflictsWithChecker(
-						$this->lookup,
-						ConstraintsServices::getConstraintParameterParser(),
-						ConstraintsServices::getConnectionCheckerHelper()
-					),
-				$this->config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' )
-					=> new ItemChecker(
-						$this->lookup,
-						ConstraintsServices::getConstraintParameterParser(),
-						ConstraintsServices::getConnectionCheckerHelper()
-					),
-				$this->config->get( 'WBQualityConstraintsValueRequiresClaimConstraintId' )
-					=> new TargetRequiredClaimChecker(
-						$this->lookup,
-						ConstraintsServices::getConstraintParameterParser(),
-						ConstraintsServices::getConnectionCheckerHelper()
-					),
-				$this->config->get( 'WBQualityConstraintsSymmetricConstraintId' )
-					=> new SymmetricChecker(
-						$this->lookup,
-						ConstraintsServices::getConnectionCheckerHelper()
-					),
-				$this->config->get( 'WBQualityConstraintsInverseConstraintId' )
-					=> new InverseChecker(
-						$this->lookup,
-						ConstraintsServices::getConstraintParameterParser(),
-						ConstraintsServices::getConnectionCheckerHelper()
-					),
-				$this->config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' )
-					=> new QualifierChecker(),
-				$this->config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' )
-					=> new QualifiersChecker(
-						ConstraintsServices::getConstraintParameterParser()
-					),
-				$this->config->get( 'WBQualityConstraintsMandatoryQualifierConstraintId' )
-					=> new MandatoryQualifiersChecker(
-						ConstraintsServices::getConstraintParameterParser()
-					),
-				$this->config->get( 'WBQualityConstraintsRangeConstraintId' )
-					=> new RangeChecker(
-						$this->propertyDataTypeLookup,
-						ConstraintsServices::getConstraintParameterParser(),
-						ConstraintsServices::getRangeCheckerHelper()
-					),
-				$this->config->get( 'WBQualityConstraintsDifferenceWithinRangeConstraintId' )
-					=> new DiffWithinRangeChecker(
-						ConstraintsServices::getConstraintParameterParser(),
-						ConstraintsServices::getRangeCheckerHelper(),
-						$this->config
-					),
-				$this->config->get( 'WBQualityConstraintsTypeConstraintId' )
-					=> new TypeChecker(
-						$this->lookup,
-						ConstraintsServices::getConstraintParameterParser(),
-						ConstraintsServices::getTypeCheckerHelper(),
-						$this->config
-					),
-				$this->config->get( 'WBQualityConstraintsValueTypeConstraintId' )
-					=> new ValueTypeChecker(
-						$this->lookup,
-						ConstraintsServices::getConstraintParameterParser(),
-						ConstraintsServices::getTypeCheckerHelper(),
-						$this->config
-					),
-				$this->config->get( 'WBQualityConstraintsSingleValueConstraintId' )
-					=> new SingleValueChecker( ConstraintsServices::getConstraintParameterParser() ),
-				$this->config->get( 'WBQualityConstraintsMultiValueConstraintId' )
-					=> new MultiValueChecker( ConstraintsServices::getConstraintParameterParser() ),
-				$this->config->get( 'WBQualityConstraintsDistinctValuesConstraintId' )
-					=> new UniqueValueChecker(
-						ConstraintsServices::getSparqlHelper()
-					),
-				$this->config->get( 'WBQualityConstraintsFormatConstraintId' )
-					=> new FormatChecker(
-						ConstraintsServices::getConstraintParameterParser(),
-						$this->config,
-						ConstraintsServices::getSparqlHelper()
-					),
-				$this->config->get( 'WBQualityConstraintsCommonsLinkConstraintId' )
-					=> new CommonsLinkChecker(
-						ConstraintsServices::getConstraintParameterParser(),
-						$this->titleParser
-					),
-				$this->config->get( 'WBQualityConstraintsOneOfConstraintId' )
-					=> new OneOfChecker(
-						ConstraintsServices::getConstraintParameterParser()
-					),
-				$this->config->get( 'WBQualityConstraintsUsedForValuesOnlyConstraintId' )
-					=> new ValueOnlyChecker(),
-				$this->config->get( 'WBQualityConstraintsUsedAsReferenceConstraintId' )
-					=> new ReferenceChecker(),
-				$this->config->get( 'WBQualityConstraintsNoBoundsConstraintId' )
-					=> new NoBoundsChecker(),
-				$this->config->get( 'WBQualityConstraintsAllowedUnitsConstraintId' )
-					=> new AllowedUnitsChecker(
-						ConstraintsServices::getConstraintParameterParser(),
-						$this->unitConverter
-					),
-				$this->config->get( 'WBQualityConstraintsSingleBestValueConstraintId' )
-					=> new SingleBestValueChecker( ConstraintsServices::getConstraintParameterParser() ),
-				$this->config->get( 'WBQualityConstraintsAllowedEntityTypesConstraintId' )
-					=> new EntityTypeChecker(
-						ConstraintsServices::getConstraintParameterParser()
-					),
-				$this->config->get( 'WBQualityConstraintsNoneOfConstraintId' )
-					=> new NoneOfChecker(
-						ConstraintsServices::getConstraintParameterParser()
-					),
-				$this->config->get( 'WBQualityConstraintsIntegerConstraintId' )
-					=> new IntegerChecker(),
-				$this->config->get( 'WBQualityConstraintsCitationNeededConstraintId' )
-					=> new CitationNeededChecker(),
-				$this->config->get( 'WBQualityConstraintsPropertyScopeConstraintId' )
-					=> new PropertyScopeChecker(
-						ConstraintsServices::getConstraintParameterParser()
-					),
-				$this->config->get( 'WBQualityConstraintsContemporaryConstraintId' )
-					=> new ContemporaryChecker(
-						$this->lookup,
-						ConstraintsServices::getRangeCheckerHelper(),
-						$this->config
-					),
-			];
-		}
-
-		return $this->constraintCheckerMap;
-	}
-
-	/**
 	 * @return WikiPageEntityMetaDataAccessor
 	 */
 	public function getWikiPageEntityMetaDataAccessor() {
@@ -354,7 +157,7 @@ class ConstraintReportFactory {
 	public function getResultsSource() {
 		if ( $this->resultsSource === null ) {
 			$this->resultsSource = new CheckingResultsSource(
-				$this->getConstraintChecker()
+				ConstraintsServices::getDelegatingConstraintChecker()
 			);
 
 			if ( $this->config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {

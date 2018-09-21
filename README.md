@@ -201,15 +201,45 @@ To add a new constraint type, the following steps are necessary:
   * The first part of the description can be copied from similar settings,
     the rest should contain a short description of the constraint type.
   * The ID can always be public (`"public": true`).
-* Configure the constraint type checker in `ConstraintReportFactory`.
-  * Add an array entry like
+* Register the new constraint type checker.
+  * In `ConstraintCheckerServices.php`, add a constant like
     ```php
-    $this->config->get( 'WBQualityConstraints…ConstraintId' )
-    	=> new …Checker(
-    		// injected services
-    	),
+    const …_CHECKER => 'WBQC_…Checker';
     ```
-    at the end of the `getConstraintCheckerMap()` function.
+    at the end of the list of constants.
+    The value should be `'WBQC_'` followed by the class name,
+    and the constant name should be the class name converted to all caps separated by underscores.
+  * Also in `ConstraintCheckerServices.php`, add a method like
+    ```php
+    /**
+     * @param MediaWikiServices|null $services
+     * @return ConstraintChecker
+     */
+    public static function get…Checker( MediaWikiServices $services = null ) {
+    	return self::getService( $services, self::…_CHECKER );
+    }
+    ```
+    at the end of the class.
+  * In `ServiceWiring-ConstraintCheckers.php`, append a new function like
+    ```php
+    ConstraintCheckerServices::…_CHECKER => function( MediaWikiServices $services ) {
+    	return new …Checker(
+        	// injected services
+        );
+    },
+    ```
+    to the array of services.
+  * In `ServiceWiring.php`, append a new entry like
+    ```php
+    $config->get( 'WBQualityConstraints…ConstraintId' )
+    	=> ConstraintCheckerServices::get…Checker( $services ),
+    ```
+    to the the `$checkerMap` array in the `DELEGATING_CONSTRAINT_CHECKER` function.
+  * In `ServicesTest.php`, append a new entry like
+    ```php
+    [ …Checker::class ],
+    ```
+    to the array in `provideConstraintCheckerServiceClasses()`.
 * Add tests for the new constraint checker.
   * The test class name should be the same as the checker class name,
     with an additional suffix `Test` (i. e., `…CheckerTest`).
@@ -259,5 +289,3 @@ To add a new constraint type, the following steps are necessary:
 * Ask someone with grafana-admin access to update the “constraint types” panel
   in the [wikidata-quality board](https://grafana.wikimedia.org/dashboard/db/wikidata-quality)
   to add the new constraint type.
-
-An example commit that performs almost all of these steps is [Change Ica05406e14](https://gerrit.wikimedia.org/r/382715).
