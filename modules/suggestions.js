@@ -43,7 +43,8 @@
 				item = {
 					id: id,
 					label: ld.entities[ id ] && ld.entities[ id ].labels[ language ] && ld.entities[ id ].labels[ language ].value || '',
-					description: ld.entities[ id ] && ld.entities[ id ].descriptions[ language ] && ld.entities[ id ].descriptions[ language ].value || ''
+					description: ld.entities[ id ] && ld.entities[ id ].descriptions[ language ] && ld.entities[ id ].descriptions[ language ].value || '',
+					rating: 1
 				};
 
 				if ( !filter( item.label + item.description ) && ( item.label !== '' || item.description !== '' ) ) {
