@@ -10,7 +10,7 @@ use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Store\EntityIdLookup;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
-use WikibaseQuality\ConstraintReport\ConstraintReportFactory;
+use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use Wikimedia\Purtle\RdfWriterFactory;
 
 /**
@@ -47,12 +47,11 @@ class CheckConstraintsRdf extends FormlessAction {
 
 	public static function newFromGlobalState( Page $page, IContextSource $context = null ) {
 		$repo = WikibaseRepo::getDefaultInstance();
-		$constraintReportFactory = ConstraintReportFactory::getDefaultInstance();
 
 		return new static(
 			$page,
 			$context,
-			$constraintReportFactory->getResultsSource(),
+			ConstraintsServices::getResultsSource(),
 			$repo->getEntityIdLookup(),
 			$repo->getRdfVocabulary()
 		);
