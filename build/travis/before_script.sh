@@ -15,10 +15,8 @@ rm master.tar.gz
 mv mediawiki-master wiki
 
 # checkout wikibase
-wget https://github.com/wikimedia/mediawiki-extensions-Wikibase/archive/master.tar.gz
-tar -zxf master.tar.gz
-rm master.tar.gz
-mv mediawiki-extensions-Wikibase-master wiki/extensions/Wikibase
+git clone --depth=1 --shallow-submodules --recurse-submodules https://github.com/wikimedia/mediawiki-extensions-Wikibase
+mv mediawiki-extensions-Wikibase wiki/extensions/Wikibase
 
 # checkout WikibaseQuality
 wget https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality/archive/master.tar.gz
