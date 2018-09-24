@@ -1,9 +1,14 @@
 module.exports = ( function ( mw, wb, $, OO ) {
 	'use strict';
 
-	var CACHED_STATUSES = 'violation|warning|bad-parameters';
+	var defaultConfig = {
+		CACHED_STATUSES: 'violation|warning|bad-parameters',
+		WBCHECKCONSTRAINTS_MAX_ID_COUNT: 50
+	};
 
-	function SELF() {}
+	function SELF( config ) {
+		this.config = Object.assign( {}, defaultConfig, config );
+	}
 
 	SELF.prototype.defaultBehavior = function () {
 		var entityId = mw.config.get( 'wbEntityId' );
@@ -19,12 +24,15 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			'oojs-ui-widgets',
 			'oojs-ui.styles.icons-alerts',
 			'wikibase.quality.constraints.icon',
-			'wikibase.quality.constraints.ui'
+			'wikibase.quality.constraints.ui',
+			'wikibase.EntityInitializer'
 		] ).done( function () {
 			var api = new mw.Api( this._mwApiOptions() ),
 				lang = mw.config.get( 'wgUserLanguage' );
 
-			this.fullCheck( api, lang, entityId );
+			wb.EntityInitializer.newFromEntityLoadedHook().getEntity().done( function ( entity ) {
+				this.fullCheckEntityAndSubentities( api, lang, entity );
+			}.bind( this ) );
 
 			if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
 				this.propertyParameterCheck( api, lang, entityId );
@@ -37,21 +45,95 @@ module.exports = ( function ( mw, wb, $, OO ) {
 		}.bind( this ) );
 	};
 
-	SELF.prototype.fullCheck = function ( api, lang, entityId ) {
-		var self = this;
+	/**
+	 * @param {mw.Api} api
+	 * @param {string} lang
+	 * @param {wb.datamodel.Entity} entity
+	 * @return {Thenable}
+	 */
+	SELF.prototype.fullCheckEntityAndSubentities = function ( api, lang, entity ) {
+		var ids = [ entity.getId() ];
+
+		if ( typeof entity.getSubEntityIds === 'function' ) {
+			ids = ids.concat( entity.getSubEntityIds() );
+		}
+
+		return this.fullCheck( api, lang, ids );
+	};
+
+	SELF.prototype.fullCheck = function ( api, lang, entityIds ) {
+		if ( typeof entityIds === 'string' ) {
+			entityIds = [ entityIds ];
+		}
+
 		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
+		return this._fullCheckAllIds( api, lang, entityIds );
+	};
+
+	SELF.prototype._wbcheckconstraints = function ( api, lang, ids ) {
 		return api.get( {
 			action: 'wbcheckconstraints',
 			format: 'json',
 			formatversion: 2,
 			uselang: lang,
-			id: entityId,
-			status: CACHED_STATUSES
-		} ).then( function ( data ) {
-			$( '.wbqc-reports-button' ).remove();
-			$( '.wikibase-statementgroupview .wikibase-statementview' )
-				.each( function () { self._addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
+			id: ids,
+			status: this.config.CACHED_STATUSES
+		} ).then( function ( result ) {
+			return result;
 		} );
+	};
+
+	SELF.prototype._fullCheckAllIds = function ( api, lang, ids ) {
+		var i,
+			j = ids.length,
+			chunk = this.config.WBCHECKCONSTRAINTS_MAX_ID_COUNT,
+			promises = [];
+
+		for ( i = 0; i < j; i += chunk ) {
+			promises.push(
+				this._wbcheckconstraints( api, lang, ids.slice( i, i + chunk ) )
+			);
+		}
+
+		return $.when.apply( $, promises )
+			.then( this._aggregateMultipleWbcheckconstraintsResponses.bind( this ) )
+			.then( this._renderWbcheckconstraintsResult.bind( this ) )
+			.promise();
+	};
+
+	/**
+	 * Because of the way this is implemented it can not be done repeatedly for partial results
+	 * (e.g. a wbcheckconstraints result for only some of the entities on a page)
+	 *
+	 * @param {object} data Map of entity ids and constraint check information
+	 */
+	SELF.prototype._renderWbcheckconstraintsResult = function ( data ) {
+		var self = this;
+
+		$( '.wbqc-reports-button' ).remove();
+		$( '.wikibase-statementgroupview .wikibase-statementview' )
+			.each( function () {
+				var entityId;
+				for ( entityId in data ) {
+					if ( !data.hasOwnProperty( entityId ) ) {
+						continue;
+					}
+					self._addReportsToStatement( data[ entityId ], $( this ) );
+				}
+			} );
+	};
+
+	SELF.prototype._aggregateMultipleWbcheckconstraintsResponses = function ( /* multiple responses */ ) {
+		var responses = [].slice.call( arguments ),
+			i = 0,
+			responseCount = responses.length,
+			entityConstraints = {};
+
+		for ( i; i < responseCount; i++ ) {
+			Object.assign( entityConstraints, responses[ i ].wbcheckconstraints );
+		}
+
+		return entityConstraints;
 	};
 
 	SELF.prototype.snakCheck = function ( api, lang, entityId, statementId ) {
@@ -65,7 +147,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			formatversion: 2,
 			uselang: lang,
 			claimid: statementId,
-			status: CACHED_STATUSES
+			status: this.config.CACHED_STATUSES
 		} ).then( function ( data ) {
 			if ( isUpdated ) {
 				return;
@@ -74,6 +156,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
 				.each( function () { self._addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
 		} );
+		// TODO does this also need to check subentities?
 		this.fullCheck( api, lang, entityId ).then( function () {
 			isUpdated = true;
 		} );
@@ -348,7 +431,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
 			),
 			statementId = match && match[ 1 ],
-			propertyId = $statement.parents( '.wikibase-statementgroupview' )[ 0 ].id,
+			propertyId = $statement.parents( '.wikibase-statementgroupview' ).data( 'property-id' ),
 			results = this._extractResultsForStatement( entityData, propertyId, statementId ),
 			index,
 			qualifier,
