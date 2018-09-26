@@ -44,5 +44,7 @@
 	"wbqc-violation-header-parameters": "پارامترها:",
 	"wbqc-violations-group": "محدودیت‌ها",
 	"wbqc-violation-message-commons-link-no-existent": "پیوند به انبار باید وجود داشته باشد.",
+	"wbqc-violation-message-noBounds": "مقدار برای $1 نباید محدود باشد",
+	"wbqc-violation-message-units-none": "مقدار برای $1 باید یکا داشته باشد",
 	"wbqc-violation-message-citationNeeded": "اظهار $1 باید حداقل یک منبع داشته‌باشد."
 }
