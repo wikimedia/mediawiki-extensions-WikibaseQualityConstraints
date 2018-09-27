@@ -12,12 +12,21 @@
 	"license": "GPL-2.0-or-later",
 	"devDependencies": {
 		"eslint-config-wikimedia": "0.4.0",
+		"eslint-plugin-jasmine": "^2.10.1",
 		"grunt": "1.0.1",
 		"grunt-banana-checker": "0.6.0",
 		"grunt-eslint": "19.0.0",
+		"grunt-jasmine-nodejs": "^1.6.1",
 		"grunt-jsonlint": "1.1.0",
 		"grunt-stylelint": "0.6.0",
+		"jasmine": "^3.2.0",
+		"module-alias": "^2.1.0",
+		"sinon": "^6.2.0",
 		"stylelint": "7.8.0",
-		"stylelint-config-wikimedia": "0.4.1"
+		"stylelint-config-wikimedia": "0.4.1",
+		"unexpected": "^10.39.0"
+	},
+	"_moduleAliases": {
+		"wikibase.quality.constraints.gadget": "./modules/gadget.js"
 	}
 }
