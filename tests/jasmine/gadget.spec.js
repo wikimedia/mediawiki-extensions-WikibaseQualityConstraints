@@ -97,6 +97,38 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 			expect( global.mediaWiki.config.get.withArgs( 'wbIsEditView' ).calledOnce, 'to be true' );
 		} );
 
+		it( 'sets entity from newFromEntityLoadedHook', function () {
+			var gadget = new Gadget();
+
+			gadget.fullCheck = sinon.stub();
+			global.mediaWiki.config = sinon.stub();
+			global.mediaWiki.config.get = sinon.stub();
+			global.mediaWiki.config.get.withArgs( 'wbEntityId' ).returns( 'Q42' );
+			global.mediaWiki.config.get.withArgs( 'wbIsEditView' ).returns( true );
+			global.mediaWiki.loader = sinon.stub();
+			global.mediaWiki.loader.using = sinon.stub();
+			global.mediaWiki.loader.using.returns( { done: sinon.stub().yields() } );
+			global.mediaWiki.loader.getState = sinon.stub();
+			global.mediaWiki.loader.getState.withArgs( 'wikibase.quality.constraints.gadget' ).returns( 'executing' );
+			global.mediaWiki.Api = sinon.stub();
+			global.mediaWiki.Api.prototype.get = sinon.stub().returns( {
+				then: sinon.stub().returns( {
+					then: sinon.stub()
+				} )
+			} );
+
+			global.mediaWiki.hook = sinon.stub();
+			loadedEntity = {
+				getId: sinon.stub().returns( sinon.stub() )
+			};
+			global.mediaWiki.hook.withArgs( 'wikibase.statement.saved' ).returns( { add: sinon.stub() } );
+
+			gadget.defaultBehavior();
+
+			expect( gadget.getEntity(), 'to equal', loadedEntity );
+
+		} );
+
 		it( 'invokes mw loader and resumes once it is ready', function () {
 			var gadget = new Gadget(),
 				done = sinon.stub();
@@ -169,6 +201,15 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 	} );
 
+	describe( 'setting and getting an entity', function () {
+		it( 'gets the same entity as set', function () {
+			var gadget = new Gadget(),
+				entity = sinon.stub();
+			gadget.setEntity( entity );
+			expect( gadget.getEntity(), 'to equal', entity );
+		} );
+	} );
+
 	describe( 'fullCheck', function () {
 		it( 'tracks usage', function () {
 			var gadget = new Gadget(),
@@ -185,8 +226,8 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 			global.mediaWiki.track = sinon.spy();
 
 			gadget._renderWbcheckconstraintsResult = sinon.spy();
-
-			gadget.fullCheck( api, lang, entityId );
+			gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
+			gadget.fullCheck( api, lang );
 
 			sinon.assert.calledWith( global.mediaWiki.track, 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
 		} );
@@ -207,7 +248,8 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 			gadget._renderWbcheckconstraintsResult = sinon.spy();
 
-			gadget.fullCheck( api, lang, entityId );
+			gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
+			gadget.fullCheck( api, lang );
 
 			sinon.assert.calledWith( api.get, {
 				action: 'wbcheckconstraints',
@@ -276,7 +318,8 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 			} );
 			gadget._addReportsToStatement = sinon.spy();
 
-			gadget.fullCheck( api, lang, entityId );
+			gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
+			gadget.fullCheck( api, lang );
 
 			sinon.assert.called( preExistingReportButtonsRemovedSpy );
 			sinon.assert.calledWith( gadget._addReportsToStatement, responseData.wbcheckconstraints.Q42 );
@@ -419,34 +462,103 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 	} );
 
-	describe( 'fullCheckEntityAndSubentities', function () {
-		it( 'gets and passes entity id from entity', function () {
+	describe( '_getEntityDataByStatementId', function () {
+		it( 'extracts the entity data when the statementId exists', function () {
 			var gadget = new Gadget(),
-				api = {},
-				lang = 'hu',
-				entity = {
-					getId: sinon.stub().returns( 'L42' )
-				};
-			gadget.fullCheck = sinon.spy();
+				entityData = {
+					claims: {
+						P9: [ {
+							id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+						} ]
+					}
+				},
+				result;
+			result = gadget._getEntityDataByStatementId( { wbcheckconstraints: { Q42: entityData } },
+				'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' );
 
-			gadget.fullCheckEntityAndSubentities( api, lang, entity );
-
-			sinon.assert.calledWith( gadget.fullCheck, api, lang, [ 'L42' ] );
+			expect( result, 'to equal', entityData );
 		} );
 
-		it( 'gets and passes sub entity ids from entity too if available', function () {
+		it( 'returns null when the statementId isn\'t present', function () {
 			var gadget = new Gadget(),
-				api = {},
-				lang = 'hu',
-				entity = {
-					getId: sinon.stub().returns( 'L42' ),
-					getSubEntityIds: sinon.stub().returns( [ 'L42-F1', 'L42-S3' ] )
-				};
-			gadget.fullCheck = sinon.spy();
+				entityData = {
+					claims: {
+						P9: [ {
+							id: 'noid'
+						} ]
+					}
+				},
+				result;
+			result = gadget._getEntityDataByStatementId( { wbcheckconstraints: { Q42: entityData } },
+				'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' );
 
-			gadget.fullCheckEntityAndSubentities( api, lang, entity );
-
-			sinon.assert.calledWith( gadget.fullCheck, api, lang, [ 'L42', 'L42-F1', 'L42-S3' ] );
+			expect( result, 'to equal', null );
 		} );
 	} );
+
+	describe( 'snackCheck', function () {
+		it( 'runs a full check', function () {
+			var gadget = new Gadget(),
+				api = sinon.stub(),
+				lang = sinon.stub(),
+				statementId = sinon.stub();
+
+			statementId.replace = sinon.stub();
+			api.get = sinon.stub().returns( { then: sinon.stub() } );
+			gadget.fullCheck = sinon.stub().returns( { then: sinon.stub() } );
+
+			gadget.snakCheck( api, lang, statementId );
+			sinon.assert.calledOnce( gadget.fullCheck );
+		} );
+
+		it( 'adds reports to statement from response', function () {
+			var gadget = new Gadget(),
+				api = sinon.stub(),
+				lang = sinon.stub(),
+				statementId = 'Q42$ae34ea61-4b81-db2b-4220-28f115fff19b',
+				responseData,
+				entityData;
+
+			entityData = { claims: { P3: [
+				{
+					id: 'Q42$ae34ea61-4b81-db2b-4220-28f115fff19b',
+					mainsnak: {
+						hash: '5929cec551a5f2e1dd9e07b5531cb01948c06142',
+						results: []
+					}
+				}
+			] } };
+
+			responseData = { wbcheckconstraints: { Q42: entityData } };
+
+			api.get = sinon.stub().returns( { then: sinon.stub().yields( responseData ) } );
+			gadget.fullCheck = sinon.stub().returns( { then: sinon.stub() } );
+			gadget._addReportsToStatement = sinon.spy();
+
+			gadget.snakCheck( api, lang, statementId );
+			sinon.assert.calledWith( gadget._addReportsToStatement, entityData );
+		} );
+
+		it( 'calls api with statement id', function () {
+			var gadget = new Gadget(),
+				api = sinon.stub(),
+				lang = 'de',
+				statementId = 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2';
+
+			api.get = sinon.stub().returns( { then: sinon.stub() } );
+			gadget.fullCheck = sinon.stub().returns( { then: sinon.stub() } );
+
+			gadget.snakCheck( api, lang, statementId );
+
+			sinon.assert.calledWith( api.get, {
+				action: 'wbcheckconstraints',
+				format: 'json',
+				formatversion: 2,
+				uselang: 'de',
+				claimid: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+				status: gadget.config.CACHED_STATUSES
+			} );
+		} );
+	} );
+
 } );
