@@ -127,7 +127,8 @@
 		}
 	},
 	"JobClasses": {
-		"constraintsTableUpdate": "WikibaseQuality\\ConstraintReport\\UpdateConstraintsTableJob::newFromGlobalState"
+		"constraintsTableUpdate": "WikibaseQuality\\ConstraintReport\\UpdateConstraintsTableJob::newFromGlobalState",
+		"constraintsRunCheck": "WikibaseQuality\\ConstraintReport\\Job\\CheckConstraintsJob::newFromGlobalState"
 	},
 	"config": {
 		"WBQualityConstraintsTypeCheckMaxEntities": {
@@ -148,6 +149,11 @@
 		"WBQualityConstraintsEnableConstraintsImportFromStatements": {
 			"value": true,
 			"description": "Whether to import property constraint statements into the constraint database or not.",
+			"public": true
+		},
+		"WBQualityConstraintsEnableConstraintsCheckJobs": {
+			"value": false,
+			"description": "Whether to automatically run constraint checks in jobs.",
 			"public": true
 		},
 		"WBQualityConstraintsCheckQualifiers": {
@@ -190,7 +196,7 @@
 		},
 		"WBQualityConstraintsCacheCheckConstraintsResults": {
 			"value": true,
-			"description": "Whether to cache results of the wbcheckconstraints API action or not. Results are only cached for constraint checks on full entities, and only when the set of constraints to be checked is not specified (i. e. the constraintid parameter is unset).",
+			"description": "Whether to a caching service while running constraint checks. Results are only cached for constraint checks on full entities, and only when the set of constraints to be checked is not specified (i. e. the constraintid parameter is unset).",
 			"public": true
 		},
 		"WBQualityConstraintsCacheCheckConstraintsTTLSeconds": {

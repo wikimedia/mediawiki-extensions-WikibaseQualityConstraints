@@ -8,17 +8,16 @@ use DatabaseUpdater;
 use ExtensionRegistry;
 use JobQueueGroup;
 use JobSpecification;
-use User;
 use MediaWiki\MediaWikiServices;
 use OutputPage;
 use Skin;
-use Title;
+use User;
 use Wikibase\Change;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\EntityChange;
-use Wikibase\Lib\Changes\EntityDiffChangedAspects;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
+use WikibaseQuality\ConstraintReport\Job\CheckConstraintsJob;
 use WikiPage;
 
 /**
@@ -49,22 +48,36 @@ final class WikibaseQualityConstraintsHooks {
 	}
 
 	public static function onWikibaseChange( Change $change ) {
+		if ( !( $change instanceof EntityChange ) ) {
+			return;
+		}
+
+		/** @var EntityChange $change */
 		$config = MediaWikiServices::getInstance()->getMainConfig();
+
+		// If jobs are enabled and the results would be stored in some way run a job.
+		if (
+			$config->get( 'WBQualityConstraintsEnableConstraintsCheckJobs' ) &&
+			$config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' )
+		) {
+			$params = [ 'entityId' => $change->getEntityId()->getSerialization() ];
+			JobQueueGroup::singleton()->push(
+				new JobSpecification( CheckConstraintsJob::COMMAND, $params )
+			);
+		}
+
 		if ( $config->get( 'WBQualityConstraintsEnableConstraintsImportFromStatements' ) &&
 			self::isConstraintStatementsChange( $config, $change )
 		) {
-			/** @var EntityChange $change */
-			$title = Title::newMainPage();
 			$params = [ 'propertyId' => $change->getEntityId()->getSerialization() ];
 			JobQueueGroup::singleton()->push(
-				new JobSpecification( 'constraintsTableUpdate', $params, [], $title )
+				new JobSpecification( 'constraintsTableUpdate', $params )
 			);
 		}
 	}
 
-	public static function isConstraintStatementsChange( Config $config, Change $change ) {
-		if ( !( $change instanceof EntityChange ) ||
-			 $change->getAction() !== EntityChange::UPDATE ||
+	public static function isConstraintStatementsChange( Config $config, EntityChange $change ) {
+		if ( $change->getAction() !== EntityChange::UPDATE ||
 			 !( $change->getEntityId() instanceof PropertyId )
 		) {
 			return false;
