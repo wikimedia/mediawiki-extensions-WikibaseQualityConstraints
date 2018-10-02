@@ -15,6 +15,7 @@ use User;
 use Wikibase\Change;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\EntityChange;
+use Wikibase\Lib\Changes\EntityDiffChangedAspects;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
 use WikibaseQuality\ConstraintReport\Job\CheckConstraintsJob;
@@ -58,7 +59,8 @@ final class WikibaseQualityConstraintsHooks {
 		// If jobs are enabled and the results would be stored in some way run a job.
 		if (
 			$config->get( 'WBQualityConstraintsEnableConstraintsCheckJobs' ) &&
-			$config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' )
+			$config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) &&
+			self::isSelectedForJobRunBasedOnPercentage()
 		) {
 			$params = [ 'entityId' => $change->getEntityId()->getSerialization() ];
 			JobQueueGroup::singleton()->push(
@@ -76,8 +78,16 @@ final class WikibaseQualityConstraintsHooks {
 		}
 	}
 
-	public static function isConstraintStatementsChange( Config $config, EntityChange $change ) {
-		if ( $change->getAction() !== EntityChange::UPDATE ||
+	private static function isSelectedForJobRunBasedOnPercentage() {
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		$percentage = $config->get( 'WBQualityConstraintsEnableConstraintsCheckJobsRatio' );
+
+		return mt_rand( 1, 100 ) <= $percentage;
+	}
+
+	public static function isConstraintStatementsChange( Config $config, Change $change ) {
+		if ( !( $change instanceof EntityChange ) ||
+			 $change->getAction() !== EntityChange::UPDATE ||
 			 !( $change->getEntityId() instanceof PropertyId )
 		) {
 			return false;

@@ -156,6 +156,11 @@
 			"description": "Whether to automatically run constraint checks in jobs.",
 			"public": true
 		},
+		"WBQualityConstraintsEnableConstraintsCheckJobsRatio": {
+			"value": 0,
+			"description": "Percentage (0%-100%) of edits that trigger a constraint check",
+			"public": true
+		},
 		"WBQualityConstraintsCheckQualifiers": {
 			"value": true,
 			"description": "Whether to check constraints on qualifiers.",
