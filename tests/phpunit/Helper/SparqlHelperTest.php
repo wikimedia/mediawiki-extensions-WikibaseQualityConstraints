@@ -94,7 +94,8 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 					$entityIdParser,
 					new DataValueFactory( new DataValueDeserializer() )
 				),
-				new NullStatsdDataFactory()
+				new NullStatsdDataFactory(),
+				'A fancy user agent'
 			] )
 			->setMethods( [ 'runQuery' ] )
 			->getMock();
