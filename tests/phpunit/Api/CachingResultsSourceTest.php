@@ -131,6 +131,8 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 				new HashConfig( [
 					'WBQualityConstraintsCheckDurationInfoSeconds' => 5,
 					'WBQualityConstraintsCheckDurationWarningSeconds' => 10,
+					'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 15,
+					'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55,
 				] )
 			)
 		);
@@ -158,6 +160,8 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 					new HashConfig( [
 						'WBQualityConstraintsCheckDurationInfoSeconds' => 5,
 						'WBQualityConstraintsCheckDurationWarningSeconds' => 10,
+						'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 15,
+						'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55,
 					] )
 				)
 			] )

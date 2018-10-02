@@ -6,6 +6,7 @@ use HashConfig;
 use IBufferingStatsdDataFactory;
 use PHPUnit4And6Compat;
 use Psr\Log\LoggerInterface;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -84,6 +85,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
 			'WBQualityConstraintsCheckDurationInfoSeconds' => 1.0,
 			'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
+			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 5.0,
+			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55.0,
 		] ) );
 
 		$loggingHelper->logConstraintCheck(
@@ -129,12 +132,102 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
 			'WBQualityConstraintsCheckDurationInfoSeconds' => null,
 			'WBQualityConstraintsCheckDurationWarningSeconds' => null,
+			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => null,
+			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => null,
 		] ) );
 
 		$loggingHelper->logConstraintCheck(
 			$context, $constraint,
 			$checkResult,
 			'\Test\Namespace\TestChecker', 5.0,
+			__METHOD__
+		);
+	}
+
+	/**
+	 * @dataProvider provideConstraintCheckDurationsAndLogLevelsOnEntity
+	 */
+	public function testLogConstraintCheckOnEntity( $durationSeconds, $expectedLevel, $expectedLimit ) {
+		$entityId = new ItemId( 'Q1' );
+
+		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
+		$dataFactory->expects( $this->once() )
+			->method( 'timing' )
+			->with(
+				$this->identicalTo( 'wikibase.quality.constraints.check.entity.timing' ),
+				$this->identicalTo( $durationSeconds * 1000 )
+			);
+
+		$logger = $this->getMock( LoggerInterface::class );
+		$logger->expects( $expectedLevel !== null ? $this->once() : $this->never() )
+			->method( 'log' )
+			->with(
+				$this->identicalTo( $expectedLevel ),
+				$this->identicalTo(
+					'Full constraint check on {entityId} ' .
+					'took longer than {limitSeconds} second(s) ' .
+					'(duration: {durationSeconds} seconds).'
+				),
+				$this->equalTo(
+					[
+						'method' => __METHOD__,
+						'loggingMethod' => LoggingHelper::class . '::logConstraintCheckOnEntity',
+						'durationSeconds' => $durationSeconds,
+						'limitSeconds' => $expectedLimit,
+						'entityId' => 'Q1',
+					]
+				)
+			);
+
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
+			'WBQualityConstraintsCheckDurationInfoSeconds' => 1.0,
+			'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
+			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 5.0,
+			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55.0,
+		] ) );
+
+		$loggingHelper->logConstraintCheckOnEntity(
+			$entityId,
+			[],
+			$durationSeconds,
+			__METHOD__
+		);
+	}
+
+	public function provideConstraintCheckDurationsAndLogLevelsOnEntity() {
+		return [
+			'short constraint check, nothing to log' => [ 5.0, null, null ],
+			'long but not extremely long constraint check, log as info' => [ 10.0, 'info', 5.0 ],
+			'extremely long constraint check, log as warning' => [ 120.0, 'warning', 55.0 ],
+		];
+	}
+
+	public function testLogConstraintCheckOnEntityDisabled() {
+		$entityId = new ItemId( 'Q1' );
+
+		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
+		$dataFactory->expects( $this->once() )
+			->method( 'timing' )
+			->with(
+				$this->identicalTo( 'wikibase.quality.constraints.check.entity.timing' ),
+				$this->identicalTo( 10000 )
+			);
+
+		$logger = $this->getMock( LoggerInterface::class );
+		$logger->expects( $this->never() )
+			->method( 'log' );
+
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
+			'WBQualityConstraintsCheckDurationInfoSeconds' => null,
+			'WBQualityConstraintsCheckDurationWarningSeconds' => null,
+			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => null,
+			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => null,
+		] ) );
+
+		$loggingHelper->logConstraintCheckOnEntity(
+			$entityId,
+			[],
+			10,
 			__METHOD__
 		);
 	}

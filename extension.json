@@ -138,12 +138,22 @@
 		},
 		"WBQualityConstraintsCheckDurationInfoSeconds": {
 			"value": 1.0,
-			"description": "The maximum time that a constraint check should usually take, in seconds. Any constraint check that takes longer than this time is logged at ‘info’ level. Specifying `null` disables this logging.",
+			"description": "The maximum time that a single constraint check should usually take, in seconds. Any constraint check that takes longer than this time is logged at ‘info’ level. Specifying `null` disables this logging.",
 			"public": true
 		},
 		"WBQualityConstraintsCheckDurationWarningSeconds": {
 			"value": 10.0,
-			"description": "The maximum time that a constraint check should ever take, in seconds. Any constraint check that takes longer than this time is logged at ‘warning’ level. Specifying `null` disables this logging.",
+			"description": "The maximum time that a single constraint check should ever take, in seconds. Any constraint check that takes longer than this time is logged at ‘warning’ level. Specifying `null` disables this logging.",
+			"public": true
+		},
+		"WBQualityConstraintsCheckOnEntityDurationInfoSeconds" : {
+			"value": 5.0,
+			"description": "The maximum time that a full constraint check on an entity should usually take, in seconds. Any entity constraint check that takes longer than this time is logged at ‘info’ level. Specifying `null` disables this logging.",
+			"public": true
+		},
+		"WBQualityConstraintsCheckOnEntityDurationWarningSeconds" : {
+			"value": 55.0,
+			"description": "The maximum time that a full constraint check on an entity should ever take, in seconds. Any entity constraint check that takes longer than this time is logged at ‘warning’ level. Specifying `null` disables this logging.",
 			"public": true
 		},
 		"WBQualityConstraintsEnableConstraintsImportFromStatements": {
