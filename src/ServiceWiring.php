@@ -245,7 +245,10 @@ return [
 			$entityIdParser = $repo->getEntityIdParser();
 			$entityNamespaceLookup = $repo->getEntityNamespaceLookup();
 			$wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
-				$entityNamespaceLookup
+				$entityNamespaceLookup,
+				$services->getSlotRoleStore(),
+				$repo->getSettings()->getSetting( 'changesDatabase' ),
+				'' // Empty string here means this only works for the local repo
 			);
 
 			$resultsSource = new CachingResultsSource(
