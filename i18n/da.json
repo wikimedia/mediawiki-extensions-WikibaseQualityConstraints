@@ -5,9 +5,11 @@
 			"Saederup92"
 		]
 	},
+	"wbqc-constraintreport-status-exception": "Undtagelse",
 	"wbqc-constraintreport-status-warning": "Advarsel",
 	"wbqc-constraintreport-status-not-in-scope": "Ikke omfattet",
 	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-constraintreport-result-table-header-message": "Besked",
 	"wbqc-constraintreport-no-parameter": "ingen",
 	"wbqc-constrainttypehelp-short": "Hjælp",
 	"wbqc-violation-header-parameters": "Parametre:"
