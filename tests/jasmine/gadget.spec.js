@@ -334,14 +334,29 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 	} );
 
 	describe( '_addReportsToStatement', function () {
-		it( 'extracts result for statement with property id and statement id', function () {
-			var gadget = new Gadget(),
-				entityData = {
-					claims: {
-						P9: [ {
-							id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
-							mainsnak: {
-								hash: '261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+		var entityData = {
+				claims: {
+					P9: [ {
+						id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+						mainsnak: {
+							hash: '261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+							results: [ {
+								status: 'warning',
+								property: 'P9',
+								constraint: {
+									id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+									type: 'Q1283',
+									typeLabel: 'MultiValueConstraintItem',
+									link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+									discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+								},
+								'message-html': 'This property should contain multiple values.',
+								claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+							} ]
+						},
+						qualifiers: {
+							P9: [ {
+								hash: 'ab294fd4a345d913a4c96a91b184e563f9431847',
 								results: [ {
 									status: 'warning',
 									property: 'P9',
@@ -352,22 +367,47 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 										link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
 										discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
 									},
-									'message-html': 'This property should contain multiple values.',
-									claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+									'message-html': 'This property should contain multiple values.'
 								} ]
+							} ]
+						},
+						references: [
+							{
+								hash: 'ec294fd4a345d913a4c96a91b184e563f9431832',
+								snaks: {
+									P9: [ {
+										hash: '261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+										results: [ {
+											status: 'warning',
+											property: 'P9',
+											constraint: {
+												id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												type: 'Q1283',
+												typeLabel: 'MultiValueConstraintItem',
+												link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+											},
+											'message-html': 'This property should contain multiple values.'
+										} ]
+									} ]
+								}
 							}
-						} ]
-					}
+						]
+					} ]
+				}
+			},
+			dataStub = sinon.stub().withArgs( 'property-id' ).returns( 'P9' ),
+			$statement = {
+				0: {
+					className: 'wikibase-statement-Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
 				},
-				dataStub = sinon.stub().withArgs( 'property-id' ).returns( 'P9' ),
-				$statement = {
-					0: {
-						className: 'wikibase-statement-Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
-					},
-					parents: sinon.stub().returns( {
-						data: dataStub
-					} )
-				};
+				parents: sinon.stub().returns( {
+					data: dataStub
+				} )
+			};
+
+		it( 'extracts result for statement with property id and statement id', function () {
+			var gadget = new Gadget();
 
 			gadget._extractResultsForStatement = sinon.stub();
 			gadget._extractResultsForStatement.returns( null );
@@ -380,6 +420,93 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 				'P9',
 				'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
 			);
+		} );
+
+		it( 'adds results to main snak', function () {
+			var gadget = new Gadget(),
+				$mainsnak = {};
+
+			gadget._extractResultsForStatement = sinon.stub()
+				.withArgs( entityData, 'P9', 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' )
+				.returns( entityData.claims.P9[ 0 ] );
+			$statement.find = sinon.stub().withArgs( '.wikibase-statementview-mainsnak' ).returns( $mainsnak );
+			gadget._addResultsToSnak = sinon.spy();
+
+			gadget._addReportsToStatement( entityData, $statement );
+
+			sinon.assert.calledWith(
+				gadget._addResultsToSnak,
+				entityData.claims.P9[ 0 ].mainsnak,
+				$mainsnak
+			);
+		} );
+
+		it( 'adds results to qualifiers', function () {
+			var gadget = new Gadget(),
+				$qualifierSnak = {};
+
+			gadget._extractResultsForStatement = sinon.stub()
+				.withArgs( entityData, 'P9', 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' )
+				.returns( { // gets reformatted by _extractResultsForStatement
+					qualifiers: entityData.claims.P9[ 0 ].qualifiers.P9
+				} );
+			$statement.find = sinon.stub()
+				.withArgs( '.wikibase-statementview-qualifiers .wikibase-snakview-ab294fd4a345d913a4c96a91b184e563f9431847' )
+				.returns( $qualifierSnak );
+			gadget._addResultsToSnak = sinon.spy();
+
+			gadget._addReportsToStatement( entityData, $statement );
+
+			sinon.assert.calledWith(
+				gadget._addResultsToSnak,
+				entityData.claims.P9[ 0 ].qualifiers.P9[ 0 ].results,
+				$qualifierSnak
+			);
+		} );
+
+		it( 'adds results to references', function () {
+			var gadget = new Gadget(),
+				$referenceSnak = {},
+				entityViewrenderedHook = sinon.stub().yields(),
+				togglerToggledSpy = sinon.spy();
+
+			gadget._extractResultsForStatement = sinon.stub()
+				.withArgs( entityData, 'P9', 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' )
+				.returns( { // gets reformatted by _extractResultsForStatement
+					references: {
+						ec294fd4a345d913a4c96a91b184e563f9431832: [
+							entityData.claims.P9[ 0 ].references[ 0 ].snaks.P9[ 0 ]
+						]
+					}
+				} );
+			$statement.find = sinon.stub();
+			$statement.find.withArgs(
+					'.wikibase-statementview-references ' +
+					'.wikibase-referenceview-ec294fd4a345d913a4c96a91b184e563f9431832 ' +
+					'.wikibase-snakview-261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d'
+				)
+				.returns( $referenceSnak );
+			gadget._addResultsToSnak = sinon.stub().returns( true );
+			global.mediaWiki.hook = sinon.stub();
+			global.mediaWiki.hook.withArgs( 'wikibase.entityPage.entityView.rendered' ).returns( {
+				add: entityViewrenderedHook
+			} );
+			$statement.find.withArgs( '.wikibase-statementview-references-heading .ui-toggler-toggle-collapsed' )
+				.returns( {
+					length: 1,
+					data: sinon.stub().withArgs( 'toggler' ).returns( {
+						toggle: togglerToggledSpy
+					} )
+				} );
+
+			gadget._addReportsToStatement( entityData, $statement );
+
+			sinon.assert.calledWith(
+				gadget._addResultsToSnak,
+				entityData.claims.P9[ 0 ].references[ 0 ].snaks.P9[ 0 ].results,
+				$referenceSnak
+			);
+			sinon.assert.calledOnce( togglerToggledSpy );
 		} );
 	} );
 
