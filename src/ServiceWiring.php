@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use Http;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
@@ -134,7 +135,8 @@ return [
 			$services->getMainWANObjectCache(),
 			ConstraintsServices::getViolationMessageSerializer( $services ),
 			ConstraintsServices::getViolationMessageDeserializer( $services ),
-			$services->getStatsdDataFactory()
+			$services->getStatsdDataFactory(),
+			wfWikiID() . ' WikibaseQualityConstraints ' . Http::userAgent()
 		);
 	},
 

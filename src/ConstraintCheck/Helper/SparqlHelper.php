@@ -88,6 +88,11 @@ class SparqlHelper {
 	 */
 	private $dataFactory;
 
+	/**
+	 * @var string
+	 */
+	private $defaultUserAgent;
+
 	public function __construct(
 		Config $config,
 		RdfVocabulary $rdfVocabulary,
@@ -96,7 +101,8 @@ class SparqlHelper {
 		WANObjectCache $cache,
 		ViolationMessageSerializer $violationMessageSerializer,
 		ViolationMessageDeserializer $violationMessageDeserializer,
-		IBufferingStatsdDataFactory $dataFactory
+		IBufferingStatsdDataFactory $dataFactory,
+		$defaultUserAgent
 	) {
 		$this->config = $config;
 		$this->rdfVocabulary = $rdfVocabulary;
@@ -106,6 +112,7 @@ class SparqlHelper {
 		$this->violationMessageSerializer = $violationMessageSerializer;
 		$this->violationMessageDeserializer = $violationMessageDeserializer;
 		$this->dataFactory = $dataFactory;
+		$this->defaultUserAgent = $defaultUserAgent;
 
 		$this->entityPrefix = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY );
 		$this->prefixes = <<<EOT
@@ -561,7 +568,6 @@ EOF;
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function runQuery( $query ) {
-
 		$endpoint = $this->config->get( 'WBQualityConstraintsSparqlEndpoint' );
 		$maxQueryTimeMillis = $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' );
 		$url = $endpoint . '?' . http_build_query(
@@ -579,6 +585,7 @@ EOF;
 			'method' => 'GET',
 			'timeout' => (int)round( ( $maxQueryTimeMillis + 1000 ) / 1000 ),
 			'connectTimeout' => 'default',
+			'userAgent' => $this->defaultUserAgent,
 		];
 		$request = MWHttpRequest::factory( $url, $options );
 		$startTime = microtime( true );
