@@ -10,6 +10,14 @@ module.exports = ( function ( mw, wb, $, OO ) {
 		this.config = Object.assign( {}, defaultConfig, config );
 	}
 
+	SELF.prototype.setEntity = function ( entity ) {
+		this._entity = entity;
+	};
+
+	SELF.prototype.getEntity = function () {
+		return this._entity;
+	};
+
 	SELF.prototype.defaultBehavior = function () {
 		var entityId = mw.config.get( 'wbEntityId' );
 
@@ -31,7 +39,8 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				lang = mw.config.get( 'wgUserLanguage' );
 
 			wb.EntityInitializer.newFromEntityLoadedHook().getEntity().done( function ( entity ) {
-				this.fullCheckEntityAndSubentities( api, lang, entity );
+				this.setEntity( entity );
+				this.fullCheck( api, lang );
 			}.bind( this ) );
 
 			if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
@@ -40,30 +49,17 @@ module.exports = ( function ( mw, wb, $, OO ) {
 
 			mw.hook( 'wikibase.statement.saved' ).add( function ( entityId, statementId ) {
 				mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
-				this.snakCheck( api, lang, entityId, statementId );
+				this.snakCheck( api, lang, statementId );
 			}.bind( this ) );
 		}.bind( this ) );
 	};
 
-	/**
-	 * @param {mw.Api} api
-	 * @param {string} lang
-	 * @param {wb.datamodel.Entity} entity
-	 * @return {Thenable}
-	 */
-	SELF.prototype.fullCheckEntityAndSubentities = function ( api, lang, entity ) {
-		var ids = [ entity.getId() ];
+	SELF.prototype.fullCheck = function ( api, lang ) {
+		var entity = this.getEntity(),
+			entityIds = [ entity.getId() ];
 
 		if ( typeof entity.getSubEntityIds === 'function' ) {
-			ids = ids.concat( entity.getSubEntityIds() );
-		}
-
-		return this.fullCheck( api, lang, ids );
-	};
-
-	SELF.prototype.fullCheck = function ( api, lang, entityIds ) {
-		if ( typeof entityIds === 'string' ) {
-			entityIds = [ entityIds ];
+			entityIds = entityIds.concat( entity.getSubEntityIds() );
 		}
 
 		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
@@ -136,7 +132,38 @@ module.exports = ( function ( mw, wb, $, OO ) {
 		return entityConstraints;
 	};
 
-	SELF.prototype.snakCheck = function ( api, lang, entityId, statementId ) {
+	SELF.prototype._getEntityDataByStatementId = function ( response, statementId ) {
+		var entities = response.wbcheckconstraints,
+			entity,
+			property,
+			properties,
+			index;
+
+		for ( entity in entities ) {
+
+			if ( entities.hasOwnProperty( entity ) ) {
+				properties = entities[ entity ].claims;
+				for ( property in properties ) {
+
+					if ( properties.hasOwnProperty( property ) ) {
+						for ( index = 0; index < entities[ entity ].claims[ property ].length; index++ ) {
+
+							if ( entities[ entity ].claims[ property ][ index ].id === statementId ) {
+								return entities[ entity ];
+							}
+
+						}
+					}
+
+				}
+			}
+
+		}
+
+		return null;
+	};
+
+	SELF.prototype.snakCheck = function ( api, lang, statementId ) {
 		var isUpdated = false,
 			statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' ),
 			self = this;
@@ -149,15 +176,18 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			claimid: statementId,
 			status: this.config.CACHED_STATUSES
 		} ).then( function ( data ) {
+			var entityData;
 			if ( isUpdated ) {
 				return;
 			}
-
-			$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
-				.each( function () { self._addReportsToStatement( data.wbcheckconstraints[ entityId ], $( this ) ); } );
+			entityData = self._getEntityDataByStatementId( data, statementId );
+			if ( entityData !== null ) {
+				self._addReportsToStatement( entityData,
+					$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
+				);
+			}
 		} );
-		// TODO does this also need to check subentities?
-		this.fullCheck( api, lang, entityId ).then( function () {
+		this.fullCheck( api, lang ).then( function () {
 			isUpdated = true;
 		} );
 	};
@@ -210,7 +240,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 *
 	 * @param {*} cached A value indicating the cached status.
 	 * Typically an object with a `maximumAgeInSeconds` member.
-	 * @returns {string} HTML
+	 * @return {string} HTML
 	 */
 	SELF.prototype._getCachedMessage = function ( cached ) {
 		var maximumAgeInMinutes,
@@ -243,7 +273,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * Build a panel for a single constraint check result.
 	 *
 	 * @param {Object} result The constraint check result.
-	 * @returns {wikibase.quality.constraints.ui.ConstraintReportPanel}
+	 * @return {wikibase.quality.constraints.ui.ConstraintReportPanel}
 	 */
 	SELF.prototype._buildReport = function ( result ) {
 		var config = {
@@ -262,7 +292,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * This is to `wbcheckconstraintparameters` what {@link this._buildReport} is to `wbcheckconstraints`.
 	 *
 	 * @param {Object} problem The constraint parameter check result.
-	 * @returns {OO.ui.PanelLayout}
+	 * @return {OO.ui.PanelLayout}
 	 */
 	SELF.prototype._buildParameterReport = function ( problem ) {
 		var $report, $heading, $body;
@@ -287,7 +317,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 *
 	 * @param {wikibase.quality.constraints.ui.ConstraintReportPanel[]} reports
 	 * A list of individual report panels as returned by {@link this._buildReport}.
-	 * @returns {wikibase.quality.constraints.ui.ConstraintReportList|null}
+	 * @return {wikibase.quality.constraints.ui.ConstraintReportList|null}
 	 * The list if it contains at least one uncollapsed panel,
 	 * otherwise null.
 	 */
@@ -332,7 +362,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @param {Object} entityData The constraint check results for a single entity.
 	 * @param {string} propertyId The serialization of the property ID of the statement.
 	 * @param {string} statementId The ID of the statement.
-	 * @returns {Object|null} An object containing lists of constraint check results,
+	 * @return {Object|null} An object containing lists of constraint check results,
 	 * or null if the results could not be extracted.
 	 */
 	SELF.prototype._extractResultsForStatement = function ( entityData, propertyId, statementId ) {
@@ -398,7 +428,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 *
 	 * @param {Array} results A list of constraint check results.
 	 * @param {jQuery} $snak The snak to which the results apply.
-	 * @returns {boolean} Whether any results were added to the snak or not.
+	 * @return {boolean} Whether any results were added to the snak or not.
 	 */
 	SELF.prototype._addResultsToSnak = function ( results, $snak ) {
 		var reports = results.map( this._buildReport ),
@@ -428,7 +458,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 */
 	SELF.prototype._addReportsToStatement = function ( entityData, $statement ) {
 		var match = $statement[ 0 ].className.match(
-			/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
+				/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
 			),
 			statementId = match && match[ 1 ],
 			propertyId = $statement.parents( '.wikibase-statementgroupview' ).data( 'property-id' ),
