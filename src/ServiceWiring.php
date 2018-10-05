@@ -143,6 +143,8 @@ return [
 			ConstraintsServices::getViolationMessageSerializer( $services ),
 			ConstraintsServices::getViolationMessageDeserializer( $services ),
 			$services->getStatsdDataFactory(),
+			ConstraintsServices::getExpiryLock( $services ),
+			ConstraintsServices::getLoggingHelper(),
 			wfWikiID() . ' WikibaseQualityConstraints ' . Http::userAgent(),
 			$services->getHttpRequestFactory()
 		);

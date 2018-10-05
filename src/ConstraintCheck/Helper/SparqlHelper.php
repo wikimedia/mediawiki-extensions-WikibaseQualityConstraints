@@ -5,11 +5,13 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
+use DateInterval;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
 use MediaWiki\Http\HttpRequestFactory;
 use MWException;
+use Psr\Log\LoggerInterface;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -19,6 +21,7 @@ use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Rdf\RdfVocabulary;
+use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
@@ -29,6 +32,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\Role;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * Class for running a SPARQL query on some endpoint and getting the results.
@@ -89,9 +93,42 @@ class SparqlHelper {
 	private $dataFactory;
 
 	/**
+	 * @var LoggerInterface
+	 */
+	private $loggingHelper;
+
+	/**
 	 * @var string
 	 */
 	private $defaultUserAgent;
+
+	/**
+	 * @var ExpiryLock
+	 */
+	private $throttlingLock;
+
+	/**
+	 * @var int stands for: No Retry-After header-field was sent back
+	 */
+	const NO_RETRY_AFTER = -1;
+	/**
+	 * @var int stands for: Empty Retry-After header-field was sent back
+	 */
+	const EMPTY_RETRY_AFTER = -2;
+	/**
+	 * @var int stands for: Invalid Retry-After header-field was sent back
+	 * link a string
+	 */
+	const INVALID_RETRY_AFTER = -3;
+	/**
+	 * @var string ID on which the lock is applied on
+	 */
+	const EXPIRY_LOCK_ID = 'SparqlHelper.runQuery';
+
+	/**
+	 * @var HTTP response code for too many requests
+	 */
+	const HTTP_TOO_MANY_REQUESTS = 429;
 
 	/**
 	 * @var HttpRequestFactory
@@ -107,6 +144,8 @@ class SparqlHelper {
 		ViolationMessageSerializer $violationMessageSerializer,
 		ViolationMessageDeserializer $violationMessageDeserializer,
 		IBufferingStatsdDataFactory $dataFactory,
+		ExpiryLock $throttlingLock,
+		LoggingHelper $loggingHelper,
 		$defaultUserAgent,
 		HttpRequestFactory $requestFactory
 	) {
@@ -118,6 +157,8 @@ class SparqlHelper {
 		$this->violationMessageSerializer = $violationMessageSerializer;
 		$this->violationMessageDeserializer = $violationMessageDeserializer;
 		$this->dataFactory = $dataFactory;
+		$this->throttlingLock = $throttlingLock;
+		$this->loggingHelper = $loggingHelper;
 		$this->defaultUserAgent = $defaultUserAgent;
 		$this->requestFactory = $requestFactory;
 		$this->entityPrefix = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY );
@@ -542,7 +583,7 @@ EOF;
 	 *
 	 * @param array $responseHeaders see MWHttpRequest::getResponseHeaders()
 	 *
-	 * @return integer|boolean the max-age (in seconds)
+	 * @return int|boolean the max-age (in seconds)
 	 * or a plain boolean if no max-age can be determined
 	 */
 	public function getCacheMaxAge( $responseHeaders ) {
@@ -565,7 +606,50 @@ EOF;
 	}
 
 	/**
+	 * Get the delaydate of a 429 headered response, which is caused by
+	 * throttling of to many SPARQL-Requests. The header-format is defined
+	 * in RFC7231 see: https://tools.ietf.org/html/rfc7231#section-7.1.3
+	 *
+	 * @param $responseHeaders
+	 *
+	 * @return int|ConvertibleTimestamp
+	 * or SparlHelper::NO_RETRY_AFTER if there is no Retry-After header
+	 * or SparlHelper::EMPTY_RETRY_AFTER if there is an empty Retry-After
+	 * or SparlHelper::INVALID_RETRY_AFTER if there is something wrong with the format
+	 *
+	 */
+	public function getThrottling( array $responseHeaders ) {
+		if ( !array_key_exists( 'Retry-After', $responseHeaders ) ) {
+			return self::NO_RETRY_AFTER;
+		}
+
+		$trimmedRetryAfterValue = trim( $responseHeaders[ 'Retry-After' ] );
+		if ( empty( $trimmedRetryAfterValue ) ) {
+			return self::EMPTY_RETRY_AFTER;
+		}
+
+		if ( is_numeric( $trimmedRetryAfterValue ) ) {
+			$delaySeconds = (int)$trimmedRetryAfterValue;
+			if ( $delaySeconds >= 0 ) {
+				return $this->getTimestampInFuture( new DateInterval( 'PT' . $delaySeconds . 'S' ) );
+			}
+		} else {
+			$return = strtotime( $responseHeaders[ 'Retry-After' ] );
+			if ( !empty( $return ) ) {
+				return new ConvertibleTimestamp( $return );
+			}
+		}
+		return self::INVALID_RETRY_AFTER;
+	}
+
+	private function getTimestampInFuture( DateInterval $delta ) {
+		$now = new ConvertibleTimestamp();
+		return new ConvertibleTimestamp( $now->timestamp->add( $delta ) );
+	}
+
+	/**
 	 * Runs a query against the configured endpoint and returns the results.
+	 * TODO: See if Sparql Client in core can be used instead of rolling our own
 	 *
 	 * @param string $query The query, unencoded (plain string).
 	 * @param bool $needsPrefixes Whether the query requires prefixes or they can be omitted.
@@ -575,8 +659,20 @@ EOF;
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function runQuery( $query, $needsPrefixes = true ) {
+
+		if ( $this->throttlingLock->isLocked( self::EXPIRY_LOCK_ID ) ) {
+			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
+			throw new TooManySparqlRequestsException();
+		}
+
 		$endpoint = $this->config->get( 'WBQualityConstraintsSparqlEndpoint' );
 		$maxQueryTimeMillis = $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' );
+		$fallbackBlockDuration = (int)$this->config->get( 'WBQualityConstraintsSparqlThrottlingFallbackDuration' );
+
+		if ( $fallbackBlockDuration < 0 ) {
+			throw new InvalidArgumentException( 'Fallback duration must be positive int but is: '.
+				$fallbackBlockDuration );
+		}
 
 		if ( $needsPrefixes ) {
 			$query = $this->prefixes . $query;
@@ -608,6 +704,22 @@ EOF;
 			'wikibase.quality.constraints.sparql.timing',
 			( $endTime - $startTime ) * 1000
 		);
+
+		if ( $request->getStatus() === self::HTTP_TOO_MANY_REQUESTS ) {
+			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
+			$throttlingUntil = $this->getThrottling( $request->getResponseHeaders() );
+			if ( !( $throttlingUntil instanceof ConvertibleTimestamp ) ) {
+				$this->loggingHelper->logSparqlHelperTooManyRequestsRetryAfterInvalid( $request );
+				$this->throttlingLock->lock(
+					self::EXPIRY_LOCK_ID,
+					$this->getTimestampInFuture( new DateInterval( 'PT' . $fallbackBlockDuration . 'S' ) )
+				);
+			} else {
+				$this->loggingHelper->logSparqlHelperTooManyRequestsRetryAfterPresent( $throttlingUntil, $request );
+				$this->throttlingLock->lock( self::EXPIRY_LOCK_ID, $throttlingUntil );
+			}
+			throw new TooManySparqlRequestsException();
+		}
 
 		$maxAge = $this->getCacheMaxAge( $request->getResponseHeaders() );
 		if ( $maxAge ) {

@@ -191,6 +191,11 @@
 			"description": "The maximum runtime for queries on the configured SPARQL endpoint, in milliseconds.",
 			"public": true
 		},
+		"WBQualityConstraintsSparqlThrottlingFallbackDuration": {
+			"value": 10,
+			"description": "The default duration in seconds, which prevents requests to the SPARQL endpoint, if the endpoint response with a 'try-later' (Responsecode 429). This field will only be used, if the endpoint sends a incorrect or incomplete response. The value must be a integer, which is greater than zero.",
+			"public": true
+		},
 		"WBQualityConstraintsSparqlTimeoutExceptionClasses": {
 			"value": [
 				"com.bigdata.bop.engine.QueryTimeoutException",

@@ -16,6 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper
@@ -220,6 +221,34 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			10,
 			__METHOD__
 		);
+	}
+
+	public function testlogSparqlHelperMadeTooManyRequestsRetryAfterPresent_CallsNotice() {
+		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
+		$logger = $this->createMock( LoggerInterface::class );
+		$config = $this->createMock( \Config::class );
+		$timestamp = $this->createMock( ConvertibleTimestamp::class );
+		$request = $this->createMock( \MWHttpRequest::class );
+
+		$logger->expects( $this->once() )
+			->method( 'notice' );
+
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $config );
+		$loggingHelper->logSparqlHelperTooManyRequestsRetryAfterPresent( $timestamp, $request );
+	}
+
+	public function testlogSparqlHelperMadeTooManyRequestsRetryAfterMissing_CallsWarning() {
+		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
+		$logger = $this->createMock( LoggerInterface::class );
+		$config = $this->createMock( \Config::class );
+		$timestamp = $this->createMock( ConvertibleTimestamp::class );
+		$request = $this->createMock( \MWHttpRequest::class );
+
+		$logger->expects( $this->once() )
+			->method( 'warning' );
+
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $config );
+		$loggingHelper->logSparqlHelperTooManyRequestsRetryAfterInvalid( $request );
 	}
 
 }

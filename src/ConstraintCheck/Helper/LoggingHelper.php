@@ -4,11 +4,13 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
 use IBufferingStatsdDataFactory;
+use MWHttpRequest;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * Helper class for tracking and logging messages.
@@ -274,6 +276,27 @@ class LoggingHelper {
 					)
 				),
 				'maxRevisionIds' => $maxRevisionIds,
+			]
+		);
+	}
+
+	public function logSparqlHelperTooManyRequestsRetryAfterPresent( ConvertibleTimestamp $retryAfterTime, MWHttpRequest $request ) {
+		$this->logger->notice(
+			'Sparql API replied with status 429 and a retry-after header. Requesting to retry after {retryAfterTime}',
+			[
+				'retryAfterTime' => $retryAfterTime,
+				'responseHeaders' => json_encode( $request->getResponseHeaders() ),
+				'responseContent' => $request->getContent(),
+			]
+		);
+	}
+
+	public function logSparqlHelperTooManyRequestsRetryAfterInvalid( MWHttpRequest $request ) {
+		$this->logger->warning(
+			'Sparql API replied with status 429 and no valid retry-after header.',
+			[
+				'responseHeaders' => json_encode( $request->getResponseHeaders() ),
+				'responseContent' => $request->getContent(),
 			]
 		);
 	}

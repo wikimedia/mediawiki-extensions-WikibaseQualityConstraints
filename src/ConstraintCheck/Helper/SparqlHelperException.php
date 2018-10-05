@@ -9,8 +9,8 @@ use RuntimeException;
  */
 class SparqlHelperException extends RuntimeException {
 
-	public function __construct() {
-		parent::__construct( 'The SPARQL query endpoint returned an error.' );
+	public function __construct( $msg = 'The SPARQL query endpoint returned an error.' ) {
+		parent::__construct( $msg );
 	}
 
 }
