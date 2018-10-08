@@ -38,6 +38,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La verificació de l'espai de noms \"$1\" encara no ha sigut implementada.",
 	"wbqc-violation-message-conflicts-with-property": "Una entitat no hauria de tenir declaracions per $1 i $2 alhora.",
 	"wbqc-violation-message-conflicts-with-claim": "Una entitat no hauria de tenir una declaració per $1 si també té una declaració per $2 amb valor $3.",
+	"wbqc-violation-message-contemporary-subject-earlier": "Les entitats $1 i $3 haurien de ser contemporànies per estar enllaçades mitjançant $2, però el valor final més tardà de $1 és $4, i el més valor inicial més primerenc de $3 és $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "Les entitats $1 i $3 haurien de ser contemporànies per estar enllaçades mitjançant $2, però el valor final més tardà de $3 és $4, i el més valor inicial més primerenc de $1 és $5.",
 	"wbqc-violation-message-diff-within-range": "La diferència entre $3 ($4) i $1 ($2) hauria de ser entre $5 i $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "La diferència entre $3 ($4) i $1 ($2) no hauria de ser major que $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "La diferència entre $3 ($4) i $1 ($2) hauria de ser menor que $5.",
