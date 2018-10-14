@@ -80,6 +80,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "尚未實行對命名空間「$1」的檢查。",
 	"wbqc-violation-message-conflicts-with-property": "實體不應擁有用於$1和$2的聲明。",
 	"wbqc-violation-message-conflicts-with-claim": "如果實體擁有聲明$2帶$3，那麼這個實體不應該擁有用於$1的聲明。",
+	"wbqc-violation-message-format": "$1 的值（$2）應符合正規表達式 $3。",
+	"wbqc-violation-message-format-clarification": "$1 的值（$2）應符合「$4」（正規表達式：$3）。",
 	"wbqc-violation-message-item": "$1 的實體也應該有{{PLURAL:$3|0=聲明 $2。 |1=聲明 $2 $5。 |聲明 $2，且包含下列值之一：$4}}",
 	"wbqc-violation-message-multi-value": "此屬性應包含多個值。",
 	"wbqc-violation-message-range-parameters-same": "範圍的起始（$1）與終點（$2）不能相同。",
