@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport;
 use Http;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use Wikibase\Lib\Store\Sql\EntityIdLocalPartPageTableEntityQuery;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
@@ -248,7 +249,10 @@ return [
 			$entityNamespaceLookup = $repo->getEntityNamespaceLookup();
 			$wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
 				$entityNamespaceLookup,
-				$services->getSlotRoleStore(),
+				new EntityIdLocalPartPageTableEntityQuery(
+					$entityNamespaceLookup,
+					$services->getSlotRoleStore()
+				),
 				$repo->getSettings()->getSetting( 'changesDatabase' ),
 				'' // Empty string here means this only works for the local repo
 			);
