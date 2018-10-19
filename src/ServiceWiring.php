@@ -137,7 +137,8 @@ return [
 			ConstraintsServices::getViolationMessageSerializer( $services ),
 			ConstraintsServices::getViolationMessageDeserializer( $services ),
 			$services->getStatsdDataFactory(),
-			wfWikiID() . ' WikibaseQualityConstraints ' . Http::userAgent()
+			wfWikiID() . ' WikibaseQualityConstraints ' . Http::userAgent(),
+			$services->getHttpRequestFactory()
 		);
 	},
 

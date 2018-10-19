@@ -12,6 +12,7 @@ use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use HashConfig;
+use MediaWiki\Http\HttpRequestFactory;
 use NullStatsdDataFactory;
 use PHPUnit4And6Compat;
 use WANObjectCache;
@@ -95,7 +96,8 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 					new DataValueFactory( new DataValueDeserializer() )
 				),
 				new NullStatsdDataFactory(),
-				'A fancy user agent'
+				'A fancy user agent',
+				$this->createMock( HttpRequestFactory::class )
 			] )
 			->setMethods( [ 'runQuery' ] )
 			->getMock();
