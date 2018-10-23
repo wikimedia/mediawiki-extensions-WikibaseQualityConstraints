@@ -8,8 +8,8 @@ use DataValues\MonolingualTextValue;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
+use MediaWiki\Http\HttpRequestFactory;
 use MWException;
-use MWHttpRequest;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -93,6 +93,11 @@ class SparqlHelper {
 	 */
 	private $defaultUserAgent;
 
+	/**
+	 * @var HttpRequestFactory
+	 */
+	private $requestFactory;
+
 	public function __construct(
 		Config $config,
 		RdfVocabulary $rdfVocabulary,
@@ -102,7 +107,8 @@ class SparqlHelper {
 		ViolationMessageSerializer $violationMessageSerializer,
 		ViolationMessageDeserializer $violationMessageDeserializer,
 		IBufferingStatsdDataFactory $dataFactory,
-		$defaultUserAgent
+		$defaultUserAgent,
+		HttpRequestFactory $requestFactory
 	) {
 		$this->config = $config;
 		$this->rdfVocabulary = $rdfVocabulary;
@@ -113,7 +119,7 @@ class SparqlHelper {
 		$this->violationMessageDeserializer = $violationMessageDeserializer;
 		$this->dataFactory = $dataFactory;
 		$this->defaultUserAgent = $defaultUserAgent;
-
+		$this->requestFactory = $requestFactory;
 		$this->entityPrefix = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY );
 		$this->prefixes = <<<EOT
 PREFIX wd: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY )}>
@@ -587,7 +593,7 @@ EOF;
 			'connectTimeout' => 'default',
 			'userAgent' => $this->defaultUserAgent,
 		];
-		$request = MWHttpRequest::factory( $url, $options );
+		$request = $this->requestFactory->create( $url, $options );
 		$startTime = microtime( true );
 		$status = $request->execute();
 		$endTime = microtime( true );
