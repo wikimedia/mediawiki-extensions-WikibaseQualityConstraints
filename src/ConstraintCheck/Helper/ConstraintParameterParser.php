@@ -29,7 +29,7 @@ use WikibaseQuality\ConstraintReport\Role;
  * that were imported from constraint statements.
  *
  * All public methods of this class expect constraint parameters
- * (see {@link \WikibaseQuality\Constraint::getConstraintParameters()})
+ * (see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()})
  * and return parameter objects or throw {@link ConstraintParameterException}s.
  * The results are used by the checkers,
  * which may include rendering them into violation messages.
@@ -144,7 +144,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string[] class entity ID serializations

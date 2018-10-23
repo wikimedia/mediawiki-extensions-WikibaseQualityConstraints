@@ -144,7 +144,7 @@ class RangeChecker implements ConstraintChecker {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @param string $type 'quantity' or 'time' (can be data type or data value type)
 	 *

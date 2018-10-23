@@ -35,9 +35,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextVio
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
-use WikibaseQuality\Html\HtmlTableBuilder;
-use WikibaseQuality\Html\HtmlTableCellBuilder;
-use WikibaseQuality\Html\HtmlTableHeaderBuilder;
+use WikibaseQuality\ConstraintReport\Html\HtmlTableBuilder;
+use WikibaseQuality\ConstraintReport\Html\HtmlTableCellBuilder;
+use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
