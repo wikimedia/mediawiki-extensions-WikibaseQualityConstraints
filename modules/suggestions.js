@@ -17,22 +17,22 @@
 
 	function getConstraintDefinition( repoApiUrl, propertyId, constraintsPropertyId, constraintId, constraintQualifierOfPropertyId ) {
 		return getJsonCached( repoApiUrl + '?action=wbgetclaims&format=json&entity=' + propertyId + '&property=' + constraintsPropertyId ).then(
-				function ( d ) {
-					var oneOfIds = [];
-					if ( !d.claims || !d.claims[ constraintsPropertyId ] ) {
-						return oneOfIds;
-					}
-
-					d.claims[ constraintsPropertyId ].forEach( function ( c ) {
-						if ( c.mainsnak.datavalue.value.id === constraintId && c.qualifiers && c.qualifiers[ constraintQualifierOfPropertyId ] ) {
-							oneOfIds = oneOfIds.concat( c.qualifiers[ constraintQualifierOfPropertyId ]
-								.filter( function ( d ) { return d.datavalue; } )
-								.map( function ( d ) { return d.datavalue.value.id; } ) );
-						}
-					} );
-
+			function ( d ) {
+				var oneOfIds = [];
+				if ( !d.claims || !d.claims[ constraintsPropertyId ] ) {
 					return oneOfIds;
+				}
+
+				d.claims[ constraintsPropertyId ].forEach( function ( c ) {
+					if ( c.mainsnak.datavalue.value.id === constraintId && c.qualifiers && c.qualifiers[ constraintQualifierOfPropertyId ] ) {
+						oneOfIds = oneOfIds.concat( c.qualifiers[ constraintQualifierOfPropertyId ]
+							.filter( function ( d ) { return d.datavalue; } )
+							.map( function ( d ) { return d.datavalue.value.id; } ) );
+					}
 				} );
+
+				return oneOfIds;
+			} );
 	}
 
 	function createItemsFromIdsFetchLabels( repoApiUrl, language, ids, filter ) {
@@ -146,11 +146,11 @@
 		}
 
 		addPromise( getConstraintDefinition(
-				data.options.url,
-				mainSnakPropertyId,
-				propertyConstraintId,
-				constraintId,
-				qualifierId
+			data.options.url,
+			mainSnakPropertyId,
+			propertyConstraintId,
+			constraintId,
+			qualifierId
 		).then( function ( oneOfIds ) {
 			return createItemsFromIds( data.options.url, data.options.language, oneOfIds, filter );
 		} ) );

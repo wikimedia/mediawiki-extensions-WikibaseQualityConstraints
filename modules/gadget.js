@@ -561,7 +561,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	/**
 	 * Get options for the {@link mediaWiki.Api()} constructor.
 	 *
-	 * @returns {Object} The options.
+	 * @return {Object} The options.
 	 */
 	SELF.prototype._mwApiOptions = function () {
 		var gadgetState = mw.loader.getState( 'wikibase.quality.constraints.gadget' );

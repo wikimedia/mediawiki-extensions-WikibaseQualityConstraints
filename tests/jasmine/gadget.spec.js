@@ -524,11 +524,10 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 				} );
 			$statement.find = sinon.stub();
 			$statement.find.withArgs(
-					'.wikibase-statementview-references ' +
-					'.wikibase-referenceview-ec294fd4a345d913a4c96a91b184e563f9431832 ' +
-					'.wikibase-snakview-261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d'
-				)
-				.returns( $referenceSnak );
+				'.wikibase-statementview-references ' +
+				'.wikibase-referenceview-ec294fd4a345d913a4c96a91b184e563f9431832 ' +
+				'.wikibase-snakview-261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d'
+			).returns( $referenceSnak );
 			gadget._addResultsToSnak = sinon.stub().returns( true );
 			global.mediaWiki.hook = sinon.stub();
 			global.mediaWiki.hook.withArgs( 'wikibase.entityPage.entityView.rendered' ).returns( {
