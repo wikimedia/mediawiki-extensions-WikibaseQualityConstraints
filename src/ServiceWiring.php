@@ -5,11 +5,13 @@ namespace WikibaseQuality\ConstraintReport;
 use Http;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use ObjectCache;
 use Wikibase\Lib\Store\Sql\EntityIdLocalPartPageTableEntityQuery;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
+use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
@@ -27,6 +29,10 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeseriali
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 
 return [
+	ConstraintsServices::EXPIRY_LOCK => function( MediaWikiServices $services ) {
+		return new ExpiryLock( ObjectCache::getInstance( CACHE_ANYTHING ) );
+	},
+
 	ConstraintsServices::LOGGING_HELPER => function( MediaWikiServices $services ) {
 		return new LoggingHelper(
 			$services->getStatsdDataFactory(),
