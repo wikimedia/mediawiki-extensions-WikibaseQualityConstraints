@@ -45,115 +45,75 @@ class ConstraintsServices {
 		return $services->getService( $name );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return LoggingHelper
-	 */
-	public static function getLoggingHelper( MediaWikiServices $services = null ) {
+	public static function getLoggingHelper( MediaWikiServices $services = null ): LoggingHelper {
 		return self::getService( $services, self::LOGGING_HELPER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return ConstraintRepository
-	 */
-	public static function getConstraintRepository( MediaWikiServices $services = null ) {
+	public static function getConstraintRepository(
+		MediaWikiServices $services = null
+	): ConstraintRepository {
 		return self::getService( $services, self::CONSTRAINT_REPOSITORY );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return ConstraintLookup
-	 */
-	public static function getConstraintLookup( MediaWikiServices $services = null ) {
+	public static function getConstraintLookup( MediaWikiServices $services = null ): ConstraintLookup {
 		return self::getService( $services, self::CONSTRAINT_LOOKUP );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return CheckResultSerializer
-	 */
-	public static function getCheckResultSerializer( MediaWikiServices $services = null ) {
+	public static function getCheckResultSerializer(
+		MediaWikiServices $services = null
+	): CheckResultSerializer {
 		return self::getService( $services, self::CHECK_RESULT_SERIALIZER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return CheckResultDeserializer
-	 */
-	public static function getCheckResultDeserializer( MediaWikiServices $services = null ) {
+	public static function getCheckResultDeserializer(
+		MediaWikiServices $services = null
+	): CheckResultDeserializer {
 		return self::getService( $services, self::CHECK_RESULT_DESERIALIZER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return ViolationMessageSerializer
-	 */
-	public static function getViolationMessageSerializer( MediaWikiServices $services = null ) {
+	public static function getViolationMessageSerializer(
+		MediaWikiServices $services = null
+	): ViolationMessageSerializer {
 		return self::getService( $services, self::VIOLATION_MESSAGE_SERIALIZER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return ViolationMessageDeserializer
-	 */
-	public static function getViolationMessageDeserializer( MediaWikiServices $services = null ) {
+	public static function getViolationMessageDeserializer(
+		MediaWikiServices $services = null
+	): ViolationMessageDeserializer {
 		return self::getService( $services, self::VIOLATION_MESSAGE_DESERIALIZER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return ConstraintParameterParser
-	 */
-	public static function getConstraintParameterParser( MediaWikiServices $services = null ) {
+	public static function getConstraintParameterParser(
+		MediaWikiServices $services = null
+	): ConstraintParameterParser {
 		return self::getService( $services, self::CONSTRAINT_PARAMETER_PARSER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return ConnectionCheckerHelper
-	 */
-	public static function getConnectionCheckerHelper( MediaWikiServices $services = null ) {
+	public static function getConnectionCheckerHelper(
+		MediaWikiServices $services = null
+	): ConnectionCheckerHelper {
 		return self::getService( $services, self::CONNECTION_CHECKER_HELPER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return RangeCheckerHelper
-	 */
-	public static function getRangeCheckerHelper( MediaWikiServices $services = null ) {
+	public static function getRangeCheckerHelper( MediaWikiServices $services = null ): RangeCheckerHelper {
 		return self::getService( $services, self::RANGE_CHECKER_HELPER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return SparqlHelper
-	 */
-	public static function getSparqlHelper( MediaWikiServices $services = null ) {
+	public static function getSparqlHelper( MediaWikiServices $services = null ): SparqlHelper {
 		return self::getService( $services, self::SPARQL_HELPER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return TypeCheckerHelper
-	 */
-	public static function getTypeCheckerHelper( MediaWikiServices $services = null ) {
+	public static function getTypeCheckerHelper( MediaWikiServices $services = null ): TypeCheckerHelper {
 		return self::getService( $services, self::TYPE_CHECKER_HELPER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return DelegatingConstraintChecker
-	 */
-	public static function getDelegatingConstraintChecker( MediaWikiServices $services = null ) {
+	public static function getDelegatingConstraintChecker(
+		MediaWikiServices $services = null
+	): DelegatingConstraintChecker {
 		return self::getService( $services, self::DELEGATING_CONSTRAINT_CHECKER );
 	}
 
-	/**
-	 * @param MediaWikiServices|null $services
-	 * @return ResultsSource
-	 */
-	public static function getResultsSource( MediaWikiServices $services = null ) {
+	public static function getResultsSource( MediaWikiServices $services = null ): ResultsSource {
 		return self::getService( $services, self::RESULTS_SOURCE );
 	}
 
