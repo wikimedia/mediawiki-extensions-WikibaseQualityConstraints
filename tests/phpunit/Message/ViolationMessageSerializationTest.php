@@ -51,6 +51,7 @@ class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
+	 * @coversNothing
 	 * @dataProvider provideViolationMessages
 	 */
 	public function testSerializeDeserialize( ViolationMessage $message ) {
