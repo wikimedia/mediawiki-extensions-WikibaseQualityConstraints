@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Api\ResultsSource;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
@@ -35,6 +36,7 @@ class ConstraintsServices {
 	const TYPE_CHECKER_HELPER = 'WBQC_TypeCheckerHelper';
 	const DELEGATING_CONSTRAINT_CHECKER = 'WBQC_DelegatingConstraintChecker';
 	const RESULTS_SOURCE = 'WBQC_ResultsSource';
+	const EXPIRY_LOCK = 'WBQC_ExpiryLock';
 
 	private static function getService( MediaWikiServices $services = null, $name ) {
 		if ( $services === null ) {
@@ -153,6 +155,13 @@ class ConstraintsServices {
 	 */
 	public static function getResultsSource( MediaWikiServices $services = null ) {
 		return self::getService( $services, self::RESULTS_SOURCE );
+	}
+
+	/**
+	 * @return ExpiryLock
+	 */
+	public static function getExpiryLock( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::EXPIRY_LOCK );
 	}
 
 }

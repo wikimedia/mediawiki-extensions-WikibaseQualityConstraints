@@ -6,6 +6,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
+use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Api\ResultsSource;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CitationNeededChecker;
@@ -64,6 +65,7 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 
 	public function provideConstraintsServiceClasses() {
 		return [
+			[ ExpiryLock::class ],
 			[ LoggingHelper::class ],
 			[ ConstraintRepository::class ],
 			[ ConstraintLookup::class ],
