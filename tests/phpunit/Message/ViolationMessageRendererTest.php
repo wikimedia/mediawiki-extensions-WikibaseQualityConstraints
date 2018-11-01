@@ -881,7 +881,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		];
 	}
 
-	/*
+	/**
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScope
 	 */
 	public function testRenderConstraintScope_unknown() {
