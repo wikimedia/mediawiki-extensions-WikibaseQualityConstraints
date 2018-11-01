@@ -189,7 +189,7 @@
 			"public": true
 		},
 		"WBQualityConstraintsCacheCheckConstraintsResults": {
-			"value": false,
+			"value": true,
 			"description": "Whether to cache results of the wbcheckconstraints API action or not. Results are only cached for constraint checks on full entities, and only when the set of constraints to be checked is not specified (i. e. the constraintid parameter is unset).",
 			"public": true
 		},
