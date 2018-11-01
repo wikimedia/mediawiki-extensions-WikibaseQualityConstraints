@@ -60,6 +60,7 @@
 	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "Die Beschränkungsparameter sind defekt.",
 	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "Die Beschränkung wurde nicht geprüft, da die Aussage veraltet ist.",
 	"apihelp-wbcheckconstraints-paramvalue-status-warning": "Die Aussage verletzt die Beschränkung, die Beschränkung ist jedoch nicht verpflichtend.",
+	"apihelp-wbcheckconstraintparameters-summary": "Überprüft die Beschränkungsparameter der Beschränkungsaussagen.",
 	"apihelp-wbcheckconstraints-example-1": "Überprüft alle Beschränkungen der Objekte Q5 und Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Überprüft alle Beschränkungen einer einzelnen Aussage.",
 	"apihelp-wbcheckconstraints-example-3": "Überprüft eine bestimmte Beschränkung des Objekts Q2.",

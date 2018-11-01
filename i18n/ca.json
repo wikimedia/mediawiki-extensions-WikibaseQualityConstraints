@@ -69,6 +69,8 @@
 	"wbqc-violation-message-valueOnly": "Aquesta propietat només hauria de ser utilitzada pel valor principal d'una declaració, no pas per qualificadors o referències.",
 	"wbqc-violation-message-reference": "La propietat només s'hauria de fer servir en referències, no pel valor principal d'una declaració o qualificador.",
 	"wbqc-violation-message-noBounds": "Els valors de $1 no haurien de tenir límits.",
+	"wbqc-violation-message-units": "El valor de $1 hauria de tenir {{PLURAL:$2|1=la unitat $4.|2=les unitats $4 o $5.|una de les següents unitats: $3}}",
+	"wbqc-violation-message-units-or-none": "El valor de $1 hauria de tenir {{PLURAL:$2|1=la unitat $4|2=les unitats $4 o $5|una de les següents unitats}} o {{PLURAL:$2|1=no tenir-ne.|2=no tenir-ne.|no tenir-ne: $3}}",
 	"wbqc-violation-message-citationNeeded": "Les declaracions de $1 haurien de tenir com a mínim una referència.",
 	"wbqc-violation-message-property-scope": "La propietat $1 no s'hauria d'utilitzar aquí ($2). {{PLURAL:$3|L'únic lloc vàlid|Els únics llocs vàlids}} per aquesta propietat {{PLURAL:$3|és $5.|són: $4}}",
 	"wbqc-violation-message-exception": "Aquesta entitat és una excepció coneguda d'aquesta restricció i ha estat marcada com a tal."
