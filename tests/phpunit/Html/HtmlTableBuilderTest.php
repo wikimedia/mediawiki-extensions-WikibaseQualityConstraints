@@ -48,8 +48,8 @@ class HtmlTableBuilderTest extends \PHPUnit\Framework\TestCase {
 					'bar'
 				],
 				[
-					new \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder( 'foo' ),
-					new \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder( 'bar' )
+					new HtmlTableHeaderBuilder( 'foo' ),
+					new HtmlTableHeaderBuilder( 'bar' )
 				],
 				false,
 				null
@@ -60,19 +60,19 @@ class HtmlTableBuilderTest extends \PHPUnit\Framework\TestCase {
 					'bar'
 				],
 				[
-					new \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder( 'foo', true ),
-					new \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder( 'bar' )
+					new HtmlTableHeaderBuilder( 'foo', true ),
+					new HtmlTableHeaderBuilder( 'bar' )
 				],
 				true,
 				null
 			],
 			[
 				[
-					new \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder( 'foo', true ),
-					new \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder( 'bar' )
+					new HtmlTableHeaderBuilder( 'foo', true ),
+					new HtmlTableHeaderBuilder( 'bar' )
 				],
 				[
-					new \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder( 'foo', true ),
+					new HtmlTableHeaderBuilder( 'foo', true ),
 					new HtmlTableHeaderBuilder( 'bar' )
 				],
 				true,
@@ -229,11 +229,11 @@ class HtmlTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	 * @param string $content
 	 * @param bool $isSortable
 	 *
-	 * @return \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder
+	 * @return HtmlTableHeaderBuilder
 	 */
 	private function getHtmlTableHeaderMock( $content, $isSortable = false ) {
 		$cellMock = $this
-			->getMockBuilder( \WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder::class )
+			->getMockBuilder( HtmlTableHeaderBuilder::class )
 			->setConstructorArgs( [ $content, $isSortable ] )
 			->setMethods( [ 'toHtml' ] )
 			->getMock();
