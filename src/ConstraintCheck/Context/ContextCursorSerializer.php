@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 /**
  * A serializer for {@link ContextCursor}s.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ContextCursorSerializer {
 

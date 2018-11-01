@@ -21,7 +21,7 @@ use WikibaseQuality\ConstraintReport\Role;
 
 /**
  * @author David Abián
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ContemporaryChecker implements ConstraintChecker {
 

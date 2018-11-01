@@ -24,7 +24,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @group WikibaseQualityConstraints
  *
  * @author David Abián
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 
