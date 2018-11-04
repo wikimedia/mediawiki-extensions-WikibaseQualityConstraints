@@ -159,5 +159,7 @@
 	"wbqc-violation-message-integer-bounds": "$1的值应为整数，但$2的界限有小数部分。",
 	"wbqc-violation-message-citationNeeded": "$1的声明应有至少一个参考资料。",
 	"wbqc-violation-message-property-scope": "属性$1不应在此位置（$2）使用。可用于此属性的{{PLURAL:$3|位置}}{{PLURAL:$3|只有$5。|只有：$4}}",
-	"wbqc-violation-message-exception": "此实体是该约束的已知例外，并已如此标记。"
+	"wbqc-violation-message-exception": "此实体是该约束的已知例外，并已如此标记。",
+	"wbqc-beta-feature-label-message": "来自约束定义的实体建议",
+	"wbqc-beta-feature-description-message": "启用衍生自属性页面上约束定义的实体建议。"
 }
