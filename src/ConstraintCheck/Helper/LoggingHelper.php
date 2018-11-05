@@ -124,13 +124,13 @@ class LoggingHelper {
 				'constraintId' => $constraint->getConstraintId(),
 				'constraintPropertyId' => $constraint->getPropertyId()->getSerialization(),
 				'constraintTypeItemId' => $constraintTypeItemId,
-				'constraintParameters' => $constraint->getConstraintParameters(),
+				'constraintParameters' => json_encode( $constraint->getConstraintParameters() ),
 				'constraintCheckerClass' => $constraintCheckerClass,
 				'constraintCheckerClassShortName' => $constraintCheckerClassShortName,
 				'entityId' => $context->getEntity()->getId()->getSerialization(),
 				'statementGuid' => $context->getSnakStatement()->getGuid(),
 				'resultStatus' => $result->getStatus(),
-				'resultParameters' => $result->getParameters(),
+				'resultParameters' => json_encode( $result->getParameters() ),
 				'resultMessage' => $resultMessageKey,
 			]
 		);
@@ -190,11 +190,13 @@ class LoggingHelper {
 			'caching disabled for this check result.',
 			[
 				'loggingMethod' => __METHOD__,
-				'entityIds' => array_map(
-					function ( EntityId $entityId ) {
-						return $entityId->getSerialization();
-					},
-					$entityIds
+				'entityIds' => json_encode(
+					array_map(
+						function ( EntityId $entityId ) {
+							return $entityId->getSerialization();
+						},
+						$entityIds
+					)
 				),
 				'maxRevisionIds' => $maxRevisionIds,
 			]

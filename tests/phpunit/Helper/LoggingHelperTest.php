@@ -69,13 +69,13 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 						'constraintId' => 'test constraint id',
 						'constraintPropertyId' => 'P1',
 						'constraintTypeItemId' => 'Q100',
-						'constraintParameters' => [],
+						'constraintParameters' => json_encode( [] ),
 						'constraintCheckerClass' => '\Test\Namespace\TestChecker',
 						'constraintCheckerClassShortName' => 'TestChecker',
 						'entityId' => 'Q1',
 						'statementGuid' => $statement->getGuid(),
 						'resultStatus' => CheckResult::STATUS_VIOLATION,
-						'resultParameters' => [ 'test' => 'params' ],
+						'resultParameters' => json_encode( [ 'test' => 'params' ] ),
 						'resultMessage' => 'wbqc-violation-message-single-value',
 					]
 				)
