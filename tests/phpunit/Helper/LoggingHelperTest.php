@@ -15,6 +15,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper
@@ -25,7 +26,16 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  * @license GPL-2.0-or-later
  */
 class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
-	use PHPUnit4And6Compat;
+	use DefaultConfig, PHPUnit4And6Compat;
+
+	private function getLoggingDisabledConfig() {
+		return new HashConfig( [
+			'WBQualityConstraintsCheckDurationInfoSeconds' => null,
+			'WBQualityConstraintsCheckDurationWarningSeconds' => null,
+			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => null,
+			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => null,
+		] );
+	}
 
 	/**
 	 * @dataProvider provideConstraintCheckDurationsAndLogLevels
@@ -82,12 +92,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 				)
 			);
 
-		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
-			'WBQualityConstraintsCheckDurationInfoSeconds' => 1.0,
-			'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
-			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 5.0,
-			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55.0,
-		] ) );
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $this->getDefaultConfig() );
 
 		$loggingHelper->logConstraintCheck(
 			$context, $constraint,
@@ -129,12 +134,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$logger = $this->getMock( LoggerInterface::class );
 		$logger->expects( $this->never() )->method( 'log' );
 
-		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
-			'WBQualityConstraintsCheckDurationInfoSeconds' => null,
-			'WBQualityConstraintsCheckDurationWarningSeconds' => null,
-			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => null,
-			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => null,
-		] ) );
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $this->getLoggingDisabledConfig() );
 
 		$loggingHelper->logConstraintCheck(
 			$context, $constraint,
@@ -179,12 +179,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 				)
 			);
 
-		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
-			'WBQualityConstraintsCheckDurationInfoSeconds' => 1.0,
-			'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
-			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 5.0,
-			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55.0,
-		] ) );
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $this->getDefaultConfig() );
 
 		$loggingHelper->logConstraintCheckOnEntity(
 			$entityId,
@@ -217,12 +212,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$logger->expects( $this->never() )
 			->method( 'log' );
 
-		$loggingHelper = new LoggingHelper( $dataFactory, $logger, new HashConfig( [
-			'WBQualityConstraintsCheckDurationInfoSeconds' => null,
-			'WBQualityConstraintsCheckDurationWarningSeconds' => null,
-			'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => null,
-			'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => null,
-		] ) );
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $this->getLoggingDisabledConfig() );
 
 		$loggingHelper->logConstraintCheckOnEntity(
 			$entityId,
