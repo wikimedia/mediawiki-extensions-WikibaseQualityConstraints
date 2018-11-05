@@ -132,20 +132,40 @@ class TypeCheckerHelper {
 	 */
 	public function isSubclassOfWithSparqlFallback( EntityId $comparativeClass, array $classesToCheck ) {
 		try {
-			return new CachedBool(
-				$this->isSubclassOf( $comparativeClass, $classesToCheck ),
-				Metadata::blank()
+			$start1 = microtime( true );
+			$isSubclass = $this->isSubclassOf( $comparativeClass, $classesToCheck );
+			$end1 = microtime( true );
+			$this->dataFactory->timing(
+				'wikibase.quality.constraints.type.php.success.timing',
+				( $end1 - $start1 ) * 1000
 			);
+
+			return new CachedBool( $isSubclass, Metadata::blank() );
 		} catch ( OverflowException $e ) {
+			$end1 = microtime( true );
+			$this->dataFactory->timing(
+				'wikibase.quality.constraints.type.php.overflow.timing',
+				( $end1 - $start1 ) * 1000
+			);
+
 			if ( !( $this->sparqlHelper instanceof DummySparqlHelper ) ) {
 				$this->dataFactory->increment(
 					'wikibase.quality.constraints.sparql.typeFallback'
 				);
-				return $this->sparqlHelper->hasType(
+
+				$start2 = microtime( true );
+				$hasType = $this->sparqlHelper->hasType(
 					$comparativeClass->getSerialization(),
 					$classesToCheck,
 					/* withInstance = */ false
 				);
+				$end2 = microtime( true );
+				$this->dataFactory->timing(
+					'wikibase.quality.constraints.type.sparql.success.timing',
+					( $end2 - $start2 ) * 1000
+				);
+
+				return $hasType;
 			} else {
 				return new CachedBool( false, Metadata::blank() );
 			}
