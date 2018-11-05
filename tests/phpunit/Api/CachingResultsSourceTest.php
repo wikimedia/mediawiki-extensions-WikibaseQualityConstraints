@@ -103,6 +103,22 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
+	 * @return LoggingHelper
+	 */
+	private function getLoggingHelper() {
+		return new LoggingHelper(
+			new NullStatsdDataFactory(),
+			new NullLogger(),
+			new HashConfig( [
+				'WBQualityConstraintsCheckDurationInfoSeconds' => 5.0,
+				'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
+				'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 15.0,
+				'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55.0,
+			] )
+		);
+	}
+
+	/**
 	 * @param ResultsSource $resultsSource
 	 * @param ResultsCache $resultsCache
 	 * @param WikiPageEntityMetaDataAccessor $metaDataAccessor
@@ -125,16 +141,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			86400,
 			$possiblyStaleConstraintTypes,
 			10000,
-			new LoggingHelper(
-				new NullStatsdDataFactory(),
-				new NullLogger(),
-				new HashConfig( [
-					'WBQualityConstraintsCheckDurationInfoSeconds' => 5,
-					'WBQualityConstraintsCheckDurationWarningSeconds' => 10,
-					'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 15,
-					'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55,
-				] )
-			)
+			$this->getLoggingHelper()
 		);
 	}
 
@@ -154,16 +161,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 				86400,
 				[],
 				10000,
-				new LoggingHelper(
-					new NullStatsdDataFactory(),
-					new NullLogger(),
-					new HashConfig( [
-						'WBQualityConstraintsCheckDurationInfoSeconds' => 5,
-						'WBQualityConstraintsCheckDurationWarningSeconds' => 10,
-						'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 15,
-						'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55,
-					] )
-				)
+				$this->getLoggingHelper()
 			] )
 			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();

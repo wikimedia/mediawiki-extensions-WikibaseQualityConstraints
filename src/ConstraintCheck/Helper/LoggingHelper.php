@@ -61,6 +61,32 @@ class LoggingHelper {
 	}
 
 	/**
+	 * Find the longest limit in $limits which the $durationSeconds exceeds,
+	 * and return it along with the associated log level.
+	 *
+	 * @param float $durationSeconds
+	 * @return array [ $limitSeconds, $logLevel ]
+	 */
+	private function findLimit( $limits, $durationSeconds ) {
+		$limitSeconds = null;
+		$logLevel = null;
+
+		foreach ( $limits as $level => $limit ) {
+			if (
+				// duration exceeds this limit
+				isset( $limit ) && $durationSeconds > $limit &&
+				// this limit is longer than previous longest limit
+				( $limitSeconds === null || $limit > $limitSeconds )
+			) {
+				$limitSeconds = $limit;
+				$logLevel = $level;
+			}
+		}
+
+		return [ $limitSeconds, $logLevel ];
+	}
+
+	/**
 	 * Log a single constraint check.
 	 * The constraint check is tracked on the statsd data factory,
 	 * and also logged with the logger interface if it took longer than a certain time.
@@ -93,19 +119,11 @@ class LoggingHelper {
 		);
 
 		// find the longest limit (and associated log level) that the duration exceeds
-		foreach ( $this->constraintCheckDurationLimits as $level => $limit ) {
-			if (
-				// duration exceeds this limit
-				isset( $limit ) && $durationSeconds > $limit &&
-				// this limit is longer than previous longest limit
-				( !isset( $limitSeconds ) || $limit > $limitSeconds )
-			) {
-				$limitSeconds = $limit;
-				$logLevel = $level;
-			}
-		}
-
-		if ( !isset( $limitSeconds ) ) {
+		list( $limitSeconds, $logLevel ) = $this->findLimit(
+			$this->constraintCheckDurationLimits,
+			$durationSeconds
+		);
+		if ( $limitSeconds === null ) {
 			return;
 		}
 		if ( $context->getType() !== Context::TYPE_STATEMENT ) {
@@ -169,19 +187,11 @@ class LoggingHelper {
 		);
 
 		// find the longest limit (and associated log level) that the duration exceeds
-		foreach ( $this->constraintCheckOnEntityDurationLimits as $level => $limit ) {
-			if (
-				// duration exceeds this limit
-				isset( $limit ) && $durationSeconds > $limit &&
-				// this limit is longer than previous longest limit
-				( !isset( $limitSeconds ) || $limit > $limitSeconds )
-			) {
-				$limitSeconds = $limit;
-				$logLevel = $level;
-			}
-		}
-
-		if ( !isset( $limitSeconds ) ) {
+		list( $limitSeconds, $logLevel ) = $this->findLimit(
+			$this->constraintCheckOnEntityDurationLimits,
+			$durationSeconds
+		);
+		if ( $limitSeconds === null ) {
 			return;
 		}
 
