@@ -114,6 +114,8 @@ class CheckConstraintsTest extends ApiTestCase {
 				'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
 				'WBQualityConstraintsCheckDurationInfoSeconds' => 1.0,
 				'WBQualityConstraintsCheckDurationWarningSeconds' => 10.0,
+				'WBQualityConstraintsCheckOnEntityDurationInfoSeconds' => 5.0,
+				'WBQualityConstraintsCheckOnEntityDurationWarningSeconds' => 55.0,
 				'WBQualityConstraintsIncludeDetailInApi' => true,
 			] );
 			$entityIdParser = new ItemIdParser();

@@ -147,11 +147,24 @@ class DelegatingConstraintChecker {
 		$entity = $this->entityLookup->getEntity( $entityId );
 
 		if ( $entity instanceof StatementListProvider ) {
+			$startTime = microtime( true );
+
 			$checkResults = $this->checkEveryStatement(
 				$this->entityLookup->getEntity( $entityId ),
 				$constraintIds,
 				$defaultResultsPerContext
 			);
+
+			$endTime = microtime( true );
+
+			if ( $constraintIds === null ) { // only log full constraint checks
+				$this->loggingHelper->logConstraintCheckOnEntity(
+					$entityId,
+					$checkResults,
+					$endTime - $startTime,
+					__METHOD__
+				);
+			}
 		}
 
 		if ( $defaultResultsPerEntity !== null ) {
