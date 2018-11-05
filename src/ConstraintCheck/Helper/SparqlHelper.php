@@ -504,7 +504,7 @@ EOF;
 SELECT (REGEX($textStringLiteral, $regexStringLiteral) AS ?matches) {}
 EOF;
 
-		$result = $this->runQuery( $query );
+		$result = $this->runQuery( $query, false );
 
 		$vars = $result->getArray()['results']['bindings'][0];
 		if ( array_key_exists( 'matches', $vars ) ) {
@@ -568,17 +568,24 @@ EOF;
 	 * Runs a query against the configured endpoint and returns the results.
 	 *
 	 * @param string $query The query, unencoded (plain string).
+	 * @param bool $needsPrefixes Whether the query requires prefixes or they can be omitted.
 	 *
 	 * @return CachedQueryResults
 	 *
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	public function runQuery( $query ) {
+	public function runQuery( $query, $needsPrefixes = true ) {
 		$endpoint = $this->config->get( 'WBQualityConstraintsSparqlEndpoint' );
 		$maxQueryTimeMillis = $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' );
+
+		if ( $needsPrefixes ) {
+			$query = $this->prefixes . $query;
+		}
+		$query = "#wbqc\n" . $query;
+
 		$url = $endpoint . '?' . http_build_query(
 			[
-				'query' => "#wbqc\n" . $this->prefixes . $query,
+				'query' => $query,
 				'format' => 'json',
 				'maxQueryTimeMillis' => $maxQueryTimeMillis,
 			],
