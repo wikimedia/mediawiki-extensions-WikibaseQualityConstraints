@@ -3,7 +3,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use HashConfig;
 use MediaWiki\MediaWikiServices;
+use MediaWikiTestCase;
+use \Config;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
@@ -55,13 +58,13 @@ use WikibaseQuality\ConstraintReport\ConstraintCheckerServices;
 use WikibaseQuality\ConstraintReport\WikibaseServices;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintsServices
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintsServices
  *
  * @group WikibaseQualityConstraints
  *
  * @license GPL-2.0-or-later
  */
-class ServicesTest extends \PHPUnit\Framework\TestCase {
+class ServicesTest extends MediaWikiTestCase {
 
 	public function provideConstraintsServiceClasses() {
 		return [
@@ -76,10 +79,12 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 			[ ConstraintParameterParser::class ],
 			[ ConnectionCheckerHelper::class ],
 			[ RangeCheckerHelper::class ],
-			[ SparqlHelper::class ],
+			[ SparqlHelper::class, new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ) ],
+			[ SparqlHelper::class, new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => '' ] ) ],
 			[ TypeCheckerHelper::class ],
 			[ DelegatingConstraintChecker::class ],
-			[ ResultsSource::class ],
+			[ ResultsSource::class, new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => true ] ) ],
+			[ ResultsSource::class, new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => false ] ) ],
 		];
 	}
 
@@ -133,7 +138,8 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @dataProvider provideAllServiceClasses
 	 */
-	public function testServiceWiring( $serviceClass ) {
+	public function testServiceWiring( $serviceClass, Config $customConfigSetting = null ) {
+		$this->overrideMwServices( $customConfigSetting );
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$serviceName = 'WBQC_' . end( $serviceClassParts );
 
@@ -145,7 +151,8 @@ class ServicesTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @dataProvider provideConstraintsServiceClasses
 	 */
-	public function testConstraintsServices( $serviceClass ) {
+	public function testConstraintsServices( $serviceClass, Config $customConfigSetting = null ) {
+		$this->overrideMwServices( $customConfigSetting );
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$getterName = 'get' . end( $serviceClassParts );
 
