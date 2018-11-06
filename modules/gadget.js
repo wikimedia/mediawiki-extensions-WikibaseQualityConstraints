@@ -7,7 +7,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	};
 
 	function SELF( config ) {
-		this.config = Object.assign( {}, defaultConfig, config );
+		this.config = $.extend( {}, defaultConfig, config );
 	}
 
 	SELF.prototype.setEntity = function ( entity ) {
@@ -126,7 +126,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			entityConstraints = {};
 
 		for ( i; i < responseCount; i++ ) {
-			Object.assign( entityConstraints, responses[ i ].wbcheckconstraints );
+			$.extend( entityConstraints, responses[ i ].wbcheckconstraints );
 		}
 
 		return entityConstraints;
