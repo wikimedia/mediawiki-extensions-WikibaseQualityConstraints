@@ -23,7 +23,7 @@
 	"require": {
 		"php": ">=5.5.9",
 		"serialization/serialization": "^3.2.1|^4.0.0",
-		"wikibase/data-model": "~7.0|~8.0",
+		"wikibase/data-model": "~7.0|~8.0|~9.0",
 		"wikibase/data-model-serialization": "^2.0.0",
 		"wikibase/data-model-services": "~2.0|~3.0",
 		"wikimedia/purtle": "^1.0.7"
