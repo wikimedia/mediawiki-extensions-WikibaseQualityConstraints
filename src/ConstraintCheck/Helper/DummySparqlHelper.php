@@ -46,7 +46,7 @@ class DummySparqlHelper extends SparqlHelper {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
 
-	public function runQuery( $query ) {
+	public function runQuery( $query, $needsPrefixes = true ) {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
 
