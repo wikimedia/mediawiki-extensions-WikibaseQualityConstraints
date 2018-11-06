@@ -38,6 +38,19 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 				}
 			};
 		};
+		// poor man's Object.assign()
+		global.jQuery.extend = function () {
+			var objects = Array.from( arguments ),
+				target = objects.shift(),
+				i,
+				name;
+			for ( i = 0; i < objects.length; i++ ) {
+				for ( name in objects[ i ] ) {
+					target[ name ] = objects[ i ][ name ];
+				}
+			}
+			return target;
+		};
 
 		loadedEntity = {};
 
