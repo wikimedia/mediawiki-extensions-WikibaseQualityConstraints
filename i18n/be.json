@@ -39,6 +39,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Праверка для прасторы \"$1\" яшчэ не рэалізавана.",
 	"wbqc-violation-message-conflicts-with-property": "Сутнасць не павінна мець сцверджанні адначасова для $1 і $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Сутнасць не павінна мець сцверджання $1, калі яна ўжо мае сцверджанне $2 са значэннем $3.",
+	"wbqc-violation-message-contemporary-subject-earlier": "Сутнасці $1 і $3 мусяць быць сучаснікамі, каб быць звязанымі праз $2, аднак апошнім канцавым значэннем для $1 з’яўляецца $4, а першым пачатковым значэннем для $3 з’яўляецца $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "Сутнасці $1 і $3 мусяць быць сучаснікамі, каб быць звязанымі праз $2, аднак апошнім канцавым значэннем для $3 з’яўляецца $4, а першым пачатковым значэннем для $1 з’яўляецца $5.",
 	"wbqc-violation-message-diff-within-range": "Розніца паміж $3 ($4) і $1 ($2) павінна знаходзіцца паміж $5 і $6.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Розніца паміж $3 ($4) і $1 ($2) павінна быць не больш за $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "Розніца паміж $3 ($4) і $1 ($2) павінна быць не менш за $5.",
