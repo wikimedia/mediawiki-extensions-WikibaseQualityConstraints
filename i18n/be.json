@@ -46,6 +46,7 @@
 	"wbqc-violation-message-diff-within-range-rightopen": "Розніца паміж $3 ($4) і $1 ($2) павінна быць не менш за $5.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Уласцівасць, аб’яўленая ў параметрах, павінна мець значэнне таго ж тыпу, што і гэтая ўласцівасць.",
 	"wbqc-violation-message-format": "Значэнне для ўласцівасці $1 ($2) павінна адпавядаць рэгулярнаму выразу $3.",
+	"wbqc-violation-message-format-clarification": "Значэнне для ўласцівасці $1 ($2) павінна адпавядаць «$4» (рэгулярны выраз: $3).",
 	"wbqc-violation-message-inverse": "Элемент $1 павінен мець адваротнае сцвержанне $2 $3.",
 	"wbqc-violation-message-item": "Сутнасць з $1 павінна таксама мець {{PLURAL:$3|0=сцверджанне $2.|1=сцверджанне $2 $5.|сцверджанне для $2 з адным з наступных значэнняў:$4}}",
 	"wbqc-violation-message-mandatory-qualifier": "Сцверджанне $1 не мае кваліфікатара $2.",
