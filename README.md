@@ -16,49 +16,23 @@ It performs constraint checks in Wikibase.
 
 ## Installation
 
-_If you have already installed a complementary Wikibase Quality extension you can skip the first two steps and just
-add the repository (second entry in "repositories" and the required version (last entry in "require") to the
-composer.local.json._  
+* Clone `WikibaseQualityConstraints` inside the `extensions/` directory of your MediaWiki installations.
 
-* Create the file `composer.local.json` in the directory of your mediawiki installation.
+  ``` sh
+  cd .../extensions/
+  git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseQualityConstraints
+  ```
 
-* Add the following lines:
-```json
-{
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseQuality"
-        },
-        {
-            "type": "git",
-            "url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseQualityConstraints"
-        }
-    ],
-    "require": {
-        "wikibase/quality": "@dev",
-        "wikibase/wikibase": "@dev",
-        "wikibase/constraints": "1.x-dev"
-    }
-}
-```
+* Install dependencies.
+  The simplest way is to set up [composer-merge-plugin](https://www.mediawiki.org/wiki/Composer#Using_composer-merge-plugin)
+  and then run `composer install` in the MediaWiki base directory;
+  alternatively, you can run `composer install` inside the `WikibaseQualityConstraints` directory.
 
-* Run `composer install`.
+* Load the extension.
 
-* If not already done, add the following lines to your `LocalSettings.php` to enable Wikibase and
-Wikibase Quality:
-```php
-$wgEnableWikibaseRepo = true;
-$wgEnableWikibaseClient = false;
-require_once "$IP/extensions/Wikibase/repo/Wikibase.php";
-require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";
-wfLoadExtension( 'WikibaseQuality' );
-```
-
-* You have to add also the following line to your `LocalSettings.php` to enable Wikibase Quality Constraints:
-```php
-wfLoadExtension( 'WikibaseQualityConstraints' );
-```
+  ```php
+  wfLoadExtension( 'WikibaseQualityConstraints' );
+  ```
 
 * Run `php maintenance/update.php --quick`.
 
