@@ -6,8 +6,6 @@ use Http;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use ObjectCache;
-use Wikibase\Lib\Store\Sql\EntityIdLocalPartPageTableEntityQuery;
-use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
@@ -255,16 +253,7 @@ return [
 			// TODO in the future, get EntityIdParser and WikiPageEntityMetaDataAccessor from $services?
 			$repo = WikibaseRepo::getDefaultInstance();
 			$entityIdParser = $repo->getEntityIdParser();
-			$entityNamespaceLookup = $repo->getEntityNamespaceLookup();
-			$wikiPageEntityMetaDataAccessor = new WikiPageEntityMetaDataLookup(
-				$entityNamespaceLookup,
-				new EntityIdLocalPartPageTableEntityQuery(
-					$entityNamespaceLookup,
-					$services->getSlotRoleStore()
-				),
-				$repo->getSettings()->getSetting( 'changesDatabase' ),
-				'' // Empty string here means this only works for the local repo
-			);
+			$wikiPageEntityMetaDataAccessor = $repo->getLocalRepoWikiPageMetaDataLookup();
 
 			$resultsSource = new CachingResultsSource(
 				$resultsSource,
