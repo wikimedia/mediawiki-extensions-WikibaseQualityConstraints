@@ -126,7 +126,7 @@ class SparqlHelper {
 	const EXPIRY_LOCK_ID = 'SparqlHelper.runQuery';
 
 	/**
-	 * @var HTTP response code for too many requests
+	 * @var int HTTP response code for too many requests
 	 */
 	const HTTP_TOO_MANY_REQUESTS = 429;
 
