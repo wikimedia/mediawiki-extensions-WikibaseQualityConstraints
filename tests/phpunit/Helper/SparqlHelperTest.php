@@ -14,6 +14,7 @@ use DataValues\UnboundedQuantityValue;
 use HashBagOStuff;
 use HashConfig;
 use MediaWiki\Http\HttpRequestFactory;
+use MultiConfig;
 use NullStatsdDataFactory;
 use PHPUnit4And6Compat;
 use WANObjectCache;
@@ -86,7 +87,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 		LoggingHelper $loggingHelper = null
 	) {
 		if ( $config === null ) {
-			$config = $this->getDefaultConfig();
+			$config = new HashConfig();
 		}
 		if ( $dataTypeLookup === null ) {
 			$dataTypeLookup = new InMemoryDataTypeLookup();
@@ -99,7 +100,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 
 		return $this->getMockBuilder( SparqlHelper::class )
 			->setConstructorArgs( [
-				$config,
+				new MultiConfig( [ $config, $this->getDefaultConfig() ] ),
 				new RdfVocabulary(
 					[ '' => 'http://www.wikidata.org/entity/' ],
 					'http://www.wikidata.org/wiki/Special:EntityData/'
@@ -122,8 +123,29 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 	}
 
-	public function testHasType() {
+	public function testHasTypeWithoutHint() {
 		$sparqlHelper = $this->getSparqlHelper();
+
+		$query = <<<EOF
+ASK {
+  BIND(wd:Q1 AS ?item)
+  VALUES ?class { wd:Q100 wd:Q101 }
+  ?item wdt:P31/wdt:P279* ?class.
+}
+EOF;
+
+		$sparqlHelper->expects( $this->exactly( 1 ) )
+			->method( 'runQuery' )
+			->willReturn( $this->askResult( true ) )
+			->withConsecutive( [ $this->equalTo( $query ) ] );
+
+		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ], true )->getBool() );
+	}
+
+	public function testHasTypeWithHint() {
+		$sparqlHelper = $this->getSparqlHelper( new HashConfig( [
+			'WBQualityConstraintsSparqlHasWikibaseSupport' => true,
+		] ) );
 
 		$query = <<<EOF
 ASK {

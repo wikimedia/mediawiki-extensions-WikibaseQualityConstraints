@@ -188,6 +188,10 @@ EOT;
 	public function hasType( $id, array $classes, $withInstance ) {
 		$instanceOfId = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
 		$subclassOfId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
+		// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
+		$gearingHint = $this->config->get( 'WBQualityConstraintsSparqlHasWikibaseSupport' ) ?
+			' hint:Prior hint:gearing "forward".' :
+			'';
 
 		$path = ( $withInstance ? "wdt:$instanceOfId/" : "" ) . "wdt:$subclassOfId*";
 
@@ -205,10 +209,9 @@ EOT;
 ASK {
   BIND(wd:$id AS ?item)
   VALUES ?class { $classesValues }
-  ?item $path ?class. hint:Prior hint:gearing "forward".
+  ?item $path ?class.$gearingHint
 }
 EOF;
-			// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
 
 			$result = $this->runQuery( $query );
 			$metadatas[] = $result->getMetadata();
@@ -668,6 +671,10 @@ EOF;
 		if ( $fallbackBlockDuration < 0 ) {
 			throw new InvalidArgumentException( 'Fallback duration must be positive int but is: '.
 				$fallbackBlockDuration );
+		}
+
+		if ( $this->config->get( 'WBQualityConstraintsSparqlHasWikibaseSupport' ) ) {
+			$needsPrefixes = false;
 		}
 
 		if ( $needsPrefixes ) {
