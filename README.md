@@ -53,35 +53,15 @@ It performs constraint checks in Wikibase.
 
 [minisparql]: https://github.com/lucaswerkmeister/minisparql
 
-### Gadget
+### Client-side script
 
-The extension includes a gadget that checks constraints on entity pages and displays violations on statements.
-Note that you must have the [Gadgets] extension installed before you can use this gadget.
-The gadget is loaded via ResourceLoader and can be used with the following definition in MediaWiki:Gadgets-definition:
-
-```mediawiki
-* checkConstraints[ResourceLoader|dependencies=wikibase.quality.constraints.gadget]|checkConstraints.js
-```
-
-`checkConstraints.js` (page title: MediaWiki:Gadget-checkConstraints.js) is only required because the the Gadgets extension does not support gadgets without any JS files.
-It can be empty (or even nonexistent), but some explanatory comment is recommended, for example:
+The extension includes a client-side script that checks constraints on entity pages and displays violations on statements.
+It is loaded by default for all logged-in users;
+anonymous users can load it on a page by entering the following code into the web console:
 
 ```js
-// this gadget resides in the wikibase.quality.constraints.gadget ResourceLoader module
-// its source code is available in the gadget* files at https://github.com/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/tree/master/modules
+mw.loader.load( 'wikibase.quality.constraints.gadget' );
 ```
-
-To make the gadget display nicely in the preferences and on Special:Gadget,
-MediaWiki:Gadget-checkConstraints should be created, e. g. with the following content:
-
-```mediawiki
-''checkConstraints'': Shows property constraint reports for statements on an item or property page ([[Help:Property constraints portal|help]])
-```
-
-The gadget can also be loaded directly as a standalone script, e. g. as a user script,
-by simply including `modules/gadget.js` in `common.js` and `modules/gadget.css` in `common.css`.
-
-[Gadgets]: https://www.mediawiki.org/wiki/Extension:Gadgets
 
 ### Data import
 
