@@ -130,7 +130,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 ASK {
   BIND(wd:Q1 AS ?item)
   VALUES ?class { wd:Q100 wd:Q101 }
-  ?item wdt:P31/wdt:P279* ?class.
+  ?item wdt:P279* ?class.
 }
 EOF;
 
@@ -139,7 +139,7 @@ EOF;
 			->willReturn( $this->askResult( true ) )
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
-		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ], true )->getBool() );
+		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
 	public function testHasTypeWithHint() {
@@ -151,7 +151,7 @@ EOF;
 ASK {
   BIND(wd:Q1 AS ?item)
   VALUES ?class { wd:Q100 wd:Q101 }
-  ?item wdt:P31/wdt:P279* ?class. hint:Prior hint:gearing "forward".
+  ?item wdt:P279* ?class. hint:Prior hint:gearing "forward".
 }
 EOF;
 
@@ -160,7 +160,7 @@ EOF;
 			->willReturn( $this->askResult( true ) )
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
-		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ], true )->getBool() );
+		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
 	public function testFindEntitiesWithSameStatement() {
