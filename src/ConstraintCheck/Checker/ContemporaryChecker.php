@@ -97,7 +97,8 @@ class ContemporaryChecker implements ConstraintChecker {
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
-		} elseif ( $snak->getDataValue()->getType() !== 'wikibase-entityid' ) {
+		}
+		if ( $snak->getDataValue()->getType() !== 'wikibase-entityid' ) {
 			// wrong data type
 			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
 				->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM )
