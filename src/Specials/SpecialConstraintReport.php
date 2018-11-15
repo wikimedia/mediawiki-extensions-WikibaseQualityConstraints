@@ -39,6 +39,7 @@ use WikibaseQuality\ConstraintReport\Html\HtmlTableBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableCellBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
+use WikibaseQuality\ConstraintReport\WikibaseServices;
 
 /**
  * Special page that displays all constraints that are defined on an Entity with additional information
@@ -110,7 +111,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 
 		return new self(
-			$wikibaseRepo->getEntityLookup(),
+			WikibaseServices::getEntityLookup(),
 			$wikibaseRepo->getEntityTitleLookup(),
 			new EntityIdLabelFormatterFactory(),
 			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
