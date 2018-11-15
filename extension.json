@@ -204,6 +204,11 @@
 			"description": "Strings that, when they occur inside an error response of the SPARQL endpoint, indicate that the error is a query timeout. On the Wikidata Query Service, these are fully qualified names of exception classes.",
 			"public": true
 		},
+		"WBQualityConstraintsSparqlHasWikibaseSupport": {
+			"value": false,
+			"description": "Whether the SPARQL endpoint has special Wikibase support, i. e. whether it is an installation of the Wikibase RDF Query server. If this is enabled, prefixes are not included in SPARQL queries, since the server already defines them by default (which reduces network traffic), and some queries include BlazeGraph-specific query hints. Otherwise, the queries should be suitable for any SPARQL server.",
+			"public": true
+		},
 		"WBQualityConstraintsCheckFormatConstraint": {
 			"value": true,
 			"description": "Whether or not to check the 'format' constraint. If this flag is set to false, any check of the 'format' constraint will return a 'todo' status with the 'wbqc-violation-message-security-reason' message.",
