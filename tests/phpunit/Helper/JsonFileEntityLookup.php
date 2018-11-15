@@ -2,23 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
-use DataValues\BooleanValue;
-use DataValues\Deserializers\DataValueDeserializer;
-use DataValues\Geo\Values\GlobeCoordinateValue;
-use DataValues\MonolingualTextValue;
-use DataValues\MultilingualTextValue;
-use DataValues\NumberValue;
-use DataValues\QuantityValue;
-use DataValues\StringValue;
-use DataValues\TimeValue;
-use DataValues\UnknownValue;
-use Deserializers\Deserializer;
-use Wikibase\DataModel\DeserializerFactory;
-use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityId;
-use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Services\Lookup\UnresolvedEntityRedirectException;
+use Wikibase\Lib\Store\EntityContentDataCodec;
+use Wikibase\Repo\WikibaseRepo;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,9 +23,9 @@ class JsonFileEntityLookup implements EntityLookup {
 	private $baseDir;
 
 	/**
-	 * @var Deserializer
+	 * @var EntityContentDataCodec
 	 */
-	private $entityDeserializer;
+	private $entityContentDataCodec;
 
 	/**
 	 * @param string $baseDir
@@ -44,25 +33,7 @@ class JsonFileEntityLookup implements EntityLookup {
 	public function __construct( $baseDir ) {
 		$this->baseDir = $baseDir;
 
-		$factory = new DeserializerFactory(
-			new DataValueDeserializer(
-				[
-					'boolean' => BooleanValue::class,
-					'number' => NumberValue::class,
-					'string' => StringValue::class,
-					'unknown' => UnknownValue::class,
-					'globecoordinate' => GlobeCoordinateValue::class,
-					'monolingualtext' => MonolingualTextValue::class,
-					'multilingualtext' => MultilingualTextValue::class,
-					'quantity' => QuantityValue::class,
-					'time' => TimeValue::class,
-					'wikibase-entityid' => EntityIdValue::class,
-				]
-			),
-			new BasicEntityIdParser()
-		);
-
-		$this->entityDeserializer = $factory->newEntityDeserializer();
+		$this->entityContentDataCodec = WikibaseRepo::getDefaultInstance()->getEntityContentDataCodec();
 	}
 
 	/**
@@ -71,6 +42,7 @@ class JsonFileEntityLookup implements EntityLookup {
 	 * @param EntityId $entityId
 	 *
 	 * @return EntityDocument|null
+	 * @throws UnresolvedEntityRedirectException
 	 */
 	public function getEntity( EntityId $entityId ) {
 		if ( !$this->hasEntity( $entityId ) ) {
@@ -78,13 +50,22 @@ class JsonFileEntityLookup implements EntityLookup {
 		}
 
 		$filePath = $this->buildFilePath( $entityId );
-		$serializedEntity = json_decode( file_get_contents( $filePath ), true );
+		$serializedEntity = file_get_contents( $filePath );
 
-		if ( $serializedEntity === null ) {
+		if ( $serializedEntity === false ) {
 			return null;
 		}
 
-		return $this->entityDeserializer->deserialize( $serializedEntity );
+		$entity = $this->entityContentDataCodec->decodeEntity( $serializedEntity, CONTENT_FORMAT_JSON );
+		if ( $entity ) {
+			return $entity;
+		}
+
+		$redirect = $this->entityContentDataCodec->decodeRedirect( $serializedEntity, CONTENT_FORMAT_JSON );
+		if ( $redirect ) {
+			throw new UnresolvedEntityRedirectException( $redirect->getEntityId(), $redirect->getTargetId() );
+		}
+		return null;
 	}
 
 	/**

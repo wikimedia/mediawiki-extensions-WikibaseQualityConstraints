@@ -4,9 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker\TypeChecker;
 
 use DataValues\StringValue;
 use NullStatsdDataFactory;
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -260,6 +258,18 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-entity-must-exist' );
 	}
 
+	public function testValueTypeConstraintNonExistingRedirectTarget() {
+		$snak = new PropertyValueSnak( $this->valueTypePropertyId, new EntityIdValue( new ItemId( 'Q302' ) ) );
+		$constraintParameters = array_merge(
+			$this->relationParameter( 'instance' ),
+			$this->classParameter( [ 'Q100', 'Q101' ] )
+		);
+		$constraint = $this->getConstraintMock( $constraintParameters );
+
+		$checkResult = $this->checker->checkConstraint( new FakeSnakContext( $snak ), $constraint );
+		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-entity-must-exist' );
+	}
+
 	public function testValueTypeConstraintNoValueSnak() {
 		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
 		$constraintParameters = array_merge(
@@ -311,13 +321,6 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Q21510865' ) );
 
 		return $mock;
-	}
-
-	/**
-	 * @return EntityDocument
-	 */
-	private function getEntity() {
-		return new Item( new ItemId( 'Q1' ) );
 	}
 
 }

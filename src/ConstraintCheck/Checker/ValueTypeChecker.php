@@ -6,6 +6,7 @@ use Config;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Services\Lookup\UnresolvedEntityRedirectException;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -137,7 +138,12 @@ class ValueTypeChecker implements ConstraintChecker {
 		}
 		/** @var EntityIdValue $dataValue */
 
-		$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
+		try {
+			$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
+		} catch ( UnresolvedEntityRedirectException $e ) {
+			// Edge case (double redirect): Pretend the entity doesn't exist
+			$item = null;
+		}
 
 		if ( !( $item instanceof StatementListProvider ) ) {
 			$message = new ViolationMessage( 'wbqc-violation-message-value-entity-must-exist' );
