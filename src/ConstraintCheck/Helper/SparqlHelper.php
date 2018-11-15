@@ -173,10 +173,8 @@ PREFIX pq: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_QUALIFIER )}>
 PREFIX pqv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_QUALIFIER_VALUE )}>
 PREFIX pr: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_REFERENCE )}>
 PREFIX prv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_REFERENCE_VALUE )}>
-PREFIX wikibase: <http://wikiba.se/ontology#>
-PREFIX wikibase-beta: <http://wikiba.se/ontology-beta#>
+PREFIX wikibase: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ONTOLOGY )}>
 EOT;
-		// TODO get wikibase: prefix from vocabulary once -beta is dropped (T112127)
 	}
 
 	/**
@@ -244,8 +242,7 @@ EOF;
 
 		$deprecatedFilter = '';
 		if ( $ignoreDeprecatedStatements ) {
-			$deprecatedFilter .= 'MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }';
-			$deprecatedFilter .= 'MINUS { ?otherStatement wikibase-beta:rank wikibase-beta:DeprecatedRank. }';
+			$deprecatedFilter = 'MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }';
 		}
 
 		$query = <<<EOF
@@ -302,7 +299,6 @@ EOF;
 		if ( $ignoreDeprecatedStatements ) {
 			$deprecatedFilter = <<< EOF
   MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }
-  MINUS { ?otherStatement wikibase-beta:rank wikibase-beta:DeprecatedRank. }
 EOF;
 		}
 
