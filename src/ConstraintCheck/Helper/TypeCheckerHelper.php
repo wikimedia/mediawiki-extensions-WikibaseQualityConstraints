@@ -156,8 +156,7 @@ class TypeCheckerHelper {
 				$start2 = microtime( true );
 				$hasType = $this->sparqlHelper->hasType(
 					$comparativeClass->getSerialization(),
-					$classesToCheck,
-					/* withInstance = */ false
+					$classesToCheck
 				);
 				$end2 = microtime( true );
 				$this->dataFactory->timing(

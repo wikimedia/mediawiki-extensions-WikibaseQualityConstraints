@@ -22,7 +22,7 @@ class DummySparqlHelper extends SparqlHelper {
 		// no parent::__construct() call
 	}
 
-	public function hasType( $id, array $classes, $withInstance ) {
+	public function hasType( $id, array $classes ) {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
 

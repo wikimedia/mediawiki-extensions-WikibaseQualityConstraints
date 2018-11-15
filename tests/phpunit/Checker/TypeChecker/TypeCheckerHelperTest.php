@@ -82,7 +82,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private function getSparqlHelper( $return, array $arguments = null ) {
 		if ( $arguments === null ) {
-			$arguments = [ $this->anything(), $this->anything(), $this->anything() ];
+			$arguments = [ $this->anything(), $this->anything() ];
 		}
 		$mock = $this->getMockBuilder( SparqlHelper::class )
 			  ->disableOriginalConstructor()
@@ -248,8 +248,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			true,
 			[
 				$this->identicalTo( 'Q1' ),
-				$this->identicalTo( [ 'Q5' ] ),
-				$this->identicalTo( false )
+				$this->identicalTo( [ 'Q5' ] )
 			]
 		);
 		$helper = $this->getHelper( $this->getMaxEntitiesLookup( $lookup ), $sparqlHelper );

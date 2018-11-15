@@ -180,20 +180,16 @@ EOT;
 	/**
 	 * @param string $id entity ID serialization of the entity to check
 	 * @param string[] $classes entity ID serializations of the expected types
-	 * @param boolean $withInstance true for “instance” relation, false for “subclass” relation
 	 *
 	 * @return CachedBool
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	public function hasType( $id, array $classes, $withInstance ) {
-		$instanceOfId = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
+	public function hasType( $id, array $classes ) {
 		$subclassOfId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 		// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
 		$gearingHint = $this->config->get( 'WBQualityConstraintsSparqlHasWikibaseSupport' ) ?
 			' hint:Prior hint:gearing "forward".' :
 			'';
-
-		$path = ( $withInstance ? "wdt:$instanceOfId/" : "" ) . "wdt:$subclassOfId*";
 
 		$metadatas = [];
 
@@ -209,7 +205,7 @@ EOT;
 ASK {
   BIND(wd:$id AS ?item)
   VALUES ?class { $classesValues }
-  ?item $path ?class.$gearingHint
+  ?item wdt:$subclassOfId* ?class.$gearingHint
 }
 EOF;
 
