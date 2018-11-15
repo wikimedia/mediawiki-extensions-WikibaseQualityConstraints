@@ -282,6 +282,14 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 		$this->saveAndCheck( $subjectItem, $valueItem, CheckResult::STATUS_COMPLIANCE );
 	}
 
+	public function testContemporaryConstraintDeletedObject() {
+		$subjectItem = NewItem::withId( 'Q1' )
+			->andStatement( $this->newLinkingStatement( 'Q2' ) )
+			->build();
+		$valueItem = NewItem::withId( 'Q255' )->build();
+		$this->saveAndCheck( $subjectItem, $valueItem, CheckResult::STATUS_VIOLATION );
+	}
+
 	public function testContemporaryConstraintNoObject() {
 		$subjectItem = NewItem::withId( 'Q1' )
 			->andStatement( $this->newTimeStatement( $this->startPropertyIds[0], $this->timestamps[2] ) )

@@ -11,6 +11,7 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
+use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -105,14 +106,22 @@ class ContemporaryChecker implements ConstraintChecker {
 				->withDataValueType( 'wikibase-entityid' );
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
 		}
-		/** @var EntityId $subjectId */
-		$subjectId = $context->getEntity()->getId();
+
 		/** @var EntityId $objectId */
 		$objectId = $snak->getDataValue()->getEntityId();
+		$objectItem = $this->entityLookup->getEntity( $objectId );
+		if ( !( $objectItem instanceof StatementListProvider ) ) {
+			// object was deleted/doesn't exist
+			$message = new ViolationMessage( 'wbqc-violation-message-value-entity-must-exist' );
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+		}
+		/** @var Statement[] $objectStatements */
+		$objectStatements = $objectItem->getStatements()->toArray();
+
+		/** @var EntityId $subjectId */
+		$subjectId = $context->getEntity()->getId();
 		/** @var Statement[] $subjectStatements */
 		$subjectStatements = $context->getEntity()->getStatements()->toArray();
-		/** @var Statement[] $objectStatements */
-		$objectStatements = $this->entityLookup->getEntity( $objectId )->getStatements()->toArray();
 		/** @var String[] $startPropertyIds */
 		$startPropertyIds = $this->config->get( self::CONFIG_VARIABLE_START_PROPERTY_IDS );
 		/** @var String[] $endPropertyIds */
