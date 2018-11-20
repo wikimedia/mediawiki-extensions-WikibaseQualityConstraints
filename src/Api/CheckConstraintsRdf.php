@@ -45,7 +45,7 @@ class CheckConstraintsRdf extends FormlessAction {
 		$this->rdfVocabulary = $rdfVocabulary;
 	}
 
-	public static function newFromGlobalState( Page $page, IContextSource $context = null ) {
+	public static function newFromGlobalState( Page $page, IContextSource $context ) {
 		$repo = WikibaseRepo::getDefaultInstance();
 
 		return new static(
