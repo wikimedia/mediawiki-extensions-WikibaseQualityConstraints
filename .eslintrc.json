@@ -12,7 +12,6 @@
 	},
 	"rules": {
 		"compat/compat": "error",
-		"dot-notation": [ "error", { "allowKeywords": true } ],
 		"no-underscore-dangle": "off"
 	},
 	"plugins": ["compat"]
