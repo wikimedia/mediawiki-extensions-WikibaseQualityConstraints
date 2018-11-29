@@ -101,7 +101,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * Because of the way this is implemented it can not be done repeatedly for partial results
 	 * (e.g. a wbcheckconstraints result for only some of the entities on a page)
 	 *
-	 * @param {object} data Map of entity ids and constraint check information
+	 * @param {Object} data Map of entity ids and constraint check information
 	 */
 	SELF.prototype._renderWbcheckconstraintsResult = function ( data ) {
 		var self = this;
@@ -111,7 +111,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			.each( function () {
 				var entityId;
 				for ( entityId in data ) {
-					if ( !data.hasOwnProperty( entityId ) ) {
+					if ( !Object.prototype.hasOwnProperty.call( data, entityId ) ) {
 						continue;
 					}
 					self._addReportsToStatement( data[ entityId ], $( this ) );
@@ -141,11 +141,11 @@ module.exports = ( function ( mw, wb, $, OO ) {
 
 		for ( entity in entities ) {
 
-			if ( entities.hasOwnProperty( entity ) ) {
+			if ( Object.prototype.hasOwnProperty.call( entities, entity ) ) {
 				properties = entities[ entity ].claims;
 				for ( property in properties ) {
 
-					if ( properties.hasOwnProperty( property ) ) {
+					if ( Object.prototype.hasOwnProperty.call( properties, property ) ) {
 						for ( index = 0; index < entities[ entity ].claims[ property ].length; index++ ) {
 
 							if ( entities[ entity ].claims[ property ][ index ].id === statementId ) {

@@ -12,6 +12,7 @@
 	},
 	"rules": {
 		"compat/compat": "error",
+		"max-len": "off",
 		"no-underscore-dangle": "off"
 	},
 	"plugins": ["compat"]
