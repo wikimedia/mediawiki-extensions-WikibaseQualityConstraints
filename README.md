@@ -66,26 +66,17 @@ mw.loader.load( 'wikibase.quality.constraints.gadget' );
 ### Data import
 
 For local development, it’s easiest to import some data from Wikidata.
-You can use the [WikibaseImport] extension to do this;
-once you have installed it, you can use the following command
-to import the essential entities that this extension needs
-(stuff like the “instance of” property):
+You can use the `ImportConstraintEntities` maintenance script script to do this;
+it will import all the required entities from Wikidata that don’t exist in your local wiki yet
+and then print a config snippet which you can append to your `LocalSettings.php`.
 
 ```sh
 # working directory should be the MediaWiki installation folder, i.e. where LocalSettings.php is
-jq -r '.config | with_entries(select(.key | endswith("Id"))) | .[] | .value' extensions/WikibaseQualityConstraints/extension.json | php extensions/WikibaseImport/maintenance/importEntities.php --stdin
+php extensions/WikibaseQualityConstraints/maintenance/ImportConstraintEntities.php | tee -a LocalSettings.php
 ```
 
-Afterwards, export the resulting entity IDs to your local config (since they’ll be different than on Wikidata):
-
-```sh
-# from the MediaWiki installation folder
-extensions/WikibaseQualityConstraints/maintenance/exportEntityMapping
-# or directly from the extension folder
-maintenance/exportEntityMapping
-```
-
-[WikibaseImport]: https://github.com/filbertkm/WikibaseImport
+(The new entities will not show up in your wiki’s recent changes until they have been processed in the job queue;
+try running the `maintenance/runJobs.php` script if it doesn’t happen automatically.)
 
 ### Running the tests
 
