@@ -132,12 +132,17 @@ class TypeCheckerHelper {
 	 */
 	public function isSubclassOfWithSparqlFallback( EntityId $comparativeClass, array $classesToCheck ) {
 		try {
+			$entitiesChecked = 0;
 			$start1 = microtime( true );
-			$isSubclass = $this->isSubclassOf( $comparativeClass, $classesToCheck );
+			$isSubclass = $this->isSubclassOf( $comparativeClass, $classesToCheck, $entitiesChecked );
 			$end1 = microtime( true );
 			$this->dataFactory->timing(
 				'wikibase.quality.constraints.type.php.success.timing',
 				( $end1 - $start1 ) * 1000
+			);
+			$this->dataFactory->timing( // not really a timing, but works like one (we want percentiles etc.)
+				'wikibase.quality.constraints.type.php.success.entities',
+				$entitiesChecked
 			);
 
 			return new CachedBool( $isSubclass, Metadata::blank() );
