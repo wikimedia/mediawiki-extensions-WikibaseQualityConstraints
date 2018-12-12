@@ -140,5 +140,7 @@
 	"wbqc-violation-message-integer-bounds": "Hodnoty vlastnosti $1 by měly být celá čísla, ale $2 má meze s desetinnou částí.",
 	"wbqc-violation-message-citationNeeded": "Tvrzení vlastnosti $1 by měla mít alespoň jednu referenci.",
 	"wbqc-violation-message-property-scope": "Vlastnost $1 by neměla být používána na tomto místě ($2). {{PLURAL:$3|Jediným platným místem|Jedinými platnými místy}} pro tuto vlastnost {{PLURAL:$3|je $5.|jsou: $4}}",
-	"wbqc-violation-message-exception": "Tato vlastnost je u tohoto omezení uvedena jako známá výjimka, takže tak byla označena."
+	"wbqc-violation-message-exception": "Tato vlastnost je u tohoto omezení uvedena jako známá výjimka, takže tak byla označena.",
+	"wbqc-beta-feature-label-message": "Návrhy entit podle definic omezení",
+	"wbqc-beta-feature-description-message": "Zapne návrhy entit odvozené z definic omezení na stránkách vlastností."
 }
