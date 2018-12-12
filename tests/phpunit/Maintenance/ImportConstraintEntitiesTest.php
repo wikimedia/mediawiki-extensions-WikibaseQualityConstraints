@@ -6,6 +6,7 @@ use HashConfig;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\Lib\Store\EntityStore;
+use Wikibase\Lib\Store\StorageException;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintEntities;
 
@@ -82,6 +83,48 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 		$this->assertSame( 'type constraint', $localEntity->getLabels()->getByLanguage( 'en' )->getText() );
 		$this->assertEmpty( $localEntity->getSiteLinkList()->toArray() );
 		$this->assertEmpty( $localEntity->getStatements()->toArray() );
+	}
+
+	public function provideStorageExceptions() {
+		yield 'item in separate namespace' => [
+			new StorageException(
+				'Item [[Item:Q475|Q475]] already has label "as references" ' .
+				'associated with language code en, using the same description text.'
+			),
+			'Q475',
+		];
+		yield 'item in main namespace' => [
+			new StorageException(
+				'Item [[Q475]] already has label "as references" ' .
+				'associated with language code en, using the same description text.'
+			),
+			'Q475',
+		];
+		yield 'property' => [
+			new StorageException(
+				'Property [[Property:P694|P694]] already has label "instance of" ' .
+				'associated with language code en.'
+			),
+			'P694',
+		];
+		$storageException = new StorageException( 'random other error' );
+		yield 'other' => [
+			$storageException,
+			$storageException,
+		];
+	}
+
+	/**
+	 * @dataProvider provideStorageExceptions
+	 */
+	public function testStorageExceptionToEntityId( StorageException $exception, $expected ) {
+		try {
+			$actual = $this->maintenance->storageExceptionToEntityId( $exception );
+
+			$this->assertSame( $expected, $actual );
+		} catch ( StorageException $actual ) {
+			$this->assertSame( $expected, $actual );
+		}
 	}
 
 	public function testOutputConfigUpdatesGlobals() {
