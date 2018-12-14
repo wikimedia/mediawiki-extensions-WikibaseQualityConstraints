@@ -170,17 +170,21 @@ class ImportConstraintEntities extends Maintenance {
 
 			return $localEntity->getId()->getSerialization();
 		} catch ( StorageException $storageException ) {
-			$message = $storageException->getMessage();
-			// example message:
-			// * Item [[Item:Q475|Q475]] already has label "as references" associated with language code en, using the same description text.
-			// note that the label and language code may vary (conflicts in any language),
-			// and that the item link may or may not be in the main namespace
-			$pattern = '/[[|]([^]|]*)]] already has label .* using the same description text/';
-			if ( preg_match( $pattern, $message, $matches ) ) {
-				return $matches[1];
-			} else {
-				throw $storageException;
-			}
+			return $this->storageExceptionToEntityId( $storageException );
+		}
+	}
+
+	private function storageExceptionToEntityId( StorageException $storageException ) {
+		$message = $storageException->getMessage();
+		// example messages:
+		// * Item [[Item:Q475|Q475]] already has label "as references" associated with language code en, using the same description text.
+		// * Item [[Q475]] already has label "as references" associated with language code en, using the same description text.
+		// * Property [[Property:P694|P694]] already has label "instance of" associated with language code en.
+		$pattern = '/[[|]([^][|]*)]] already has label .* associated with language code/';
+		if ( preg_match( $pattern, $message, $matches ) ) {
+			return $matches[1];
+		} else {
+			throw $storageException;
 		}
 	}
 
