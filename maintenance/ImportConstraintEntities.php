@@ -44,7 +44,7 @@ class ImportConstraintEntities extends Maintenance {
 	private $entityStore;
 
 	/**
-	 * @var User
+	 * @var User|null (null in dry-run mode, non-null otherwise)
 	 */
 	private $user;
 
@@ -75,7 +75,9 @@ class ImportConstraintEntities extends Maintenance {
 		$this->entitySerializer = $repo->getAllTypesEntitySerializer();
 		$this->entityDeserializer = $repo->getInternalFormatEntityDeserializer();
 		$this->entityStore = $repo->getEntityStore();
-		$this->user = User::newSystemUser( 'WikibaseQualityConstraints importer' );
+		if ( !$this->getOption( 'dry-run', false ) ) {
+			$this->user = User::newSystemUser( 'WikibaseQualityConstraints importer' );
+		}
 	}
 
 	public function execute() {
