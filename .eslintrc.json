@@ -1,4 +1,5 @@
 {
+	"root": true,
 	"extends": "wikimedia",
 	"env": {
 		"browser": true,
@@ -15,5 +16,7 @@
 		"max-len": "off",
 		"no-underscore-dangle": "off"
 	},
-	"plugins": ["compat"]
+	"plugins": [
+		"compat"
+	]
 }
