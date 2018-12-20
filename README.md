@@ -3,8 +3,7 @@
 [![Coverage Status][coveralls-badge]][coveralls]
 [![Scrutinizer Code Quality][scrutinizer-badge]][scrutinizer]
 
-This is a complementary extension for the [Wikibase Quality base extension][wbq].
-It performs constraint checks in Wikibase.
+Extension to Wikibase Repository that performs constraint checks.
 
 [travis-badge]: https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints.svg?branch=master
 [travis]: https://travis-ci.org/wikimedia/mediawiki-extensions-WikibaseQualityConstraints
@@ -12,7 +11,6 @@ It performs constraint checks in Wikibase.
 [coveralls]: https://coveralls.io/github/wikimedia/mediawiki-extensions-WikibaseQualityConstraints
 [scrutinizer-badge]: https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badges/quality-score.png?b=master
 [scrutinizer]: https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/?branch=master
-[wbq]: https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality.git
 
 ## Installation
 
