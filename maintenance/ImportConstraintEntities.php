@@ -213,7 +213,7 @@ class ImportConstraintEntities extends Maintenance {
 
 	private function outputConfigUpdatesWgConf( array $configUpdates ) {
 		foreach ( $configUpdates as $key => $value ) {
-			$keyCode = var_export( $key, true );
+			$keyCode = var_export( "wg$key", true );
 			$wikidataValueCode = var_export( $value['wikidata'], true );
 			$localValueCode = var_export( $value['local'], true );
 			$wikiIdCode = var_export( wfWikiID(), true );
