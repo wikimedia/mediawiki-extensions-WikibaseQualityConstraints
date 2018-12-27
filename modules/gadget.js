@@ -431,7 +431,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @return {boolean} Whether any results were added to the snak or not.
 	 */
 	SELF.prototype._addResultsToSnak = function ( results, $snak ) {
-		var reports = results.map( this._buildReport ),
+		var reports = results.map( this._buildReport.bind( this ) ),
 			list = this._buildReportList( reports ),
 			haveMandatoryViolations;
 
@@ -534,7 +534,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			}
 
 			problems = parameterReports[ constraintId ].problems;
-			reports = problems.map( this._buildParameterReport );
+			reports = problems.map( this._buildParameterReport.bind( this ) );
 
 			list = new wikibase.quality.constraints.ui.ConstraintReportList( {
 				items: [
