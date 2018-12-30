@@ -200,8 +200,8 @@ class HtmlTableBuilderTest extends \PHPUnit\Framework\TestCase {
 					]
 				],
 				'<table class="wikitable">'
-					. '<tr><th>fu</th><th>bar</th></tr>'
-					. '<tr><td>fucked up</td><td>beyond all recognition</td></tr>'
+					. '<thead><tr><th>fu</th><th>bar</th></tr></thead>'
+					. '<tbody><tr><td>fucked up</td><td>beyond all recognition</td></tr></tbody>'
 					. '</table>'
 			],
 			[
@@ -215,9 +215,9 @@ class HtmlTableBuilderTest extends \PHPUnit\Framework\TestCase {
 						$this->getHtmlTableCellMock( 'beyond all recognition' )
 					]
 				],
-				'<table class="wikitable sortable jquery-tablesort">'
-					. '<tr><th>fu</th><th>bar</th></tr>'
-					. '<tr><td>fucked up</td><td>beyond all recognition</td></tr>'
+				'<table class="wikitable sortable">'
+					. '<thead><tr><th>fu</th><th>bar</th></tr></thead>'
+					. '<tbody><tr><td>fucked up</td><td>beyond all recognition</td></tr></tbody>'
 					. '</table>'
 			]
 		];
