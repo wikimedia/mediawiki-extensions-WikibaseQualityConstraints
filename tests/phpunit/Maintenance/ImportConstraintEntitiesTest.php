@@ -161,12 +161,12 @@ EOF;
 		];
 		$wikiId = wfWikiID();
 		$expected = <<< EOF
-'WBQualityConstraintsFooId' => [
+'wgWBQualityConstraintsFooId' => [
 	'default' => 'Q1',
 	'$wikiId' => 'Q123',
 ],
 
-'WBQualityConstraintsBarId' => [
+'wgWBQualityConstraintsBarId' => [
 	'default' => 'Q2',
 	'$wikiId' => 'Q"\\'\\\\456',
 ],
