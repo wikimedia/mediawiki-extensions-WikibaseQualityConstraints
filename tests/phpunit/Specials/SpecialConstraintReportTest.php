@@ -233,7 +233,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		);
 
 		$matchers['result table'] = tagMatchingOutline(
-			'<table class="wikitable sortable jquery-tablesort"/>'
+			'<table class="wikitable sortable"/>'
 		);
 
 		$matchers['column status'] = both(

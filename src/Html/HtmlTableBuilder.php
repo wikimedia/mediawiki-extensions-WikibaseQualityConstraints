@@ -123,16 +123,19 @@ class HtmlTableBuilder {
 		// Open table
 		$tableClasses = 'wikitable';
 		if ( $this->isSortable ) {
-			$tableClasses .= ' sortable jquery-tablesort';
+			$tableClasses .= ' sortable';
 		}
 		$html = Html::openElement( 'table', [ 'class' => $tableClasses ] );
 
 		// Write headers
+		$html .= Html::openElement( 'thead' );
 		$html .= Html::openElement( 'tr' );
 		foreach ( $this->headers as $header ) {
 			$html .= $header->toHtml();
 		}
 		$html .= Html::closeElement( 'tr' );
+		$html .= Html::closeElement( 'thead' );
+		$html .= Html::openElement( 'tbody' );
 
 		// Write rows
 		foreach ( $this->rows as $row ) {
@@ -149,6 +152,7 @@ class HtmlTableBuilder {
 		}
 
 		// Close table
+		$html .= Html::closeElement( 'tbody' );
 		$html .= Html::closeElement( 'table' );
 
 		return $html;
