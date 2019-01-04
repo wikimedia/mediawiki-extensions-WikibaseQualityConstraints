@@ -217,7 +217,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	SELF.prototype._buildPopup = function ( $content, $container, icon, iconTitleMessageKey, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: icon,
-			iconTitle: mw.message( iconTitleMessageKey ).text(),
+			title: mw.message( iconTitleMessageKey ).text(),
 			flags: flags || '',
 			framed: false,
 			classes: [ 'wbqc-reports-button', 'wikibase-snakview-indicator' ],
