@@ -253,7 +253,7 @@ return [
 			// TODO in the future, get EntityIdParser and WikiPageEntityMetaDataAccessor from $services?
 			$repo = WikibaseRepo::getDefaultInstance();
 			$entityIdParser = $repo->getEntityIdParser();
-			$wikiPageEntityMetaDataAccessor = $repo->getLocalRepoWikiPageMetaDataLookup();
+			$wikiPageEntityMetaDataAccessor = $repo->getLocalRepoWikiPageMetaDataAccessor();
 
 			$resultsSource = new CachingResultsSource(
 				$resultsSource,
