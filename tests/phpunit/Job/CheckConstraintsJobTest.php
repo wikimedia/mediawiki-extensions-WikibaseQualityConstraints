@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
+use Job;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Job\CheckConstraintsJob;
 use Wikibase\DataModel\Entity\ItemId;
@@ -26,6 +27,15 @@ class CheckConstraintsJobTest extends MediaWikiTestCase {
 	private function createJob( $titleString, $params ) {
 		$title = Title::makeTitle( NS_MAIN, $titleString );
 		return new CheckConstraintsJob( $title, $params );
+	}
+
+	public function testCreationFromFactory() {
+		Job::factory(
+			CheckConstraintsJob::COMMAND,
+			Title::newMainPage(),
+			[ 'entityId' => 'Q123' ]
+		);
+		$this->assertTrue( true ); // No exception
 	}
 
 	public function testJobDuplicationInfo() {

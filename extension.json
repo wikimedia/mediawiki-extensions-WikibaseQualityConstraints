@@ -128,7 +128,7 @@
 	},
 	"JobClasses": {
 		"constraintsTableUpdate": "WikibaseQuality\\ConstraintReport\\UpdateConstraintsTableJob::newFromGlobalState",
-		"constraintsRunCheck": "WikibaseQuality\\ConstraintReport\\Job\\CheckConstraintsJob::newFromGlobalState"
+		"constraintsRunCheck": "WikibaseQuality\\ConstraintReport\\Job\\CheckConstraintsJob"
 	},
 	"config": {
 		"WBQualityConstraintsTypeCheckMaxEntities": {
