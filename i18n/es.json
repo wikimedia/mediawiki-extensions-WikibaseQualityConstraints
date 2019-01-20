@@ -8,7 +8,8 @@
 			"2axterix2",
 			"MarcoAurelio",
 			"Themasterriot",
-			"Dgstranz"
+			"Dgstranz",
+			"Tiberius1701"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restricción",
@@ -93,15 +94,15 @@
 	"wbqc-violation-message-sparql-error": "La consulta SPARQL produjo un error.",
 	"wbqc-violation-message-parameters-error-unknown": "No se pudieron importar los parámetros de esta restricción.",
 	"wbqc-violation-message-parameters-error-toolong": "No se pudieron importar los parámetros de esta restricción porque eran demasiado largos.",
-	"wbqc-violation-message-invalid-scope": "$1 no es un ámbito válido para el tipo de restricción $2; los únicos {{PLURAL:$3|ámbito válido|ámbitos válidos}} para este tipo de restricción {{PLURAL:$3|es $5.|2=son $5 y $6.|son: $4}}",
+	"wbqc-violation-message-invalid-scope": "$1 no es un ámbito válido para el tipo de restricción $2; {{PLURAL:$3|el único ámbito válido|los únicos ámbitos válidos}} para este tipo de restricción {{PLURAL:$3|es $5.|2=son $5 y $6.|son: $4}}",
 	"wbqc-violation-message-commons-link-no-existent": "El enlace a Commons debería existir.",
 	"wbqc-violation-message-commons-link-not-well-formed": "El enlace a Commons debería estar bien formado.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "La verificación para el espacio de nombres \"$1\" todavía no está implementada.",
 	"wbqc-violation-message-conflicts-with-property": "Las entidades no deben incluir declaraciones para $1 y $2 a la vez.",
 	"wbqc-violation-message-conflicts-with-claim": "Esta propiedad no debe usarse cuando haya otra declaración usando la propiedad con uno de los valores definidos en los parámetros.",
 	"wbqc-violation-message-diff-within-range": "La diferencia entre $3 ($4) y $1 ($2) debe ser de entre $5 y $6.",
-	"wbqc-violation-message-diff-within-range-leftopen": "La diferencia entre $3 ($4) y $1 ($2) debe ser no mayor que $5.",
-	"wbqc-violation-message-diff-within-range-rightopen": "La diferencia entre $3 ($4) y $1 ($2) debe ser no menor que $5.",
+	"wbqc-violation-message-diff-within-range-leftopen": "La diferencia entre $3 ($4) y $1 ($2) no debe ser mayor de $5.",
+	"wbqc-violation-message-diff-within-range-rightopen": "La diferencia entre $3 ($4) y $1 ($2) no debe ser menor de $5.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propiedad definida en los parámetros debe tener un valor del mismo tipo que esta propiedad.",
 	"wbqc-violation-message-format": "El valor de $1 ($2) debería coincidir con la expresión regular $3.",
 	"wbqc-violation-message-format-clarification": "El valor de $1 ($2) debería coincidir con «$4» (regex: $3).",
@@ -128,9 +129,9 @@
 	"wbqc-violation-message-single-value": "Esta propiedad debería contener un único valor.",
 	"wbqc-violation-message-symmetric": "$1 también debería tener la declaración simétrica $2 $3.",
 	"wbqc-violation-message-unique-value": "El valor de esta propiedad no debe estar presente en ningún otro elemento, pero existe también en {{PLURAL:$1|1=$3.|2=$3 y $4.|los elementos siguientes: $2}}",
-	"wbqc-violation-message-noBounds": "Los valores para $1 no deberían tener límites.",
+	"wbqc-violation-message-noBounds": "Los valores de $1 no deberían tener límites.",
 	"wbqc-violation-message-units-none": "El valor de $1 no debe incluir una unidad.",
-	"wbqc-violation-message-integer": "Los valores para $1 deberían ser enteros, pero $2 tiene una parte fraccional.",
-	"wbqc-violation-message-integer-bounds": "Los valores para $1 deberían ser enteros, pero los límites de $2 tienen una parte fraccional.",
+	"wbqc-violation-message-integer": "Los valores de $1 deberían ser enteros, pero $2 tiene una parte fraccional.",
+	"wbqc-violation-message-integer-bounds": "Los valores de $1 deberían ser enteros, pero los límites de $2 tienen una parte fraccional.",
 	"wbqc-violation-message-citationNeeded": "Las declaraciones de $1 deberían tener al menos una referencia."
 }
