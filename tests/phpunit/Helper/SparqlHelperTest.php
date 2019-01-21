@@ -527,11 +527,13 @@ EOF;
 	 public function testrunQuerySetsLock_if429HeadersAndRetryAfterSet() {
 		$lock = $this->createMock( ExpiryLock::class );
 		$retryAfter = 1000;
-		$responseMock = [ 'Retry-After' => $retryAfter ];
 
 		$requestMock = $this->createMock( \MWHttpRequest::class );
-		$requestMock->method( 'getResponseHeaders' )
-			->willReturn( $responseMock );
+		$requestMock->method( 'getResponseHeader' )
+			->with( $this->callback( function ( $headerName ) {
+				return strtolower( $headerName ) === 'retry-after';
+			} ) )
+			->willReturn( $retryAfter );
 		$requestMock->method( 'getStatus' )
 			->willReturn( 429 );
 

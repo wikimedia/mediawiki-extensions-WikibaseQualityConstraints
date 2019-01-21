@@ -11,6 +11,7 @@ use InvalidArgumentException;
 use MapCacheLRU;
 use MediaWiki\Http\HttpRequestFactory;
 use MWException;
+use MWHttpRequest;
 use Psr\Log\LoggerInterface;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
@@ -601,24 +602,24 @@ EOF;
 	}
 
 	/**
-	 * Get the delaydate of a 429 headered response, which is caused by
+	 * Get the delay date of a 429 headered response, which is caused by
 	 * throttling of to many SPARQL-Requests. The header-format is defined
 	 * in RFC7231 see: https://tools.ietf.org/html/rfc7231#section-7.1.3
 	 *
-	 * @param $responseHeaders
+	 * @param MWHttpRequest $request
 	 *
 	 * @return int|ConvertibleTimestamp
 	 * or SparlHelper::NO_RETRY_AFTER if there is no Retry-After header
 	 * or SparlHelper::EMPTY_RETRY_AFTER if there is an empty Retry-After
 	 * or SparlHelper::INVALID_RETRY_AFTER if there is something wrong with the format
-	 *
 	 */
-	public function getThrottling( array $responseHeaders ) {
-		if ( !array_key_exists( 'Retry-After', $responseHeaders ) ) {
+	public function getThrottling( MWHttpRequest $request ) {
+		$retryAfterValue = $request->getResponseHeader( 'Retry-After' );
+		if ( $retryAfterValue === null ) {
 			return self::NO_RETRY_AFTER;
 		}
 
-		$trimmedRetryAfterValue = trim( $responseHeaders[ 'Retry-After' ] );
+		$trimmedRetryAfterValue = trim( $retryAfterValue );
 		if ( empty( $trimmedRetryAfterValue ) ) {
 			return self::EMPTY_RETRY_AFTER;
 		}
@@ -629,7 +630,7 @@ EOF;
 				return $this->getTimestampInFuture( new DateInterval( 'PT' . $delaySeconds . 'S' ) );
 			}
 		} else {
-			$return = strtotime( $responseHeaders[ 'Retry-After' ] );
+			$return = strtotime( $trimmedRetryAfterValue );
 			if ( !empty( $return ) ) {
 				return new ConvertibleTimestamp( $return );
 			}
@@ -706,7 +707,7 @@ EOF;
 
 		if ( $request->getStatus() === self::HTTP_TOO_MANY_REQUESTS ) {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
-			$throttlingUntil = $this->getThrottling( $request->getResponseHeaders() );
+			$throttlingUntil = $this->getThrottling( $request );
 			if ( !( $throttlingUntil instanceof ConvertibleTimestamp ) ) {
 				$this->loggingHelper->logSparqlHelperTooManyRequestsRetryAfterInvalid( $request );
 				$this->throttlingLock->lock(
