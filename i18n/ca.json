@@ -18,6 +18,7 @@
 	"wbqc-constraintreport-result-table-header-message": "Missatge",
 	"wbqc-constraintreport-no-parameter": "cap",
 	"wbqc-constrainttypehelp-short": "Ajuda",
+	"wbqc-constraintdiscuss-short": "Discussió",
 	"wbqc-cached-generic": "Aquest resultat està emmagatzemat a la memòria cau i pot estar desactualitzat.",
 	"wbqc-cached-minutes": "Aquest resultat està emmagatzemat a la memòria cau i pot estar desactualitzat fins a {{PLURAL:$1|1=un minut|$1&nbsp;minuts}}.",
 	"wbqc-cached-hours": "Aquest resultat està emmagatzemat a la memòria cau i pot estar desactualitzat fins a {{PLURAL:$1|1=una hora|$1&nbsp;hores}}.",
