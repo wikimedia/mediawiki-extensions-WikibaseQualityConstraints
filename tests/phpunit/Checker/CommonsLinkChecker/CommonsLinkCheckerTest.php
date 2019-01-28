@@ -58,6 +58,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			[ NS_CATEGORY, 'Test_category' ],
 			[ NS_MAIN, 'Test_gallery' ],
 			[ 100, 'Test_creator' ],
+			[ 486, 'Test_data' ],
 		];
 
 		foreach ( $pages as list( $namespace, $title ) ) {
@@ -140,6 +141,18 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
 			$this->getConstraintMock( $this->namespaceParameter( 'Creator' ) )
+		);
+
+		$this->assertCompliance( $result );
+	}
+
+	public function testCommonsLinkConstraintValidData() {
+		$value = new StringValue( 'test data' );
+		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+
+		$result = $this->commonsLinkChecker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'Data' ) )
 		);
 
 		$this->assertCompliance( $result );

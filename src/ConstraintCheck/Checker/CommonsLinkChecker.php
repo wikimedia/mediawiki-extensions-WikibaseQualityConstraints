@@ -73,11 +73,11 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * second element is a string to prepend to the title before giving it to the TitleParser
 	 */
 	private function getCommonsNamespace( $namespace ) {
-		// for namespace numbers see mediawiki-config repo, wmf-config/InitialiseSettings.php,
-		// 'wgExtraNamespaces' key, 'commonswiki' subkey
 		switch ( $namespace ) {
 			case '':
 				return [ NS_MAIN, '' ];
+			// extra namespaces, see operations/mediawiki-config.git,
+			// wmf-config/InitialiseSettings.php, 'wgExtraNamespaces' key, 'commonswiki' subkey
 			case 'Creator':
 				return [ 100, '' ];
 			case 'TimedText':
@@ -86,6 +86,10 @@ class CommonsLinkChecker implements ConstraintChecker {
 				return [ 104, '' ];
 			case 'Institution':
 				return [ 106, '' ];
+			// extension namespace, see mediawiki/extensions/JsonConfig.git,
+			// extension.json, 'namespaces' key, third element
+			case 'Data':
+				return [ 486, '' ];
 			default:
 				return [ NS_MAIN, $namespace . ':' ];
 		}
