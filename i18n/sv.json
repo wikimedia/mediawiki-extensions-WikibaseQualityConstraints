@@ -7,6 +7,7 @@
 	"wbqc-constraintreport": "Rapportera begränsning",
 	"wbqc-desc": "Kontrollerar begränsningar på både objekt och egenskaper samt visar resultaten på en specialsida",
 	"wbqc-constraintreport-explanation-part-one": "Denna specialsida utför begränsningskontroller på alla entiteter du vill. Entiteterna hämtas från det realtidsuppdaterande systemet, så varje begränsningsbrott du åtgärdar där kommer direkt att tas bort från denna lista.",
+	"wbqc-constraintreport-explanation-part-two": "Begränsningarna tolkas från uttalanden på egenskaper varje gång dessa uttalanden redigeras, vanligtvis inom några minuter.",
 	"wbqc-constraintreport-form-section": "Kolla begränsningar för entitet",
 	"wbqc-constraintreport-form-submit-label": "Kontrollera",
 	"wbqc-constraintreport-form-entityid-label": "Enhets-ID:",
