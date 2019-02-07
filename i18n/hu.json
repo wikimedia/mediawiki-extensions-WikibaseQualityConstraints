@@ -118,7 +118,7 @@
 	"wbqc-violation-message-valueType-instance": "A(z) „$1” állítások értékének {{PLURAL:$3|1=a(z) $5 osztály|2=a(z) $5 vagy $6 osztály|a következő osztályok egyike}} (vagy {{PLURAL:$3|egy|valamelyikük}} alosztálya) példányának kell lennie, de a(z) $2 nem {{PLURAL:$3|1=az.|2=az.|az: $4}}",
 	"wbqc-violation-message-valueType-subclass": "A(z) „$1” állítások értékének {{PLURAL:$3|1=a(z) $5 osztály|2=a(z) $5 vagy $6 osztály|a következő osztályok egyike}} (vagy {{PLURAL:$3|egy|valamelyikük}} alosztálya) alosztályának kell lennie, de a(z) $2 nem {{PLURAL:$3|1=az.|2=az.|az: $4}}",
 	"wbqc-violation-message-valueType-instanceOrSubclass": "A(z) „$1” állítások értékének {{PLURAL:$3|1=a(z) $5 osztály|2=a(z) $5 vagy $6 osztály|a következő osztályok egyike}} (vagy {{PLURAL:$3|egy|valamelyikük}} alosztálya) példányának vagy alosztályának kell lennie, de a(z) $2 nem {{PLURAL:$3|1=az.|2=az.|az: $4}}",
-	"wbqc-violation-message-target-required-claim": "A(z) $1 egy {{PLURAL:$3|0=$2|1=$2 $5|$2}} állítással kell rendelkezzen{{PLURAL:$3|0=.|1=.|a következő értékek egyikével: $4}}",
+	"wbqc-violation-message-target-required-claim": "A(z) $1 egy {{PLURAL:$3|0=$2|1=$2 $5|$2}} állítással kell rendelkezzen{{PLURAL:$3|0=.|1=.|&#32;a következő értékek egyikével: $4}}",
 	"wbqc-violation-message-unique-value": "A tulajdonság értéke nem szerepelhet másik elemen, de {{PLURAL:$1|1=a(z) $3 elemen|2=a(z) $3 és $4 elemen|a következő elemeken}} is szerepel{{PLURAL:$1|1=.|2=.|: $2}}",
 	"wbqc-violation-message-valueOnly": "A tulajdonság csak egy állítás fő értékeként használható, minősítőként és forráshivatkozásként nem.",
 	"wbqc-violation-message-reference": "A tulajdonság csak a forráshivatkozásokban használható, egy állítás fő értékeként és minősítőként nem."
