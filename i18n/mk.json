@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Bjankuloski06"
+			"Bjankuloski06",
+			"Vlad5250"
 		]
 	},
 	"wbqc-constraintreport": "Извештај за услови",
@@ -99,7 +100,7 @@
 	"wbqc-violation-message-invalid-scope": "$1 не претставува важечки делокруг за условниот тип $2; {{PLURAL:$3|единствениот важечки делокруг|единствените важечки делокрузи}} за условниот тип {{PLURAL:$3|е $5.|2=се $5 и $6.|се: $4}}",
 	"wbqc-violation-message-commons-link-no-existent": "Врската кон Ризницата треба да постои.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Врската кон Ризницата треба да биде добро срочена.",
-	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Провереката на именскиот простор „$1“ сè уште не е воведена.",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Проверката на именскиот простор „$1“ сè уште не е воведена.",
 	"wbqc-violation-message-conflicts-with-property": "Единицата не треба да има искази за $1 и $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Својството не треба да има исказ за $1 ако воедно има исказ за $2 со вредноста $3.",
 	"wbqc-violation-message-contemporary-subject-earlier": "Единиците $1 и $3 треба истовремено да се поврзани преку $2, но најновата конечна вредност на $1 е $4, а најраната почетна вредност на $3 е $5.",
