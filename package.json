@@ -1,15 +1,8 @@
 {
-	"name": "WikibaseQualityConstraints",
-	"version": "0.0.0",
+	"private": true,
 	"scripts": {
 		"test": "grunt test"
 	},
-	"repository": {
-		"type": "git",
-		"url": "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseQualityConstraints"
-	},
-	"author": "BP2014N1",
-	"license": "GPL-2.0-or-later",
 	"devDependencies": {
 		"eslint-config-wikimedia": "0.9.0",
 		"eslint-plugin-compat": "^2.7.0",
