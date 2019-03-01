@@ -196,7 +196,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return string
 	 */
 	protected function getGroupName() {
-		return 'wikibasequality';
+		return 'wikibase';
 	}
 
 	/**
