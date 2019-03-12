@@ -67,7 +67,8 @@
 			"selector": ".oo-ui-icon-{name}",
 			"images": {
 				"mandatory-constraint-violation": "modules/icon/mandatory-constraint-violation.svg",
-				"non-mandatory-constraint-violation": "modules/icon/non-mandatory-constraint-violation.svg"
+				"non-mandatory-constraint-violation": "modules/icon/non-mandatory-constraint-violation.svg",
+				"suggestion-constraint-violation": "modules/icon/suggestion-constraint-violation.svg"
 			}
 		},
 		"wikibase.quality.constraints.ui": {
