@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"WikiPhoenix"
+			"WikiPhoenix",
+			"Jon Harald Søby"
 		]
 	},
-	"wbqc-constraintreport": "Rapportera begränsning",
+	"wbqc-constraintreport": "Begränsningrapporter",
 	"wbqc-desc": "Kontrollerar begränsningar på både objekt och egenskaper samt visar resultaten på en specialsida",
 	"wbqc-constraintreport-explanation-part-one": "Denna specialsida utför begränsningskontroller på alla entiteter du vill. Entiteterna hämtas från det realtidsuppdaterande systemet, så varje begränsningsbrott du åtgärdar där kommer direkt att tas bort från denna lista.",
 	"wbqc-constraintreport-explanation-part-two": "Begränsningarna tolkas från uttalanden på egenskaper varje gång dessa uttalanden redigeras, vanligtvis inom några minuter.",
