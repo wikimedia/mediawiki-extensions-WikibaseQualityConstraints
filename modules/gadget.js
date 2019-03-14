@@ -211,13 +211,13 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @param {jQuery} $content Content to be shown in the popup.
 	 * @param {jQuery} $container The container to which the button is appended.
 	 * @param {string} icon Identifier for an icon as provided by OOUI.
-	 * @param {string} iconTitleMessageKey The message key of the title attribute of the icon.
+	 * @param {string} titleMessageKey The message key of the title attribute of the button.
 	 * @param {string} [flags] Optional custom flags the {@link OO.ui.PopupButtonWidget} can understand.
 	 */
-	SELF.prototype._buildPopup = function ( $content, $container, icon, iconTitleMessageKey, flags /* = '' */ ) {
+	SELF.prototype._buildPopup = function ( $content, $container, icon, titleMessageKey, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: icon,
-			title: mw.message( iconTitleMessageKey ).text(),
+			title: mw.message( titleMessageKey ).text(),
 			flags: flags || '',
 			framed: false,
 			classes: [ 'wbqc-reports-button', 'wikibase-snakview-indicator' ],
