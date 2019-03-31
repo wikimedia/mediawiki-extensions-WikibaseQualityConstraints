@@ -50,6 +50,7 @@
 	"wbqc-cached-days": "Dieses Ergebnis stammt aus dem Cache und kann bis zu {{PLURAL:$1|1=einen Tag|$1 Tage}} alt sein.",
 	"wbqc-dataValueType-wikibase-entityid": "Objektkennung",
 	"apihelp-wbcheckconstraints-description": "Führt Beschränkungsprüfungen zu jedem gewünschten Objekt aus und gibt das Ergebnis zurück.",
+	"apihelp-wbcheckconstraints-summary": "Führt Beschränkungsprüfungen für jedes beliebige Objekt durch und gibt das Ergebnis aus.",
 	"apihelp-wbcheckconstraints-param-id": "Kennung der Objektliste, von der die Daten abgerufen werden sollen. Mehrere Werte mit „|“ oder Ähnlichem trennen.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID-Liste, die eine Behauptung erkennt, um einen Beschränkungsbericht zu prüfen. Mehrere Werte mit „|“ trennen.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Optionaler Filter, um nur die Beschränkungen zurückzugeben, die die angegebenen Beschränkungskennungen haben.",
