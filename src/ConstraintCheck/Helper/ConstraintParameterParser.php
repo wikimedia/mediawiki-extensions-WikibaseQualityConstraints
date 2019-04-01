@@ -568,7 +568,7 @@ class ConstraintParameterParser {
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @throws ConstraintParameterException if the parameter is invalid
-	 * @return string|null 'mandatory' or null
+	 * @return string|null 'mandatory', 'suggestion' or null
 	 */
 	public function parseConstraintStatusParameter( array $constraintParameters ) {
 		$this->checkError( $constraintParameters );
@@ -578,6 +578,14 @@ class ConstraintParameterParser {
 		}
 
 		$mandatoryId = $this->config->get( 'WBQualityConstraintsMandatoryConstraintId' );
+		$supportedStatuses = [ new ItemId( $mandatoryId ) ];
+		if ( $this->config->get( 'WBQualityConstraintsEnableSuggestionConstraintStatus' ) ) {
+			$suggestionId = $this->config->get( 'WBQualityConstraintsSuggestionConstraintId' );
+			$supportedStatuses[] = new ItemId( $suggestionId );
+		} else {
+			$suggestionId = null;
+		}
+
 		$this->requireSingleParameter( $constraintParameters, $constraintStatusId );
 		$snak = $this->snakDeserializer->deserialize( $constraintParameters[$constraintStatusId][0] );
 		$this->requireValueParameter( $snak, $constraintStatusId );
@@ -585,11 +593,16 @@ class ConstraintParameterParser {
 
 		if ( $statusId === $mandatoryId ) {
 			return 'mandatory';
+		} elseif ( $statusId === $suggestionId ) {
+			return 'suggestion';
 		} else {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
 					->withEntityId( new PropertyId( $constraintStatusId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-					->withEntityIdList( [ new ItemId( $mandatoryId ) ], Role::CONSTRAINT_PARAMETER_VALUE )
+					->withEntityIdList(
+						$supportedStatuses,
+						Role::CONSTRAINT_PARAMETER_VALUE
+					)
 			);
 		}
 	}

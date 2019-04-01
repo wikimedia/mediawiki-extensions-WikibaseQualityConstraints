@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\StringValue;
+use HashConfig;
 use MediaWiki\MediaWikiServices;
 use MultiConfig;
 use Wikibase\DataModel\Entity\EntityId;
@@ -19,12 +20,14 @@ use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
@@ -66,13 +69,19 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 
-		$this->setService( ConstraintsServices::CONSTRAINT_PARAMETER_PARSER, $this->getConstraintParameterParser() );
-
 		$config = new MultiConfig( [
+			new HashConfig( [ 'WBQualityConstraintsEnableSuggestionConstraintStatus' => true ] ),
 			$this->getDefaultConfig(),
 			MediaWikiServices::getInstance()->getMainConfig(),
 		] );
 		$this->setService( 'MainConfig', $config );
+
+		$constraintParameterParser = new ConstraintParameterParser(
+			$config,
+			WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory(),
+			[ '' => 'http://wikibase.example/entity/' ]
+		);
+		$this->setService( ConstraintsServices::CONSTRAINT_PARAMETER_PARSER, $constraintParameterParser );
 
 		$this->lookup = new InMemoryEntityLookup();
 		$this->setService( WikibaseServices::ENTITY_LOOKUP, $this->lookup );
@@ -268,6 +277,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 				'pid' => 3,
 				'constraint_type_qid' => 'Is not inside',
 				'constraint_parameters' => '{}'
+			],
+			[
+				'constraint_guid' => 'P5$2234a1ee-0257-4e13-b619-11211c23734a',
+				'pid' => 5,
+				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
+				'constraint_parameters' => json_encode(
+					$this->statusParameter( 'suggestion' )
+				),
 			],
 			[
 				'constraint_guid' => 'P6$ad792000-6a12-413d-9fe5-11d2467b7a92',
@@ -526,6 +543,21 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
 		$this->assertEquals( 'warning', $result[ 0 ]->getStatus(), 'Should be a warning' );
+	}
+
+	public function testCheckOnEntityIdSuggestionConstraint() {
+		$entity = NewItem::withId( 'Q5' )
+			->andStatement( NewStatement::noValueFor( 'P5' ) )
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$results = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
+		$this->assertCount( 1, $results );
+		$result = $results[0];
+		$this->assertSame( 'suggestion', $result->getStatus() );
+		$this->assertArrayHasKey( 'constraint_status', $result->getParameters() );
+		$this->assertSame( [ 'suggestion' ], $result->getParameters()[ 'constraint_status' ] );
 	}
 
 	public function testCheckOnEntityIdSelectConstraintIds() {
