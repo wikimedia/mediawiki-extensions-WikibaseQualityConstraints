@@ -177,9 +177,12 @@ class ImportConstraintEntities extends Maintenance {
 	private function storageExceptionToEntityId( StorageException $storageException ) {
 		$message = $storageException->getMessage();
 		// example messages:
-		// * Item [[Item:Q475|Q475]] already has label "as references" associated with language code en, using the same description text.
-		// * Item [[Q475]] already has label "as references" associated with language code en, using the same description text.
-		// * Property [[Property:P694|P694]] already has label "instance of" associated with language code en.
+		// * Item [[Item:Q475|Q475]] already has label "as references"
+		//   associated with language code en, using the same description text.
+		// * Item [[Q475]] already has label "as references"
+		//   associated with language code en, using the same description text.
+		// * Property [[Property:P694|P694]] already has label "instance of"
+		//   associated with language code en.
 		$pattern = '/[[|]([^][|]*)]] already has label .* associated with language code/';
 		if ( preg_match( $pattern, $message, $matches ) ) {
 			return $matches[1];

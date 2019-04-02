@@ -145,7 +145,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		/** @var PropertyId $property */
 		list( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
-		// checks only the first occurrence of the referenced property (this constraint implies a single value constraint on that property)
+		// checks only the first occurrence of the referenced property
 		foreach ( $context->getSnakGroup( Context::GROUP_NON_DEPRECATED ) as $otherSnak ) {
 			if (
 				!$property->equals( $otherSnak->getPropertyId() ) ||
@@ -198,17 +198,21 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
 		try {
 			$this->constraintParameterParser->parseQuantityRangeParameter(
 				$constraintParameters,
-				$constraint->getConstraintTypeItemId()
+				$constraintTypeItemId
 			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}
 		try {
-			$this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+			$this->constraintParameterParser->parsePropertyParameter(
+				$constraintParameters,
+				$constraintTypeItemId
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}

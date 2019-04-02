@@ -80,11 +80,13 @@ class CheckConstraintParameters extends ApiBase {
 		$language = $repo->getUserLanguage();
 
 		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
-		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $language );
+		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory
+			->getEntityIdFormatter( $language );
 		$formatterOptions = new FormatterOptions();
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
 		$valueFormatterFactory = $repo->getValueFormatterFactory();
-		$dataValueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
+		$dataValueFormatter = $valueFormatterFactory
+			->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
 			$entityIdHtmlLinkFormatter,
@@ -228,9 +230,14 @@ class CheckConstraintParameters extends ApiBase {
 	private function checkPropertyIds( array $propertyIds, ApiResult $result ) {
 		foreach ( $propertyIds as $propertyId ) {
 			$result->addArrayType( $this->getResultPathForPropertyId( $propertyId ), 'assoc' );
-			$allConstraintExceptions = $this->delegatingConstraintChecker->checkConstraintParametersOnPropertyId( $propertyId );
+			$allConstraintExceptions = $this->delegatingConstraintChecker
+				->checkConstraintParametersOnPropertyId( $propertyId );
 			foreach ( $allConstraintExceptions as $constraintId => $constraintParameterExceptions ) {
-				$this->addConstraintParameterExceptionsToResult( $constraintId, $constraintParameterExceptions, $result );
+				$this->addConstraintParameterExceptionsToResult(
+					$constraintId,
+					$constraintParameterExceptions,
+					$result
+				);
 			}
 		}
 	}
@@ -245,7 +252,8 @@ class CheckConstraintParameters extends ApiBase {
 				// already checked as part of checkPropertyIds()
 				continue;
 			}
-			$constraintParameterExceptions = $this->delegatingConstraintChecker->checkConstraintParametersOnConstraintId( $constraintId );
+			$constraintParameterExceptions = $this->delegatingConstraintChecker
+				->checkConstraintParametersOnConstraintId( $constraintId );
 			$this->addConstraintParameterExceptionsToResult( $constraintId, $constraintParameterExceptions, $result );
 		}
 	}
@@ -274,7 +282,11 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param ConstraintParameterException[]|null $constraintParameterExceptions
 	 * @param ApiResult $result
 	 */
-	private function addConstraintParameterExceptionsToResult( $constraintId, $constraintParameterExceptions, ApiResult $result ) {
+	private function addConstraintParameterExceptionsToResult(
+		$constraintId,
+		$constraintParameterExceptions,
+		ApiResult $result
+	) {
 		$path = $this->getResultPathForConstraintId( $constraintId );
 		if ( $constraintParameterExceptions === null ) {
 			$result->addValue(
@@ -335,7 +347,9 @@ class CheckConstraintParameters extends ApiBase {
 		return [
 			'action=wbcheckconstraintparameters&propertyid=P247'
 				=> 'apihelp-wbcheckconstraintparameters-example-propertyid-1',
-			'action=wbcheckconstraintparameters&constraintid=P247$0fe1711e-4c0f-82ce-3af0-830b721d0fba|P225$cdc71e4a-47a0-12c5-dfb3-3f6fc0b6613f'
+			'action=wbcheckconstraintparameters&' .
+			'constraintid=P247$0fe1711e-4c0f-82ce-3af0-830b721d0fba|' .
+			'P225$cdc71e4a-47a0-12c5-dfb3-3f6fc0b6613f'
 				=> 'apihelp-wbcheckconstraintparameters-example-constraintid-2',
 		];
 	}

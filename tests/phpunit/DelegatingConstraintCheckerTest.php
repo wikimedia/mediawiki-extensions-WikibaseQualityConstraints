@@ -310,7 +310,16 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 				'constraint_guid' => 'P9$43053ee8-79da-4326-a2ac-f85098291db3',
 				'pid' => 9,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
-				'constraint_parameters' => '{"P2316":[{"snaktype":"novalue","property":"P2316"}],"P2303":[{"snaktype":"novalue","property":"P2316"}]}'
+				'constraint_parameters' => json_encode( [
+					'P2316' => [ [
+						'snaktype' => 'novalue',
+						'property' => 'P2316',
+					] ],
+					'P2303' => [ [
+						'snaktype' => 'novalue',
+						'property' => 'P2303',
+					] ],
+				] ),
 			],
 			[
 				'constraint_guid' => 'P1$a1b1f3d8-6215-4cb6-9edd-3af126ae134f',
@@ -477,8 +486,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertCount( 1, $result, 'Should be one result' );
-		$this->assertEquals( 'todo', $result[ 0 ]->getStatus(), 'Should be marked as a todo' );
+		$this->assertCount( 1, $result );
+		$this->assertTodo( $result[0] );
 	}
 
 	public function testCheckOnEntityIdNoValue() {
@@ -505,7 +514,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertEquals( 'exception', $result[ 0 ]->getStatus(), 'Should be an exception' );
+		$this->assertEquals( 'exception', $result[ 0 ]->getStatus() );
 	}
 
 	public function testCheckOnEntityIdBrokenException() {
@@ -516,7 +525,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertEquals( 'bad-parameters', $result[ 0 ]->getStatus(), 'Should be a bad parameter but not throw an exception' );
+		$this->assertEquals( 'bad-parameters', $result[ 0 ]->getStatus() );
 	}
 
 	public function testCheckOnEntityIdMandatoryConstraint() {
@@ -542,7 +551,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertEquals( 'warning', $result[ 0 ]->getStatus(), 'Should be a warning' );
+		$this->assertEquals( 'warning', $result[ 0 ]->getStatus() );
 	}
 
 	public function testCheckOnEntityIdSuggestionConstraint() {
@@ -578,7 +587,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			]
 		);
 
-		$this->assertCount( 3, $result, 'Every selected constraint should be represented by one result' );
+		$this->assertCount( 3, $result,
+			'Every selected constraint should be represented by one result' );
 		foreach ( $result as $checkResult ) {
 			$this->assertNotSame( 'todo', $checkResult->getStatus(), 'Constraints should not be unimplemented' );
 		}
@@ -598,7 +608,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$statement->getGuid()
 		);
 
-		$this->assertCount( $this->constraintCount, $result, 'Every constraint should be represented by one result' );
+		$this->assertCount( $this->constraintCount, $result,
+			'Every constraint should be represented by one result' );
 	}
 
 	public function testCheckOnClaimIdEmptyResult() {
@@ -633,52 +644,77 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$entity->getId()
 		);
 
-		$this->assertCount( $this->constraintCount, $result, 'Every constraint should be represented by one result' );
+		$this->assertCount( $this->constraintCount, $result,
+			'Every constraint should be represented by one result' );
 		foreach ( $result as $constraintGuid => $constraintResult ) {
-			$this->assertSame( [], $constraintResult, 'Constraint should have no bad parameters' );
+			$this->assertSame( [], $constraintResult,
+				'Constraint should have no bad parameters' );
 		}
 	}
 
 	public function testCheckConstraintParametersOnPropertyIdWithError() {
 		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new PropertyId( 'P8' ) );
 
-		$this->assertCount( 1, $result, 'Every constraint should be represented by one result' );
-		$this->assertCount( 1, $result['P8$34c8af8e-bb50-4458-994b-f355ff899fff'], 'The constraint should have one exception' );
-		$this->assertInstanceOf( ConstraintParameterException::class, $result['P8$34c8af8e-bb50-4458-994b-f355ff899fff'][0] );
+		$this->assertCount( 1, $result,
+			'Every constraint should be represented by one result' );
+		$this->assertCount( 1, $result['P8$34c8af8e-bb50-4458-994b-f355ff899fff'],
+			'The constraint should have one exception' );
+		$this->assertInstanceOf(
+			ConstraintParameterException::class,
+			$result['P8$34c8af8e-bb50-4458-994b-f355ff899fff'][0]
+		);
 	}
 
 	public function testCheckConstraintParametersOnPropertyIdWithMetaErrors() {
 		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new PropertyId( 'P9' ) );
 
-		$this->assertCount( 1, $result, 'Every constraint should be represented by one result' );
-		$this->assertCount( 2, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'], 'The constraint should have two exceptions' );
-		$this->assertInstanceOf( ConstraintParameterException::class, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][0] );
-		$this->assertInstanceOf( ConstraintParameterException::class, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][1] );
+		$this->assertCount( 1, $result,
+			'Every constraint should be represented by one result' );
+		$this->assertCount( 2, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'],
+			'The constraint should have two exceptions' );
+		$this->assertInstanceOf(
+			ConstraintParameterException::class,
+			$result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][0]
+		);
+		$this->assertInstanceOf(
+			ConstraintParameterException::class,
+			$result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][1]
+		);
 	}
 
 	public function testCheckConstraintParametersOnConstraintId() {
-		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P1$ecb8f617-90f1-4ef3-afab-f4bf3881ec28' );
+		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId(
+			'P1$ecb8f617-90f1-4ef3-afab-f4bf3881ec28'
+		);
 
 		$this->assertSame( [], $result, 'Constraint should exist and have no bad parameters' );
 	}
 
 	public function testCheckConstraintParametersOnConstraintIdWhenConstraintDoesNotExist() {
-		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P1$1735c111-e88c-42f9-8b7a-0692c9c797a3' );
+		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId(
+			'P1$1735c111-e88c-42f9-8b7a-0692c9c797a3'
+		);
 
 		$this->assertNull( $result, 'Constraint should not exist' );
 	}
 
 	public function testCheckConstraintParametersOnConstraintIdWithError() {
-		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P8$34c8af8e-bb50-4458-994b-f355ff899fff' );
+		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId(
+			'P8$34c8af8e-bb50-4458-994b-f355ff899fff'
+		);
 
-		$this->assertCount( 1, $result, 'The constraint should have one exception' );
+		$this->assertCount( 1, $result,
+			'The constraint should have one exception' );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[0] );
 	}
 
 	public function testCheckConstraintParametersOnConstraintIdWithMetaErrors() {
-		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId( 'P9$43053ee8-79da-4326-a2ac-f85098291db3' );
+		$result = $this->constraintChecker->checkConstraintParametersOnConstraintId(
+			'P9$43053ee8-79da-4326-a2ac-f85098291db3'
+		);
 
-		$this->assertCount( 2, $result, 'The constraint should have two exceptions' );
+		$this->assertCount( 2, $result,
+			'The constraint should have two exceptions' );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[0] );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[1] );
 	}

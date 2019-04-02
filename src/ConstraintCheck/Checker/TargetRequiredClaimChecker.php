@@ -88,11 +88,19 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
-		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		$propertyId = $this->constraintParameterParser->parsePropertyParameter(
+			$constraintParameters,
+			$constraintTypeItemId
+		);
 		$parameters['property'] = [ $propertyId ];
 
-		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), false );
+		$items = $this->constraintParameterParser->parseItemsParameter(
+			$constraintParameters,
+			$constraintTypeItemId,
+			false
+		);
 		$parameters['items'] = $items;
 
 		$snak = $context->getSnak();
@@ -110,7 +118,7 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
-				->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM )
+				->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 				->withDataValueType( 'wikibase-entityid' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
@@ -159,14 +167,22 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+			$this->constraintParameterParser->parsePropertyParameter(
+				$constraintParameters,
+				$constraintTypeItemId
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}
 		try {
-			$this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), false );
+			$this->constraintParameterParser->parseItemsParameter(
+				$constraintParameters,
+				$constraintTypeItemId,
+				false
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}

@@ -52,6 +52,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 	}
 
 	public function addDBData() {
+		$config = $this->getDefaultConfig();
 		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', [
 			// a constraint imported from a template (UUID)
@@ -65,25 +66,28 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			[
 				'constraint_guid' => 'P2$2892c48c-53e5-40ef-94a2-274ebf35075c',
 				'pid' => 2,
-				'constraint_type_qid' => $this->getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ),
+				'constraint_type_qid' => $config->get( 'WBQualityConstraintsSingleValueConstraintId' ),
 				'constraint_parameters' => '{}'
 			],
 			// a constraint imported from a different statement (statement ID)
 			[
 				'constraint_guid' => 'P3$1926459f-a4d6-42f5-a46e-e1866a2499ed',
 				'pid' => 3,
-				'constraint_type_qid' => $this->getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ),
+				'constraint_type_qid' => $config->get( 'WBQualityConstraintsSingleValueConstraintId' ),
 				'constraint_parameters' => '{}'
 			],
 		] );
 	}
 
 	public function testExtractParametersFromQualifiers() {
-		$job = UpdateConstraintsTableJob::newFromGlobalState( Title::newFromText( 'constraintsTableUpdate' ), [ 'propertyId' => 'P2' ] );
+		$job = UpdateConstraintsTableJob::newFromGlobalState(
+			Title::newFromText( 'constraintsTableUpdate' ),
+			[ 'propertyId' => 'P2' ]
+		);
 		$class1 = new EntityIdValue( new ItemId( 'Q5' ) );
 		$class2 = new EntityIdValue( new ItemId( 'Q15632617' ) );
 		$quantity = UnboundedQuantityValue::newFromNumber( 50, 'kg' );
-		$date = new TimeValue( '+2000-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN );
+		$date = $this->getTimeValue( '2000-01-01' );
 		$snakP2308A = new PropertyValueSnak(
 			new PropertyId( 'P2308' ),
 			$class1
@@ -106,24 +110,37 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$snakP2305 = new PropertySomeValueSnak(
 			new PropertyId( 'P2305' )
 		);
-		$qualifiers = new SnakList( [ $snakP2308A, $snakP1646, $snakP2308B, $snakP2313, $snakP2310, $snakP2305 ] );
+		$qualifiers = new SnakList( [
+			$snakP2308A,
+			$snakP1646,
+			$snakP2308B,
+			$snakP2313,
+			$snakP2310,
+			$snakP2305,
+		] );
 		$parameters = $job->extractParametersFromQualifiers( $qualifiers );
-		$deserializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory()->newSnakDeserializer();
-		$this->assertEquals( $snakP2308A, $deserializer->deserialize( $parameters['P2308'][0] ), 'P2308 (1)' );
-		$this->assertEquals( $snakP1646, $deserializer->deserialize( $parameters['P1646'][0] ), 'P1646' );
-		$this->assertEquals( $snakP2308B, $deserializer->deserialize( $parameters['P2308'][1] ), 'P2308 (2)' );
-		$this->assertEquals( $snakP2313, $deserializer->deserialize( $parameters['P2313'][0] ), 'P2313' );
-		$this->assertEquals( $snakP2310, $deserializer->deserialize( $parameters['P2310'][0] ), 'P2310' );
-		$this->assertEquals( $snakP2305, $deserializer->deserialize( $parameters['P2305'][0] ), 'P2305' );
+		$deserializer = WikibaseRepo::getDefaultInstance()
+			->getBaseDataModelDeserializerFactory()
+			->newSnakDeserializer();
+		$this->assertEquals( $snakP2308A, $deserializer->deserialize( $parameters['P2308'][0] ) );
+		$this->assertEquals( $snakP1646, $deserializer->deserialize( $parameters['P1646'][0] ) );
+		$this->assertEquals( $snakP2308B, $deserializer->deserialize( $parameters['P2308'][1] ) );
+		$this->assertEquals( $snakP2313, $deserializer->deserialize( $parameters['P2313'][0] ) );
+		$this->assertEquals( $snakP2310, $deserializer->deserialize( $parameters['P2310'][0] ) );
+		$this->assertEquals( $snakP2305, $deserializer->deserialize( $parameters['P2305'][0] ) );
 	}
 
 	public function testExtractConstraintFromStatement_NoParameters() {
-		$job = UpdateConstraintsTableJob::newFromGlobalState( Title::newFromText( 'constraintsTableUpdate' ), [ 'propertyId' => 'P2' ] );
-		$singleValueId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' );
+		$config = $this->getDefaultConfig();
+		$job = UpdateConstraintsTableJob::newFromGlobalState(
+			Title::newFromText( 'constraintsTableUpdate' ),
+			[ 'propertyId' => 'P2' ]
+		);
+		$singleValueId = $config->get( 'WBQualityConstraintsSingleValueConstraintId' );
 		$statementGuid = 'P2$484b7eaf-e86c-4f25-91dc-7ae19f8be8de';
 		$statement = new Statement(
 			new PropertyValueSnak(
-				new PropertyId( $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
+				new PropertyId( $config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
 				new EntityIdValue( new ItemId( $singleValueId ) )
 			)
 		);
@@ -140,7 +157,10 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 	}
 
 	public function testExtractConstraintFromStatement_Parameters() {
-		$job = UpdateConstraintsTableJob::newFromGlobalState( Title::newFromText( 'constraintsTableUpdate' ), [ 'propertyId' => 'P2' ] );
+		$job = UpdateConstraintsTableJob::newFromGlobalState(
+			Title::newFromText( 'constraintsTableUpdate' ),
+			[ 'propertyId' => 'P2' ]
+		);
 
 		$config = $this->getDefaultConfig();
 		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
@@ -175,7 +195,9 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 
 		$constraint = $job->extractConstraintFromStatement( new PropertyId( 'P2' ), $statement );
 
-		$snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
+		$snakSerializer = WikibaseRepo::getDefaultInstance()
+			->getBaseDataModelSerializerFactory()
+			->newSnakSerializer();
 		$this->assertEquals( $typeId, $constraint->getConstraintTypeItemId() );
 		$this->assertEquals( new PropertyId( 'P2' ), $constraint->getPropertyId() );
 		$this->assertEquals( $statementGuid, $constraint->getConstraintId() );
@@ -194,9 +216,13 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 	}
 
 	public function testImportConstraintsForProperty() {
-		$job = UpdateConstraintsTableJob::newFromGlobalState( Title::newFromText( 'constraintsTableUpdate' ), [ 'propertyId' => 'P2' ] );
-		$singleValueId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ) );
-		$propertyConstraintId = new PropertyId( $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyConstraintId' ) );
+		$config = $this->getDefaultConfig();
+		$job = UpdateConstraintsTableJob::newFromGlobalState(
+			Title::newFromText( 'constraintsTableUpdate' ),
+			[ 'propertyId' => 'P2' ]
+		);
+		$singleValueId = new ItemId( $config->get( 'WBQualityConstraintsSingleValueConstraintId' ) );
+		$propertyConstraintId = new PropertyId( $config->get( 'WBQualityConstraintsPropertyConstraintId' ) );
 		$statementGuid = 'P2$484b7eaf-e86c-4f25-91dc-7ae19f8be8de';
 		$statement = new Statement(
 			new PropertyValueSnak(
@@ -381,6 +407,17 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 					'{}'
 				],
 			]
+		);
+	}
+
+	private function getTimeValue( $date ): TimeValue {
+		return new TimeValue(
+			"+{$date}T00:00:00Z",
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
 		);
 	}
 

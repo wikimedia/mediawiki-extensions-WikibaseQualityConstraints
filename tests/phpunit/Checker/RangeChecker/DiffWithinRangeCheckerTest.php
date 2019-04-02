@@ -113,11 +113,11 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		self::$t0001 = new TimeValue( '+00000000001-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN );
-		self::$t1800 = new TimeValue( '+00000001800-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN );
-		self::$t1900 = new TimeValue( '+00000001900-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN );
-		self::$t1970 = new TimeValue( '+00000001970-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN );
-		self::$t2000 = new TimeValue( '+00000002000-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN );
+		self::$t0001 = self::getTimeValue( '0001-01-01' );
+		self::$t1800 = self::getTimeValue( '1800-01-01' );
+		self::$t1900 = self::getTimeValue( '1900-01-01' );
+		self::$t1970 = self::getTimeValue( '1970-01-01' );
+		self::$t2000 = self::getTimeValue( '2000-01-01' );
 		self::$s1970 = NewStatement::forProperty( 'P570' )->withValue( self::$t1970 )->build();
 		self::$i1970 = NewItem::withId( 'Q1' )->andStatement( self::$s1970 );
 	}
@@ -167,7 +167,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -178,7 +181,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -189,7 +195,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -197,12 +206,15 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	public function testDiffWithinRangeConstraintWithinDaysRange() {
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001969-12-24T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN )
+				$this->getTimeValue( '1969-12-24' )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -210,12 +222,15 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	public function testDiffWithinRangeConstraintTooFewDays() {
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001969-12-31T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN )
+				$this->getTimeValue( '1969-12-31' )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -223,12 +238,15 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	public function testDiffWithinRangeConstraintTooManyDays() {
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001969-10-31T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN )
+				$this->getTimeValue( '1969-10-31' )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob5to10DaysParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -237,7 +255,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		// DoB June 1820 and DoD January 1970 has diff within range [0, 150] years
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001820-06-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN )
+				$this->getTimeValue( '1820-06-01' )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
@@ -253,7 +271,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		// because June is after January, even though the year difference is 0 (within range)
 		$entity = self::$i1970
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001970-06-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN )
+				$this->getTimeValue( '1970-06-01' )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
@@ -268,12 +286,12 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		// DoB March 1820 and DoD September 1970 violates diff within range [0, 150] years
 		// because March is before September, even though the year difference is 150 (within range)
 		$fall1970Statement = NewStatement::forProperty( 'P570' )->withValue(
-			new TimeValue( '+00000001970-09-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN )
+			$this->getTimeValue( '1970-09-01' )
 		)->build();
 		$entity = NewItem::withId( 'Q1' )
 			->andStatement( $fall1970Statement )
 			->andStatement( NewStatement::forProperty( 'P569' )->withValue(
-				new TimeValue( '+00000001820-03-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, TimeValue::CALENDAR_GREGORIAN )
+				$this->getTimeValue( '1820-03-01' )
 			) )
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150YearsParameters );
@@ -294,7 +312,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -390,7 +411,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -399,7 +423,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$entity = self::$i1970->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -413,7 +440,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -427,7 +457,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -438,7 +471,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-must-have-equal-types' );
 	}
@@ -448,7 +484,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, $statement ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -463,7 +502,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -478,7 +520,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-leftopen' );
 	}
@@ -493,7 +538,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -508,7 +556,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		);
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, self::$s1970 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, self::$s1970 ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range-rightopen' );
 	}
@@ -534,7 +585,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			)
 		) );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $minuendStatement ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, $minuendStatement ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -553,7 +607,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new QualifierContext( $entity, $statement, $qualifier2 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new QualifierContext( $entity, $statement, $qualifier2 ),
+			$constraint
+		);
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -573,7 +630,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			->build();
 		$constraint = $this->getConstraintMock( $this->dob0to150Parameters );
 
-		$checkResult = $this->checker->checkConstraint( new ReferenceContext( $entity, $statement, $reference, $snak2 ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new ReferenceContext( $entity, $statement, $reference, $snak2 ),
+			$constraint
+		);
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-diff-within-range' );
 	}
@@ -586,7 +646,10 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint(
+			new MainSnakContext( $entity, $statement ),
+			$constraint
+		);
 
 		$this->assertDeprecation( $checkResult );
 	}
@@ -617,6 +680,17 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Q21510854' ) );
 
 		return $mock;
+	}
+
+	private static function getTimeValue( $date ): TimeValue {
+		return new TimeValue(
+			"+{$date}T00:00:00Z",
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
 	}
 
 }

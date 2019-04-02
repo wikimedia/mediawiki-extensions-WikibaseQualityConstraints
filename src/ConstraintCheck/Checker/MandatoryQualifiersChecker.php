@@ -69,8 +69,12 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
-		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		$propertyId = $this->constraintParameterParser->parsePropertyParameter(
+			$constraintParameters,
+			$constraintTypeItemId
+		);
 		$parameters['property'] = [ $propertyId ];
 
 		$message = ( new ViolationMessage( 'wbqc-violation-message-mandatory-qualifier' ) )
@@ -92,9 +96,13 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+			$this->constraintParameterParser->parsePropertyParameter(
+				$constraintParameters,
+				$constraintTypeItemId
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}

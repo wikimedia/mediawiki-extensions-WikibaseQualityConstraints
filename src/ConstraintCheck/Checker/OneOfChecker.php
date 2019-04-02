@@ -67,8 +67,13 @@ class OneOfChecker implements ConstraintChecker {
 
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
-		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), true );
+		$items = $this->constraintParameterParser->parseItemsParameter(
+			$constraintParameters,
+			$constraintTypeItemId,
+			true
+		);
 		$parameters['item'] = $items;
 
 		$snak = $context->getSnak();
@@ -91,9 +96,14 @@ class OneOfChecker implements ConstraintChecker {
 
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), true );
+			$this->constraintParameterParser->parseItemsParameter(
+				$constraintParameters,
+				$constraintTypeItemId,
+				true
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}

@@ -47,8 +47,9 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 					  ->getMock();
 		$sparqlHelper->method( 'matchesRegularExpression' )
 			->will( $this->returnCallback(
-				function( $text, $pattern ) {
-					return preg_match( '/^' . str_replace( '/', '\/', $pattern ) . '$/', $text );
+				function( $text, $regex ) {
+					$pattern = '/^' . str_replace( '/', '\/', $regex ) . '$/';
+					return preg_match( $pattern, $text );
 				}
 			) );
 		$this->formatChecker = new FormatChecker(
@@ -238,14 +239,18 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatConstraintWithSyntaxClarification() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$syntaxClarificationId = $this->getDefaultConfig()
+			->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$statement = NewStatement::forProperty( $syntaxClarificationId )
 			->withValue( '' )
 			->build();
 
 		$result = $this->formatChecker->checkConstraint(
 			new FakeSnakContext( $statement->getMainSnak() ),
-			$this->getConstraintMock( array_merge( $this->formatParameter( '.+' ), $this->syntaxClarificationParameter( 'en', 'nonempty' ) ) )
+			$this->getConstraintMock( array_merge(
+				$this->formatParameter( '.+' ),
+				$this->syntaxClarificationParameter( 'en', 'nonempty' )
+			) )
 		);
 
 		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
@@ -268,7 +273,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			new FakeSnakContext( $snak ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
 		);
-		$this->assertEquals( 'violation', $result->getStatus(), 'check should not comply' );
+		$this->assertViolation( $result );
 	}
 
 	public function testFormatConstraintNoValueSnak() {
@@ -330,7 +335,10 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$entity = NewItem::withId( 'Q1' )
 				->build();
 
-		$checkResult = $this->formatChecker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
+		$checkResult = $this->formatChecker->checkConstraint(
+			new MainSnakContext( $entity, $statement ),
+			$constraint
+		);
 
 		// this constraint is still checked on deprecated statements
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-format-clarification' );

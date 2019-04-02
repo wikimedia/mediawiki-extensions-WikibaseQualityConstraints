@@ -87,11 +87,19 @@ class ConflictsWithChecker implements ConstraintChecker {
 
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
-		$propertyId = $this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		$propertyId = $this->constraintParameterParser->parsePropertyParameter(
+			$constraintParameters,
+			$constraintTypeItemId
+		);
 		$parameters['property'] = [ $propertyId ];
 
-		$items = $this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), false );
+		$items = $this->constraintParameterParser->parseItemsParameter(
+			$constraintParameters,
+			$constraintTypeItemId,
+			false
+		);
 		$parameters['items'] = $items;
 
 		/** @var StatementList $statementList */
@@ -142,14 +150,22 @@ class ConflictsWithChecker implements ConstraintChecker {
 
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parsePropertyParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+			$this->constraintParameterParser->parsePropertyParameter(
+				$constraintParameters,
+				$constraintTypeItemId
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}
 		try {
-			$this->constraintParameterParser->parseItemsParameter( $constraintParameters, $constraint->getConstraintTypeItemId(), false );
+			$this->constraintParameterParser->parseItemsParameter(
+				$constraintParameters,
+				$constraintTypeItemId,
+				false
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}

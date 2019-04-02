@@ -88,8 +88,12 @@ class FormatChecker implements ConstraintChecker {
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
-		$format = $this->constraintParameterParser->parseFormatParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		$format = $this->constraintParameterParser->parseFormatParameter(
+			$constraintParameters,
+			$constraintTypeItemId
+		);
 		$parameters['pattern'] = [ $format ];
 
 		$syntaxClarifications = $this->constraintParameterParser->parseSyntaxClarificationParameter(
@@ -119,7 +123,7 @@ class FormatChecker implements ConstraintChecker {
 				break;
 			default:
 				$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-types-2' ) )
-					->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 					->withDataValueType( 'string' )
 					->withDataValueType( 'monolingualtext' );
 				return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
@@ -142,7 +146,7 @@ class FormatChecker implements ConstraintChecker {
 			}
 		} else {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-security-reason' ) )
-				->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM );
+				->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM );
 			$status = CheckResult::STATUS_TODO;
 		}
 		return new CheckResult( $context, $constraint, $parameters, $status, $message );
@@ -150,9 +154,13 @@ class FormatChecker implements ConstraintChecker {
 
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parseFormatParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+			$this->constraintParameterParser->parseFormatParameter(
+				$constraintParameters,
+				$constraintTypeItemId
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}

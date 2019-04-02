@@ -105,7 +105,12 @@ class CommonsLinkChecker implements ConstraintChecker {
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
-		$namespace = $this->constraintParameterParser->parseNamespaceParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
+
+		$namespace = $this->constraintParameterParser->parseNamespaceParameter(
+			$constraintParameters,
+			$constraintTypeItemId
+		);
 		$parameters['namespace'] = [ $namespace ];
 
 		$snak = $context->getSnak();
@@ -124,7 +129,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		 */
 		if ( $dataValue->getType() !== 'string' ) {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
-				->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM )
+				->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 				->withDataValueType( 'string' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
@@ -133,7 +138,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 
 		try {
 			if ( !$this->commonsLinkIsWellFormed( $commonsLink ) ) {
-				throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
+				throw new MalformedTitleException( 'caught below', $commonsLink );
 			}
 
 			$prefix = $this->getCommonsNamespace( $namespace )[1];
@@ -144,7 +149,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 
 			if ( $normalizedTitle === false ) {
 				if ( $this->valueIncludesNamespace( $commonsLink, $namespace ) ) {
-					throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
+					throw new MalformedTitleException( 'caught below', $commonsLink );
 				} else {
 					$message = new ViolationMessage( 'wbqc-violation-message-commons-link-no-existent' );
 					$status = CheckResult::STATUS_VIOLATION;
@@ -163,9 +168,13 @@ class CommonsLinkChecker implements ConstraintChecker {
 
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parseNamespaceParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+			$this->constraintParameterParser->parseNamespaceParameter(
+				$constraintParameters,
+				$constraintTypeItemId
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}

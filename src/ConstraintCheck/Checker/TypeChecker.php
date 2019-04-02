@@ -93,8 +93,12 @@ class TypeChecker implements ConstraintChecker {
 
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
-		$classes = $this->constraintParameterParser->parseClassParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		$classes = $this->constraintParameterParser->parseClassParameter(
+			$constraintParameters,
+			$constraintTypeItemId
+		);
 		$parameters['class'] = array_map(
 			function( $id ) {
 				return new ItemId( $id );
@@ -102,7 +106,10 @@ class TypeChecker implements ConstraintChecker {
 			$classes
 		);
 
-		$relation = $this->constraintParameterParser->parseRelationParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+		$relation = $this->constraintParameterParser->parseRelationParameter(
+			$constraintParameters,
+			$constraintTypeItemId
+		);
 		$relationIds = [];
 		if ( $relation === 'instance' || $relation === 'instanceOrSubclass' ) {
 			$relationIds[] = $this->config->get( 'WBQualityConstraintsInstanceOfId' );
@@ -138,14 +145,21 @@ class TypeChecker implements ConstraintChecker {
 
 	public function checkConstraintParameters( Constraint $constraint ) {
 		$constraintParameters = $constraint->getConstraintParameters();
+		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
 		try {
-			$this->constraintParameterParser->parseClassParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+			$this->constraintParameterParser->parseClassParameter(
+				$constraintParameters,
+				$constraintTypeItemId
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}
 		try {
-			$this->constraintParameterParser->parseRelationParameter( $constraintParameters, $constraint->getConstraintTypeItemId() );
+			$this->constraintParameterParser->parseRelationParameter(
+				$constraintParameters,
+				$constraintTypeItemId
+			);
 		} catch ( ConstraintParameterException $e ) {
 			$exceptions[] = $e;
 		}
