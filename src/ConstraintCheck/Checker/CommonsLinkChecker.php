@@ -3,9 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use MalformedTitleException;
-use MediaWiki\MediaWikiServices;
-use TitleParser;
-use TitleValue;
+use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
@@ -29,16 +27,16 @@ class CommonsLinkChecker implements ConstraintChecker {
 	private $constraintParameterParser;
 
 	/**
-	 * @var TitleParser
+	 * @var MediaWikiPageNameNormalizer
 	 */
-	private $titleParser;
+	private $pageNameNormalizer;
 
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
-		TitleParser $titleParser
+		MediaWikiPageNameNormalizer $pageNameNormalizer
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
-		$this->titleParser = $titleParser;
+		$this->pageNameNormalizer = $pageNameNormalizer;
 	}
 
 	/**
@@ -137,18 +135,23 @@ class CommonsLinkChecker implements ConstraintChecker {
 			if ( !$this->commonsLinkIsWellFormed( $commonsLink ) ) {
 				throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
 			}
-			list( $defaultNamespace, $prefix ) = $this->getCommonsNamespace( $namespace );
-			$title = $this->titleParser->parseTitle( $prefix . $commonsLink, $defaultNamespace );
-			if ( $this->pageExists( $title ) ) {
-				$message = null;
-				$status = CheckResult::STATUS_COMPLIANCE;
-			} else {
+
+			$prefix = $this->getCommonsNamespace( $namespace )[1];
+			$normalizedTitle = $this->pageNameNormalizer->normalizePageName(
+				$prefix . $commonsLink,
+				'https://commons.wikimedia.org/w/api.php'
+			);
+
+			if ( $normalizedTitle === false ) {
 				if ( $this->valueIncludesNamespace( $commonsLink, $namespace ) ) {
 					throw new MalformedTitleException( 'wbqc-violation-message-commons-link-not-well-formed', $commonsLink ); // caught below
 				} else {
 					$message = new ViolationMessage( 'wbqc-violation-message-commons-link-no-existent' );
 					$status = CheckResult::STATUS_VIOLATION;
 				}
+			} else {
+				$message = null;
+				$status = CheckResult::STATUS_COMPLIANCE;
 			}
 		} catch ( MalformedTitleException $e ) {
 			$message = new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' );
@@ -170,29 +173,6 @@ class CommonsLinkChecker implements ConstraintChecker {
 	}
 
 	/**
-	 * @param TitleValue $title
-	 *
-	 * @return bool
-	 */
-	private function pageExists( TitleValue $title ) {
-		$commonsWikiId = 'commonswiki';
-		if ( defined( 'MW_PHPUNIT_TEST' ) ) {
-			$commonsWikiId = false;
-		}
-
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-		$dbConnection = $lbFactory->getMainLB( $commonsWikiId )->getConnection(
-			DB_REPLICA, false, $commonsWikiId
-		);
-		$row = $dbConnection->selectRow( 'page', '*', [
-			'page_title' => $title->getDBkey(),
-			'page_namespace' => $title->getNamespace()
-		] );
-
-		return $row !== false;
-	}
-
-	/**
 	 * @param string $commonsLink
 	 *
 	 * @return bool
@@ -200,6 +180,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	private function commonsLinkIsWellFormed( $commonsLink ) {
 		$toReplace = [ "_", "%20" ];
 		$compareString = trim( str_replace( $toReplace, '', $commonsLink ) );
+
 		return $commonsLink === $compareString;
 	}
 

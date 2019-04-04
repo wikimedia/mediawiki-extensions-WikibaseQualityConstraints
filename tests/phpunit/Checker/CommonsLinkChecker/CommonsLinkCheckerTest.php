@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\CommonsLinkChecker;
 
-use Title;
+use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
@@ -19,8 +19,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\ConstraintReport\Tests\TitleParserMock;
-use WikiPage;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
@@ -34,7 +32,7 @@ use WikiPage;
  */
 class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters, ResultAssertions, TitleParserMock;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var CommonsLinkChecker
@@ -43,34 +41,32 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->commonsLinkChecker = new CommonsLinkChecker(
-			$this->getConstraintParameterParser(),
-			$this->getTitleParserMock()
-		);
-		$this->tablesUsed[] = 'page';
-	}
+		$pageNameNormalizer = $this
+			->getMockBuilder( MediaWikiPageNameNormalizer::class )
+			->disableOriginalConstructor()
+			->getMock();
 
-	public function addDBData() {
-		$this->db->delete( 'page', '*' );
-
-		$pages = [
-			[ NS_FILE, 'Test_image.jpg' ],
-			[ NS_CATEGORY, 'Test_category' ],
-			[ NS_MAIN, 'Test_gallery' ],
-			[ 100, 'Test_creator' ],
-			[ 486, 'Test_data' ],
+		$valueMap = [
+			'File:File:test image.jpg' => false,
+			'File:test image.jpg' => 'File:Test image.jpg',
+			'Category:test category' => 'Category:Test category',
+			'test gallery' => 'Test gallery',
+			'test creator' => 'Creator:Test creator',
+			'test data' => 'Data:Test data',
+			'File:no image.jpg' => false,
 		];
 
-		foreach ( $pages as list( $namespace, $title ) ) {
-			WikiPage::factory( Title::makeTitle( $namespace, $title ) )
-				->insertOn( $this->db );
-			/*
-			 * insertOn() says it *must* be followed by creating a revision and such,
-			 * but that’s just way too slow, and apparently not necessary for tests.
-			 * (But in case this breaks: try ->doEditContent( new TextContent( '' ), 'summary' );
-			 * instead of ->insertOn(), which is the method that does everything together.)
-			 */
-		}
+		$pageNameNormalizer
+			->method( 'normalizePageName' )
+			->willReturnCallback( function ( $pageName, $apiUrl ) use ( $valueMap ) {
+				$this->assertSame( 'https://commons.wikimedia.org/w/api.php', $apiUrl );
+				return $valueMap[$pageName];
+			} );
+
+		$this->commonsLinkChecker = new CommonsLinkChecker(
+			$this->getConstraintParameterParser(),
+			$pageNameNormalizer
+		);
 	}
 
 	public function testCommonsLinkConstraintValid() {
@@ -166,6 +162,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			new FakeSnakContext( $snak ),
 			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
+
 		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-no-existent' );
 	}
 
@@ -177,6 +174,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			new FakeSnakContext( $snak ),
 			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
+
 		$this->assertViolation( $result, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
@@ -187,6 +185,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			new FakeSnakContext( $snak ),
 			$this->getConstraintMock( $this->namespaceParameter( 'File' ) )
 		);
+
 		$this->assertCompliance( $result );
 	}
 
