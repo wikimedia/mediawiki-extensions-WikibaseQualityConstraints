@@ -7,6 +7,8 @@ use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
+use HashConfig;
+use MultiConfig;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -15,10 +17,12 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
@@ -873,7 +877,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		);
 	}
 
-	public function testParseConstraintStatusParameter() {
+	public function testParseConstraintStatusParameter_mandatory() {
 		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
 		$mandatoryId = $this->getDefaultConfig()->get( 'WBQualityConstraintsMandatoryConstraintId' );
 		$snak = new PropertyValueSnak( new PropertyId( $constraintStatusId ), new EntityIdValue( new ItemId( $mandatoryId ) ) );
@@ -883,6 +887,38 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		);
 
 		$this->assertEquals( 'mandatory', $parsed );
+	}
+
+	public function testParseConstraintStatusParameter_suggestion_disabled() {
+		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$suggestionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSuggestionConstraintId' );
+		$snak = new PropertyValueSnak( new PropertyId( $constraintStatusId ), new EntityIdValue( new ItemId( $suggestionId ) ) );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseConstraintStatusParameter',
+			[ [ $constraintStatusId => [ $this->getSnakSerializer()->serialize( $snak ) ] ] ],
+			'wbqc-violation-message-parameter-oneof'
+		);
+	}
+
+	public function testParseConstraintStatusParameter_suggestion_enabled() {
+		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$suggestionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSuggestionConstraintId' );
+		$snak = new PropertyValueSnak( new PropertyId( $constraintStatusId ), new EntityIdValue( new ItemId( $suggestionId ) ) );
+		$constraintParameterParser = new ConstraintParameterParser(
+			new MultiConfig( [
+				new HashConfig( [ 'WBQualityConstraintsEnableSuggestionConstraintStatus' => true ] ),
+				$this->getDefaultConfig()
+			] ),
+			WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory(),
+			[ '' => 'http://wikibase.example/entity/' ]
+		);
+
+		$parsed = $constraintParameterParser->parseConstraintStatusParameter(
+			[ $constraintStatusId => [ $this->getSnakSerializer()->serialize( $snak ) ] ]
+		);
+
+		$this->assertEquals( 'suggestion', $parsed );
 	}
 
 	public function testParseConstraintStatusParameter_Missing() {

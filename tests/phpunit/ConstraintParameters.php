@@ -281,6 +281,9 @@ trait ConstraintParameters {
 			case 'mandatory':
 				$configKey = 'WBQualityConstraintsMandatoryConstraintId';
 				break;
+			case 'suggestion':
+				$configKey = 'WBQualityConstraintsSuggestionConstraintId';
+				break;
 			default:
 				throw new InvalidArgumentException( '$status must be mandatory' );
 		}

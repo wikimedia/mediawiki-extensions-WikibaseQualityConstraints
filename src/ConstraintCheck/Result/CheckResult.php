@@ -51,6 +51,13 @@ class CheckResult {
 	 */
 	const STATUS_WARNING = 'warning';
 	/**
+	 * The statement violates the constraint, but the constraint is just a suggestion.
+	 *
+	 * DelegatingConstraintChecker downgrades violations to suggestions automatically based on the constraint parameters;
+	 * constraint checkers should not assign this status directly.
+	 */
+	const STATUS_SUGGESTION = 'suggestion';
+	/**
 	 * The constraint is not checked on this kind of snak
 	 * (main snak, qualifier or reference),
 	 * so the constraint check is skipped.

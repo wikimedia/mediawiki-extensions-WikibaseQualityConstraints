@@ -2,7 +2,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	'use strict';
 
 	var defaultConfig = {
-		CACHED_STATUSES: 'violation|warning|bad-parameters',
+		CACHED_STATUSES: 'violation|warning|suggestion|bad-parameters',
 		WBCHECKCONSTRAINTS_MAX_ID_COUNT: 50
 	};
 
@@ -335,6 +335,10 @@ module.exports = ( function ( mw, wb, $, OO ) {
 						label: mw.message( 'wbqc-potentialissues-short' ).text()
 					},
 					{
+						status: 'suggestion',
+						label: mw.message( 'wbqc-suggestions-short' ).text()
+					},
+					{
 						status: 'bad-parameters',
 						label: mw.message( 'wbqc-parameterissues-short' ).text(),
 						subheading: mw.message( 'wbqc-parameterissues-long' ).text(),
@@ -433,16 +437,32 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	SELF.prototype._addResultsToSnak = function ( results, $snak ) {
 		var reports = results.map( this._buildReport.bind( this ) ),
 			list = this._buildReportList( reports ),
-			haveMandatoryViolations;
+			icon,
+			titleMessageKey;
 
 		if ( list !== null ) {
-			haveMandatoryViolations = list.items[ 0 ].status === 'violation';
+			switch ( list.items[ 0 ].status ) {
+				case 'violation':
+					icon = 'mandatory-constraint-violation';
+					titleMessageKey = 'wbqc-issues-long';
+					break;
+				case 'warning':
+					icon = 'non-mandatory-constraint-violation';
+					titleMessageKey = 'wbqc-potentialissues-long';
+					break;
+				case 'suggestion':
+					icon = 'suggestion-constraint-violation';
+					titleMessageKey = 'wbqc-suggestions-long';
+					break;
+				default:
+					throw new Error( 'unexpected status ' + list.items[ 0 ].status );
+			}
 
 			this._buildPopup(
 				list.$element,
 				$snak.find( '.wikibase-snakview-indicators' ),
-				( haveMandatoryViolations ? '' : 'non-' ) + 'mandatory-constraint-violation',
-				haveMandatoryViolations ? 'wbqc-issues-long' : 'wbqc-potentialissues-long'
+				icon,
+				titleMessageKey
 			);
 			return true;
 		} else {

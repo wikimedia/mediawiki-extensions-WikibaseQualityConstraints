@@ -574,29 +574,7 @@ class DelegatingConstraintChecker {
 
 			$this->addMetadata( $context, $result );
 
-			try {
-				$constraintStatus = $this->constraintParameterParser
-					->parseConstraintStatusParameter( $constraint->getConstraintParameters() );
-			} catch ( ConstraintParameterException $e ) {
-				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
-				$constraintStatus = null;
-			}
-			if ( $constraintStatus === null ) {
-				// downgrade violation to warning
-				if ( $result->getStatus() === CheckResult::STATUS_VIOLATION ) {
-					$result->setStatus( CheckResult::STATUS_WARNING );
-				}
-			} else {
-				if ( $constraintStatus !== 'mandatory' ) {
-					// @codeCoverageIgnoreStart
-					throw new LogicException(
-						"Unknown constraint status '$constraintStatus', " .
-						"only known status is 'mandatory'"
-					);
-					// @codeCoverageIgnoreEnd
-				}
-				$result->addParameter( 'constraint_status', $constraintStatus );
-			}
+			$this->downgradeResultStatus( $context, $result );
 
 			$this->loggingHelper->logConstraintCheck(
 				$context,
@@ -648,6 +626,39 @@ class DelegatingConstraintChecker {
 		] ) );
 	}
 
+	private function downgradeResultStatus( Context $context, CheckResult &$result ) {
+		$constraint = $result->getConstraint();
+		try {
+			$constraintStatus = $this->constraintParameterParser
+				->parseConstraintStatusParameter( $constraint->getConstraintParameters() );
+		} catch ( ConstraintParameterException $e ) {
+			$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
+			$constraintStatus = null;
+		}
+		if ( $constraintStatus === null ) {
+			// downgrade violation to warning
+			if ( $result->getStatus() === CheckResult::STATUS_VIOLATION ) {
+				$result->setStatus( CheckResult::STATUS_WARNING );
+			}
+		} elseif ( $constraintStatus === 'suggestion' ) {
+			// downgrade violation to suggestion
+			if ( $result->getStatus() === CheckResult::STATUS_VIOLATION ) {
+				$result->setStatus( CheckResult::STATUS_SUGGESTION );
+			}
+			$result->addParameter( 'constraint_status', $constraintStatus );
+		} else {
+			if ( $constraintStatus !== 'mandatory' ) {
+				// @codeCoverageIgnoreStart
+				throw new LogicException(
+					"Unknown constraint status '$constraintStatus', " .
+					"only known status is 'mandatory'"
+				);
+				// @codeCoverageIgnoreEnd
+			}
+			$result->addParameter( 'constraint_status', $constraintStatus );
+		}
+	}
+
 	/**
 	 * @param CheckResult[] $result
 	 *
@@ -664,6 +675,7 @@ class DelegatingConstraintChecker {
 				CheckResult::STATUS_BAD_PARAMETERS => $orderNum++,
 				CheckResult::STATUS_VIOLATION => $orderNum++,
 				CheckResult::STATUS_WARNING => $orderNum++,
+				CheckResult::STATUS_SUGGESTION => $orderNum++,
 				CheckResult::STATUS_EXCEPTION => $orderNum++,
 				CheckResult::STATUS_COMPLIANCE => $orderNum++,
 				CheckResult::STATUS_DEPRECATED => $orderNum++,

@@ -273,6 +273,7 @@ class CheckConstraints extends ApiBase {
 					CheckResult::STATUS_COMPLIANCE,
 					CheckResult::STATUS_VIOLATION,
 					CheckResult::STATUS_WARNING,
+					CheckResult::STATUS_SUGGESTION,
 					CheckResult::STATUS_EXCEPTION,
 					CheckResult::STATUS_NOT_IN_SCOPE,
 					CheckResult::STATUS_DEPRECATED,
@@ -284,6 +285,7 @@ class CheckConstraints extends ApiBase {
 				ApiBase::PARAM_DFLT => implode( '|', [
 					CheckResult::STATUS_VIOLATION,
 					CheckResult::STATUS_WARNING,
+					CheckResult::STATUS_SUGGESTION,
 					CheckResult::STATUS_BAD_PARAMETERS,
 				] ),
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],

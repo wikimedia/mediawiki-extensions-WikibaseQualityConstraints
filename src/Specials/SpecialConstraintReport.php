@@ -557,6 +557,9 @@ class SpecialConstraintReport extends SpecialPage {
 	private function formatStatus( $status ) {
 		$messageName = "wbqc-constraintreport-status-" . strtolower( $status );
 		$statusIcons = [
+			CheckResult::STATUS_SUGGESTION => [
+				'icon' => 'suggestion-constraint-violation',
+			],
 			CheckResult::STATUS_WARNING => [
 				'icon' => 'non-mandatory-constraint-violation',
 			],

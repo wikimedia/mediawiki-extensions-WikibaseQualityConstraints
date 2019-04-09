@@ -76,7 +76,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 	describe( 'config', function () {
 		it( 'has default values', function () {
 			var gadget = new Gadget();
-			expect( gadget.config.CACHED_STATUSES, 'to equal', 'violation|warning|bad-parameters' );
+			expect( gadget.config.CACHED_STATUSES, 'to equal', 'violation|warning|suggestion|bad-parameters' );
 			expect( gadget.config.WBCHECKCONSTRAINTS_MAX_ID_COUNT, 'to equal', 50 );
 		} );
 
