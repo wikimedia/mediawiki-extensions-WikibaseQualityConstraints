@@ -651,7 +651,7 @@ class DelegatingConstraintChecker {
 				// @codeCoverageIgnoreStart
 				throw new LogicException(
 					"Unknown constraint status '$constraintStatus', " .
-					"only known status is 'mandatory'"
+					"only known statuses are 'mandatory' and 'suggestion'"
 				);
 				// @codeCoverageIgnoreEnd
 			}

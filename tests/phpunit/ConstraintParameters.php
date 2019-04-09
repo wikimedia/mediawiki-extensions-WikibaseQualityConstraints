@@ -272,7 +272,7 @@ trait ConstraintParameters {
 	}
 
 	/**
-	 * @param string $status (the only currently supported status is 'mandatory')
+	 * @param string $status ('mandatory' or 'suggestion')
 	 * @return array[]
 	 */
 	public function statusParameter( $status ) {
@@ -285,7 +285,7 @@ trait ConstraintParameters {
 				$configKey = 'WBQualityConstraintsSuggestionConstraintId';
 				break;
 			default:
-				throw new InvalidArgumentException( '$status must be mandatory' );
+				throw new InvalidArgumentException( '$status must be mandatory or suggestion' );
 		}
 		return [
 			$statusParameterId => [ $this->getSnakSerializer()->serialize(
