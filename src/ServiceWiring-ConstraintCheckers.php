@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CitationNeededChecker;
@@ -153,15 +154,10 @@ return [
 	},
 
 	ConstraintCheckerServices::COMMONS_LINK_CHECKER => function( MediaWikiServices $services ) {
-		// TODO return different implementations for:
-		// - Wikimedia production ('commonswiki' database available)
-		// - InstantCommons wikis
-		// - own Commons wikis
-		// - …
-		// ? (see also T169538)
+		$pageNameNormalizer = new MediaWikiPageNameNormalizer();
 		return new CommonsLinkChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
-			$services->getTitleParser()
+			$pageNameNormalizer
 		);
 	},
 
