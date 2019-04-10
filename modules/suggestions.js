@@ -35,7 +35,7 @@
 			} );
 	}
 
-	function createItemsFromIdsFetchLabels( repoApiUrl, language, ids, filter ) {
+	function createItemsFromIdsFetchLabels( repoApiUrl, language, ids, filter, articlePathPattern ) {
 		return getJsonCached( repoApiUrl + '?action=wbgetentities&props=labels|descriptions&format=json&languages=' + language + '&ids=' + ids.join( '|' ) ).then( function ( ld ) {
 			var data = [],
 				item = null;
@@ -44,7 +44,8 @@
 					id: id,
 					label: ld.entities[ id ] && ld.entities[ id ].labels[ language ] && ld.entities[ id ].labels[ language ].value || '',
 					description: ld.entities[ id ] && ld.entities[ id ].descriptions[ language ] && ld.entities[ id ].descriptions[ language ].value || '',
-					rating: 1
+					rating: 1,
+					url: articlePathPattern.replace( '$1', 'Special:EntityPage/' + id )
 				};
 
 				if ( !filter( item.label + item.description ) && ( item.label !== '' || item.description !== '' ) ) {
@@ -56,7 +57,7 @@
 		} );
 	}
 
-	function createItemsFromIds( repoApiUrl, language, ids, filter ) {
+	function createItemsFromIds( repoApiUrl, language, ids, filter, articlePathPattern ) {
 		var $deferred = $.Deferred(),
 			promises = [],
 			itemList = [],
@@ -65,7 +66,13 @@
 			};
 
 		while ( ids.length > 0 ) {
-			promises.push( createItemsFromIdsFetchLabels( repoApiUrl, language, ids.splice( 0, MAX_LABELS_API_LIMIT ), filter ).then( addItems ) );
+			promises.push( createItemsFromIdsFetchLabels(
+				repoApiUrl,
+				language,
+				ids.splice( 0, MAX_LABELS_API_LIMIT ),
+				filter,
+				articlePathPattern
+			).then( addItems ) );
 		}
 
 		$.when.apply( $, promises ).then( function () {
@@ -115,6 +122,8 @@
 			constraintQualifierOfPropertyId = mw.config.get( 'wbQualityConstraintsQualifierOfPropertyConstraintId' ),
 			mainSnakPropertyId = getMainSnakPropertyId( data.element ),
 			isGloballyEnabled = mw.config.get( 'wbQualityConstraintsSuggestionsGloballyEnabled' ),
+			wbRepo = mw.config.get( 'wbRepo' ),
+			articlePathPattern = wbRepo.url + wbRepo.articlePath,
 			constraintId = null,
 			qualifierId = null,
 			filter = function ( term ) {
@@ -152,7 +161,7 @@
 			constraintId,
 			qualifierId
 		).then( function ( oneOfIds ) {
-			return createItemsFromIds( data.options.url, data.options.language, oneOfIds, filter );
+			return createItemsFromIds( data.options.url, data.options.language, oneOfIds, filter, articlePathPattern );
 		} ) );
 
 	} );
