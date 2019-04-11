@@ -39,14 +39,16 @@ class CheckConstraintsJobTest extends MediaWikiTestCase {
 	}
 
 	public function testJobDuplicationInfo() {
-		$params = [ 'entityId' => self::ENTITY_ID ];
+		$params = [
+			'entityId' => self::ENTITY_ID,
+			'namespace' => NS_MAIN,
+			'title' => self::JOB_TITLE_STRING,
+		];
 		$job = $this->createJob( self::JOB_TITLE_STRING, $params );
 
 		$this->assertEquals(
 			[
 				'type' => CheckConstraintsJob::COMMAND,
-				'namespace' => NS_MAIN,
-				'title' => self::JOB_TITLE_STRING,
 				'params' => $params
 			],
 			$job->getDeduplicationInfo()
