@@ -173,8 +173,5 @@
 	"wbqc-violation-message-citationNeeded": "Statements for $1 should have at least one reference.",
 	"wbqc-violation-message-property-scope": "The property $1 should not be used in this location ($2). The only valid {{PLURAL:$3|location|locations}} for this property {{PLURAL:$3|is $5.|are: $4}}",
 
-	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such.",
-
-	"wbqc-beta-feature-label-message": "Entity suggestions from constraint definitions",
-	"wbqc-beta-feature-description-message": "Enable entity suggestions derived from constraint definitions on property pages."
+	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such."
 }
