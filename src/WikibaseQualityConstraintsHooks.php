@@ -9,7 +9,6 @@ use JobSpecification;
 use MediaWiki\MediaWikiServices;
 use OutputPage;
 use Skin;
-use User;
 use Wikibase\Change;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\EntityChange;
@@ -142,34 +141,6 @@ final class WikibaseQualityConstraintsHooks {
 		}
 
 		$out->addModules( 'wikibase.quality.constraints.gadget' );
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetBetaFeaturePreferences
-	 *
-	 * @param User $user
-	 * @param array[] &$prefs
-	 */
-	public static function onGetBetaFeaturePreferences( User $user, array &$prefs ) {
-		$config = MediaWikiServices::getInstance()->getMainConfig();
-		$extensionAssetsPath = $config->get( 'ExtensionAssetsPath' );
-		if ( $config->get( 'WBQualityConstraintsSuggestionsBetaFeature' ) ) {
-			$prefs['constraint-suggestions'] = [
-					'label-message' => 'wbqc-beta-feature-label-message',
-					'desc-message' => 'wbqc-beta-feature-description-message',
-					'screenshot' => [
-							'ltr' => "$extensionAssetsPath/WikibaseQualityConstraints/resources/ConstraintSuggestions-beta-features-ltr.svg",
-							'rtl' => "$extensionAssetsPath/WikibaseQualityConstraints/resources/ConstraintSuggestions-beta-features-rtl.svg",
-					],
-					'info-link'
-					=> 'https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Constraints_suggestions',
-					'discussion-link'
-					=> 'https://www.mediawiki.org/wiki/Help_talk:Constraints_suggestions',
-					'requirements' => [
-							'javascript' => true,
-					],
-			];
-		}
 	}
 
 	/**

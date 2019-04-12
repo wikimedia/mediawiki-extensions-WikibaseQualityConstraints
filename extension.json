@@ -31,8 +31,7 @@
 		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange",
 		"ArticlePurge": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onArticlePurge",
 		"BeforePageDisplay": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onBeforePageDisplay",
-		"MakeGlobalVariablesScript": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::addVariables",
-		"GetBetaFeaturePreferences": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onGetBetaFeaturePreferences"
+		"MakeGlobalVariablesScript": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::addVariables"
 	},
 	"SpecialPages": {
 		"ConstraintReport": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState"
