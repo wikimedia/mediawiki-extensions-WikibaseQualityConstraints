@@ -121,7 +121,6 @@
 			constraintsPropertyId = mw.config.get( 'wbQualityConstraintsPropertyId' ),
 			constraintQualifierOfPropertyId = mw.config.get( 'wbQualityConstraintsQualifierOfPropertyConstraintId' ),
 			mainSnakPropertyId = getMainSnakPropertyId( data.element ),
-			isGloballyEnabled = mw.config.get( 'wbQualityConstraintsSuggestionsGloballyEnabled' ),
 			wbRepo = mw.config.get( 'wbRepo' ),
 			articlePathPattern = wbRepo.url + wbRepo.articlePath,
 			constraintId = null,
@@ -144,10 +143,6 @@
 		if ( !isQualifierContext( data.element ) && data.options.type === 'item' ) {
 			constraintId = oneOfConstraintId;
 			qualifierId = constraintQualifierOfPropertyId;
-		}
-
-		if ( !isGloballyEnabled && mainSnakPropertyId !== propertyConstraintId ) {
-			return;
 		}
 
 		if ( !constraintId || !qualifierId ) {

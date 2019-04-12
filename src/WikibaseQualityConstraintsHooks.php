@@ -2,10 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
-use BetaFeatures;
 use Config;
 use DatabaseUpdater;
-use ExtensionRegistry;
 use JobQueueGroup;
 use JobSpecification;
 use MediaWiki\MediaWikiServices;
@@ -187,15 +185,6 @@ final class WikibaseQualityConstraintsHooks {
 		$vars['wbQualityConstraintsAllowedQualifierConstraintId'] = $config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' );
 		$vars['wbQualityConstraintsPropertyId'] = $config->get( 'WBQualityConstraintsPropertyId' );
 		$vars['wbQualityConstraintsQualifierOfPropertyConstraintId'] = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-
-		$vars['wbQualityConstraintsSuggestionsGloballyEnabled'] = false;
-
-		if ( $config->get( 'WBQualityConstraintsSuggestionsBetaFeature' ) &&
-			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) &&
-			BetaFeatures::isFeatureEnabled( $out->getUser(), 'constraint-suggestions' )
-			) {
-			$vars['wbQualityConstraintsSuggestionsGloballyEnabled'] = true;
-		}
 	}
 
 }
