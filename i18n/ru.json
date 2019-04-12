@@ -9,7 +9,8 @@
 			"Michgrig",
 			"Happy13241",
 			"Ole Yves",
-			"Stjn"
+			"Stjn",
+			"Kareyac"
 		]
 	},
 	"wbqc-constraintreport-form-section": "Проверьте ограничения для сущности",
@@ -38,6 +39,7 @@
 	"wbqc-issues-long": "У этого утверждения обнаружен ряд проблем.",
 	"wbqc-potentialissues-short": "Возможные проблемы",
 	"wbqc-potentialissues-long": "У этого утверждения обнаружен ряд возможных проблем.",
+	"wbqc-suggestions-short": "Предложения",
 	"wbqc-badparameters-short": "Неверные параметры",
 	"wbqc-constrainttypehelp-short": "Помощь",
 	"wbqc-constraintdiscuss-short": "Обсудить",

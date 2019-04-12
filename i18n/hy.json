@@ -4,5 +4,6 @@
 			"Kareyac"
 		]
 	},
-	"wbqc-violation-message-type-relation-subclass": "ենթադասեր"
+	"wbqc-constraintreport-status-suggestion": "Առաջարկություն",
+	"wbqc-suggestions-short": "Առաջարկություններ"
 }
