@@ -30,6 +30,7 @@
 	"wbqc-violation-message-multi-value": "Denne eigenskapen skal ha meir enn éin verdi.",
 	"wbqc-violation-message-type-instance": "Einingar som nyttar eigenskapen $1 bør vera førekomstar av {{PLURAL:$3|1=$5|2=$5 eller $6|ein av klassane under}} (eller av {{PLURAL:$3|1=ein av underklassane hans|2=ein av underklassane deira|ein av underklassane deira}}), men $2 {{PLURAL:$3|1=er ikkje det.|2=er ikkje det.|er ikkje det: $4}}",
 	"wbqc-violation-message-type-instanceOrSubclass": "Einingar som nyttar eigenskapen $1 bør vera førekomstar eller underklassar av {{PLURAL:$3|1=$5|2=$5 eller $6|ein av klassane under}} (eller av {{PLURAL:$3|1=ein av underklassane hans|2=ein av underklassane deira|ein av underklassane deira}}), men $2 {{PLURAL:$3|1=er ikkje det.|2=er ikkje det.|er ikkje det: $4}}",
+	"wbqc-violation-message-valueType-instance": "Verdiar i $1-utsegner bør vera førekomstar av {{PLURAL:$3|1=$5|2=$5 eller $6|ein av desse klassane: $4}} (eller {{PLURAL:$3|1=ein underklasse av han|2=ein underklasse av dei|ein av underklassane deira}}), men $2 er ikkje det",
 	"wbqc-violation-message-target-required-claim": "$1 bør ha {{PLURAL:$3|0=ei $2-utsegn.|1=ei $2-utsegn med verdien $5.|ei $2-utsegn med ein av desse verdiane: $4}}",
 	"wbqc-violation-message-units-none": "Verdien til $1 bør ikkje ha ei eining.",
 	"wbqc-violation-message-units": "Verdien til $1 bør ha {{PLURAL:$2|1=eininga $4.|2=eininga $4 eller $5.|ein av desse einingane: $3}}",
