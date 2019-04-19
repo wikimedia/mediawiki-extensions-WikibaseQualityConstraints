@@ -328,15 +328,20 @@ class CachingResultsSource implements ResultsSource {
 
 	/**
 	 * @param EntityId $entityId
+	 * @param int $forRevision Requested revision of $entityId
+	 *            If this parameter is not zero, the results are returned if this is the latest revision,
+	 *            otherwise null is returned, since we can't get constraints for past revisions.
 	 * @return CachedCheckResults|null
 	 */
 	public function getStoredResults(
-		EntityId $entityId
+		EntityId $entityId,
+		$forRevision = 0
 	) {
 		$value = $this->cache->get( $entityId, $curTTL, [], $asOf );
 		$now = call_user_func( $this->microtime, true );
 
-		$dependencyMetadata = $this->checkDependencyMetadata( $value );
+		$dependencyMetadata = $this->checkDependencyMetadata( $value,
+			[ $entityId->getSerialization() => $forRevision ] );
 		if ( $dependencyMetadata === null ) {
 			return null;
 		}
@@ -364,11 +369,15 @@ class CachingResultsSource implements ResultsSource {
 	 * Extract the dependency metadata of $value
 	 * and check that the dependency metadata does not indicate staleness.
 	 *
-	 * @param array|bool $value
+	 * @param array|false $value
+	 * @param int[] $paramRevs Revisions from parameters, id => revision
+	 *   These revisions are used instead of ones recorded in the metadata,
+	 *   so we can serve requests specifying concrete revisions, and if they are not latest,
+	 *   we will reject then.
 	 * @return DependencyMetadata|null the dependency metadata,
 	 * or null if $value should no longer be used
 	 */
-	private function checkDependencyMetadata( $value ) {
+	private function checkDependencyMetadata( $value, $paramRevs ) {
 		if ( $value === false ) {
 			return null;
 		}
@@ -381,6 +390,12 @@ class CachingResultsSource implements ResultsSource {
 			$futureTimeDependencyMetadata = DependencyMetadata::ofFutureTime( $futureTime );
 		} else {
 			$futureTimeDependencyMetadata = DependencyMetadata::blank();
+		}
+
+		foreach ( $paramRevs as $id => $revision ) {
+			if ( $revision > 0 ) {
+				$value['latestRevisionIds'][$id] = min( $revision, $value['latestRevisionIds'][$id] ?? PHP_INT_MAX );
+			}
 		}
 
 		$dependedEntityIds = array_map(

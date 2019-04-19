@@ -116,8 +116,9 @@ class CheckConstraintsRdf extends FormlessAction {
 			$response->statusHeader( 404 ); // Not Found
 			return null;
 		}
+		$revId = $this->getRequest()->getVal( 'revision', 0 );
 
-		$results = $this->resultsSource->getStoredResults( $entityId );
+		$results = $this->resultsSource->getStoredResults( $entityId, $revId );
 		if ( $results === null ) {
 			$response->statusHeader( 204 ); // No Content
 			return null;
