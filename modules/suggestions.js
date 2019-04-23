@@ -1,7 +1,8 @@
 ( function ( mw, wb, $ ) {
 	'use strict';
 	var MAX_LABELS_API_LIMIT = 50,
-		jsonCache = {};
+		jsonCache = {},
+		config = require( './config.json' );
 
 	function getJsonCached( url ) {
 		var promise = null;
@@ -115,11 +116,11 @@
 	}
 
 	mw.hook( 'wikibase.entityselector.search' ).add( function ( data, addPromise ) {
-		var propertyConstraintId = mw.config.get( 'wbQualityConstraintsPropertyConstraintId' ),
-			oneOfConstraintId = mw.config.get( 'wbQualityConstraintsOneOfConstraintId' ),
-			allowedQualifierConstraintId = mw.config.get( 'wbQualityConstraintsAllowedQualifierConstraintId' ),
-			constraintsPropertyId = mw.config.get( 'wbQualityConstraintsPropertyId' ),
-			constraintQualifierOfPropertyId = mw.config.get( 'wbQualityConstraintsQualifierOfPropertyConstraintId' ),
+		var propertyConstraintId = config.WBQualityConstraintsPropertyConstraintId,
+			oneOfConstraintId = config.WBQualityConstraintsOneOfConstraintId,
+			allowedQualifierConstraintId = config.WBQualityConstraintsAllowedQualifierConstraintId,
+			constraintsPropertyId = config.WBQualityConstraintsPropertyId,
+			constraintQualifierOfPropertyId = config.WBQualityConstraintsQualifierOfPropertyConstraintId,
 			mainSnakPropertyId = getMainSnakPropertyId( data.element ),
 			wbRepo = mw.config.get( 'wbRepo' ),
 			articlePathPattern = wbRepo.url + wbRepo.articlePath,
