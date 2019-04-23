@@ -168,7 +168,5 @@
 	"wbqc-violation-message-integer-bounds": "用於 $1 的值應為整數，但 $2 的範圍含有小數部份。",
 	"wbqc-violation-message-citationNeeded": "$1的聲明至少需要有一個參考來源。",
 	"wbqc-violation-message-property-scope": "屬性$1不應在此位置（$2）上使用，有效的位置僅為{{PLURAL:$3|$5。|：$4}}",
-	"wbqc-violation-message-exception": "此實體是該限制的已知例外，並已被如此標記。",
-	"wbqc-beta-feature-label-message": "來自限制定義的實體建議",
-	"wbqc-beta-feature-description-message": "啟用衍生自屬性頁面上限制定義的實體建議。"
+	"wbqc-violation-message-exception": "此實體是該限制的已知例外，並已被如此標記。"
 }

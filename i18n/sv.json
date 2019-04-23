@@ -143,6 +143,5 @@
 	"wbqc-violation-message-entityType": "Egenskapen $1 bör inte användas på denna typ av entitet, {{PLURAL:$2|1=den enda giltiga entitetstypen är $4.|2=de enda giltiga entitetstyperna är $4 och $5.|de enda giltiga entitetstyperna är: $3}}",
 	"wbqc-violation-message-none-of": "Värdet för $1 bör {{PLURAL:$2|1=inte vara $4.|2=antingen inte vara $4 eller $5.|inte vara en av följande:$3}}",
 	"wbqc-violation-message-citationNeeded": "Uttalanden för $1 bör ha minst en referens.",
-	"wbqc-violation-message-exception": "Denna entitet är ett känt undantag för denna begränsning och har märkts som sådan.",
-	"wbqc-beta-feature-label-message": "Entitetsförslag från begränsningsdefinitioner"
+	"wbqc-violation-message-exception": "Denna entitet är ett känt undantag för denna begränsning och har märkts som sådan."
 }

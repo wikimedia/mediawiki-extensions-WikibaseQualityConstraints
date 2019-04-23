@@ -144,7 +144,5 @@
 	"wbqc-violation-message-integer-bounds": "Vrednosti za $1 morajo biti cela števila, odstopanja pri $2 pa vsebujejo decimalke.",
 	"wbqc-violation-message-citationNeeded": "Izjave za $1 morajo imeti vsaj en vir.",
 	"wbqc-violation-message-property-scope": "Lastnost $1 ne sme biti uporabljena na tem mestu ($2). {{PLURAL:$3|Ustrezno mesto|Ustrezni mesti|Ustrezna mesta}} za to lastnost {{PLURAL:$3|je $5.|so: $4}}",
-	"wbqc-violation-message-exception": "Ta stvar je znana izjema za to omejitev in je bila tako tudi označena.",
-	"wbqc-beta-feature-label-message": "Predlogi stvari iz opredelitev omejitev",
-	"wbqc-beta-feature-description-message": "Omogoči predlaganje stvari iz opredelitev omejitev na straneh lastnosti."
+	"wbqc-violation-message-exception": "Ta stvar je znana izjema za to omejitev in je bila tako tudi označena."
 }

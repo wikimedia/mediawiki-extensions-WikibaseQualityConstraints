@@ -166,7 +166,5 @@
 	"wbqc-violation-message-integer-bounds": "يجب أن تكون قيم $1 عددا صحيحا، لكن حدود $2 بها جزء كسري.",
 	"wbqc-violation-message-citationNeeded": "يجب أن تحتوي بيانات $1 على مرجع واحد على الأقل.",
 	"wbqc-violation-message-property-scope": "يجب عدم استخدام الخاصية $1 في هذا الموقع ($2); {{PLURAL:$3|الموقع الصالح الوحيد|المواقع الصالحة الوحيدة}} لهذه الخاصية {{PLURAL:$3|هو $5.|هي: $4}}",
-	"wbqc-violation-message-exception": "هذا الكيان استثناء معروف لدى القيد وتم وضع علامة عليه على هذا النحو.",
-	"wbqc-beta-feature-label-message": "اقتراحات الكيانات من تعريفات القيد",
-	"wbqc-beta-feature-description-message": "تمكين اقتراحات الكيانات المشتقة من تعريفات القيد في صفحات الخصائص."
+	"wbqc-violation-message-exception": "هذا الكيان استثناء معروف لدى القيد وتم وضع علامة عليه على هذا النحو."
 }

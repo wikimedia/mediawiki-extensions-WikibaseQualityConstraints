@@ -162,7 +162,5 @@
 	"wbqc-violation-message-integer-bounds": "Os valores de $1 devem ser inteiros, mas os limites de $2 têm uma parte fracionária.",
 	"wbqc-violation-message-citationNeeded": "Declarações para $1 devem ter pelo menos uma referência.",
 	"wbqc-violation-message-property-scope": "A propriedade $1 não deve ser usada neste local ($2). {{PLURAL:$3|O único local válido|Os únicos locais válidos}} para esta propriedade {{PLURAL:$3|é $5.|são: $4}}",
-	"wbqc-violation-message-exception": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal.",
-	"wbqc-beta-feature-label-message": "Sugestão de entidades com base nas definições de restrições",
-	"wbqc-beta-feature-description-message": "Ativar a sugestão de entidades, derivada das definições de restrições nas páginas de propriedades."
+	"wbqc-violation-message-exception": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal."
 }
