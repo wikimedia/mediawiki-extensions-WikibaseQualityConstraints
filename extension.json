@@ -50,13 +50,13 @@
 		"constraintsrdf": [ "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintsRdf", "newFromGlobalState" ]
 	},
 	"ResourceFileModulePaths": {
-		"localBasePath": "",
-		"remoteExtPath": "WikibaseQualityConstraints"
+		"localBasePath": "modules",
+		"remoteExtPath": "WikibaseQualityConstraints/modules"
 	},
 	"ResourceModules": {
 		"SpecialConstraintReportPage": {
-			"styles": "modules/SpecialConstraintReportPage.less",
-			"scripts": "modules/SpecialConstraintReportPage.js",
+			"styles": "SpecialConstraintReportPage.less",
+			"scripts": "SpecialConstraintReportPage.js",
 			"dependencies": [
 				"oojs-ui-core.styles"
 			]
@@ -65,9 +65,9 @@
 			"class": "ResourceLoaderImageModule",
 			"selector": ".oo-ui-icon-{name}",
 			"images": {
-				"mandatory-constraint-violation": "modules/icon/mandatory-constraint-violation.svg",
-				"non-mandatory-constraint-violation": "modules/icon/non-mandatory-constraint-violation.svg",
-				"suggestion-constraint-violation": "modules/icon/suggestion-constraint-violation.svg"
+				"mandatory-constraint-violation": "icon/mandatory-constraint-violation.svg",
+				"non-mandatory-constraint-violation": "icon/non-mandatory-constraint-violation.svg",
+				"suggestion-constraint-violation": "icon/suggestion-constraint-violation.svg"
 			}
 		},
 		"wikibase.quality.constraints.ui": {
@@ -98,19 +98,19 @@
 				"wbqc-cached-days"
 			],
 			"scripts": [
-				"modules/ui/module.js",
-				"modules/ui/ConstraintReportPanel.js",
-				"modules/ui/ConstraintReportGroup.js",
-				"modules/ui/ConstraintReportList.js"
+				"ui/module.js",
+				"ui/ConstraintReportPanel.js",
+				"ui/ConstraintReportGroup.js",
+				"ui/ConstraintReportList.js"
 			],
 			"styles": [
-				"modules/ui/ConstraintReportPanel.less",
-				"modules/ui/ConstraintReportGroup.less"
+				"ui/ConstraintReportPanel.less",
+				"ui/ConstraintReportGroup.less"
 			]
 		},
 		"wikibase.quality.constraints.gadget": {
-			"scripts": "modules/gadget.js",
-			"styles": "modules/gadget.less",
+			"scripts": "gadget.js",
+			"styles": "gadget.less",
 			"dependencies": [
 				"mediawiki.api",
 				"oojs-ui-core",
@@ -119,10 +119,10 @@
 				"wikibase.quality.constraints.icon",
 				"wikibase.quality.constraints.ui"
 			],
-			"skipFunction": "modules/gadget-skip.js"
+			"skipFunction": "gadget-skip.js"
 		},
 		"wikibase.quality.constraints.suggestions": {
-			"scripts": "modules/suggestions.js",
+			"scripts": "suggestions.js",
 			"dependencies": [
 				"jquery.wikibase.entityselector"
 			]
