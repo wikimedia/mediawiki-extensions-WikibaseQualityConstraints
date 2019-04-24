@@ -3,7 +3,8 @@
 	"extends": "wikimedia",
 	"env": {
 		"browser": true,
-		"jquery": true
+		"jquery": true,
+		"commonjs": true
 	},
 	"globals": {
 		"module": false,

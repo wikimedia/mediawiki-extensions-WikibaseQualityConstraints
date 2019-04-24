@@ -143,19 +143,4 @@ final class WikibaseQualityConstraintsHooks {
 		$out->addModules( 'wikibase.quality.constraints.gadget' );
 	}
 
-	/**
-	 * Hook: MakeGlobalVariablesScript
-	 * @param array &$vars
-	 * @param OutputPage $out
-	 */
-	public static function addVariables( &$vars, OutputPage $out ) {
-		$config = MediaWikiServices::getInstance()->getMainConfig();
-
-		$vars['wbQualityConstraintsPropertyConstraintId'] = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
-		$vars['wbQualityConstraintsOneOfConstraintId'] = $config->get( 'WBQualityConstraintsOneOfConstraintId' );
-		$vars['wbQualityConstraintsAllowedQualifierConstraintId'] = $config->get( 'WBQualityConstraintsAllowedQualifiersConstraintId' );
-		$vars['wbQualityConstraintsPropertyId'] = $config->get( 'WBQualityConstraintsPropertyId' );
-		$vars['wbQualityConstraintsQualifierOfPropertyConstraintId'] = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-	}
-
 }

@@ -30,8 +30,7 @@
 		"LoadExtensionSchemaUpdates": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema",
 		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange",
 		"ArticlePurge": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onArticlePurge",
-		"BeforePageDisplay": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onBeforePageDisplay",
-		"MakeGlobalVariablesScript": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::addVariables"
+		"BeforePageDisplay": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onBeforePageDisplay"
 	},
 	"SpecialPages": {
 		"ConstraintReport": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState"
@@ -122,7 +121,19 @@
 			"skipFunction": "gadget-skip.js"
 		},
 		"wikibase.quality.constraints.suggestions": {
-			"scripts": "suggestions.js",
+			"packageFiles": [
+				"suggestions.js",
+				{
+					"name": "config.json",
+					"config": [
+						"WBQualityConstraintsPropertyConstraintId",
+						"WBQualityConstraintsOneOfConstraintId",
+						"WBQualityConstraintsAllowedQualifiersConstraintId",
+						"WBQualityConstraintsPropertyId",
+						"WBQualityConstraintsQualifierOfPropertyConstraintId"
+					]
+				}
+			],
 			"dependencies": [
 				"jquery.wikibase.entityselector"
 			]
