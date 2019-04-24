@@ -129,13 +129,12 @@ class CheckConstraintsRdf extends FormlessAction {
 		$formatName = $writerFactory->getFormatName( $format );
 		$contentType = $writerFactory->getMimeTypes( $formatName )[0];
 
-		$response->header( "Content-Type: $contentType; charset=UTF-8" );
-
 		$writer = $writerFactory->getWriter( $formatName );
 		foreach ( [ RdfVocabulary::NS_STATEMENT, RdfVocabulary::NS_ONTOLOGY ] as $ns ) {
 			$writer->prefix( $ns, $this->rdfVocabulary->getNamespaceURI( $ns ) );
 		}
 		$writer->start();
+		$writtenAny = false;
 
 		foreach ( $results->getArray() as $checkResult ) {
 			if ( $checkResult instanceof NullResult ) {
@@ -144,7 +143,7 @@ class CheckConstraintsRdf extends FormlessAction {
 			if ( $checkResult->getStatus() === CheckResult::STATUS_BAD_PARAMETERS ) {
 				continue;
 			}
-
+			$writtenAny = true;
 			$writer->about( RdfVocabulary::NS_STATEMENT,
 				$this->cleanupGuid( $checkResult->getContextCursor()->getStatementGuid() ) )
 				->say( RdfVocabulary::NS_ONTOLOGY, 'hasViolationForConstraint' )
@@ -152,7 +151,14 @@ class CheckConstraintsRdf extends FormlessAction {
 					$this->cleanupGuid( $checkResult->getConstraint()->getConstraintId() ) );
 		}
 		$writer->finish();
-		echo $writer->drain();
+		if ( $writtenAny ) {
+			$response->header( "Content-Type: $contentType; charset=UTF-8" );
+			echo $writer->drain();
+		} else {
+			// Do not output RDF if we haven't written any actual statements. Output 204 instead
+			$writer->drain();
+			$response->statusHeader( 204 ); // No Content
+		}
 		return null;
 	}
 

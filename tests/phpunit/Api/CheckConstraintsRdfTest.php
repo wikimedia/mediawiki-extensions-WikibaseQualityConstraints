@@ -31,6 +31,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikiPage;
 
 /**
@@ -77,6 +78,17 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 			[],
 			$status,
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
+		);
+	}
+
+	private function getNullResult( $entityId ) {
+		return new NullResult(
+			new MainSnakContextCursor(
+				$entityId,
+				'P1',
+				$entityId . '$00000000-0000-0000-0000-000000000000',
+				'0000000000000000000000000000000000000000'
+			)
 		);
 	}
 
@@ -135,6 +147,9 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	/**
+	 * @return ResultsSource
+	 */
 	private function getCachingResultsSource() {
 		return $this->getMockBuilder( CachingResultsSource::class )
 			->setConstructorArgs( [
@@ -152,7 +167,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 	}
 
-	private function getCheckConstraintsRdf( \Page $page, $mockResponse, $cachingResultsSource = null ) {
+	private function getCheckConstraintsRdf( \Page $page, $mockResponse, ResultsSource $cachingResultsSource = null ) {
 		if ( $cachingResultsSource === null ) {
 			$cachingResultsSource = $this->getCachingResultsSource();
 		}
@@ -223,6 +238,34 @@ TEXT;
 		$mockResponse = $this->getMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
 		$action = $this->getCheckConstraintsRdf( $page, $mockResponse );
+
+		ob_start();
+		$action->onView();
+		$actualOutput = ob_get_clean();
+
+		$expectedOutput = '';
+		$this->assertEquals( $expectedOutput, $actualOutput );
+	}
+
+	public function testShowNoResultsWithNull() {
+		$page = new WikiPage( Title::newFromText( 'Property:P1' ) );
+
+		$cachingResultsSource = $this->getCachingResultsSource();
+		$cachingResultsSource->expects( $this->once() )->method( 'getStoredResults' )
+			->willReturnCallback( function( EntityId $entityId ) {
+				$serialization = $entityId->getSerialization();
+				return new CachedCheckResults(
+					[
+						$this->getNullResult( $serialization ),
+						$this->getCheckResult( $serialization, CheckResult::STATUS_BAD_PARAMETERS )
+					],
+					Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 64800 ) )
+				);
+			} );
+
+		$mockResponse = $this->getMock( \WebResponse::class );
+		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
+		$action = $this->getCheckConstraintsRdf( $page, $mockResponse, $cachingResultsSource );
 
 		ob_start();
 		$action->onView();
