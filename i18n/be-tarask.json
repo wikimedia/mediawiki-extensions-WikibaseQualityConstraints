@@ -23,6 +23,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "Хібныя парамэтры",
 	"wbqc-constraintreport-status-deprecated": "Састарэлы",
 	"wbqc-constraintreport-status-warning": "Папярэджаньне",
+	"wbqc-constraintreport-status-suggestion": "Прапанова",
 	"wbqc-constraintreport-status-not-in-scope": "Па-за вобласьцю дзеяньня",
 	"wbqc-constraintreport-result-table-header-status": "Статус",
 	"wbqc-constraintreport-result-table-header-property": "Уласьцівасьць",
