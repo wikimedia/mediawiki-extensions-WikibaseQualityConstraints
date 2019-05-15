@@ -11,13 +11,14 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
+use Wikibase\Lib\Store\EntityRevision;
+use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
@@ -313,8 +314,10 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 				$deprecatedConstraintStatement
 			] )
 		);
-		$entityLookup = new InMemoryEntityLookup();
-		$entityLookup->addEntity( $property );
+		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
+		$entityRevisionLookup->method( 'getEntityRevision' )
+			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_MASTER )
+			->willReturn( new EntityRevision( $property ) );
 
 		$constraintRepository = $this->getMock( ConstraintRepository::class );
 		$constraintRepository->expects( $this->once() )
@@ -334,7 +337,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			'P3',
 			$config,
 			$constraintRepository,
-			$entityLookup,
+			$entityRevisionLookup,
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 		$job->importConstraintsForProperty(
@@ -359,8 +362,10 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 					->build()
 			)
 		);
-		$entityLookup = new InMemoryEntityLookup();
-		$entityLookup->addEntity( $property );
+		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
+		$entityRevisionLookup->method( 'getEntityRevision' )
+			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_MASTER )
+			->willReturn( new EntityRevision( $property ) );
 
 		$job = new UpdateConstraintsTableJob(
 			Title::newFromText( 'constraintsTableUpdate' ),
@@ -368,7 +373,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			'P2',
 			$this->getDefaultConfig(),
 			new ConstraintRepository(),
-			$entityLookup,
+			$entityRevisionLookup,
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 
