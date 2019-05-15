@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use Job;
+use JobQueueGroup;
 use Serializers\Serializer;
 use Title;
 use MediaWiki\MediaWikiServices;
@@ -13,6 +14,7 @@ use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Repo\WikibaseRepo;
+use Wikibase\Store;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -33,9 +35,10 @@ class UpdateConstraintsTableJob extends Job {
 			$title,
 			$params,
 			$params['propertyId'],
+			$params['revisionId'] ?? null,
 			MediaWikiServices::getInstance()->getMainConfig(),
 			ConstraintsServices::getConstraintRepository(),
-			$repo->getEntityRevisionLookup(),
+			$repo->getEntityRevisionLookup( Store::LOOKUP_CACHING_DISABLED ),
 			$repo->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 	}
@@ -44,6 +47,11 @@ class UpdateConstraintsTableJob extends Job {
 	 * @var string
 	 */
 	private $propertyId;
+
+	/**
+	 * @var int|null
+	 */
+	private $revisionId;
 
 	/**
 	 * @var Config
@@ -69,6 +77,7 @@ class UpdateConstraintsTableJob extends Job {
 	 * @param Title $title
 	 * @param string[] $params should contain 'propertyId' => 'P...'
 	 * @param string $propertyId property ID of the property for this job (which has the constraint statements)
+	 * @param int|null $revisionId revision ID that triggered this job, if any
 	 * @param Config $config
 	 * @param ConstraintRepository $constraintRepo
 	 * @param EntityRevisionLookup $entityRevisionLookup
@@ -78,6 +87,7 @@ class UpdateConstraintsTableJob extends Job {
 		Title $title,
 		array $params,
 		$propertyId,
+		$revisionId,
 		Config $config,
 		ConstraintRepository $constraintRepo,
 		EntityRevisionLookup $entityRevisionLookup,
@@ -86,6 +96,7 @@ class UpdateConstraintsTableJob extends Job {
 		parent::__construct( 'constraintsTableUpdate', $title, $params );
 
 		$this->propertyId = $propertyId;
+		$this->revisionId = $revisionId;
 		$this->config = $config;
 		$this->constraintRepo = $constraintRepo;
 		$this->entityRevisionLookup = $entityRevisionLookup;
@@ -148,8 +159,13 @@ class UpdateConstraintsTableJob extends Job {
 		$propertyRevision = $this->entityRevisionLookup->getEntityRevision(
 			$propertyId,
 			0, // latest
-			EntityRevisionLookup::LATEST_FROM_MASTER
+			EntityRevisionLookup::LATEST_FROM_REPLICA
 		);
+
+		if ( $this->revisionId !== null && $propertyRevision->getRevisionId() < $this->revisionId ) {
+			JobQueueGroup::singleton()->push( $this );
+			return true;
+		}
 
 		$this->constraintRepo->deleteForPropertyWhereConstraintIdIsStatementId( $propertyId );
 
