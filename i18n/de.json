@@ -69,6 +69,7 @@
 	"apihelp-wbcheckconstraints-example-2": "Überprüft alle Beschränkungen einer einzelnen Aussage.",
 	"apihelp-wbcheckconstraints-example-3": "Überprüft eine bestimmte Beschränkung des Objekts Q2.",
 	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Überprüft Beschränkungsparameter aller Beschränkungen einer Eigenschaft.",
+	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Überprüft Parameter zwei spezieller Beschränkungen.",
 	"wbq-subextension-name-wbqc": "Beschränkungen",
 	"wbqc-violation-header-parameters": "Parameter:",
 	"wbqc-violations-group": "Beschränkungen",
