@@ -6,7 +6,7 @@ use HashConfig;
 use Language;
 use MockMessageLocalizer;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
-use Wikibase\Lib\UnDeserializableValueFormatter;
+use Wikibase\Lib\Formatters\UnDeserializableValueFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 

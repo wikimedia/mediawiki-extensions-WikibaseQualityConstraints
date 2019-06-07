@@ -13,7 +13,7 @@ use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
-use Wikibase\Lib\SnakFormatter;
+use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\WikibaseRepo;
