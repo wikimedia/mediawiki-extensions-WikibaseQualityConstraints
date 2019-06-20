@@ -9,9 +9,9 @@ use Title;
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Repo\WikibaseRepo;
 use Wikimedia\Assert\Assert;
 
@@ -35,7 +35,7 @@ class UpdateConstraintsTableJob extends Job {
 			$params['propertyId'],
 			MediaWikiServices::getInstance()->getMainConfig(),
 			ConstraintsServices::getConstraintRepository(),
-			$repo->getEntityLookup(),
+			$repo->getEntityRevisionLookup(),
 			$repo->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 	}
@@ -56,9 +56,9 @@ class UpdateConstraintsTableJob extends Job {
 	private $constraintRepo;
 
 	/**
-	 * @var EntityLookup
+	 * @var EntityRevisionLookup
 	 */
-	private $entityLookup;
+	private $entityRevisionLookup;
 
 	/**
 	 * @var Serializer
@@ -71,7 +71,7 @@ class UpdateConstraintsTableJob extends Job {
 	 * @param string $propertyId property ID of the property for this job (which has the constraint statements)
 	 * @param Config $config
 	 * @param ConstraintRepository $constraintRepo
-	 * @param EntityLookup $entityLookup
+	 * @param EntityRevisionLookup $entityRevisionLookup
 	 * @param Serializer $snakSerializer
 	 */
 	public function __construct(
@@ -80,7 +80,7 @@ class UpdateConstraintsTableJob extends Job {
 		$propertyId,
 		Config $config,
 		ConstraintRepository $constraintRepo,
-		EntityLookup $entityLookup,
+		EntityRevisionLookup $entityRevisionLookup,
 		Serializer $snakSerializer
 	) {
 		parent::__construct( 'constraintsTableUpdate', $title, $params );
@@ -88,7 +88,7 @@ class UpdateConstraintsTableJob extends Job {
 		$this->propertyId = $propertyId;
 		$this->config = $config;
 		$this->constraintRepo = $constraintRepo;
-		$this->entityLookup = $entityLookup;
+		$this->entityRevisionLookup = $entityRevisionLookup;
 		$this->snakSerializer = $snakSerializer;
 	}
 
@@ -145,10 +145,16 @@ class UpdateConstraintsTableJob extends Job {
 		// TODO in the future: only touch constraints affected by the edit (requires T163465)
 
 		$propertyId = new PropertyId( $this->propertyId );
+		$propertyRevision = $this->entityRevisionLookup->getEntityRevision(
+			$propertyId,
+			0, // latest
+			EntityRevisionLookup::LATEST_FROM_MASTER
+		);
+
 		$this->constraintRepo->deleteForPropertyWhereConstraintIdIsStatementId( $propertyId );
 
 		/** @var Property $property */
-		$property = $this->entityLookup->getEntity( $propertyId );
+		$property = $propertyRevision->getEntity();
 		$this->importConstraintsForProperty(
 			$property,
 			$this->constraintRepo,
