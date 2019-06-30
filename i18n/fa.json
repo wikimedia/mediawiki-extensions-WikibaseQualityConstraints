@@ -3,7 +3,8 @@
 		"authors": [
 			"Reza1615",
 			"Rtemis",
-			"Ladsgroup"
+			"Ladsgroup",
+			"FarsiNevis"
 		]
 	},
 	"wbqc-constraintreport": "محدوده گزارش",
@@ -23,6 +24,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "پارامترهای بد",
 	"wbqc-constraintreport-status-deprecated": "توصیه",
 	"wbqc-constraintreport-status-warning": "هشدار",
+	"wbqc-constraintreport-status-suggestion": "پیشنهاد",
 	"wbqc-constraintreport-status-not-in-scope": "در محدوده نیست",
 	"wbqc-constraintreport-result-table-header-status": "وضعیت",
 	"wbqc-constraintreport-result-table-header-property": "ویژگی",
@@ -35,6 +37,7 @@
 	"wbqc-issues-long": "این اظهار مشکلاتی دارد.",
 	"wbqc-potentialissues-short": "مشکلات بالقوه",
 	"wbqc-potentialissues-long": "این اظهار مشکلاتی دارد.",
+	"wbqc-suggestions-short": "پیشنهادها",
 	"wbqc-badparameters-short": "پارامترهای بد",
 	"wbqc-parameterissues-short": "مشکلات پیشرفته",
 	"wbqc-constrainttypehelp-short": "کمک",

@@ -3,7 +3,8 @@
 		"authors": [
 			"Tacsipacsi",
 			"Urbalazs",
-			"Csigabi"
+			"Csigabi",
+			"Máté"
 		]
 	},
 	"wbqc-constraintreport": "Kikötésjelentés",
@@ -29,8 +30,9 @@
 	"wbqc-constraintreport-no-parameter": "semmi",
 	"wbqc-issues-short": "Problémák",
 	"wbqc-issues-long": "Ezzel az állítással problémák vannak.",
-	"wbqc-potentialissues-short": "Lehetséges probléma",
+	"wbqc-potentialissues-short": "Lehetséges problémák",
 	"wbqc-potentialissues-long": "Ezzel az állítással lehet, hogy problémák vannak.",
+	"wbqc-suggestions-short": "Javaslatok",
 	"wbqc-badparameters-short": "Rossz paraméterek",
 	"wbqc-badparameters-long": "A kikötésállítás érvénytelen paramétereket tartalmaz.",
 	"wbqc-parameterissues-short": "Haladó problémák",

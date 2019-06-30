@@ -4,7 +4,8 @@
 			"Liuxinyu970226",
 			"NeverBehave",
 			"Deathkon",
-			"A Chinese Wikipedian"
+			"A Chinese Wikipedian",
+			"神樂坂秀吉"
 		]
 	},
 	"wbqc-constraintreport": "约束报告",
@@ -25,6 +26,7 @@
 	"wbqc-constraintreport-status-bad-parameters": "错误参数",
 	"wbqc-constraintreport-status-deprecated": "已弃用",
 	"wbqc-constraintreport-status-warning": "警告",
+	"wbqc-constraintreport-status-suggestion": "建议",
 	"wbqc-constraintreport-status-not-in-scope": "不在范围内",
 	"wbqc-constraintreport-result-table-header-status": "状态",
 	"wbqc-constraintreport-result-table-header-property": "属性",
@@ -37,6 +39,7 @@
 	"wbqc-issues-long": "此陈述有一些问题。",
 	"wbqc-potentialissues-short": "潜在问题",
 	"wbqc-potentialissues-long": "此陈述有一些潜在问题。",
+	"wbqc-suggestions-short": "建议",
 	"wbqc-badparameters-short": "错误参数",
 	"wbqc-badparameters-long": "此约束陈述存在一些无效参数。",
 	"wbqc-parameterissues-short": "高级问题",
