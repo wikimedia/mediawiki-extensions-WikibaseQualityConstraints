@@ -826,6 +826,9 @@ class ConstraintParameterParser {
 			case $this->config->get( 'WBQualityConstraintsWikibaseSenseId' ):
 				$entityType = 'sense';
 				break;
+			case $this->config->get( 'WBQualityConstraintsMediaInfoId' ):
+				$entityType = 'mediainfo';
+				break;
 			default:
 				$allowed = [
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseItemId' ) ),
@@ -833,6 +836,7 @@ class ConstraintParameterParser {
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ) ),
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseFormId' ) ),
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseSenseId' ) ),
+					new ItemId( $this->config->get( 'WBQualityConstraintsMediaInfoId' ) ),
 				];
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )

@@ -244,3 +244,17 @@ To add a new constraint type, the following steps are necessary:
 * Ask someone with grafana-admin access to update the “constraint types” panel
   in the [wikidata-quality board](https://grafana.wikimedia.org/dashboard/db/wikidata-quality)
   to add the new constraint type.
+
+### Adding a new allowed entity type
+
+* Start by adding an Item reference to `extension.json`. For example:
+ 	```
+ 	"WBQualityConstraintsMediaInfoId": {
+        "value": "Q3898244",
+        "description": "The item ID of the 'MediaInfo' item, which represents the 'mediainfo' entity type for 'allowed entity types' constraints.",
+        "public": true
+    }
+ * The next step takes place inside `src/ConstraintCheck/Helper/ConstraintParameterParser.php`. The new allowed entity type
+ should be added to the switch/case within the method `parseEntityTypeItem()`.
+ Don't forget to add it to the default case as well!
+ * To be able to test the newly added allowed entity type locally, please perform the steps described in section "Data import".

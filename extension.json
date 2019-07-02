@@ -547,6 +547,11 @@
 			"description": "The item ID of the 'wikibase sense' item, which represents the 'sense' entity type for 'allowed entity types' constraints.",
 			"public": true
 		},
+		"WBQualityConstraintsMediaInfoId": {
+			"value": "Q59712033",
+			"description": "The item ID of the 'MediaInfo' item, which represents the 'mediainfo' entity type for 'allowed entity types' constraints.",
+			"public": true
+		},
 		"WBQualityConstraintsPropertyScopeId": {
 			"value": "P5314",
 			"description": "The property ID of the 'property scope' property, which specifies the scope parameter of a 'scope' constraint.",
