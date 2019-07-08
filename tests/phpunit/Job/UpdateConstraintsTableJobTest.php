@@ -316,7 +316,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		);
 		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
 		$entityRevisionLookup->method( 'getEntityRevision' )
-			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_MASTER )
+			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );
 
 		$constraintRepository = $this->getMock( ConstraintRepository::class );
@@ -335,6 +335,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[],
 			'P3',
+			null,
 			$config,
 			$constraintRepository,
 			$entityRevisionLookup,
@@ -364,13 +365,14 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		);
 		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
 		$entityRevisionLookup->method( 'getEntityRevision' )
-			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_MASTER )
+			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );
 
 		$job = new UpdateConstraintsTableJob(
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[],
 			'P2',
+			null,
 			$this->getDefaultConfig(),
 			new ConstraintRepository(),
 			$entityRevisionLookup,

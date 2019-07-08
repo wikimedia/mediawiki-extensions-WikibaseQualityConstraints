@@ -69,6 +69,10 @@ final class WikibaseQualityConstraintsHooks {
 			self::isConstraintStatementsChange( $config, $change )
 		) {
 			$params = [ 'propertyId' => $change->getEntityId()->getSerialization() ];
+			$metadata = $change->getMetadata();
+			if ( array_key_exists( 'rev_id', $metadata ) ) {
+				$params['revisionId'] = $metadata['rev_id'];
+			}
 			JobQueueGroup::singleton()->push(
 				new JobSpecification( 'constraintsTableUpdate', $params )
 			);
