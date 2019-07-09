@@ -2,13 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\ConnectionChecker;
 
-use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
-use DataValues\StringValue;
-use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -17,7 +14,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
@@ -32,7 +28,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var JsonFileEntityLookup
+	 * @var InMemoryEntityLookup
 	 */
 	private $lookup;
 
@@ -48,7 +44,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
+		$this->lookup = new InMemoryEntityLookup();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new InverseChecker(
 			$this->lookup,
@@ -59,13 +55,23 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testInverseConstraintValid() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-
-		$value = new EntityIdValue( new ItemId( 'Q7' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q7' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P1' )
+					->withValue( $entityId )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraintParameters = $this->propertyParameter( 'P1' );
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
@@ -74,11 +80,24 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testInverseConstraintOnProperty() {
-		$entity = new Property( new PropertyId( 'P1' ), null, 'wikibase-property' );
-		$value = new EntityIdValue( new PropertyId( 'P2' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P3' ), $value ) );
-		$constraintParameters = $this->propertyParameter( 'P3' );
+		$entityId = new PropertyId( 'P1' );
+		$otherEntityId = new PropertyId( 'P2' );
+		$otherEntity = new Property( $otherEntityId, null, 'wikibase-property' );
+		$otherEntity->getStatements()->addStatement(
+			NewStatement::forProperty( 'P3' )
+				->withValue( $entityId )
+				->build()
+		);
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P3' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = new Property( $entityId, null, 'wikibase-property' );
+		$entity->getStatements()->addStatement(
+			$statement
+		);
 
+		$constraintParameters = $this->propertyParameter( 'P3' );
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
@@ -87,13 +106,23 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testInverseConstraintWrongItem() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-
-		$value = new EntityIdValue( new ItemId( 'Q8' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q7' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P1' )
+					->withValue( new ItemId( 'Q2' ) ) // should be $entityId
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraintParameters = $this->propertyParameter( 'P1' );
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
@@ -102,13 +131,23 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testInverseConstraintWrongDataTypeForItem() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-
-		$value = new StringValue( 'Q7' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q7' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P1' )
+					->withValue( $entityId )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId->getSerialization() ) // should be $otherEntityId
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraintParameters = $this->propertyParameter( 'P1' );
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
@@ -117,13 +156,15 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testInverseConstraintItemDoesNotExist() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-
-		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( new ItemId( 'Q100' ) )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraintParameters = $this->propertyParameter( 'P1' );
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
@@ -132,12 +173,14 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testInverseConstraintNoValueSnak() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-
-		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$entityId = new ItemId( 'Q1' );
+		$statement = NewStatement::noValueFor( 'P188' )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraintParameters = $this->propertyParameter( 'P1' );
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
@@ -159,20 +202,29 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testInverseConstraintDependedEntityIds() {
-		$entity = $this->lookup->getEntity( new ItemId( 'Q1' ) );
-
-		$targetEntityId = new ItemId( 'Q7' );
-		$value = new EntityIdValue( $targetEntityId );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q7' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P1' )
+					->withValue( $entityId )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraintParameters = $this->propertyParameter( 'P1' );
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
 		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$dependencyMetadata = $checkResult->getMetadata()->getDependencyMetadata();
-		$this->assertSame( [ $targetEntityId ], $dependencyMetadata->getEntityIds() );
+		$this->assertSame( [ $otherEntityId ], $dependencyMetadata->getEntityIds() );
 	}
 
 	public function testCheckConstraintParameters() {

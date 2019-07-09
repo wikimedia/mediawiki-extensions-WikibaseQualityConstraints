@@ -2,21 +2,14 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\ConnectionChecker;
 
-use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Statement\Statement;
-use DataValues\StringValue;
-use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\TargetRequiredClaimChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\Tests\Helper\JsonFileEntityLookup;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 
@@ -33,7 +26,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var JsonFileEntityLookup
+	 * @var InMemoryEntityLookup
 	 */
 	private $lookup;
 
@@ -49,7 +42,7 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
+		$this->lookup = new InMemoryEntityLookup();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new TargetRequiredClaimChecker(
 			$this->lookup,
@@ -60,90 +53,165 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testTargetRequiredClaimConstraintValid() {
-		$value = new EntityIdValue( new ItemId( 'Q5' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q5' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P2' )
+					->withValue( new ItemId( 'Q42' ) )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
+
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P2' ),
 			$this->itemsParameter( [ 'Q42' ] )
 		);
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTargetRequiredClaimConstraintWrongItem() {
-		$value = new EntityIdValue( new ItemId( 'Q5' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q5' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P2' )
+					->withValue( new ItemId( 'Q42' ) ) // should be 'Q2'
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
+
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P2' ),
 			$this->itemsParameter( [ 'Q2' ] )
 		);
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
 
 	public function testTargetRequiredClaimConstraintOnlyProperty() {
-		$value = new EntityIdValue( new ItemId( 'Q5' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-		$constraintParameters = $this->propertyParameter( 'P2' );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q5' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P2' )
+					->withValue( new ItemId( 'Q42' ) )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
+		$constraintParameters = $this->propertyParameter( 'P2' );
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testTargetRequiredClaimConstraintOnlyPropertyButDoesNotExist() {
-		$value = new EntityIdValue( new ItemId( 'Q5' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-		$constraintParameters = $this->propertyParameter( 'P3' );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q5' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P2' ) // should be 'P3'
+					->withValue( new ItemId( 'Q42' ) )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
+		$constraintParameters = $this->propertyParameter( 'P3' );
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-required-claim' );
 	}
 
 	public function testTargetRequiredClaimConstraintWrongDataTypeForItem() {
-		$value = new StringValue( 'Q5' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-		$constraintParameters = $this->propertyParameter( 'P2' );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q5' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P2' )
+					->withValue( $entityId )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId->getSerialization() ) // should be $otherEntityId
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
+		$constraintParameters = $this->propertyParameter( 'P2' );
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testTargetRequiredClaimConstraintItemDoesNotExist() {
-		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
-		$constraintParameters = $this->propertyParameter( 'P2' );
+		$entityId = new ItemId( 'Q1' );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( new ItemId( 'Q100' ) )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
+		$constraintParameters = $this->propertyParameter( 'P2' );
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
 
 	public function testTargetRequiredClaimConstraintNoValueSnak() {
-		$statement = NewStatement::noValueFor( 'P1' )->build();
-		$constraintParameters = $this->propertyParameter( 'P2' );
+		$entityId = new ItemId( 'Q1' );
+		$statement = NewStatement::noValueFor( 'P1' )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
+		$constraintParameters = $this->propertyParameter( 'P2' );
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -162,20 +230,32 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testTargetRequiredClaimConstraintDependedEntityIds() {
-		$targetEntityId = new ItemId( 'Q5' );
-		$value = new EntityIdValue( $targetEntityId );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q5' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P2' )
+					->withValue( new ItemId( 'Q42' ) )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
+
 		$constraintParameters = array_merge(
 			$this->propertyParameter( 'P2' ),
 			$this->itemsParameter( [ 'Q42' ] )
 		);
-
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$dependencyMetadata = $checkResult->getMetadata()->getDependencyMetadata();
-		$this->assertSame( [ $targetEntityId ], $dependencyMetadata->getEntityIds() );
+		$this->assertSame( [ $otherEntityId ], $dependencyMetadata->getEntityIds() );
 	}
 
 	public function testCheckConstraintParameters() {
@@ -204,13 +284,6 @@ class TargetRequiredClaimCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Q21503247' ) );
 
 		return $mock;
-	}
-
-	/**
-	 * @return EntityDocument
-	 */
-	private function getEntity() {
-		return new Item( new ItemId( 'Q1' ) );
 	}
 
 }
