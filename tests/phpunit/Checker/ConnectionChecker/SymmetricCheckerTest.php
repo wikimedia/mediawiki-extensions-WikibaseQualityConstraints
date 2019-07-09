@@ -2,15 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\ConnectionChecker;
 
-use DataValues\StringValue;
-use Wikibase\DataModel\Entity\EntityDocument;
-use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -18,7 +13,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
-use WikibaseQuality\ConstraintReport\Tests\Helper\JsonFileEntityLookup;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -34,7 +28,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters, ResultAssertions;
 
 	/**
-	 * @var JsonFileEntityLookup
+	 * @var InMemoryEntityLookup
 	 */
 	private $lookup;
 
@@ -50,7 +44,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->lookup = new JsonFileEntityLookup( __DIR__ );
+		$this->lookup = new InMemoryEntityLookup();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new SymmetricChecker(
 			$this->lookup,
@@ -59,20 +53,46 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSymmetricConstraintWithCorrectSpouse() {
-		$value = new EntityIdValue( new ItemId( 'Q3' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q3' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P188' )
+					->withValue( $entityId )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
 
 	public function testSymmetricConstraintOnProperty() {
-		$entity = new Property( new PropertyId( 'P1' ), null, 'wikibase-property' );
-		$value = new EntityIdValue( new PropertyId( 'P2' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P3' ), $value ) );
+		$entityId = new PropertyId( 'P1' );
+		$otherEntityId = new PropertyId( 'P2' );
+		$otherEntity = new Property( $otherEntityId, null, 'wikibase-property' );
+		$otherEntity->getStatements()->addStatement(
+			NewStatement::forProperty( 'P3' )
+				->withValue( $entityId )
+				->build()
+		);
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P3' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = new Property( $entityId, null, 'wikibase-property' );
+		$entity->getStatements()->addStatement(
+			$statement
+		);
 
 		$constraint = $this->getConstraintMock();
 
@@ -82,44 +102,80 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSymmetricConstraintWithWrongSpouse() {
-		$value = new EntityIdValue( new ItemId( 'Q2' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q3' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P188' )
+					->withValue( new ItemId( 'Q42' ) ) // should be $entityId
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-symmetric' );
 	}
 
 	public function testSymmetricConstraintWithWrongDataValue() {
-		$value = new StringValue( 'Q3' );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q3' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P1' )
+					->withValue( $entityId )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId->getSerialization() ) // should be $otherEntityId
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-value-needed-of-type' );
 	}
 
 	public function testSymmetricConstraintWithNonExistentEntity() {
-		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( new ItemId( 'Q100' ) )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertViolation( $checkResult, 'wbqc-violation-message-target-entity-must-exist' );
 	}
 
 	public function testSymmetricConstraintNoValueSnak() {
-		$statement = NewStatement::noValueFor( 'P1' )->build();
+		$entityId = new ItemId( 'Q1' );
+		$statement = NewStatement::noValueFor( 'P1' )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$this->assertCompliance( $checkResult );
 	}
@@ -138,16 +194,28 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSymmetricConstraintDependedEntityIds() {
-		$targetEntityId = new ItemId( 'Q3' );
-		$value = new EntityIdValue( $targetEntityId );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$entityId = new ItemId( 'Q1' );
+		$otherEntityId = new ItemId( 'Q7' );
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( 'P1' )
+					->withValue( $entityId )
+			)
+			->build();
+		$this->lookup->addEntity( $otherEntity );
+		$statement = NewStatement::forProperty( 'P188' )
+			->withValue( $otherEntityId )
+			->build();
+		$entity = NewItem::withId( $entityId )
+			->andStatement( $statement )
+			->build();
 
 		$constraint = $this->getConstraintMock();
 
-		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $this->getEntity(), $statement ), $constraint );
+		$checkResult = $this->checker->checkConstraint( new MainSnakContext( $entity, $statement ), $constraint );
 
 		$dependencyMetadata = $checkResult->getMetadata()->getDependencyMetadata();
-		$this->assertSame( [ $targetEntityId ], $dependencyMetadata->getEntityIds() );
+		$this->assertSame( [ $otherEntityId ], $dependencyMetadata->getEntityIds() );
 	}
 
 	public function testCheckConstraintParameters() {
@@ -174,13 +242,6 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Q21510862' ) );
 
 		return $mock;
-	}
-
-	/**
-	 * @return EntityDocument
-	 */
-	private function getEntity() {
-		return new Item( new ItemId( 'Q1' ) );
 	}
 
 }
