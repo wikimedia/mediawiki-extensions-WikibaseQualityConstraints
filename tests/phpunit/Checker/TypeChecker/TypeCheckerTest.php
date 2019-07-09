@@ -53,7 +53,6 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->checker = new TypeChecker(
-			$this->lookup,
 			$this->getConstraintParameterParser(),
 			new TypeCheckerHelper(
 				$this->lookup,

@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
-use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -22,11 +21,6 @@ use Wikibase\DataModel\Statement\Statement;
 class ItemChecker implements ConstraintChecker {
 
 	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
 	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
@@ -42,12 +36,10 @@ class ItemChecker implements ConstraintChecker {
 	private $constraintParameterRenderer;
 
 	public function __construct(
-		EntityLookup $lookup,
 		ConstraintParameterParser $constraintParameterParser,
 		ConnectionCheckerHelper $connectionCheckerHelper,
 		ConstraintParameterRenderer $constraintParameterRenderer
 	) {
-		$this->entityLookup = $lookup;
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->connectionCheckerHelper = $connectionCheckerHelper;
 		$this->constraintParameterRenderer = $constraintParameterRenderer;

@@ -38,7 +38,6 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new ConflictsWithChecker(
-			$this->lookup,
 			$this->getConstraintParameterParser(),
 			$this->connectionCheckerHelper,
 			$this->getConstraintParameterRenderer()
