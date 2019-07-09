@@ -38,7 +38,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
 return [
 	ConstraintCheckerServices::CONFLICTS_WITH_CHECKER => function( MediaWikiServices $services ) {
 		return new ConflictsWithChecker(
-			WikibaseServices::getEntityLookup( $services ),
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			ConstraintsServices::getConnectionCheckerHelper( $services )
 		);
@@ -46,7 +45,6 @@ return [
 
 	ConstraintCheckerServices::ITEM_CHECKER => function( MediaWikiServices $services ) {
 		return new ItemChecker(
-			WikibaseServices::getEntityLookup( $services ),
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			ConstraintsServices::getConnectionCheckerHelper( $services )
 		);
@@ -109,7 +107,6 @@ return [
 
 	ConstraintCheckerServices::TYPE_CHECKER => function( MediaWikiServices $services ) {
 		return new TypeChecker(
-			WikibaseServices::getEntityLookup( $services ),
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			ConstraintsServices::getTypeCheckerHelper( $services ),
 			$services->getMainConfig()

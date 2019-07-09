@@ -14,7 +14,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConnectionCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
-use WikibaseQuality\ConstraintReport\Tests\Helper\JsonFileEntityLookup;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -37,7 +36,6 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->checker = new ItemChecker(
-			new JsonFileEntityLookup( __DIR__ ),
 			$this->getConstraintParameterParser(),
 			new ConnectionCheckerHelper()
 		);

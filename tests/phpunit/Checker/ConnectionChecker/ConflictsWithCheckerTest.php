@@ -49,7 +49,6 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new ConflictsWithChecker(
-			$this->lookup,
 			$this->getConstraintParameterParser(),
 			$this->connectionCheckerHelper
 		);
