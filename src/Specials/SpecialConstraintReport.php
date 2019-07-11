@@ -357,6 +357,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param CheckResult[] $results
 	 *
 	 * @return string HTML
+	 * @suppress SecurityCheck-DoubleEscaped
 	 */
 	private function buildResultTable( EntityId $entityId, array $results ) {
 		// Set table headers
@@ -534,7 +535,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$indicator
 		);
 
-		$expandableContent = Html::element(
+		$wrappedExpandableContent = Html::element(
 			'div',
 			[
 				'class' => 'wbqc-expandable-content'
@@ -542,7 +543,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$expandableContent
 		);
 
-		return sprintf( '%s %s %s', $content, $tooltipIndicator, $expandableContent );
+		return sprintf( '%s %s %s', $content, $tooltipIndicator, $wrappedExpandableContent );
 	}
 
 	/**

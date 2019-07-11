@@ -37,6 +37,7 @@ class HtmlTableHeaderBuilder {
 	 * @param string $content HTML
 	 * @param bool $isSortable
 	 * @param bool $isRawContent
+	 * @param-taint $content escapes_html
 	 *
 	 * @throws InvalidArgumentException
 	 */
@@ -76,9 +77,11 @@ class HtmlTableHeaderBuilder {
 			$attributes['class'] = 'unsortable';
 		}
 
-		$content = $this->content;
 		if ( !$this->isRawContent ) {
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			$content = htmlspecialchars( $this->content );
+		} else {
+			$content = $this->content;
 		}
 
 		return Html::rawElement( 'th', $attributes, $content );
