@@ -60,7 +60,7 @@ return [
 
 	ConstraintCheckerServices::SYMMETRIC_CHECKER => function( MediaWikiServices $services ) {
 		return new SymmetricChecker(
-			WikibaseServices::getEntityLookup( $services ),
+			WikibaseServices::getEntityLookupWithoutCache( $services ),
 			ConstraintsServices::getConnectionCheckerHelper( $services )
 		);
 	},
