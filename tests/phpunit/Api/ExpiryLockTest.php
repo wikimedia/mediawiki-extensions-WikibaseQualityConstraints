@@ -2,8 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
+use HashBagOStuff;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
+use WikibaseQuality\ConstraintReport\Tests\Fake\InvalidConvertibleTimestamp;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Api\ExpiryLock
@@ -20,54 +22,57 @@ class ExpiryLockTest extends \MediaWikiTestCase {
 		parent::tearDown();
 	}
 
-	public function testLockingSetsAHashKey() {
-		$id = 'someLockName';
-		$timestampString = '100010001';
-		$timeStamp = new ConvertibleTimestamp( $timestampString );
-		$cache = $this->createMock( \BagOStuff::class );
-		$cache->expects( $this->once() )
-			->method( 'set' )
-			->with( $this->anything(), $timestampString, $timestampString )
-			->willReturn( true );
+	public function testLock_whenNotLockedYet_returnsTrue() {
+		$lock = new ExpiryLock( new HashBagOStuff() );
 
-		$lock = new ExpiryLock( $cache );
-		$lock->lock( $id, $timeStamp );
+		$this->assertTrue( $lock->lock( 'fooId', new ConvertibleTimestamp( '10' ) ) );
 	}
 
-	public function testUnlockedIfCachedValueUnset() {
-		$cache = $this->createMock( \BagOStuff::class );
-		$lock = new ExpiryLock( $cache );
+	public function testLock_whenAlreadyLocked_returnsFalse() {
+		$lock = new ExpiryLock( new HashBagOStuff() );
+		$id = 'fooId';
+		$expiryTimeStamp = new ConvertibleTimestamp( '10' );
+		ConvertibleTimestamp::setFakeTime( '9' );
+
+		$lock->lock( $id, $expiryTimeStamp );
+
+		$this->assertFalse( $lock->lock( $id, $expiryTimeStamp ) );
+	}
+
+	public function testIsLocked_whenInvalidTimestampStored_returnsFalse() {
+		$lock = new ExpiryLock( new HashBagOStuff() );
+		$id = 'fooId';
+		$invalidTimestamp = new InvalidConvertibleTimestamp();
+
+		$lock->lock( $id, $invalidTimestamp );
+
 		$this->assertFalse( $lock->isLocked( 'fooId' ) );
 	}
 
-	public function testUnlockedIfCachedValueIsNotValidTimestamp() {
-		$cache = $this->createMock( \BagOStuff::class );
-		$cache->method( 'get' )
-			->willReturn( 'foo' );
-		$lock = new ExpiryLock( $cache );
+	public function testIsLocked_whenNotLockedYet_returnsFalse() {
+		$lock = new ExpiryLock( new HashBagOStuff() );
+
 		$this->assertFalse( $lock->isLocked( 'fooId' ) );
 	}
 
-	public function testUnlockedIfCurrentTimeIsAfterLockedTime() {
-		$cache = $this->createMock( \BagOStuff::class );
-		$cache->method( 'get' )
-			->willReturn( '10' );
-
+	public function testIsLocked_whenLockedButExpired_returnsFalse() {
+		$lock = new ExpiryLock( new HashBagOStuff() );
+		$id = 'fooId';
 		ConvertibleTimestamp::setFakeTime( '11' );
 
-		$lock = new ExpiryLock( $cache );
-		$this->assertFalse( $lock->isLocked( 'fooId' ) );
+		$lock->lock( $id, new ConvertibleTimestamp( '10' ) );
+
+		$this->assertFalse( $lock->isLocked( $id ) );
 	}
 
-	public function testLockedIfCurrentTimeIsBeforeLockedTime() {
-		$cache = $this->createMock( \BagOStuff::class );
-		$cache->method( 'get' )
-			->willReturn( '50' );
-
+	public function testIsLocked_whenLockedAndNotExpiredYet_returnsTrue() {
+		$lock = new ExpiryLock( new HashBagOStuff() );
+		$id = 'fooId';
 		ConvertibleTimestamp::setFakeTime( '40' );
 
-		$lock = new ExpiryLock( $cache );
-		$this->assertTrue( $lock->isLocked( 'fooId' ) );
+		$lock->lock( $id, new ConvertibleTimestamp( '50' ) );
+
+		$this->assertTrue( $lock->isLocked( $id ) );
 	}
 
 }

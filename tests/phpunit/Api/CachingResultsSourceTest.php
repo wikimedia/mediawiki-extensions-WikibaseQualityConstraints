@@ -198,16 +198,14 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			[ $this->getCheckResult( 'Q100' ) ],
 			Metadata::blank()
 		);
+		$q100 = new ItemId( 'Q100' );
 		$statuses = [ 'garbage status', 'other status' ];
 		$resultsSource = $this->getMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
-			->with( [], [ 'fake' ], null, $statuses )
+			->with( [ $q100 ], [ 'fake' ], null, $statuses )
 			->willReturn( $expectedResults );
-		$cache = $this->getMockBuilder( WANObjectCache::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$cache->expects( $this->never() )->method( 'set' );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -216,7 +214,9 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			$metaDataAccessor
 		);
 
-		$cachingResultsSource->getAndStoreResults( [], [ 'fake' ], null, $statuses );
+		$cachingResultsSource->getAndStoreResults( [ $q100 ], [ 'fake' ], null, $statuses );
+
+		$this->assertNull( $cachingResultsSource->getStoredResults( $q100 ) );
 	}
 
 	public function testGetAndStoreResults_DontCacheWithConstraintIds() {
@@ -231,10 +231,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getResults' )
 			->with( [ $q100 ], [], [ 'fake' ], $statuses )
 			->willReturn( $expectedResults );
-		$cache = $this->getMockBuilder( WANObjectCache::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$cache->expects( $this->never() )->method( 'set' );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -244,6 +241,8 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$cachingResultsSource->getAndStoreResults( [ $q100 ], [], [ 'fake' ], $statuses );
+
+		$this->assertNull( $cachingResultsSource->getStoredResults( $q100 ) );
 	}
 
 	public function testGetAndStoreResults_StoreResults() {
@@ -385,10 +384,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
-		$cache = $this->getMockBuilder( WANObjectCache::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$cache->expects( $this->never() )->method( 'set' );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -398,6 +394,8 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$cachingResultsSource->getAndStoreResults( [ $q100 ], [], null, $statuses );
+
+		$this->assertNull( $cachingResultsSource->getStoredResults( $q100 ) );
 	}
 
 	public function testGetAndStoreResults_WithoutFutureTime() {
@@ -493,10 +491,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
-		$cache = $this->getMockBuilder( WANObjectCache::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$cache->expects( $this->never() )->method( 'set' );
+		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->once() )
 			->method( 'loadLatestRevisionIds' )
@@ -512,6 +507,8 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$cachingResultsSource->getAndStoreResults( [ $q100 ], [], null, $statuses );
+
+		$this->assertNull( $cachingResultsSource->getStoredResults( $q100 ) );
 	}
 
 	public function testGetAndStoreResults_NullResult() {
