@@ -18,6 +18,8 @@ use MultiConfig;
 use NullStatsdDataFactory;
 use PHPUnit4And6Compat;
 use WANObjectCache;
+use Wikibase\DataAccess\EntitySourceDefinitions;
+use Wikibase\DataAccess\Tests\DataAccessSettingsFactory;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -103,7 +105,10 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 				new MultiConfig( [ $config, $this->getDefaultConfig() ] ),
 				new RdfVocabulary(
 					[ '' => 'http://www.wikidata.org/entity/' ],
-					'http://www.wikidata.org/wiki/Special:EntityData/'
+					'http://www.wikidata.org/wiki/Special:EntityData/',
+					DataAccessSettingsFactory::anySettings(),
+					new EntitySourceDefinitions( [] ),
+					''
 				),
 				$entityIdParser,
 				$dataTypeLookup,
@@ -124,8 +129,6 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasTypeWithoutHint() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$query = <<<EOF
@@ -145,8 +148,6 @@ EOF;
 	}
 
 	public function testHasTypeWithHint() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper( new HashConfig( [
 			'WBQualityConstraintsSparqlHasWikibaseSupport' => true,
 		] ) );
@@ -168,7 +169,6 @@ EOF;
 	}
 
 	public function testFindEntitiesWithSameStatement() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
 
 		$guid = 'Q1$8542690f-dfab-4846-944f-8382df730d2c';
 		$statement = new Statement(
@@ -219,7 +219,6 @@ EOF;
 		$sparqlValue,
 		$sparqlPath
 	) {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
 
 		$dtLookup = $this->getMock( PropertyDataTypeLookup::class );
 		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
@@ -360,7 +359,6 @@ EOF;
 	}
 
 	public function testSerializeConstraintParameterException() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
 
 		$cpe = new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
@@ -383,8 +381,6 @@ EOF;
 	}
 
 	public function testDeserializeConstraintParameterException() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$serialization = [
 			'type' => ConstraintParameterException::class,
 			'violationMessage' => [
@@ -406,8 +402,6 @@ EOF;
 	}
 
 	public function testMatchesRegularExpressionWithSparql() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
 		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^(?:\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\")$") AS ?matches) {}';
@@ -424,8 +418,6 @@ EOF;
 	}
 
 	public function testMatchesRegularExpressionWithSparqlBadRegex() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$text = '';
 		$regex = '(.{2,5)?';
 		$query = 'SELECT (REGEX("", "^(?:(.{2,5)?)$") AS ?matches) {}';
@@ -457,8 +449,6 @@ EOF;
 	 * @dataProvider provideTimeoutMessages
 	 */
 	public function testIsTimeout( $content, $expected ) {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->isTimeout( $content );
@@ -467,8 +457,6 @@ EOF;
 	}
 
 	public function testIsTimeoutRegex() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper(
 			new HashConfig( [
 				'WBQualityConstraintsSparqlTimeoutExceptionClasses' => [
@@ -520,8 +508,6 @@ EOF;
 	 * @dataProvider provideCacheHeaders
 	 */
 	 public function testGetCacheMaxAge( $responseHeaders, $expected ) {
-		 $this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->getCacheMaxAge( $responseHeaders );
