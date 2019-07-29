@@ -6,7 +6,6 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use HashConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWikiTestCase;
-use \Config;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
@@ -79,12 +78,12 @@ class ServicesTest extends MediaWikiTestCase {
 			[ ConstraintParameterParser::class ],
 			[ ConnectionCheckerHelper::class ],
 			[ RangeCheckerHelper::class ],
-			[ SparqlHelper::class, new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ) ],
-			[ SparqlHelper::class, new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => '' ] ) ],
+			[ SparqlHelper::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ) ] ],
+			[ SparqlHelper::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => '' ] ) ] ],
 			[ TypeCheckerHelper::class ],
 			[ DelegatingConstraintChecker::class ],
-			[ ResultsSource::class, new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => true ] ) ],
-			[ ResultsSource::class, new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => false ] ) ],
+			[ ResultsSource::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => true ] ) ] ],
+			[ ResultsSource::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => false ] ) ] ],
 		];
 	}
 
@@ -125,6 +124,7 @@ class ServicesTest extends MediaWikiTestCase {
 	public function provideWikibaseServiceClasses() {
 		return [
 			[ EntityLookup::class ],
+			[ 'EntityLookupWithoutCache', [ 'expectedClass' => EntityLookup::class ] ],
 			[ PropertyDataTypeLookup::class ],
 		];
 	}
@@ -138,51 +138,57 @@ class ServicesTest extends MediaWikiTestCase {
 	/**
 	 * @dataProvider provideAllServiceClasses
 	 */
-	public function testServiceWiring( $serviceClass, Config $customConfigSetting = null ) {
-		$this->overrideMwServices( $customConfigSetting );
+	public function testServiceWiring( $serviceClass, array $options = [] ) {
+		$options += [ 'config' => null, 'expectedClass' => $serviceClass ];
+		$this->overrideMwServices( $options['config'] );
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$serviceName = 'WBQC_' . end( $serviceClassParts );
 
 		$service = MediaWikiServices::getInstance()->getService( $serviceName );
 
-		$this->assertInstanceOf( $serviceClass, $service );
+		$this->assertInstanceOf( $options['expectedClass'], $service );
 	}
 
 	/**
 	 * @dataProvider provideConstraintsServiceClasses
 	 */
-	public function testConstraintsServices( $serviceClass, Config $customConfigSetting = null ) {
-		$this->overrideMwServices( $customConfigSetting );
+	public function testConstraintsServices( $serviceClass, array $options = [] ) {
+		$options += [ 'config' => null, 'expectedClass' => $serviceClass ];
+		$this->overrideMwServices( $options['config'] );
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$getterName = 'get' . end( $serviceClassParts );
 
 		$service = ConstraintsServices::$getterName();
 
-		$this->assertInstanceOf( $serviceClass, $service );
+		$this->assertInstanceOf( $options['expectedClass'], $service );
 	}
 
 	/**
 	 * @dataProvider provideConstraintCheckerServiceClasses
 	 */
-	public function testConstraintCheckerServices( $serviceClass ) {
+	public function testConstraintCheckerServices( $serviceClass, array $options = [] ) {
+		$options += [ 'config' => null, 'expectedClass' => $serviceClass ];
+		$this->overrideMwServices( $options['config'] );
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$getterName = 'get' . end( $serviceClassParts );
 
 		$service = ConstraintCheckerServices::$getterName();
 
-		$this->assertInstanceOf( $serviceClass, $service );
+		$this->assertInstanceOf( $options['expectedClass'], $service );
 	}
 
 	/**
 	 * @dataProvider provideWikibaseServiceClasses
 	 */
-	public function testWikibaseServices( $serviceClass ) {
+	public function testWikibaseServices( $serviceClass, array $options = [] ) {
+		$options += [ 'config' => null, 'expectedClass' => $serviceClass ];
+		$this->overrideMwServices( $options['config'] );
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$getterName = 'get' . end( $serviceClassParts );
 
 		$service = WikibaseServices::$getterName();
 
-		$this->assertInstanceOf( $serviceClass, $service );
+		$this->assertInstanceOf( $options['expectedClass'], $service );
 	}
 
 }

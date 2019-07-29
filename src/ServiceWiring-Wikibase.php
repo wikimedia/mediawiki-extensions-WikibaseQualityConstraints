@@ -14,7 +14,7 @@ return [
 		);
 	},
 
-	WikibaseServices::ENTITY_LOOKUP_WIHTOUT_CACHE => function( MediaWikiServices $services ) {
+	WikibaseServices::ENTITY_LOOKUP_WITHOUT_CACHE => function( MediaWikiServices $services ) {
 		return new ExceptionIgnoringEntityLookup(
 			WikibaseRepo::getDefaultInstance()->getEntityLookup( Store::LOOKUP_CACHING_RETRIEVE_ONLY )
 		);

@@ -18,7 +18,7 @@ class WikibaseServices {
 
 	const ENTITY_LOOKUP = 'WBQC_EntityLookup';
 	const PROPERTY_DATA_TYPE_LOOKUP = 'WBQC_PropertyDataTypeLookup';
-	const ENTITY_LOOKUP_WIHTOUT_CACHE = 'WBQC_EntityLookupWithoutCache';
+	const ENTITY_LOOKUP_WITHOUT_CACHE = 'WBQC_EntityLookupWithoutCache';
 
 	private static function getService( MediaWikiServices $services = null, $name ) {
 		if ( $services === null ) {
@@ -48,7 +48,7 @@ class WikibaseServices {
 	 * @return EntityLookup
 	 */
 	public static function getEntityLookupWithoutCache( MediaWikiServices $services = null ) {
-		return self::getService( $services, self::ENTITY_LOOKUP_WIHTOUT_CACHE );
+		return self::getService( $services, self::ENTITY_LOOKUP_WITHOUT_CACHE );
 	}
 
 }
