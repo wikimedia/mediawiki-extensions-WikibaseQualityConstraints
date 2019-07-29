@@ -1,7 +1,7 @@
 {
 	"name": "wikibase/constraints",
 	"type": "mediawiki-extension",
-	"description": "Extension for WikibaseQuality to manage constraints in Wikibase.",
+	"description": "Extension to manage constraints in Wikibase.",
 	"keywords": [
 		"quality",
 		"trust",

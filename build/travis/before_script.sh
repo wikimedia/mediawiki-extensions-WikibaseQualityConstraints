@@ -18,12 +18,6 @@ mv mediawiki-master wiki
 git clone --depth=1 --shallow-submodules --recurse-submodules https://github.com/wikimedia/mediawiki-extensions-Wikibase
 mv mediawiki-extensions-Wikibase wiki/extensions/Wikibase
 
-# checkout WikibaseQuality
-wget https://github.com/wikimedia/mediawiki-extensions-WikibaseQuality/archive/master.tar.gz
-tar -zxf master.tar.gz
-rm master.tar.gz
-mv mediawiki-extensions-WikibaseQuality-master wiki/extensions/WikibaseQuality
-
 cd wiki
 
 if [ $DBTYPE == "mysql" ]
@@ -33,9 +27,6 @@ fi
 
 composer install
 php maintenance/install.php --dbtype $DBTYPE --dbuser root --dbname its_a_mw --dbpath $(pwd) --pass nyan TravisWiki admin
-
-cd extensions/WikibaseQuality
-composer install --dev --no-interaction --prefer-source
 
 cd ..
 
@@ -59,7 +50,6 @@ echo "define( 'WB_EXPERIMENTAL_FEATURES', true );" >> LocalSettings.php
 echo 'require_once __DIR__ . "/extensions/Wikibase/repo/Wikibase.php";' >> LocalSettings.php
 echo 'require_once __DIR__ . "/extensions/Wikibase/repo/ExampleSettings.php";' >> LocalSettings.php
 echo 'require_once __DIR__ . "/extensions/Wikibase/client/WikibaseClient.php";' >> LocalSettings.php
-echo 'wfLoadExtension( "WikibaseQuality" );' >> LocalSettings.php
 echo 'wfLoadExtension( "WikibaseQualityConstraints" );' >> LocalSettings.php
 echo '$wgWBClientSettings["siteGlobalID"] = "enwiki";' >> LocalSettings.php
 
