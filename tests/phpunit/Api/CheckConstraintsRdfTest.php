@@ -182,6 +182,8 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testShow() {
+		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
+
 		$page = new WikiPage( Title::newFromText( 'Property:P1' ) );
 
 		$cachingResultsSource = $this->getCachingResultsSource();

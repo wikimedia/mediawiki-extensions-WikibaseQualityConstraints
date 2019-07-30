@@ -78,7 +78,8 @@ class ServicesTest extends MediaWikiTestCase {
 			[ ConstraintParameterParser::class ],
 			[ ConnectionCheckerHelper::class ],
 			[ RangeCheckerHelper::class ],
-			[ SparqlHelper::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ) ] ],
+			// Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase
+			// [ SparqlHelper::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ) ] ],
 			[ SparqlHelper::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => '' ] ) ] ],
 			[ TypeCheckerHelper::class ],
 			[ DelegatingConstraintChecker::class ],
