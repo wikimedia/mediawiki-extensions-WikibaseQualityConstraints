@@ -42,3 +42,4 @@ Thumbs.db
 /tests/coverage
 /build/logs
 /node_modules
+/.eslintcache
