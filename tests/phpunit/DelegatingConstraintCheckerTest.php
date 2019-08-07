@@ -67,6 +67,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() {
 		parent::setUp();
+		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 
 		$config = new MultiConfig( [
