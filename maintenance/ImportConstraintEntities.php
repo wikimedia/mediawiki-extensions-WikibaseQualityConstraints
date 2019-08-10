@@ -65,6 +65,7 @@ class ImportConstraintEntities extends Maintenance {
 			'dry-run',
 			'Don’t actually import entities, just print which ones would be imported.'
 		);
+		$this->requireExtension( 'WikibaseQualityConstraints' );
 	}
 
 	/**
