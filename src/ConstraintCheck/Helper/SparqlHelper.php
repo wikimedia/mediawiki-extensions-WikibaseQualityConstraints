@@ -54,9 +54,9 @@ class SparqlHelper {
 	private $rdfVocabulary;
 
 	/**
-	 * @var string
+	 * @var string[]
 	 */
-	private $entityPrefix;
+	private $entityPrefixes;
 
 	/**
 	 * @var string
@@ -162,20 +162,61 @@ class SparqlHelper {
 		$this->loggingHelper = $loggingHelper;
 		$this->defaultUserAgent = $defaultUserAgent;
 		$this->requestFactory = $requestFactory;
-		$this->entityPrefix = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY );
-		$this->prefixes = <<<EOT
-PREFIX wd: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ENTITY )}>
+		$this->entityPrefixes = [];
+		foreach ( $rdfVocabulary->entityNamespaceNames as $namespaceName ) {
+			$this->entityPrefixes[] = $rdfVocabulary->getNamespaceURI( $namespaceName );
+		}
+
+		$this->prefixes = $this->getQueryPrefixes( $rdfVocabulary );
+	}
+
+	private function getQueryPrefixes( RdfVocabulary $rdfVocabulary ) {
+		// TODO: it would probably be smarter that RdfVocubulary exposed these prefixes somehow
+		$prefixes = '';
+		foreach ( $rdfVocabulary->entityNamespaceNames as $sourceName => $namespaceName ) {
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+		}
+		$prefixes .= <<<END
 PREFIX wds: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_STATEMENT )}>
-PREFIX wdt: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_DIRECT_CLAIM )}>
-PREFIX wdv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_VALUE )}>
-PREFIX p: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_CLAIM )}>
-PREFIX ps: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_CLAIM_STATEMENT )}>
-PREFIX pq: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_QUALIFIER )}>
-PREFIX pqv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_QUALIFIER_VALUE )}>
-PREFIX pr: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_REFERENCE )}>
-PREFIX prv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NSP_REFERENCE_VALUE )}>
-PREFIX wikibase: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ONTOLOGY )}>
-EOT;
+PREFIX wdv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_VALUE )}>\n
+END;
+
+		foreach ( $rdfVocabulary->propertyNamespaceNames as $sourceName => $sourceNamespaces ) {
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_DIRECT_CLAIM];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_CLAIM];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_CLAIM_STATEMENT];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_QUALIFIER];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_QUALIFIER_VALUE];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_REFERENCE];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_REFERENCE_VALUE];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+		}
+		$prefixes .= <<<END
+PREFIX wikibase: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ONTOLOGY )}>\n
+END;
+		return $prefixes;
 	}
 
 	/**
@@ -343,15 +384,19 @@ EOF;
 		return new CachedEntityIds( array_map(
 			function ( $resultBindings ) {
 				$entityIRI = $resultBindings['otherEntity']['value'];
-				$entityPrefixLength = strlen( $this->entityPrefix );
-				if ( substr( $entityIRI, 0, $entityPrefixLength ) === $this->entityPrefix ) {
-					try {
-						return $this->entityIdParser->parse(
-							substr( $entityIRI, $entityPrefixLength )
-						);
-					} catch ( EntityIdParsingException $e ) {
-						// fall through
+				foreach ( $this->entityPrefixes as $entityPrefix ) {
+					$entityPrefixLength = strlen( $entityPrefix );
+					if ( substr( $entityIRI, 0, $entityPrefixLength ) === $entityPrefix ) {
+						try {
+							return $this->entityIdParser->parse(
+								substr( $entityIRI, $entityPrefixLength )
+							);
+						} catch ( EntityIdParsingException $e ) {
+							// fall through
+						}
 					}
+
+					return null;
 				}
 
 				return null;

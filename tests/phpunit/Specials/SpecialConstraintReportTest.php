@@ -143,8 +143,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 * @dataProvider provideRequestsAndMatchers
 	 */
 	public function testExecute( $subPage, array $request, $userLanguage, array $matchers ) {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$request = new \FauxRequest( $request );
 
 		// the added item is Q1; this solves the problem that the provider is executed before the test
