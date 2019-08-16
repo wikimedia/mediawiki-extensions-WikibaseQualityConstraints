@@ -16,6 +16,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
+use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraintsRdf;
@@ -182,8 +183,6 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testShow() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$page = new WikiPage( Title::newFromText( 'Property:P1' ) );
 
 		$cachingResultsSource = $this->getCachingResultsSource();
@@ -208,14 +207,14 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		$action->onView();
 		$actualOutput = ob_get_clean();
 
-		$wdsURI = $rdfVocabulary->getNamespaceURI( 'wds' );
+		$wdsURI = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_STATEMENT );
 		$expectedOutput = <<<TEXT
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix wds: <$wdsURI> .
+@prefix s: <$wdsURI> .
 @prefix wikibase: <http://wikiba.se/ontology#> .
 
-wds:P1-00000000-0000-0000-0000-000000000000 wikibase:hasViolationForConstraint wds:P1-00000000-0000-0000-0000-000000000000 .
+s:P1-00000000-0000-0000-0000-000000000000 wikibase:hasViolationForConstraint s:P1-00000000-0000-0000-0000-000000000000 .
 
 TEXT;
 		$this->assertEquals( $expectedOutput, $actualOutput );

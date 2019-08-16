@@ -18,6 +18,7 @@ use MultiConfig;
 use NullStatsdDataFactory;
 use PHPUnit4And6Compat;
 use WANObjectCache;
+use Wikibase\DataAccess\EntitySource;
 use Wikibase\DataAccess\EntitySourceDefinitions;
 use Wikibase\DataAccess\Tests\DataAccessSettingsFactory;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -105,10 +106,12 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 				new MultiConfig( [ $config, $this->getDefaultConfig() ] ),
 				new RdfVocabulary(
 					[ '' => 'http://www.wikidata.org/entity/' ],
-					'http://www.wikidata.org/wiki/Special:EntityData/',
+					[ '' => 'http://www.wikidata.org/wiki/Special:EntityData/' ],
 					DataAccessSettingsFactory::anySettings(),
 					new EntitySourceDefinitions( [] ),
-					''
+					'',
+					[ '' => 'wd' ],
+					[ '' => '' ]
 				),
 				$entityIdParser,
 				$dataTypeLookup,
@@ -129,8 +132,6 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasTypeWithoutHint() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$query = <<<EOF
@@ -150,8 +151,6 @@ EOF;
 	}
 
 	public function testHasTypeWithHint() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper( new HashConfig( [
 			'WBQualityConstraintsSparqlHasWikibaseSupport' => true,
 		] ) );
@@ -173,8 +172,6 @@ EOF;
 	}
 
 	public function testFindEntitiesWithSameStatement() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$guid = 'Q1$8542690f-dfab-4846-944f-8382df730d2c';
 		$statement = new Statement(
 			new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ),
@@ -224,8 +221,6 @@ EOF;
 		$sparqlValue,
 		$sparqlPath
 	) {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$dtLookup = $this->getMock( PropertyDataTypeLookup::class );
 		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
 
@@ -365,8 +360,6 @@ EOF;
 	}
 
 	public function testSerializeConstraintParameterException() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$cpe = new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
 				->withInlineCode( '[', Role::CONSTRAINT_PARAMETER_VALUE )
@@ -388,8 +381,6 @@ EOF;
 	}
 
 	public function testDeserializeConstraintParameterException() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$serialization = [
 			'type' => ConstraintParameterException::class,
 			'violationMessage' => [
@@ -411,8 +402,6 @@ EOF;
 	}
 
 	public function testMatchesRegularExpressionWithSparql() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
 		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^(?:\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\")$") AS ?matches) {}';
@@ -429,8 +418,6 @@ EOF;
 	}
 
 	public function testMatchesRegularExpressionWithSparqlBadRegex() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$text = '';
 		$regex = '(.{2,5)?';
 		$query = 'SELECT (REGEX("", "^(?:(.{2,5)?)$") AS ?matches) {}';
@@ -462,8 +449,6 @@ EOF;
 	 * @dataProvider provideTimeoutMessages
 	 */
 	public function testIsTimeout( $content, $expected ) {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->isTimeout( $content );
@@ -472,8 +457,6 @@ EOF;
 	}
 
 	public function testIsTimeoutRegex() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper(
 			new HashConfig( [
 				'WBQualityConstraintsSparqlTimeoutExceptionClasses' => [
@@ -525,8 +508,6 @@ EOF;
 	 * @dataProvider provideCacheHeaders
 	 */
 	 public function testGetCacheMaxAge( $responseHeaders, $expected ) {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->getCacheMaxAge( $responseHeaders );
@@ -752,6 +733,103 @@ EOF;
 		$helper->expects( $this->once() )
 			->method( 'logSparqlHelperTooManyRequestsRetryAfterInvalid' );
 		return $helper;
+	}
+
+	public function testGivenNeedsPrefixesFlagTrue_RunQueryIncludesPrefixesInResultingQuery() {
+		$lock = $this->createMock( ExpiryLock::class );
+		$lock->method( 'isLocked' )
+			->willReturn( false );
+
+		$request = $this->createMock( \MWHttpRequest::class );
+		$request->method( 'getStatus' )
+			->willReturn( 200 );
+		$request->method( 'getResponseHeaders' )
+			->willReturn( [] );
+		$request->method( 'execute' )
+			->willReturn( \Status::newGood() );
+		$request->method( 'getContent' )->willReturn( '{}' );
+
+		$requestFactory = $this->createMock( HttpRequestFactory::class );
+		$requestFactory->expects( $this->atLeastOnce() )
+			->method( 'create' )
+			->with(
+				$this->callback( function( $url ) {
+					$query = substr( $url, strpos( $url, '?query=' ) );
+					$query = substr( $query, strlen( '?query=' ) );
+					$query = substr( $query, 0, strpos( $query, '&format=' ) );
+
+					$expectedPrefix = <<<END
+#wbqc
+PREFIX wd: <http://wiki/entity/>
+PREFIX wds: <http://wiki/entity/statement/>
+PREFIX wdv: <http://wiki/value/>
+PREFIX wdt: <http://wiki/prop/direct/>
+PREFIX p: <http://wiki/prop/>
+PREFIX ps: <http://wiki/prop/statement/>
+PREFIX pq: <http://wiki/prop/qualifier/>
+PREFIX pqv: <http://wiki/prop/qualifier/value/>
+PREFIX pr: <http://wiki/prop/reference/>
+PREFIX prv: <http://wiki/prop/reference/value/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+END;
+					$expectedPrefix = rawurlencode( $expectedPrefix );
+					return substr( $query, 0, strlen( $expectedPrefix ) ) === $expectedPrefix;
+				} ),
+				$this->anything()
+			)
+			->willReturn( $request );
+
+		$config = $this->getDefaultConfig();
+		$config->set( 'WBQualityConstraintsSparqlHasWikibaseSupport', false );
+
+		$rdfVocabulary = new RdfVocabulary(
+			[ 'wd' => 'http://wiki/entity/' ],
+			'http://data.wiki/',
+			DataAccessSettingsFactory::entitySourceBasedFederation(),
+			new EntitySourceDefinitions( [
+				new EntitySource(
+					'wd',
+					false,
+					[
+						'item' => [ 'namespaceId' => 100 ,'slot' => 'main' ],
+						'property' => [ 'namespaceId' => 200, 'slot' => 'main' ]
+					],
+					'http://wiki/entity/',
+					'wd',
+					'',
+					'd'
+				)
+			] ),
+			'wd',
+			[ 'wd' => 'wd' ],
+			[ 'wd' => '' ]
+		);
+
+		$sparqlHelper = new SparqlHelper(
+			$this->getDefaultConfig(),
+			$rdfVocabulary,
+			$this->createMock( EntityIdParser::class ),
+			$this->createMock( PropertyDataTypeLookup::class ),
+			WANObjectCache::newEmpty(),
+			$this->createMock( ViolationMessageSerializer::class ),
+			$this->createMock( ViolationMessageDeserializer::class ),
+			$this->createMock( \IBufferingStatsdDataFactory::class ),
+			$lock,
+			$this->createMock( LoggingHelper::class ),
+			'',
+			$requestFactory
+		);
+
+		$query = <<<END
+SELECT ?item ?itemLabel
+WHERE
+{
+  ?item wdt:P31 wd:Q2934.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+END;
+
+		$sparqlHelper->runQuery( $query, $needsPrefixes = true );
 	}
 
 }
