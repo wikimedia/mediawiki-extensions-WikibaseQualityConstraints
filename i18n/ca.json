@@ -60,6 +60,7 @@
 	"wbqc-violation-message-range-quantity-closed": "El valor de $1 ($2) ha d'estar entre $3 i $4.",
 	"wbqc-violation-message-range-time-closed-rightnow": "El valor de $1 ($2) hauria de situar-se en el passat, però no pas abans de $3.",
 	"wbqc-violation-message-single-value": "Aquesta propietat només hauria de contenir un sol valor; és a dir, només hi hauria d'haver una declaració que fes servir aquesta propietat.",
+	"wbqc-violation-message-single-value-separators": "Aquesta propietat només hauria de tenir un sol valor amb {{PLURAL:$2|1=el mateix qualificador $4.|el mateix conjunt de qualificadors per aquestes propietats: $3}}",
 	"wbqc-violation-message-symmetric": "$1 també hauria de tenir la declaració simètrica $2 $3.",
 	"wbqc-violation-message-type-instance": "Les entitats que utilitzin la propietat $1 haurien de ser instàncies {{PLURAL:$3|1=de $5|2=de $5 o $6|d'una de les següents classes}} (o {{PLURAL:$3|1=d'una subclasse seva|2=d'una subclasse seva|d'una de les seves subclasses}}), però $2 ara mateix {{PLURAL:$3|1=no ho és.|2=no ho és.|no ho és: $4}}",
 	"wbqc-violation-message-type-subclass": "Les entitats que utilitzin la propietat $1 haurien de ser subclasses {{PLURAL:de $3|1=de $5|2=de $5 o $6|d'una de les següents classes}} (o {{PLURAL:de $3|1=d'una subclasse seva|2=d'una subclasse seva|d'una de les seves subclasses}}), però $2 ara mateix {{PLURAL:$3|1=no ho és.|2=no ho és.|no ho és: $4}}",
