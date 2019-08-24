@@ -15,7 +15,8 @@
 	},
 	"MessagesDirs": {
 		"WikibaseQualityConstraints": [
-			"i18n"
+			"i18n",
+			"i18n/api"
 		]
 	},
 	"ExtensionMessagesFiles": {
@@ -46,7 +47,10 @@
 		}
 	},
 	"Actions": {
-		"constraintsrdf": [ "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintsRdf", "newFromGlobalState" ]
+		"constraintsrdf": [
+			"WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintsRdf",
+			"newFromGlobalState"
+		]
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "modules",
@@ -159,12 +163,12 @@
 			"description": "The maximum time that a single constraint check should ever take, in seconds. Any constraint check that takes longer than this time is logged at ‘warning’ level. Specifying `null` disables this logging.",
 			"public": true
 		},
-		"WBQualityConstraintsCheckOnEntityDurationInfoSeconds" : {
+		"WBQualityConstraintsCheckOnEntityDurationInfoSeconds": {
 			"value": 5.0,
 			"description": "The maximum time that a full constraint check on an entity should usually take, in seconds. Any entity constraint check that takes longer than this time is logged at ‘info’ level. Specifying `null` disables this logging.",
 			"public": true
 		},
-		"WBQualityConstraintsCheckOnEntityDurationWarningSeconds" : {
+		"WBQualityConstraintsCheckOnEntityDurationWarningSeconds": {
 			"value": 55.0,
 			"description": "The maximum time that a full constraint check on an entity should ever take, in seconds. Any entity constraint check that takes longer than this time is logged at ‘warning’ level. Specifying `null` disables this logging.",
 			"public": true
@@ -578,12 +582,22 @@
 			"public": true
 		},
 		"WBQualityConstraintsStartTimePropertyIds": {
-			"value": ["P569", "P571", "P580", "P585"],
+			"value": [
+				"P569",
+				"P571",
+				"P580",
+				"P585"
+			],
 			"description": "Property IDs of statements whose minimum value defines the start time of an entity, which is used by 'contemporary' contraints.",
 			"public": true
 		},
 		"WBQualityConstraintsEndTimePropertyIds": {
-			"value": ["P570", "P576", "P582", "P585"],
+			"value": [
+				"P570",
+				"P576",
+				"P582",
+				"P585"
+			],
 			"description": "Property IDs of statements whose maximum value defines the end time of an entity, which is used by 'contemporary' contraints.",
 			"public": true
 		},
