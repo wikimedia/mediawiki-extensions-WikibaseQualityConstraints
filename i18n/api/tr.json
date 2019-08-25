@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Incelemeelemani"
+		]
+	},
+	"apihelp-wbcheckconstraints-description": "İstediğiniz varlık üzerinde kısıtlama kontrollerini yapar ve sonucunu döndürür.",
+	"apihelp-wbcheckconstraints-summary": "İstediğiniz varlık üzerinde kısıtlama kontrollerini yapar ve sonucunu döndürür.",
+	"apihelp-wbcheckconstraints-param-id": "Verilerin alınacağı varlıkların kimlik listesi. Birden fazla varlık için '|' veya alternatifi değer kullanın.",
+	"apihelp-wbcheckconstraints-param-claimid": "Bir kısıtlama raporunu kontrol etme talebini tanımlayan GUID listesi. '|' ile değerleri ayırın.",
+	"apihelp-wbcheckconstraints-param-constraintid": "Yalnızca belirtilen kısıtlama kimliğine sahip kısıtlamaları döndürmek için isteğe bağlı filtre."
+}
