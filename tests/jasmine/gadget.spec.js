@@ -134,12 +134,11 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 			loadedEntity = {
 				getId: sinon.stub().returns( sinon.stub() )
 			};
-			global.mediaWiki.hook.withArgs( 'wikibase.statement.saved' ).returns( { add: sinon.stub() } );
+			global.mediaWiki.hook.returns( { add: sinon.stub() } );
 
 			gadget.defaultBehavior();
 
 			expect( gadget.getEntity(), 'to equal', loadedEntity );
-
 		} );
 
 		it( 'invokes mw loader and resumes once it is ready', function () {
@@ -160,9 +159,10 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 			expect( done.calledOnce, 'to be true' );
 		} );
 
-		it( 'runs a fullCheck once mw loader is done', function () {
+		it( 'runs a fullCheck once mw loader is done and entityView.rendered fires', function () {
 			var gadget = new Gadget(),
 				statementSavedSpy = sinon.spy(),
+				entityViewRenderedSpy = sinon.stub(),
 				wgUserLanguage = 'de',
 				wbEntityId = 'Q42';
 
@@ -189,6 +189,8 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 				getId: sinon.stub().returns( wbEntityId )
 			};
 			global.mediaWiki.hook.withArgs( 'wikibase.statement.saved' ).returns( { add: statementSavedSpy } );
+			global.mediaWiki.hook.withArgs( 'wikibase.entityPage.entityView.rendered' )
+				.returns( { add: entityViewRenderedSpy.yields() } );
 
 			global.mediaWiki.track = sinon.spy();
 
@@ -196,6 +198,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 			gadget.defaultBehavior();
 
+			expect( entityViewRenderedSpy.calledOnce, 'to be true' );
 			sinon.assert.calledWith(
 				global.mediaWiki.track,
 				'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity'
