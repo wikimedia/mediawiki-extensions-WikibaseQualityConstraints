@@ -736,8 +736,6 @@ EOF;
 	}
 
 	public function testGivenNeedsPrefixesFlagTrue_RunQueryIncludesPrefixesInResultingQuery() {
-		$this->markTestSkipped( 'Temporarily skipping due to on-going changes to the constructor of RdfVocabulary in Wikibase' );
-
 		$lock = $this->createMock( ExpiryLock::class );
 		$lock->method( 'isLocked' )
 			->willReturn( false );
@@ -786,7 +784,7 @@ END;
 
 		$rdfVocabulary = new RdfVocabulary(
 			[ 'wd' => 'http://wiki/entity/' ],
-			'http://data.wiki/',
+			[ 'wd' => 'http://data.wiki/' ],
 			DataAccessSettingsFactory::entitySourceBasedFederation(),
 			new EntitySourceDefinitions( [
 				new EntitySource(
