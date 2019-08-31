@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Joetaras"
+		]
+	},
+	"apihelp-wbcheckconstraints-description": "Face le condrolle de vingole sus a tutte le endità ca vuè ccu tuèrne jndr'à 'u resultate.",
+	"apihelp-wbcheckconstraints-summary": "Face le condrolle de vingole sus a tutte le endità ca vuè ccu tuèrne jndr'à 'u resultate.",
+	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "'A dichiarazione soddisfe 'u vingole.",
+	"apihelp-wbcheckconstraints-paramvalue-status-violation": "'A dichiarazione viole 'u vingole."
+}
