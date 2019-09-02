@@ -326,7 +326,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 					then: sinon.stub().yields( responseData )
 				} )
 			} );
-			global.jQuery.withArgs( '.wbqc-reports-button' ).returns( {
+			global.jQuery.withArgs( '.wbqc-constraint-warning' ).returns( {
 				remove: preExistingReportButtonsRemovedSpy
 			} );
 			global.jQuery.withArgs( '.wikibase-statementgroupview .wikibase-statementview' ).returns( {

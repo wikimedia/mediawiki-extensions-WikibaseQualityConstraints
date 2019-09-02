@@ -107,7 +107,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	SELF.prototype._renderWbcheckconstraintsResult = function ( data ) {
 		var self = this;
 
-		$( '.wbqc-reports-button' ).remove();
+		$( '.wbqc-constraint-warning' ).remove();
 		$( '.wikibase-statementgroupview .wikibase-statementview' )
 			.each( function () {
 				var entityId;
@@ -213,15 +213,16 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @param {jQuery} $container The container to which the button is appended.
 	 * @param {string} icon Identifier for an icon as provided by OOUI.
 	 * @param {string} titleMessageKey The message key of the title attribute of the button.
+	 * @param {string[]} [classes] Optional list of classes added to the button element
 	 * @param {string} [flags] Optional custom flags the {@link OO.ui.PopupButtonWidget} can understand.
 	 */
-	SELF.prototype._buildPopup = function ( $content, $container, icon, titleMessageKey, flags /* = '' */ ) {
+	SELF.prototype._buildPopup = function ( $content, $container, icon, titleMessageKey, classes, flags /* = '' */ ) {
 		var widget = new OO.ui.PopupButtonWidget( {
 			icon: icon,
 			title: mw.message( titleMessageKey ).text(),
 			flags: flags || '',
 			framed: false,
-			classes: [ 'wbqc-reports-button', 'wikibase-snakview-indicator' ],
+			classes: [ 'wbqc-reports-button', 'wikibase-snakview-indicator' ].concat( classes || [] ),
 			$overlay: $container.parents( '.wikibase-statementview' ).first(),
 			popup: {
 				$content: $content,
@@ -463,7 +464,8 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				list.$element,
 				$snak.find( '.wikibase-snakview-indicators' ),
 				icon,
-				titleMessageKey
+				titleMessageKey,
+				[ 'wbqc-constraint-warning' ]
 			);
 			return true;
 		} else {
@@ -574,6 +576,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				$snak.find( '.wikibase-snakview-indicators' ),
 				'alert',
 				'wbqc-badparameters-long',
+				[ 'wbqc-parameter-warning' ],
 				'warning'
 			);
 		}
