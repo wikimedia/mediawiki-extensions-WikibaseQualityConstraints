@@ -40,12 +40,13 @@ module.exports = ( function ( mw, wb, $, OO ) {
 
 			wb.EntityInitializer.newFromEntityLoadedHook().getEntity().done( function ( entity ) {
 				this.setEntity( entity );
-				this.fullCheck( api, lang );
+				mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( function () {
+					this.fullCheck( api, lang );
+					if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
+						this.propertyParameterCheck( api, lang, entityId );
+					}
+				}.bind( this ) );
 			}.bind( this ) );
-
-			if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
-				this.propertyParameterCheck( api, lang, entityId );
-			}
 
 			mw.hook( 'wikibase.statement.saved' ).add( function ( entityId, statementId ) {
 				mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
