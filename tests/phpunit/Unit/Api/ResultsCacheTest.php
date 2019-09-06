@@ -18,20 +18,6 @@ use WikibaseQuality\ConstraintReport\Api\ResultsCache;
  */
 class ResultsCacheTest extends \MediaWikiUnitTestCase {
 
-	private $originalWgLang;
-
-	public function setUp() {
-		global $wgLang;
-		parent::setUp();
-		$this->originalWgLang = $wgLang;
-	}
-
-	public function tearDown() {
-		global $wgLang;
-		$wgLang = $this->originalWgLang;
-		parent::tearDown();
-	}
-
 	public function testMakeKey() {
 		$resultsCache = new ResultsCache( WANObjectCache::newEmpty(), 'v2' );
 
