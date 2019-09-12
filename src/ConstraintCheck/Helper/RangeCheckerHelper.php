@@ -9,9 +9,9 @@ use DataValues\TimeValue;
 use DataValues\TimeValueCalculator;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
+use ValueParsers\IsoTimestampParser;
 use ValueParsers\ValueParser;
 use Wikibase\Lib\Units\UnitConverter;
-use Wikibase\Repo\Parsers\TimeParserFactory;
 
 /**
  * Class for helper functions for range checkers.
@@ -51,9 +51,9 @@ class RangeCheckerHelper {
 		UnitConverter $unitConverter = null
 	) {
 		$this->config = $config;
-		$this->timeParser = ( new TimeParserFactory() )->getTimeParser();
+		$this->timeParser = new IsoTimestampParser();
 		$this->timeCalculator = new TimeValueCalculator();
-		$this->timeValueComparer = new TimeValueComparer();
+		$this->timeValueComparer = new TimeValueComparer( $this->timeCalculator );
 		$this->unitConverter = $unitConverter;
 	}
 
