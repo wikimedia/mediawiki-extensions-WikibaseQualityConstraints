@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use DataValues\StringValue;
 use HashConfig;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use MultiConfig;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
@@ -22,6 +23,7 @@ use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
@@ -31,6 +33,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterP
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
+use WikibaseQuality\ConstraintReport\ConstraintCheckerServices;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\WikibaseServices;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
@@ -87,6 +90,15 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->setService( WikibaseServices::ENTITY_LOOKUP, $this->lookup );
 		$dataTypeLookup = new EntityRetrievingDataTypeLookup( $this->lookup );
 		$this->setService( WikibaseServices::PROPERTY_DATA_TYPE_LOOKUP, $dataTypeLookup );
+
+		$pageNameNormalizer = $this->getMock( MediaWikiPageNameNormalizer::class );
+		$pageNameNormalizer->method( 'normalizePageName' )
+			->willReturnArgument( 0 );
+		$commonsLinkChecker = new CommonsLinkChecker(
+			$constraintParameterParser,
+			$pageNameNormalizer
+		);
+		$this->setService( ConstraintCheckerServices::COMMONS_LINK_CHECKER, $commonsLinkChecker );
 
 		$this->constraintChecker = ConstraintsServices::getDelegatingConstraintChecker();
 
