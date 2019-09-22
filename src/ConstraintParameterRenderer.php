@@ -91,7 +91,7 @@ class ConstraintParameterRenderer {
 	/**
 	 * Formats constraint parameters.
 	 *
-	 * @param (string|ItemId|PropertyId|DataValue)[]|null $parameters
+	 * @param (string|ItemId|PropertyId|DataValue)[][]|null $parameters
 	 *
 	 * @return string HTML
 	 */

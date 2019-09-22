@@ -75,7 +75,7 @@ class ExpiryLock {
 	}
 
 	/**
-	 * @param string the converted $cacheId
+	 * @param string $cacheId the converted cache id
 	 *
 	 * @return boolean representing if the Lock is Locked
 	 *
