@@ -86,6 +86,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			$constraint->getConstraintTypeItemId()
 		);
 
+		$parameters = [];
 		if ( $min !== null ) {
 			$parameters['minimum_quantity'] = [ $min ];
 		}

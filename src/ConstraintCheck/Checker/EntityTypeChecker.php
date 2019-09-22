@@ -61,7 +61,9 @@ class EntityTypeChecker implements ConstraintChecker {
 			$constraintParameters,
 			$constraint->getConstraintTypeItemId()
 		);
-		$parameters['item'] = $entityTypes->getEntityTypes();
+		$parameters = [
+			'item' => $entityTypes->getEntityTypes(),
+		];
 
 		if ( !in_array( $context->getEntity()->getType(), $entityTypes->getEntityTypes() ) ) {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-entityType' ) )
