@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
@@ -78,12 +79,14 @@ class UniqueValueChecker implements ConstraintChecker {
 					true // ignore deprecated statements
 				);
 			} else {
-				if ( $context->getSnak()->getType() !== 'value' ) {
+				$snak = $context->getSnak();
+				if ( !$snak instanceof PropertyValueSnak ) {
+					// nothing to check
 					return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 				}
 				$result = $this->sparqlHelper->findEntitiesWithSameQualifierOrReference(
 					$context->getEntity()->getId(),
-					$context->getSnak(),
+					$snak,
 					$context->getType(),
 					// ignore qualifiers of deprecated statements but still check their references
 					$context->getType() === 'qualifier'

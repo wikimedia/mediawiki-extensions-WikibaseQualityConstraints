@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 use Config;
 use DataValues\DataValue;
 use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
@@ -99,7 +100,9 @@ class ContemporaryChecker implements ConstraintChecker {
 			// nothing to check
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 		}
-		if ( $snak->getDataValue()->getType() !== 'wikibase-entityid' ) {
+
+		$dataValue = $snak->getDataValue();
+		if ( !$dataValue instanceof EntityIdValue ) {
 			// wrong data type
 			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
 				->withEntityId( new ItemId( $constraint->getConstraintTypeItemId() ), Role::CONSTRAINT_TYPE_ITEM )
@@ -107,8 +110,7 @@ class ContemporaryChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
 		}
 
-		/** @var EntityId $objectId */
-		$objectId = $snak->getDataValue()->getEntityId();
+		$objectId = $dataValue->getEntityId();
 		$objectItem = $this->entityLookup->getEntity( $objectId );
 		if ( !( $objectItem instanceof StatementListProvider ) ) {
 			// object was deleted/doesn't exist

@@ -18,6 +18,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\DataModel\Statement\StatementListProvider;
 
 /**
  * @author BP2014N1
@@ -116,17 +117,16 @@ class TargetRequiredClaimChecker implements ConstraintChecker {
 		 * error handling:
 		 *   type of $dataValue for properties with 'Target required claim' constraint has to be 'wikibase-entityid'
 		 */
-		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
+		if ( !$dataValue instanceof EntityIdValue ) {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
 				->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 				->withDataValueType( 'wikibase-entityid' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		/** @var EntityIdValue $dataValue */
 
 		$targetEntityId = $dataValue->getEntityId();
 		$targetEntity = $this->entityLookup->getEntity( $targetEntityId );
-		if ( $targetEntity === null ) {
+		if ( !$targetEntity instanceof StatementListProvider ) {
 			$message = new ViolationMessage( 'wbqc-violation-message-target-entity-must-exist' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}

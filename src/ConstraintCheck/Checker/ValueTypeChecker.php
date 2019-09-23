@@ -137,13 +137,12 @@ class ValueTypeChecker implements ConstraintChecker {
 		 * error handling:
 		 *   type of $dataValue for properties with 'Value type' constraint has to be 'wikibase-entityid'
 		 */
-		if ( $dataValue->getType() !== 'wikibase-entityid' ) {
+		if ( !$dataValue instanceof EntityIdValue ) {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
 				->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 				->withDataValueType( 'wikibase-entityid' );
 			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION, $message );
 		}
-		/** @var EntityIdValue $dataValue */
 
 		try {
 			$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
