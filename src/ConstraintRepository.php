@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport;
 use MediaWiki\Logger\LoggerFactory;
 use Wikimedia\Rdbms\DBUnexpectedError;
 use Wikimedia\Rdbms\IResultWrapper;
-use Wikimedia\Rdbms\LikeMatch;
 use Wikibase\DataModel\Entity\PropertyId;
 
 /**
@@ -65,36 +64,18 @@ class ConstraintRepository implements ConstraintLookup {
 	}
 
 	/**
-	 * @param LikeMatch $any should be IDatabase::anyChar()
-	 *
-	 * @return string[]
-	 */
-	private function uuidPattern( LikeMatch $any ) {
-		return array_merge(
-			array_fill( 0, 8, $any ), [ '-' ],
-			array_fill( 0, 4, $any ), [ '-' ],
-			array_fill( 0, 4, $any ), [ '-' ],
-			array_fill( 0, 4, $any ), [ '-' ],
-			array_fill( 0, 12, $any )
-		);
-	}
-
-	/**
-	 * Delete all constraints for the property ID where the constraint ID is a statement ID
-	 * (an entity ID, a '$' separator, and a UUID).
+	 * Delete all constraints for the property ID.
 	 *
 	 * @param PropertyId $propertyId
 	 *
 	 * @throws DBUnexpectedError
 	 */
-	public function deleteForPropertyWhereConstraintIdIsStatementId( PropertyId $propertyId ) {
+	public function deleteForProperty( PropertyId $propertyId ) {
 		$db = wfGetDB( DB_MASTER );
 		$db->delete(
 			'wbqc_constraints',
 			[
 				'pid' => $propertyId->getNumericId(),
-				// AND constraint_guid LIKE %$________-____-____-____-____________
-				'constraint_guid ' . $db->buildLike( array_merge( [ $db->anyString(), '$' ], $this->uuidPattern( $db->anyChar() ) ) )
 			]
 		);
 	}
