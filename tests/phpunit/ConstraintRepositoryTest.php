@@ -157,22 +157,6 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		);
 	}
 
-	public function testDeleteAll() {
-		$this->insertTestData();
-
-		$repo = new ConstraintRepository();
-		$repo->deleteAll();
-
-		$this->assertSelect(
-			'wbqc_constraints',
-			'COUNT(constraint_guid)',
-			[],
-			[
-				[ 0 ]
-			]
-		);
-	}
-
 	public function insertTestData() {
 		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', [
