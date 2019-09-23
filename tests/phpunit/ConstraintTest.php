@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 
@@ -30,7 +31,7 @@ class ConstraintTest extends \MediaWikiTestCase {
 	}
 
 	public function testConstructAndGetters() {
-		$repo = new ConstraintRepository();
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
 
 		$this->assertEquals( 'Item', $constraints[0]->getConstraintTypeItemId() );
