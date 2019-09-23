@@ -82,21 +82,6 @@ class ConstraintRepository implements ConstraintLookup {
 	}
 
 	/**
-	 * Delete all constraints where the constraint ID is a UUID
-	 * (formatted in groups of 8-4-4-4-12 digits).
-	 *
-	 * @throws DBUnexpectedError
-	 */
-	public function deleteWhereConstraintIdIsUuid() {
-		$db = wfGetDB( DB_MASTER );
-		$db->delete(
-			'wbqc_constraints',
-			// WHERE constraint_guid LIKE ________-____-____-____-____________
-			'constraint_guid ' . $db->buildLike( $this->uuidPattern( $db->anyChar() ) )
-		);
-	}
-
-	/**
 	 * Delete all constraints for the property ID where the constraint ID is a statement ID
 	 * (an entity ID, a '$' separator, and a UUID).
 	 *
