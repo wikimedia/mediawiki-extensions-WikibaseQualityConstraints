@@ -352,7 +352,7 @@ class ViolationMessageRenderer {
 	}
 
 	/**
-	 * @param string[] $text Context::TYPE_* constants
+	 * @param string[] $scopeList Context::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
 	 * @return array[] list of parameters as accepted by Message::params()
 	 */
@@ -387,7 +387,7 @@ class ViolationMessageRenderer {
 	}
 
 	/**
-	 * @param string[] $text Context::TYPE_* constants
+	 * @param string[] $scopeList Context::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
 	 * @return array[] list of parameters as accepted by Message::params()
 	 */

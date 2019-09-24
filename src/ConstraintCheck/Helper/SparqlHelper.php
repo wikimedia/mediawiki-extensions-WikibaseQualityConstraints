@@ -12,7 +12,6 @@ use MapCacheLRU;
 use MediaWiki\Http\HttpRequestFactory;
 use MWException;
 use MWHttpRequest;
-use Psr\Log\LoggerInterface;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -94,7 +93,7 @@ class SparqlHelper {
 	private $dataFactory;
 
 	/**
-	 * @var LoggerInterface
+	 * @var LoggingHelper
 	 */
 	private $loggingHelper;
 

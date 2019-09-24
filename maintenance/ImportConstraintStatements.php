@@ -29,8 +29,7 @@ class ImportConstraintStatements extends Maintenance {
 
 	/**
 	 * @var callable
-	 * @param string $propertyIdSerialization
-	 * @return UpdateConstraintsTableJob
+	 * @phan-var callable(string):UpdateConstraintsTableJob
 	 */
 	private $newUpdateConstraintsTableJob;
 

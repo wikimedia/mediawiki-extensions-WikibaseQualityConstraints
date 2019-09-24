@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 
 /**
  * @license GPL-2.0-or-later
