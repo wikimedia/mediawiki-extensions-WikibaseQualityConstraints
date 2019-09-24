@@ -260,17 +260,17 @@ class ConstraintParameterParser {
 
 	private function parseItemIdParameter( PropertyValueSnak $snak, $parameterId ) {
 		$dataValue = $snak->getDataValue();
-		if ( $dataValue instanceof EntityIdValue &&
-			$dataValue->getEntityId() instanceof ItemId
-		) {
-			return ItemIdSnakValue::fromItemId( $dataValue->getEntityId() );
-		} else {
-			throw new ConstraintParameterException(
-				( new ViolationMessage( 'wbqc-violation-message-parameter-item' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-					->withDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
-			);
+		if ( $dataValue instanceof EntityIdValue ) {
+			$itemId = $dataValue->getEntityId();
+			if ( $itemId instanceof ItemId ) {
+				return ItemIdSnakValue::fromItemId( $itemId );
+			}
 		}
+		throw new ConstraintParameterException(
+			( new ViolationMessage( 'wbqc-violation-message-parameter-item' ) )
+				->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+				->withDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
+		);
 	}
 
 	/**

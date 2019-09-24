@@ -84,10 +84,11 @@ class ItemIdSnakValue {
 		switch ( true ) {
 			case $snak instanceof PropertyValueSnak:
 				$dataValue = $snak->getDataValue();
-				if ( $dataValue instanceof EntityIdValue
-					&& $dataValue->getEntityId() instanceof ItemId
-				) {
-					return self::fromItemId( $dataValue->getEntityId() );
+				if ( $dataValue instanceof EntityIdValue ) {
+					$itemId = $dataValue->getEntityId();
+					if ( $itemId instanceof ItemId ) {
+						return self::fromItemId( $itemId );
+					}
 				}
 				break;
 			case $snak instanceof PropertySomeValueSnak:
