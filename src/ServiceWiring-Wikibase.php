@@ -3,9 +3,9 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use Wikibase\DataModel\Services\Lookup\ExceptionIgnoringEntityLookup;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Store;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ExceptionIgnoringEntityLookup;
 
 return [
 	WikibaseServices::ENTITY_LOOKUP => function( MediaWikiServices $services ) {
