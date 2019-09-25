@@ -40,7 +40,7 @@ return [
 	},
 
 	ConstraintsServices::CONSTRAINT_REPOSITORY => function( MediaWikiServices $services ) {
-		return new ConstraintRepository();
+		return new ConstraintRepository( $services->getDBLoadBalancer() );
 	},
 
 	ConstraintsServices::CONSTRAINT_LOOKUP => function( MediaWikiServices $services ) {

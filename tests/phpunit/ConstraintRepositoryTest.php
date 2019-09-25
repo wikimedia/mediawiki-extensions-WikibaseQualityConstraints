@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 
@@ -21,7 +22,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 	public function testQueryConstraintsForExistingProperty() {
 		$this->insertTestData();
 
-		$repo = new ConstraintRepository();
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
 
 		$this->assertInternalType( 'array', $constraints );
@@ -32,7 +33,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 	public function testQueryConstraintsForNonExistingProperty() {
 		$this->insertTestData();
 
-		$repo = new ConstraintRepository();
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P2' ) );
 
 		$this->assertInternalType( 'array', $constraints );
@@ -50,7 +51,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 			]
 		] );
 
-		$repo = new ConstraintRepository();
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P3' ) );
 
 		$this->assertSame( [ '@error' => [] ], $constraints[0]->getConstraintParameters() );
@@ -64,7 +65,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 			new Constraint( 'bar', new PropertyId( 'P42' ), 'TestConstraint', [ 'bar' => 'baz' ] ),
 			new Constraint( 'baz', new PropertyId( 'P42' ), 'TestConstraint', [] ),
 		];
-		$repo = new ConstraintRepository();
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
 		$repo->insertBatch( $constraints );
 
 		$this->assertSelect(
@@ -127,7 +128,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 			];
 		}
 
-		$repo = new ConstraintRepository();
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
 		$repo->insertBatch( [
 			new Constraint(
 				'P1$13510cdc-0f91-4ea3-b71d-db2a33c27dff',

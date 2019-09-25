@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\Logger\LoggerFactory;
 use Wikimedia\Rdbms\DBUnexpectedError;
+use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikibase\DataModel\Entity\PropertyId;
 
@@ -13,15 +14,22 @@ use Wikibase\DataModel\Entity\PropertyId;
  */
 class ConstraintRepository implements ConstraintLookup {
 
+	/** @var ILoadBalancer */
+	private $lb;
+
+	public function __construct( ILoadBalancer $lb ) {
+		$this->lb = $lb;
+	}
+
 	/**
 	 * @param PropertyId $propertyId
 	 *
 	 * @return Constraint[]
 	 */
 	public function queryConstraintsForProperty( PropertyId $propertyId ) {
-		$db = wfGetDB( DB_REPLICA );
+		$dbr = $this->lb->getConnection( ILoadBalancer::DB_REPLICA );
 
-		$results = $db->select(
+		$results = $dbr->select(
 			'wbqc_constraints',
 			'*',
 			[ 'pid' => $propertyId->getNumericId() ]
@@ -59,8 +67,8 @@ class ConstraintRepository implements ConstraintLookup {
 			$constraints
 		);
 
-		$db = wfGetDB( DB_MASTER );
-		return $db->insert( 'wbqc_constraints', $accumulator );
+		$dbw = $this->lb->getConnection( ILoadBalancer::DB_MASTER );
+		return $dbw->insert( 'wbqc_constraints', $accumulator );
 	}
 
 	/**
@@ -71,8 +79,8 @@ class ConstraintRepository implements ConstraintLookup {
 	 * @throws DBUnexpectedError
 	 */
 	public function deleteForProperty( PropertyId $propertyId ) {
-		$db = wfGetDB( DB_MASTER );
-		$db->delete(
+		$dbw = $this->lb->getConnection( ILoadBalancer::DB_MASTER );
+		$dbw->delete(
 			'wbqc_constraints',
 			[
 				'pid' => $propertyId->getNumericId(),
