@@ -167,7 +167,7 @@ class UpdateConstraintsTableJob extends Job {
 			return true;
 		}
 
-		$this->constraintRepo->deleteForPropertyWhereConstraintIdIsStatementId( $propertyId );
+		$this->constraintRepo->deleteForProperty( $propertyId );
 
 		/** @var Property $property */
 		$property = $propertyRevision->getEntity();
