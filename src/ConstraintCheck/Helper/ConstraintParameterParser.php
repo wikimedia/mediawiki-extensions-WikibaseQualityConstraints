@@ -261,9 +261,9 @@ class ConstraintParameterParser {
 	private function parseItemIdParameter( PropertyValueSnak $snak, $parameterId ) {
 		$dataValue = $snak->getDataValue();
 		if ( $dataValue instanceof EntityIdValue ) {
-			$itemId = $dataValue->getEntityId();
-			if ( $itemId instanceof ItemId ) {
-				return ItemIdSnakValue::fromItemId( $itemId );
+			$entityId = $dataValue->getEntityId();
+			if ( $entityId instanceof ItemId ) {
+				return ItemIdSnakValue::fromItemId( $entityId );
 			}
 		}
 		throw new ConstraintParameterException(
