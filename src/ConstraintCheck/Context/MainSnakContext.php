@@ -3,14 +3,12 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use LogicException;
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
-use Wikibase\DataModel\Statement\StatementListProvider;
-use Wikimedia\Assert\Assert;
 
 /**
  * A constraint check context for the main snak of a statement.
@@ -24,8 +22,7 @@ class MainSnakContext extends AbstractContext {
 	 */
 	private $statement;
 
-	public function __construct( EntityDocument $entity, Statement $statement ) {
-		Assert::parameterType( StatementListProvider::class, $entity, '$entity' );
+	public function __construct( StatementListProvidingEntity $entity, Statement $statement ) {
 		parent::__construct( $entity, $statement->getMainSnak() );
 
 		$this->statement = $statement;

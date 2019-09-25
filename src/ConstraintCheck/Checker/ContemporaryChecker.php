@@ -118,9 +118,7 @@ class ContemporaryChecker implements ConstraintChecker {
 		/** @var Statement[] $objectStatements */
 		$objectStatements = $objectItem->getStatements()->toArray();
 
-		/** @var EntityId $subjectId */
 		$subjectId = $context->getEntity()->getId();
-		/** @var Statement[] $subjectStatements */
 		$subjectStatements = $context->getEntity()->getStatements()->toArray();
 		/** @var String[] $startPropertyIds */
 		$startPropertyIds = $this->config->get( self::CONFIG_VARIABLE_START_PROPERTY_IDS );

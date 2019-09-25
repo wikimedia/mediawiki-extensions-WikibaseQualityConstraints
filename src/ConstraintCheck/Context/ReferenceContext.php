@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
-use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
@@ -25,7 +25,7 @@ class ReferenceContext extends AbstractContext {
 	private $reference;
 
 	public function __construct(
-		EntityDocument $entity,
+		StatementListProvidingEntity $entity,
 		Statement $statement,
 		Reference $reference,
 		Snak $snak

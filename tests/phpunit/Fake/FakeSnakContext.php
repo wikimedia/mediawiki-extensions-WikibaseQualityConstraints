@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Fake;
 
-use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -18,11 +18,11 @@ class FakeSnakContext extends AbstractContext {
 
 	/**
 	 * @param Snak $snak
-	 * @param EntityDocument|null $entity defaults to a new Q1 item
+	 * @param StatementListProvidingEntity|null $entity defaults to a new Q1 item
 	 */
 	public function __construct(
 		Snak $snak,
-		EntityDocument $entity = null
+		StatementListProvidingEntity $entity = null
 	) {
 		parent::__construct(
 			$entity ?: new Item( new ItemId( 'Q1' ) ),
