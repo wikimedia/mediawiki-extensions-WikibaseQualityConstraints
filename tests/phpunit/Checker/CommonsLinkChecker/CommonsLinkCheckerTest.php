@@ -3,11 +3,9 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\CommonsLinkChecker;
 
 use MediaWiki\Site\MediaWikiPageNameNormalizer;
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -231,13 +229,6 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Q21510852' ) );
 
 		return $mock;
-	}
-
-	/**
-	 * @return EntityDocument
-	 */
-	private function getEntity() {
-		return new Item( new ItemId( 'Q1' ) );
 	}
 
 }

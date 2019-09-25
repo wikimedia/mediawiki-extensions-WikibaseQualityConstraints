@@ -3,11 +3,9 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\FormatChecker;
 
 use HashConfig;
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
-use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -370,13 +368,6 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( 'Q21502404' ) );
 
 		return $mock;
-	}
-
-	/**
-	 * @return EntityDocument
-	 */
-	private function getEntity() {
-		return new Item( new ItemId( 'Q1' ) );
 	}
 
 }

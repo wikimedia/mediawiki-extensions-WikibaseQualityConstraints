@@ -2,15 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\RangeChecker;
 
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
-use Wikibase\DataModel\Entity\Item;
-use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\Lib\Units\CSVUnitStorage;
@@ -390,13 +387,6 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			 ->will( $this->returnValue( new PropertyId( $propertyId ) ) );
 
 		return $mock;
-	}
-
-	/**
-	 * @return EntityDocument
-	 */
-	private function getEntity() {
-		return new Item( new ItemId( 'Q1' ) );
 	}
 
 	private function getQuantity( $value, $unit = '1' ): QuantityValue {
