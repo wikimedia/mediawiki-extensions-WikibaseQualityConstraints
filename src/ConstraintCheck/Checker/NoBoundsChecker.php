@@ -40,12 +40,12 @@ class NoBoundsChecker implements ConstraintChecker {
 	}
 
 	public function checkConstraint( Context $context, Constraint $constraint ) {
-		if ( $context->getSnak()->getType() !== 'value' ) {
+		$snak = $context->getSnak();
+
+		if ( !$snak instanceof PropertyValueSnak ) {
+			// nothing to check
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 		}
-
-		/** @var PropertyValueSnak $snak */
-		$snak = $context->getSnak();
 
 		if ( $snak->getDataValue() instanceof QuantityValue ) {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-noBounds' ) )

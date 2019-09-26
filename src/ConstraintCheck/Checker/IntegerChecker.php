@@ -44,7 +44,8 @@ class IntegerChecker implements ConstraintChecker {
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		$snak = $context->getSnak();
 
-		if ( $context->getSnak()->getType() !== 'value' ) {
+		if ( !$snak instanceof PropertyValueSnak ) {
+			// nothing to check
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 		}
 
