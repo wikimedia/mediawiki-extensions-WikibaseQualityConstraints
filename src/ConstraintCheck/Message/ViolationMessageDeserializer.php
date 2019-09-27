@@ -134,7 +134,9 @@ class ViolationMessageDeserializer implements Deserializer {
 			case '::novalue':
 				return ItemIdSnakValue::noValue();
 			default:
-				return ItemIdSnakValue::fromItemId( $this->deserializeEntityId( $valueSerialization ) );
+				$itemId = $this->deserializeEntityId( $valueSerialization );
+				'@phan-var \Wikibase\DataModel\Entity\ItemId $itemId';
+				return ItemIdSnakValue::fromItemId( $itemId );
 		}
 	}
 

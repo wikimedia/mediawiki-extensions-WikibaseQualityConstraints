@@ -272,6 +272,7 @@ class CheckConstraintParameters extends ApiBase {
 	 */
 	private function getResultPathForConstraintId( $constraintId ) {
 		$propertyId = $this->statementGuidParser->parse( $constraintId )->getEntityId();
+		'@phan-var PropertyId $propertyId';
 		return array_merge( $this->getResultPathForPropertyId( $propertyId ), [ $constraintId ] );
 	}
 

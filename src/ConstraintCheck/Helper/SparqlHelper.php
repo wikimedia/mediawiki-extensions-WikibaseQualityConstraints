@@ -439,9 +439,11 @@ EOF;
 			case 'wikibase-item':
 			case 'wikibase-property':
 				/** @var EntityIdValue $dataValue */
+				'@phan-var EntityIdValue $dataValue';
 				return [ 'wd:' . $dataValue->getEntityId()->getSerialization(), false ];
 			case 'monolingualtext':
 				/** @var MonolingualTextValue $dataValue */
+				'@phan-var MonolingualTextValue $dataValue';
 				$lang = $dataValue->getLanguageCode();
 				if ( !preg_match( '/^[a-zA-Z]+(-[a-zA-Z0-9]+)*$/D', $lang ) ) {
 					// not a valid language tag for SPARQL (see SPARQL spec, production 145 LANGTAG)

@@ -118,7 +118,12 @@ class UpdateConstraintsTableJob extends Job {
 		Statement $constraintStatement
 	) {
 		$constraintId = $constraintStatement->getGuid();
-		$constraintTypeQid = $constraintStatement->getMainSnak()->getDataValue()->getEntityId()->getSerialization();
+		$snak = $constraintStatement->getMainSnak();
+		'@phan-var \Wikibase\DataModel\Snak\PropertyValueSnak $snak';
+		$dataValue = $snak->getDataValue();
+		'@phan-var \Wikibase\DataModel\Entity\EntityIdValue $dataValue';
+		$entityId = $dataValue->getEntityId();
+		$constraintTypeQid = $entityId->getSerialization();
 		$parameters = $this->extractParametersFromQualifiers( $constraintStatement->getQualifiers() );
 		return new Constraint(
 			$constraintId,
@@ -171,6 +176,7 @@ class UpdateConstraintsTableJob extends Job {
 
 		/** @var Property $property */
 		$property = $propertyRevision->getEntity();
+		'@phan-var Property $property';
 		$this->importConstraintsForProperty(
 			$property,
 			$this->constraintRepo,

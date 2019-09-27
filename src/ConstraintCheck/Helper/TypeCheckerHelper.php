@@ -103,6 +103,7 @@ class TypeCheckerHelper {
 			/** @var EntityIdValue $dataValue */
 
 			$dataValue = $mainSnak->getDataValue();
+			'@phan-var EntityIdValue $dataValue';
 			$comparativeClass = $dataValue->getEntityId();
 
 			if ( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
@@ -202,6 +203,7 @@ class TypeCheckerHelper {
 			/** @var EntityIdValue $dataValue */
 
 			$dataValue = $mainSnak->getDataValue();
+			'@phan-var EntityIdValue $dataValue';
 			$comparativeClass = $dataValue->getEntityId();
 
 			if ( in_array( $comparativeClass->getSerialization(), $classesToCheck ) ) {
@@ -225,6 +227,11 @@ class TypeCheckerHelper {
 		);
 	}
 
+	/**
+	 * @param Snak $mainSnak
+	 * @return bool
+	 * @phan-assert PropertyValueSnak $mainSnak
+	 */
 	private function hasCorrectType( Snak $mainSnak ) {
 		return $mainSnak instanceof PropertyValueSnak
 			&& $mainSnak->getDataValue()->getType() === 'wikibase-entityid';

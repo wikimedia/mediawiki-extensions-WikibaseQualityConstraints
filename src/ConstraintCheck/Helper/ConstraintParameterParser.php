@@ -589,7 +589,11 @@ class ConstraintParameterParser {
 		$this->requireSingleParameter( $constraintParameters, $constraintStatusId );
 		$snak = $this->snakDeserializer->deserialize( $constraintParameters[$constraintStatusId][0] );
 		$this->requireValueParameter( $snak, $constraintStatusId );
-		$statusId = $snak->getDataValue()->getEntityId()->getSerialization();
+		'@phan-var \Wikibase\DataModel\Snak\PropertyValueSnak $snak';
+		$dataValue = $snak->getDataValue();
+		'@phan-var EntityIdValue $dataValue';
+		$entityId = $dataValue->getEntityId();
+		$statusId = $entityId->getSerialization();
 
 		if ( $statusId === $mandatoryId ) {
 			return 'mandatory';
@@ -642,6 +646,7 @@ class ConstraintParameterParser {
 			$value = $snak->getDataValue();
 			$this->requireMonolingualTextParameter( $value, $parameterId );
 			/** @var MonolingualTextValue $value */
+			'@phan-var MonolingualTextValue $value';
 
 			$code = $value->getLanguageCode();
 			if ( array_key_exists( $code, $result ) ) {

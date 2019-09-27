@@ -119,6 +119,7 @@ class FormatChecker implements ConstraintChecker {
 				break;
 			case 'monolingualtext':
 				/** @var MonolingualTextValue $dataValue */
+				'@phan-var MonolingualTextValue $dataValue';
 				$text = $dataValue->getText();
 				break;
 			default:

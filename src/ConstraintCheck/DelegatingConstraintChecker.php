@@ -303,6 +303,7 @@ class DelegatingConstraintChecker {
 	 */
 	public function checkConstraintParametersOnConstraintId( $constraintId ) {
 		$propertyId = $this->statementGuidParser->parse( $constraintId )->getEntityId();
+		'@phan-var PropertyId $propertyId';
 		$constraints = $this->constraintLookup->queryConstraintsForProperty( $propertyId );
 
 		foreach ( $constraints as $constraint ) {

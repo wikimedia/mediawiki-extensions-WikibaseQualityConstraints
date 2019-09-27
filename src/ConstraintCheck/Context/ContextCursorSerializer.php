@@ -34,6 +34,7 @@ class ContextCursorSerializer {
 			$serialization['P'] = $cursor->getSnakPropertyId();
 			if ( $type === Context::TYPE_REFERENCE ) {
 				/** @var ReferenceContextCursor $cursor */
+				'@phan-var ReferenceContextCursor $cursor';
 				$serialization['r'] = $cursor->getReferenceHash();
 			}
 		}

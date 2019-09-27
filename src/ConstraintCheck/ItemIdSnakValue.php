@@ -83,6 +83,7 @@ class ItemIdSnakValue {
 	public static function fromSnak( Snak $snak ) {
 		switch ( true ) {
 			case $snak instanceof PropertyValueSnak:
+				// @phan-suppress-next-line PhanUndeclaredMethod Fixed by https://github.com/phan/phan/issues/3315
 				$dataValue = $snak->getDataValue();
 				if ( $dataValue instanceof EntityIdValue ) {
 					$itemId = $dataValue->getEntityId();
@@ -151,10 +152,12 @@ class ItemIdSnakValue {
 	public function matchesSnak( Snak $snak ) {
 		switch ( true ) {
 			case $snak instanceof PropertyValueSnak:
+				// @phan-suppress-next-line PhanUndeclaredMethod Fixed by https://github.com/phan/phan/issues/3315
+				$dataValue = $snak->getDataValue();
 				return $this->isValue() &&
-					$snak->getDataValue() instanceof EntityIdValue &&
-					$snak->getDataValue()->getEntityId() instanceof ItemId &&
-					$snak->getDataValue()->getEntityId()->equals( $this->getItemId() );
+					$dataValue instanceof EntityIdValue &&
+					$dataValue->getEntityId() instanceof ItemId &&
+					$dataValue->getEntityId()->equals( $this->getItemId() );
 			case $snak instanceof PropertySomeValueSnak:
 				return $this->isSomeValue();
 			case $snak instanceof PropertyNoValueSnak:

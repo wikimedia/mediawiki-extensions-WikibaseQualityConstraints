@@ -50,6 +50,7 @@ class CheckConstraintsJob extends Job {
 		$this->entityId = $params['entityId'];
 
 		$resultSource = ConstraintsServices::getResultsSource( MediaWikiServices::getInstance() );
+		'@phan-var CachingResultsSource $resultSource';
 		// This job should only ever be used when caching result sources are used.
 		$this->setResultsSource( $resultSource );
 

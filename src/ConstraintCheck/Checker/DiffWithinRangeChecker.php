@@ -142,6 +142,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		}
 
 		$minuend = $snak->getDataValue();
+		'@phan-var \DataValues\TimeValue|\DataValues\QuantityValue|\DataValues\UnboundedQuantityValue $minuend';
 
 		/** @var PropertyId $property */
 		list( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
@@ -156,6 +157,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 			}
 
 			$subtrahend = $otherSnak->getDataValue();
+			'@phan-var \DataValues\TimeValue|\DataValues\QuantityValue|\DataValues\UnboundedQuantityValue $subtrahend';
 			if ( $subtrahend->getType() === $minuend->getType() ) {
 				$diff = $this->rangeInYears( $min, $max ) && $minuend->getType() === 'time' ?
 					$this->rangeCheckerHelper->getDifferenceInYears( $minuend, $subtrahend ) :

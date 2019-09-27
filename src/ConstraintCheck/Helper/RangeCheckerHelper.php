@@ -99,10 +99,14 @@ class RangeCheckerHelper {
 			case 'time':
 				/** @var TimeValue $lhs */
 				/** @var TimeValue $rhs */
+				'@phan-var TimeValue $lhs';
+				'@phan-var TimeValue $rhs';
 				return $this->timeValueComparer->getComparison( $lhs, $rhs );
 			case 'quantity':
 				/** @var QuantityValue|UnboundedQuantityValue $lhs */
 				/** @var QuantityValue|UnboundedQuantityValue $rhs */
+				'@phan-var QuantityValue|UnboundedQuantityValue $lhs';
+				'@phan-var QuantityValue|UnboundedQuantityValue $rhs';
 				$lhsStandard = $this->standardize( $lhs );
 				$rhsStandard = $this->standardize( $rhs );
 				return $lhsStandard->getAmount()->compare( $rhsStandard->getAmount() );
