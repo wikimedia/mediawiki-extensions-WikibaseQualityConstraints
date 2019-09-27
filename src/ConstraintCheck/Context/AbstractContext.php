@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
-use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Snak\Snak;
 
 /**
@@ -14,7 +14,7 @@ use Wikibase\DataModel\Snak\Snak;
 abstract class AbstractContext implements Context {
 
 	/**
-	 * @var EntityDocument
+	 * @var StatementListProvidingEntity
 	 */
 	protected $entity;
 
@@ -23,7 +23,7 @@ abstract class AbstractContext implements Context {
 	 */
 	protected $snak;
 
-	public function __construct( EntityDocument $entity, Snak $snak ) {
+	public function __construct( StatementListProvidingEntity $entity, Snak $snak ) {
 		$this->entity = $entity;
 		$this->snak = $snak;
 	}

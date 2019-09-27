@@ -4,13 +4,12 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use InvalidArgumentException;
 use LogicException;
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\DataModel\Statement\StatementListProvider;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -146,11 +145,11 @@ class DelegatingConstraintChecker {
 		$checkResults = [];
 		$entity = $this->entityLookup->getEntity( $entityId );
 
-		if ( $entity instanceof StatementListProvider ) {
+		if ( $entity instanceof StatementListProvidingEntity ) {
 			$startTime = microtime( true );
 
 			$checkResults = $this->checkEveryStatement(
-				$this->entityLookup->getEntity( $entityId ),
+				$entity,
 				$constraintIds,
 				$defaultResultsPerContext
 			);
@@ -196,7 +195,7 @@ class DelegatingConstraintChecker {
 		$parsedGuid = $this->statementGuidParser->parse( $guid );
 		$entityId = $parsedGuid->getEntityId();
 		$entity = $this->entityLookup->getEntity( $entityId );
-		if ( $entity instanceof StatementListProvider ) {
+		if ( $entity instanceof StatementListProvidingEntity ) {
 			$statement = $entity->getStatements()->getFirstStatementWithGuid( $guid );
 			if ( $statement ) {
 				$result = $this->checkStatement(
@@ -323,14 +322,14 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
-	 * @param EntityDocument|StatementListProvider $entity
+	 * @param StatementListProvidingEntity $entity
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
 	 * @param callable|null $defaultResultsPerContext optional function to pre-populate the check results
 	 *
 	 * @return CheckResult[]
 	 */
 	private function checkEveryStatement(
-		EntityDocument $entity,
+		StatementListProvidingEntity $entity,
 		array $constraintIds = null,
 		callable $defaultResultsPerContext = null
 	) {
@@ -351,7 +350,7 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
-	 * @param EntityDocument|StatementListProvider $entity
+	 * @param StatementListProvidingEntity $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
 	 * @param callable|null $defaultResultsPerContext optional function to pre-populate the check results
@@ -359,7 +358,7 @@ class DelegatingConstraintChecker {
 	 * @return CheckResult[]
 	 */
 	private function checkStatement(
-		EntityDocument $entity,
+		StatementListProvidingEntity $entity,
 		Statement $statement,
 		array $constraintIds = null,
 		callable $defaultResultsPerContext = null
@@ -422,7 +421,7 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
-	 * @param EntityDocument $entity
+	 * @param StatementListProvidingEntity $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
 	 * @param callable|null $defaultResults optional function to pre-populate the check results
@@ -430,7 +429,7 @@ class DelegatingConstraintChecker {
 	 * @return CheckResult[]
 	 */
 	private function checkConstraintsForMainSnak(
-		EntityDocument $entity,
+		StatementListProvidingEntity $entity,
 		Statement $statement,
 		array $constraintIds = null,
 		callable $defaultResults = null
@@ -464,7 +463,7 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
-	 * @param EntityDocument $entity
+	 * @param StatementListProvidingEntity $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
 	 * @param callable|null $defaultResultsPerContext optional function to pre-populate the check results
@@ -472,7 +471,7 @@ class DelegatingConstraintChecker {
 	 * @return CheckResult[]
 	 */
 	private function checkConstraintsForQualifiers(
-		EntityDocument $entity,
+		StatementListProvidingEntity $entity,
 		Statement $statement,
 		array $constraintIds = null,
 		callable $defaultResultsPerContext = null
@@ -504,7 +503,7 @@ class DelegatingConstraintChecker {
 	}
 
 	/**
-	 * @param EntityDocument $entity
+	 * @param StatementListProvidingEntity $entity
 	 * @param Statement $statement
 	 * @param string[]|null $constraintIds list of constraints to check (if null: all constraints)
 	 * @param callable|null $defaultResultsPerContext optional function to pre-populate the check results
@@ -512,7 +511,7 @@ class DelegatingConstraintChecker {
 	 * @return CheckResult[]
 	 */
 	private function checkConstraintsForReferences(
-		EntityDocument $entity,
+		StatementListProvidingEntity $entity,
 		Statement $statement,
 		array $constraintIds = null,
 		callable $defaultResultsPerContext = null

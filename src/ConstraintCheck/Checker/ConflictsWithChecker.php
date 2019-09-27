@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
-use Wikibase\DataModel\Statement\StatementList;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -94,7 +93,6 @@ class ConflictsWithChecker implements ConstraintChecker {
 		);
 		$parameters['items'] = $items;
 
-		/** @var StatementList $statementList */
 		$statementList = $context->getEntity()
 			->getStatements()
 			->getByRank( [ Statement::RANK_PREFERRED, Statement::RANK_NORMAL ] );

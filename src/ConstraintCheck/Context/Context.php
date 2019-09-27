@@ -2,8 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
-use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -55,7 +55,7 @@ interface Context {
 	/**
 	 * The entity that is being checked.
 	 *
-	 * @return EntityDocument
+	 * @return StatementListProvidingEntity
 	 */
 	public function getEntity();
 

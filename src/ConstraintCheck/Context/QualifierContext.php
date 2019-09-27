@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
-use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 
@@ -19,7 +19,7 @@ class QualifierContext extends AbstractContext {
 	private $statement;
 
 	public function __construct(
-		EntityDocument $entity,
+		StatementListProvidingEntity $entity,
 		Statement $statement,
 		Snak $snak
 	) {
