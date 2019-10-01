@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vlad5250"
+			"Vlad5250",
+			"StanProg"
 		]
 	},
-	"wbqc-violation-message-sparql-error": "Искането с SPARQL даде грешка."
+	"wbqc-violation-message-sparql-error": "Заявката на SPARQL върна грешка."
 }
