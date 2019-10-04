@@ -6,13 +6,11 @@ matrix:
   fast_finish: true
   include:
     - env: DBTYPE=mysql
-      php: hhvm
+      php: 7.2
     - env: DBTYPE=sqlite
-      php: hhvm
-    - env: DBTYPE=mysql
-      php: 7.0
+      php: 7.2
     - env: DBTYPE=sqlite
-      php: 7.1
+      php: 7.3
 
 before_script:
   - bash ./build/travis/before_script.sh
