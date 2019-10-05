@@ -75,7 +75,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 			->willReturn( [ [ 'type' => 'unknown', 'value' => null, 'role' => null ] ] );
 		$serializer = new ViolationMessageSerializer();
 
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		$serializer->serialize( $message );
 	}
 
@@ -190,7 +190,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
 	 */
 	public function testSerializeItemIdSnakValue_sanityCheck() {
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		$this->getMockBuilder( EntityId::class )
 			->setConstructorArgs( [ '::somevalue' ] )
 			->getMock();

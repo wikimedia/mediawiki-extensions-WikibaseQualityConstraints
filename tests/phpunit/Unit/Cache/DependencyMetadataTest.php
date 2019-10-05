@@ -159,7 +159,7 @@ class DependencyMetadataTest extends \MediaWikiUnitTestCase {
 	}
 
 	public function testMerge_invalid() {
-		$this->setExpectedException( ParameterElementTypeException::class );
+		$this->expectException( ParameterElementTypeException::class );
 
 		DependencyMetadata::merge( [
 			[ new ItemId( 'Q42' ) ],

@@ -34,19 +34,19 @@ class CachingMetadataTest extends \MediaWikiUnitTestCase {
 	}
 
 	public function testOfMaximumAgeInSeconds_zero() {
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 
 		CachingMetadata::ofMaximumAgeInSeconds( 0 );
 	}
 
 	public function testOfMaximumAgeInSeconds_negative() {
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 
 		CachingMetadata::ofMaximumAgeInSeconds( -42 );
 	}
 
 	public function testOfMaximumAgeInSeconds_string() {
-		$this->setExpectedException( ParameterTypeException::class );
+		$this->expectException( ParameterTypeException::class );
 
 		CachingMetadata::ofMaximumAgeInSeconds( '42' );
 	}
@@ -75,7 +75,7 @@ class CachingMetadataTest extends \MediaWikiUnitTestCase {
 	}
 
 	public function testMerge_invalid() {
-		$this->setExpectedException( ParameterElementTypeException::class );
+		$this->expectException( ParameterElementTypeException::class );
 
 		CachingMetadata::merge( [
 			10,

@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
 use HashConfig;
 use IBufferingStatsdDataFactory;
-use PHPUnit4And6Compat;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -27,7 +26,7 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  * @license GPL-2.0-or-later
  */
 class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
-	use DefaultConfig, PHPUnit4And6Compat;
+	use DefaultConfig;
 
 	private function getLoggingDisabledConfig() {
 		return new HashConfig( [
@@ -54,7 +53,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);
 
-		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
+		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
 		$dataFactory->expects( $this->once() )
 			->method( 'timing' )
 			->with(
@@ -62,7 +61,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 				$this->identicalTo( $durationSeconds * 1000 )
 			);
 
-		$logger = $this->getMock( LoggerInterface::class );
+		$logger = $this->createMock( LoggerInterface::class );
 		$logger->expects( $expectedLevel !== null ? $this->once() : $this->never() )
 			->method( 'log' )
 			->with(
@@ -124,7 +123,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);
 
-		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
+		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
 		$dataFactory->expects( $this->once() )
 			->method( 'timing' )
 			->with(
@@ -132,7 +131,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 				$this->identicalTo( 5000.0 )
 			);
 
-		$logger = $this->getMock( LoggerInterface::class );
+		$logger = $this->createMock( LoggerInterface::class );
 		$logger->expects( $this->never() )->method( 'log' );
 
 		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $this->getLoggingDisabledConfig() );
@@ -151,7 +150,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 	public function testLogConstraintCheckOnEntity( $durationSeconds, $expectedLevel, $expectedLimit ) {
 		$entityId = new ItemId( 'Q1' );
 
-		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
+		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
 		$dataFactory->expects( $this->once() )
 			->method( 'timing' )
 			->with(
@@ -159,7 +158,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 				$this->identicalTo( $durationSeconds * 1000 )
 			);
 
-		$logger = $this->getMock( LoggerInterface::class );
+		$logger = $this->createMock( LoggerInterface::class );
 		$logger->expects( $expectedLevel !== null ? $this->once() : $this->never() )
 			->method( 'log' )
 			->with(
@@ -201,7 +200,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 	public function testLogConstraintCheckOnEntityDisabled() {
 		$entityId = new ItemId( 'Q1' );
 
-		$dataFactory = $this->getMock( IBufferingStatsdDataFactory::class );
+		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
 		$dataFactory->expects( $this->once() )
 			->method( 'timing' )
 			->with(
@@ -209,7 +208,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 				$this->identicalTo( 10000 )
 			);
 
-		$logger = $this->getMock( LoggerInterface::class );
+		$logger = $this->createMock( LoggerInterface::class );
 		$logger->expects( $this->never() )
 			->method( 'log' );
 

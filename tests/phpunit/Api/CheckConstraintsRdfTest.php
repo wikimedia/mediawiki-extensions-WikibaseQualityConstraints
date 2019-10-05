@@ -100,9 +100,9 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private function getContext( PHPUnit_Framework_MockObject_MockObject $mockResponse ) {
 		$output = $this->getOutput();
-		$context = $this->getMock( IContextSource::class );
+		$context = $this->createMock( IContextSource::class );
 
-		$mockRequest = $this->getMock( WebRequest::class );
+		$mockRequest = $this->createMock( WebRequest::class );
 		$mockRequest->method( 'response' )
 			->willReturn( $mockResponse );
 		$context->method( 'getRequest' )
@@ -195,7 +195,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 				);
 			} );
 
-		$mockResponse = $this->getMock( \WebResponse::class );
+		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->never() )->method( 'statusHeader' );
 		$mockResponse->expects( $this->once() )->method( 'header' )
 			->with( 'Content-Type: text/turtle; charset=UTF-8' );
@@ -222,7 +222,7 @@ TEXT;
 
 	public function testShow404() {
 		$page = new WikiPage( Title::newFromText( 'something strange' ) );
-		$mockResponse = $this->getMock( \WebResponse::class );
+		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 404 );
 		$action = $this->getCheckConstraintsRdf( $page, $mockResponse );
 
@@ -236,7 +236,7 @@ TEXT;
 
 	public function testShowNoResults() {
 		$page = new WikiPage( Title::newFromText( 'Item:Q1' ) );
-		$mockResponse = $this->getMock( \WebResponse::class );
+		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
 		$action = $this->getCheckConstraintsRdf( $page, $mockResponse );
 
@@ -264,7 +264,7 @@ TEXT;
 				);
 			} );
 
-		$mockResponse = $this->getMock( \WebResponse::class );
+		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
 		$action = $this->getCheckConstraintsRdf( $page, $mockResponse, $cachingResultsSource );
 

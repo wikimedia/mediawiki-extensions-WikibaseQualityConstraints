@@ -32,12 +32,12 @@ class ViolationMessageTest extends \MediaWikiUnitTestCase {
 	}
 
 	public function testConstruct_messageKeyWithoutPrefix() {
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		new ViolationMessage( 'single-value' );
 	}
 
 	public function testConstruct_unrelatedMessageKey() {
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		new ViolationMessage( 'wbqc-constraintreport' );
 	}
 

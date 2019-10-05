@@ -315,7 +315,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 				$deprecatedConstraintStatement
 			] )
 		);
-		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
+		$entityRevisionLookup = $this->createMock( EntityRevisionLookup::class );
 		$entityRevisionLookup->method( 'getEntityRevision' )
 			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );
@@ -366,7 +366,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 					->build()
 			)
 		);
-		$entityRevisionLookup = $this->getMock( EntityRevisionLookup::class );
+		$entityRevisionLookup = $this->createMock( EntityRevisionLookup::class );
 		$entityRevisionLookup->method( 'getEntityRevision' )
 			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );

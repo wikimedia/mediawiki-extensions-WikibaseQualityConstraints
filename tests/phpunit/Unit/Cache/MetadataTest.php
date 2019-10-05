@@ -85,7 +85,7 @@ class MetadataTest extends \MediaWikiUnitTestCase {
 	}
 
 	public function testMerge_invalid() {
-		$this->setExpectedException( ParameterElementTypeException::class );
+		$this->expectException( ParameterElementTypeException::class );
 
 		Metadata::merge( [
 			10,

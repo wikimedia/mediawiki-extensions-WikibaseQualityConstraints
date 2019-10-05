@@ -33,7 +33,7 @@ class ReferenceCheckerTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testReferenceConstraint( $type, $messageKey ) {
 		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
-		$context = $this->getMock( Context::class );
+		$context = $this->createMock( Context::class );
 		$context->method( 'getType' )->willReturn( $type );
 		$context->method( 'getSnak' )->willReturn( $snak );
 		$checker = new ReferenceChecker();

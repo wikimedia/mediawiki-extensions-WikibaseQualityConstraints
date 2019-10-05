@@ -174,12 +174,12 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		);
 		$q100 = new ItemId( 'Q100' );
 		$statuses = [ 'garbage status', 'other status' ];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [] );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -200,13 +200,13 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		);
 		$q100 = new ItemId( 'Q100' );
 		$statuses = [ 'garbage status', 'other status' ];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [ 'fake' ], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$resultsSource,
@@ -226,13 +226,13 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		);
 		$q100 = new ItemId( 'Q100' );
 		$statuses = [ 'garbage status', 'other status' ];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], [ 'fake' ], $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$resultsSource,
@@ -256,14 +256,14 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache, 'v2' );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [] );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -303,14 +303,14 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache, 'v2' );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->once() )
 			->method( 'loadLatestRevisionIds' )
 			->with(
@@ -347,14 +347,14 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_BAD_PARAMETERS,
 			CheckResult::STATUS_TODO,
 		];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache, 'v2' );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [] );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -379,13 +379,13 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		);
 		$q100 = new ItemId( 'Q100' );
 		$statuses = [ CheckResult::STATUS_VIOLATION ];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->never() )->method( 'loadLatestRevisionIds' );
 		$cachingResultsSource = $this->getCachingResultsSource(
 			$resultsSource,
@@ -409,14 +409,14 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache, 'v2' );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [] );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -451,14 +451,14 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache, 'v2' );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [] );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -486,13 +486,13 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->expects( $this->once() )
 			->method( 'loadLatestRevisionIds' )
 			->with(
@@ -522,14 +522,14 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			CheckResult::STATUS_WARNING,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
-		$resultsSource = $this->getMock( ResultsSource::class );
+		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( [ $q100 ], [], null, $statuses )
 			->willReturn( $expectedResults );
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
 		$resultsCache = new ResultsCache( $cache, 'v2' );
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [] );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -560,7 +560,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetStoredResults_Outdated() {
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [
 				'Q5' => 100,
@@ -589,7 +589,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetStoredResults_Fresh() {
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [
 				'Q5' => 100,
@@ -630,7 +630,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetStoredResults_WithoutRevisionInformation() {
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor
 			->method( 'loadLatestRevisionIds' )
 			->willReturn( [
@@ -660,7 +660,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetStoredResults_UpdateCachingMetadata() {
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [
 				'Q5' => 100,
@@ -704,7 +704,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetStoredResults_NullResult() {
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [
 				'Q5' => 100,
@@ -771,7 +771,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetResults_FutureDateStillInFuture() {
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [] );
 		$resultsCache = new ResultsCache( new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ), 'v2' );
@@ -807,7 +807,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetResults_FutureDateNowInPast() {
-		$metaDataAccessor = $this->getMock( WikiPageEntityMetaDataAccessor::class );
+		$metaDataAccessor = $this->createMock( WikiPageEntityMetaDataAccessor::class );
 		$metaDataAccessor->method( 'loadLatestRevisionIds' )
 			->willReturn( [] );
 		$resultsCache = new ResultsCache( new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ), 'v2' );

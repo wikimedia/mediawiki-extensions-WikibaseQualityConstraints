@@ -49,7 +49,7 @@ class ContextCursorSerializationTest extends \MediaWikiUnitTestCase {
 		$serialization = [ 't' => 'unknown' ];
 		$deserializer = new ContextCursorDeserializer();
 
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		$deserializer->deserialize( $serialization );
 	}
 

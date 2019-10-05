@@ -22,7 +22,7 @@ class EntityContextCursorTest extends \MediaWikiUnitTestCase {
 		$result = [ 'result' ];
 
 		$actual = [];
-		$this->setExpectedException( LogicException::class );
+		$this->expectException( LogicException::class );
 		$cursor->storeCheckResultInArray( $result, $actual );
 	}
 

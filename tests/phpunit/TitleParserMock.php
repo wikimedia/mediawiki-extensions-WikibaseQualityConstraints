@@ -12,7 +12,7 @@ use TitleValue;
 trait TitleParserMock {
 
 	public function getTitleParserMock() {
-		$titleParser = $this->getMock( TitleParser::class );
+		$titleParser = $this->createMock( TitleParser::class );
 		$titleParser->method( 'parseTitle' )->will( $this->returnCallback(
 			function( $text, $defaultNamespace ) {
 				$exploded = explode( ':', $text, 2 );

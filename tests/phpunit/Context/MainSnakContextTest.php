@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Context;
 
 use LogicException;
-use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
@@ -24,7 +23,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContextCurs
  * @license GPL-2.0-or-later
  */
 class MainSnakContextTest extends \PHPUnit\Framework\TestCase {
-	use PHPUnit4And6Compat;
 
 	public function testGetSnak() {
 		$entity = NewItem::withId( 'Q1' )->build();
@@ -118,7 +116,7 @@ class MainSnakContextTest extends \PHPUnit\Framework\TestCase {
 		$entity = NewItem::withId( 'Q1' )->andStatement( $statement )->build();
 		$context = new MainSnakContext( $entity, $statement );
 
-		$this->setExpectedException( LogicException::class );
+		$this->expectException( LogicException::class );
 		$context->getSnakGroup( 'unknown-mode' );
 	}
 

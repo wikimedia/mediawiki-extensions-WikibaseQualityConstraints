@@ -65,7 +65,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		}
 		$maxEntities = $this->getDefaultConfig()->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
 
-		$spy = $this->getMock( EntityLookup::class );
+		$spy = $this->createMock( EntityLookup::class );
 		$spy->expects( $this->exactly( $maxEntities ) )
 			->method( 'getEntity' )
 			->will( $this->returnCallback( [ $lookup, 'getEntity' ] ) );

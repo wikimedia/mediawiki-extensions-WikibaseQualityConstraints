@@ -91,7 +91,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$dataTypeLookup = new EntityRetrievingDataTypeLookup( $this->lookup );
 		$this->setService( WikibaseServices::PROPERTY_DATA_TYPE_LOOKUP, $dataTypeLookup );
 
-		$pageNameNormalizer = $this->getMock( MediaWikiPageNameNormalizer::class );
+		$pageNameNormalizer = $this->createMock( MediaWikiPageNameNormalizer::class );
 		$pageNameNormalizer->method( 'normalizePageName' )
 			->willReturnArgument( 0 );
 		$commonsLinkChecker = new CommonsLinkChecker(
@@ -780,7 +780,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSupportedContextTypes_NotSupported() {
-		$checker = $this->getMock( ConstraintChecker::class );
+		$checker = $this->createMock( ConstraintChecker::class );
 		$checker->method( 'getSupportedContextTypes' )
 			->willReturn( [
 				Context::TYPE_STATEMENT => CheckResult::STATUS_NOT_IN_SCOPE,
@@ -818,7 +818,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSupportedContextTypes_NotImplemented() {
-		$checker = $this->getMock( ConstraintChecker::class );
+		$checker = $this->createMock( ConstraintChecker::class );
 		$checker->method( 'getSupportedContextTypes' )
 			->willReturn( [
 				Context::TYPE_STATEMENT => CheckResult::STATUS_TODO,
@@ -856,7 +856,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSupportedContextTypes_DefaultScope() {
-		$checker = $this->getMock( ConstraintChecker::class );
+		$checker = $this->createMock( ConstraintChecker::class );
 		$checker->method( 'getSupportedContextTypes' )
 			->willReturn( [
 				Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
@@ -900,7 +900,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSupportedContextTypes_ExplicitScope() {
-		$checker = $this->getMock( ConstraintChecker::class );
+		$checker = $this->createMock( ConstraintChecker::class );
 		$checker->method( 'getSupportedContextTypes' )
 			->willReturn( [
 				Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,

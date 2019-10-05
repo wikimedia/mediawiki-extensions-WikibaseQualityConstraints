@@ -8,7 +8,6 @@ use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use InvalidArgumentException;
-use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\ItemId;
@@ -27,7 +26,6 @@ use Wikimedia\TestingAccessWrapper;
  * @license GPL-2.0-or-later
  */
 class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
-	use PHPUnit4And6Compat;
 
 	private function getViolationMessageDeserializer(
 		EntityIdParser $entityIdParser = null,
@@ -99,7 +97,7 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		];
 		$deserializer = $this->getViolationMessageDeserializer();
 
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		$deserializer->deserialize( $serialized );
 	}
 
@@ -134,7 +132,7 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testDeserializeEntityId() {
 		$propertyId = new PropertyId( 'P1' );
-		$mock = $this->getMock( EntityIdParser::class );
+		$mock = $this->createMock( EntityIdParser::class );
 		$mock->expects( $this->once() )
 			->method( 'parse' )
 			->with( 'P1' )

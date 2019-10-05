@@ -39,7 +39,7 @@ class NowValueTest extends \MediaWikiUnitTestCase {
 	public function testSerialize() {
 		$now = new NowValue();
 
-		$this->setExpectedException( LogicException::class );
+		$this->expectException( LogicException::class );
 		$now->serialize();
 	}
 

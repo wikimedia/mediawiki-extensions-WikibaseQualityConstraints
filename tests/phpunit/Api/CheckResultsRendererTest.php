@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use MockMessageLocalizer;
-use PHPUnit4And6Compat;
 use Title;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
@@ -38,26 +37,25 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\AppendingContextCursor;
 class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 
 	use DefaultConfig;
-	use PHPUnit4And6Compat;
 
 	private function getResultsRenderer() {
 		$entityIdFormatter = new PlainEntityIdFormatter();
-		$entityTitleLookup = $this->getMock( EntityTitleLookup::class );
+		$entityTitleLookup = $this->createMock( EntityTitleLookup::class );
 		$entityTitleLookup->method( 'getTitleForId' )
 			->will( $this->returnCallback( function( EntityId $id ) {
-				$title = $this->getMock( Title::class );
+				$title = $this->createMock( Title::class );
 				$title->method( 'getFullUrl' )
 					->willReturn( 'http://wiki.test/' . $id->getSerialization() );
 				$title->method( 'getTalkPage' )
 					->will( $this->returnCallback( function() use ( $id ) {
-						$title = $this->getMock( Title::class );
+						$title = $this->createMock( Title::class );
 						$title->method( 'getFullUrl' )
 							->willReturn( 'http://wiki.test/Talk:' . $id->getSerialization() );
 						return $title;
 					} ) );
 				return $title;
 			} ) );
-		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter = $this->createMock( ValueFormatter::class );
 
 		return new CheckResultsRenderer(
 			$entityTitleLookup,

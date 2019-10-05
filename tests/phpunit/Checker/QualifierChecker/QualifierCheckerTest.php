@@ -43,7 +43,7 @@ class QualifierCheckerTest extends \MediaWikiTestCase {
 	 */
 	public function testQualifierConstraint( $type, $messageKey ) {
 		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
-		$context = $this->getMock( Context::class );
+		$context = $this->createMock( Context::class );
 		$context->method( 'getType' )->willReturn( $type );
 		$context->method( 'getSnak' )->willReturn( $snak );
 		$checker = new QualifierChecker();

@@ -41,7 +41,7 @@ class ItemIdSnakValueTest extends \MediaWikiUnitTestCase {
 		$this->assertTrue( $value->isSomeValue() );
 		$this->assertFalse( $value->isNoValue() );
 
-		$this->setExpectedException( DomainException::class );
+		$this->expectException( DomainException::class );
 		$value->getItemId();
 	}
 
@@ -52,7 +52,7 @@ class ItemIdSnakValueTest extends \MediaWikiUnitTestCase {
 		$this->assertFalse( $value->isSomeValue() );
 		$this->assertTrue( $value->isNoValue() );
 
-		$this->setExpectedException( DomainException::class );
+		$this->expectException( DomainException::class );
 		$value->getItemId();
 	}
 
@@ -76,7 +76,7 @@ class ItemIdSnakValueTest extends \MediaWikiUnitTestCase {
 			new EntityIdValue( $propertyId )
 		);
 
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		$value = ItemIdSnakValue::fromSnak( $snak );
 	}
 
@@ -86,7 +86,7 @@ class ItemIdSnakValueTest extends \MediaWikiUnitTestCase {
 			new StringValue( 'Q1' )
 		);
 
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		$value = ItemIdSnakValue::fromSnak( $snak );
 	}
 

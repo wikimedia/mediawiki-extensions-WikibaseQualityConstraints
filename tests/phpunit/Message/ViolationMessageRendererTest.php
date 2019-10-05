@@ -323,7 +323,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( [ [ 'type' => 'unknown', 'value' => null, 'role' => null ] ] );
 		$renderer = $this->newViolationMessageRenderer();
 
-		$this->setExpectedException( InvalidArgumentException::class );
+		$this->expectException( InvalidArgumentException::class );
 		$renderer->render( $message );
 	}
 
@@ -459,7 +459,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderEntityId() {
 		$entityId = new ItemId( 'Q1' );
 		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->once() )
 			->method( 'formatEntityId' )
 			->with( $entityId )
@@ -482,7 +482,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderEntityId_withRole() {
 		$entityId = new PropertyId( 'P1' );
 		$role = Role::PREDICATE;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test property>' );
@@ -504,7 +504,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderEntityIdList() {
 		$entityIdList = [ new ItemId( 'Q1' ), new PropertyId( 'P2' ) ];
 		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->exactly( 2 ) )
 			->method( 'formatEntityId' )
 			->willReturnCallback( [ new PlainEntityIdFormatter(), 'formatEntityId' ] );
@@ -531,7 +531,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderEntityIdList_withRole() {
 		$entityIdList = [ new ItemId( 'Q1' ) ];
 		$role = Role::OBJECT;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test item>' );
@@ -558,7 +558,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$itemId = new ItemId( 'Q1' );
 		$itemIdSnakValue = ItemIdSnakValue::fromItemId( $itemId );
 		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->once() )
 			->method( 'formatEntityId' )
 			->with( $itemId )
@@ -580,7 +580,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderItemIdSnakValue_someValue() {
 		$itemIdSnakValue = ItemIdSnakValue::someValue();
 		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter
 			->expects( $this->never() )
 			->method( 'formatEntityId' );
@@ -605,7 +605,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderItemIdSnakValue_noValue() {
 		$itemIdSnakValue = ItemIdSnakValue::noValue();
 		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter
 			->expects( $this->never() )
 			->method( 'formatEntityId' );
@@ -632,7 +632,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$itemId = new ItemId( 'Q1' );
 		$itemIdSnakValue = ItemIdSnakValue::fromItemId( $itemId );
 		$role = Role::OBJECT;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test item>' );
@@ -657,7 +657,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 			ItemIdSnakValue::fromItemId( new ItemId( 'Q2' ) ),
 		];
 		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->exactly( 2 ) )
 			->method( 'formatEntityId' )
 			->willReturnCallback( [ new PlainEntityIdFormatter(), 'formatEntityId' ] );
@@ -684,7 +684,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderItemIdSnakValueList_withRole() {
 		$valueList = [ ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ) ];
 		$role = Role::OBJECT;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test item>' );
@@ -710,7 +710,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderDataValue() {
 		$dataValue = new StringValue( 'a&nbsp;string' );
 		$role = null;
-		$dataValueFormatter = $this->getMock( ValueFormatter::class );
+		$dataValueFormatter = $this->createMock( ValueFormatter::class );
 		$dataValueFormatter->expects( $this->once() )
 			->method( 'format' )
 			->with( $dataValue )
@@ -733,7 +733,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderDataValue_withRole() {
 		$dataValue = new StringValue( 'test' );
 		$role = Role::OBJECT;
-		$dataValueFormatter = $this->getMock( ValueFormatter::class );
+		$dataValueFormatter = $this->createMock( ValueFormatter::class );
 		$dataValueFormatter
 			->method( 'format' )
 			->willReturn( 'test' );
@@ -852,7 +852,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$scope = $contextType;
 		$role = null;
 		$itemId = new ItemId( $itemIdSerialization );
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->once() )
 			->method( 'formatEntityId' )
 			->with( $itemId )
@@ -887,7 +887,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderConstraintScope_unknown() {
 		$scope = 'some unknown scope';
 		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->never() )
 			->method( 'formatEntityId' );
 		$renderer = $this->newViolationMessageRenderer( $entityIdFormatter );
@@ -932,7 +932,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderConstraintScopeList() {
 		$scopeList = [ Context::TYPE_STATEMENT, Context::TYPE_REFERENCE ];
 		$role = null;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->exactly( 2 ) )
 			->method( 'formatEntityId' )
 			->willReturnCallback( [ new PlainEntityIdFormatter(), 'formatEntityId' ] );
@@ -959,7 +959,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	public function testRenderConstraintScopeList_withRole() {
 		$scopeList = [ Context::TYPE_STATEMENT ];
 		$role = Role::CONSTRAINT_PARAMETER_VALUE;
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter
 			->method( 'formatEntityId' )
 			->willReturn( '<test scope>' );

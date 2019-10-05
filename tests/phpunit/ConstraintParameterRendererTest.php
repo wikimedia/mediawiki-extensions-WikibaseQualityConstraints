@@ -28,7 +28,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 
 	public function testFormatDataValue() {
 		$value = new StringValue( 'a test string' );
-		$valueFormatter = $this->getMock( ValueFormatter::class );
+		$valueFormatter = $this->createMock( ValueFormatter::class );
 		$valueFormatter->expects( $this->once() )
 			->method( 'format' )
 			->with( $value )
@@ -47,7 +47,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 
 	public function testFormatEntityId() {
 		$value = new PropertyId( 'P1234' );
-		$entityIdFormatter = $this->getMock( EntityIdFormatter::class );
+		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->once() )
 			->method( 'formatEntityId' )
 			->with( $value )

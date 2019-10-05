@@ -221,7 +221,7 @@ EOF;
 		$sparqlValue,
 		$sparqlPath
 	) {
-		$dtLookup = $this->getMock( PropertyDataTypeLookup::class );
+		$dtLookup = $this->createMock( PropertyDataTypeLookup::class );
 		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
 
 		$sparqlHelper = $this->getSparqlHelper( null, $dtLookup );
@@ -578,7 +578,7 @@ EOF;
 			$requestFactoryMock
 		);
 
-		$this->setExpectedException( TooManySparqlRequestsException::class );
+		$this->expectException( TooManySparqlRequestsException::class );
 		$sparqlHelper->runQuery( 'fake query' );
 	 }
 
@@ -619,7 +619,7 @@ EOF;
 			$requestFactoryMock
 		);
 
-		$this->setExpectedException( TooManySparqlRequestsException::class );
+		$this->expectException( TooManySparqlRequestsException::class );
 		$sparqlHelper->runQuery( 'fake query' );
 	}
 
@@ -651,7 +651,7 @@ EOF;
 			 $requestFactoryMock
 		 );
 
-		 $this->setExpectedException( TooManySparqlRequestsException::class );
+		 $this->expectException( TooManySparqlRequestsException::class );
 		 $sparqlHelper->runQuery( 'foo baz' );
 	 }
 
@@ -684,7 +684,7 @@ EOF;
 			$requestFactoryMock
 		);
 
-		$this->setExpectedException( TooManySparqlRequestsException::class );
+		$this->expectException( TooManySparqlRequestsException::class );
 		$sparqlHelper->runQuery( 'foo baz' );
 	}
 
