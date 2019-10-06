@@ -6,7 +6,7 @@ use HashConfig;
 use IContextSource;
 use NullStatsdDataFactory;
 use OutputPage;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
 use Title;
 use WANObjectCache;
@@ -47,7 +47,7 @@ use WikiPage;
 class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 
 	/**
-	 * @return PHPUnit_Framework_MockObject_MockObject
+	 * @return MockObject
 	 */
 	private function getOutput() {
 		$output = $this->getMockBuilder( OutputPage::class )
@@ -92,11 +92,11 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @param PHPUnit_Framework_MockObject_MockObject $output
+	 * @param MockObject $mockResponse
 	 *
 	 * @return IContextSource
 	 */
-	private function getContext( PHPUnit_Framework_MockObject_MockObject $mockResponse ) {
+	private function getContext( MockObject $mockResponse ) {
 		$output = $this->getOutput();
 		$context = $this->createMock( IContextSource::class );
 
