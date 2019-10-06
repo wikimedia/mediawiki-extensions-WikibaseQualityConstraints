@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
-use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
@@ -23,7 +22,6 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @license GPL-2.0-or-later
  */
 class IntegerCheckerTest extends \PHPUnit\Framework\TestCase {
-	use PHPUnit4And6Compat;
 
 	use ResultAssertions;
 

@@ -58,9 +58,7 @@ class CheckConstraintsJobTest extends MediaWikiTestCase {
 	}
 
 	public function testJobRun() {
-		$resultSource = $this->getMock(
-			CachingResultsSource::class, [], [], '', false
-		);
+		$resultSource = $this->createMock( CachingResultsSource::class );
 		$resultSource->expects( $this->once() )
 			->method( 'getResults' )
 			->with( $this->equalTo( [ new ItemId( self::ENTITY_ID ) ] ) );

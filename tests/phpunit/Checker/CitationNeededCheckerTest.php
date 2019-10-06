@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use DataValues\StringValue;
-use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -26,7 +25,6 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @license GPL-2.0-or-later
  */
 class CitationNeededCheckerTest extends \PHPUnit\Framework\TestCase {
-	use PHPUnit4And6Compat;
 
 	use ResultAssertions;
 

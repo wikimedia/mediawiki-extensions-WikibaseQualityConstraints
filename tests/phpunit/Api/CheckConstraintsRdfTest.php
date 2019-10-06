@@ -6,7 +6,6 @@ use HashConfig;
 use IContextSource;
 use NullStatsdDataFactory;
 use OutputPage;
-use PHPUnit4And6Compat;
 use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\NullLogger;
 use Title;
@@ -46,7 +45,6 @@ use WikiPage;
  * @license GPL-2.0-or-later
  */
 class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
-	use PHPUnit4And6Compat;
 
 	/**
 	 * @return PHPUnit_Framework_MockObject_MockObject
@@ -154,11 +152,11 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	private function getCachingResultsSource() {
 		return $this->getMockBuilder( CachingResultsSource::class )
 			->setConstructorArgs( [
-				$this->getMock( ResultsSource::class ),
+				$this->createMock( ResultsSource::class ),
 				new ResultsCache( WANObjectCache::newEmpty(), 'v2' ),
 				$this->getCheckResultSerializer(),
 				$this->getCheckResultDeserializer(),
-				$this->getMock( WikiPageEntityMetaDataAccessor::class ),
+				$this->createMock( WikiPageEntityMetaDataAccessor::class ),
 				new ItemIdParser(),
 				86400,
 				[],

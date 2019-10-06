@@ -20,7 +20,7 @@ class HtmlTableCellBuilderTest extends \MediaWikiUnitTestCase {
 	 */
 	public function testConstruct( $content, $attributes, $expectedException = null ) {
 		if ( $expectedException !== null ) {
-			$this->setExpectedException( $expectedException );
+			$this->expectException( $expectedException );
 		}
 		$cell = new HtmlTableCellBuilder( $content, $attributes );
 

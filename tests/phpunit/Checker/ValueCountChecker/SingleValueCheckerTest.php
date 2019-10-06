@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\ValueCountChecker;
 
-use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
@@ -27,7 +26,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  */
 class SingleValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
-	use ConstraintParameters, PHPUnit4And6Compat, ResultAssertions;
+	use ConstraintParameters, ResultAssertions;
 
 	/**
 	 * @var SingleValueChecker

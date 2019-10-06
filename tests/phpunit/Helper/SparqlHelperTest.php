@@ -16,7 +16,6 @@ use HashConfig;
 use MediaWiki\Http\HttpRequestFactory;
 use MultiConfig;
 use NullStatsdDataFactory;
-use PHPUnit4And6Compat;
 use WANObjectCache;
 use Wikibase\DataAccess\EntitySource;
 use Wikibase\DataAccess\EntitySourceDefinitions;
@@ -60,7 +59,6 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  * @license GPL-2.0-or-later
  */
 class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
-	use PHPUnit4And6Compat;
 
 	use DefaultConfig, ResultAssertions;
 
@@ -435,7 +433,7 @@ EOF;
 				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message ⧼${messageKey}⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
-				$this->getMock( ContextCursor::class ),
+				$this->createMock( ContextCursor::class ),
 				$this->getMockBuilder( Constraint::class )->disableOriginalConstructor()->getMock(),
 				[],
 				CheckResult::STATUS_VIOLATION,

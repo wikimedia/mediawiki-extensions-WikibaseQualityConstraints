@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
-use PHPUnit4And6Compat;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -29,7 +28,6 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @license GPL-2.0-or-later
  */
 class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
-	use PHPUnit4And6Compat;
 
 	use ConstraintParameters, ResultAssertions;
 

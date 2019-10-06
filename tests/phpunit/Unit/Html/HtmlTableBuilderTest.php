@@ -30,7 +30,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 		$expectedException
 	) {
 		if ( $expectedException !== null ) {
-			$this->setExpectedException( $expectedException );
+			$this->expectException( $expectedException );
 		}
 		$htmlTable = new HtmlTableBuilder( $headers );
 
@@ -109,7 +109,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 		$expectedException = null
 	) {
 		if ( $expectedException ) {
-			$this->setExpectedException( $expectedException );
+			$this->expectException( $expectedException );
 		}
 
 		$htmlTable = new HtmlTableBuilder( [ 'fu', 'bar' ] );

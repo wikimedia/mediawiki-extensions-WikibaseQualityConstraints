@@ -20,7 +20,7 @@ class HtmlTableHeaderBuilderTest extends \MediaWikiUnitTestCase {
 	 */
 	public function testConstruct( $content, $isSortable, $expectedException = null ) {
 		if ( $expectedException !== null ) {
-			$this->setExpectedException( $expectedException );
+			$this->expectException( $expectedException );
 		}
 		$header = new HtmlTableHeaderBuilder( $content, $isSortable );
 
