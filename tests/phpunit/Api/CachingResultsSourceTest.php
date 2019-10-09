@@ -249,12 +249,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			Metadata::blank()
 		);
 		$q100 = new ItemId( 'Q100' );
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS
-		];
+		$statuses = CachingResultsSource::CACHED_STATUSES;
 		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
@@ -297,12 +292,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			$q101->getSerialization() => 1337,
 			$p102->getSerialization() => 42,
 		];
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS
-		];
+		$statuses = CachingResultsSource::CACHED_STATUSES;
 		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
@@ -341,13 +331,10 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			Metadata::blank()
 		);
 		$q100 = new ItemId( 'Q100' );
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS,
-			CheckResult::STATUS_TODO,
-		];
+		$statuses = array_merge(
+			CachingResultsSource::CACHED_STATUSES,
+			[ CheckResult::STATUS_TODO ]
+		);
 		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
@@ -405,12 +392,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			Metadata::ofDependencyMetadata( DependencyMetadata::blank() )
 		);
 		$q100 = new ItemId( 'Q100' );
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS
-		];
+		$statuses = CachingResultsSource::CACHED_STATUSES;
 		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
@@ -448,12 +430,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			Metadata::ofDependencyMetadata( DependencyMetadata::ofFutureTime( $timeValue ) )
 		);
 		$q100 = new ItemId( 'Q100' );
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS
-		];
+		$statuses = CachingResultsSource::CACHED_STATUSES;
 		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
@@ -484,12 +461,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			[ $this->getCheckResult( 'Q100' ) ],
 			Metadata::ofDependencyMetadata( DependencyMetadata::ofEntityId( $q100 ) )
 		);
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS
-		];
+		$statuses = CachingResultsSource::CACHED_STATUSES;
 		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
@@ -521,12 +493,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			[ new NullResult( new EntityContextCursor( 'Q100' ) ) ],
 			Metadata::ofDependencyMetadata( DependencyMetadata::ofEntityId( $q100 ) )
 		);
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS
-		];
+		$statuses = CachingResultsSource::CACHED_STATUSES;
 		$resultsSource = $this->createMock( ResultsSource::class );
 		$resultsSource->expects( $this->once() )
 			->method( 'getResults' )
@@ -907,12 +874,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetResults_FullyCached() {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS
-		];
+		$statuses = CachingResultsSource::CACHED_STATUSES;
 		$cachingResultsSource = $this->getCachingResultsSourceMock(
 			$this->createMock( ResultsSource::class ),
 			new ResultsCache( WANObjectCache::newEmpty(), 'v2' ),
@@ -946,12 +908,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetResults_PartiallyCached() {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS
-		];
+		$statuses = CachingResultsSource::CACHED_STATUSES;
 		$cachingResultsSource = $this->getCachingResultsSourceMock(
 			$this->createMock( ResultsSource::class ),
 			new ResultsCache( WANObjectCache::newEmpty(), 'v2' ),
@@ -995,11 +952,10 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetResults_UseCacheWithMissingStatuses() {
 		$entityIds = [ new ItemId( 'Q5' ) ];
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS,
-		];
+		$statuses = array_values( array_diff(
+			CachingResultsSource::CACHED_STATUSES,
+			[ CheckResult::STATUS_WARNING ]
+		) );
 		$allResults = new CachedCheckResults(
 			[
 				$this->getCheckResult( 'Q5' ),
@@ -1033,13 +989,10 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetResults_SkipCacheWithExtraStatuses() {
 		$entityIds = [ new ItemId( 'Q5' ), new ItemId( 'Q10' ) ];
-		$statuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS,
-			CheckResult::STATUS_TODO,
-		];
+		$statuses = array_merge(
+			CachingResultsSource::CACHED_STATUSES,
+			[ CheckResult::STATUS_TODO ]
+		);
 		$results = new CachedCheckResults(
 			[ $this->getCheckResult( 'Q5' ) ],
 			Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 5 * 60 ) )
