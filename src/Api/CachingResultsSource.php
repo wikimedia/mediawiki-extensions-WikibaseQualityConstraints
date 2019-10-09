@@ -141,6 +141,7 @@ class CachingResultsSource implements ResultsSource {
 		$this->cachedStatuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS,
 		];
 		$this->cachedStatusesFlipped = array_flip( $this->cachedStatuses );
