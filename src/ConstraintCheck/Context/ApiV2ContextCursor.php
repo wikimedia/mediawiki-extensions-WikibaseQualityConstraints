@@ -85,10 +85,10 @@ abstract class ApiV2ContextCursor implements ContextCursor {
 	abstract protected function &getMainArray( array &$container );
 
 	/**
-	 * @param array|null $result
+	 * @param ?array $result
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( array $result = null, array &$container ) {
+	public function storeCheckResultInArray( ?array $result, array &$container ) {
 		$mainArray = &$this->getMainArray( $container );
 		if ( !array_key_exists( 'results', $mainArray ) ) {
 			$mainArray['results'] = [];

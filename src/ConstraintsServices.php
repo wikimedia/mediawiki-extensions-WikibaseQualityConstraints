@@ -38,7 +38,7 @@ class ConstraintsServices {
 	const RESULTS_SOURCE = 'WBQC_ResultsSource';
 	const EXPIRY_LOCK = 'WBQC_ExpiryLock';
 
-	private static function getService( MediaWikiServices $services = null, $name ) {
+	private static function getService( ?MediaWikiServices $services, $name ) {
 		if ( $services === null ) {
 			$services = MediaWikiServices::getInstance();
 		}

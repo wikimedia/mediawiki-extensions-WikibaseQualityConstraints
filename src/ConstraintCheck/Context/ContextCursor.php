@@ -62,9 +62,9 @@ interface ContextCursor {
 	 * but still populate the appropriate location for the context in $container
 	 * (by creating all intermediate path elements of the location where $result would be stored).
 	 *
-	 * @param array|null $result
+	 * @param ?array $result
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( array $result = null, array &$container );
+	public function storeCheckResultInArray( ?array $result, array &$container );
 
 }

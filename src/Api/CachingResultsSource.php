@@ -149,7 +149,7 @@ class CachingResultsSource implements ResultsSource {
 	public function getResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null,
+		?array $constraintIds,
 		array $statuses
 	) {
 		$results = [];
@@ -202,7 +202,7 @@ class CachingResultsSource implements ResultsSource {
 	private function canUseStoredResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null,
+		?array $constraintIds,
 		array $statuses
 	) {
 		if ( $claimIds !== [] ) {
@@ -241,7 +241,7 @@ class CachingResultsSource implements ResultsSource {
 	public function getAndStoreResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null,
+		?array $constraintIds,
 		array $statuses
 	) {
 		$results = $this->resultsSource->getResults( $entityIds, $claimIds, $constraintIds, $statuses );
@@ -269,14 +269,14 @@ class CachingResultsSource implements ResultsSource {
 	 *
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
-	 * @param string[]|null $constraintIds
+	 * @param ?string[] $constraintIds
 	 * @param string[] $statuses
 	 * @return bool
 	 */
 	private function canStoreResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null,
+		?array $constraintIds,
 		array $statuses
 	) {
 		if ( $constraintIds !== null ) {

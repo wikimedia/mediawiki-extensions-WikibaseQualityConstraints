@@ -40,7 +40,7 @@ class ConstraintCheckerServices {
 	const PROPERTY_SCOPE_CHECKER = 'WBQC_PropertyScopeChecker';
 	const CONTEMPORARY_CHECKER = 'WBQC_ContemporaryChecker';
 
-	private static function getService( MediaWikiServices $services = null, $name ) {
+	private static function getService( ?MediaWikiServices $services, $name ) {
 		if ( $services === null ) {
 			$services = MediaWikiServices::getInstance();
 		}

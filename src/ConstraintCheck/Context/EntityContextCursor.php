@@ -80,10 +80,10 @@ class EntityContextCursor extends ApiV2ContextCursor {
 	/**
 	 * Populate the results container up to the 'claims' level.
 	 *
-	 * @param array|null $result must be null
+	 * @param ?array $result must be null
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( array $result = null, array &$container ) {
+	public function storeCheckResultInArray( ?array $result, array &$container ) {
 		if ( $result !== null ) {
 			throw new LogicException( 'EntityContextCursor cannot store check results' );
 		}

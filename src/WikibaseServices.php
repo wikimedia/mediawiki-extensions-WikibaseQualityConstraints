@@ -20,7 +20,7 @@ class WikibaseServices {
 	const PROPERTY_DATA_TYPE_LOOKUP = 'WBQC_PropertyDataTypeLookup';
 	const ENTITY_LOOKUP_WITHOUT_CACHE = 'WBQC_EntityLookupWithoutCache';
 
-	private static function getService( MediaWikiServices $services = null, $name ) {
+	private static function getService( ?MediaWikiServices $services, $name ) {
 		if ( $services === null ) {
 			$services = MediaWikiServices::getInstance();
 		}

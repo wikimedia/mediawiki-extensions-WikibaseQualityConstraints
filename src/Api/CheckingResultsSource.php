@@ -32,14 +32,14 @@ class CheckingResultsSource implements ResultsSource {
 	/**
 	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
-	 * @param string[]|null $constraintIds
+	 * @param ?string[] $constraintIds
 	 * @param string[] $statuses
 	 * @return CachedCheckResults
 	 */
 	public function getResults(
 		array $entityIds,
 		array $claimIds,
-		array $constraintIds = null,
+		?array $constraintIds,
 		array $statuses
 	) {
 		$results = [];

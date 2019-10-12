@@ -388,12 +388,12 @@ class ConstraintParameterParser {
 
 	/**
 	 * Checks whether there is exactly one non-null quantity with the given unit.
-	 * @param DataValue|null $min
-	 * @param DataValue|null $max
+	 * @param ?DataValue $min
+	 * @param ?DataValue $max
 	 * @param string $unit
 	 * @return bool
 	 */
-	private function exactlyOneQuantityWithUnit( DataValue $min = null, DataValue $max = null, $unit ) {
+	private function exactlyOneQuantityWithUnit( ?DataValue $min, ?DataValue $max, $unit ) {
 		if ( !( $min instanceof UnboundedQuantityValue ) ||
 			!( $max instanceof UnboundedQuantityValue )
 		) {
