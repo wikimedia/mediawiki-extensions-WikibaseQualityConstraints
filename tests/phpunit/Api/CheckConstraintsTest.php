@@ -166,7 +166,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		};
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		self::$constraintLookupContents = [];
 		self::$checkerMap = [];
 		parent::tearDown();

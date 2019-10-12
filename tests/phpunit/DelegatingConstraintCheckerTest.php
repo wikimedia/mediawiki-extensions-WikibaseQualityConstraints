@@ -68,7 +68,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $constraintCount;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 
@@ -106,7 +106,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->tablesUsed[] = 'wbqc_constraints';
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		parent::tearDown();
 	}

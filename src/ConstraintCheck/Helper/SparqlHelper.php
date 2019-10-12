@@ -712,7 +712,7 @@ EOF;
 		$fallbackBlockDuration = (int)$this->config->get( 'WBQualityConstraintsSparqlThrottlingFallbackDuration' );
 
 		if ( $fallbackBlockDuration < 0 ) {
-			throw new InvalidArgumentException( 'Fallback duration must be positive int but is: '.
+			throw new InvalidArgumentException( 'Fallback duration must be positive int but is: ' .
 				$fallbackBlockDuration );
 		}
 

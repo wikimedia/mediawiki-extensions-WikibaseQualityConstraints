@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\InvalidConvertibleTimestamp;
  */
 class ExpiryLockTest extends \MediaWikiUnitTestCase {
 
-	public function tearDown() {
+	public function tearDown() : void {
 		ConvertibleTimestamp::setFakeTime( false );
 		parent::tearDown();
 	}

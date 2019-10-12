@@ -55,7 +55,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	 */
 	private $testMessageHtml;
 
-	public function setUp() {
+	public function setUp() : void {
 		global $wgAPIModules;
 
 		$this->oldModuleDeclaration = $wgAPIModules['wbcheckconstraintparameters'];
@@ -116,7 +116,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		parent::setUp();
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 		global $wgAPIModules;
 
 		$wgAPIModules['wbcheckconstraintparameters'] = $this->oldModuleDeclaration;
@@ -238,7 +238,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$result = $this->doRequest(
 			[
 				CheckConstraintParameters::PARAM_CONSTRAINT_ID =>
-					self::P1_NONEXISTENT . '|' .self::P1_GOOD . '|' .self::P1_BAD
+					self::P1_NONEXISTENT . '|' . self::P1_GOOD . '|' . self::P1_BAD
 			]
 		);
 

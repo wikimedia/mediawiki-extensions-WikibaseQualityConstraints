@@ -195,19 +195,15 @@ class RangeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		return $cases;
 	}
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetComparison_unsupportedDataValueTypeThrowsException() {
 		$rangeCheckerHelper = $this->getRangeCheckerHelper();
+		$this->expectException( InvalidArgumentException::class );
 		$rangeCheckerHelper->getComparison( new StringValue( 'kittens' ), new StringValue( 'puppies' ) );
 	}
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetComparison_differingDataValueTypeThrowsException() {
 		$rangeCheckerHelper = $this->getRangeCheckerHelper();
+		$this->expectException( InvalidArgumentException::class );
 		$rangeCheckerHelper->getComparison( $this->getQuantityValue( 42.0 ), $this->getTimeValue( 1970 ) );
 	}
 

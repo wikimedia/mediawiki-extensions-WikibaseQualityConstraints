@@ -130,7 +130,7 @@ class RangeChecker implements ConstraintChecker {
 		}
 
 		if (
-			$dataValue instanceof  TimeValue &&
+			$dataValue instanceof TimeValue &&
 			( $min instanceof NowValue || $max instanceof NowValue ) &&
 			$this->rangeCheckerHelper->isFutureTime( $dataValue )
 		) {
@@ -199,7 +199,7 @@ class RangeChecker implements ConstraintChecker {
 		$messageKey .= '-' . ( $min !== null ? ( $max !== null ? 'closed' : 'rightopen' ) : 'leftopen' );
 		if ( $min instanceof NowValue ) {
 			$messageKey .= '-leftnow';
-		} elseif ( $max instanceof  NowValue ) {
+		} elseif ( $max instanceof NowValue ) {
 			$messageKey .= '-rightnow';
 		}
 		$message = ( new ViolationMessage( $messageKey ) )
@@ -208,7 +208,7 @@ class RangeChecker implements ConstraintChecker {
 		if ( $min !== null && !( $min instanceof NowValue ) ) {
 			$message = $message->withDataValue( $min, Role::OBJECT );
 		}
-		if ( $max !== null && !( $max instanceof  NowValue ) ) {
+		if ( $max !== null && !( $max instanceof NowValue ) ) {
 			$message = $message->withDataValue( $max, Role::OBJECT );
 		}
 		return $message;

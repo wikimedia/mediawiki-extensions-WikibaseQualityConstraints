@@ -37,7 +37,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $commonsLinkChecker;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$pageNameNormalizer = $this
 			->getMockBuilder( MediaWikiPageNameNormalizer::class )

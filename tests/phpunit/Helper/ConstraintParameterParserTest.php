@@ -46,7 +46,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	 */
 	private $constraint;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->constraint = new Constraint( 'constraint ID', new PropertyId( 'P1' ), 'constraint type Q-ID', [] );
 	}

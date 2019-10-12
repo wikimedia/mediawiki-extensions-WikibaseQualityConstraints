@@ -48,7 +48,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $valueTypePropertyId;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );

@@ -122,7 +122,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 		self::$i1970 = NewItem::withId( 'Q1' )->andStatement( self::$s1970 );
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$config = $this->getDefaultConfig();
 		$yearUnit = $config->get( 'WBQualityConstraintsYearUnit' );

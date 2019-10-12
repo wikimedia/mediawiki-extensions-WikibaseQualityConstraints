@@ -24,7 +24,7 @@ class CachingConstraintLookup implements ConstraintLookup {
 	private $cache = [];
 
 	/**
-	 * @var ConstraintLookup $lookup The lookup to which all queries are delegated.
+	 * @param ConstraintLookup $lookup The lookup to which all queries are delegated.
 	 */
 	public function __construct( ConstraintLookup $lookup ) {
 		$this->lookup = $lookup;

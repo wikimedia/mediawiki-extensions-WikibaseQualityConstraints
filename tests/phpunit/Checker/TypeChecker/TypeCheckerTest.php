@@ -50,7 +50,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $typeSnak;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->checker = new TypeChecker(

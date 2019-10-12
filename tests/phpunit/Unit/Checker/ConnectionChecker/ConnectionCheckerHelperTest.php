@@ -33,7 +33,7 @@ class ConnectionCheckerHelperTest extends \MediaWikiUnitTestCase {
 	 */
 	private $connectionCheckerHelper;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->statementList = new StatementList( [
 			new Statement( new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) ),

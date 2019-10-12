@@ -35,7 +35,7 @@ class QualifiersCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $checker;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->qualifiersList = [ 'P580', 'P582', 'P1365', 'P1366', 'P642', 'P805' ];
 		$this->checker = new QualifiersChecker( $this->getConstraintParameterParser() );

@@ -34,7 +34,7 @@ class ConflictsWithCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $checker;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();
 		$this->checker = new ConflictsWithChecker(

@@ -136,7 +136,7 @@ class ItemIdSnakValue {
 	 * @return ItemId
 	 */
 	public function getItemId() {
-		if ( ! $this->isValue() ) {
+		if ( !$this->isValue() ) {
 			throw new DomainException( 'This value does not contain an item ID.' );
 		}
 		return $this->itemId;

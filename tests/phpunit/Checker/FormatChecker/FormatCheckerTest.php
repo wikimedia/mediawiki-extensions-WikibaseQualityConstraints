@@ -37,7 +37,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $formatChecker;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
 					  ->disableOriginalConstructor()

@@ -42,7 +42,7 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $checker;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->lookup = new InMemoryEntityLookup();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();

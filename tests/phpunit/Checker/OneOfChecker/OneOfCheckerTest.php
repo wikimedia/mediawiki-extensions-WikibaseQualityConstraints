@@ -33,7 +33,7 @@ class OneOfCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $oneOfChecker;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->oneOfChecker = new OneOfChecker(
 			$this->getConstraintParameterParser()

@@ -41,14 +41,14 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 
 	use DefaultConfig;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		$this->tablesUsed[] = 'wbqc_constraints';
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		parent::tearDown();
 	}

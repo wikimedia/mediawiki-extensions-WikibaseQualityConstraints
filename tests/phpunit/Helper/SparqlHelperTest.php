@@ -62,7 +62,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 
 	use DefaultConfig, ResultAssertions;
 
-	public function tearDown() {
+	public function tearDown() : void {
 		ConvertibleTimestamp::setFakeTime( false );
 
 		parent::tearDown();
