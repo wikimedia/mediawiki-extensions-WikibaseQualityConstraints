@@ -252,6 +252,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
 		$resultsSource = $this->createMock( ResultsSource::class );
@@ -299,6 +300,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
 		$resultsSource = $this->createMock( ResultsSource::class );
@@ -342,6 +344,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS,
 			CheckResult::STATUS_TODO,
 		];
@@ -405,6 +408,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
 		$resultsSource = $this->createMock( ResultsSource::class );
@@ -447,6 +451,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
 		$resultsSource = $this->createMock( ResultsSource::class );
@@ -482,6 +487,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
 		$resultsSource = $this->createMock( ResultsSource::class );
@@ -518,6 +524,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
 		$resultsSource = $this->createMock( ResultsSource::class );
@@ -903,6 +910,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
 		$cachingResultsSource = $this->getCachingResultsSourceMock(
@@ -941,6 +949,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS
 		];
 		$cachingResultsSource = $this->getCachingResultsSourceMock(
@@ -988,6 +997,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$entityIds = [ new ItemId( 'Q5' ) ];
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS,
 		];
 		$allResults = new CachedCheckResults(
@@ -1026,6 +1036,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$statuses = [
 			CheckResult::STATUS_VIOLATION,
 			CheckResult::STATUS_WARNING,
+			CheckResult::STATUS_SUGGESTION,
 			CheckResult::STATUS_BAD_PARAMETERS,
 			CheckResult::STATUS_TODO,
 		];
