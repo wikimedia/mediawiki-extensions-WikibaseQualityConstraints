@@ -35,7 +35,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			'wikibase.quality.constraints.ui',
 			'wikibase.EntityInitializer'
 		] ).done( function () {
-			var api = new mw.Api( this._mwApiOptions() ),
+			var api = new mw.Api(),
 				lang = mw.config.get( 'wgUserLanguage' );
 
 			wb.EntityInitializer.newFromEntityLoadedHook().getEntity().done( function ( entity ) {
@@ -580,24 +580,6 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				'warning'
 			);
 		}
-	};
-
-	/**
-	 * Get options for the {@link mediaWiki.Api()} constructor.
-	 *
-	 * @return {Object} The options.
-	 */
-	SELF.prototype._mwApiOptions = function () {
-		var gadgetState = mw.loader.getState( 'wikibase.quality.constraints.gadget' );
-		return {
-			ajax: {
-				headers: {
-					'X-MediaWiki-Gadget': gadgetState === 'executing' ?
-						'checkConstraints' :
-						'checkConstraints-custom'
-				}
-			}
-		};
 	};
 
 	if ( typeof exports === 'undefined' ) {
