@@ -5,5 +5,6 @@
 			"StanProg"
 		]
 	},
+	"wbqc-constraintreport-result-table-header-message": "Съобщение",
 	"wbqc-violation-message-sparql-error": "Заявката на SPARQL върна грешка."
 }
