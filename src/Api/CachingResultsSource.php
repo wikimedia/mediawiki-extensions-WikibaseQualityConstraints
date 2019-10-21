@@ -29,6 +29,13 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
  */
 class CachingResultsSource implements ResultsSource {
 
+	public const CACHED_STATUSES = [
+		CheckResult::STATUS_VIOLATION,
+		CheckResult::STATUS_WARNING,
+		CheckResult::STATUS_SUGGESTION,
+		CheckResult::STATUS_BAD_PARAMETERS,
+	];
+
 	/**
 	 * @var ResultsSource
 	 */
@@ -90,17 +97,6 @@ class CachingResultsSource implements ResultsSource {
 	private $microtime = 'microtime';
 
 	/**
-	 * TODO: In PHP 5.6, make this a public class constant instead,
-	 * and also use it in CheckConstraints::getAllowedParams()
-	 * and in some of the tests.
-	 *
-	 * @var string[]
-	 */
-	private $cachedStatuses;
-
-	private $cachedStatusesFlipped;
-
-	/**
 	 * @param ResultsSource $resultsSource The ResultsSource that cache misses are delegated to.
 	 * @param ResultsCache $cache The cache where results can be stored.
 	 * @param CheckResultSerializer $checkResultSerializer Used to serialize check results.
@@ -137,14 +133,6 @@ class CachingResultsSource implements ResultsSource {
 		$this->maxRevisionIds = $maxRevisionIds;
 		$this->loggingHelper = $loggingHelper;
 		$this->timeValueComparer = new TimeValueComparer();
-
-		$this->cachedStatuses = [
-			CheckResult::STATUS_VIOLATION,
-			CheckResult::STATUS_WARNING,
-			CheckResult::STATUS_SUGGESTION,
-			CheckResult::STATUS_BAD_PARAMETERS,
-		];
-		$this->cachedStatusesFlipped = array_flip( $this->cachedStatuses );
 	}
 
 	public function getResults(
@@ -155,7 +143,6 @@ class CachingResultsSource implements ResultsSource {
 	) {
 		$results = [];
 		$metadatas = [];
-		$statusesFlipped = array_flip( $statuses );
 		if ( $this->canUseStoredResults( $entityIds, $claimIds, $constraintIds, $statuses ) ) {
 			$storedEntityIds = [];
 			foreach ( $entityIds as $entityId ) {
@@ -163,7 +150,7 @@ class CachingResultsSource implements ResultsSource {
 				if ( $storedResults !== null ) {
 					$this->loggingHelper->logCheckConstraintsCacheHit( $entityId );
 					foreach ( $storedResults->getArray() as $checkResult ) {
-						if ( $this->statusSelected( $statusesFlipped, $checkResult ) ) {
+						if ( $this->statusSelected( $statuses, $checkResult ) ) {
 							$results[] = $checkResult;
 						}
 					}
@@ -212,7 +199,7 @@ class CachingResultsSource implements ResultsSource {
 		if ( $constraintIds !== null ) {
 			return false;
 		}
-		if ( array_diff( $statuses, $this->cachedStatuses ) !== [] ) {
+		if ( array_diff( $statuses, self::CACHED_STATUSES ) !== [] ) {
 			return false;
 		}
 		return true;
@@ -223,12 +210,12 @@ class CachingResultsSource implements ResultsSource {
 	 * either because it has the right status
 	 * or because it is a NullResult whose metadata should be preserved.
 	 *
-	 * @param string[] $statusesFlipped
+	 * @param string[] $statuses
 	 * @param CheckResult $result
 	 * @return bool
 	 */
-	private function statusSelected( array $statusesFlipped, CheckResult $result ) {
-		return array_key_exists( $result->getStatus(), $statusesFlipped ) ||
+	private function statusSelected( array $statuses, CheckResult $result ) {
+		return in_array( $result->getStatus(), $statuses, true ) ||
 			$result instanceof NullResult;
 	}
 
@@ -283,7 +270,7 @@ class CachingResultsSource implements ResultsSource {
 		if ( $constraintIds !== null ) {
 			return false;
 		}
-		if ( array_diff( $this->cachedStatuses, $statuses ) !== [] ) {
+		if ( array_diff( self::CACHED_STATUSES, $statuses ) !== [] ) {
 			return false;
 		}
 		return true;
@@ -310,7 +297,7 @@ class CachingResultsSource implements ResultsSource {
 			if ( $checkResult->getContextCursor()->getEntityId() !== $entityId->getSerialization() ) {
 				continue;
 			}
-			if ( $this->statusSelected( $this->cachedStatusesFlipped, $checkResult ) ) {
+			if ( $this->statusSelected( self::CACHED_STATUSES, $checkResult ) ) {
 				$resultSerializations[] = $this->checkResultSerializer->serialize( $checkResult );
 			}
 		}
