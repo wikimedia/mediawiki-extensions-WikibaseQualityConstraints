@@ -34,10 +34,10 @@ class AppendingContextCursor implements ContextCursor {
 	}
 
 	/**
-	 * @param array|null $result
+	 * @param ?array $result
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( array $result = null, array &$container ) {
+	public function storeCheckResultInArray( ?array $result, array &$container ) {
 		if ( $result !== null ) {
 			$container[] = $result;
 		}

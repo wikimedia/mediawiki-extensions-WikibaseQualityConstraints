@@ -1019,12 +1019,12 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @param Item $subjectItem
-	 * @param Item|null $valueItem
+	 * @param ?Item $valueItem
 	 * @param string $expectedStatus
 	 *
 	 * @throws \ConfigException
 	 */
-	private function saveAndCheck( Item $subjectItem, Item $valueItem = null, $expectedStatus ) {
+	private function saveAndCheck( Item $subjectItem, ?Item $valueItem, $expectedStatus ) {
 		$lookup = new InMemoryEntityLookup();
 		$lookup->addEntity( $subjectItem );
 		if ( $valueItem != null ) {

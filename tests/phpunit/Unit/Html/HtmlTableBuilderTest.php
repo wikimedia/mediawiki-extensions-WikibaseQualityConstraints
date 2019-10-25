@@ -25,7 +25,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 	 */
 	public function testConstruct(
 		$headers,
-		array $expectedHeaders = null,
+		?array $expectedHeaders,
 		$expectedIsSortable,
 		$expectedException
 	) {

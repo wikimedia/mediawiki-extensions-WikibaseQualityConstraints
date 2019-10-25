@@ -2,7 +2,6 @@
 <ruleset>
 	<rule ref="./vendor/wikibase/wikibase-codesniffer/Wikibase">
 		<exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
-		<exclude name="MediaWiki.Usage.NullableType.PHP71NullableStyle" />
 	</rule>
 
 	<rule ref="Generic.Files.LineLength">
