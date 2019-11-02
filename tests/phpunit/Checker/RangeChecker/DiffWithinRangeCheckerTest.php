@@ -111,7 +111,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $checker;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 		self::$t0001 = self::getTimeValue( '0001-01-01' );
 		self::$t1800 = self::getTimeValue( '1800-01-01' );
