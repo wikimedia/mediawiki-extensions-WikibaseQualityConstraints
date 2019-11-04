@@ -13,6 +13,7 @@
 	"wbqc-constraintreport-explanation-part-two": "محدودیت‌ها از صفحهٔ بحث خصوصیت‌ها هفته‌ای یک بار گرفته می‌شود. در نتیجه اگر یکی از آنها را حذف/اضافه/ویرایش کرده‌اید یک هفته زمان می‌برد تا در گزارش محدودیت‌ها بیاید. ر حال حاضر در حال انتقال دادن محدودیت‌ها از اظهارها به خصوصیت‌ها و فعال‌سازی صفحهٔ ویژه برای چک کردن زنده آنها هستیم.",
 	"wbqc-constraintreport-form-submit-label": "بررسی",
 	"wbqc-constraintreport-form-entityid-label": "شناسهٔ ورودی:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "نتیجه برای",
 	"wbqc-constraintreport-invalid-entity-id": "شناسهٔ نادرست ورودی.",
 	"wbqc-constraintreport-not-existent-entity": "ورودی وجود ندارد.",

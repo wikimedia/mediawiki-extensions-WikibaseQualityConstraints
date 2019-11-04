@@ -14,6 +14,7 @@
 	"wbqc-constraintreport-form-section": "تحقق من قيود عنصر",
 	"wbqc-constraintreport-form-submit-label": "فحص",
 	"wbqc-constraintreport-form-entityid-label": "معرف العنصر:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx أو Pxx",
 	"wbqc-constraintreport-result-headline": "النتيجة لـ",
 	"wbqc-constraintreport-invalid-entity-id": "معرف الكيان غير صالح.",
 	"wbqc-constraintreport-not-existent-entity": "الكيان غير موجود.",

@@ -17,6 +17,7 @@
 	"wbqc-constraintreport-form-section": "Zkontrolovat omezení u entity",
 	"wbqc-constraintreport-form-submit-label": "Zkontrolovat",
 	"wbqc-constraintreport-form-entityid-label": "ID entity:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx nebo Pxx",
 	"wbqc-constraintreport-result-headline": "Výsledky pro",
 	"wbqc-constraintreport-invalid-entity-id": "Chybné ID entity.",
 	"wbqc-constraintreport-not-existent-entity": "Entita neexistuje.",

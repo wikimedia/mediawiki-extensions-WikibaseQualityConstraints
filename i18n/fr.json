@@ -21,6 +21,7 @@
 	"wbqc-constraintreport-form-section": "Vérifier les contraintes pour l'entité",
 	"wbqc-constraintreport-form-submit-label": "Vérifier",
 	"wbqc-constraintreport-form-entityid-label": "Identifiant de l'entité :",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Résultats pour",
 	"wbqc-constraintreport-invalid-entity-id": "Identifiant d'entité invalide.",
 	"wbqc-constraintreport-not-existent-entity": "L'entité n'existe pas.",

@@ -19,6 +19,7 @@
 	"wbqc-constraintreport-form-section": "Controlla i vincoli per l'entità",
 	"wbqc-constraintreport-form-submit-label": "Controlla",
 	"wbqc-constraintreport-form-entityid-label": "ID entità:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Risultato per",
 	"wbqc-constraintreport-invalid-entity-id": "Entità ID non valida.",
 	"wbqc-constraintreport-not-existent-entity": "L'entità non esiste!",

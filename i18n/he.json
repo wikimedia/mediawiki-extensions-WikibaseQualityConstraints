@@ -13,6 +13,7 @@
 	"wbqc-constraintreport-form-section": "בדיקת אילוצים של ישות",
 	"wbqc-constraintreport-form-submit-label": "לבדוק",
 	"wbqc-constraintreport-form-entityid-label": "מזהה ישות:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx או Pxx",
 	"wbqc-constraintreport-result-headline": "תוצאה עבור",
 	"wbqc-constraintreport-invalid-entity-id": "מזהה ישות בלתי־תקין.",
 	"wbqc-constraintreport-not-existent-entity": "הישות אינה קיימת.",

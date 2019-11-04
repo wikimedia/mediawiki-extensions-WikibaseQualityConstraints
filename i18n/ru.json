@@ -17,6 +17,7 @@
 	"wbqc-constraintreport-form-section": "Проверьте ограничения для сущности",
 	"wbqc-constraintreport-form-submit-label": "Проверить",
 	"wbqc-constraintreport-form-entityid-label": "Идентификатор сущности:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Результат для",
 	"wbqc-constraintreport-invalid-entity-id": "Недопустимый идентификатор сущности.",
 	"wbqc-constraintreport-not-existent-entity": "Сущность не существует.",

@@ -13,6 +13,7 @@
 	"wbqc-constraintreport-form-section": "Beschränkungen für das Objekt überprüfen",
 	"wbqc-constraintreport-form-submit-label": "Überprüfen",
 	"wbqc-constraintreport-form-entityid-label": "Objektkennung:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx oder Pxx",
 	"wbqc-constraintreport-result-headline": "Ergebnis für",
 	"wbqc-constraintreport-invalid-entity-id": "Ungültige Objektkennung.",
 	"wbqc-constraintreport-not-existent-entity": "Das Objekt ist nicht vorhanden!",

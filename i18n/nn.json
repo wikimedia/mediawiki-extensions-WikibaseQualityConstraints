@@ -7,6 +7,7 @@
 	"wbqc-constraintreport": "Avgrensingsrapport",
 	"wbqc-constraintreport-form-section": "Gå gjennom avgrensingar for ei eining",
 	"wbqc-constraintreport-form-entityid-label": "Einings-ID:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx eller Pxx",
 	"wbqc-constraintreport-status-todo": "Uferdig",
 	"wbqc-constraintreport-status-warning": "Åtvaring",
 	"wbqc-constraintreport-result-table-header-property": "Eigenskap",

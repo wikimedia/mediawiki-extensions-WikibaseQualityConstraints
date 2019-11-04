@@ -10,6 +10,7 @@
 	},
 	"wbqc-constraintreport-explanation-part-one": "Aquesta pàgina especial comprova les restriccions de qualsevol entitat que desitgis. Les entitats es descarreguen del sistema activat, per tant cada violació de restricció que s'arregli serà eliminada immediatament de la llista.",
 	"wbqc-constraintreport-explanation-part-two": "Les restriccions són comentades a les pàgines de discussió pertinents un cop per setmana. Per tant si afegiu, elimineu o modifiqueu una restricció, pot trigar fins a una setmana fins que es tingui en compte en aquest informe de restriccions. Actualment hi ha en curs migrar les restriccions a les declaracions sobre propietats, habilitant aquesta pàgina especial per fer verificacions en directe.",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
 	"wbqc-constraintreport-result-headline": "Resultat de $1",
 	"wbqc-constraintreport-status-violation": "Violació",
 	"wbqc-constraintreport-status-exception": "Excepció",

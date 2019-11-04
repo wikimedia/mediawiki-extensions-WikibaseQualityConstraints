@@ -4,7 +4,8 @@
 			"Vitorvicentevalente",
 			"Macofe",
 			"Hamilton Abreu",
-			"Athena in Wonderland"
+			"Athena in Wonderland",
+			"Mansil alfalb"
 		]
 	},
 	"wbqc-constraintreport": "Relatório de restrições",
@@ -14,6 +15,7 @@
 	"wbqc-constraintreport-form-section": "Verificar as restrições da entidade",
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-form-entityid-label": "Identificador da entidade:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx ou Pxx",
 	"wbqc-constraintreport-result-headline": "Resultados para",
 	"wbqc-constraintreport-invalid-entity-id": "Identificador de entidade inválido.",
 	"wbqc-constraintreport-not-existent-entity": "A entidade não existe.",
