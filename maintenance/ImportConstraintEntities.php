@@ -89,6 +89,7 @@ class ImportConstraintEntities extends Maintenance {
 		$extensionJsonFile = __DIR__ . '/../extension.json';
 		$extensionJsonText = file_get_contents( $extensionJsonFile );
 		$extensionJson = json_decode( $extensionJsonText, /* assoc = */ true );
+		// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
 		$wikidataEntityIds = $this->getEntitiesToImport( $extensionJson['config'], $this->getConfig() );
 
 		foreach ( $wikidataEntityIds as $key => $wikidataEntityId ) {
@@ -103,7 +104,7 @@ class ImportConstraintEntities extends Maintenance {
 	}
 
 	/**
-	 * @param array $extensionJsonConfig
+	 * @param array[] $extensionJsonConfig
 	 * @param Config $wikiConfig
 	 * @return string[]
 	 */
@@ -142,6 +143,7 @@ class ImportConstraintEntities extends Maintenance {
 	 * @return string local entity ID
 	 */
 	private function importEntityFromJson( $wikidataEntityId, $wikidataEntitiesJson ) {
+		// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
 		$wikidataEntityArray = json_decode( $wikidataEntitiesJson, true )['entities'][$wikidataEntityId];
 		$wikidataEntity = $this->entityDeserializer->deserialize( $wikidataEntityArray );
 
@@ -208,6 +210,9 @@ class ImportConstraintEntities extends Maintenance {
 		}
 	}
 
+	/**
+	 * @param array[] $configUpdates
+	 */
 	private function outputConfigUpdatesGlobals( array $configUpdates ) {
 		foreach ( $configUpdates as $key => $value ) {
 			$localValueCode = var_export( $value['local'], true );
@@ -215,6 +220,9 @@ class ImportConstraintEntities extends Maintenance {
 		}
 	}
 
+	/**
+	 * @param array[] $configUpdates
+	 */
 	private function outputConfigUpdatesWgConf( array $configUpdates ) {
 		foreach ( $configUpdates as $key => $value ) {
 			$keyCode = var_export( "wg$key", true );
