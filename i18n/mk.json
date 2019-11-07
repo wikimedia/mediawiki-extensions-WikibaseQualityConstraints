@@ -12,7 +12,7 @@
 	"wbqc-constraintreport-form-section": "Провери ги условите на единицата",
 	"wbqc-constraintreport-form-submit-label": "Провери",
 	"wbqc-constraintreport-form-entityid-label": "Назнака на единицата:",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx или Pxx",
 	"wbqc-constraintreport-result-headline": "Исход за",
 	"wbqc-constraintreport-invalid-entity-id": "Неважечка назнака на единица:",
 	"wbqc-constraintreport-not-existent-entity": "Единицата не постои!",
