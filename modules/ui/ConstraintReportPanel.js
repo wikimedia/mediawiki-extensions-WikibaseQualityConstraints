@@ -62,7 +62,10 @@
 		this.$helpLink = config.$helpLink || $( '<a class="wbqc-constraint-type-help">' )
 			.text( mw.message( 'wbqc-constrainttypehelp-short' ).text() )
 			.attr( 'title', mw.message( 'wbqc-constrainttypehelp-long' ).text() )
-			.attr( 'href', 'https://www.wikidata.org/wiki/Help:Property_constraints_portal/' + this.constraint.type )
+			.attr(
+				'href',
+				'https://www.wikidata.org/wiki/Special:MyLanguage/Help:Property_constraints_portal/' + this.constraint.type
+			)
 			.attr( 'target', '_blank' );
 		this.$discussLink = config.$discussLink || $( '<a class="wbqc-constraint-discuss">' )
 			.text( mw.message( 'wbqc-constraintdiscuss-short' ).text() )
