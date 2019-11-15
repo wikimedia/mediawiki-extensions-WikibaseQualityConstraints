@@ -7,7 +7,8 @@
 			"SimondR",
 			"Avatar6",
 			"Ahonc",
-			"Vlad5250"
+			"Vlad5250",
+			"Movses"
 		]
 	},
 	"wbqc-constraintreport": "Звіт про обмеження",
@@ -17,6 +18,7 @@
 	"wbqc-constraintreport-form-section": "Перевірити обмеження для сутності",
 	"wbqc-constraintreport-form-submit-label": "Перевірити",
 	"wbqc-constraintreport-form-entityid-label": "Ідентифікатор сутності:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx або Pxx",
 	"wbqc-constraintreport-result-headline": "Результат для",
 	"wbqc-constraintreport-invalid-entity-id": "Недійсний ідентифікатор сутності.",
 	"wbqc-constraintreport-not-existent-entity": "Сутність не існує.",
