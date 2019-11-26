@@ -1,6 +1,6 @@
 <?php
 
-namespace WikibaseQuality\ConstraintReport;
+namespace WikibaseQuality\ConstraintReport\Job;
 
 use Config;
 use Job;
@@ -15,6 +15,9 @@ use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Store;
+use WikibaseQuality\ConstraintReport\Constraint;
+use WikibaseQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use Wikimedia\Assert\Assert;
 
 /**

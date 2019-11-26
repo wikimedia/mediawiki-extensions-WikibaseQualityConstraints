@@ -5,8 +5,8 @@ namespace WikibaseQuality\ConstraintReport\Tests\Maintenance;
 use HashConfig;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
 use Wikibase\Lib\Tests\Store\MockPropertyInfoLookup;
+use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintStatements;
-use WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintStatements

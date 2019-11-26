@@ -23,12 +23,12 @@ use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
+use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
-use WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob;
 use Wikibase\Repo\WikibaseRepo;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob
+ * @covers WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob
  *
  * @group WikibaseQualityConstraints
  * @group Database

@@ -144,7 +144,7 @@
 		}
 	},
 	"JobClasses": {
-		"constraintsTableUpdate": "WikibaseQuality\\ConstraintReport\\UpdateConstraintsTableJob::newFromGlobalState",
+		"constraintsTableUpdate": "WikibaseQuality\\ConstraintReport\\Job\\UpdateConstraintsTableJob::newFromGlobalState",
 		"constraintsRunCheck": "WikibaseQuality\\ConstraintReport\\Job\\CheckConstraintsJob"
 	},
 	"config": {

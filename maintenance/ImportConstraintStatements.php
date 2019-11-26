@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Maintenance;
 use Maintenance;
 use Title;
 use Wikibase\Lib\Store\PropertyInfoLookup;
-use WikibaseQuality\ConstraintReport\UpdateConstraintsTableJob;
+use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use Wikibase\Repo\WikibaseRepo;
 
 // @codeCoverageIgnoreStart
