@@ -24,11 +24,6 @@ class CheckConstraintsJob extends Job {
 	const COMMAND = 'constraintsRunCheck';
 
 	/**
-	 * @var string
-	 */
-	private $entityId;
-
-	/**
 	 * @var CachingResultsSource
 	 */
 	private $resultsSource;
@@ -47,7 +42,6 @@ class CheckConstraintsJob extends Job {
 		$this->removeDuplicates = true;
 
 		Assert::parameterType( 'string', $params['entityId'], '$params[\'entityId\']' );
-		$this->entityId = $params['entityId'];
 
 		$resultSource = ConstraintsServices::getResultsSource( MediaWikiServices::getInstance() );
 		'@phan-var CachingResultsSource $resultSource';
@@ -72,7 +66,7 @@ class CheckConstraintsJob extends Job {
 	 */
 	public function run() {
 		try {
-			$entityId = $this->entityIdParser->parse( $this->entityId );
+			$entityId = $this->entityIdParser->parse( $this->params['entityId'] );
 		} catch ( EntityIdParsingException $e ) {
 			return false;
 		}
