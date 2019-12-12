@@ -1,8 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
-			"Zakiy"
+			"Zakiy",
+			"Pebaryan"
 		]
 	},
-	"wbqc-constraintreport-result-table-header-message": "Pesan"
+	"wbqc-constraintreport-status-suggestion": "Saran",
+	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-constraintreport-result-table-header-property": "Atribut",
+	"wbqc-constraintreport-result-table-header-message": "Pesan",
+	"wbqc-constraintreport-result-table-header-constraint": "Pewatas",
+	"wbqc-constraintreport-result-link-to-claim": "ke klaim",
+	"wbqc-constraintreport-result-link-to-constraint": "ke pewatas",
+	"wbqc-violation-message-commons-link-no-existent": "Tautan Commons harus ada.",
+	"wbqc-violation-message-units-none": "Nilai untuk $1 harus memiliki satuan."
 }
