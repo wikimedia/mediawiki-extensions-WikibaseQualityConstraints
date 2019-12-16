@@ -241,7 +241,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 
 		$job->importConstraintsForProperty(
 			$property,
-			new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) ),
+			new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false ),
 			$propertyConstraintId
 		);
 
@@ -377,7 +377,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			'P2',
 			null,
 			$this->getDefaultConfig(),
-			new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) ),
+			new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false ),
 			$entityRevisionLookup,
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);

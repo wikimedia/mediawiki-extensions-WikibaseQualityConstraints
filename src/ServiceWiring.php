@@ -6,6 +6,7 @@ use Http;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use ObjectCache;
+use Wikibase\DataModel\Entity\Property;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
@@ -40,7 +41,10 @@ return [
 	},
 
 	ConstraintsServices::CONSTRAINT_REPOSITORY => function( MediaWikiServices $services ) {
-		return new ConstraintRepository( $services->getDBLoadBalancer() );
+		$sourceDefinitions = WikibaseRepo::getDefaultInstance()->getEntitySourceDefinitions();
+		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
+
+		return new ConstraintRepository( $services->getDBLoadBalancer(), $propertySource->getDatabaseName() );
 	},
 
 	ConstraintsServices::CONSTRAINT_LOOKUP => function( MediaWikiServices $services ) {

@@ -6,6 +6,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
+use Wikimedia\Rdbms\LoadBalancer;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintRepository
@@ -22,7 +23,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 	public function testQueryConstraintsForExistingProperty() {
 		$this->insertTestData();
 
-		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
 
 		$this->assertInternalType( 'array', $constraints );
@@ -33,7 +34,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 	public function testQueryConstraintsForNonExistingProperty() {
 		$this->insertTestData();
 
-		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P2' ) );
 
 		$this->assertInternalType( 'array', $constraints );
@@ -51,7 +52,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 			]
 		] );
 
-		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P3' ) );
 
 		$this->assertSame( [ '@error' => [] ], $constraints[0]->getConstraintParameters() );
@@ -65,7 +66,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 			new Constraint( 'bar', new PropertyId( 'P42' ), 'TestConstraint', [ 'bar' => 'baz' ] ),
 			new Constraint( 'baz', new PropertyId( 'P42' ), 'TestConstraint', [] ),
 		];
-		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false );
 		$repo->insertBatch( $constraints );
 
 		$this->assertSelect(
@@ -128,7 +129,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 			];
 		}
 
-		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false );
 		$repo->insertBatch( [
 			new Constraint(
 				'P1$13510cdc-0f91-4ea3-b71d-db2a33c27dff',
@@ -174,6 +175,36 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 				'constraint_parameters' => '{}'
 			],
 		] );
+	}
+
+	// TODO: have real functionality here, once figured out how to test second DB
+	public function testQueryConstraintsFromNonLocalDatabase() {
+		$loadBalancer = $this->createMock( LoadBalancer::class );
+		$loadBalancer->method( 'getConnection' )
+			->with( $this->anything(), $this->anything(), 'otherdb' )
+			->willReturn( $this->db );
+		$loadBalancer->expects( $this->once() )
+			->method( 'reuseConnection' )
+			->with( $this->db );
+
+		$repo = new ConstraintRepository( $loadBalancer, 'otherdb' );
+		$repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
+	}
+
+	public function testInsertBatchNotPossibleForNonLocalDatabase() {
+		$repo = new ConstraintRepository( $this->createMock( LoadBalancer::class ), 'otherdb' );
+
+		$this->expectException( \LogicException::class );
+
+		$repo->insertBatch( [ new Constraint( 'foo', new PropertyId( 'P42' ), 'TestConstraint', [ 'foo' => 'bar' ] ) ] );
+	}
+
+	public function testDeleteForPropertyNotPossibleForNonLocalDatabase() {
+		$repo = new ConstraintRepository( $this->createMock( LoadBalancer::class ), 'otherdb' );
+
+		$this->expectException( \LogicException::class );
+
+		$repo->deleteForProperty( new PropertyId( 'P1' ) );
 	}
 
 }

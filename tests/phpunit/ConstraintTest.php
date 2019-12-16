@@ -31,7 +31,7 @@ class ConstraintTest extends \MediaWikiTestCase {
 	}
 
 	public function testConstructAndGetters() {
-		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ) );
+		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
 
 		$this->assertEquals( 'Item', $constraints[0]->getConstraintTypeItemId() );

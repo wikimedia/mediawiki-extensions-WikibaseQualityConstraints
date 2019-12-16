@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
+use LogicException;
 use MediaWiki\Logger\LoggerFactory;
 use Wikimedia\Rdbms\DBUnexpectedError;
 use Wikimedia\Rdbms\ILoadBalancer;
@@ -17,8 +18,12 @@ class ConstraintRepository implements ConstraintLookup {
 	/** @var ILoadBalancer */
 	private $lb;
 
-	public function __construct( ILoadBalancer $lb ) {
+	/** @var string|false */
+	private $dbName;
+
+	public function __construct( ILoadBalancer $lb, $dbName ) {
 		$this->lb = $lb;
+		$this->dbName = $dbName;
 	}
 
 	/**
@@ -27,13 +32,17 @@ class ConstraintRepository implements ConstraintLookup {
 	 * @return Constraint[]
 	 */
 	public function queryConstraintsForProperty( PropertyId $propertyId ) {
-		$dbr = $this->lb->getConnection( ILoadBalancer::DB_REPLICA );
+		$dbr = $this->lb->getConnection( ILoadBalancer::DB_REPLICA, [], $this->dbName );
 
 		$results = $dbr->select(
 			'wbqc_constraints',
 			'*',
 			[ 'pid' => $propertyId->getNumericId() ]
 		);
+
+		if ( $this->dbName !== false ) {
+			$this->lb->reuseConnection( $dbr );
+		}
 
 		return $this->convertToConstraints( $results );
 	}
@@ -55,6 +64,10 @@ class ConstraintRepository implements ConstraintLookup {
 	 * @return bool
 	 */
 	public function insertBatch( array $constraints ) {
+		if ( $this->dbName !== false ) {
+			throw new LogicException( __METHOD__ . ' should not be called when constraints defined in non-local database.' );
+		}
+
 		$accumulator = array_map(
 			function ( Constraint $constraint ) {
 				return [
@@ -79,6 +92,10 @@ class ConstraintRepository implements ConstraintLookup {
 	 * @throws DBUnexpectedError
 	 */
 	public function deleteForProperty( PropertyId $propertyId ) {
+		if ( $this->dbName !== false ) {
+			throw new LogicException( __METHOD__ . ' should not be called when constraints defined in non-local database.' );
+		}
+
 		$dbw = $this->lb->getConnection( ILoadBalancer::DB_MASTER );
 		$dbw->delete(
 			'wbqc_constraints',
