@@ -87,5 +87,8 @@
 	"wbqc-violation-message-commons-link-not-well-formed": "Commons bağlantısı iyi oluşturulmalı.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "\"$1\" ad alanını kontrol et henüz uygulanmadı.",
 	"wbqc-violation-message-conflicts-with-property": "Bir işletme hem $1 hem de $2 için ifadeler içermemelidir.",
-	"wbqc-violation-message-conflicts-with-claim": "Bir de $2 $3 değerinde bir deyime sahipse, işletmenin $1 için bir ifadesi olmamalıdır."
+	"wbqc-violation-message-conflicts-with-claim": "Bir de $2 $3 değerinde bir deyime sahipse, işletmenin $1 için bir ifadesi olmamalıdır.",
+	"wbqc-violation-message-contemporary-subject-earlier": "$1 ve $3 varlıklar $2 üzerinden bağlanmak için çağdaş olmalıdır, ancak $1 son bitiş değeri $4 ve en erken başlangıç değeri $3 ve $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "$1 ve $3 varlıklar $2 üzerinden bağlanmak için çağdaş olmalıdır, ancak $3 son bitiş değeri $4 ve en erken başlangıç değeri $5.",
+	"wbqc-violation-message-diff-within-range": "$3 ($4) ve $1 ($2) arasındaki fark $5 ile $6 arasında olmalıdır."
 }
