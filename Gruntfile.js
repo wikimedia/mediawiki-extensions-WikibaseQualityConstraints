@@ -1,12 +1,7 @@
 /* eslint-env node */
 
 module.exports = function ( grunt ) {
-	var conf = grunt.file.readJSON( 'extension.json' ),
-		bananaConfig = conf.MessagesDirs;
-	bananaConfig.options = {
-		disallowDuplicateTranslations: false,
-		disallowUnusedTranslations: false
-	};
+	var conf = grunt.file.readJSON( 'extension.json' );
 
 	grunt.loadNpmTasks( 'grunt-eslint' );
 	grunt.loadNpmTasks( 'grunt-jsonlint' );
@@ -32,7 +27,16 @@ module.exports = function ( grunt ) {
 				'!vendor/**'
 			]
 		},
-		banana: bananaConfig,
+		banana: Object.assign(
+			conf.MessagesDirs,
+			{
+				options: {
+					disallowDuplicateTranslations: false,
+					disallowUnusedTranslations: false,
+					requireLowerCase: 'initial'
+				}
+			}
+		),
 		jsonlint: {
 			all: [
 				'**/*.json',
