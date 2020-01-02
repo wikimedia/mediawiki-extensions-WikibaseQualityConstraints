@@ -624,7 +624,9 @@
 	},
 	"AutoloadNamespaces": {
 		"WikibaseQuality\\ConstraintReport\\": "src/",
-		"WikibaseQuality\\ConstraintReport\\Maintenance\\": "maintenance/",
+		"WikibaseQuality\\ConstraintReport\\Maintenance\\": "maintenance/"
+	},
+	"TestAutoloadNamespaces": {
 		"WikibaseQuality\\ConstraintReport\\Tests\\": "tests/phpunit/"
 	},
 	"manifest_version": 2
