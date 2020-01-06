@@ -638,6 +638,7 @@ EOF;
 				array_key_exists( 'cache-control', $responseHeaders ) &&
 				preg_match( '/\bmax-age=(\d+)\b/', $responseHeaders['cache-control'][0], $maxage )
 			) {
+				// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 				return intval( $maxage[1] );
 			} else {
 				return true;
