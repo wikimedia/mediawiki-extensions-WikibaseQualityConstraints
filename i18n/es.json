@@ -10,14 +10,15 @@
 			"Themasterriot",
 			"Dgstranz",
 			"Tiberius1701",
-			"Ciencia Al Poder"
+			"Ciencia Al Poder",
+			"DannyS712"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restricción",
 	"wbqc-constraintreport-form-section": "Verificar las restricciones para la entidad",
 	"wbqc-constraintreport-form-submit-label": "Verificar",
 	"wbqc-constraintreport-form-entityid-label": "Identificador de entidad:",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx o Pxx",
 	"wbqc-constraintreport-result-headline": "Resultado de",
 	"wbqc-constraintreport-invalid-entity-id": "Identificador de entidad no válido.",
 	"wbqc-constraintreport-not-existent-entity": "La entidad no existe.",
