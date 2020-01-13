@@ -71,7 +71,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 			->withEntityId( new PropertyId( 'P1' ) );
 		$this->testMessageHtml = $this->testMessage->getMessageKey();
 
-		$wgAPIModules['wbcheckconstraintparameters']['factory'] = function ( $main, $name, $prefix = '' ) {
+		$wgAPIModules['wbcheckconstraintparameters']['factory'] = function ( $main, $name ) {
 			$repo = WikibaseRepo::getDefaultInstance();
 			$apiHelperFactory = $repo->getApiHelperFactory( RequestContext::getMain() );
 			$statementGuidParser = $repo->getStatementGuidParser();
@@ -104,7 +104,6 @@ class CheckConstraintParametersTest extends ApiTestCase {
 			return new CheckConstraintParameters(
 				$main,
 				$name,
-				$prefix,
 				$apiHelperFactory,
 				$delegatingConstraintChecker,
 				$violationMessageRenderer,

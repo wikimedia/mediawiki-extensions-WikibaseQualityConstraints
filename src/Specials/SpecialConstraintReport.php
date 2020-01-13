@@ -8,7 +8,6 @@ use Html;
 use HTMLForm;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
-use MediaWiki\MediaWikiServices;
 use OOUI\IconWidget;
 use OOUI\LabelWidget;
 use SpecialPage;
@@ -33,12 +32,10 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableCellBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
-use WikibaseQuality\ConstraintReport\WikibaseServices;
 
 /**
  * Special page that displays all constraints that are defined on an Entity with additional information
@@ -104,19 +101,22 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private $dataFactory;
 
-	public static function newFromGlobalState() {
+	public static function newFromGlobalState(
+		Config $config,
+		IBufferingStatsdDataFactory $dataFactory,
+		EntityLookup $entityLookup,
+		DelegatingConstraintChecker $delegatingConstraintChecker
+	): self {
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
-		$config = MediaWikiServices::getInstance()->getMainConfig();
-		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 
 		return new self(
-			WikibaseServices::getEntityLookup(),
+			$entityLookup,
 			$wikibaseRepo->getEntityTitleLookup(),
 			new EntityIdLabelFormatterFactory(),
 			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
-			ConstraintsServices::getDelegatingConstraintChecker(),
+			$delegatingConstraintChecker,
 			$config,
 			$dataFactory
 		);

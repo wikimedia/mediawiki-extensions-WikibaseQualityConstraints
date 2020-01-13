@@ -5,9 +5,9 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use ApiBase;
 use ApiMain;
 use ApiResult;
+use Config;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
-use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -21,7 +21,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
-use WikibaseQuality\ConstraintReport\ConstraintsServices;
 
 /**
  * API module that checks whether the parameters of a constraint statement are valid.
@@ -67,14 +66,14 @@ class CheckConstraintParameters extends ApiBase {
 
 	/**
 	 * Creates new instance from global state.
-	 *
-	 * @param ApiMain $main
-	 * @param string $name
-	 * @param string $prefix
-	 *
-	 * @return self
 	 */
-	public static function newFromGlobalState( ApiMain $main, $name, $prefix = '' ) {
+	public static function newFromGlobalState(
+		ApiMain $main,
+		string $name,
+		Config $config,
+		IBufferingStatsdDataFactory $dataFactory,
+		DelegatingConstraintChecker $delegatingConstraintChecker
+	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
 		$helperFactory = $repo->getApiHelperFactory( RequestContext::getMain() );
 		$language = $repo->getUserLanguage();
@@ -87,7 +86,6 @@ class CheckConstraintParameters extends ApiBase {
 		$valueFormatterFactory = $repo->getValueFormatterFactory();
 		$dataValueFormatter = $valueFormatterFactory
 			->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
-		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
 			$entityIdHtmlLinkFormatter,
 			$dataValueFormatter,
@@ -98,19 +96,17 @@ class CheckConstraintParameters extends ApiBase {
 		return new self(
 			$main,
 			$name,
-			$prefix,
 			$helperFactory,
-			ConstraintsServices::getDelegatingConstraintChecker(),
+			$delegatingConstraintChecker,
 			$violationMessageRenderer,
 			$repo->getStatementGuidParser(),
-			MediaWikiServices::getInstance()->getStatsdDataFactory()
+			$dataFactory
 		);
 	}
 
 	/**
 	 * @param ApiMain $main
 	 * @param string $name
-	 * @param string $prefix
 	 * @param ApiHelperFactory $apiHelperFactory
 	 * @param DelegatingConstraintChecker $delegatingConstraintChecker
 	 * @param StatementGuidParser $statementGuidParser
@@ -119,14 +115,13 @@ class CheckConstraintParameters extends ApiBase {
 	public function __construct(
 		ApiMain $main,
 		$name,
-		$prefix,
 		ApiHelperFactory $apiHelperFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
 		ViolationMessageRenderer $violationMessageRenderer,
 		StatementGuidParser $statementGuidParser,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
-		parent::__construct( $main, $name, $prefix );
+		parent::__construct( $main, $name );
 
 		$this->apiErrorReporter = $apiHelperFactory->getErrorReporter( $this );
 		$this->delegatingConstraintChecker = $delegatingConstraintChecker;

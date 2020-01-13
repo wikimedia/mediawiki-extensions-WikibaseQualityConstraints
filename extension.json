@@ -34,16 +34,35 @@
 		"BeforePageDisplay": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onBeforePageDisplay"
 	},
 	"SpecialPages": {
-		"ConstraintReport": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState"
+		"ConstraintReport": {
+			"class": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport",
+			"factory": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState",
+			"services": [
+				"MainConfig",
+				"StatsdDataFactory",
+				"WBQC_EntityLookup",
+				"WBQC_ResultsSource"
+			]
+		}
 	},
 	"APIModules": {
 		"wbcheckconstraints": {
 			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints",
-			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints::newFromGlobalState"
+			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints::newFromGlobalState",
+			"services": [
+				"MainConfig",
+				"StatsdDataFactory",
+				"WBQC_ResultsSource"
+			]
 		},
 		"wbcheckconstraintparameters": {
 			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters",
-			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters::newFromGlobalState"
+			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters::newFromGlobalState",
+			"services": [
+				"MainConfig",
+				"StatsdDataFactory",
+				"WBQC_DelegatingConstraintChecker"
+			]
 		}
 	},
 	"Actions": {
