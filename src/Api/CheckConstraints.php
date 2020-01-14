@@ -4,8 +4,8 @@ namespace WikibaseQuality\ConstraintReport\Api;
 
 use ApiBase;
 use ApiMain;
+use Config;
 use IBufferingStatsdDataFactory;
-use MediaWiki\MediaWikiServices;
 use RequestContext;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\EntityId;
@@ -20,7 +20,6 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintsServices;
 
 /**
  * API module that performs constraint check of entities, claims and constraint ID
@@ -72,14 +71,14 @@ class CheckConstraints extends ApiBase {
 
 	/**
 	 * Creates new instance from global state.
-	 *
-	 * @param ApiMain $main
-	 * @param string $name
-	 * @param string $prefix
-	 *
-	 * @return self
 	 */
-	public static function newFromGlobalState( ApiMain $main, $name, $prefix = '' ) {
+	public static function newFromGlobalState(
+		ApiMain $main,
+		string $name,
+		Config $config,
+		IBufferingStatsdDataFactory $dataFactory,
+		ResultsSource $resultsSource
+	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
 
 		$language = $repo->getUserLanguage();
@@ -92,8 +91,6 @@ class CheckConstraints extends ApiBase {
 		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $language );
 		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
 		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $language );
-		$config = MediaWikiServices::getInstance()->getMainConfig();
-		$dataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
 
 		$checkResultsRenderer = new CheckResultsRenderer(
 			$repo->getEntityTitleLookup(),
@@ -105,12 +102,10 @@ class CheckConstraints extends ApiBase {
 				$config
 			)
 		);
-		$resultsSource = ConstraintsServices::getResultsSource();
 
 		return new CheckConstraints(
 			$main,
 			$name,
-			$prefix,
 			$repo->getEntityIdParser(),
 			$repo->getStatementGuidValidator(),
 			$repo->getApiHelperFactory( RequestContext::getMain() ),
@@ -123,7 +118,6 @@ class CheckConstraints extends ApiBase {
 	/**
 	 * @param ApiMain $main
 	 * @param string $name
-	 * @param string $prefix
 	 * @param EntityIdParser $entityIdParser
 	 * @param StatementGuidValidator $statementGuidValidator
 	 * @param ApiHelperFactory $apiHelperFactory
@@ -134,7 +128,6 @@ class CheckConstraints extends ApiBase {
 	public function __construct(
 		ApiMain $main,
 		$name,
-		$prefix,
 		EntityIdParser $entityIdParser,
 		StatementGuidValidator $statementGuidValidator,
 		ApiHelperFactory $apiHelperFactory,
@@ -142,7 +135,7 @@ class CheckConstraints extends ApiBase {
 		CheckResultsRenderer $checkResultsRenderer,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
-		parent::__construct( $main, $name, $prefix );
+		parent::__construct( $main, $name );
 		$this->entityIdParser = $entityIdParser;
 		$this->statementGuidValidator = $statementGuidValidator;
 		$this->resultBuilder = $apiHelperFactory->getResultBuilder( $this );

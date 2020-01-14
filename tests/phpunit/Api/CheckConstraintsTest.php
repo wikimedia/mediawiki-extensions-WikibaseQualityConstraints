@@ -144,7 +144,6 @@ class CheckConstraintsTest extends ApiTestCase {
 			return new CheckConstraints(
 				$main,
 				$name,
-				'',
 				$entityIdParser,
 				new StatementGuidValidator( $entityIdParser ),
 				$repo->getApiHelperFactory( RequestContext::getMain() ),
