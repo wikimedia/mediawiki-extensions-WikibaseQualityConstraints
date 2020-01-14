@@ -130,6 +130,8 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasTypeWithoutHint() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$query = <<<EOF
@@ -149,6 +151,8 @@ EOF;
 	}
 
 	public function testHasTypeWithHint() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$sparqlHelper = $this->getSparqlHelper( new HashConfig( [
 			'WBQualityConstraintsSparqlHasWikibaseSupport' => true,
 		] ) );
@@ -170,6 +174,8 @@ EOF;
 	}
 
 	public function testFindEntitiesWithSameStatement() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$guid = 'Q1$8542690f-dfab-4846-944f-8382df730d2c';
 		$statement = new Statement(
 			new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ),
@@ -219,6 +225,8 @@ EOF;
 		$sparqlValue,
 		$sparqlPath
 	) {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$dtLookup = $this->createMock( PropertyDataTypeLookup::class );
 		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
 
@@ -358,6 +366,8 @@ EOF;
 	}
 
 	public function testSerializeConstraintParameterException() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$cpe = new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
 				->withInlineCode( '[', Role::CONSTRAINT_PARAMETER_VALUE )
@@ -379,6 +389,8 @@ EOF;
 	}
 
 	public function testDeserializeConstraintParameterException() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$serialization = [
 			'type' => ConstraintParameterException::class,
 			'violationMessage' => [
@@ -400,6 +412,8 @@ EOF;
 	}
 
 	public function testMatchesRegularExpressionWithSparql() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
 		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^(?:\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\")$") AS ?matches) {}';
@@ -416,6 +430,8 @@ EOF;
 	}
 
 	public function testMatchesRegularExpressionWithSparqlBadRegex() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$text = '';
 		$regex = '(.{2,5)?';
 		$query = 'SELECT (REGEX("", "^(?:(.{2,5)?)$") AS ?matches) {}';
@@ -447,6 +463,8 @@ EOF;
 	 * @dataProvider provideTimeoutMessages
 	 */
 	public function testIsTimeout( $content, $expected ) {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->isTimeout( $content );
@@ -455,6 +473,8 @@ EOF;
 	}
 
 	public function testIsTimeoutRegex() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$sparqlHelper = $this->getSparqlHelper(
 			new HashConfig( [
 				'WBQualityConstraintsSparqlTimeoutExceptionClasses' => [
@@ -506,6 +526,8 @@ EOF;
 	 * @dataProvider provideCacheHeaders
 	 */
 	 public function testGetCacheMaxAge( $responseHeaders, $expected ) {
+		 $this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->getCacheMaxAge( $responseHeaders );
@@ -734,6 +756,8 @@ EOF;
 	}
 
 	public function testGivenNeedsPrefixesFlagTrue_RunQueryIncludesPrefixesInResultingQuery() {
+		$this->markTestSkipped( 'Temporarily skipping due to ongoing changes in Wikibase code (T242415)' );
+
 		$lock = $this->createMock( ExpiryLock::class );
 		$lock->method( 'isLocked' )
 			->willReturn( false );
