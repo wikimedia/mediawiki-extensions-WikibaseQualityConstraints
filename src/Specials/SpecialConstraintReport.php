@@ -26,7 +26,6 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
-use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookupFactory;
 use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
@@ -115,7 +114,6 @@ class SpecialConstraintReport extends SpecialPage {
 			$wikibaseRepo->getEntityTitleLookup(),
 			new EntityIdLabelFormatterFactory(),
 			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
-			$wikibaseRepo->getLanguageFallbackLabelDescriptionLookupFactory(),
 			$wikibaseRepo->getEntityIdParser(),
 			$wikibaseRepo->getValueFormatterFactory(),
 			ConstraintsServices::getDelegatingConstraintChecker(),
@@ -129,7 +127,6 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityTitleLookup $entityTitleLookup,
 		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
 		EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory,
-		LanguageFallbackLabelDescriptionLookupFactory $fallbackLabelDescLookupFactory,
 		EntityIdParser $entityIdParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $constraintChecker,
