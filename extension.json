@@ -41,7 +41,7 @@
 				"MainConfig",
 				"StatsdDataFactory",
 				"WBQC_EntityLookup",
-				"WBQC_ResultsSource"
+				"WBQC_DelegatingConstraintChecker"
 			]
 		}
 	},
