@@ -82,7 +82,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$constraintParameterParser = new ConstraintParameterParser(
 			$config,
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory(),
-			[ '' => 'http://wikibase.example/entity/' ]
+			'http://wikibase.example/entity/'
 		);
 		$this->setService( ConstraintsServices::CONSTRAINT_PARAMETER_PARSER, $constraintParameterParser );
 
