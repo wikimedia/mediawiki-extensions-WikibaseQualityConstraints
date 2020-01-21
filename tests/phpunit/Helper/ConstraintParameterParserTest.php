@@ -911,7 +911,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$this->getDefaultConfig()
 			] ),
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory(),
-			[ '' => 'http://wikibase.example/entity/' ]
+			'http://wikibase.example/entity/'
 		);
 
 		$parsed = $constraintParameterParser->parseConstraintStatusParameter(

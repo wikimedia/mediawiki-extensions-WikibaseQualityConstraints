@@ -50,27 +50,26 @@ class ConstraintParameterParser {
 	private $snakDeserializer;
 
 	/**
-	 * @var string[]
+	 * @var string
 	 */
-	private $conceptBaseUris;
+	private $unitItemConceptBaseUri;
 
 	/**
 	 * @param Config $config
 	 *   contains entity IDs used in constraint parameters (constraint statement qualifiers)
 	 * @param DeserializerFactory $factory
 	 *   used to parse constraint statement qualifiers into constraint parameters
-	 * @param string[] $conceptBaseUris
-	 *   mapping from repository names to base URIs of concept URIs,
-	 *   used to obtain the full unit string from an entity ID given in constraint parameters
+	 * @param string $unitItemConceptBaseUri
+	 *   concept base URI of items used for units
 	 */
 	public function __construct(
 		Config $config,
 		DeserializerFactory $factory,
-		array $conceptBaseUris
+		string $unitItemConceptBaseUri
 	) {
 		$this->config = $config;
 		$this->snakDeserializer = $factory->newSnakDeserializer();
-		$this->conceptBaseUris = $conceptBaseUris;
+		$this->unitItemConceptBaseUri = $unitItemConceptBaseUri;
 	}
 
 	/**
@@ -732,14 +731,7 @@ class ConstraintParameterParser {
 	 * @return string unit
 	 */
 	private function parseUnitParameter( ItemId $unitId ) {
-		$unitRepositoryName = $unitId->getRepositoryName();
-		if ( !array_key_exists( $unitRepositoryName, $this->conceptBaseUris ) ) {
-			throw new LogicException(
-				'No base URI for concept URI for repository: ' . $unitRepositoryName
-			);
-		}
-		$baseUri = $this->conceptBaseUris[$unitRepositoryName];
-		return $baseUri . $unitId->getSerialization();
+		return $this->unitItemConceptBaseUri . $unitId->getSerialization();
 	}
 
 	/**

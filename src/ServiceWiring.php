@@ -97,15 +97,15 @@ return [
 	},
 
 	ConstraintsServices::CONSTRAINT_PARAMETER_PARSER => function( MediaWikiServices $services ) {
-		// TODO in the future, get DeserializerFactory and concept base URIs from $services?
+		// TODO in the future, get DeserializerFactory and entity source definitions from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$deserializerFactory = $repo->getBaseDataModelDeserializerFactory();
-		$conceptBaseUris = $repo->getConceptBaseUris();
+		$entitySourceDefinitions = $repo->getEntitySourceDefinitions();
 
 		return new ConstraintParameterParser(
 			$services->getMainConfig(),
 			$deserializerFactory,
-			$conceptBaseUris
+			$entitySourceDefinitions->getSourceForEntityType( 'item' )->getConceptBaseUri()
 		);
 	},
 
