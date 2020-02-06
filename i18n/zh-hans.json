@@ -7,7 +7,8 @@
 			"A Chinese Wikipedian",
 			"神樂坂秀吉",
 			"予弦",
-			"A Retired User"
+			"A Retired User",
+			"铁桶"
 		]
 	},
 	"wbqc-constraintreport": "约束报告",
@@ -17,7 +18,7 @@
 	"wbqc-constraintreport-form-section": "检查实体的违例",
 	"wbqc-constraintreport-form-submit-label": "检查",
 	"wbqc-constraintreport-form-entityid-label": "实体ID：",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx或Pxx",
 	"wbqc-constraintreport-result-headline": "结果用于",
 	"wbqc-constraintreport-invalid-entity-id": "无效的实体ID。",
 	"wbqc-constraintreport-not-existent-entity": "实体不存在。",
