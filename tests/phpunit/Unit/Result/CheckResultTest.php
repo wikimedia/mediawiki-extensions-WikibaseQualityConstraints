@@ -67,8 +67,8 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 		$checkResult->withMetadata( $metadata );
 
 		$this->assertSame( $context, $checkResult->getContextCursor() );
-		$this->assertSame( null, $checkResult->getSnakType() );
-		$this->assertSame( null, $checkResult->getDataValue() );
+		$this->assertNull( $checkResult->getSnakType() );
+		$this->assertNull( $checkResult->getDataValue() );
 		$this->assertSame( $constraint, $checkResult->getConstraint() );
 		$this->assertSame( $constraintId, $checkResult->getConstraintId() );
 		$this->assertSame( $parameters, $checkResult->getParameters() );

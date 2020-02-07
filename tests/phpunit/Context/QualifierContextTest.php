@@ -60,7 +60,7 @@ class QualifierContextTest extends \PHPUnit\Framework\TestCase {
 		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$context = new QualifierContext( $entity, $statement, $snak );
 
-		$this->assertSame( null, $context->getSnakRank() );
+		$this->assertNull( $context->getSnakRank() );
 	}
 
 	public function testGetSnakStatement() {
@@ -69,7 +69,7 @@ class QualifierContextTest extends \PHPUnit\Framework\TestCase {
 		$snak = new PropertySomeValueSnak( new PropertyId( 'P2' ) );
 		$context = new QualifierContext( $entity, $statement, $snak );
 
-		$this->assertSame( null, $context->getSnakStatement() );
+		$this->assertNull( $context->getSnakStatement() );
 	}
 
 	/**

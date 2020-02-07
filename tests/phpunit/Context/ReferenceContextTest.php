@@ -70,7 +70,7 @@ class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 		$statement->getReferences()->addReference( $reference );
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
 
-		$this->assertSame( null, $context->getSnakRank() );
+		$this->assertNull( $context->getSnakRank() );
 	}
 
 	public function testGetSnakStatement() {
@@ -81,7 +81,7 @@ class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 		$statement->getReferences()->addReference( $reference );
 		$context = new ReferenceContext( $entity, $statement, $reference, $snak );
 
-		$this->assertSame( null, $context->getSnakStatement() );
+		$this->assertNull( $context->getSnakStatement() );
 	}
 
 	/**
