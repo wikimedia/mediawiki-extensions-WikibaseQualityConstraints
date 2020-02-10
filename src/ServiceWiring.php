@@ -247,7 +247,26 @@ return [
 			ConstraintsServices::getDelegatingConstraintChecker( $services )
 		);
 
+		$cacheCheckConstraintsResults = false;
+
 		if ( $config->get( 'WBQualityConstraintsCacheCheckConstraintsResults' ) ) {
+			$cacheCheckConstraintsResults = true;
+			// check that we can use getLocalRepoWikiPageMetaDataAccessor()
+			// TODO we should always be able to cache constraint check results (T244726)
+			$repo = WikibaseRepo::getDefaultInstance();
+			foreach ( $repo->getEntitySourceDefinitions()->getSources() as $entitySource ) {
+				if ( $entitySource->getDatabaseName() !== false ) {
+					LoggerFactory::getInstance( 'WikibaseQualityConstraints' )->warning(
+						'Cannot cache constraint check results for non-local source: ' .
+						$entitySource->getSourceName()
+					);
+					$cacheCheckConstraintsResults = false;
+					break;
+				}
+			}
+		}
+
+		if ( $cacheCheckConstraintsResults ) {
 			$possiblyStaleConstraintTypes = [
 				$config->get( 'WBQualityConstraintsCommonsLinkConstraintId' ),
 				$config->get( 'WBQualityConstraintsTypeConstraintId' ),
