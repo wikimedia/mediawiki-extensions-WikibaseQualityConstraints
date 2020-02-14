@@ -19,6 +19,7 @@
 	"wbqc-constraintreport-form-section": "Beperkingen voor entiteit controleren",
 	"wbqc-constraintreport-form-submit-label": "Controleren",
 	"wbqc-constraintreport-form-entityid-label": "Entiteits-ID:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx of Pxx",
 	"wbqc-constraintreport-result-headline": "Resulaten voor",
 	"wbqc-constraintreport-invalid-entity-id": "Ongeldige entiteitsidentificatiecode.",
 	"wbqc-constraintreport-not-existent-entity": "Entiteit bestaat niet.",
@@ -107,6 +108,7 @@
 	"wbqc-violation-message-no-qualifiers": "$1-verklaringen zouden geen kwalificaties moeten hebben.",
 	"wbqc-violation-message-qualifiers": "$2 is geen geldige kwalificatie voor $1 – geldige {{PLURAL:$3|1=kwalificatie is $5.|2=kwalificaties zijn $5 en $6.|kwalificaties zijn:$4}}",
 	"wbqc-violation-message-range-parameters-needed": "Eigenschappen met waarden voor het gegevenstype \"$1\" en beperking \"$4\" zouden de parameters \"$2\" en \"$3\" moeten hebben.",
+	"wbqc-violation-message-range-parameters-same": "Het begin ($1) en het eind ($2) van een bereik mogen niet hetzelfde zijn.",
 	"wbqc-violation-message-range-quantity-closed": "De waarde voor $1 ($2) zou tussen $3 en $4 moeten liggen.",
 	"wbqc-violation-message-range-quantity-leftopen": "De waarde voor $1 ($2) zou niet meer dan $3 moeten zijn.",
 	"wbqc-violation-message-range-quantity-rightopen": "De waarde voor $1 ($2) zou niet lager dan $3 moeten zijn.",
@@ -132,6 +134,7 @@
 	"wbqc-violation-message-reference": "Deze eigenschap zou alleen in bronnen moeten worden gebruikt, niet als waarde of voor kwalificaties.",
 	"wbqc-violation-message-units-none": "De waarde voor $1 zou geen eenheid moeten bevatten.",
 	"wbqc-violation-message-none-of": "De waarde voor $1 zou niet {{PLURAL:$2|1=$4 moeten zijn.|2=$4 of $5 moeten zijn.|een van de volgende moeten zijn:$3}}",
+	"wbqc-violation-message-integer": "De waarden voor $1 moeten een geheel getal zijn, maar $2 heeft getallen na de komma.",
 	"wbqc-violation-message-citationNeeded": "Verklaringen voor $1 zouden tenminste een bron moeten bevatten.",
 	"wbqc-violation-message-property-scope": "De eigenschap $1 zou niet op deze plek ($2) moeten worden gebruikt. De geldige {{PLURAL:$3|locatie is|locaties zijn}} voor deze eigenschap {{PLURAL:$3|$5.|: $4}}",
 	"wbqc-violation-message-exception": "Deze entiteit is gemarkeerd als een uitzondering op deze beperking."
