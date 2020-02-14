@@ -131,7 +131,7 @@ final class WikibaseQualityConstraintsHooks {
 			return;
 		}
 
-		if ( !$lookup->isEntityNamespace( $title->getNamespace() ) ) {
+		if ( !$lookup->isNamespaceWithEntities( $title->getNamespace() ) ) {
 			return;
 		}
 		if ( empty( $out->getJsConfigVars()['wbIsEditView'] ) ) {
