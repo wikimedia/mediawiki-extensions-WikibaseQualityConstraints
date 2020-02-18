@@ -166,7 +166,11 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 	}
 
-	private function getCheckConstraintsRdf( \Page $page, $mockResponse, ResultsSource $cachingResultsSource = null ) {
+	private function getCheckConstraintsRdf(
+		WikiPage $page,
+		$mockResponse,
+		ResultsSource $cachingResultsSource = null
+	) : CheckConstraintsRdf {
 		if ( $cachingResultsSource === null ) {
 			$cachingResultsSource = $this->getCachingResultsSource();
 		}
@@ -181,7 +185,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testShow() {
-		$page = new WikiPage( Title::newFromText( 'Property:P1' ) );
+		$page = WikiPage::factory( Title::newFromText( 'Property:P1' ) );
 
 		$cachingResultsSource = $this->getCachingResultsSource();
 		$cachingResultsSource->expects( $this->once() )->method( 'getStoredResults' )
@@ -219,7 +223,7 @@ TEXT;
 	}
 
 	public function testShow404() {
-		$page = new WikiPage( Title::newFromText( 'something strange' ) );
+		$page = WikiPage::factory( Title::newFromText( 'something strange' ) );
 		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 404 );
 		$action = $this->getCheckConstraintsRdf( $page, $mockResponse );
@@ -233,7 +237,7 @@ TEXT;
 	}
 
 	public function testShowNoResults() {
-		$page = new WikiPage( Title::newFromText( 'Item:Q1' ) );
+		$page = WikiPage::factory( Title::newFromText( 'Item:Q1' ) );
 		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
 		$action = $this->getCheckConstraintsRdf( $page, $mockResponse );
@@ -247,7 +251,7 @@ TEXT;
 	}
 
 	public function testShowNoResultsWithNull() {
-		$page = new WikiPage( Title::newFromText( 'Property:P1' ) );
+		$page = WikiPage::factory( Title::newFromText( 'Property:P1' ) );
 
 		$cachingResultsSource = $this->getCachingResultsSource();
 		$cachingResultsSource->expects( $this->once() )->method( 'getStoredResults' )

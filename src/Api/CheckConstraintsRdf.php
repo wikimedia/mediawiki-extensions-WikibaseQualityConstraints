@@ -2,9 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
+use Article;
 use FormlessAction;
 use IContextSource;
-use Page;
 use Wikibase\Lib\Store\EntityIdLookup;
 use Wikibase\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
@@ -12,6 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use Wikimedia\Purtle\RdfWriterFactory;
+use WikiPage;
 
 /**
  * Produce constraint check results in RDF.
@@ -32,8 +33,15 @@ class CheckConstraintsRdf extends FormlessAction {
 	 */
 	private $rdfVocabulary;
 
+	/**
+	 * @param WikiPage|Article $page
+	 * @param IContextSource $context
+	 * @param ResultsSource $resultsSource
+	 * @param EntityIdLookup $entityIdLookup
+	 * @param RdfVocabulary $rdfVocabulary
+	 */
 	public function __construct(
-		Page $page,
+		object $page,
 		IContextSource $context,
 		ResultsSource $resultsSource,
 		EntityIdLookup $entityIdLookup,
@@ -45,7 +53,15 @@ class CheckConstraintsRdf extends FormlessAction {
 		$this->rdfVocabulary = $rdfVocabulary;
 	}
 
-	public static function newFromGlobalState( Page $page, IContextSource $context ) {
+	/**
+	 * @param WikiPage|Article $page
+	 * @param IContextSource $context
+	 * @return CheckConstraintsRdf
+	 */
+	public static function newFromGlobalState(
+		object $page,
+		IContextSource $context
+	) {
 		$repo = WikibaseRepo::getDefaultInstance();
 
 		return new static(
