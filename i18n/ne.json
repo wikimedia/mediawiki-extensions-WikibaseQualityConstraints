@@ -4,7 +4,8 @@
 			"बिप्लब आनन्द",
 			"Nirjal stha",
 			"Nirajan pant",
-			"सरोज कुमार ढकाल"
+			"सरोज कुमार ढकाल",
+			"पर्वत सुबेदी"
 		]
 	},
 	"wbqc-constraintreport": "श्रोत अभाव प्रतिवेदन",
@@ -14,6 +15,7 @@
 	"wbqc-constraintreport-status-violation": "प्रतिपालना",
 	"wbqc-constraintreport-status-compliance": "अनुपालना",
 	"wbqc-constraintreport-status-todo": "टोडो",
+	"wbqc-constraintreport-result-table-header-status": "स्थिति",
 	"wbqc-constraintreport-result-table-header-constraint": "श्रोत अभाव",
 	"wbqc-constraintreport-result-link-to-claim": "दाबीमा जानुहोस्",
 	"wbqc-issues-short": "मुद्दाहरू",
