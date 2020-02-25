@@ -49,7 +49,7 @@
 	"wbqc-constraintdiscuss-short": "Diskussion",
 	"wbqc-constraintdiscuss-long": "Diskussionsseite über diese Beschränkung",
 	"wbqc-cached-generic": "Dieses Ergebnis ist gecacht und könnte veraltet sein.",
-	"wbqc-cached-minutes": "Dieses Ergebnis ist gecacht und könnte bis zu {{PLURAL:$1|1=eine Minute|$1 Minuten}} alt sein.",
+	"wbqc-cached-minutes": "Dieses Ergebnis ist gecacht und könnte bis zu {{PLURAL:$1|1=einer Minute|$1 Minuten}} alt sein.",
 	"wbqc-cached-hours": "Dieses Ergebnis stammt aus dem Cache und kann bis zu {{PLURAL:$1|1=eine Stunde|$1 Stunden}} alt sein.",
 	"wbqc-cached-days": "Dieses Ergebnis stammt aus dem Cache und kann bis zu {{PLURAL:$1|1=einen Tag|$1 Tage}} alt sein.",
 	"wbqc-dataValueType-wikibase-entityid": "Objektkennung",
