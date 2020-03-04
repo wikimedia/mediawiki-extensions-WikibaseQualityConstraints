@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Maintenance;
 use Config;
 use Deserializers\Deserializer;
 use Maintenance;
+use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\MediaWikiServices;
 use Serializers\Serializer;
 use User;
@@ -45,6 +46,11 @@ class ImportConstraintEntities extends Maintenance {
 	private $entityStore;
 
 	/**
+	 * @var HttpRequestFactory
+	 */
+	private $httpRequestFactory;
+
+	/**
 	 * @var User|null (null in dry-run mode, non-null otherwise)
 	 */
 	private $user;
@@ -77,6 +83,7 @@ class ImportConstraintEntities extends Maintenance {
 		$this->entitySerializer = $repo->getAllTypesEntitySerializer();
 		$this->entityDeserializer = $repo->getInternalFormatEntityDeserializer();
 		$this->entityStore = $repo->getEntityStore();
+		$this->httpRequestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
 		if ( !$this->getOption( 'dry-run', false ) ) {
 			$this->user = User::newSystemUser( 'WikibaseQualityConstraints importer' );
 		}
@@ -134,8 +141,7 @@ class ImportConstraintEntities extends Maintenance {
 	 */
 	private function importEntityFromWikidata( $wikidataEntityId ) {
 		$wikidataEntityUrl = "https://www.wikidata.org/wiki/Special:EntityData/$wikidataEntityId.json";
-		$wikidataEntitiesJson = MediaWikiServices::getInstance()->getHttpRequestFactory()
-			->get( $wikidataEntityUrl, [], __METHOD__ );
+		$wikidataEntitiesJson = $this->httpRequestFactory->get( $wikidataEntityUrl, [], __METHOD__ );
 		return $this->importEntityFromJson( $wikidataEntityId, $wikidataEntitiesJson );
 	}
 

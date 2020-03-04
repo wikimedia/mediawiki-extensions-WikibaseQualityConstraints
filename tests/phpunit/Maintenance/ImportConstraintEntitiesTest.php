@@ -3,10 +3,14 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Maintenance;
 
 use HashConfig;
+use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
 use Wikibase\DataModel\Entity\Item;
+use Wikibase\InternalSerialization\Deserializers\EntityDeserializer;
+use Wikibase\Lib\Store\EntityRevision;
 use Wikibase\Lib\Store\EntityStore;
 use Wikibase\Lib\Store\StorageException;
+use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintEntities;
 
@@ -48,6 +52,34 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 			[ 'WBQualityConstraintsBarId' => 'Q2' ],
 			$wikidataEntityIds
 		);
+	}
+
+	public function testImportEntityFromWikidata() {
+		$entityId = 'Q1';
+		$entitySerialization = 'entity serialization';
+		$entityJson = json_encode( [ 'entities' => [ $entityId => $entitySerialization ] ] );
+		$entity = NewItem::withLabel( 'en', 'fake entity' )->build();
+
+		$this->maintenance->setupServices();
+		$httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+		$httpRequestFactory->expects( $this->once() )
+			->method( 'get' )
+			->with( "https://www.wikidata.org/wiki/Special:EntityData/$entityId.json" )
+			->willReturn( $entityJson );
+		$this->maintenance->httpRequestFactory = $httpRequestFactory;
+		$entityDeserializer = $this->createMock( EntityDeserializer::class );
+		$entityDeserializer->method( 'deserialize' )
+			->with( $entitySerialization )
+			->willReturn( $entity );
+		$this->maintenance->entityDeserializer = $entityDeserializer;
+		$entityStore = $this->createMock( EntityStore::class );
+		$entityStore->method( 'saveEntity' )
+			->willReturn( new EntityRevision( NewItem::withId( 'Q2' )->build() ) );
+		$this->maintenance->entityStore = $entityStore;
+
+		$localId = $this->maintenance->importEntityFromWikidata( $entityId );
+
+		$this->assertSame( 'Q2', $localId );
 	}
 
 	public function testImportEntityFromJson_dryRun() {
