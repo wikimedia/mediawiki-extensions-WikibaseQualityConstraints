@@ -7,6 +7,7 @@ use Deserializers\Deserializer;
 use Maintenance;
 use Serializers\Serializer;
 use User;
+use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\SiteLinkList;
 use Wikibase\DataModel\Statement\StatementListProvider;
@@ -133,7 +134,7 @@ class ImportConstraintEntities extends Maintenance {
 	 */
 	private function importEntityFromWikidata( $wikidataEntityId ) {
 		$wikidataEntityUrl = "https://www.wikidata.org/wiki/Special:EntityData/$wikidataEntityId.json";
-		$wikidataEntitiesJson = file_get_contents( $wikidataEntityUrl );
+		$wikidataEntitiesJson = MediaWikiServices::getInstance()->getHttpRequestFactory()->get( $wikidataEntityUrl );
 		return $this->importEntityFromJson( $wikidataEntityId, $wikidataEntitiesJson );
 	}
 
