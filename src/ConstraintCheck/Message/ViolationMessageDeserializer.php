@@ -3,13 +3,13 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use DataValues\DataValue;
-use DataValues\DataValueFactory;
 use DataValues\MultilingualTextValue;
 use Deserializers\Deserializer;
 use InvalidArgumentException;
 use LogicException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
+use Wikibase\Lib\DataValueFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use Wikimedia\Assert\Assert;
