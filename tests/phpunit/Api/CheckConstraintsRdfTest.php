@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
+use Article;
 use HashConfig;
 use IContextSource;
 use NullStatsdDataFactory;
@@ -32,7 +33,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
-use WikiPage;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraintsRdf
@@ -167,7 +167,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function getCheckConstraintsRdf(
-		WikiPage $page,
+		Article $article,
 		$mockResponse,
 		ResultsSource $cachingResultsSource = null
 	) : CheckConstraintsRdf {
@@ -176,7 +176,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		}
 		$repo = WikibaseRepo::getDefaultInstance();
 		return new CheckConstraintsRdf(
-			$page,
+			$article,
 			$this->getContext( $mockResponse ),
 			$cachingResultsSource,
 			$repo->getEntityIdLookup(),
@@ -185,8 +185,6 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testShow() {
-		$page = WikiPage::factory( Title::newFromText( 'Property:P1' ) );
-
 		$cachingResultsSource = $this->getCachingResultsSource();
 		$cachingResultsSource->expects( $this->once() )->method( 'getStoredResults' )
 			->willReturnCallback( function( EntityId $entityId ) {
@@ -203,7 +201,11 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 			->with( 'Content-Type: text/turtle; charset=UTF-8' );
 		$repo = WikibaseRepo::getDefaultInstance();
 		$rdfVocabulary = $repo->getRdfVocabulary();
-		$action = $this->getCheckConstraintsRdf( $page, $mockResponse, $cachingResultsSource );
+		$action = $this->getCheckConstraintsRdf(
+			new Article( Title::newFromText( 'Property:P1' ) ),
+			$mockResponse,
+			$cachingResultsSource
+		);
 
 		ob_start();
 		$action->onView();
@@ -223,10 +225,12 @@ TEXT;
 	}
 
 	public function testShow404() {
-		$page = WikiPage::factory( Title::newFromText( 'something strange' ) );
 		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 404 );
-		$action = $this->getCheckConstraintsRdf( $page, $mockResponse );
+		$action = $this->getCheckConstraintsRdf(
+			new Article( Title::newFromText( 'something strange' ) ),
+			$mockResponse
+		);
 
 		ob_start();
 		$action->onView();
@@ -237,10 +241,12 @@ TEXT;
 	}
 
 	public function testShowNoResults() {
-		$page = WikiPage::factory( Title::newFromText( 'Item:Q1' ) );
 		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
-		$action = $this->getCheckConstraintsRdf( $page, $mockResponse );
+		$action = $this->getCheckConstraintsRdf(
+			new Article( Title::newFromText( 'Item:Q1' ) ),
+			$mockResponse
+		);
 
 		ob_start();
 		$action->onView();
@@ -251,8 +257,6 @@ TEXT;
 	}
 
 	public function testShowNoResultsWithNull() {
-		$page = WikiPage::factory( Title::newFromText( 'Property:P1' ) );
-
 		$cachingResultsSource = $this->getCachingResultsSource();
 		$cachingResultsSource->expects( $this->once() )->method( 'getStoredResults' )
 			->willReturnCallback( function( EntityId $entityId ) {
@@ -268,7 +272,11 @@ TEXT;
 
 		$mockResponse = $this->createMock( \WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
-		$action = $this->getCheckConstraintsRdf( $page, $mockResponse, $cachingResultsSource );
+		$action = $this->getCheckConstraintsRdf(
+			new Article( Title::newFromText( 'Property:P1' ) ),
+			$mockResponse,
+			$cachingResultsSource
+		);
 
 		ob_start();
 		$action->onView();

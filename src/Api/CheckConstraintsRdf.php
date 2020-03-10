@@ -12,7 +12,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use Wikimedia\Purtle\RdfWriterFactory;
-use WikiPage;
 
 /**
  * Produce constraint check results in RDF.
@@ -34,7 +33,7 @@ class CheckConstraintsRdf extends FormlessAction {
 	private $rdfVocabulary;
 
 	/**
-	 * @param WikiPage|Article $page
+	 * @param Article $page
 	 * @param IContextSource $context
 	 * @param ResultsSource $resultsSource
 	 * @param EntityIdLookup $entityIdLookup
@@ -54,7 +53,7 @@ class CheckConstraintsRdf extends FormlessAction {
 	}
 
 	/**
-	 * @param WikiPage|Article $page
+	 * @param Article $page
 	 * @param IContextSource $context
 	 * @return CheckConstraintsRdf
 	 */
