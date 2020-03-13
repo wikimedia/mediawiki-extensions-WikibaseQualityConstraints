@@ -427,13 +427,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			}
 			$entityIds = $checkResult->getMetadata()->getDependencyMetadata()->getEntityIds();
 			$this->assertContains( $entity->getId(), $entityIds );
-			$this->assertContains(
-				new PropertyId( 'P1' ),
-				$entityIds,
-				'',
-				false,
-				false // undocumented parameter: don’t check object identity
-			);
+			$this->assertContainsEquals( new PropertyId( 'P1' ), $entityIds );
 		}
 	}
 
