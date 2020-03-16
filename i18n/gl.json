@@ -4,13 +4,14 @@
 			"Elisardojm",
 			"Banjo",
 			"Toliño",
-			"Athena in Wonderland"
+			"Athena in Wonderland",
+			"Maria zaos"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restrición",
 	"wbqc-desc": "Comproba as restricións nos elementos e nas propiedades e amosa os resultados nunha páxina especial",
 	"wbqc-constraintreport-explanation-part-one": "Esta páxina especial realiza revisións de restrición nas entidades que queira. As entidades búscanse no sistema real, polo que cada violación de restrición que amañe será eliminada instantaneamente desta lista.",
-	"wbqc-constraintreport-explanation-part-two": "As restricións son analizadas nas páxinas de conversa das propiedades unha vez á semana, polo que se engade/borra/cambia unha restrición pode tardar ata unha semana ata que sexa reflectido neste informe de restricións. Actualmente hai traballos en progreso para migrar as restricións a declaracións en propiedades, permitindo que esta páxina especial faga revisións en vivo.",
+	"wbqc-constraintreport-explanation-part-two": "As restricións desde as afirmacións ás propiedades son analizadas cada vez que estas son editadas, normalmente nuns minutos.",
 	"wbqc-constraintreport-form-section": "Revisar restriccións para entidade",
 	"wbqc-constraintreport-form-submit-label": "Comprobar",
 	"wbqc-constraintreport-form-entityid-label": "Identificador de entidade:",
@@ -44,10 +45,10 @@
 	"wbqc-constrainttypehelp-long": "Páxina de axuda para este tipo de restrición",
 	"wbqc-constraintdiscuss-short": "Conversar",
 	"wbqc-constraintdiscuss-long": "Páxina de conversa sobre esta restrición",
-	"wbqc-cached-generic": "Este resultado ven da caché e pode estar desfasado.",
-	"wbqc-cached-minutes": "Este resultado ven da caché e pode estar desfasado en ata {{PLURAL:$1|1=un&nbsp;minuto|$1&nbsp;minutos}}.",
-	"wbqc-cached-hours": "Este resultado ven da caché e pode estar desactualizado en ata {{PLURAL:$1|1=unha hora|$1&nbsp;horas}}.",
-	"wbqc-cached-days": "Este resultado ven da caché e pode estar desactualizado en ata {{PLURAL:$1|1=un día|$1&nbsp;días}}.",
+	"wbqc-cached-generic": "Este resultado vén da caché e pode estar desfasado.",
+	"wbqc-cached-minutes": "Este resultado vén da caché e pode estar desfasado ata un máximo {{PLURAL:$1|1=dun minuto|de&nbsp;$1&nbsp;minutos}}.",
+	"wbqc-cached-hours": "Este resultado vén da caché e pode estar desactualizado ata un máximo {{PLURAL:$1|1=dunha hora|&nbsp;de $1&nbsp;horas}}.",
+	"wbqc-cached-days": "Este resultado vén da caché e pode estar desactualizado ata un máximo {{PLURAL:$1|1=dun día|de $1&nbsp;días}}.",
 	"wbqc-dataValueType-wikibase-entityid": "Id. da entidade",
 	"wbq-subextension-name-wbqc": "Restricións",
 	"wbqc-violation-header-parameters": "Parámetros:",
@@ -87,7 +88,7 @@
 	"wbqc-violation-message-inverse": "$1 debería tener tamén a declaración inversa $2 $3.",
 	"wbqc-violation-message-item": "As entidades que inclúan $1 deben contar tamén con {{PLURAL:$3|0=unha declaración $2.|1=unha declaración $2 $5.|unha declaración para $2 cun dos valores seguintes: $4}}",
 	"wbqc-violation-message-multi-value": "Esta propiedade debería ter valores múltiples. Isto é, debería haber máis dunha declaración usando esta propiedade.",
-	"wbqc-violation-message-one-of": "O valor da propiedade debe ser un dos elementos definidos nos parámetros.",
+	"wbqc-violation-message-one-of": "O valor da propiedade debe ser {PLURAL:$2|1=$4.|2=either $4 or $5.|un dos seguintes:$3}}",
 	"wbqc-violation-message-qualifier": "A propiedade só debería ser usada como cualificador.",
 	"wbqc-violation-message-no-qualifiers": "As declaracións para $1 non deberían conter ningún calificador.",
 	"wbqc-violation-message-qualifiers": "A propiedade só debe usarse cos (non outras que) cualificadores definidos nos parámetros.",
@@ -98,7 +99,7 @@
 	"wbqc-violation-message-range-time-closed": "O valor para $1 ($2) debe estar entre $3 e $4",
 	"wbqc-violation-message-range-time-leftopen": "O valor para $1 ($2) non debe estar despois de $3.",
 	"wbqc-violation-message-range-time-rightopen": "O valor para $1 ($2) non debe estar antes de $3.",
-	"wbqc-violation-message-single-value": "Esta propiedade só debe ter un único valor. Isto é, debe haber só unha afirmación usando esta propiedade.",
+	"wbqc-violation-message-single-value": "Esta propiedade só debe ter un valor.",
 	"wbqc-violation-message-symmetric": "Esta propiedade só debe ser usada cando hai unha declaración no seu valor entidade coa mesma propiedade e este obxecto co seu valor.",
-	"wbqc-violation-message-unique-value": "Este valor de propiedade non debe estar presente en ningún outro elemento."
+	"wbqc-violation-message-unique-value": "Este valor de propiedade non debe estar presente en ningún outro elemento, pero está presente {{PLURAL:$1|1=$3.|2=$3 and $4.|nos seguintes elementos: $2}}"
 }
