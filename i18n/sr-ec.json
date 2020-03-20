@@ -54,6 +54,8 @@
 	"wbqc-violation-message-commons-link-not-well-formed": "Веза до Оставе би требало да буде добро форматирана.",
 	"wbqc-violation-message-conflicts-with-property": "Ентитет не би требало да има изјаве и за $1 и за $2.",
 	"wbqc-violation-message-conflicts-with-claim": "Ентитет не би требало да има изјаву за $1 ако такође има изјаву за $2 са вредношћу $3.",
+	"wbqc-violation-message-contemporary-subject-earlier": "Ентитети $1 и $3 треба да су савремени да би били повезани преко $2, али најкаснија крајња вредност за $1 је $4 а најранија почетна вредност за $3 је $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "Ентитети $1 и $3 треба да су савремени да би били повезани преко $2, али најкаснија крајња вредност за $3 је $4 а најранија почетна вредност за $1 је $5.",
 	"wbqc-violation-message-diff-within-range": "Разлика између $3 ($4) и $1 ($2) мора да буде између $5 и $6.",
 	"wbqc-violation-message-format": "$1 ($2) мора да се поклапа са регуларним изразом $3.",
 	"wbqc-violation-message-format-clarification": "$1 ($2) мора да се поклапа са \"$4\" (регуларни израз: $3).",
