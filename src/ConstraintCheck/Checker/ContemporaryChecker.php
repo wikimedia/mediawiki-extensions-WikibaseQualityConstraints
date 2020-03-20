@@ -182,7 +182,7 @@ class ContemporaryChecker implements ConstraintChecker {
 	}
 
 	/**
-	 * @param String[] $extremePropertyIds
+	 * @param string[] $extremePropertyIds
 	 * @param Statement[] $statements
 	 * @param string $startOrEnd 'start' or 'end'
 	 *
