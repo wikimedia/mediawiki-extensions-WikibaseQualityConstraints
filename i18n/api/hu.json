@@ -4,6 +4,9 @@
 			"Tacsipacsi"
 		]
 	},
+	"apihelp-wbcheckconstraints-description": "Kikötések ellenőrzése egy megadott entitáson, és az eredmények visszaadása.",
+	"apihelp-wbcheckconstraints-summary": "Kikötések ellenőrzése egy megadott entitáson, és az eredmények visszaadása.",
+	"apihelp-wbcheckconstraints-param-id": "A lekérdezendő entitások azonosítóinak listája.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Opcionális szűrő, csak a megadott kikötésazonosítóval rendelkező kikötések visszaadása.",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "Az állítás megfelel a kikötésnek.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "Az állítás megszegi a kikötést.",
@@ -12,6 +15,7 @@
 	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "A kikötés paraméterei hibásak.",
 	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "A kikötés nincs ellenőrizve, mert az állítás elavult.",
 	"apihelp-wbcheckconstraints-paramvalue-status-warning": "Az állítás megszegi a kikötést, de a kikötés nem kötelező.",
+	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "Az állítás megszegi a kikötést, de a kikötés csak egy javaslat.",
 	"apihelp-wbcheckconstraintparameters-summary": "A kikötésállítások paramétereinek ellenőrzése.",
 	"apihelp-wbcheckconstraintparameters-extended-description": "A <var>property</var> és <var>constraintid</var> paraméterek közül akár bármelyik, akár mindkettő megadható; ha mindkettő meg van adva, akkor a kettő uniója lesz ellenőrizve.",
 	"apihelp-wbcheckconstraintparameters-param-propertyid": "Az ellenőrizendő tulajdonságok azonosítói. A tulajdonságok összes kikötésállítása ellenőrizve lesz.\n\nHa meg van adva a paraméter, akkor nem lehet üres.",
