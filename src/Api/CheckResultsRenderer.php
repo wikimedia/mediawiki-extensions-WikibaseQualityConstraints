@@ -73,6 +73,7 @@ class CheckResultsRenderer {
 		$constraintPropertyId = new PropertyId( $checkResult->getContextCursor()->getSnakPropertyId() );
 
 		$title = $this->entityTitleLookup->getTitleForId( $constraintPropertyId );
+		$talkTitle = $title->getTalkPageIfDefined();
 		$typeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $typeItemId ) );
 		$link = $title->getFullURL() . '#' . $constraintId;
 
@@ -81,7 +82,7 @@ class CheckResultsRenderer {
 			'type' => $typeItemId,
 			'typeLabel' => $typeLabel,
 			'link' => $link,
-			'discussLink' => $title->getTalkPage()->getFullURL(),
+			'discussLink' => $talkTitle ? $talkTitle->getFullURL() : $title->getFullURL(),
 		];
 
 		$result = [

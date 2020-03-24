@@ -46,7 +46,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				$title = $this->createMock( Title::class );
 				$title->method( 'getFullUrl' )
 					->willReturn( 'http://wiki.test/' . $id->getSerialization() );
-				$title->method( 'getTalkPage' )
+				$title->method( 'getTalkPageIfDefined' )
 					->will( $this->returnCallback( function() use ( $id ) {
 						$title = $this->createMock( Title::class );
 						$title->method( 'getFullUrl' )
