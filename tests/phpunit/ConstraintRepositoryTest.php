@@ -26,7 +26,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
 
-		$this->assertInternalType( 'array', $constraints );
+		$this->assertIsArray( $constraints );
 		$this->assertEquals( 2, count( $constraints ) );
 		$this->assertInstanceOf( Constraint::class, $constraints[0] );
 	}
@@ -37,7 +37,7 @@ class ConstraintRepositoryTest extends \MediaWikiTestCase {
 		$repo = new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false );
 		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P2' ) );
 
-		$this->assertInternalType( 'array', $constraints );
+		$this->assertIsArray( $constraints );
 		$this->assertEmpty( $constraints );
 	}
 
