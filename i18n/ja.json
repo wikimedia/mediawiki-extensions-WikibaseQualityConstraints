@@ -4,7 +4,8 @@
 			"Otokoume",
 			"Sujiniku",
 			"Afaz",
-			"Kkairri"
+			"Kkairri",
+			"Shirayuki"
 		]
 	},
 	"wbqc-constraintreport": "制約チェック",
@@ -52,7 +53,7 @@
 	"wbqc-cached-days": "この結果はキャッシュされたもので、最新の状態ではありません（最大{{PLURAL:$1|$1日}}）。",
 	"wbqc-dataValueType-wikibase-entityid": "エンティティID",
 	"wbq-subextension-name-wbqc": "制約",
-	"wbqc-violation-header-parameters": "パラメータ:",
+	"wbqc-violation-header-parameters": "パラメーター:",
 	"wbqc-violations-group": "制約",
 	"wbqc-violation-message": "プロパティ制約に違反しています。詳細はアイコンをクリックしてください。",
 	"wbqc-violation-message-not-yet-implemented": "技術的な理由から、制約「$1」のチェックはまだ実装されていません。",
@@ -75,8 +76,8 @@
 	"wbqc-violation-message-parameter-oneof": "パラメーター「$1」は{{PLURAL:$2|1=$4でなければなりません。|2=$4か$5でなければなりません|以下のいずれかでなければなりません。$3}}",
 	"wbqc-violation-message-parameter-regex": "$1は無効な正規表現です。",
 	"wbqc-violation-message-sparql-error": "SPARQLクエリでエラーが発生しました。",
-	"wbqc-violation-message-parameters-error-unknown": "この制約のパラメータをインポートできませんでした。",
-	"wbqc-violation-message-parameters-error-toolong": "この制約のパラメータは、長すぎるためインポートできませんでした。",
+	"wbqc-violation-message-parameters-error-unknown": "この制約のパラメーターをインポートできませんでした。",
+	"wbqc-violation-message-parameters-error-toolong": "この制約のパラメーターは、長すぎるためインポートできませんでした。",
 	"wbqc-violation-message-invalid-scope": "$1は制約「$2」が扱う範囲内にありません。有効な{{PLURAL:$3|範囲}}は{{PLURAL:$3|1=$5です。|2=$5と$6です。|以下のとおりです。$4}}",
 	"wbqc-violation-message-commons-link-no-existent": "コモンズへのリンクは実在しなければなりません。",
 	"wbqc-violation-message-commons-link-not-well-formed": "コモンズへのリンクは整形式でなければなりません。",
@@ -86,7 +87,7 @@
 	"wbqc-violation-message-diff-within-range": "$3（$4）と$1（$2）の間は、$5から$6の範囲でなければなりません。",
 	"wbqc-violation-message-diff-within-range-leftopen": "$3（$4）と$1（$2）の間は、$5よりも大きくなければなりません。",
 	"wbqc-violation-message-diff-within-range-rightopen": "$3（$4）と$1（$2）の間は、$5よりも小さくなければなりません。",
-	"wbqc-violation-message-diff-within-range-must-have-equal-types": "パラメーター中に定義されているプロパティは、このプロパティと同じ型の値を持たなければなりません。",
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "パラメーター内に定義されているプロパティは、このプロパティと同じ型の値を持たなければなりません。",
 	"wbqc-violation-message-format": "$1の値（$2）は次の正規表現に一致しなければなりません。$3",
 	"wbqc-violation-message-format-clarification": "$1の値（$2）は「$4」に一致しなければなりません（正規表現：$3）。",
 	"wbqc-violation-message-inverse": "$1は逆関係の文「$2：$3」をもつ必要があります。",
