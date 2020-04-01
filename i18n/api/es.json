@@ -3,7 +3,8 @@
 		"authors": [
 			"Ciencia Al Poder",
 			"Dgstranz",
-			"Fitoschido"
+			"Fitoschido",
+			"Agabi10"
 		]
 	},
 	"apihelp-wbcheckconstraints-description": "Realiza comprobaciones de restricciones en cualquier entidad y devuelve el resultado.",
@@ -18,10 +19,11 @@
 	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "Los parámetros de la restricción son defectuosos.",
 	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "No se ha comprobado la restricción porque la declaración es obsoleta.",
 	"apihelp-wbcheckconstraints-paramvalue-status-warning": "La declaración viola la restricción, pero esta última no es obligatoria.",
+	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "La declaración viola la restricción, pero la restricción es sólo una sugerencia.",
 	"apihelp-wbcheckconstraintparameters-summary": "Verifica los parámetros de restricción de las declaraciones de restricción.",
 	"apihelp-wbcheckconstraints-example-1": "Verificar todas las restricciones en los elementos Q5 y Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Verificar todas las restricciones en una sola declaración.",
 	"apihelp-wbcheckconstraints-example-3": "Verificar una restricción particular en el elemento Q2.",
 	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Verificar los parámetros de restricción de todas las restricciones de una propiedad.",
-	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Verificar los parámetros de restricción de dos restricciones particulares."
+	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Verificar los parámetros de restricción de dos restricciones específicas."
 }

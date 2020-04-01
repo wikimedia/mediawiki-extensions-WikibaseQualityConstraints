@@ -33,6 +33,8 @@
 	"wbqc-potentialissues-long": "Sellel avaldusel on mõned võimalikud probleemid.",
 	"wbqc-suggestions-short": "Soovitused",
 	"wbqc-suggestions-long": "Selle avalduse täiustamise kohta on soovitusi.",
+	"wbqc-parameterissues-short": "Kaudselt seotud probleemid",
+	"wbqc-parameterissues-long": "Need probleemid on seotud kitsenduse määratluse ja omaduse endaga, mitte selle avaldusega.",
 	"wbqc-constrainttypehelp-short": "Abi",
 	"wbqc-constrainttypehelp-long": "Seda tüüpi kitsenduse abileht",
 	"wbqc-constraintdiscuss-short": "Arutelu",
@@ -50,6 +52,8 @@
 	"wbqc-violation-message-commons-link-not-well-formed": "Commonsi link peaks olema reeglipärasel kujul.",
 	"wbqc-violation-message-conflicts-with-property": "Olemil ei peaks olema korraga avaldusi omaduste $1 ja $2 kohta.",
 	"wbqc-violation-message-conflicts-with-claim": "Olemil ei peaks olema avaldust omaduse $1 kohta, kui tal on ka avaldus omaduse $2 kohta väärtusega $3.",
+	"wbqc-violation-message-contemporary-subject-earlier": "Olemid $1 ja $3 peaks olema kaasaegsed, et olla seotud omaduse $2 kaudu, aga olemi $1 hiliseim lõppväärtus on $4 ja olemi $3 varaseim algusväärtus on $5.",
+	"wbqc-violation-message-contemporary-value-earlier": "Olemid $1 ja $3 peaks olema kaasaegsed, et olla seotud omaduse $2 kaudu, aga olemi $3 hiliseim lõppväärtus on $4 ja olemi $1 varaseim algusväärtus on $5.",
 	"wbqc-violation-message-diff-within-range": "Erinevus omaduste $3 ($4) ja $1 ($2) vahel peaks olema piiride $5 ja $6 vahel.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Erinevus omaduste $3 ($4) ja $1 ($2) vahel ei peaks olema suurem kui $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "Erinevus omaduste $3 ($4) ja $1 ($2) vahel ei peaks olema väiksem kui $5.",
@@ -103,6 +107,6 @@
 	"wbqc-violation-message-integer": "Omaduse $1 väärtus peaks olema täisarv, aga väärtusel $2 on murdosa.",
 	"wbqc-violation-message-integer-bounds": "Omaduse $1 väärtus peaks olema täisarv, aga väärtuse $2 piiridel on murdosa.",
 	"wbqc-violation-message-citationNeeded": "Avaldusel omaduse $1 kohta peaks olema vähemalt üks viide.",
-	"wbqc-violation-message-property-scope": "Omadust $1 ei peaks kasutama selles kohas ($2). {{PLURAL:$3|Ainus sobiv koht|Ainsad sobivad kohad}} sellele omadusele {{PLURAL:$3|on $5.|on järgmised: $4}}",
+	"wbqc-violation-message-property-scope": "Omadust $1 ei peaks kasutama selles kohas ($2). {{PLURAL:$3|Seda omadust sobib kasutada ainult $5.|Ainsad sobivad kohad sellele omadusele on järgmised: $4}}",
 	"wbqc-violation-message-exception": "See olem on selle kitsenduse teadaolev erand ja see on erandina märgitud."
 }
