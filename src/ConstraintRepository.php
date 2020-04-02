@@ -21,6 +21,12 @@ class ConstraintRepository implements ConstraintLookup {
 	/** @var string|false */
 	private $dbName;
 
+	/**
+	 * @param ILoadBalancer $lb Load balancer for database connections.
+	 * Must match $dbName, i.e. if $dbName is not false,
+	 * then using the main DBLoadBalancer service may be incorrect.
+	 * @param string|false $dbName Database name ($domain for ILoadBalancer methods).
+	 */
 	public function __construct( ILoadBalancer $lb, $dbName ) {
 		$this->lb = $lb;
 		$this->dbName = $dbName;

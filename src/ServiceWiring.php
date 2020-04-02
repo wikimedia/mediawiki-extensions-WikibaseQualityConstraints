@@ -43,8 +43,12 @@ return [
 	ConstraintsServices::CONSTRAINT_REPOSITORY => function( MediaWikiServices $services ) {
 		$sourceDefinitions = WikibaseRepo::getDefaultInstance()->getEntitySourceDefinitions();
 		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
+		$dbName = $propertySource->getDatabaseName();
 
-		return new ConstraintRepository( $services->getDBLoadBalancer(), $propertySource->getDatabaseName() );
+		return new ConstraintRepository(
+			$services->getDBLoadBalancerFactory()->getMainLB( $dbName ),
+			$dbName
+		);
 	},
 
 	ConstraintsServices::CONSTRAINT_LOOKUP => function( MediaWikiServices $services ) {
