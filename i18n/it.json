@@ -82,7 +82,7 @@
 	"wbqc-violation-message-format-clarification": "Il valore per $1 ($2) dovrebbe corrispondere a \"$4\" (espressione regolare: $3).",
 	"wbqc-violation-message-inverse": "$1 dovrebbe avere anche la dichiarazione inversa $2 $3.",
 	"wbqc-violation-message-item": "Un'entità con $1 dovrebbe avere anche {{PLURAL:$3|0=una dichiarazione $2.|1=una dichiarazione $2 $5.|una dichiarazione per $2 con uno dei seguenti valori:$4}}",
-	"wbqc-violation-message-mandatory-qualifier": "A questa dichiarazione $1 manca un qualificatore $2.",
+	"wbqc-violation-message-mandatory-qualifier": "A questa dichiarazione $1 manca il qualificatore $2.",
 	"wbqc-violation-message-multi-value": "Questa proprietà dovrebbe contenere valori multipli.",
 	"wbqc-violation-message-one-of": "Il valore per $1 deve essere {{PLURAL:$2|1=$4.|2=$4 o $5.|uno dei seguenti:$3}}",
 	"wbqc-violation-message-qualifier": "La proprietà dovrebbe essere usata solo come qualificatore.",
