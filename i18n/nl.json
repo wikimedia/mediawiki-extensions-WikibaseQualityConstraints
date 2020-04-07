@@ -1,15 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Sjoerddebruin",
-			"Macofe",
-			"Siebrand",
-			"Mainframe98",
+			"Bdijkstra",
 			"Festina90",
+			"Macofe",
+			"Mainframe98",
 			"Mar(c)",
-			"Romaine",
 			"RadioAzureus",
-			"Bdijkstra"
+			"Romaine",
+			"Siebrand",
+			"Sjoerddebruin"
 		]
 	},
 	"wbqc-constraintreport": "Beperkingenrapportage",

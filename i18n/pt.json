@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vitorvicentevalente",
-			"Macofe",
-			"Hamilton Abreu",
 			"Athena in Wonderland",
-			"Mansil alfalb"
+			"Hamilton Abreu",
+			"Macofe",
+			"Mansil alfalb",
+			"Vitorvicentevalente"
 		]
 	},
 	"wbqc-constraintreport": "Relatório de restrições",

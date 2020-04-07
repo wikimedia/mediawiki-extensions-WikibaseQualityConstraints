@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Macofe",
 			"Annamerida",
+			"Arnaugir",
 			"F3RaN",
 			"Fitoschido",
-			"Arnaugir"
+			"Macofe"
 		]
 	},
 	"wbqc-constraintreport-explanation-part-one": "Aquesta pàgina especial comprova les restriccions de qualsevol entitat que desitgis. Les entitats es descarreguen del sistema activat, per tant cada violació de restricció que s'arregli serà eliminada immediatament de la llista.",

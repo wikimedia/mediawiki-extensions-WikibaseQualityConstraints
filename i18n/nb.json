@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kingu",
-			"Jeblad",
 			"Danmichaelo",
+			"Imre Eilertsen",
+			"Jeblad",
 			"Jon Harald Søby",
-			"Imre Eilertsen"
+			"Kingu"
 		]
 	},
 	"wbqc-constraintreport": "Begrensningsrapporter",

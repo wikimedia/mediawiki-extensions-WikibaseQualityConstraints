@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Otokoume",
-			"Sujiniku",
 			"Afaz",
 			"Kkairri",
-			"Shirayuki"
+			"Otokoume",
+			"Shirayuki",
+			"Sujiniku"
 		]
 	},
 	"wbqc-constraintreport": "制約チェック",

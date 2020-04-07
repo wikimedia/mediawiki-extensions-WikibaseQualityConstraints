@@ -2,8 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Gomoko",
-			"Wladek92",
-			"Thibaut120094"
+			"Thibaut120094",
+			"Wladek92"
 		]
 	},
 	"apihelp-wbcheckconstraints-description": "Réalise les contrôles de contraintes sur n'importe quelle entité que vous désirez et retourne les résultats.",

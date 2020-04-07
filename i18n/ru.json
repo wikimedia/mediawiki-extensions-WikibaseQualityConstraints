@@ -1,17 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
-			"Александр Сигачёв",
-			"Дмитрий",
-			"Okras",
-			"Redredsonia",
-			"Kaganer",
-			"Michgrig",
 			"Happy13241",
-			"Ole Yves",
-			"Stjn",
+			"Kaganer",
 			"Kareyac",
-			"Movses"
+			"Michgrig",
+			"Movses",
+			"Okras",
+			"Ole Yves",
+			"Redredsonia",
+			"Stjn",
+			"Александр Сигачёв",
+			"Дмитрий"
 		]
 	},
 	"wbqc-constraintreport-form-section": "Проверьте ограничения для сущности",

@@ -1,10 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Tacsipacsi",
-			"Urbalazs",
 			"Csigabi",
-			"Máté"
+			"Máté",
+			"Tacsipacsi",
+			"Urbalazs"
 		]
 	},
 	"wbqc-constraintreport": "Kikötésjelentés",

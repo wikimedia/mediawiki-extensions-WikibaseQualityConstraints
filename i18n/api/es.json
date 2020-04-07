@@ -1,10 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
+			"Agabi10",
 			"Ciencia Al Poder",
 			"Dgstranz",
-			"Fitoschido",
-			"Agabi10"
+			"Fitoschido"
 		]
 	},
 	"apihelp-wbcheckconstraints-description": "Realiza comprobaciones de restricciones en cualquier entidad y devuelve el resultado.",
