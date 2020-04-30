@@ -3,8 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Unit;
 
 use Wikibase\DataModel\Entity\PropertyId;
-use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
+use WikibaseQuality\ConstraintReport\ConstraintLookup;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\CachingConstraintLookup

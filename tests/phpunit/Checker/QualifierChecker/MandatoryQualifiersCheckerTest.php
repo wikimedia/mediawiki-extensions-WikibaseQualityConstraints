@@ -6,13 +6,13 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Repo\Tests\NewItem;
+use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use Wikibase\Repo\Tests\NewItem;
-use Wikibase\Repo\Tests\NewStatement;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker

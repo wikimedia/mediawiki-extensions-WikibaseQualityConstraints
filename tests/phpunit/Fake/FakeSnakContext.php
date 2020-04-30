@@ -2,10 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Fake;
 
-use Wikibase\DataModel\Entity\StatementListProvidingEntity;
-use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\StatementListProvidingEntity;
+use Wikibase\DataModel\Snak\Snak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext;
 
 /**

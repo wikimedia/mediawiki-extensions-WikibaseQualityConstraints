@@ -2,13 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\FormatChecker;
 
-use HashConfig;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\StringValue;
+use HashConfig;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;

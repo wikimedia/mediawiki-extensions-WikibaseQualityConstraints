@@ -4,10 +4,10 @@ namespace WikibaseQuality\ConstraintReport;
 
 use LogicException;
 use MediaWiki\Logger\LoggerFactory;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikimedia\Rdbms\DBUnexpectedError;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\IResultWrapper;
-use Wikibase\DataModel\Entity\PropertyId;
 
 /**
  * @author BP2014N1

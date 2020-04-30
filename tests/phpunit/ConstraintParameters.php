@@ -15,10 +15,10 @@ use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use Wikibase\Repo\Parsers\TimeParserFactory;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 
 /**
  * @author Lucas Werkmeister

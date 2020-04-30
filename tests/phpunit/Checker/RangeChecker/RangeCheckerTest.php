@@ -2,14 +2,14 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\RangeChecker;
 
-use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
-use Wikibase\DataModel\Snak\PropertyValueSnak;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Lib\Units\CSVUnitStorage;
 use Wikibase\Lib\Units\UnitConverter;
 use Wikibase\Repo\Tests\NewItem;

@@ -50,10 +50,10 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDes
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheckerServices;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
-use WikibaseQuality\ConstraintReport\ConstraintCheckerServices;
 use WikibaseQuality\ConstraintReport\WikibaseServices;
 
 /**

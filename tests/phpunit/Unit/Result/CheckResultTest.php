@@ -2,12 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Result;
 
-use Wikibase\DataModel\Snak\PropertyValueSnak;
+use DataValues\StringValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
-use DataValues\StringValue;
+use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;

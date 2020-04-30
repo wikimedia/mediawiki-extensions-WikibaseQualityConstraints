@@ -2,11 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\OneOfChecker;
 
-use Wikibase\DataModel\Snak\PropertyNoValueSnak;
-use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
+use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;

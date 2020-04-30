@@ -2,20 +2,20 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Specials;
 
+use DataValues\StringValue;
 use HamcrestPHPUnitIntegration;
 use MediaWiki\MediaWikiServices;
 use MultiConfig;
 use NullStatsdDataFactory;
 use SpecialPageTestBase;
-use Wikibase\DataModel\Services\Statement\GuidGenerator;
-use Wikibase\Repo\EntityIdLabelFormatterFactory;
-use DataValues\StringValue;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\Property;
+use Wikibase\DataModel\Services\Statement\GuidGenerator;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
-use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;

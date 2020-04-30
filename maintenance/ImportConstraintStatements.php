@@ -5,8 +5,8 @@ namespace WikibaseQuality\ConstraintReport\Maintenance;
 use Maintenance;
 use Title;
 use Wikibase\Lib\Store\PropertyInfoLookup;
-use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use Wikibase\Repo\WikibaseRepo;
+use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 
 // @codeCoverageIgnoreStart
 $basePath = getenv( "MW_INSTALL_PATH" ) !== false

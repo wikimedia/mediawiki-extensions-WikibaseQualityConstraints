@@ -24,10 +24,10 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
@@ -736,7 +736,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			'Q21510852'
 		);
 
-		$this->assertEquals( '', $parsed );
+		$this->assertSame( '', $parsed );
 	}
 
 	public function testParseNamespaceParameter_ItemId() {

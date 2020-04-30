@@ -21,11 +21,11 @@ use Wikibase\Lib\Store\EntityRevision;
 use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use Wikibase\Repo\Tests\NewStatement;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
-use Wikibase\Repo\WikibaseRepo;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob

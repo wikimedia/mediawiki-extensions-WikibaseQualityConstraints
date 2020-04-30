@@ -35,8 +35,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheckerServices;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
-use WikibaseQuality\ConstraintReport\WikibaseServices;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
+use WikibaseQuality\ConstraintReport\WikibaseServices;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**

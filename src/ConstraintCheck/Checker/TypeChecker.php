@@ -4,15 +4,15 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Config;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelperException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
-use Wikibase\DataModel\Statement\Statement;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
  * @author BP2014N1

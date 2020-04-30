@@ -5,10 +5,12 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 use ApiTestCase;
 use DataValues\UnknownValue;
 use HashConfig;
+use Language;
 use MediaWiki\Logger\LoggerFactory;
 use MockMessageLocalizer;
 use NullStatsdDataFactory;
 use RequestContext;
+use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
@@ -18,8 +20,8 @@ use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
-use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
+use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\Tests\NewItem;
@@ -37,9 +39,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRen
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
-use ValueFormatters\FormatterOptions;
 use Wikimedia\Assert\Assert;
-use Language;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraints

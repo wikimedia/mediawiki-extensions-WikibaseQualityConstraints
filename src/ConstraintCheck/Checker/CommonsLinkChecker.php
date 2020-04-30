@@ -6,13 +6,13 @@ use MalformedTitleException;
 use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\Role;
 
 /**

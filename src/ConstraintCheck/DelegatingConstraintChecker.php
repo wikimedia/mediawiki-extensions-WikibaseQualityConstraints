@@ -4,12 +4,14 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 
 use InvalidArgumentException;
 use LogicException;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Statement\Statement;
+use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -25,8 +27,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
-use WikibaseQuality\ConstraintReport\Constraint;
-use Wikibase\DataModel\Entity\EntityId;
 
 /**
  * Used to start the constraint-check process and to delegate

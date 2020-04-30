@@ -32,10 +32,10 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableCellBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 
 /**
  * Special page that displays all constraints that are defined on an Entity with additional information

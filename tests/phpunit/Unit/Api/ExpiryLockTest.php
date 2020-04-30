@@ -4,8 +4,8 @@ namespace WikibaseQuality\ConstraintReport\Tests\Unit\Api;
 
 use HashBagOStuff;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
-use Wikimedia\Timestamp\ConvertibleTimestamp;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InvalidConvertibleTimestamp;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Api\ExpiryLock
