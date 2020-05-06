@@ -23,7 +23,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerialize
 class ConstraintsServices {
 
 	const LOGGING_HELPER = 'WBQC_LoggingHelper';
-	const CONSTRAINT_REPOSITORY = 'WBQC_ConstraintRepository';
+	const CONSTRAINT_STORE = 'WBQC_ConstraintStore';
 	const CONSTRAINT_LOOKUP = 'WBQC_ConstraintLookup';
 	const CHECK_RESULT_SERIALIZER = 'WBQC_CheckResultSerializer';
 	const CHECK_RESULT_DESERIALIZER = 'WBQC_CheckResultDeserializer';
@@ -49,10 +49,10 @@ class ConstraintsServices {
 		return self::getService( $services, self::LOGGING_HELPER );
 	}
 
-	public static function getConstraintRepository(
+	public static function getConstraintStore(
 		MediaWikiServices $services = null
-	): ConstraintRepository {
-		return self::getService( $services, self::CONSTRAINT_REPOSITORY );
+	): ConstraintStore {
+		return self::getService( $services, self::CONSTRAINT_STORE );
 	}
 
 	public static function getConstraintLookup( MediaWikiServices $services = null ): ConstraintLookup {

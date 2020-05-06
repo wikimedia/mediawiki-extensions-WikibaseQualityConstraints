@@ -22,7 +22,7 @@ use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
-use WikibaseQuality\ConstraintReport\ConstraintRepository;
+use WikibaseQuality\ConstraintReport\ConstraintRepositoryStore;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
@@ -241,7 +241,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 
 		$job->importConstraintsForProperty(
 			$property,
-			new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false ),
+			new ConstraintRepositoryStore( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false ),
 			$propertyConstraintId
 		);
 
@@ -320,7 +320,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );
 
-		$constraintRepository = $this->getMockBuilder( ConstraintRepository::class )
+		$constraintRepository = $this->getMockBuilder( ConstraintRepositoryStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$constraintRepository->expects( $this->once() )
@@ -377,7 +377,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			'P2',
 			null,
 			$this->getDefaultConfig(),
-			new ConstraintRepository( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false ),
+			new ConstraintRepositoryStore( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false ),
 			$entityRevisionLookup,
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);

@@ -52,8 +52,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeseriali
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheckerServices;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
-use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
+use WikibaseQuality\ConstraintReport\ConstraintStore;
 use WikibaseQuality\ConstraintReport\WikibaseServices;
 
 /**
@@ -69,7 +69,7 @@ class ServicesTest extends MediaWikiTestCase {
 		return [
 			[ ExpiryLock::class ],
 			[ LoggingHelper::class ],
-			[ ConstraintRepository::class ],
+			[ ConstraintStore::class ],
 			[ ConstraintLookup::class ],
 			[ CheckResultSerializer::class ],
 			[ CheckResultDeserializer::class ],
@@ -189,6 +189,34 @@ class ServicesTest extends MediaWikiTestCase {
 		$service = WikibaseServices::$getterName();
 
 		$this->assertInstanceOf( $options['expectedClass'], $service );
+	}
+
+	public function testConstraintStoreThrowsExceptionForNonLocalEntitySource() {
+		$this->mergeMwGlobalArrayValue(
+			'wgWBRepoSettings',
+			[ 'localEntitySourceName' => 'LocalItemOnlySource' ]
+		);
+		$this->mergeMwGlobalArrayValue(
+			'wgWBRepoSettings',
+			[ 'entitySources' => [
+				'LocalItemOnlySource' => $this->getASourceDefinition( [ 'item' => 23 ] ),
+				'NonWritablePropertySource' => $this->getASourceDefinition( [ 'property' => 9 ] ),
+			] ]
+		);
+
+		$this->expectException( \RuntimeException::class );
+		ConstraintsServices::getConstraintStore();
+	}
+
+	private function getASourceDefinition( $entityNamespaces ) {
+		return [
+			'entityNamespaces' => $entityNamespaces,
+			'repoDatabase' => 'adb',
+			'baseUri' => 'http://bla/',
+			'rdfNodeNamespacePrefix' => 'h',
+			'rdfPredicateNamespacePrefix' => 'f',
+			'interwikiPrefix' => 'wiki',
+		];
 	}
 
 }

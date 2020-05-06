@@ -16,8 +16,8 @@ use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Store;
 use WikibaseQuality\ConstraintReport\Constraint;
-use WikibaseQuality\ConstraintReport\ConstraintRepository;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
+use WikibaseQuality\ConstraintReport\ConstraintStore;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -40,7 +40,7 @@ class UpdateConstraintsTableJob extends Job {
 			$params['propertyId'],
 			$params['revisionId'] ?? null,
 			MediaWikiServices::getInstance()->getMainConfig(),
-			ConstraintsServices::getConstraintRepository(),
+			ConstraintsServices::getConstraintStore(),
 			$repo->getEntityRevisionLookup( Store::LOOKUP_CACHING_DISABLED ),
 			$repo->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
@@ -62,9 +62,9 @@ class UpdateConstraintsTableJob extends Job {
 	private $config;
 
 	/**
-	 * @var ConstraintRepository
+	 * @var ConstraintStore
 	 */
-	private $constraintRepo;
+	private $constraintStore;
 
 	/**
 	 * @var EntityRevisionLookup
@@ -82,7 +82,7 @@ class UpdateConstraintsTableJob extends Job {
 	 * @param string $propertyId property ID of the property for this job (which has the constraint statements)
 	 * @param int|null $revisionId revision ID that triggered this job, if any
 	 * @param Config $config
-	 * @param ConstraintRepository $constraintRepo
+	 * @param ConstraintStore $constraintStore
 	 * @param EntityRevisionLookup $entityRevisionLookup
 	 * @param Serializer $snakSerializer
 	 */
@@ -92,7 +92,7 @@ class UpdateConstraintsTableJob extends Job {
 		$propertyId,
 		$revisionId,
 		Config $config,
-		ConstraintRepository $constraintRepo,
+		ConstraintStore $constraintStore,
 		EntityRevisionLookup $entityRevisionLookup,
 		Serializer $snakSerializer
 	) {
@@ -101,7 +101,7 @@ class UpdateConstraintsTableJob extends Job {
 		$this->propertyId = $propertyId;
 		$this->revisionId = $revisionId;
 		$this->config = $config;
-		$this->constraintRepo = $constraintRepo;
+		$this->constraintStore = $constraintStore;
 		$this->entityRevisionLookup = $entityRevisionLookup;
 		$this->snakSerializer = $snakSerializer;
 	}
@@ -138,7 +138,7 @@ class UpdateConstraintsTableJob extends Job {
 
 	public function importConstraintsForProperty(
 		Property $property,
-		ConstraintRepository $constraintRepo,
+		ConstraintStore $constraintStore,
 		PropertyId $propertyConstraintPropertyId
 	) {
 		$constraintsStatements = $property->getStatements()
@@ -148,11 +148,11 @@ class UpdateConstraintsTableJob extends Job {
 		foreach ( $constraintsStatements->getIterator() as $constraintStatement ) {
 			$constraints[] = $this->extractConstraintFromStatement( $property->getId(), $constraintStatement );
 			if ( count( $constraints ) >= self::BATCH_SIZE ) {
-				$constraintRepo->insertBatch( $constraints );
+				$constraintStore->insertBatch( $constraints );
 				$constraints = [];
 			}
 		}
-		$constraintRepo->insertBatch( $constraints );
+		$constraintStore->insertBatch( $constraints );
 	}
 
 	/**
@@ -175,14 +175,14 @@ class UpdateConstraintsTableJob extends Job {
 			return true;
 		}
 
-		$this->constraintRepo->deleteForProperty( $propertyId );
+		$this->constraintStore->deleteForProperty( $propertyId );
 
 		/** @var Property $property */
 		$property = $propertyRevision->getEntity();
 		'@phan-var Property $property';
 		$this->importConstraintsForProperty(
 			$property,
-			$this->constraintRepo,
+			$this->constraintStore,
 			new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) )
 		);
 
