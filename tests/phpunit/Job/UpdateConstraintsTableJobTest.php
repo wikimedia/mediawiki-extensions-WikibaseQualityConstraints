@@ -22,6 +22,7 @@ use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
+use Wikibase\Store;
 use WikibaseQuality\ConstraintReport\ConstraintRepositoryStore;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
@@ -317,7 +318,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		);
 		$entityRevisionLookup = $this->createMock( EntityRevisionLookup::class );
 		$entityRevisionLookup->method( 'getEntityRevision' )
-			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_REPLICA )
+			->with( $property->getId(), 0, Store::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );
 
 		$constraintRepository = $this->getMockBuilder( ConstraintRepositoryStore::class )
@@ -368,7 +369,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		);
 		$entityRevisionLookup = $this->createMock( EntityRevisionLookup::class );
 		$entityRevisionLookup->method( 'getEntityRevision' )
-			->with( $property->getId(), 0, EntityRevisionLookup::LATEST_FROM_REPLICA )
+			->with( $property->getId(), 0, Store::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );
 
 		$job = new UpdateConstraintsTableJob(

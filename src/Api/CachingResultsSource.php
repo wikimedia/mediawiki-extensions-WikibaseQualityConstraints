@@ -6,8 +6,8 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use DataValues\TimeValue;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
-use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
+use Wikibase\Store;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
@@ -466,7 +466,7 @@ class CachingResultsSource implements ResultsSource {
 
 		$latestRevisionIds = $this->wikiPageEntityMetaDataAccessor->loadLatestRevisionIds(
 			$entityIds,
-			EntityRevisionLookup::LATEST_FROM_REPLICA
+			Store::LATEST_FROM_REPLICA
 		);
 		if ( $this->hasFalseElements( $latestRevisionIds ) ) {
 			return null;

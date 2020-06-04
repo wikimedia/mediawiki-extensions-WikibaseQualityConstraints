@@ -12,8 +12,8 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
-use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
+use Wikibase\Store;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
 use WikibaseQuality\ConstraintReport\Api\ResultsSource;
@@ -305,7 +305,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->method( 'loadLatestRevisionIds' )
 			->with(
 				[ $q100, $q101, $p102 ],
-				EntityRevisionLookup::LATEST_FROM_REPLICA
+				Store::LATEST_FROM_REPLICA
 			)
 			->willReturn( $revisionIds );
 		$cachingResultsSource = $this->getCachingResultsSource(
@@ -473,7 +473,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->method( 'loadLatestRevisionIds' )
 			->with(
 				[ $q100 ],
-				EntityRevisionLookup::LATEST_FROM_REPLICA
+				Store::LATEST_FROM_REPLICA
 			)
 			->willReturn( [ 'Q100' => false ] );
 		$cachingResultsSource = $this->getCachingResultsSource(

@@ -167,7 +167,7 @@ class UpdateConstraintsTableJob extends Job {
 		$propertyRevision = $this->entityRevisionLookup->getEntityRevision(
 			$propertyId,
 			0, // latest
-			EntityRevisionLookup::LATEST_FROM_REPLICA
+			Store::LATEST_FROM_REPLICA
 		);
 
 		if ( $this->revisionId !== null && $propertyRevision->getRevisionId() < $this->revisionId ) {
