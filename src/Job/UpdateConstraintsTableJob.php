@@ -13,6 +13,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityRevisionLookup;
+use Wikibase\Lib\Store\LookupConstants;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Store;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -167,7 +168,7 @@ class UpdateConstraintsTableJob extends Job {
 		$propertyRevision = $this->entityRevisionLookup->getEntityRevision(
 			$propertyId,
 			0, // latest
-			Store::LATEST_FROM_REPLICA
+			LookupConstants::LATEST_FROM_REPLICA
 		);
 
 		if ( $this->revisionId !== null && $propertyRevision->getRevisionId() < $this->revisionId ) {
