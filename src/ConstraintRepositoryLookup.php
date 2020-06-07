@@ -41,7 +41,8 @@ class ConstraintRepositoryLookup implements ConstraintLookup {
 		$results = $dbr->select(
 			'wbqc_constraints',
 			'*',
-			[ 'pid' => $propertyId->getNumericId() ]
+			[ 'pid' => $propertyId->getNumericId() ],
+			__METHOD__
 		);
 
 		return $this->convertToConstraints( $results );

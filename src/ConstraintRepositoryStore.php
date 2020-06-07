@@ -59,7 +59,7 @@ class ConstraintRepositoryStore implements ConstraintStore {
 		);
 
 		$dbw = $this->lb->getConnection( ILoadBalancer::DB_MASTER, [], $this->dbName );
-		return $dbw->insert( 'wbqc_constraints', $accumulator );
+		return $dbw->insert( 'wbqc_constraints', $accumulator, __METHOD__ );
 	}
 
 	/**
@@ -75,7 +75,8 @@ class ConstraintRepositoryStore implements ConstraintStore {
 			'wbqc_constraints',
 			[
 				'pid' => $propertyId->getNumericId(),
-			]
+			],
+			__METHOD__
 		);
 	}
 
