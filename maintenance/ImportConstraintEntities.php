@@ -134,7 +134,8 @@ class ImportConstraintEntities extends Maintenance {
 	 */
 	private function importEntityFromWikidata( $wikidataEntityId ) {
 		$wikidataEntityUrl = "https://www.wikidata.org/wiki/Special:EntityData/$wikidataEntityId.json";
-		$wikidataEntitiesJson = MediaWikiServices::getInstance()->getHttpRequestFactory()->get( $wikidataEntityUrl );
+		$wikidataEntitiesJson = MediaWikiServices::getInstance()->getHttpRequestFactory()
+			->get( $wikidataEntityUrl, [], __METHOD__ );
 		return $this->importEntityFromJson( $wikidataEntityId, $wikidataEntitiesJson );
 	}
 

@@ -742,7 +742,7 @@ EOF;
 			'connectTimeout' => 'default',
 			'userAgent' => $this->defaultUserAgent,
 		];
-		$request = $this->requestFactory->create( $url, $options );
+		$request = $this->requestFactory->create( $url, $options, __METHOD__ );
 		$startTime = microtime( true );
 		$status = $request->execute();
 		$endTime = microtime( true );
