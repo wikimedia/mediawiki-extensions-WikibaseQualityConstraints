@@ -6,7 +6,7 @@ use Article;
 use FormlessAction;
 use IContextSource;
 use Wikibase\Lib\Store\EntityIdLookup;
-use Wikibase\Rdf\RdfVocabulary;
+use Wikibase\Repo\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;

@@ -20,7 +20,7 @@ use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\Rdf\RdfVocabulary;
+use Wikibase\Repo\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;

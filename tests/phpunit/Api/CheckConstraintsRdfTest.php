@@ -16,7 +16,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
-use Wikibase\Rdf\RdfVocabulary;
+use Wikibase\Repo\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraintsRdf;

@@ -29,7 +29,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\DataValueFactory;
 use Wikibase\Lib\EntityTypeDefinitions;
-use Wikibase\Rdf\RdfVocabulary;
+use Wikibase\Repo\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
