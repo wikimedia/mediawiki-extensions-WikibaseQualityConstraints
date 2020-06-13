@@ -114,7 +114,8 @@ final class WikibaseQualityConstraintsHooks {
 
 		$entityContentFactory = $repo->getEntityContentFactory();
 		if ( $entityContentFactory->isEntityContentModel( $wikiPage->getContentModel() ) ) {
-			$entityId = $entityContentFactory->getEntityIdForTitle( $wikiPage->getTitle() );
+			$entityIdLookup = $repo->getEntityIdLookup();
+			$entityId = $entityIdLookup->getEntityIdForTitle( $wikiPage->getTitle() );
 			if ( $entityId !== null ) {
 				$resultsCache = ResultsCache::getDefaultInstance();
 				$resultsCache->delete( $entityId );
