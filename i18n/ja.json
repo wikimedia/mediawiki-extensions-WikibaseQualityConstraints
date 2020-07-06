@@ -81,7 +81,7 @@
 	"wbqc-violation-message-invalid-scope": "$1は制約「$2」が扱う範囲内にありません。有効な{{PLURAL:$3|範囲}}は{{PLURAL:$3|1=$5です。|2=$5と$6です。|以下のとおりです。$4}}",
 	"wbqc-violation-message-commons-link-no-existent": "コモンズへのリンクは実在しなければなりません。",
 	"wbqc-violation-message-commons-link-not-well-formed": "コモンズへのリンクは整形式でなければなりません。",
-	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "名前空間「$1」は実装されていません。間違っていないか確認して下さい。",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "名前空間「$1」は実装されていません。間違っていないか確認してください。",
 	"wbqc-violation-message-conflicts-with-property": "エンティティは$1と$2の文を両方もつことはできません。",
 	"wbqc-violation-message-conflicts-with-claim": "エンティティが「$2：$3」の文をもつ場合、$1の文を使用してはなりません。",
 	"wbqc-violation-message-diff-within-range": "$3（$4）と$1（$2）の間は、$5から$6の範囲でなければなりません。",
