@@ -284,14 +284,12 @@ class ConstraintReportFactory {
 			$this->constraintCheckerMap = [
 				$this->config->get( 'WBQualityConstraintsConflictsWithConstraintId' )
 					=> new ConflictsWithChecker(
-						$this->lookup,
 						$this->constraintParameterParser,
 						$connectionCheckerHelper,
 						$this->constraintParameterRenderer
 					),
 				$this->config->get( 'WBQualityConstraintsItemRequiresClaimConstraintId' )
 					=> new ItemChecker(
-						$this->lookup,
 						$this->constraintParameterParser,
 						$connectionCheckerHelper,
 						$this->constraintParameterRenderer
@@ -344,7 +342,6 @@ class ConstraintReportFactory {
 					),
 				$this->config->get( 'WBQualityConstraintsTypeConstraintId' )
 					=> new TypeChecker(
-						$this->lookup,
 						$this->constraintParameterParser,
 						$typeCheckerHelper,
 						$this->config
