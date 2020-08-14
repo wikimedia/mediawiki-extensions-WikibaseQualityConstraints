@@ -25,9 +25,9 @@ use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
-use Wikibase\Repo\EntityIdHtmlLinkFormatterFactory;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
+use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
@@ -126,7 +126,7 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityLookup $entityLookup,
 		EntityTitleLookup $entityTitleLookup,
 		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
-		EntityIdHtmlLinkFormatterFactory $entityIdHtmlLinkFormatterFactory,
+		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
 		EntityIdParser $entityIdParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $constraintChecker,
