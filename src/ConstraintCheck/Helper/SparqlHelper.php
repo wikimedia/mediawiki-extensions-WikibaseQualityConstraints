@@ -701,7 +701,6 @@ EOF;
 	 *
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	// @codingStandardsIgnoreStart
 	public function runQuery( $query, $needsPrefixes = true ) {
 
 		if ( $this->throttlingLock->isLocked( self::EXPIRY_LOCK_ID ) ) {
@@ -711,12 +710,6 @@ EOF;
 
 		$endpoint = $this->config->get( 'WBQualityConstraintsSparqlEndpoint' );
 		$maxQueryTimeMillis = $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' );
-		$fallbackBlockDuration = (int)$this->config->get( 'WBQualityConstraintsSparqlThrottlingFallbackDuration' );
-
-		if ( $fallbackBlockDuration < 0 ) {
-			throw new InvalidArgumentException( 'Fallback duration must be positive int but is: ' .
-				$fallbackBlockDuration );
-		}
 
 		if ( $this->config->get( 'WBQualityConstraintsSparqlHasWikibaseSupport' ) ) {
 			$needsPrefixes = false;
@@ -753,21 +746,7 @@ EOF;
 			( $endTime - $startTime ) * 1000
 		);
 
-		if ( $request->getStatus() === self::HTTP_TOO_MANY_REQUESTS ) {
-			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
-			$throttlingUntil = $this->getThrottling( $request );
-			if ( !( $throttlingUntil instanceof ConvertibleTimestamp ) ) {
-				$this->loggingHelper->logSparqlHelperTooManyRequestsRetryAfterInvalid( $request );
-				$this->throttlingLock->lock(
-					self::EXPIRY_LOCK_ID,
-					$this->getTimestampInFuture( new DateInterval( 'PT' . $fallbackBlockDuration . 'S' ) )
-				);
-			} else {
-				$this->loggingHelper->logSparqlHelperTooManyRequestsRetryAfterPresent( $throttlingUntil, $request );
-				$this->throttlingLock->lock( self::EXPIRY_LOCK_ID, $throttlingUntil );
-			}
-			throw new TooManySparqlRequestsException();
-		}
+		$this->guardAgainstTooManyRequestsError( $request );
 
 		$maxAge = $this->getCacheMaxAge( $request->getResponseHeaders() );
 		if ( $maxAge ) {
@@ -810,6 +789,38 @@ EOF;
 
 		throw new SparqlHelperException();
 	}
-	// @codingStandardsIgnoreEnd
+
+	/**
+	 * Handle a potential “too many requests” error.
+	 *
+	 * @param MWHttpRequest $request
+	 * @throws TooManySparqlRequestsException
+	 */
+	private function guardAgainstTooManyRequestsError( MWHttpRequest $request ): void {
+		if ( $request->getStatus() !== self::HTTP_TOO_MANY_REQUESTS ) {
+			return;
+		}
+
+		$fallbackBlockDuration = (int)$this->config->get( 'WBQualityConstraintsSparqlThrottlingFallbackDuration' );
+
+		if ( $fallbackBlockDuration < 0 ) {
+			throw new InvalidArgumentException( 'Fallback duration must be positive int but is: ' .
+				$fallbackBlockDuration );
+		}
+
+		$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
+		$throttlingUntil = $this->getThrottling( $request );
+		if ( !( $throttlingUntil instanceof ConvertibleTimestamp ) ) {
+			$this->loggingHelper->logSparqlHelperTooManyRequestsRetryAfterInvalid( $request );
+			$this->throttlingLock->lock(
+				self::EXPIRY_LOCK_ID,
+				$this->getTimestampInFuture( new DateInterval( 'PT' . $fallbackBlockDuration . 'S' ) )
+			);
+		} else {
+			$this->loggingHelper->logSparqlHelperTooManyRequestsRetryAfterPresent( $throttlingUntil, $request );
+			$this->throttlingLock->lock( self::EXPIRY_LOCK_ID, $throttlingUntil );
+		}
+		throw new TooManySparqlRequestsException();
+	}
 
 }
