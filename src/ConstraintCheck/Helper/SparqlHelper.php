@@ -6,6 +6,7 @@ use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
 use DateInterval;
+use FormatJson;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
@@ -700,6 +701,7 @@ EOF;
 	 *
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
+	// @codingStandardsIgnoreStart
 	public function runQuery( $query, $needsPrefixes = true ) {
 
 		if ( $this->throttlingLock->isLocked( self::EXPIRY_LOCK_ID ) ) {
@@ -744,7 +746,7 @@ EOF;
 		];
 		$request = $this->requestFactory->create( $url, $options, __METHOD__ );
 		$startTime = microtime( true );
-		$status = $request->execute();
+		$requestStatus = $request->execute();
 		$endTime = microtime( true );
 		$this->dataFactory->timing(
 			'wikibase.quality.constraints.sparql.timing',
@@ -772,32 +774,42 @@ EOF;
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.cached' );
 		}
 
-		if ( $status->isOK() ) {
+		if ( $requestStatus->isOK() ) {
 			$json = $request->getContent();
-			$arr = json_decode( $json, true );
-			return new CachedQueryResults(
-				$arr,
-				Metadata::ofCachingMetadata(
-					$maxAge ?
-						CachingMetadata::ofMaximumAgeInSeconds( $maxAge ) :
-						CachingMetadata::fresh()
-				)
-			);
+			$jsonStatus = FormatJson::parse( $json, FormatJson::FORCE_ASSOC );
+			if ( $jsonStatus->isOK() ) {
+				return new CachedQueryResults(
+					$jsonStatus->getValue(),
+					Metadata::ofCachingMetadata(
+						$maxAge ?
+							CachingMetadata::ofMaximumAgeInSeconds( $maxAge ) :
+							CachingMetadata::fresh()
+					)
+				);
+			} else {
+				$jsonErrorCode = $jsonStatus->getErrors()[0]['message'];
+				$this->dataFactory->increment(
+					"wikibase.quality.constraints.sparql.error.json.$jsonErrorCode"
+				);
+				// fall through to general error handling
+			}
 		} else {
-			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.error' );
-
 			$this->dataFactory->increment(
 				"wikibase.quality.constraints.sparql.error.http.{$request->getStatus()}"
 			);
-
-			if ( $this->isTimeout( $request->getContent() ) ) {
-				$this->dataFactory->increment(
-					'wikibase.quality.constraints.sparql.error.timeout'
-				);
-			}
-
-			throw new SparqlHelperException();
+			// fall through to general error handling
 		}
+
+		$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.error' );
+
+		if ( $this->isTimeout( $request->getContent() ) ) {
+			$this->dataFactory->increment(
+				'wikibase.quality.constraints.sparql.error.timeout'
+			);
+		}
+
+		throw new SparqlHelperException();
 	}
+	// @codingStandardsIgnoreEnd
 
 }
