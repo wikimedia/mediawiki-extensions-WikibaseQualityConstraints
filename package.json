@@ -11,7 +11,6 @@
 		"grunt-banana-checker": "0.9.0",
 		"grunt-eslint": "23.0.0",
 		"grunt-jasmine-nodejs": "^1.6.1",
-		"grunt-jsonlint": "1.1.0",
 		"grunt-stylelint": "0.15.0",
 		"jasmine": "^3.3.1",
 		"module-alias": "^2.1.0",
