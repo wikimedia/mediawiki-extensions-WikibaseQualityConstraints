@@ -92,12 +92,14 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		if ( !self::$hasSetup ) {
 			$store = WikibaseRepo::getDefaultInstance()->getEntityStore();
 
+			$editor = $this->getTestUser()->getUser();
+
 			$propertyP1 = Property::newFromType( 'string' );
-			$store->saveEntity( $propertyP1, 'TestEntityP1', $GLOBALS[ 'wgUser' ], EDIT_NEW );
+			$store->saveEntity( $propertyP1, 'TestEntityP1', $editor, EDIT_NEW );
 			self::$idMap[ 'P1' ] = $propertyP1->getId();
 
 			$itemQ1 = new Item();
-			$store->saveEntity( $itemQ1, 'TestEntityQ1', $GLOBALS[ 'wgUser' ], EDIT_NEW );
+			$store->saveEntity( $itemQ1, 'TestEntityQ1', $editor, EDIT_NEW );
 			self::$idMap[ 'Q1' ] = $itemQ1->getId();
 
 			$statementGuidGenerator = new GuidGenerator();
@@ -109,7 +111,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			$statement->setGuid( $statementGuid );
 			$itemQ1->getStatements()->addStatement( $statement );
 
-			$store->saveEntity( $itemQ1, 'TestEntityQ1', $GLOBALS[ 'wgUser' ], EDIT_UPDATE );
+			$store->saveEntity( $itemQ1, 'TestEntityQ1', $editor, EDIT_UPDATE );
 
 			self::$hasSetup = true;
 		}
