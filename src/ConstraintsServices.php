@@ -117,10 +117,7 @@ class ConstraintsServices {
 		return self::getService( $services, self::RESULTS_SOURCE );
 	}
 
-	/**
-	 * @return ExpiryLock
-	 */
-	public static function getExpiryLock( MediaWikiServices $services = null ) {
+	public static function getExpiryLock( MediaWikiServices $services = null ): ExpiryLock {
 		return self::getService( $services, self::EXPIRY_LOCK );
 	}
 
