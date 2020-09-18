@@ -48,7 +48,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				}.bind( this ) );
 			}.bind( this ) );
 
-			mw.hook( 'wikibase.statement.saved' ).add( function ( entityId, statementId ) {
+			mw.hook( 'wikibase.statement.saved' ).add( function ( savedEntityId, statementId ) {
 				mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
 				this.snakCheck( api, lang, statementId );
 			}.bind( this ) );
