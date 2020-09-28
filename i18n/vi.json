@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Darcy Le",
+			"Ioe2015",
 			"KhangND",
 			"Minh Nguyen"
 		]
@@ -53,6 +54,7 @@
 	"wbqc-violation-message-parameter-needed": "Thuộc tính có ràng buộc “$1” phải có tham số “$2”.",
 	"wbqc-violation-message-target-entity-must-exist": "Thực thể đích phải tồn tại.",
 	"wbqc-violation-message-value-entity-must-exist": "Thực thể giá trị phải tồn tại.",
+	"wbqc-violation-message-parameter-regex": "$1 không phải là một biểu thức chính quy hợp lệ.",
 	"wbqc-violation-message-commons-link-no-existent": "Liên kết đến Commons nên tồn tại.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Liên kết đến Commons nên hợp lệ.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Chưa hỗ trợ kiểm tra không gian tên “$1”.",
