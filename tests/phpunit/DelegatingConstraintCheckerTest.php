@@ -6,6 +6,7 @@ use DataValues\StringValue;
 use HashConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Site\MediaWikiPageNameNormalizer;
+use MockHttpTrait;
 use MultiConfig;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
@@ -50,7 +51,7 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  */
 class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters, ResultAssertions, TitleParserMock;
+	use ConstraintParameters, ResultAssertions, TitleParserMock, MockHttpTrait;
 
 	/**
 	 * @var DelegatingConstraintChecker
@@ -70,6 +71,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
+		$this->installMockHttp( $this->makeFakeHttpRequest( '', 0 ) );
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 
 		$config = new MultiConfig( [
