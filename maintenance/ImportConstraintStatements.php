@@ -63,7 +63,11 @@ class ImportConstraintStatements extends Maintenance {
 		}
 
 		foreach ( $this->propertyInfoLookup->getAllPropertyInfo() as $propertyIdSerialization => $info ) {
-			$this->output( sprintf( 'Importing constraint statements for % 6s... ', $propertyIdSerialization ), $propertyIdSerialization );
+			$this->output( sprintf(
+				'Importing constraint statements for % 6s... ',
+				$propertyIdSerialization ),
+				$propertyIdSerialization
+			);
 			$startTime = microtime( true );
 			$job = call_user_func( $this->newUpdateConstraintsTableJob, $propertyIdSerialization );
 			$job->run();

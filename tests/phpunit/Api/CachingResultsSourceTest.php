@@ -452,7 +452,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertNotFalse( $cachedResults );
 		$this->assertArrayHasKey( 'futureTime', $cachedResults );
-		$this->assertEquals( $timeValue->getArrayValue(), $cachedResults['futureTime'] );
+		$this->assertSame( $timeValue->getArrayValue(), $cachedResults['futureTime'] );
 	}
 
 	public function testGetAndStoreResults_DontStoreWithoutRevisionInformation() {
@@ -837,7 +837,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			$statuses
 		);
 
-		$this->assertEquals( $expected->getArray(), $results->getArray() );
+		$this->assertSame( $expected->getArray(), $results->getArray() );
 		$this->assertEquals( $expected->getMetadata(), $results->getMetadata() );
 	}
 
@@ -984,7 +984,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$actual = $results->getArray();
 		sort( $expected );
 		sort( $actual );
-		$this->assertEquals( $expected, $actual );
+		$this->assertSame( $expected, $actual );
 	}
 
 	public function testGetResults_SkipCacheWithExtraStatuses() {

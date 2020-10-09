@@ -204,7 +204,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$this->assertEquals( $typeId, $constraint->getConstraintTypeItemId() );
 		$this->assertEquals( new PropertyId( 'P2' ), $constraint->getPropertyId() );
 		$this->assertEquals( $statementGuid, $constraint->getConstraintId() );
-		$this->assertEquals(
+		$this->assertSame(
 			[
 				$classId => [
 					$snakSerializer->serialize( $classHumanSnak ),

@@ -223,8 +223,8 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->assertSame( 'Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183', $resultStatement['id'] );
 		$resultsForItem = $resultStatement['mainsnak']['results'];
 		$this->assertCount( 1, $resultsForItem );
-		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
-		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );
+		$this->assertSame( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
+		$this->assertSame( 'P1', $resultsForItem[0]['property'] );
 	}
 
 	public function testItemWithClaimExistsAndHasViolation_WillGetOnlyThisViolationInTheResult() {
@@ -242,8 +242,8 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->assertSame( 'Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183', $resultStatement['id'] );
 		$resultsForItem = $resultStatement['mainsnak']['results'];
 		$this->assertCount( 1, $resultsForItem );
-		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
-		$this->assertEquals( 'P1', $resultsForItem[0]['property'] );
+		$this->assertSame( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
+		$this->assertSame( 'P1', $resultsForItem[0]['property'] );
 	}
 
 	public function testItemWithAlternativeCaseClaimExistsAndHasViolation_WillGetOnlyThisViolationInTheResult() {
@@ -264,8 +264,8 @@ class CheckConstraintsTest extends ApiTestCase {
 		$this->assertSame( $guid, $resultStatement['id'] );
 		$resultsForItem = $resultStatement['mainsnak']['results'];
 		$this->assertCount( 1, $resultsForItem );
-		$this->assertEquals( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
-		$this->assertEquals( $propertyId, $resultsForItem[0]['property'] );
+		$this->assertSame( CheckResult::STATUS_WARNING, $resultsForItem[0]['status'] );
+		$this->assertSame( $propertyId, $resultsForItem[0]['property'] );
 	}
 
 	public function testStatusParameterFiltersResults() {
@@ -288,8 +288,8 @@ class CheckConstraintsTest extends ApiTestCase {
 		$violatingStatement = $result['wbcheckconstraints']['Q1']['claims']['P1'][0];
 		$violatingStatementResults = $violatingStatement['mainsnak']['results'];
 		$this->assertCount( 1, $violatingStatementResults );
-		$this->assertEquals( CheckResult::STATUS_WARNING, $violatingStatementResults[0]['status'] );
-		$this->assertEquals( 'P1', $violatingStatementResults[0]['property'] );
+		$this->assertSame( CheckResult::STATUS_WARNING, $violatingStatementResults[0]['status'] );
+		$this->assertSame( 'P1', $violatingStatementResults[0]['property'] );
 
 		$compliantStatement = $result['wbcheckconstraints']['Q1']['claims']['P2'][0];
 		$compliantStatementResults = $compliantStatement['mainsnak']['results'];

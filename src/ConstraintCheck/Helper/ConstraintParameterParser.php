@@ -690,7 +690,11 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return string[]|null Context::TYPE_* constants
 	 */
-	public function parseConstraintScopeParameter( array $constraintParameters, $constraintTypeItemId, array $validScopes = null ) {
+	public function parseConstraintScopeParameter(
+		array $constraintParameters,
+		$constraintTypeItemId,
+		array $validScopes = null
+	) {
 		$contextTypes = [];
 		$parameterId = $this->config->get( 'WBQualityConstraintsConstraintScopeId' );
 		$items = $this->parseItemsParameter(

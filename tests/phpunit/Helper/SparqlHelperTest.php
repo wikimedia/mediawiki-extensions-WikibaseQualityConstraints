@@ -62,7 +62,8 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  */
 class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 
-	use DefaultConfig, ResultAssertions;
+	use DefaultConfig;
+	use ResultAssertions;
 
 	public function tearDown() : void {
 		ConvertibleTimestamp::setFakeTime( false );
@@ -430,8 +431,11 @@ EOF;
 
 		try {
 			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpressionWithSparql' ], [ $text, $regex ] );
-			$this->assertTrue( false,
-				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message ⧼${messageKey}⧽." );
+			$this->assertTrue(
+				false,
+				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message "
+			. "⧼${messageKey}⧽."
+			);
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
 				$this->createMock( ContextCursor::class ),

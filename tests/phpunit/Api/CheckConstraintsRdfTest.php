@@ -221,7 +221,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 s:P1-00000000-0000-0000-0000-000000000000 wikibase:hasViolationForConstraint s:P1-00000000-0000-0000-0000-000000000000 .
 
 TEXT;
-		$this->assertEquals( $expectedOutput, $actualOutput );
+		$this->assertSame( $expectedOutput, $actualOutput );
 	}
 
 	public function testShow404() {
@@ -237,7 +237,7 @@ TEXT;
 		$actualOutput = ob_get_clean();
 
 		$expectedOutput = '';
-		$this->assertEquals( $expectedOutput, $actualOutput );
+		$this->assertSame( $expectedOutput, $actualOutput );
 	}
 
 	public function testShowNoResults() {
@@ -253,7 +253,7 @@ TEXT;
 		$actualOutput = ob_get_clean();
 
 		$expectedOutput = '';
-		$this->assertEquals( $expectedOutput, $actualOutput );
+		$this->assertSame( $expectedOutput, $actualOutput );
 	}
 
 	public function testShowNoResultsWithNull() {
@@ -283,7 +283,7 @@ TEXT;
 		$actualOutput = ob_get_clean();
 
 		$expectedOutput = '';
-		$this->assertEquals( $expectedOutput, $actualOutput );
+		$this->assertSame( $expectedOutput, $actualOutput );
 	}
 
 }

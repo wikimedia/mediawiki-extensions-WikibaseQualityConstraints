@@ -181,7 +181,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 
 		// Run assertions
 		$actualHtml = $htmlTable->toHtml();
-		$this->assertEquals( $expectedHtml, $actualHtml );
+		$this->assertSame( $expectedHtml, $actualHtml );
 	}
 
 	public function toHtmlDataProvider() {

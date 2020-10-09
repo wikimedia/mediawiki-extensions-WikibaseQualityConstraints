@@ -1,6 +1,5 @@
 <?php
 
-
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use DataValues\TimeValue;

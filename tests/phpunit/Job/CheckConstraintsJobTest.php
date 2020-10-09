@@ -46,7 +46,7 @@ class CheckConstraintsJobTest extends MediaWikiTestCase {
 		];
 		$job = $this->createJob( self::JOB_TITLE_STRING, $params );
 
-		$this->assertEquals(
+		$this->assertSame(
 			[
 				'type' => CheckConstraintsJob::COMMAND,
 				'params' => $params

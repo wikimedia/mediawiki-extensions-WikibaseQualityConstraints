@@ -51,7 +51,10 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  */
 class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
-	use ConstraintParameters, ResultAssertions, TitleParserMock, MockHttpTrait;
+	use ConstraintParameters;
+	use ResultAssertions;
+	use TitleParserMock;
+	use MockHttpTrait;
 
 	/**
 	 * @var DelegatingConstraintChecker
@@ -522,7 +525,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertEquals( 'exception', $result[ 0 ]->getStatus() );
+		$this->assertSame( 'exception', $result[ 0 ]->getStatus() );
 	}
 
 	public function testCheckOnEntityIdBrokenException() {
@@ -533,7 +536,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertEquals( 'bad-parameters', $result[ 0 ]->getStatus() );
+		$this->assertSame( 'bad-parameters', $result[ 0 ]->getStatus() );
 	}
 
 	public function testCheckOnEntityIdMandatoryConstraint() {
@@ -559,7 +562,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertEquals( 'warning', $result[ 0 ]->getStatus() );
+		$this->assertSame( 'warning', $result[ 0 ]->getStatus() );
 	}
 
 	public function testCheckOnEntityIdSuggestionConstraint() {
