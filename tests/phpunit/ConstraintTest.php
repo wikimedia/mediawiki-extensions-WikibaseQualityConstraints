@@ -42,7 +42,7 @@ class ConstraintTest extends \MediaWikiTestCase {
 		$this->assertEquals( new PropertyId( 'P1' ), $constraints[0]->getPropertyId() );
 		$this->assertSame( '1', $constraints[0]->getConstraintId() );
 		$constraintParameters = $constraints[0]->getConstraintParameters();
-		$this->assertSame( 2, count( $constraintParameters ) );
+		$this->assertCount( 2, $constraintParameters );
 		$this->assertSame( 'P21', $constraintParameters['property'] );
 		$this->assertSame( 'mandatory', $constraintParameters['constraint_status'] );
 	}
