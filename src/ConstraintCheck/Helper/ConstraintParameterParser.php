@@ -188,7 +188,7 @@ class ConstraintParameterParser {
 		$instanceId = $this->config->get( 'WBQualityConstraintsInstanceOfRelationId' );
 		$subclassId = $this->config->get( 'WBQualityConstraintsSubclassOfRelationId' );
 		$instanceOrSubclassId = $this->config->get( 'WBQualityConstraintsInstanceOrSubclassOfRelationId' );
-		switch ( $relationEntityId ) {
+		switch ( $relationEntityId->getSerialization() ) {
 			case $instanceId:
 				return 'instance';
 			case $subclassId:
@@ -936,7 +936,11 @@ class ConstraintParameterParser {
 			case $referencesId:
 				return Context::TYPE_REFERENCE;
 			default:
-				$allowed = [ $mainSnakId, $qualifiersId, $referencesId ];
+				$allowed = [
+					new ItemId( $mainSnakId ),
+					new ItemId( $qualifiersId ),
+					new ItemId( $referencesId ),
+				];
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
 						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
