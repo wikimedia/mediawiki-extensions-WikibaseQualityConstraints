@@ -36,10 +36,11 @@
 	"SpecialPages": {
 		"ConstraintReport": {
 			"class": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport",
-			"factory": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::newFromGlobalState",
+			"factory": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::factory",
 			"services": [
 				"MainConfig",
 				"StatsdDataFactory",
+				"WikibaseRepo.EntityIdParser",
 				"WBQC_EntityLookup",
 				"WBQC_DelegatingConstraintChecker"
 			]
@@ -48,10 +49,11 @@
 	"APIModules": {
 		"wbcheckconstraints": {
 			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints",
-			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints::newFromGlobalState",
+			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints::factory",
 			"services": [
 				"MainConfig",
 				"StatsdDataFactory",
+				"WikibaseRepo.EntityIdParser",
 				"WBQC_ResultsSource"
 			]
 		},

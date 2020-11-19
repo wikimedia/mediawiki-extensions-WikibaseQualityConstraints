@@ -101,9 +101,10 @@ class SpecialConstraintReport extends SpecialPage {
 	 */
 	private $dataFactory;
 
-	public static function newFromGlobalState(
+	public static function factory(
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
+		EntityIdParser $entityIdParser,
 		EntityLookup $entityLookup,
 		DelegatingConstraintChecker $delegatingConstraintChecker
 	): self {
@@ -114,7 +115,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$wikibaseRepo->getEntityTitleLookup(),
 			new EntityIdLabelFormatterFactory(),
 			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
-			$wikibaseRepo->getEntityIdParser(),
+			$entityIdParser,
 			$wikibaseRepo->getValueFormatterFactory(),
 			$delegatingConstraintChecker,
 			$config,

@@ -69,14 +69,12 @@ class CheckConstraints extends ApiBase {
 	 */
 	private $dataFactory;
 
-	/**
-	 * Creates new instance from global state.
-	 */
-	public static function newFromGlobalState(
+	public static function factory(
 		ApiMain $main,
 		string $name,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
+		EntityIdParser $entityIdParser,
 		ResultsSource $resultsSource
 	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
@@ -103,10 +101,10 @@ class CheckConstraints extends ApiBase {
 			)
 		);
 
-		return new CheckConstraints(
+		return new self(
 			$main,
 			$name,
-			$repo->getEntityIdParser(),
+			$entityIdParser,
 			$repo->getStatementGuidValidator(),
 			$repo->getApiHelperFactory( RequestContext::getMain() ),
 			$resultsSource,

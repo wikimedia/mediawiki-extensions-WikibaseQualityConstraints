@@ -110,7 +110,7 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 
 		$repo = WikibaseRepo::getDefaultInstance();
 		/** @var Item $localEntity */
-		$localEntity = $repo->getEntityLookup()->getEntity( $repo->getEntityIdParser()->parse( $localEntityId ) );
+		$localEntity = $repo->getEntityLookup()->getEntity( WikibaseRepo::getEntityIdParser()->parse( $localEntityId ) );
 		$this->assertInstanceOf( Item::class, $localEntity );
 		$this->assertSame( 'type constraint', $localEntity->getLabels()->getByLanguage( 'en' )->getText() );
 		$this->assertEmpty( $localEntity->getSiteLinkList()->toArray() );

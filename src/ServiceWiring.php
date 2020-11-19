@@ -80,9 +80,9 @@ return [
 	},
 
 	ConstraintsServices::CHECK_RESULT_DESERIALIZER => function( MediaWikiServices $services ) {
-		// TODO in the future, get EntityIdParser and DataValueFactory from $services?
+		// TODO in the future, get DataValueFactory from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
-		$entityIdParser = $repo->getEntityIdParser();
+		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
 		$dataValueFactory = $repo->getDataValueFactory();
 
 		return new CheckResultDeserializer(
@@ -101,9 +101,9 @@ return [
 	},
 
 	ConstraintsServices::VIOLATION_MESSAGE_DESERIALIZER => function( MediaWikiServices $services ) {
-		// TODO in the future, get EntityIdParser and DataValueFactory from $services?
+		// TODO in the future, get DataValueFactory from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
-		$entityIdParser = $repo->getEntityIdParser();
+		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
 		$dataValueFactory = $repo->getDataValueFactory();
 
 		return new ViolationMessageDeserializer(
@@ -146,10 +146,10 @@ return [
 			return new DummySparqlHelper();
 		}
 
-		// TODO in the future, get RDFVocabulary, EntityIdParser and PropertyDataTypeLookup from $services?
+		// TODO in the future, get RDFVocabulary and PropertyDataTypeLookup from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$rdfVocabulary = $repo->getRdfVocabulary();
-		$entityIdParser = $repo->getEntityIdParser();
+		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
 		$propertyDataTypeLookup = $repo->getPropertyDataTypeLookup();
 
 		return new SparqlHelper(
@@ -289,9 +289,9 @@ return [
 				$config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
 				$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
 			];
-			// TODO in the future, get EntityIdParser and WikiPageEntityMetaDataAccessor from $services?
+			// TODO in the future, get WikiPageEntityMetaDataAccessor from $services?
 			$repo = WikibaseRepo::getDefaultInstance();
-			$entityIdParser = $repo->getEntityIdParser();
+			$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
 			$wikiPageEntityMetaDataAccessor = $repo->getLocalRepoWikiPageMetaDataAccessor();
 
 			$resultsSource = new CachingResultsSource(
