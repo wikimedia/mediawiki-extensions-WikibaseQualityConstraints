@@ -36,6 +36,8 @@
 	"wbqc-constraintreport-no-parameter": "tidak ada",
 	"wbqc-issues-short": "Masalah",
 	"wbqc-issues-long": "Pernyataan ini memiliki beberapa masalah.",
+	"wbqc-potentialissues-short": "Kemungkinan masalah",
+	"wbqc-potentialissues-long": "Pernyataan ini dapat memiliki masalah.",
 	"wbqc-suggestions-short": "Saran",
 	"wbqc-suggestions-long": "Ada beberapa saran untuk memperbaiki pernyataan ini.",
 	"wbqc-badparameters-short": "Parameter buruk",
@@ -140,5 +142,5 @@
 	"wbqc-violation-message-integer-bounds": "Nilai untuk $1 seharusnya berupa bilangan bulat sedangkan batas atas atau bawah $2 sebagian adalah pecahan atau bilangan desimal.",
 	"wbqc-violation-message-citationNeeded": "Pernyataan $1 sebaiknya memiliki paling tidak satu rujukan.",
 	"wbqc-violation-message-property-scope": "Atribut $1 seharusnya tidak digunakan di sini ($2) dan hanya digunakan di {{PLURAL:$3|$5.|: $4}}",
-	"wbqc-violation-message-exception": "Entitas ini mendapat pengecualian khusus terhadap pewatas serta telah ditandai."
+	"wbqc-violation-message-exception": "Entitas ini mendapat pengecualian khusus terhadap pewatas. Pengecualian tersebut telah ditandai."
 }
