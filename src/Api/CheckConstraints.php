@@ -234,7 +234,6 @@ class CheckConstraints extends ApiBase {
 			$this->errorReporter->dieError(
 				"If $paramConstraintId is specified, it must be nonempty.", 'no-data' );
 		}
-		// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 		if ( $params[self::PARAM_ID] === null && $params[self::PARAM_CLAIM_ID] === null ) {
 			$paramId = self::PARAM_ID;
 			$paramClaimId = self::PARAM_CLAIM_ID;
