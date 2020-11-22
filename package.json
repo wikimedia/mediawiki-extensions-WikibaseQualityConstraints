@@ -11,11 +11,11 @@
 		"grunt-banana-checker": "0.9.0",
 		"grunt-eslint": "23.0.0",
 		"grunt-jasmine-nodejs": "^1.6.1",
-		"grunt-stylelint": "0.15.0",
+		"grunt-stylelint": "0.16.0",
 		"jasmine": "^3.3.1",
 		"module-alias": "^2.1.0",
 		"sinon": "^6.3.5",
-		"stylelint-config-wikimedia": "0.10.1",
+		"stylelint-config-wikimedia": "0.10.3",
 		"unexpected": "^10.40.2"
 	},
 	"_moduleAliases": {
