@@ -33,6 +33,10 @@ class ImportConstraintStatements extends Maintenance {
 	 */
 	private $newUpdateConstraintsTableJob;
 
+	/**
+	 * @var callable
+	 * @phan-var callable():void
+	 */
 	private $setupServices;
 
 	public function __construct() {
