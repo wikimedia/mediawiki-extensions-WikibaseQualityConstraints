@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Jon Harald Søby",
+			"Sabelöga",
 			"WikiPhoenix"
 		]
 	},
@@ -12,6 +13,7 @@
 	"wbqc-constraintreport-form-section": "Kolla begränsningar för entitet",
 	"wbqc-constraintreport-form-submit-label": "Kontrollera",
 	"wbqc-constraintreport-form-entityid-label": "Enhets-ID:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx eller Pxx",
 	"wbqc-constraintreport-result-headline": "Resultat för",
 	"wbqc-constraintreport-invalid-entity-id": "Ogiltigt entitets-ID.",
 	"wbqc-constraintreport-not-existent-entity": "Entitet finns inte.",
