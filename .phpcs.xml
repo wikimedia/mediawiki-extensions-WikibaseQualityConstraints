@@ -38,9 +38,6 @@
 	<!-- Disallows any content outside of <?php … ?> tags. -->
 	<rule ref="Generic.Files.InlineHTML" />
 
-	<!-- NOTE: Never add the Generic.Metrics.… sniffs to this generic rule set, because these are
-		not about "code style", and the exact limits are highly disputable. -->
-
 	<rule ref="MediaWiki.NamingConventions.LowerCamelFunctionsName">
 		<!-- Exclude test methods like "testGivenInvalidInput_methodThrowsException". -->
 		<exclude-pattern>tests*Test*\.php</exclude-pattern>
@@ -89,7 +86,6 @@
 		</properties>
 	</rule>
 
-	<!-- Metrics are not part of the base CodeSniffer rule set. -->
 	<rule ref="Generic.Metrics.CyclomaticComplexity" />
 	<rule ref="Generic.Metrics.NestingLevel" />
 
