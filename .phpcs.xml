@@ -23,11 +23,9 @@
 			block patches from being merged. -->
 		<exclude name="MediaWiki.WhiteSpace.SpaceAfterClosure" />
 
-		<!-- Even if we encourage to use spaces in comments, we don't think this sniff should block
-			patches from being merged. -->
-		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment" />
-
 		<!-- END rules copied from wikibase-codesniffer (T268831) -->
+
+		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
 	</rule>
 
 	<!-- BEGIN rules copied from wikibase-codesniffer (T268831) -->

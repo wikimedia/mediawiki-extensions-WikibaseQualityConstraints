@@ -175,7 +175,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 	 * @dataProvider toHtmlDataProvider
 	 */
 	public function testToHtml( $headers, $rows, $expectedHtml ) {
-		//Create table
+		// Create table
 		$htmlTable = new HtmlTableBuilder( $headers );
 		$htmlTable->appendRows( $rows );
 
