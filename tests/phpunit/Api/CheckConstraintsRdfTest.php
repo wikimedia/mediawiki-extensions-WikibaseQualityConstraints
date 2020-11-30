@@ -187,7 +187,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	public function testShow() {
 		$cachingResultsSource = $this->getCachingResultsSource();
 		$cachingResultsSource->expects( $this->once() )->method( 'getStoredResults' )
-			->willReturnCallback( function( EntityId $entityId ) {
+			->willReturnCallback( function ( EntityId $entityId ) {
 				$serialization = $entityId->getSerialization();
 				return new CachedCheckResults(
 					[ $this->getCheckResult( $serialization ) ],
@@ -259,7 +259,7 @@ TEXT;
 	public function testShowNoResultsWithNull() {
 		$cachingResultsSource = $this->getCachingResultsSource();
 		$cachingResultsSource->expects( $this->once() )->method( 'getStoredResults' )
-			->willReturnCallback( function( EntityId $entityId ) {
+			->willReturnCallback( function ( EntityId $entityId ) {
 				$serialization = $entityId->getSerialization();
 				return new CachedCheckResults(
 					[

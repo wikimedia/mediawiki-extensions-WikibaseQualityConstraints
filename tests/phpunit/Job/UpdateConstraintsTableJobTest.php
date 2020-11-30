@@ -327,7 +327,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$constraintRepository->expects( $this->once() )
 			->method( 'insertBatch' )
 			->with( $this->callback(
-				function( array $constraints ) use ( $usedForValuesOnlyId, $usedAsQualifierId ) {
+				function ( array $constraints ) use ( $usedForValuesOnlyId, $usedAsQualifierId ) {
 					$this->assertCount( 2, $constraints );
 					$this->assertSame( $usedForValuesOnlyId, $constraints[0]->getConstraintTypeItemId() );
 					$this->assertSame( $usedAsQualifierId, $constraints[1]->getConstraintTypeItemId() );

@@ -462,7 +462,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId(
 			$entity->getId(),
 			null,
-			function( Context $context ) {
+			function ( Context $context ) {
 				return [ new NullResult( $context->getCursor() ) ];
 			}
 		);
@@ -478,7 +478,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$entity->getId(),
 			null,
 			null,
-			function( EntityId $entityId ) {
+			function ( EntityId $entityId ) {
 				return [ new NullResult( new EntityContextCursor( $entityId->getSerialization() ) ) ];
 			}
 		);
@@ -865,7 +865,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			->willReturn( [ Context::TYPE_QUALIFIER ] );
 		$checker->expects( $this->once() )
 			->method( 'checkConstraint' )
-			->willReturnCallback( function( Context $context, Constraint $constraint ) {
+			->willReturnCallback( function ( Context $context, Constraint $constraint ) {
 				$this->assertSame( Context::TYPE_QUALIFIER, $context->getType() );
 				return new CheckResult( $context, $constraint );
 			} );
@@ -909,7 +909,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			->willReturn( [ Context::TYPE_QUALIFIER ] );
 		$checker->expects( $this->once() )
 			->method( 'checkConstraint' )
-			->willReturnCallback( function( Context $context, Constraint $constraint ) {
+			->willReturnCallback( function ( Context $context, Constraint $constraint ) {
 				$this->assertSame( Context::TYPE_STATEMENT, $context->getType() );
 				return new CheckResult( $context, $constraint );
 			} );

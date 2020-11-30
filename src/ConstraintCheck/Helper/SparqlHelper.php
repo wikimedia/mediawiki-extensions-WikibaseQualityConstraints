@@ -237,7 +237,7 @@ END;
 
 		foreach ( array_chunk( $classes, 20 ) as $classesChunk ) {
 			$classesValues = implode( ' ', array_map(
-				function( $class ) {
+				function ( $class ) {
 					return 'wd:' . $class;
 				},
 				$classesChunk
@@ -485,7 +485,7 @@ EOF;
 		$cacheMapArray = $this->cache->getWithSetCallback(
 			$cacheKey,
 			WANObjectCache::TTL_DAY,
-			function( $cacheMapArray ) use ( $text, $regex, $textHash, $cacheMapSize ) {
+			function ( $cacheMapArray ) use ( $text, $regex, $textHash, $cacheMapSize ) {
 				// Initialize the cache map if not set
 				if ( $cacheMapArray === false ) {
 					$key = 'wikibase.quality.constraints.regex.cache.refresh.init';

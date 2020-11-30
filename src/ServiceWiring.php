@@ -28,11 +28,11 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeseriali
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 
 return [
-	ConstraintsServices::EXPIRY_LOCK => function( MediaWikiServices $services ) {
+	ConstraintsServices::EXPIRY_LOCK => function ( MediaWikiServices $services ) {
 		return new ExpiryLock( ObjectCache::getInstance( CACHE_ANYTHING ) );
 	},
 
-	ConstraintsServices::LOGGING_HELPER => function( MediaWikiServices $services ) {
+	ConstraintsServices::LOGGING_HELPER => function ( MediaWikiServices $services ) {
 		return new LoggingHelper(
 			$services->getStatsdDataFactory(),
 			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
@@ -40,7 +40,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::CONSTRAINT_STORE => function( MediaWikiServices $services ) {
+	ConstraintsServices::CONSTRAINT_STORE => function ( MediaWikiServices $services ) {
 		$wbRepo = WikibaseRepo::getDefaultInstance();
 		$sourceDefinitions = $wbRepo->getEntitySourceDefinitions();
 		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
@@ -56,7 +56,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::CONSTRAINT_LOOKUP => function( MediaWikiServices $services ) {
+	ConstraintsServices::CONSTRAINT_LOOKUP => function ( MediaWikiServices $services ) {
 		$wbRepo = WikibaseRepo::getDefaultInstance();
 		$sourceDefinitions = $wbRepo->getEntitySourceDefinitions();
 		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
@@ -68,7 +68,7 @@ return [
 		return new CachingConstraintLookup( $rawLookup );
 	},
 
-	ConstraintsServices::CHECK_RESULT_SERIALIZER => function( MediaWikiServices $services ) {
+	ConstraintsServices::CHECK_RESULT_SERIALIZER => function ( MediaWikiServices $services ) {
 		return new CheckResultSerializer(
 			new ConstraintSerializer(
 				false // constraint parameters are not exposed
@@ -79,7 +79,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::CHECK_RESULT_DESERIALIZER => function( MediaWikiServices $services ) {
+	ConstraintsServices::CHECK_RESULT_DESERIALIZER => function ( MediaWikiServices $services ) {
 		// TODO in the future, get DataValueFactory from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
@@ -96,11 +96,11 @@ return [
 		);
 	},
 
-	ConstraintsServices::VIOLATION_MESSAGE_SERIALIZER => function( MediaWikiServices $services ) {
+	ConstraintsServices::VIOLATION_MESSAGE_SERIALIZER => function ( MediaWikiServices $services ) {
 		return new ViolationMessageSerializer();
 	},
 
-	ConstraintsServices::VIOLATION_MESSAGE_DESERIALIZER => function( MediaWikiServices $services ) {
+	ConstraintsServices::VIOLATION_MESSAGE_DESERIALIZER => function ( MediaWikiServices $services ) {
 		// TODO in the future, get DataValueFactory from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
@@ -112,7 +112,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::CONSTRAINT_PARAMETER_PARSER => function( MediaWikiServices $services ) {
+	ConstraintsServices::CONSTRAINT_PARAMETER_PARSER => function ( MediaWikiServices $services ) {
 		// TODO in the future, get DeserializerFactory and entity source definitions from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$deserializerFactory = $repo->getBaseDataModelDeserializerFactory();
@@ -125,11 +125,11 @@ return [
 		);
 	},
 
-	ConstraintsServices::CONNECTION_CHECKER_HELPER => function( MediaWikiServices $services ) {
+	ConstraintsServices::CONNECTION_CHECKER_HELPER => function ( MediaWikiServices $services ) {
 		return new ConnectionCheckerHelper();
 	},
 
-	ConstraintsServices::RANGE_CHECKER_HELPER => function( MediaWikiServices $services ) {
+	ConstraintsServices::RANGE_CHECKER_HELPER => function ( MediaWikiServices $services ) {
 		// TODO in the future, get UnitConverter from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$unitConverter = $repo->getUnitConverter();
@@ -140,7 +140,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::SPARQL_HELPER => function( MediaWikiServices $services ) {
+	ConstraintsServices::SPARQL_HELPER => function ( MediaWikiServices $services ) {
 		$endpoint = $services->getMainConfig()->get( 'WBQualityConstraintsSparqlEndpoint' );
 		if ( $endpoint === '' ) {
 			return new DummySparqlHelper();
@@ -168,7 +168,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::TYPE_CHECKER_HELPER => function( MediaWikiServices $services ) {
+	ConstraintsServices::TYPE_CHECKER_HELPER => function ( MediaWikiServices $services ) {
 		return new TypeCheckerHelper(
 			WikibaseServices::getEntityLookup( $services ),
 			$services->getMainConfig(),
@@ -177,7 +177,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::DELEGATING_CONSTRAINT_CHECKER => function( MediaWikiServices $services ) {
+	ConstraintsServices::DELEGATING_CONSTRAINT_CHECKER => function ( MediaWikiServices $services ) {
 		// TODO in the future, get StatementGuidParser from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$statementGuidParser = $repo->getStatementGuidParser();
@@ -257,7 +257,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::RESULTS_SOURCE => function( MediaWikiServices $services ) {
+	ConstraintsServices::RESULTS_SOURCE => function ( MediaWikiServices $services ) {
 		$config = $services->getMainConfig();
 		$resultsSource = new CheckingResultsSource(
 			ConstraintsServices::getDelegatingConstraintChecker( $services )

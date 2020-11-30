@@ -755,7 +755,7 @@ EOF;
 		$requestFactory->expects( $this->atLeastOnce() )
 			->method( 'create' )
 			->with(
-				$this->callback( function( $url ) {
+				$this->callback( function ( $url ) {
 					$query = substr( $url, strpos( $url, '?query=' ) );
 					$query = substr( $query, strlen( '?query=' ) );
 					$query = substr( $query, 0, strpos( $query, '&format=' ) );

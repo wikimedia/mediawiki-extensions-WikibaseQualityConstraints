@@ -557,7 +557,7 @@ class ConstraintParameterParser {
 		}
 
 		return array_map(
-			function( $snakSerialization ) use ( $exceptionId ) {
+			function ( $snakSerialization ) use ( $exceptionId ) {
 				return $this->parseEntityIdParameter( $snakSerialization, $exceptionId );
 			},
 			$constraintParameters[$exceptionId]

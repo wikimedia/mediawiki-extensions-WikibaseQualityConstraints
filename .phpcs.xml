@@ -19,10 +19,6 @@
 			The code is not guaranteed to be easier to read if this is disallowed. -->
 		<exclude name="MediaWiki.WhiteSpace.DisallowEmptyLineFunctions" />
 
-		<!-- Even if we encourage to use a space in "function ()", we don't think this sniff should
-			block patches from being merged. -->
-		<exclude name="MediaWiki.WhiteSpace.SpaceAfterClosure" />
-
 		<!-- END rules copied from wikibase-codesniffer (T268831) -->
 
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />

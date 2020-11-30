@@ -69,7 +69,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->method( 'serialize' )
-			->willReturnCallback( function( CheckResult $checkResult ) {
+			->willReturnCallback( function ( CheckResult $checkResult ) {
 				$entityId = $checkResult->getContextCursor()->getEntityId();
 				if ( $checkResult instanceof NullResult ) {
 					return [ 'NullResult for ' . $entityId ];
@@ -88,7 +88,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->method( 'deserialize' )
-			->willReturnCallback( function( $serialization ) {
+			->willReturnCallback( function ( $serialization ) {
 				if ( strpos( $serialization[0], 'NullResult for ' ) === 0 ) {
 					$id = str_replace( 'NullResult for ', '', $serialization[0] );
 					return new NullResult( new EntityContextCursor( $id ) );
@@ -717,7 +717,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		$cachingResultsSource->method( 'getStoredResults' )->willReturn( null );
 		$cachingResultsSource->method( 'getAndStoreResults' )
 			->with( $entityIds, [], null, $statuses )
-			->willReturnCallback( function( $entityIds, $claimIds, $constraintIds ) {
+			->willReturnCallback( function ( $entityIds, $claimIds, $constraintIds ) {
 				$results = [];
 				foreach ( $entityIds as $entityId ) {
 					$serialization = $entityId->getSerialization();

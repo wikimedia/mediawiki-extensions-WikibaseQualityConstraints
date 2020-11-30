@@ -60,10 +60,10 @@ class CheckConstraintParametersTest extends ApiTestCase {
 
 		$this->oldModuleDeclaration = $wgAPIModules['wbcheckconstraintparameters'];
 
-		$this->checkConstraintParametersOnPropertyId = function( $propertyId ) {
+		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
 			$this->assertTrue( false, 'checkConstraintParametersOnPropertyId method should not be called by this test.' );
 		};
-		$this->checkConstraintParametersOnConstraintId = function( $constraintId ) {
+		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
 			$this->assertTrue( false, 'checkConstraintParametersOnConstraintId method should not be called by this test.' );
 		};
 
@@ -79,14 +79,14 @@ class CheckConstraintParametersTest extends ApiTestCase {
 			$delegatingConstraintChecker = $this->createMock( DelegatingConstraintChecker::class );
 			$delegatingConstraintChecker->method( 'checkConstraintParametersOnPropertyId' )
 				->will( $this->returnCallback(
-					function( $propertyId ) {
+					function ( $propertyId ) {
 						$callable = $this->checkConstraintParametersOnPropertyId;
 						return $callable( $propertyId );
 					}
 				) );
 			$delegatingConstraintChecker->method( 'checkConstraintParametersOnConstraintId' )
 				->will( $this->returnCallback(
-					function( $constraintId ) {
+					function ( $constraintId ) {
 						$callable = $this->checkConstraintParametersOnConstraintId;
 						return $callable( $constraintId );
 					}
@@ -97,7 +97,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				->setMethods( [ 'render' ] )
 				->getMock();
 			$violationMessageRenderer->method( 'render' )
-				->willReturnCallback( function( ViolationMessage $violationMessage ) {
+				->willReturnCallback( function ( ViolationMessage $violationMessage ) {
 					return $violationMessage->getMessageKey();
 				} );
 
@@ -140,7 +140,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForNonexistentProperty() {
-		$this->checkConstraintParametersOnPropertyId = function( $propertyId ) {
+		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
 			return [];
 		};
 
@@ -152,7 +152,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForNonexistentConstraint() {
-		$this->checkConstraintParametersOnConstraintId = function( $constraintId ) {
+		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
 			return null;
 		};
 
@@ -173,7 +173,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForGoodConstraint() {
-		$this->checkConstraintParametersOnConstraintId = function( $constraintId ) {
+		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
 			return [];
 		};
 
@@ -197,7 +197,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForBadConstraint() {
-		$this->checkConstraintParametersOnConstraintId = function( $constraintId ) {
+		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
 			return [ new ConstraintParameterException( $this->testMessage ) ];
 		};
 
@@ -223,7 +223,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForMultipleConstraints() {
-		$this->checkConstraintParametersOnConstraintId = function( $constraintId ) {
+		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
 			switch ( $constraintId ) {
 				case self::P1_NONEXISTENT:
 					return null;
@@ -264,7 +264,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForMultipleProperties() {
-		$this->checkConstraintParametersOnPropertyId = function( $propertyId ) {
+		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
 			switch ( $propertyId->getSerialization() ) {
 				case self::P1:
 					return [
@@ -311,10 +311,10 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForConstraintAndProperty() {
-		$this->checkConstraintParametersOnConstraintId = function( $constraintid ) {
+		$this->checkConstraintParametersOnConstraintId = function ( $constraintid ) {
 			return [ new ConstraintParameterException( $this->testMessage ) ];
 		};
-		$this->checkConstraintParametersOnPropertyId = function( $propertyId ) {
+		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
 			return [
 				self::P2_GOOD => []
 			];
@@ -349,7 +349,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForConstraintAndPropertyOverlapping() {
-		$this->checkConstraintParametersOnPropertyId = function( $propertyId ) {
+		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
 			return [
 				self::P2_GOOD => []
 			];

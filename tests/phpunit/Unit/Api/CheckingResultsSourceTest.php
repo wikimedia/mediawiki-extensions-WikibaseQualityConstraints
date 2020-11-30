@@ -102,7 +102,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		)->getArray();
 
 		$this->assertCount( 4, $results );
-		$this->assertCount( 4, array_unique( array_map( function( CheckResult $result ) {
+		$this->assertCount( 4, array_unique( array_map( function ( CheckResult $result ) {
 			return $result->getContextCursor()->getEntityId();
 		}, $results ) ) );
 		foreach ( $results as $result ) {
@@ -137,7 +137,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
-			->willReturnCallback( function(
+			->willReturnCallback( function (
 				EntityId $entityId,
 				array $constraintIds = null,
 				callable $defaultResultsPerContext = null,

@@ -162,7 +162,7 @@ class CheckConstraintParameters extends ApiBase {
 		}
 
 		return array_map(
-			function( $propertyIdSerialization ) {
+			function ( $propertyIdSerialization ) {
 				try {
 					return new PropertyId( $propertyIdSerialization );
 				} catch ( InvalidArgumentException $e ) {
@@ -193,7 +193,7 @@ class CheckConstraintParameters extends ApiBase {
 		}
 
 		return array_map(
-			function( $constraintId ) {
+			function ( $constraintId ) {
 				try {
 					$propertyId = $this->statementGuidParser->parse( $constraintId )->getEntityId();
 					if ( !$propertyId instanceof PropertyId ) {
