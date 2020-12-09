@@ -30,7 +30,7 @@ use Wikimedia\Assert\Assert;
  */
 class UpdateConstraintsTableJob extends Job {
 
-	const BATCH_SIZE = 10;
+	private const BATCH_SIZE = 10;
 
 	public static function newFromGlobalState( Title $title, array $params ) {
 		Assert::parameterType( 'string', $params['propertyId'], '$params["propertyId"]' );

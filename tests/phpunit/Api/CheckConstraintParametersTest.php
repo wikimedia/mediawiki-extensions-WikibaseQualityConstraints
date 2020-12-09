@@ -26,12 +26,12 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRen
  */
 class CheckConstraintParametersTest extends ApiTestCase {
 
-	const P1 = 'P1';
-	const P2 = 'P2';
-	const P1_NONEXISTENT = 'P1$febf1ef9-9291-4599-8488-00dd5f6ac814';
-	const P1_GOOD = 'P1$c76b6bf6-9c4f-4ef0-afb0-78cae372453d';
-	const P1_BAD = 'P1$4f7462a4-4523-4371-a35c-d246fa7159ee';
-	const P2_GOOD = 'P2$82648667-ca79-40e1-8839-4ed4abbb4c6d';
+	private const P1 = 'P1';
+	private const P2 = 'P2';
+	private const P1_NONEXISTENT = 'P1$febf1ef9-9291-4599-8488-00dd5f6ac814';
+	private const P1_GOOD = 'P1$c76b6bf6-9c4f-4ef0-afb0-78cae372453d';
+	private const P1_BAD = 'P1$4f7462a4-4523-4371-a35c-d246fa7159ee';
+	private const P2_GOOD = 'P2$82648667-ca79-40e1-8839-4ed4abbb4c6d';
 
 	private $oldModuleDeclaration;
 

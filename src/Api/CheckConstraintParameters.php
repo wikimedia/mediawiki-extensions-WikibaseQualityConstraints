@@ -30,14 +30,14 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRen
  */
 class CheckConstraintParameters extends ApiBase {
 
-	const PARAM_PROPERTY_ID = 'propertyid';
-	const PARAM_CONSTRAINT_ID = 'constraintid';
-	const KEY_STATUS = 'status';
-	const STATUS_OKAY = 'okay';
-	const STATUS_NOT_OKAY = 'not-okay';
-	const STATUS_NOT_FOUND = 'not-found';
-	const KEY_PROBLEMS = 'problems';
-	const KEY_MESSAGE_HTML = 'message-html';
+	public const PARAM_PROPERTY_ID = 'propertyid';
+	public const PARAM_CONSTRAINT_ID = 'constraintid';
+	public const KEY_STATUS = 'status';
+	public const STATUS_OKAY = 'okay';
+	public const STATUS_NOT_OKAY = 'not-okay';
+	public const STATUS_NOT_FOUND = 'not-found';
+	public const KEY_PROBLEMS = 'problems';
+	public const KEY_MESSAGE_HTML = 'message-html';
 
 	/**
 	 * @var ApiErrorReporter

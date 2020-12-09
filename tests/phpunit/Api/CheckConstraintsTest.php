@@ -54,9 +54,9 @@ use Wikimedia\Assert\Assert;
  */
 class CheckConstraintsTest extends ApiTestCase {
 
-	const EMPTY_ITEM = 'Q98';
-	const NONEXISTENT_ITEM = 'Q99';
-	const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
+	private const EMPTY_ITEM = 'Q98';
+	private const NONEXISTENT_ITEM = 'Q99';
+	private const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
 
 	private static $oldModuleDeclaration;
 

@@ -21,8 +21,8 @@ use WikibaseQuality\ConstraintReport\Job\CheckConstraintsJob;
  */
 class CheckConstraintsJobTest extends MediaWikiTestCase {
 
-	const ENTITY_ID = 'Q101';
-	const JOB_TITLE_STRING = 'CheckConstraintsJobTitleString';
+	private const ENTITY_ID = 'Q101';
+	private const JOB_TITLE_STRING = 'CheckConstraintsJobTitleString';
 
 	private function createJob( $titleString, $params ) {
 		$title = Title::makeTitle( NS_MAIN, $titleString );

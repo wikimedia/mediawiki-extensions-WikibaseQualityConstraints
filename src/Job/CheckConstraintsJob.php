@@ -21,7 +21,7 @@ use Wikimedia\Assert\Assert;
  */
 class CheckConstraintsJob extends Job {
 
-	const COMMAND = 'constraintsRunCheck';
+	public const COMMAND = 'constraintsRunCheck';
 
 	/**
 	 * @var CachingResultsSource

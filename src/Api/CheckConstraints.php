@@ -29,10 +29,10 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  */
 class CheckConstraints extends ApiBase {
 
-	const PARAM_ID = 'id';
-	const PARAM_CLAIM_ID = 'claimid';
-	const PARAM_CONSTRAINT_ID = 'constraintid';
-	const PARAM_STATUS = 'status';
+	public const PARAM_ID = 'id';
+	public const PARAM_CLAIM_ID = 'claimid';
+	public const PARAM_CONSTRAINT_ID = 'constraintid';
+	public const PARAM_STATUS = 'status';
 
 	/**
 	 * @var EntityIdParser

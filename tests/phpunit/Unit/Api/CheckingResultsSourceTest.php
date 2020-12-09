@@ -26,8 +26,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
  */
 class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 
-	const NONEXISTENT_ITEM = 'Q99';
-	const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
+	private const NONEXISTENT_ITEM = 'Q99';
+	private const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
 
 	private function getResultsSource(
 		DelegatingConstraintChecker $delegatingConstraintChecker = null

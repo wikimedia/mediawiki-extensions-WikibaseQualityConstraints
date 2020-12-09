@@ -111,25 +111,25 @@ class SparqlHelper {
 	/**
 	 * @var int stands for: No Retry-After header-field was sent back
 	 */
-	const NO_RETRY_AFTER = -1;
+	private const NO_RETRY_AFTER = -1;
 	/**
 	 * @var int stands for: Empty Retry-After header-field was sent back
 	 */
-	const EMPTY_RETRY_AFTER = -2;
+	private const EMPTY_RETRY_AFTER = -2;
 	/**
 	 * @var int stands for: Invalid Retry-After header-field was sent back
 	 * link a string
 	 */
-	const INVALID_RETRY_AFTER = -3;
+	private const INVALID_RETRY_AFTER = -3;
 	/**
 	 * @var string ID on which the lock is applied on
 	 */
-	const EXPIRY_LOCK_ID = 'SparqlHelper.runQuery';
+	public const EXPIRY_LOCK_ID = 'SparqlHelper.runQuery';
 
 	/**
 	 * @var int HTTP response code for too many requests
 	 */
-	const HTTP_TOO_MANY_REQUESTS = 429;
+	private const HTTP_TOO_MANY_REQUESTS = 429;
 
 	/**
 	 * @var HttpRequestFactory
