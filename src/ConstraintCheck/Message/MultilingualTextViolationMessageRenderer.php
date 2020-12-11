@@ -52,7 +52,6 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 
 	/**
 	 * @param ViolationMessage $violationMessage
-	 * (temporarily, pre-rendered strings are allowed and returned without changes)
 	 * @return string
 	 */
 	public function render( ViolationMessage $violationMessage ) {
