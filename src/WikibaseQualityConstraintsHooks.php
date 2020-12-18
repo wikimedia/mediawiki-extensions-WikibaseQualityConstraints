@@ -141,7 +141,7 @@ final class WikibaseQualityConstraintsHooks {
 
 		$out->addModules( 'wikibase.quality.constraints.suggestions' );
 
-		if ( !$out->getUser()->isLoggedIn() ) {
+		if ( !$out->getUser()->isRegistered() ) {
 			return;
 		}
 
