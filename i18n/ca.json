@@ -5,7 +5,8 @@
 			"Arnaugir",
 			"F3RaN",
 			"Fitoschido",
-			"Macofe"
+			"Macofe",
+			"Mguix"
 		]
 	},
 	"wbqc-constraintreport-explanation-part-one": "Aquesta pàgina especial comprova les restriccions de qualsevol entitat que desitgis. Les entitats es descarreguen del sistema activat, per tant cada violació de restricció que s'arregli serà eliminada immediatament de la llista.",
@@ -46,7 +47,7 @@
 	"wbqc-violation-message-contemporary-subject-earlier": "Les entitats $1 i $3 haurien de ser contemporànies per estar enllaçades mitjançant $2, però el valor final més tardà de $1 és $4, i el més valor inicial més primerenc de $3 és $5.",
 	"wbqc-violation-message-contemporary-value-earlier": "Les entitats $1 i $3 haurien de ser contemporànies per estar enllaçades mitjançant $2, però el valor final més tardà de $3 és $4, i el més valor inicial més primerenc de $1 és $5.",
 	"wbqc-violation-message-diff-within-range": "La diferència entre $3 ($4) i $1 ($2) hauria de ser entre $5 i $6.",
-	"wbqc-violation-message-diff-within-range-leftopen": "La diferència entre $3 ($4) i $1 ($2) no hauria de ser major que $5.",
+	"wbqc-violation-message-diff-within-range-leftopen": "La diferència entre $3 ($4) i $1 ($2) no hauria de ser més de $5.",
 	"wbqc-violation-message-diff-within-range-rightopen": "La diferència entre $3 ($4) i $1 ($2) hauria de ser menor que $5.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propietat definida en els paràmetres ha de tenir un valor del mateix tipus que aquesta propietat.",
 	"wbqc-violation-message-format": "El valor de $1 ($2) hauria de complir l'expressió regular $3.",
