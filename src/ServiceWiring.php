@@ -42,7 +42,7 @@ return [
 
 	ConstraintsServices::CONSTRAINT_STORE => function ( MediaWikiServices $services ) {
 		$wbRepo = WikibaseRepo::getDefaultInstance();
-		$sourceDefinitions = $wbRepo->getEntitySourceDefinitions();
+		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
 		$dbName = $propertySource->getDatabaseName();
 
@@ -57,8 +57,7 @@ return [
 	},
 
 	ConstraintsServices::CONSTRAINT_LOOKUP => function ( MediaWikiServices $services ) {
-		$wbRepo = WikibaseRepo::getDefaultInstance();
-		$sourceDefinitions = $wbRepo->getEntitySourceDefinitions();
+		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
 		$dbName = $propertySource->getDatabaseName();
 		$rawLookup = new ConstraintRepositoryLookup(
@@ -113,10 +112,10 @@ return [
 	},
 
 	ConstraintsServices::CONSTRAINT_PARAMETER_PARSER => function ( MediaWikiServices $services ) {
-		// TODO in the future, get DeserializerFactory and entity source definitions from $services?
+		// TODO in the future, get DeserializerFactory from $services?
 		$repo = WikibaseRepo::getDefaultInstance();
 		$deserializerFactory = $repo->getBaseDataModelDeserializerFactory();
-		$entitySourceDefinitions = $repo->getEntitySourceDefinitions();
+		$entitySourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 
 		return new ConstraintParameterParser(
 			$services->getMainConfig(),
@@ -270,7 +269,8 @@ return [
 			// check that we can use getLocalRepoWikiPageMetaDataAccessor()
 			// TODO we should always be able to cache constraint check results (T244726)
 			$repo = WikibaseRepo::getDefaultInstance();
-			foreach ( $repo->getEntitySourceDefinitions()->getSources() as $entitySource ) {
+			$entitySources = WikibaseRepo::getEntitySourceDefinitions( $services )->getSources();
+			foreach ( $entitySources as $entitySource ) {
 				if ( $entitySource->getSourceName() !== $repo->getLocalEntitySource()->getSourceName() ) {
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' )->warning(
 						'Cannot cache constraint check results for non-local source: ' .
