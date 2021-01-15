@@ -177,9 +177,7 @@ return [
 	},
 
 	ConstraintsServices::DELEGATING_CONSTRAINT_CHECKER => function ( MediaWikiServices $services ) {
-		// TODO in the future, get StatementGuidParser from $services?
-		$repo = WikibaseRepo::getDefaultInstance();
-		$statementGuidParser = $repo->getStatementGuidParser();
+		$statementGuidParser = WikibaseRepo::getStatementGuidParser( $services );
 
 		$config = $services->getMainConfig();
 		$checkerMap = [

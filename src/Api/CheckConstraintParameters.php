@@ -72,6 +72,7 @@ class CheckConstraintParameters extends ApiBase {
 		string $name,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
+		StatementGuidParser $statementGuidParser,
 		DelegatingConstraintChecker $delegatingConstraintChecker
 	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
@@ -99,7 +100,7 @@ class CheckConstraintParameters extends ApiBase {
 			$helperFactory,
 			$delegatingConstraintChecker,
 			$violationMessageRenderer,
-			$repo->getStatementGuidParser(),
+			$statementGuidParser,
 			$dataFactory
 		);
 	}

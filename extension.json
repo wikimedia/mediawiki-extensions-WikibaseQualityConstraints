@@ -63,6 +63,7 @@
 			"services": [
 				"MainConfig",
 				"StatsdDataFactory",
+				"WikibaseRepo.StatementGuidParser",
 				"WBQC_DelegatingConstraintChecker"
 			]
 		}

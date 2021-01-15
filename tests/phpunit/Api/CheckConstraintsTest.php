@@ -132,7 +132,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				self::$checkerMap,
 				new InMemoryConstraintLookup( self::$constraintLookupContents ),
 				$constraintParameterParser,
-				$repo->getStatementGuidParser(),
+				WikibaseRepo::getStatementGuidParser(),
 				new LoggingHelper(
 					$dataFactory,
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),

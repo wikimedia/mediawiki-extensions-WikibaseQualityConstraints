@@ -74,7 +74,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$wgAPIModules['wbcheckconstraintparameters']['factory'] = function ( $main, $name ) {
 			$repo = WikibaseRepo::getDefaultInstance();
 			$apiHelperFactory = $repo->getApiHelperFactory( RequestContext::getMain() );
-			$statementGuidParser = $repo->getStatementGuidParser();
+			$statementGuidParser = WikibaseRepo::getStatementGuidParser();
 
 			$delegatingConstraintChecker = $this->createMock( DelegatingConstraintChecker::class );
 			$delegatingConstraintChecker->method( 'checkConstraintParametersOnPropertyId' )
