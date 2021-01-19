@@ -60,7 +60,7 @@ final class WikibaseQualityConstraintsHooks {
 			self::isSelectedForJobRunBasedOnPercentage()
 		) {
 			$params = [ 'entityId' => $change->getEntityId()->getSerialization() ];
-			JobQueueGroup::singleton()->push(
+			JobQueueGroup::singleton()->lazyPush(
 				new JobSpecification( CheckConstraintsJob::COMMAND, $params )
 			);
 		}
