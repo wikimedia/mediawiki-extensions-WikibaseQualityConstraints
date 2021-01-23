@@ -44,11 +44,6 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 class SparqlHelper {
 
 	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
 	 * @var RdfVocabulary
 	 */
 	private $rdfVocabulary;
@@ -136,6 +131,48 @@ class SparqlHelper {
 	 */
 	private $requestFactory;
 
+	// config variables
+
+	/**
+	 * @var string
+	 */
+	private $endpoint;
+
+	/**
+	 * @var int
+	 */
+	private $maxQueryTimeMillis;
+
+	/**
+	 * @var string
+	 */
+	private $instanceOfId;
+
+	/**
+	 * @var string
+	 */
+	private $subclassOfId;
+
+	/**
+	 * @var int
+	 */
+	private $cacheMapSize;
+
+	/**
+	 * @var string[]
+	 */
+	private $timeoutExceptionClasses;
+
+	/**
+	 * @var bool
+	 */
+	private $sparqlHasWikibaseSupport;
+
+	/**
+	 * @var int
+	 */
+	private $sparqlThrottlingFallbackDuration;
+
 	public function __construct(
 		Config $config,
 		RdfVocabulary $rdfVocabulary,
@@ -150,7 +187,6 @@ class SparqlHelper {
 		$defaultUserAgent,
 		HttpRequestFactory $requestFactory
 	) {
-		$this->config = $config;
 		$this->rdfVocabulary = $rdfVocabulary;
 		$this->entityIdParser = $entityIdParser;
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
@@ -166,6 +202,21 @@ class SparqlHelper {
 		foreach ( $rdfVocabulary->entityNamespaceNames as $namespaceName ) {
 			$this->entityPrefixes[] = $rdfVocabulary->getNamespaceURI( $namespaceName );
 		}
+
+		$this->endpoint = $config->get( 'WBQualityConstraintsSparqlEndpoint' );
+		$this->maxQueryTimeMillis = $config->get( 'WBQualityConstraintsSparqlMaxMillis' );
+		$this->instanceOfId = $config->get( 'WBQualityConstraintsInstanceOfId' );
+		$this->subclassOfId = $config->get( 'WBQualityConstraintsSubclassOfId' );
+		$this->cacheMapSize = $config->get( 'WBQualityConstraintsFormatCacheMapSize' );
+		$this->timeoutExceptionClasses = $config->get(
+			'WBQualityConstraintsSparqlTimeoutExceptionClasses'
+		);
+		$this->sparqlHasWikibaseSupport = $config->get(
+			'WBQualityConstraintsSparqlHasWikibaseSupport'
+		);
+		$this->sparqlThrottlingFallbackDuration = (int)$config->get(
+			'WBQualityConstraintsSparqlThrottlingFallbackDuration'
+		);
 
 		$this->prefixes = $this->getQueryPrefixes( $rdfVocabulary );
 	}
@@ -227,9 +278,8 @@ END;
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function hasType( $id, array $classes ) {
-		$subclassOfId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 		// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
-		$gearingHint = $this->config->get( 'WBQualityConstraintsSparqlHasWikibaseSupport' ) ?
+		$gearingHint = $this->sparqlHasWikibaseSupport ?
 			' hint:Prior hint:gearing "forward".' :
 			'';
 
@@ -247,7 +297,7 @@ END;
 ASK {
   BIND(wd:$id AS ?item)
   VALUES ?class { $classesValues }
-  ?item wdt:$subclassOfId* ?class.$gearingHint
+  ?item wdt:{$this->subclassOfId}* ?class.$gearingHint
 }
 EOF;
 
@@ -480,12 +530,11 @@ EOF;
 			'WDQS-Java', // regex flavor
 			hash( 'sha256', $regex )
 		);
-		$cacheMapSize = $this->config->get( 'WBQualityConstraintsFormatCacheMapSize' );
 
 		$cacheMapArray = $this->cache->getWithSetCallback(
 			$cacheKey,
 			WANObjectCache::TTL_DAY,
-			function ( $cacheMapArray ) use ( $text, $regex, $textHash, $cacheMapSize ) {
+			function ( $cacheMapArray ) use ( $text, $regex, $textHash ) {
 				// Initialize the cache map if not set
 				if ( $cacheMapArray === false ) {
 					$key = 'wikibase.quality.constraints.regex.cache.refresh.init';
@@ -495,7 +544,7 @@ EOF;
 
 				$key = 'wikibase.quality.constraints.regex.cache.refresh';
 				$this->dataFactory->increment( $key );
-				$cacheMap = MapCacheLRU::newFromArray( $cacheMapArray, $cacheMapSize );
+				$cacheMap = MapCacheLRU::newFromArray( $cacheMapArray, $this->cacheMapSize );
 				if ( $cacheMap->has( $textHash ) ) {
 					$key = 'wikibase.quality.constraints.regex.cache.refresh.hit';
 					$this->dataFactory->increment( $key );
@@ -615,7 +664,7 @@ EOF;
 			function ( $fqn ) {
 				return preg_quote( $fqn, '/' );
 			},
-			$this->config->get( 'WBQualityConstraintsSparqlTimeoutExceptionClasses' )
+			$this->timeoutExceptionClasses
 		) );
 		return (bool)preg_match( '/' . $timeoutRegex . '/', $responseContent );
 	}
@@ -708,10 +757,7 @@ EOF;
 			throw new TooManySparqlRequestsException();
 		}
 
-		$endpoint = $this->config->get( 'WBQualityConstraintsSparqlEndpoint' );
-		$maxQueryTimeMillis = $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' );
-
-		if ( $this->config->get( 'WBQualityConstraintsSparqlHasWikibaseSupport' ) ) {
+		if ( $this->sparqlHasWikibaseSupport ) {
 			$needsPrefixes = false;
 		}
 
@@ -720,11 +766,11 @@ EOF;
 		}
 		$query = "#wbqc\n" . $query;
 
-		$url = $endpoint . '?' . http_build_query(
+		$url = $this->endpoint . '?' . http_build_query(
 			[
 				'query' => $query,
 				'format' => 'json',
-				'maxQueryTimeMillis' => $maxQueryTimeMillis,
+				'maxQueryTimeMillis' => $this->maxQueryTimeMillis,
 			],
 			null, ini_get( 'arg_separator.output' ),
 			// encode spaces with %20, not +
@@ -733,7 +779,7 @@ EOF;
 
 		$options = [
 			'method' => 'GET',
-			'timeout' => (int)round( ( $maxQueryTimeMillis + 1000 ) / 1000 ),
+			'timeout' => (int)round( ( $this->maxQueryTimeMillis + 1000 ) / 1000 ),
 			'connectTimeout' => 'default',
 			'userAgent' => $this->defaultUserAgent,
 		];
@@ -801,7 +847,7 @@ EOF;
 			return;
 		}
 
-		$fallbackBlockDuration = (int)$this->config->get( 'WBQualityConstraintsSparqlThrottlingFallbackDuration' );
+		$fallbackBlockDuration = $this->sparqlThrottlingFallbackDuration;
 
 		if ( $fallbackBlockDuration < 0 ) {
 			throw new InvalidArgumentException( 'Fallback duration must be positive int but is: ' .
