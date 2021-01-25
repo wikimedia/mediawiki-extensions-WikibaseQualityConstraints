@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"McSalama",
+			"Moj",
 			"Nike",
 			"Pyscowicz"
 		]
@@ -17,6 +18,10 @@
 	"wbqc-potentialissues-short": "Mahdollisia ongelmia",
 	"wbqc-constrainttypehelp-short": "Ohje",
 	"wbqc-constraintdiscuss-short": "Keskustele",
+	"wbqc-cached-generic": "Tämä tulos on välimuistista ja saattaa todellisuudessa vastata sivun vanhaa versiota.",
+	"wbqc-cached-minutes": "Tämä tulos on välimuistista ja saattaa todellisuudessa vastata sivun versiota {{PLURAL:$1|1=minuutti|$1&nbsp;minuuttia}} sitten.",
+	"wbqc-cached-hours": "Tämä tulos on välimuistista ja saattaa todellisuudessa vastata sivun versiota {{PLURAL:$1|1=tunti|$1&nbsp;tuntia}} sitten.",
+	"wbqc-cached-days": "Tämä tulos on välimuistista ja saattaa todellisuudessa vastata sivun versiota {{PLURAL:$1|1=päivä|$1&nbsp;päivää}} sitten.",
 	"wbqc-violation-header-parameters": "Parametrit:",
 	"wbqc-violation-message-commons-link-no-existent": "Commons-linkki täytyy olla.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Commons-linkin täytyy olla kelvollinen.",

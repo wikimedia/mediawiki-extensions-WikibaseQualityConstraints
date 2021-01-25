@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Les Meloures",
-			"Robby"
+			"Robby",
+			"Soued031"
 		]
 	},
 	"wbqc-constraintreport": "Rapport vun de Limitatiounen",
@@ -53,7 +54,7 @@
 	"wbqc-violation-message-parameter-value": "De Parameter \"$1\" muss e personaliséierte Wäert hunn an net \"kee Wäert\" oder \"onbekannte Wäert\".",
 	"wbqc-violation-message-parameter-item": "De Wäert fir de Parameter \"$1\" muss en Element sinn, net \"$2\".",
 	"wbqc-violation-message-parameter-monolingualtext": "De Wäert fir de Parameter \"$1\" muss en Text an enger Sprooch sinn, net \"$2\".",
-	"wbqc-violation-message-parameter-single": "De Parameter \"$1\" muss een eenzelne Wäert hunn.",
+	"wbqc-violation-message-parameter-single": "De Parameter \"$1\" muss een eenzege Wäert hunn.",
 	"wbqc-violation-message-sparql-error": "D'SPARQL Ufro huet zu engem Feeler gefouert.",
 	"wbqc-violation-message-parameters-error-unknown": "D'Parametere vun dëser Limitatioun konnten net importéiert ginn.",
 	"wbqc-violation-message-parameters-error-toolong": "D'Parameter vun dëser Limitatioun konnten net importéiert gi wëll se ze laang waren.",
