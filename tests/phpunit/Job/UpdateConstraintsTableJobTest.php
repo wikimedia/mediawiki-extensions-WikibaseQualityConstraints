@@ -20,6 +20,7 @@ use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Lib\Store\EntityRevision;
 use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Lib\Store\LookupConstants;
+use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLBFactory;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
@@ -27,6 +28,9 @@ use WikibaseQuality\ConstraintReport\ConstraintRepositoryStore;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ILBFactory;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob
@@ -342,6 +346,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			null,
 			$config,
 			$constraintRepository,
+			$this->mockLBFactory(),
 			$entityRevisionLookup,
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
@@ -372,13 +377,15 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			->with( $property->getId(), 0, LookupConstants::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );
 
+		$lb = new FakeLoadBalancer( [ 'dbr' => $this->db ] );
 		$job = new UpdateConstraintsTableJob(
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[],
 			'P2',
 			null,
 			$this->getDefaultConfig(),
-			new ConstraintRepositoryStore( new FakeLoadBalancer( [ 'dbr' => $this->db ] ), false ),
+			new ConstraintRepositoryStore( $lb, false ),
+			new FakeLBFactory( [ 'lb' => $lb ] ),
 			$entityRevisionLookup,
 			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
@@ -430,6 +437,15 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			TimeValue::PRECISION_DAY,
 			TimeValue::CALENDAR_GREGORIAN
 		);
+	}
+
+	private function mockLBFactory(): ILBFactory {
+		$connection = $this->createMock( IDatabase::class );
+		$loadBalancer = $this->createMock( ILoadBalancer::class );
+		$loadBalancer->method( 'getConnection' )->willReturn( $connection );
+		$lbFactory = $this->createMock( ILBFactory::class );
+		$lbFactory->method( 'getMainLB' )->willReturn( $loadBalancer );
+		return $lbFactory;
 	}
 
 }
