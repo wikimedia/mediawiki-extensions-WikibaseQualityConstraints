@@ -41,12 +41,12 @@ return [
 	},
 
 	ConstraintsServices::CONSTRAINT_STORE => function ( MediaWikiServices $services ) {
-		$wbRepo = WikibaseRepo::getDefaultInstance();
 		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
 		$dbName = $propertySource->getDatabaseName();
+		$localEntitySourceName = WikibaseRepo::getLocalEntitySource( $services )->getSourceName();
 
-		if ( $propertySource->getSourceName() !== $wbRepo->getLocalEntitySource()->getSourceName() ) {
+		if ( $propertySource->getSourceName() !== $localEntitySourceName ) {
 			throw new \RuntimeException( 'Can\'t get a ConstraintStore for a non local entity source.' );
 		}
 
@@ -262,10 +262,11 @@ return [
 			$cacheCheckConstraintsResults = true;
 			// check that we can use getLocalRepoWikiPageMetaDataAccessor()
 			// TODO we should always be able to cache constraint check results (T244726)
-			$repo = WikibaseRepo::getDefaultInstance();
 			$entitySources = WikibaseRepo::getEntitySourceDefinitions( $services )->getSources();
+			$localEntitySourceName = WikibaseRepo::getLocalEntitySource( $services )->getSourceName();
+
 			foreach ( $entitySources as $entitySource ) {
-				if ( $entitySource->getSourceName() !== $repo->getLocalEntitySource()->getSourceName() ) {
+				if ( $entitySource->getSourceName() !== $localEntitySourceName ) {
 					LoggerFactory::getInstance( 'WikibaseQualityConstraints' )->warning(
 						'Cannot cache constraint check results for non-local source: ' .
 						$entitySource->getSourceName()
