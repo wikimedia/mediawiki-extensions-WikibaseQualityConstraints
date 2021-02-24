@@ -79,10 +79,8 @@ return [
 	},
 
 	ConstraintsServices::CHECK_RESULT_DESERIALIZER => function ( MediaWikiServices $services ) {
-		// TODO in the future, get DataValueFactory from $services?
-		$repo = WikibaseRepo::getDefaultInstance();
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
-		$dataValueFactory = $repo->getDataValueFactory();
+		$dataValueFactory = WikibaseRepo::getDataValueFactory( $services );
 
 		return new CheckResultDeserializer(
 			new ConstraintDeserializer(),
@@ -100,10 +98,8 @@ return [
 	},
 
 	ConstraintsServices::VIOLATION_MESSAGE_DESERIALIZER => function ( MediaWikiServices $services ) {
-		// TODO in the future, get DataValueFactory from $services?
-		$repo = WikibaseRepo::getDefaultInstance();
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
-		$dataValueFactory = $repo->getDataValueFactory();
+		$dataValueFactory = WikibaseRepo::getDataValueFactory( $services );
 
 		return new ViolationMessageDeserializer(
 			$entityIdParser,
