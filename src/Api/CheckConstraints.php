@@ -75,6 +75,7 @@ class CheckConstraints extends ApiBase {
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		EntityIdParser $entityIdParser,
+		StatementGuidValidator $statementGuidValidator,
 		ResultsSource $resultsSource
 	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
@@ -105,7 +106,7 @@ class CheckConstraints extends ApiBase {
 			$main,
 			$name,
 			$entityIdParser,
-			$repo->getStatementGuidValidator(),
+			$statementGuidValidator,
 			$repo->getApiHelperFactory( RequestContext::getMain() ),
 			$resultsSource,
 			$checkResultsRenderer,

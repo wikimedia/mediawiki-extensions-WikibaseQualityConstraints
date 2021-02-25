@@ -54,6 +54,7 @@
 				"MainConfig",
 				"StatsdDataFactory",
 				"WikibaseRepo.EntityIdParser",
+				"WikibaseRepo.StatementGuidValidator",
 				"WBQC_ResultsSource"
 			]
 		},
