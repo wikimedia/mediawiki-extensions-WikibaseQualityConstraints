@@ -13,6 +13,7 @@ use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
+use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
@@ -73,6 +74,7 @@ class CheckConstraintParameters extends ApiBase {
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		StatementGuidParser $statementGuidParser,
+		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker
 	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
@@ -84,7 +86,6 @@ class CheckConstraintParameters extends ApiBase {
 			->getEntityIdFormatter( $language );
 		$formatterOptions = new FormatterOptions();
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-		$valueFormatterFactory = $repo->getValueFormatterFactory();
 		$dataValueFormatter = $valueFormatterFactory
 			->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 		$violationMessageRenderer = new MultilingualTextViolationMessageRenderer(

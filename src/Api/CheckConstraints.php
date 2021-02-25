@@ -12,6 +12,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
+use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
@@ -76,6 +77,7 @@ class CheckConstraints extends ApiBase {
 		IBufferingStatsdDataFactory $dataFactory,
 		EntityIdParser $entityIdParser,
 		StatementGuidValidator $statementGuidValidator,
+		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		ResultsSource $resultsSource
 	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
@@ -83,7 +85,6 @@ class CheckConstraints extends ApiBase {
 		$language = $repo->getUserLanguage();
 		$formatterOptions = new FormatterOptions();
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-		$valueFormatterFactory = $repo->getValueFormatterFactory();
 		$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
 		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
