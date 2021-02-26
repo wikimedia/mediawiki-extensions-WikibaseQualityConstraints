@@ -70,7 +70,7 @@ class CheckConstraintsRdf extends FormlessAction {
 			$context,
 			ConstraintsServices::getResultsSource(),
 			$repo->getEntityIdLookup(),
-			$repo->getRdfVocabulary()
+			WikibaseRepo::getRdfVocabulary()
 		);
 	}
 

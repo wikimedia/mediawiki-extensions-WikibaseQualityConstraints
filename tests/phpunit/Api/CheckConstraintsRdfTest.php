@@ -180,7 +180,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 			$this->getContext( $mockResponse ),
 			$cachingResultsSource,
 			$repo->getEntityIdLookup(),
-			$repo->getRdfVocabulary()
+			WikibaseRepo::getRdfVocabulary()
 		);
 	}
 
@@ -199,8 +199,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		$mockResponse->expects( $this->never() )->method( 'statusHeader' );
 		$mockResponse->expects( $this->once() )->method( 'header' )
 			->with( 'Content-Type: text/turtle; charset=UTF-8' );
-		$repo = WikibaseRepo::getDefaultInstance();
-		$rdfVocabulary = $repo->getRdfVocabulary();
+		$rdfVocabulary = WikibaseRepo::getRdfVocabulary();
 		$action = $this->getCheckConstraintsRdf(
 			new Article( Title::newFromText( 'Property:P1' ) ),
 			$mockResponse,
