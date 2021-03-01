@@ -141,9 +141,9 @@ return [
 			return new DummySparqlHelper();
 		}
 
-		// TODO in the future, get RDFVocabulary and PropertyDataTypeLookup from $services?
+		// TODO get PropertyDataTypeLookup from $services
 		$repo = WikibaseRepo::getDefaultInstance();
-		$rdfVocabulary = $repo->getRdfVocabulary();
+		$rdfVocabulary = WikibaseRepo::getRdfVocabulary( $services );
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
 		$propertyDataTypeLookup = $repo->getPropertyDataTypeLookup();
 
