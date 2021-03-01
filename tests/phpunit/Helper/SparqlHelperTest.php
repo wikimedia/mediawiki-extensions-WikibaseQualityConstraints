@@ -108,7 +108,6 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 					[ '' => 'http://www.wikidata.org/entity/' ],
 					[ '' => 'http://www.wikidata.org/wiki/Special:EntityData/' ],
 					new EntitySourceDefinitions( [], new EntityTypeDefinitions( [] ) ),
-					'',
 					[ '' => 'wd' ],
 					[ '' => '' ]
 				),
@@ -801,7 +800,6 @@ END;
 					'd'
 				)
 			], new EntityTypeDefinitions( [] ) ),
-			'wd',
 			[ 'wd' => 'wd' ],
 			[ 'wd' => '' ]
 		);
