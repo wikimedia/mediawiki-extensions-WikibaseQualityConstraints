@@ -112,11 +112,9 @@ final class WikibaseQualityConstraintsHooks {
 	}
 
 	public static function onArticlePurge( WikiPage $wikiPage ) {
-		$repo = WikibaseRepo::getDefaultInstance();
-
 		$entityContentFactory = WikibaseRepo::getEntityContentFactory();
 		if ( $entityContentFactory->isEntityContentModel( $wikiPage->getContentModel() ) ) {
-			$entityIdLookup = $repo->getEntityIdLookup();
+			$entityIdLookup = WikibaseRepo::getEntityIdLookup();
 			$entityId = $entityIdLookup->getEntityIdForTitle( $wikiPage->getTitle() );
 			if ( $entityId !== null ) {
 				$resultsCache = ResultsCache::getDefaultInstance();

@@ -63,13 +63,11 @@ class CheckConstraintsRdf extends FormlessAction {
 		object $page,
 		IContextSource $context
 	) {
-		$repo = WikibaseRepo::getDefaultInstance();
-
 		return new static(
 			$page,
 			$context,
 			ConstraintsServices::getResultsSource(),
-			$repo->getEntityIdLookup(),
+			WikibaseRepo::getEntityIdLookup(),
 			WikibaseRepo::getRdfVocabulary()
 		);
 	}
