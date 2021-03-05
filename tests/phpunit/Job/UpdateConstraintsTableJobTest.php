@@ -202,8 +202,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 
 		$constraint = $job->extractConstraintFromStatement( new PropertyId( 'P2' ), $statement );
 
-		$snakSerializer = WikibaseRepo::getDefaultInstance()
-			->getBaseDataModelSerializerFactory()
+		$snakSerializer = WikibaseRepo::getBaseDataModelSerializerFactory()
 			->newSnakSerializer();
 		$this->assertEquals( $typeId, $constraint->getConstraintTypeItemId() );
 		$this->assertEquals( new PropertyId( 'P2' ), $constraint->getPropertyId() );
@@ -348,7 +347,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			$constraintRepository,
 			$this->mockLBFactory(),
 			$entityRevisionLookup,
-			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
+			WikibaseRepo::getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 		$job->importConstraintsForProperty(
 			$property,
@@ -387,7 +386,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			new ConstraintRepositoryStore( $lb, false ),
 			new FakeLBFactory( [ 'lb' => $lb ] ),
 			$entityRevisionLookup,
-			WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer()
+			WikibaseRepo::getBaseDataModelSerializerFactory()->newSnakSerializer()
 		);
 
 		$job->run();
