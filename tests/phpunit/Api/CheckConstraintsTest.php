@@ -153,7 +153,7 @@ class CheckConstraintsTest extends ApiTestCase {
 					$constraintChecker
 				),
 				new CheckResultsRenderer(
-					$repo->getEntityTitleLookup(),
+					WikibaseRepo::getEntityTitleLookup(),
 					$entityIdFormatter,
 					new ViolationMessageRenderer(
 						$entityIdFormatter,

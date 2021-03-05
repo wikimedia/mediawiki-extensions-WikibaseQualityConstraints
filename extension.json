@@ -41,6 +41,7 @@
 				"MainConfig",
 				"StatsdDataFactory",
 				"WikibaseRepo.EntityIdParser",
+				"WikibaseRepo.EntityTitleLookup",
 				"WikibaseRepo.ValueFormatterFactory",
 				"WBQC_EntityLookup",
 				"WBQC_DelegatingConstraintChecker"
@@ -55,6 +56,7 @@
 				"MainConfig",
 				"StatsdDataFactory",
 				"WikibaseRepo.EntityIdParser",
+				"WikibaseRepo.EntityTitleLookup",
 				"WikibaseRepo.StatementGuidValidator",
 				"WikibaseRepo.ValueFormatterFactory",
 				"WBQC_ResultsSource"

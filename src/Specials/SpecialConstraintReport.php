@@ -105,6 +105,7 @@ class SpecialConstraintReport extends SpecialPage {
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		EntityIdParser $entityIdParser,
+		EntityTitleLookup $entityTitleLookup,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		EntityLookup $entityLookup,
 		DelegatingConstraintChecker $delegatingConstraintChecker
@@ -113,7 +114,7 @@ class SpecialConstraintReport extends SpecialPage {
 
 		return new self(
 			$entityLookup,
-			$wikibaseRepo->getEntityTitleLookup(),
+			$entityTitleLookup,
 			new EntityIdLabelFormatterFactory(),
 			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
 			$entityIdParser,
