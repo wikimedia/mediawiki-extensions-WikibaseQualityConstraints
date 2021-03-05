@@ -58,7 +58,7 @@ trait ConstraintParameters {
 	 */
 	private function getSnakSerializer() {
 		if ( $this->snakSerializer == null ) {
-			$this->snakSerializer = WikibaseRepo::getDefaultInstance()->getBaseDataModelSerializerFactory()->newSnakSerializer();
+			$this->snakSerializer = WikibaseRepo::getBaseDataModelSerializerFactory()->newSnakSerializer();
 		}
 
 		return $this->snakSerializer;
