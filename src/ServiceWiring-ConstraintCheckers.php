@@ -177,13 +177,9 @@ return [
 	},
 
 	ConstraintCheckerServices::ALLOWED_UNITS_CHECKER => function ( MediaWikiServices $services ) {
-		// TODO in the future, get UnitConverter from $services?
-		$repo = WikibaseRepo::getDefaultInstance();
-		$unitConverter = $repo->getUnitConverter();
-
 		return new AllowedUnitsChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
-			$unitConverter
+			WikibaseRepo::getUnitConverter( $services )
 		);
 	},
 
