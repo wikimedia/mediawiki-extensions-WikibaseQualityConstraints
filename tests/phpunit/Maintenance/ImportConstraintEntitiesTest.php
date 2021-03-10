@@ -85,7 +85,7 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 	public function testImportEntityFromJson_dryRun() {
 		$this->maintenance->loadParamsAndArgs( null, [ 'dry-run' => 1 ], null );
 		$repo = WikibaseRepo::getDefaultInstance();
-		$this->maintenance->entitySerializer = $repo->getAllTypesEntitySerializer();
+		$this->maintenance->entitySerializer = WikibaseRepo::getAllTypesEntitySerializer();
 		$this->maintenance->entityDeserializer = $repo->getInternalFormatEntityDeserializer();
 		$entityStore = $this->createMock( EntityStore::class );
 		$entityStore->expects( $this->never() )->method( 'saveEntity' );
