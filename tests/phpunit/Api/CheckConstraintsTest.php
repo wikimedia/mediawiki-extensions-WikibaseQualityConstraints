@@ -121,7 +121,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			$entityIdParser = new ItemIdParser();
 			$constraintParameterParser = new ConstraintParameterParser(
 				$config,
-				$repo->getBaseDataModelDeserializerFactory(),
+				WikibaseRepo::getBaseDataModelDeserializerFactory(),
 				WikibaseRepo::getEntitySourceDefinitions()
 					->getSourceForEntityType( 'item' )
 					->getConceptBaseUri()
