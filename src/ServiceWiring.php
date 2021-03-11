@@ -108,9 +108,7 @@ return [
 	},
 
 	ConstraintsServices::CONSTRAINT_PARAMETER_PARSER => function ( MediaWikiServices $services ) {
-		// TODO in the future, get DeserializerFactory from $services?
-		$repo = WikibaseRepo::getDefaultInstance();
-		$deserializerFactory = $repo->getBaseDataModelDeserializerFactory();
+		$deserializerFactory = WikibaseRepo::getBaseDataModelDeserializerFactory( $services );
 		$entitySourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 
 		return new ConstraintParameterParser(

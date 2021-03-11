@@ -915,7 +915,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				new HashConfig( [ 'WBQualityConstraintsEnableSuggestionConstraintStatus' => true ] ),
 				$this->getDefaultConfig()
 			] ),
-			WikibaseRepo::getDefaultInstance()->getBaseDataModelDeserializerFactory(),
+			WikibaseRepo::getBaseDataModelDeserializerFactory(),
 			'http://wikibase.example/entity/'
 		);
 

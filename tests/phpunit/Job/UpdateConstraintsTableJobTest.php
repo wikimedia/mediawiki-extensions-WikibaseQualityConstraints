@@ -126,8 +126,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			$snakP2305,
 		] );
 		$parameters = $job->extractParametersFromQualifiers( $qualifiers );
-		$deserializer = WikibaseRepo::getDefaultInstance()
-			->getBaseDataModelDeserializerFactory()
+		$deserializer = WikibaseRepo::getBaseDataModelDeserializerFactory()
 			->newSnakDeserializer();
 		$this->assertEquals( $snakP2308A, $deserializer->deserialize( $parameters['P2308'][0] ) );
 		$this->assertEquals( $snakP1646, $deserializer->deserialize( $parameters['P1646'][0] ) );
