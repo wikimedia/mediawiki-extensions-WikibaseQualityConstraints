@@ -123,13 +123,9 @@ return [
 	},
 
 	ConstraintsServices::RANGE_CHECKER_HELPER => function ( MediaWikiServices $services ) {
-		// TODO in the future, get UnitConverter from $services?
-		$repo = WikibaseRepo::getDefaultInstance();
-		$unitConverter = $repo->getUnitConverter();
-
 		return new RangeCheckerHelper(
 			$services->getMainConfig(),
-			$unitConverter
+			WikibaseRepo::getUnitConverter( $services )
 		);
 	},
 
