@@ -124,9 +124,7 @@ final class WikibaseQualityConstraintsHooks {
 	}
 
 	public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
-		$repo = WikibaseRepo::getDefaultInstance();
-
-		$lookup = $repo->getEntityNamespaceLookup();
+		$lookup = WikibaseRepo::getEntityNamespaceLookup();
 		$title = $out->getTitle();
 		if ( $title === null ) {
 			return;
