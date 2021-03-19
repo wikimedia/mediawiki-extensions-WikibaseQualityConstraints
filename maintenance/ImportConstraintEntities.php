@@ -82,7 +82,7 @@ class ImportConstraintEntities extends Maintenance {
 		$services = MediaWikiServices::getInstance();
 		$repo = WikibaseRepo::getDefaultInstance();
 		$this->entitySerializer = WikibaseRepo::getAllTypesEntitySerializer( $services );
-		$this->entityDeserializer = $repo->getInternalFormatEntityDeserializer();
+		$this->entityDeserializer = WikibaseRepo::getInternalFormatEntityDeserializer();
 		$this->entityStore = $repo->getEntityStore();
 		$this->httpRequestFactory = $services->getHttpRequestFactory();
 		if ( !$this->getOption( 'dry-run', false ) ) {
