@@ -60,9 +60,9 @@ class ImportConstraintStatements extends Maintenance {
 		// Wikibase classes are not yet loaded, so setup services in a callback run in execute
 		// that can be overridden in tests.
 		$this->setupServices = function () {
-			$repo = WikibaseRepo::getDefaultInstance();
-			$this->propertyInfoLookup = $repo->getStore()->getPropertyInfoLookup();
-			$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+			$services = MediaWikiServices::getInstance();
+			$this->propertyInfoLookup = WikibaseRepo::getStore( $services )->getPropertyInfoLookup();
+			$this->lbFactory = $services->getDBLoadBalancerFactory();
 		};
 	}
 
