@@ -278,10 +278,9 @@ return [
 				$config->get( 'WBQualityConstraintsValueTypeConstraintId' ),
 				$config->get( 'WBQualityConstraintsDistinctValuesConstraintId' ),
 			];
-			// TODO in the future, get WikiPageEntityMetaDataAccessor from $services?
-			$repo = WikibaseRepo::getDefaultInstance();
 			$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
-			$wikiPageEntityMetaDataAccessor = $repo->getLocalRepoWikiPageMetaDataAccessor();
+			$wikiPageEntityMetaDataAccessor = WikibaseRepo::getLocalRepoWikiPageMetaDataAccessor(
+				$services );
 
 			$resultsSource = new CachingResultsSource(
 				$resultsSource,
