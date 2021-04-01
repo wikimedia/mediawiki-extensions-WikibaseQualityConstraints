@@ -79,7 +79,7 @@ class CheckConstraintParameters extends ApiBase {
 	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
 		$helperFactory = $repo->getApiHelperFactory( RequestContext::getMain() );
-		$language = $repo->getUserLanguage();
+		$language = WikibaseRepo::getUserLanguage();
 
 		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
 		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory
