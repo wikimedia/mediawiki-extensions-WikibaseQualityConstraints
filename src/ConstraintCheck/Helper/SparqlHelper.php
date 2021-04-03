@@ -455,7 +455,7 @@ EOF;
 		), $results->getMetadata() );
 	}
 
-	// @codingStandardsIgnoreStart cyclomatic complexity of this function is too high
+	// phpcs:disable Generic.Metrics.CyclomaticComplexity,Squiz.WhiteSpace.FunctionSpacing
 	/**
 	 * Get an RDF literal or IRI with which the given data value can be matched in a query.
 	 *
@@ -510,7 +510,7 @@ EOF;
 				throw new InvalidArgumentException( 'unknown data type: ' . $dataType );
 		}
 	}
-	// @codingStandardsIgnoreEnd
+	// phpcs:enable
 
 	/**
 	 * @param string $text
