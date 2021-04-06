@@ -6,7 +6,6 @@ use ApiBase;
 use ApiMain;
 use Config;
 use IBufferingStatsdDataFactory;
-use RequestContext;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -110,7 +109,7 @@ class CheckConstraints extends ApiBase {
 			$name,
 			$entityIdParser,
 			$statementGuidValidator,
-			$repo->getApiHelperFactory( RequestContext::getMain() ),
+			$repo->getApiHelperFactory( $main->getContext() ),
 			$resultsSource,
 			$checkResultsRenderer,
 			$dataFactory
