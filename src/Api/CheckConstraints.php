@@ -6,21 +6,18 @@ use ApiBase;
 use ApiMain;
 use Config;
 use IBufferingStatsdDataFactory;
-use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
-use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
-use Wikibase\Repo\WikibaseRepo;
 use Wikibase\View\EntityIdFormatterFactory;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
 /**
@@ -62,9 +59,9 @@ class CheckConstraints extends ApiBase {
 	private $resultsSource;
 
 	/**
-	 * @var CheckResultsRenderer
+	 * @var CheckResultsRendererFactory
 	 */
-	private $checkResultsRenderer;
+	private $checkResultsRendererFactory;
 
 	/**
 	 * @var IBufferingStatsdDataFactory
@@ -84,23 +81,16 @@ class CheckConstraints extends ApiBase {
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		ResultsSource $resultsSource
 	): self {
-		$language = WikibaseRepo::getUserLanguage();
-		$formatterOptions = new FormatterOptions();
-		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-		$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
-
-		$entityIdHtmlLinkFormatter = $entityIdFormatterFactory->getEntityIdFormatter( $language );
 		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
-		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $language );
 
-		$checkResultsRenderer = new CheckResultsRenderer(
+		$checkResultsRendererFactory = new CheckResultsRendererFactory(
 			$entityTitleLookup,
-			$entityIdLabelFormatter,
-			new MultilingualTextViolationMessageRenderer(
-				$entityIdHtmlLinkFormatter,
-				$valueFormatter,
+			$entityIdLabelFormatterFactory,
+			new ViolationMessageRendererFactory(
+				$config,
 				$main,
-				$config
+				$entityIdFormatterFactory,
+				$valueFormatterFactory
 			)
 		);
 
@@ -111,29 +101,19 @@ class CheckConstraints extends ApiBase {
 			$statementGuidValidator,
 			$apiHelperFactory,
 			$resultsSource,
-			$checkResultsRenderer,
+			$checkResultsRendererFactory,
 			$dataFactory
 		);
 	}
 
-	/**
-	 * @param ApiMain $main
-	 * @param string $name
-	 * @param EntityIdParser $entityIdParser
-	 * @param StatementGuidValidator $statementGuidValidator
-	 * @param ApiHelperFactory $apiHelperFactory
-	 * @param ResultsSource $resultsSource
-	 * @param CheckResultsRenderer $checkResultsRenderer
-	 * @param IBufferingStatsdDataFactory $dataFactory
-	 */
 	public function __construct(
 		ApiMain $main,
-		$name,
+		string $name,
 		EntityIdParser $entityIdParser,
 		StatementGuidValidator $statementGuidValidator,
 		ApiHelperFactory $apiHelperFactory,
 		ResultsSource $resultsSource,
-		CheckResultsRenderer $checkResultsRenderer,
+		CheckResultsRendererFactory $checkResultsRendererFactory,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
 		parent::__construct( $main, $name );
@@ -142,7 +122,7 @@ class CheckConstraints extends ApiBase {
 		$this->resultBuilder = $apiHelperFactory->getResultBuilder( $this );
 		$this->errorReporter = $apiHelperFactory->getErrorReporter( $this );
 		$this->resultsSource = $resultsSource;
-		$this->checkResultsRenderer = $checkResultsRenderer;
+		$this->checkResultsRendererFactory = $checkResultsRendererFactory;
 		$this->dataFactory = $dataFactory;
 	}
 
@@ -162,10 +142,13 @@ class CheckConstraints extends ApiBase {
 		$constraintIDs = $params[self::PARAM_CONSTRAINT_ID];
 		$statuses = $params[self::PARAM_STATUS];
 
+		$checkResultsRenderer = $this->checkResultsRendererFactory
+			->getCheckResultsRenderer( $this->getLanguage() );
+
 		$this->getResult()->addValue(
 			null,
 			$this->getModuleName(),
-			$this->checkResultsRenderer->render(
+			$checkResultsRenderer->render(
 				$this->resultsSource->getResults(
 					$entityIds,
 					$claimIds,

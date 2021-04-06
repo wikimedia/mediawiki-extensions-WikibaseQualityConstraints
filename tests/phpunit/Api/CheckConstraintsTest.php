@@ -28,13 +28,13 @@ use Wikibase\Repo\Tests\NewStatement;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraints;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
-use WikibaseQuality\ConstraintReport\Api\CheckResultsRenderer;
+use WikibaseQuality\ConstraintReport\Api\CheckResultsRendererFactory;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
@@ -88,7 +88,6 @@ class CheckConstraintsTest extends ApiTestCase {
 			$languageFallbackChainFactory = new LanguageFallbackChainFactory();
 
 			$language = Language::factory( 'en' );
-			$entityIdFormatter = $factory->getEntityIdFormatter( $language );
 
 			$formatterOptions = new FormatterOptions();
 			$factoryFunctions = [];
@@ -150,14 +149,14 @@ class CheckConstraintsTest extends ApiTestCase {
 				new CheckingResultsSource(
 					$constraintChecker
 				),
-				new CheckResultsRenderer(
+				new CheckResultsRendererFactory(
 					WikibaseRepo::getEntityTitleLookup(),
-					$entityIdFormatter,
-					new ViolationMessageRenderer(
-						$entityIdFormatter,
-						$valueFormatter,
+					$factory,
+					new ViolationMessageRendererFactory(
+						$config,
 						new MockMessageLocalizer(),
-						$config
+						$factory,
+						$valueFormatterFactory
 					)
 				),
 				$dataFactory
