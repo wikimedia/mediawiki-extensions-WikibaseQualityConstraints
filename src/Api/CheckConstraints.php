@@ -84,7 +84,7 @@ class CheckConstraints extends ApiBase {
 	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
 
-		$language = $repo->getUserLanguage();
+		$language = WikibaseRepo::getUserLanguage();
 		$formatterOptions = new FormatterOptions();
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
 		$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
