@@ -80,10 +80,9 @@ class ImportConstraintEntities extends Maintenance {
 	 */
 	private function setupServices() {
 		$services = MediaWikiServices::getInstance();
-		$repo = WikibaseRepo::getDefaultInstance();
 		$this->entitySerializer = WikibaseRepo::getAllTypesEntitySerializer( $services );
-		$this->entityDeserializer = WikibaseRepo::getInternalFormatEntityDeserializer();
-		$this->entityStore = $repo->getEntityStore();
+		$this->entityDeserializer = WikibaseRepo::getInternalFormatEntityDeserializer( $services );
+		$this->entityStore = WikibaseRepo::getEntityStore( $services );
 		$this->httpRequestFactory = $services->getHttpRequestFactory();
 		if ( !$this->getOption( 'dry-run', false ) ) {
 			$this->user = User::newSystemUser( 'WikibaseQualityConstraints importer' );
