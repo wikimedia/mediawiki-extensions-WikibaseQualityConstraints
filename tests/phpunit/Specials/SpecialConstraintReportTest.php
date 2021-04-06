@@ -90,7 +90,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 */
 	public function addDBData() {
 		if ( !self::$hasSetup ) {
-			$store = WikibaseRepo::getDefaultInstance()->getEntityStore();
+			$store = WikibaseRepo::getEntityStore();
 
 			$editor = $this->getTestUser()->getUser();
 
