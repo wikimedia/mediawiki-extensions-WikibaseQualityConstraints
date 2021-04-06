@@ -8,20 +8,16 @@ use ApiResult;
 use Config;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
-use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
-use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
-use Wikibase\Repo\WikibaseRepo;
 use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 
 /**
  * API module that checks whether the parameters of a constraint statement are valid.
@@ -51,9 +47,9 @@ class CheckConstraintParameters extends ApiBase {
 	private $delegatingConstraintChecker;
 
 	/**
-	 * @var ViolationMessageRenderer
+	 * @var ViolationMessageRendererFactory
 	 */
-	private $violationMessageRenderer;
+	private $violationMessageRendererFactory;
 
 	/**
 	 * @var StatementGuidParser
@@ -79,19 +75,11 @@ class CheckConstraintParameters extends ApiBase {
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker
 	): self {
-		$language = WikibaseRepo::getUserLanguage();
-
-		$entityIdHtmlLinkFormatter = $entityIdFormatterFactory
-			->getEntityIdFormatter( $language );
-		$formatterOptions = new FormatterOptions();
-		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-		$dataValueFormatter = $valueFormatterFactory
-			->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
-		$violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
-			$entityIdHtmlLinkFormatter,
-			$dataValueFormatter,
+		$violationMessageRendererFactory = new ViolationMessageRendererFactory(
+			$config,
 			$main,
-			$config
+			$entityIdFormatterFactory,
+			$valueFormatterFactory
 		);
 
 		return new self(
@@ -99,26 +87,18 @@ class CheckConstraintParameters extends ApiBase {
 			$name,
 			$apiHelperFactory,
 			$delegatingConstraintChecker,
-			$violationMessageRenderer,
+			$violationMessageRendererFactory,
 			$statementGuidParser,
 			$dataFactory
 		);
 	}
 
-	/**
-	 * @param ApiMain $main
-	 * @param string $name
-	 * @param ApiHelperFactory $apiHelperFactory
-	 * @param DelegatingConstraintChecker $delegatingConstraintChecker
-	 * @param StatementGuidParser $statementGuidParser
-	 * @param IBufferingStatsdDataFactory $dataFactory
-	 */
 	public function __construct(
 		ApiMain $main,
-		$name,
+		string $name,
 		ApiHelperFactory $apiHelperFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
-		ViolationMessageRenderer $violationMessageRenderer,
+		ViolationMessageRendererFactory $violationMessageRendererFactory,
 		StatementGuidParser $statementGuidParser,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
@@ -126,7 +106,7 @@ class CheckConstraintParameters extends ApiBase {
 
 		$this->apiErrorReporter = $apiHelperFactory->getErrorReporter( $this );
 		$this->delegatingConstraintChecker = $delegatingConstraintChecker;
-		$this->violationMessageRenderer = $violationMessageRenderer;
+		$this->violationMessageRendererFactory = $violationMessageRendererFactory;
 		$this->statementGuidParser = $statementGuidParser;
 		$this->dataFactory = $dataFactory;
 	}
@@ -297,26 +277,22 @@ class CheckConstraintParameters extends ApiBase {
 				self::KEY_STATUS,
 				empty( $constraintParameterExceptions ) ? self::STATUS_OKAY : self::STATUS_NOT_OKAY
 			);
+
+			$violationMessageRenderer = $this->violationMessageRendererFactory
+				->getViolationMessageRenderer( $this->getLanguage() );
+			$problems = [];
+			foreach ( $constraintParameterExceptions as $constraintParameterException ) {
+				$problems[] = [
+					self::KEY_MESSAGE_HTML => $violationMessageRenderer->render(
+						$constraintParameterException->getViolationMessage() ),
+				];
+			}
 			$result->addValue(
 				$path,
 				self::KEY_PROBLEMS,
-				array_map( [ $this, 'formatConstraintParameterException' ], $constraintParameterExceptions )
+				$problems
 			);
 		}
-	}
-
-	/**
-	 * Convert a ConstraintParameterException to an array structure for the API response.
-	 *
-	 * @param ConstraintParameterException $e
-	 * @return string[]
-	 */
-	private function formatConstraintParameterException( ConstraintParameterException $e ) {
-		return [
-			self::KEY_MESSAGE_HTML => $this->violationMessageRenderer->render(
-				$e->getViolationMessage()
-			),
-		];
 	}
 
 	/**

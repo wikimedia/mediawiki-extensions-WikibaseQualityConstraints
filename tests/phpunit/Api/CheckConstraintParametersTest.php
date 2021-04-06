@@ -11,6 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters
@@ -90,21 +91,21 @@ class CheckConstraintParametersTest extends ApiTestCase {
 					}
 				) );
 
-			$violationMessageRenderer = $this->getMockBuilder( ViolationMessageRenderer::class )
-				->disableOriginalConstructor()
-				->setMethods( [ 'render' ] )
-				->getMock();
+			$violationMessageRenderer = $this->createMock( ViolationMessageRenderer::class );
 			$violationMessageRenderer->method( 'render' )
 				->willReturnCallback( function ( ViolationMessage $violationMessage ) {
 					return $violationMessage->getMessageKey();
 				} );
+			$violationMessageRendererFactory = $this->createMock( ViolationMessageRendererFactory::class );
+			$violationMessageRendererFactory->method( 'getViolationMessageRenderer' )
+				->willReturn( $violationMessageRenderer );
 
 			return new CheckConstraintParameters(
 				$main,
 				$name,
 				$apiHelperFactory,
 				$delegatingConstraintChecker,
-				$violationMessageRenderer,
+				$violationMessageRendererFactory,
 				$statementGuidParser,
 				new NullStatsdDataFactory()
 			);
