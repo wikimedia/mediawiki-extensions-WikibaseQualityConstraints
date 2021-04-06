@@ -8,7 +8,6 @@ use ApiResult;
 use Config;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
-use RequestContext;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
@@ -78,7 +77,7 @@ class CheckConstraintParameters extends ApiBase {
 		DelegatingConstraintChecker $delegatingConstraintChecker
 	): self {
 		$repo = WikibaseRepo::getDefaultInstance();
-		$helperFactory = $repo->getApiHelperFactory( RequestContext::getMain() );
+		$helperFactory = $repo->getApiHelperFactory( $main->getContext() );
 		$language = WikibaseRepo::getUserLanguage();
 
 		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
