@@ -71,7 +71,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 
 		return new SpecialConstraintReport(
-			$wikibaseRepo->getEntityLookup(),
+			WikibaseRepo::getEntityLookup(),
 			WikibaseRepo::getEntityTitleLookup(),
 			new EntityIdLabelFormatterFactory(),
 			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),

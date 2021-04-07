@@ -102,15 +102,14 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 	}
 
 	public function testImportEntityFromJson() {
-		$repo = WikibaseRepo::getDefaultInstance();
 		$this->maintenance->setupServices();
 
 		$json = file_get_contents( __DIR__ . '/Q21503250.json' );
 		$localEntityId = $this->maintenance->importEntityFromJson( 'Q21503250', $json );
 
-		$repo = WikibaseRepo::getDefaultInstance();
 		/** @var Item $localEntity */
-		$localEntity = $repo->getEntityLookup()->getEntity( WikibaseRepo::getEntityIdParser()->parse( $localEntityId ) );
+		$localEntity = WikibaseRepo::getEntityLookup()
+			->getEntity( WikibaseRepo::getEntityIdParser()->parse( $localEntityId ) );
 		$this->assertInstanceOf( Item::class, $localEntity );
 		$this->assertSame( 'type constraint', $localEntity->getLabels()->getByLanguage( 'en' )->getText() );
 		$this->assertEmpty( $localEntity->getSiteLinkList()->toArray() );
