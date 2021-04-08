@@ -50,7 +50,7 @@ class UpdateConstraintsTableJob extends Job {
 			$services->getMainConfig(),
 			ConstraintsServices::getConstraintStore(),
 			$services->getDBLoadBalancerFactory(),
-			$repo->getEntityRevisionLookup( Store::LOOKUP_CACHING_DISABLED ),
+			WikibaseRepo::getStore()->getEntityRevisionLookup( Store::LOOKUP_CACHING_DISABLED ),
 			WikibaseRepo::getBaseDataModelSerializerFactory( $services )
 				->newSnakSerializer()
 		);
