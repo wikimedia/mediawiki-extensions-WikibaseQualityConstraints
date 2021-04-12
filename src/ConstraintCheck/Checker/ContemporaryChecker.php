@@ -194,7 +194,7 @@ class ContemporaryChecker implements ConstraintChecker {
 		}
 		$extremeValue = null;
 		foreach ( $extremePropertyIds as $extremePropertyId ) {
-			$statementList = new StatementList( $statements );
+			$statementList = new StatementList( ...$statements );
 			$extremeStatements = $statementList->getByPropertyId( new PropertyId( $extremePropertyId ) );
 			/** @var Statement $extremeStatement */
 			foreach ( $extremeStatements as $extremeStatement ) {
