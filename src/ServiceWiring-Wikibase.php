@@ -22,6 +22,6 @@ return [
 	},
 
 	WikibaseServices::PROPERTY_DATA_TYPE_LOOKUP => function ( MediaWikiServices $services ) {
-		return WikibaseRepo::getDefaultInstance()->getPropertyDataTypeLookup();
+		return WikibaseRepo::getPropertyDataTypeLookup( $services );
 	},
 ];

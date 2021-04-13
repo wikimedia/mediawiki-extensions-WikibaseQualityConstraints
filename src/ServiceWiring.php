@@ -135,11 +135,9 @@ return [
 			return new DummySparqlHelper();
 		}
 
-		// TODO get PropertyDataTypeLookup from $services
-		$repo = WikibaseRepo::getDefaultInstance();
 		$rdfVocabulary = WikibaseRepo::getRdfVocabulary( $services );
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
-		$propertyDataTypeLookup = $repo->getPropertyDataTypeLookup();
+		$propertyDataTypeLookup = WikibaseRepo::getPropertyDataTypeLookup( $services );
 
 		return new SparqlHelper(
 			$services->getMainConfig(),
@@ -151,7 +149,7 @@ return [
 			ConstraintsServices::getViolationMessageDeserializer( $services ),
 			$services->getStatsdDataFactory(),
 			ConstraintsServices::getExpiryLock( $services ),
-			ConstraintsServices::getLoggingHelper(),
+			ConstraintsServices::getLoggingHelper( $services ),
 			wfWikiID() . ' WikibaseQualityConstraints ' . Http::userAgent(),
 			$services->getHttpRequestFactory()
 		);
