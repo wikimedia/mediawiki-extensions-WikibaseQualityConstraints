@@ -505,6 +505,7 @@ EOF;
 			case 'globe-coordinate':
 			case 'quantity':
 			case 'time':
+				// @phan-suppress-next-line PhanUndeclaredMethod
 				return [ 'wdv:' . $dataValue->getHash(), true ];
 			default:
 				throw new InvalidArgumentException( 'unknown data type: ' . $dataType );
