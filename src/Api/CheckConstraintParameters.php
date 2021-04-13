@@ -17,6 +17,7 @@ use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\WikibaseRepo;
+use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
@@ -72,6 +73,7 @@ class CheckConstraintParameters extends ApiBase {
 		string $name,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
+		EntityIdFormatterFactory $entityIdFormatterFactory,
 		StatementGuidParser $statementGuidParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker
@@ -80,8 +82,7 @@ class CheckConstraintParameters extends ApiBase {
 		$helperFactory = $repo->getApiHelperFactory( $main->getContext() );
 		$language = WikibaseRepo::getUserLanguage();
 
-		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
-		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory
+		$entityIdHtmlLinkFormatter = $entityIdFormatterFactory
 			->getEntityIdFormatter( $language );
 		$formatterOptions = new FormatterOptions();
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );

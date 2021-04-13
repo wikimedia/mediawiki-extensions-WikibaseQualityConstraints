@@ -26,7 +26,6 @@ use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
-use Wikibase\Repo\WikibaseRepo;
 use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
@@ -104,19 +103,18 @@ class SpecialConstraintReport extends SpecialPage {
 	public static function factory(
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
+		EntityIdFormatterFactory $entityIdFormatterFactory,
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		EntityLookup $entityLookup,
 		DelegatingConstraintChecker $delegatingConstraintChecker
 	): self {
-		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
-
 		return new self(
 			$entityLookup,
 			$entityTitleLookup,
 			new EntityIdLabelFormatterFactory(),
-			$wikibaseRepo->getEntityIdHtmlLinkFormatterFactory(),
+			$entityIdFormatterFactory,
 			$entityIdParser,
 			$valueFormatterFactory,
 			$delegatingConstraintChecker,

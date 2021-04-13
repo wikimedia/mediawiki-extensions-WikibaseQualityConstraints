@@ -19,6 +19,7 @@ use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
+use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
@@ -75,6 +76,7 @@ class CheckConstraints extends ApiBase {
 		string $name,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
+		EntityIdFormatterFactory $entityIdFormatterFactory,
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
 		StatementGuidValidator $statementGuidValidator,
@@ -88,8 +90,7 @@ class CheckConstraints extends ApiBase {
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
 		$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
-		$entityIdHtmlLinkFormatterFactory = $repo->getEntityIdHtmlLinkFormatterFactory();
-		$entityIdHtmlLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter( $language );
+		$entityIdHtmlLinkFormatter = $entityIdFormatterFactory->getEntityIdFormatter( $language );
 		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
 		$entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter( $language );
 
