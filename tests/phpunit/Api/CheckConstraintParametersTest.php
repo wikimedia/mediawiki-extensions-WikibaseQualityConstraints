@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use ApiTestCase;
 use NullStatsdDataFactory;
-use RequestContext;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters;
@@ -72,8 +71,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$this->testMessageHtml = $this->testMessage->getMessageKey();
 
 		$wgAPIModules['wbcheckconstraintparameters']['factory'] = function ( $main, $name ) {
-			$repo = WikibaseRepo::getDefaultInstance();
-			$apiHelperFactory = $repo->getApiHelperFactory( RequestContext::getMain() );
+			$apiHelperFactory = WikibaseRepo::getApiHelperFactory();
 			$statementGuidParser = WikibaseRepo::getStatementGuidParser();
 
 			$delegatingConstraintChecker = $this->createMock( DelegatingConstraintChecker::class );

@@ -73,13 +73,12 @@ class CheckConstraintParameters extends ApiBase {
 		string $name,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
+		ApiHelperFactory $apiHelperFactory,
 		EntityIdFormatterFactory $entityIdFormatterFactory,
 		StatementGuidParser $statementGuidParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker
 	): self {
-		$repo = WikibaseRepo::getDefaultInstance();
-		$helperFactory = $repo->getApiHelperFactory( $main->getContext() );
 		$language = WikibaseRepo::getUserLanguage();
 
 		$entityIdHtmlLinkFormatter = $entityIdFormatterFactory
@@ -98,7 +97,7 @@ class CheckConstraintParameters extends ApiBase {
 		return new self(
 			$main,
 			$name,
-			$helperFactory,
+			$apiHelperFactory,
 			$delegatingConstraintChecker,
 			$violationMessageRenderer,
 			$statementGuidParser,

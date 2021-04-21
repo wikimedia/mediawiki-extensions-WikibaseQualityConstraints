@@ -9,7 +9,6 @@ use Language;
 use MediaWiki\Logger\LoggerFactory;
 use MockMessageLocalizer;
 use NullStatsdDataFactory;
-use RequestContext;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -85,7 +84,6 @@ class CheckConstraintsTest extends ApiTestCase {
 		self::$entityLookup->addEntity( new Item( new ItemId( self::EMPTY_ITEM ) ) );
 
 		$wgAPIModules['wbcheckconstraints']['factory'] = function ( $main, $name ) {
-			$repo = WikibaseRepo::getDefaultInstance();
 			$factory = new EntityIdLabelFormatterFactory();
 			$languageFallbackChainFactory = new LanguageFallbackChainFactory();
 
@@ -148,7 +146,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				$name,
 				$entityIdParser,
 				new StatementGuidValidator( $entityIdParser ),
-				$repo->getApiHelperFactory( RequestContext::getMain() ),
+				WikibaseRepo::getApiHelperFactory(),
 				new CheckingResultsSource(
 					$constraintChecker
 				),

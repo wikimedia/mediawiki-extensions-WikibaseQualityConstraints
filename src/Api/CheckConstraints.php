@@ -76,6 +76,7 @@ class CheckConstraints extends ApiBase {
 		string $name,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
+		ApiHelperFactory $apiHelperFactory,
 		EntityIdFormatterFactory $entityIdFormatterFactory,
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
@@ -83,8 +84,6 @@ class CheckConstraints extends ApiBase {
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		ResultsSource $resultsSource
 	): self {
-		$repo = WikibaseRepo::getDefaultInstance();
-
 		$language = WikibaseRepo::getUserLanguage();
 		$formatterOptions = new FormatterOptions();
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
@@ -110,7 +109,7 @@ class CheckConstraints extends ApiBase {
 			$name,
 			$entityIdParser,
 			$statementGuidValidator,
-			$repo->getApiHelperFactory( $main->getContext() ),
+			$apiHelperFactory,
 			$resultsSource,
 			$checkResultsRenderer,
 			$dataFactory
