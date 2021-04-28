@@ -41,7 +41,6 @@ class UpdateConstraintsTableJob extends Job {
 	public static function newFromGlobalState( Title $title, array $params ) {
 		Assert::parameterType( 'string', $params['propertyId'], '$params["propertyId"]' );
 		$services = MediaWikiServices::getInstance();
-		$repo = WikibaseRepo::getDefaultInstance();
 		return new UpdateConstraintsTableJob(
 			$title,
 			$params,

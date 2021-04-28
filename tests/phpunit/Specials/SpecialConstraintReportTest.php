@@ -68,7 +68,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	protected function newSpecialPage() {
-		$wikibaseRepo = WikibaseRepo::getDefaultInstance();
 
 		return new SpecialConstraintReport(
 			WikibaseRepo::getEntityLookup(),
@@ -76,7 +75,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			new EntityIdLabelFormatterFactory(),
 			WikibaseRepo::getEntityIdHtmlLinkFormatterFactory(),
 			WikibaseRepo::getEntityIdParser(),
-			$wikibaseRepo->getValueFormatterFactory(),
+			WikibaseRepo::getValueFormatterFactory(),
 			ConstraintsServices::getDelegatingConstraintChecker(),
 			$this->getDefaultConfig(),
 			new NullStatsdDataFactory()
