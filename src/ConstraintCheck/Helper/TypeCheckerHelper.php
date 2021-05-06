@@ -96,7 +96,8 @@ class TypeCheckerHelper {
 		foreach ( $item->getStatements()->getByPropertyId( new PropertyId( $subclassId ) ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
-			if ( !( $this->hasCorrectType( $mainSnak ) ) ) {
+			if ( !$this->hasCorrectType( $mainSnak ) ||
+				$statement->getRank() === Statement::RANK_DEPRECATED ) {
 				continue;
 			}
 			/** @var PropertyValueSnak $mainSnak */
@@ -196,7 +197,8 @@ class TypeCheckerHelper {
 		foreach ( $this->getStatementsByPropertyIds( $statements, $relationIds ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
-			if ( !$this->hasCorrectType( $mainSnak ) ) {
+			if ( !$this->hasCorrectType( $mainSnak ) ||
+				$statement->getRank() === Statement::RANK_DEPRECATED ) {
 				continue;
 			}
 			/** @var PropertyValueSnak $mainSnak */

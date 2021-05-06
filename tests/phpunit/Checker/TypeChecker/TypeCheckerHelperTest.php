@@ -167,6 +167,22 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $result->getBool() );
 	}
 
+	public function testHasClassInRelation_IgnoresDeprecatedStatement() {
+		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q1' ) ) ) );
+		$statement->setRank( Statement::RANK_DEPRECATED );
+		$statements = new StatementList( [ $statement ] );
+		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q1' ] )->getBool() );
+	}
+
+	public function testHasClassInRelation_IgnoresDeprecatedSubclassOfStatement() {
+		$statement = new Statement( new PropertyValueSnak(
+			new PropertyId( 'P31' ),
+			new EntityIdValue( new ItemId( 'Q11' ) ) // Q11 has a deprecated subclass of statement with Q4 as its value
+		) );
+		$statements = new StatementList( [ $statement ] );
+		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
+	}
+
 	public function provideRelations() {
 		return [
 			'direct instance' => [ 'instance', null, 'Q1', true ],
