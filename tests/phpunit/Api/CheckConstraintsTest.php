@@ -83,7 +83,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		self::$entityLookup = new InMemoryEntityLookup();
 		self::$entityLookup->addEntity( new Item( new ItemId( self::EMPTY_ITEM ) ) );
 
-		$wgAPIModules['wbcheckconstraints']['factory'] = function ( $main, $name ) {
+		$wgAPIModules['wbcheckconstraints']['factory'] = static function ( $main, $name ) {
 			$factory = new EntityIdLabelFormatterFactory();
 			$languageFallbackChainFactory = new LanguageFallbackChainFactory();
 

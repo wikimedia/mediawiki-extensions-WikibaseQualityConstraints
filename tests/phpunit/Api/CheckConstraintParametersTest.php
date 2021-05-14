@@ -93,7 +93,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 
 			$violationMessageRenderer = $this->createMock( ViolationMessageRenderer::class );
 			$violationMessageRenderer->method( 'render' )
-				->willReturnCallback( function ( ViolationMessage $violationMessage ) {
+				->willReturnCallback( static function ( ViolationMessage $violationMessage ) {
 					return $violationMessage->getMessageKey();
 				} );
 			$violationMessageRendererFactory = $this->createMock( ViolationMessageRendererFactory::class );
@@ -139,7 +139,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForNonexistentProperty() {
-		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
+		$this->checkConstraintParametersOnPropertyId = static function ( $propertyId ) {
 			return [];
 		};
 
@@ -151,7 +151,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForNonexistentConstraint() {
-		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
+		$this->checkConstraintParametersOnConstraintId = static function ( $constraintId ) {
 			return null;
 		};
 
@@ -172,7 +172,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForGoodConstraint() {
-		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
+		$this->checkConstraintParametersOnConstraintId = static function ( $constraintId ) {
 			return [];
 		};
 
@@ -313,7 +313,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$this->checkConstraintParametersOnConstraintId = function ( $constraintid ) {
 			return [ new ConstraintParameterException( $this->testMessage ) ];
 		};
-		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
+		$this->checkConstraintParametersOnPropertyId = static function ( $propertyId ) {
 			return [
 				self::P2_GOOD => []
 			];
@@ -348,7 +348,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForConstraintAndPropertyOverlapping() {
-		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
+		$this->checkConstraintParametersOnPropertyId = static function ( $propertyId ) {
 			return [
 				self::P2_GOOD => []
 			];

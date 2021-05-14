@@ -269,7 +269,7 @@ class LoggingHelper {
 				'loggingMethod' => __METHOD__,
 				'entityIds' => json_encode(
 					array_map(
-						function ( EntityId $entityId ) {
+						static function ( EntityId $entityId ) {
 							return $entityId->getSerialization();
 						},
 						$entityIds

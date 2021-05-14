@@ -138,7 +138,7 @@ class CheckResultSerializer {
 
 		$serialization = [
 			self::KEY_DEPENDENCY_METADATA_ENTITY_IDS => array_map(
-				function ( EntityId $entityId ) {
+				static function ( EntityId $entityId ) {
 					return $entityId->getSerialization();
 				},
 				$entityIds

@@ -291,7 +291,7 @@ class SpecialConstraintReport extends SpecialPage {
 		];
 		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
 		$htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
-		$htmlForm->setSubmitCallback( function () {
+		$htmlForm->setSubmitCallback( static function () {
 			return false;
 		} );
 		$htmlForm->setMethod( 'post' );

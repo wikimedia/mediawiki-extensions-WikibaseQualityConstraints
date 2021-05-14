@@ -36,7 +36,7 @@ class InMemoryConstraintLookup implements ConstraintLookup {
 	public function queryConstraintsForProperty( PropertyId $propertyId ) {
 		return array_filter(
 			$this->constraints,
-			function ( Constraint $constraint ) use ( $propertyId ) {
+			static function ( Constraint $constraint ) use ( $propertyId ) {
 				return $constraint->getPropertyId()->equals( $propertyId );
 			}
 		);

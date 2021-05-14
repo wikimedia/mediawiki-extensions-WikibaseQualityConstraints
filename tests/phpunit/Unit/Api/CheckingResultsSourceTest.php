@@ -52,14 +52,14 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		$constraintIds = [ 'P1$47681880-d5f5-417d-96c3-570d6e94d234' ];
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
+			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
 			->withConsecutive(
 				[ $this->equalTo( $q1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
 				[ $this->equalTo( $q2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
 			)
-			->will( $this->returnCallback( function ( $entityId ) {
+			->will( $this->returnCallback( static function ( $entityId ) {
 				return [ new CheckResult(
 					new MainSnakContext(
 						new Item( $entityId ),
@@ -78,7 +78,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				[ $this->equalTo( $s1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
 				[ $this->equalTo( $s2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
 			)
-			->will( $this->returnCallback( function ( $claimId ) {
+			->will( $this->returnCallback( static function ( $claimId ) {
 				$entityId = new ItemId( substr( $claimId, 0, 2 ) );
 				return [ new CheckResult(
 					new MainSnakContext(
@@ -102,7 +102,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		)->getArray();
 
 		$this->assertCount( 4, $results );
-		$this->assertCount( 4, array_unique( array_map( function ( CheckResult $result ) {
+		$this->assertCount( 4, array_unique( array_map( static function ( CheckResult $result ) {
 			return $result->getContextCursor()->getEntityId();
 		}, $results ) ) );
 		foreach ( $results as $result ) {
@@ -114,7 +114,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 	public function testGetResults_Empty() {
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
+			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
 			->willReturn( [] );
@@ -134,10 +134,10 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 	public function testGetResults_Empty_WithDefaultResults() {
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
+			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
-			->willReturnCallback( function (
+			->willReturnCallback( static function (
 				EntityId $entityId,
 				array $constraintIds = null,
 				callable $defaultResultsPerContext = null,
@@ -170,7 +170,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 	public function testGetResults_DependencyMetadata() {
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
+			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
 			->willReturn( [
@@ -223,7 +223,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		$q1 = new ItemId( 'Q1' );
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'checkAgainstConstraintsOnEntityId' ] );
+			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$constraint = new Constraint(
 			'P1$47681880-d5f5-417d-96c3-570d6e94d234',
@@ -267,7 +267,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 	public function testGetResults_FilterStatuses_DependencyMetadata() {
 		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'checkAgainstConstraintsOnEntityId' ] );
+			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$context = new MainSnakContext(
 			new Item( new ItemId( 'Q1' ) ),

@@ -270,7 +270,7 @@ class TypeCheckerHelper {
 	 */
 	public function getViolationMessage( PropertyId $propertyId, EntityId $entityId, array $classes, $checker, $relation ) {
 		$classes = array_map(
-			function ( $itemIdSerialization ) {
+			static function ( $itemIdSerialization ) {
 				return new ItemId( $itemIdSerialization );
 			},
 			$classes

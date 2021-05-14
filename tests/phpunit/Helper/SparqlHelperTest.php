@@ -125,7 +125,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 				'A fancy user agent',
 				$this->createMock( HttpRequestFactory::class )
 			] )
-			->setMethods( [ 'runQuery' ] )
+			->onlyMethods( [ 'runQuery' ] )
 			->getMock();
 	}
 
@@ -539,7 +539,7 @@ EOF;
 
 		$requestMock = $this->createMock( \MWHttpRequest::class );
 		$requestMock->method( 'getResponseHeader' )
-			->with( $this->callback( function ( $headerName ) {
+			->with( $this->callback( static function ( $headerName ) {
 				return strtolower( $headerName ) === 'retry-after';
 			} ) )
 			->willReturn( $retryAfter );
@@ -558,7 +558,7 @@ EOF;
 		 $lock->expects( $this->once() )
 			 ->method( 'lock' )
 			 ->with( $this->equalTo( SparqlHelper::EXPIRY_LOCK_ID ),
-				 $this->callback( function ( $actualTimestamp ) use ( $expectedTimestamp ) {
+				 $this->callback( static function ( $actualTimestamp ) use ( $expectedTimestamp ) {
 					 $actualUnixTime = $actualTimestamp->format( 'U' );
 					 return $actualUnixTime == $expectedTimestamp;
 				 } )
@@ -696,7 +696,7 @@ EOF;
 			->with(
 				$this->equalTo( $expectedLockId ),
 				$this->callback(
-					function ( $actualTimestamp ) use ( $expectedLockExpiryTimestamp ) {
+					static function ( $actualTimestamp ) use ( $expectedLockExpiryTimestamp ) {
 						$actualUnixTime = $actualTimestamp->format( 'U' );
 						return $actualUnixTime == $expectedLockExpiryTimestamp;
 					}
@@ -754,7 +754,7 @@ EOF;
 		$requestFactory->expects( $this->atLeastOnce() )
 			->method( 'create' )
 			->with(
-				$this->callback( function ( $url ) {
+				$this->callback( static function ( $url ) {
 					$query = substr( $url, strpos( $url, '?query=' ) );
 					$query = substr( $query, strlen( '?query=' ) );
 					$query = substr( $query, 0, strpos( $query, '&format=' ) );

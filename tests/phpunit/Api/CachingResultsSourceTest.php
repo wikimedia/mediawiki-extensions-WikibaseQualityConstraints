@@ -69,7 +69,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->method( 'serialize' )
-			->willReturnCallback( function ( CheckResult $checkResult ) {
+			->willReturnCallback( static function ( CheckResult $checkResult ) {
 				$entityId = $checkResult->getContextCursor()->getEntityId();
 				if ( $checkResult instanceof NullResult ) {
 					return [ 'NullResult for ' . $entityId ];
@@ -161,7 +161,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 				10000,
 				$this->getLoggingHelper()
 			] )
-			->setMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
+			->onlyMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();
 	}
 
@@ -578,7 +578,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			$resultsCache,
 			$metaDataAccessor
 		);
-		$cachingResultsSource->setMicrotimeFunction( function () use ( $now ) {
+		$cachingResultsSource->setMicrotimeFunction( static function () use ( $now ) {
 			return $now;
 		} );
 
@@ -650,7 +650,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			$metaDataAccessor,
 			[ $this->getCheckResult( 'Q5' )->getConstraint()->getConstraintTypeItemId() ]
 		);
-		$cachingResultsSource->setMicrotimeFunction( function () use ( $now ) {
+		$cachingResultsSource->setMicrotimeFunction( static function () use ( $now ) {
 			return $now;
 		} );
 

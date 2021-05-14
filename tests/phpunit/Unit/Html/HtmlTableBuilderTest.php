@@ -233,7 +233,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 		$cellMock = $this
 			->getMockBuilder( HtmlTableHeaderBuilder::class )
 			->setConstructorArgs( [ $content, $isSortable ] )
-			->setMethods( [ 'toHtml' ] )
+			->onlyMethods( [ 'toHtml' ] )
 			->getMock();
 		$cellMock
 			->expects( $this->any() )

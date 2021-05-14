@@ -333,12 +333,12 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$role = null;
 		$renderer = $this->newViolationMessageRenderer();
 		$renderMock = $this->getMockBuilder( \stdClass::class )
-			->setMethods( [ 'render' ] )
+			->addMethods( [ 'render' ] )
 			->getMock();
 		$renderMock->expects( $this->exactly( 2 ) )
 			->method( 'render' )
 			->withConsecutive( [ $valueList[0], $role ], [ $valueList[1], $role ] )
-			->willReturnCallback( function ( $value, $role ) {
+			->willReturnCallback( static function ( $value, $role ) {
 				if ( $value instanceof StringValue ) {
 					return [ Message::rawParam( $value->getValue() ) ];
 				} else {
@@ -369,7 +369,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$role = null;
 		$renderer = $this->newViolationMessageRenderer();
 		$renderMock = $this->getMockBuilder( \stdClass::class )
-			->setMethods( [ 'render' ] )
+			->addMethods( [ 'render' ] )
 			->getMock();
 		$renderMock->expects( $this->never() )
 			->method( 'render' );
@@ -395,12 +395,12 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$role = null;
 		$renderer = $this->newViolationMessageRenderer( null, null, null, 2 );
 		$renderMock = $this->getMockBuilder( \stdClass::class )
-			->setMethods( [ 'render' ] )
+			->addMethods( [ 'render' ] )
 			->getMock();
 		$renderMock->expects( $this->exactly( 2 ) )
 			->method( 'render' )
 			->withConsecutive( [ $valueList[0], $role ], [ $valueList[1], $role ] )
-			->willReturnCallback( function ( $value, $role ) {
+			->willReturnCallback( static function ( $value, $role ) {
 				return [ Message::rawParam( $value ) ];
 			} );
 		$renderFunction = [ $renderMock, 'render' ];
@@ -427,7 +427,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$role = Role::OBJECT;
 		$renderer = $this->newViolationMessageRenderer();
 		$renderMock = $this->getMockBuilder( \stdClass::class )
-			->setMethods( [ 'render' ] )
+			->addMethods( [ 'render' ] )
 			->getMock();
 		$renderMock->expects( $this->once() )
 			->method( 'render' )

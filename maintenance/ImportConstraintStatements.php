@@ -46,7 +46,7 @@ class ImportConstraintStatements extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->newUpdateConstraintsTableJob = function ( $propertyIdSerialization ) {
+		$this->newUpdateConstraintsTableJob = static function ( $propertyIdSerialization ) {
 			return UpdateConstraintsTableJob::newFromGlobalState(
 				Title::newMainPage(),
 				[ 'propertyId' => $propertyIdSerialization ]

@@ -92,7 +92,7 @@ class TypeChecker implements ConstraintChecker {
 			$constraintTypeItemId
 		);
 		$parameters['class'] = array_map(
-			function ( $id ) {
+			static function ( $id ) {
 				return new ItemId( $id );
 			},
 			$classes

@@ -74,7 +74,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			] )
-			->setMethods( [ 'formatEntityId' ] )
+			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
 		$constraintParameterRenderer->expects( $this->once() )
 			->method( 'formatEntityId' )
@@ -95,7 +95,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			] )
-			->setMethods( [ 'formatEntityId' ] )
+			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
 		$constraintParameterRenderer->expects( $this->never() )->method( 'formatEntityId' );
 		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'en' ) ] );
@@ -114,7 +114,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			] )
-			->setMethods( [ 'formatEntityId' ] )
+			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
 		$constraintParameterRenderer->expects( $this->never() )->method( 'formatEntityId' );
 		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'en' ) ] );

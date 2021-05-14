@@ -223,7 +223,7 @@ class DelegatingConstraintChecker {
 
 		return array_keys( array_filter(
 			$this->checkerMap[$constraint->getConstraintTypeItemId()]->getSupportedContextTypes(),
-			function ( $resultStatus ) {
+			static function ( $resultStatus ) {
 				return $resultStatus !== CheckResult::STATUS_NOT_IN_SCOPE;
 			}
 		) );
@@ -680,7 +680,7 @@ class DelegatingConstraintChecker {
 			return $result;
 		}
 
-		$sortFunction = function ( CheckResult $a, CheckResult $b ) {
+		$sortFunction = static function ( CheckResult $a, CheckResult $b ) {
 			$orderNum = 0;
 			$order = [
 				CheckResult::STATUS_BAD_PARAMETERS => $orderNum++,

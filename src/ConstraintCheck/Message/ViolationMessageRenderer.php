@@ -176,13 +176,13 @@ class ViolationMessageRenderer {
 			array_fill( 0, count( $list ), $role )
 		);
 		$renderedParams = array_map(
-			function ( $params ) {
+			static function ( $params ) {
 				return $params[0];
 			},
 			$renderedParamsLists
 		);
 		$renderedElements = array_map(
-			function ( $param ) {
+			static function ( $param ) {
 				return $param['raw'];
 			},
 			$renderedParams

@@ -287,7 +287,7 @@ END;
 
 		foreach ( array_chunk( $classes, 20 ) as $classesChunk ) {
 			$classesValues = implode( ' ', array_map(
-				function ( $class ) {
+				static function ( $class ) {
 					return 'wd:' . $class;
 				},
 				$classesChunk
@@ -662,7 +662,7 @@ EOF;
 	 */
 	public function isTimeout( $responseContent ) {
 		$timeoutRegex = implode( '|', array_map(
-			function ( $fqn ) {
+			static function ( $fqn ) {
 				return preg_quote( $fqn, '/' );
 			},
 			$this->timeoutExceptionClasses

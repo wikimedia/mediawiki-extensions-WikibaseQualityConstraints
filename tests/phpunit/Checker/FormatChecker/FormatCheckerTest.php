@@ -42,11 +42,11 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		parent::setUp();
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
 					  ->disableOriginalConstructor()
-					  ->setMethods( [ 'matchesRegularExpression' ] )
+					  ->onlyMethods( [ 'matchesRegularExpression' ] )
 					  ->getMock();
 		$sparqlHelper->method( 'matchesRegularExpression' )
 			->will( $this->returnCallback(
-				function ( $text, $regex ) {
+				static function ( $text, $regex ) {
 					$pattern = '/^' . str_replace( '/', '\/', $regex ) . '$/';
 					return preg_match( $pattern, $text );
 				}
@@ -308,7 +308,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
 					  ->disableOriginalConstructor()
-					  ->setMethods( [ 'matchesRegularExpression' ] )
+					  ->onlyMethods( [ 'matchesRegularExpression' ] )
 					  ->getMock();
 		$sparqlHelper->expects( $this->never() )->method( 'matchesRegularExpression' );
 		$checker = new FormatChecker(
