@@ -59,7 +59,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				[ $this->equalTo( $q1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
 				[ $this->equalTo( $q2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
 			)
-			->will( $this->returnCallback( static function ( $entityId ) {
+			->will( $this->returnCallback( function ( $entityId ) {
 				return [ new CheckResult(
 					new MainSnakContext(
 						new Item( $entityId ),
@@ -78,7 +78,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				[ $this->equalTo( $s1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
 				[ $this->equalTo( $s2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
 			)
-			->will( $this->returnCallback( static function ( $claimId ) {
+			->will( $this->returnCallback( function ( $claimId ) {
 				$entityId = new ItemId( substr( $claimId, 0, 2 ) );
 				return [ new CheckResult(
 					new MainSnakContext(
@@ -102,7 +102,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		)->getArray();
 
 		$this->assertCount( 4, $results );
-		$this->assertCount( 4, array_unique( array_map( static function ( CheckResult $result ) {
+		$this->assertCount( 4, array_unique( array_map( function ( CheckResult $result ) {
 			return $result->getContextCursor()->getEntityId();
 		}, $results ) ) );
 		foreach ( $results as $result ) {
@@ -137,7 +137,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
 		$delegatingConstraintChecker = $mock->getMock();
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
-			->willReturnCallback( static function (
+			->willReturnCallback( function (
 				EntityId $entityId,
 				array $constraintIds = null,
 				callable $defaultResultsPerContext = null,

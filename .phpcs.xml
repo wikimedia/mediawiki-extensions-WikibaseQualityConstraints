@@ -36,6 +36,11 @@
 		<exclude-pattern>tests*Test*\.php</exclude-pattern>
 	</rule>
 
+	<rule ref="MediaWiki.Usage.StaticClosure.StaticClosure">
+		<!-- Exclude test closures that might use $this->assert...() later. -->
+		<exclude-pattern>tests*Test*\.php</exclude-pattern>
+	</rule>
+
 	<!-- NOTE: We can not use the Squiz.Arrays.ArrayBracketSpacing sniff because it conflicts with
 		the MediaWiki style that encourages to use spaces inside brackets, see
 		https://www.mediawiki.org/wiki/Manual:Coding_conventions/JavaScript#Whitespace -->

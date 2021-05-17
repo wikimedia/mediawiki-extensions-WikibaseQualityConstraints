@@ -338,7 +338,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$renderMock->expects( $this->exactly( 2 ) )
 			->method( 'render' )
 			->withConsecutive( [ $valueList[0], $role ], [ $valueList[1], $role ] )
-			->willReturnCallback( static function ( $value, $role ) {
+			->willReturnCallback( function ( $value, $role ) {
 				if ( $value instanceof StringValue ) {
 					return [ Message::rawParam( $value->getValue() ) ];
 				} else {
@@ -400,7 +400,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$renderMock->expects( $this->exactly( 2 ) )
 			->method( 'render' )
 			->withConsecutive( [ $valueList[0], $role ], [ $valueList[1], $role ] )
-			->willReturnCallback( static function ( $value, $role ) {
+			->willReturnCallback( function ( $value, $role ) {
 				return [ Message::rawParam( $value ) ];
 			} );
 		$renderFunction = [ $renderMock, 'render' ];

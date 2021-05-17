@@ -399,7 +399,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		];
 		$this->constraintCount = count( array_filter(
 			$constraints,
-			static function ( $constraint ) {
+			function ( $constraint ) {
 				return $constraint['pid'] === 1;
 			}
 		) );
@@ -462,7 +462,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId(
 			$entity->getId(),
 			null,
-			static function ( Context $context ) {
+			function ( Context $context ) {
 				return [ new NullResult( $context->getCursor() ) ];
 			}
 		);
@@ -478,7 +478,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$entity->getId(),
 			null,
 			null,
-			static function ( EntityId $entityId ) {
+			function ( EntityId $entityId ) {
 				return [ new NullResult( new EntityContextCursor( $entityId->getSerialization() ) ) ];
 			}
 		);
