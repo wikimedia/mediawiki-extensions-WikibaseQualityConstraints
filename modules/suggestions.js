@@ -118,7 +118,7 @@
 	mw.hook( 'wikibase.entityselector.search' ).add( function ( data, addPromise ) {
 		var propertyConstraintId = config.WBQualityConstraintsPropertyConstraintId,
 			oneOfConstraintId = config.WBQualityConstraintsOneOfConstraintId,
-			allowedQualifierConstraintId = config.WBQualityConstraintsAllowedQualifierConstraintId,
+			allowedQualifiersConstraintId = config.WBQualityConstraintsAllowedQualifiersConstraintId,
 			constraintsPropertyId = config.WBQualityConstraintsPropertyId,
 			constraintQualifierOfPropertyId = config.WBQualityConstraintsQualifierOfPropertyConstraintId,
 			mainSnakPropertyId = getMainSnakPropertyId( data.element ),
@@ -137,7 +137,7 @@
 			};
 
 		if ( isQualifierContext( data.element ) && data.options.type === 'property' ) {
-			constraintId = allowedQualifierConstraintId;
+			constraintId = allowedQualifiersConstraintId;
 			qualifierId = constraintsPropertyId;
 		}
 
