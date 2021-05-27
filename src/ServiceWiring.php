@@ -227,6 +227,8 @@ return [
 				=> ConstraintCheckerServices::getPropertyScopeChecker( $services ),
 			$config->get( 'WBQualityConstraintsContemporaryConstraintId' )
 				=> ConstraintCheckerServices::getContemporaryChecker( $services ),
+			$config->get( 'WBQualityConstraintsLexemeLanguageConstraintId' )
+				=> ConstraintCheckerServices::getLexemeLanguageChecker( $services ),
 		];
 
 		return new DelegatingConstraintChecker(

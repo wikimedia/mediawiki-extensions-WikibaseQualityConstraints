@@ -16,6 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\FormatChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\IntegerChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\Lexeme\LanguageChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker;
@@ -220,6 +221,12 @@ return [
 			WikibaseServices::getEntityLookup( $services ),
 			ConstraintsServices::getRangeCheckerHelper( $services ),
 			$services->getMainConfig()
+		);
+	},
+
+	ConstraintCheckerServices::LEXEME_LANGUAGE_CHECKER => static function ( MediaWikiServices $services ) {
+		return new LanguageChecker(
+			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 ];
