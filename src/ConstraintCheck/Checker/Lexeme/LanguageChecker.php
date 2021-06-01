@@ -3,8 +3,13 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\Lexeme;
 
 use ExtensionRegistry;
+use Wikibase\DataModel\Entity\EntityDocument;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Lexeme\Domain\Model\Form;
 use Wikibase\Lexeme\Domain\Model\Lexeme;
+use Wikibase\Lexeme\Domain\Model\LexemeSubEntityId;
+use Wikibase\Lexeme\Domain\Model\Sense;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -20,14 +25,21 @@ use WikibaseQuality\ConstraintReport\Role;
 class LanguageChecker implements ConstraintChecker {
 
 	/**
+	 * @var EntityLookup
+	 */
+	private $entityLookup;
+
+	/**
 	 * @var ConstraintParameterParser
 	 */
 	private $constraintParameterParser;
 
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser
+		ConstraintParameterParser $constraintParameterParser,
+		EntityLookup $lookup
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
+		$this->entityLookup = $lookup;
 	}
 
 	/**
@@ -66,7 +78,7 @@ class LanguageChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE );
 		}
 		$entityType = $context->getEntity()->getType();
-		if ( $entityType !== Lexeme::ENTITY_TYPE ) {
+		if ( !in_array( $entityType, [ Lexeme::ENTITY_TYPE, Sense::ENTITY_TYPE, Form::ENTITY_TYPE ] ) ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE );
 		}
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
@@ -88,8 +100,14 @@ class LanguageChecker implements ConstraintChecker {
 			->withEntityId( $context->getSnak()->getPropertyId(), Role::PREDICATE )
 			->withItemIdSnakValueList( $languages, Role::OBJECT );
 		$status = CheckResult::STATUS_VIOLATION;
+
+		$lexeme = $this->getLexeme( $context );
+		if ( !$lexeme ) {
+			// Lexeme doesn't exist, let's not bother
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE );
+		}
+
 		/** @var Lexeme $lexeme */
-		$lexeme = $context->getEntity();
 		'@phan-var Lexeme $lexeme';
 
 		foreach ( $languages as $language ) {
@@ -104,6 +122,21 @@ class LanguageChecker implements ConstraintChecker {
 		}
 
 		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+	}
+
+	private function getLexeme( Context $context ): ?EntityDocument {
+		$entityType = $context->getEntity()->getType();
+
+		if ( $entityType === Lexeme::ENTITY_TYPE ) {
+			return $context->getEntity();
+		}
+
+		if ( in_array( $entityType, [ Form::ENTITY_TYPE, Sense::ENTITY_TYPE ] ) ) {
+			/** @var LexemeSubEntityId $id */
+			$id = $context->getEntity()->getId();
+			'@phan-var LexemeSubEntityId $id';
+			return $this->entityLookup->getEntity( $id->getLexemeId() );
+		}
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ): array {
