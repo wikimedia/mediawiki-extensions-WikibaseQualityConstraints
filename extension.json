@@ -458,6 +458,11 @@
 			"description": "The item ID of the 'property scope constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should only be used in some locations (main value, qualifiers, and/or references, but not all of them).",
 			"public": true
 		},
+		"WBQualityConstraintsLexemeLanguageConstraintId": {
+			"value": "Q55819106",
+			"description": "The item ID of the 'lexeme language constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should only be used in lexeme that have the given language set.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'class' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",
