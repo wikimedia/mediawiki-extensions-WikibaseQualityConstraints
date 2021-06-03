@@ -226,7 +226,8 @@ return [
 
 	ConstraintCheckerServices::LEXEME_LANGUAGE_CHECKER => static function ( MediaWikiServices $services ) {
 		return new LanguageChecker(
-			ConstraintsServices::getConstraintParameterParser( $services )
+			ConstraintsServices::getConstraintParameterParser( $services ),
+			WikibaseServices::getEntityLookup( $services )
 		);
 	},
 ];

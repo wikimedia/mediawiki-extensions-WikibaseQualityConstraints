@@ -4,7 +4,10 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker\Lexeme;
 
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Services\Lookup\EntityLookup;
+use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Snak\Snak;
+use Wikibase\Lexeme\Domain\Model\LexemeId;
 use Wikibase\Lexeme\Tests\Unit\DataModel\NewForm;
 use Wikibase\Lexeme\Tests\Unit\DataModel\NewLexeme;
 use Wikibase\Lexeme\Tests\Unit\DataModel\NewSense;
@@ -36,7 +39,8 @@ class LanguageCheckerTest extends \MediaWikiTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 		$this->languageChecker = new LanguageChecker(
-			$this->getConstraintParameterParser()
+			$this->getConstraintParameterParser(),
+			$this->getEntityLookup()
 		);
 	}
 
@@ -79,35 +83,66 @@ class LanguageCheckerTest extends \MediaWikiTestCase {
 		$this->assertNotInScope( $result );
 	}
 
-	public function testLanguageConstraintWithForm() {
-		// TODO: Add support for form
+	public function testLanguageConstraintWithFormViolation() {
 		$statement = NewStatement::forProperty( 'P123' )
 			->withValue( new StringValue( 'Q1' ) )
 			->build();
+		$form = NewForm::havingLexeme( new LexemeId( 'L3' ) )->build();
 
 		$result = $this->languageChecker->checkConstraint(
-			new FakeSnakContext( $statement->getMainSnak(), NewForm::any()->build() ),
+			new FakeSnakContext( $statement->getMainSnak(), $form ),
 			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) )
 		);
 
-		$this->assertNotInScope( $result );
+		$this->assertViolation( $result );
 	}
 
-	public function testLanguageConstraintWithSense() {
-		// TODO: Add support for sense
+	public function testLanguageConstraintWithFormCompliance() {
+		$statement = NewStatement::forProperty( 'P123' )
+			->withValue( new StringValue( 'Q1' ) )
+			->build();
+		$form = NewForm::havingLexeme( new LexemeId( 'L2' ) )->build();
+
+		$result = $this->languageChecker->checkConstraint(
+			new FakeSnakContext( $statement->getMainSnak(), $form ),
+			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) )
+		);
+
+		$this->assertCompliance( $result );
+	}
+
+	public function testLanguageConstraintWithSenseViolation() {
 		$statement = NewStatement::forProperty( 'P123' )
 			->withValue( new StringValue( 'Q1' ) )
 			->build();
 
+		$sense = NewSense::havingId( 'S1' )->andLexeme( 'L3' )->build();
 		$result = $this->languageChecker->checkConstraint(
 			new FakeSnakContext(
 				$statement->getMainSnak(),
-				NewSense::havingId( 'S1' )->build()
+				$sense
 			),
 			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) )
 		);
 
-		$this->assertNotInScope( $result );
+		$this->assertViolation( $result );
+	}
+
+	public function testLanguageConstraintWithSenseCompliance() {
+		$statement = NewStatement::forProperty( 'P123' )
+			->withValue( new StringValue( 'Q1' ) )
+			->build();
+
+		$sense = NewSense::havingId( 'S1' )->andLexeme( 'L2' )->build();
+		$result = $this->languageChecker->checkConstraint(
+			new FakeSnakContext(
+				$statement->getMainSnak(),
+				$sense
+			),
+			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) )
+		);
+
+		$this->assertCompliance( $result );
 	}
 
 	public function testLanguageConstraintDeprecatedStatement() {
@@ -160,6 +195,20 @@ class LanguageCheckerTest extends \MediaWikiTestCase {
 			->withLanguage( $language )
 			->build();
 		return new FakeSnakContext( $snak, $lexeme );
+	}
+
+	private function getEntityLookup(): EntityLookup {
+		$lexeme = NewLexeme::havingId( 'L2' )
+			->withLanguage( 'Q2' )
+			->build();
+		$lexemeAnotherLanguage = NewLexeme::havingId( 'L3' )
+			->withLanguage( 'Q9' )
+			->build();
+		$lookup = new InMemoryEntityLookup();
+		$lookup->addEntity( $lexeme );
+		$lookup->addEntity( $lexemeAnotherLanguage );
+
+		return $lookup;
 	}
 
 }
