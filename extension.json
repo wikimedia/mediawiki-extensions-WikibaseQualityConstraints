@@ -164,6 +164,7 @@
 		"wikibase.quality.constraints.suggestions": {
 			"packageFiles": [
 				"suggestions.js",
+				"suggestions/EntitySelectorHookHandlerFactory.js",
 				{
 					"name": "config.json",
 					"config": [

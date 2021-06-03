@@ -18,7 +18,8 @@
 		"unexpected": "^10.40.2"
 	},
 	"_moduleAliases": {
-		"wikibase.quality.constraints.gadget": "./modules/gadget.js"
+		"wikibase.quality.constraints.gadget": "./modules/gadget.js",
+		"wikibase.quality.constraints.suggestions.EntitySelectorHookHandlerFactory": "./modules/suggestions/EntitySelectorHookHandlerFactory.js"
 	},
 	"browserslist": [
 		"ie 11"
