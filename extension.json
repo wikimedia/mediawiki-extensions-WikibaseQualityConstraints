@@ -663,6 +663,11 @@
 			"value": false,
 			"description": "Whether to enable the 'constraint suggestion' constraint status or not. This is a temporary configuration that will be removed once constraint suggestions are permanently enabled on Wikidata.",
 			"public": true
+		},
+		"WBQualityConstraintsFormatCheckerShellboxRatio": {
+			"value": 0,
+			"description": "Float value between 0 and 1 determining ratio of requests made to shellbox (vs. WDQS) in FormatChecker in evaluating regexes. Zero disables requesting to shellbox (all going to WDQS) and one means all requests will go to shellbox.",
+			"public": true
 		}
 	},
 	"AutoloadNamespaces": {

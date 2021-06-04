@@ -4,6 +4,9 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker\FormatChecker;
 
 use DataValues\StringValue;
 use HashConfig;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Shell\ShellboxClientFactory;
+use Shellbox\Client;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -51,10 +54,30 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 					return preg_match( $pattern, $text );
 				}
 			) );
+		$shellboxClient = $this->getMockBuilder( Client::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'call' ] )
+			->getMock();
+		$this->getDefaultConfig()->set( 'WBQualityConstraintsFormatCheckerShellboxRatio', 0.5 );
+		$shellboxClient->method( 'call' )
+			->will( $this->returnCallback(
+				function ( $route, $func_name, $args ) {
+					return call_user_func_array( $func_name, $args );
+				}
+			) );
+		$shellboxClientFactory = $this->getMockBuilder( ShellboxClientFactory::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getClient', 'isEnabled' ] )
+			->getMock();
+		$shellboxClientFactory->method( 'isEnabled' )
+			->will( $this->returnValue( true ) );
+		$shellboxClientFactory->method( 'getClient' )
+			->will( $this->returnValue( $shellboxClient ) );
 		$this->formatChecker = new FormatChecker(
 			$this->getConstraintParameterParser(),
 			$this->getDefaultConfig(),
-			$sparqlHelper
+			$sparqlHelper,
+			$shellboxClientFactory
 		);
 	}
 
@@ -287,12 +310,14 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatConstraintWithoutSparql() {
+		$this->getDefaultConfig()->set( 'WBQualityConstraintsFormatCheckerShellboxRatio', 0 );
 		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
 			$this->getDefaultConfig(),
-			new DummySparqlHelper()
+			new DummySparqlHelper(),
+			MediaWikiServices::getInstance()->getShellboxClientFactory()
 		);
 
 		$result = $checker->checkConstraint(
@@ -314,7 +339,8 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
 			new HashConfig( [ 'WBQualityConstraintsCheckFormatConstraint' => false ] ),
-			$sparqlHelper
+			$sparqlHelper,
+			MediaWikiServices::getInstance()->getShellboxClientFactory()
 		);
 
 		$result = $checker->checkConstraint(
