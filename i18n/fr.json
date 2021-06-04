@@ -149,6 +149,7 @@
 	"wbqc-violation-message-integer": "Les valeurs pour $1 doivent être des entiers, mais $2 a une partie fractionnaire.",
 	"wbqc-violation-message-integer-bounds": "$1 doit avoir des valeurs entières, mais les limites de $2 comportent une partie fractionnaire.",
 	"wbqc-violation-message-citationNeeded": "Les déclarations pour $1 doivent avoir au moins une référence.",
+	"wbqc-violation-message-language": "Les déclarations pour $1 ne doivent porter que sur des lexèmes avec la langue positionnée à {{PLURAL:$2|1=$4.|2=$4 ou $5.|un des suivants : $3}}",
 	"wbqc-violation-message-property-scope": "La propriété $1 ne doit plus être utilisée à cet endroit ($2). {{PLURAL:$3|Le seul emplacement valide|Les seuls emplacements valides}} pour cette propriété {{PLURAL:$3|est $5.|sont : $4}}",
 	"wbqc-violation-message-exception": "Cette entrée est une exception connue pour cette contrainte et a été marquée comme telle."
 }
