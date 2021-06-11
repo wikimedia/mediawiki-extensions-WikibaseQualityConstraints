@@ -147,7 +147,8 @@ return [
 		return new FormatChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			$services->getMainConfig(),
-			ConstraintsServices::getSparqlHelper( $services )
+			ConstraintsServices::getSparqlHelper( $services ),
+			$services->getShellboxClientFactory()
 		);
 	},
 
