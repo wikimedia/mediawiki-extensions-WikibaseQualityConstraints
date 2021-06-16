@@ -92,6 +92,8 @@
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "对名字空间“$1”的检查尚未执行。",
 	"wbqc-violation-message-conflicts-with-property": "一个实体不应同时有$1和$2的陈述。",
 	"wbqc-violation-message-conflicts-with-claim": "如果实体带有值$3得的陈述$2，则该实体不应有$1的陈述。",
+	"wbqc-violation-message-contemporary-subject-earlier": "实体$1和$3应该是同时通过$2链接，但$1的最新结束值为$4，而$3的最早起始值为$5。",
+	"wbqc-violation-message-contemporary-value-earlier": "实体$1和$3应该同时通过$2链接，但$3的最新结束值为$4，$1的最早起始值为$5。",
 	"wbqc-violation-message-diff-within-range": "$3（$4）和$1（$2）之间的差异应界定在$5和$6之间。",
 	"wbqc-violation-message-diff-within-range-leftopen": "$3（$4）和$1（$2）之间的差异不应大于$5。",
 	"wbqc-violation-message-diff-within-range-rightopen": "$3（$4）和$1（$2）之间的差异不应小于$5。",
@@ -146,6 +148,7 @@
 	"wbqc-violation-message-integer": "用于$1的值应为整数，但$2有小数部分。",
 	"wbqc-violation-message-integer-bounds": "$1的值应为整数，但$2的界限有小数部分。",
 	"wbqc-violation-message-citationNeeded": "$1的陈述应有至少一个参考文献。",
+	"wbqc-violation-message-language": "$1的陈述应该只在语言设置为{{PLURAL:$2|1=$4的词形上。|2=$4或$5的词形上。|以下之一的词形上：$3}}",
 	"wbqc-violation-message-property-scope": "属性$1不应在此位置（$2）使用。可用于此属性的{{PLURAL:$3|位置}}{{PLURAL:$3|只有$5。|只有：$4}}",
 	"wbqc-violation-message-exception": "此实体是此约束的已知例外，并已标记为例外。"
 }
