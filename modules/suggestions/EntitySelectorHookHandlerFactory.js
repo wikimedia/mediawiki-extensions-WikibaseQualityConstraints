@@ -43,8 +43,8 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 			ids.forEach( function ( id ) {
 				item = {
 					id: id,
-					label: ld.entities[ id ] && ld.entities[ id ].labels[ language ] && ld.entities[ id ].labels[ language ].value || '',
-					description: ld.entities[ id ] && ld.entities[ id ].descriptions[ language ] && ld.entities[ id ].descriptions[ language ].value || '',
+					label: ld.entities[ id ] && ld.entities[ id ].labels && ld.entities[ id ].labels[ language ] && ld.entities[ id ].labels[ language ].value || '',
+					description: ld.entities[ id ] && ld.entities[ id ].descriptions && ld.entities[ id ].descriptions[ language ] && ld.entities[ id ].descriptions[ language ].value || '',
 					rating: 1,
 					url: articlePathPattern.replace( '$1', 'Special:EntityPage/' + id )
 				};
