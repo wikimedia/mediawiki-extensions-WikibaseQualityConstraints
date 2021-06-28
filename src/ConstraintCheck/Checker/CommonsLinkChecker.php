@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use MalformedTitleException;
@@ -42,7 +44,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
 			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
@@ -53,7 +55,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT,
 			Context::TYPE_QUALIFIER,
@@ -65,12 +67,10 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 * Get the number of a namespace on Wikimedia Commons (commonswiki).
 	 * All namespaces not known to this function will be looked up by the TitleParser.
 	 *
-	 * @param string $namespace
-	 *
 	 * @return array first element is the namespace number (default namespace for TitleParser),
 	 * second element is a string to prepend to the title before giving it to the TitleParser
 	 */
-	private function getCommonsNamespace( $namespace ) {
+	private function getCommonsNamespace( string $namespace ): array {
 		switch ( $namespace ) {
 			case '':
 				return [ NS_MAIN, '' ];
@@ -96,13 +96,9 @@ class CommonsLinkChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Commons link' constraint.
 	 *
-	 * @param Context $context
-	 * @param Constraint $constraint
-	 *
 	 * @throws ConstraintParameterException
-	 * @return CheckResult
 	 */
-	public function checkConstraint( Context $context, Constraint $constraint ) {
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
@@ -166,7 +162,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		return new CheckResult( $context, $constraint, $parameters, $status, $message );
 	}
 
-	public function checkConstraintParameters( Constraint $constraint ) {
+	public function checkConstraintParameters( Constraint $constraint ): array {
 		$constraintParameters = $constraint->getConstraintParameters();
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];
@@ -181,12 +177,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 		return $exceptions;
 	}
 
-	/**
-	 * @param string $commonsLink
-	 *
-	 * @return bool
-	 */
-	private function commonsLinkIsWellFormed( $commonsLink ) {
+	private function commonsLinkIsWellFormed( string $commonsLink ): bool {
 		$toReplace = [ "_", "%20" ];
 		$compareString = trim( str_replace( $toReplace, '', $commonsLink ) );
 
@@ -196,13 +187,8 @@ class CommonsLinkChecker implements ConstraintChecker {
 	/**
 	 * Checks whether the value of the statement already includes the namespace.
 	 * This special case should be reported as “malformed title” instead of “title does not exist”.
-	 *
-	 * @param string $value
-	 * @param string $namespace
-	 *
-	 * @return bool
 	 */
-	private function valueIncludesNamespace( $value, $namespace ) {
+	private function valueIncludesNamespace( string $value, string $namespace ): bool {
 		return $namespace !== '' &&
 			strncasecmp( $value, $namespace . ':', strlen( $namespace ) + 1 ) === 0;
 	}
