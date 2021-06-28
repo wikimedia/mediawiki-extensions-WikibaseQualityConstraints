@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
-use MalformedTitleException;
 use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -131,35 +130,26 @@ class CommonsLinkChecker implements ConstraintChecker {
 		}
 
 		$commonsLink = $dataValue->getValue();
-
-		try {
-			if ( !$this->commonsLinkIsWellFormed( $commonsLink ) ) {
-				throw new MalformedTitleException( 'caught below', $commonsLink );
-			}
-
-			$prefix = $this->getCommonsNamespace( $namespace )[1];
-			$normalizedTitle = $this->pageNameNormalizer->normalizePageName(
-				$prefix . $commonsLink,
-				'https://commons.wikimedia.org/w/api.php'
-			);
-
-			if ( $normalizedTitle === false ) {
-				if ( $this->valueIncludesNamespace( $commonsLink, $namespace ) ) {
-					throw new MalformedTitleException( 'caught below', $commonsLink );
-				} else {
-					$message = new ViolationMessage( 'wbqc-violation-message-commons-link-no-existent' );
-					$status = CheckResult::STATUS_VIOLATION;
-				}
-			} else {
-				$message = null;
-				$status = CheckResult::STATUS_COMPLIANCE;
-			}
-		} catch ( MalformedTitleException $e ) {
-			$message = new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' );
-			$status = CheckResult::STATUS_VIOLATION;
+		if ( !$this->commonsLinkIsWellFormed( $commonsLink ) ) {
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION,
+				new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' ) );
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		$prefix = $this->getCommonsNamespace( $namespace )[1];
+		$normalizedTitle = $this->pageNameNormalizer->normalizePageName(
+			$prefix . $commonsLink,
+			'https://commons.wikimedia.org/w/api.php'
+		);
+		if ( $normalizedTitle === false ) {
+			if ( $this->valueIncludesNamespace( $commonsLink, $namespace ) ) {
+				return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION,
+					new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' ) );
+			}
+			return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION,
+				new ViolationMessage( 'wbqc-violation-message-commons-link-no-existent' ) );
+		}
+
+		return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE, null );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ): array {
