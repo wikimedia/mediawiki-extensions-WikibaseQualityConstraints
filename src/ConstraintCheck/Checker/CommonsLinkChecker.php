@@ -6,6 +6,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
@@ -32,12 +33,19 @@ class CommonsLinkChecker implements ConstraintChecker {
 	 */
 	private $pageNameNormalizer;
 
+	/**
+	 * @var PropertyDataTypeLookup
+	 */
+	private $propertyDatatypeLookup;
+
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
-		MediaWikiPageNameNormalizer $pageNameNormalizer
+		MediaWikiPageNameNormalizer $pageNameNormalizer,
+		PropertyDataTypeLookup $propertyDatatypeLookup
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->pageNameNormalizer = $pageNameNormalizer;
+		$this->propertyDatatypeLookup = $propertyDatatypeLookup;
 	}
 
 	/**
@@ -135,9 +143,24 @@ class CommonsLinkChecker implements ConstraintChecker {
 				new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' ) );
 		}
 
+		$dataType = $this->propertyDatatypeLookup->getDataTypeIdForProperty( $snak->getPropertyId() );
+		switch ( $dataType ) {
+			case 'geo-shape':
+			case 'tabular-data':
+				if ( strpos( $commonsLink, $namespace . ':' ) !== 0 ) {
+					return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_VIOLATION,
+						new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' ) );
+				}
+				$pageName = $commonsLink;
+				break;
+			default:
+				$pageName = $namespace ? $namespace . ':' . $commonsLink : $commonsLink;
+				break;
+		}
+
 		$prefix = $this->getCommonsNamespace( $namespace )[1];
 		$normalizedTitle = $this->pageNameNormalizer->normalizePageName(
-			$prefix . $commonsLink,
+			$pageName,
 			'https://commons.wikimedia.org/w/api.php'
 		);
 		if ( $normalizedTitle === false ) {

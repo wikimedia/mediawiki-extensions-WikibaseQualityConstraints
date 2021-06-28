@@ -7,6 +7,8 @@ use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Repo\Tests\NewItem;
@@ -33,6 +35,11 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	use ConstraintParameters;
 	use ResultAssertions;
 
+	private const COMMONS_MEDIA_PROPERTY = 'P1';
+	private const STRING_PROPERTY = 'P2';
+	private const GEO_SHAPE_PROPERTY = 'P3';
+	private const TABULAR_DATA_PROPERTY = 'P4';
+
 	/**
 	 * @var CommonsLinkChecker
 	 */
@@ -50,8 +57,10 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 			'File:test image.jpg' => 'File:Test image.jpg',
 			'Category:test category' => 'Category:Test category',
 			'test gallery' => 'Test gallery',
-			'test creator' => 'Creator:Test creator',
-			'test data' => 'Data:Test data',
+			'Creator:Test gallery' => false,
+			'Creator:Test creator' => 'Creator:Test creator',
+			'Creator:Creator:Test creator' => false,
+			'Data:test data' => 'Data:Test data',
 			'File:no image.jpg' => false,
 		];
 
@@ -64,13 +73,23 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 		$this->commonsLinkChecker = new CommonsLinkChecker(
 			$this->getConstraintParameterParser(),
-			$pageNameNormalizer
+			$pageNameNormalizer,
+			$this->getFakePropertyDatatypeLookup()
 		);
+	}
+
+	private function getFakePropertyDatatypeLookup(): PropertyDataTypeLookup {
+		$propertyDataTypeLookup = new InMemoryDataTypeLookup();
+		$propertyDataTypeLookup->setDataTypeForProperty( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), 'commonsMedia' );
+		$propertyDataTypeLookup->setDataTypeForProperty( new PropertyId( self::STRING_PROPERTY ), 'string' );
+		$propertyDataTypeLookup->setDataTypeForProperty( new PropertyId( self::GEO_SHAPE_PROPERTY ), 'geo-shape' );
+		$propertyDataTypeLookup->setDataTypeForProperty( new PropertyId( self::TABULAR_DATA_PROPERTY ), 'tabular-data' );
+		return $propertyDataTypeLookup;
 	}
 
 	public function testCommonsLinkConstraintValid() {
 		$value = new StringValue( 'test image.jpg' );
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+		$snak = new PropertyValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -83,9 +102,9 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$value1 = new StringValue( 'test_image.jpg' );
 		$value2 = new StringValue( 'test%20image.jpg' );
 		$value3 = new StringValue( 'File:test image.jpg' );
-		$snak1 = new PropertyValueSnak( new PropertyId( 'P1' ), $value1 );
-		$snak2 = new PropertyValueSnak( new PropertyId( 'P1' ), $value2 );
-		$snak3 = new PropertyValueSnak( new PropertyId( 'P1' ), $value3 );
+		$snak1 = new PropertyValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), $value1 );
+		$snak2 = new PropertyValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), $value2 );
+		$snak3 = new PropertyValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), $value3 );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak1 ),
@@ -108,7 +127,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	public function testCommonsLinkConstraintValidCategory() {
 		$value = new StringValue( 'test category' );
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+		$snak = new PropertyValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -119,7 +138,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	public function testCommonsLinkConstraintValidGallery() {
 		$value = new StringValue( 'test gallery' );
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+		$snak = new PropertyValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -130,8 +149,8 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testCommonsLinkConstraintValidCreator() {
-		$value = new StringValue( 'test creator' );
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+		$value = new StringValue( 'Test creator' );
+		$snak = new PropertyValueSnak( new PropertyId( self::STRING_PROPERTY ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -141,9 +160,33 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $result );
 	}
 
-	public function testCommonsLinkConstraintValidData() {
-		$value = new StringValue( 'test data' );
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+	public function testCommonsLinkConstraintInvalidCreatorExtraNS() {
+		$value = new StringValue( 'Creator:Test creator' );
+		$snak = new PropertyValueSnak( new PropertyId( self::STRING_PROPERTY ), $value );
+
+		$result = $this->commonsLinkChecker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'Creator' ) )
+		);
+
+		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
+	}
+
+	public function testCommonsLinkConstraintInvalidCreatorNonexistent() {
+		$value = new StringValue( 'Test gallery' );
+		$snak = new PropertyValueSnak( new PropertyId( self::STRING_PROPERTY ), $value );
+
+		$result = $this->commonsLinkChecker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'Creator' ) )
+		);
+
+		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-no-existent' );
+	}
+
+	public function testCommonsLinkConstraintValidGeoShape() {
+		$value = new StringValue( 'Data:test data' );
+		$snak = new PropertyValueSnak( new PropertyId( self::GEO_SHAPE_PROPERTY ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -153,9 +196,45 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 		$this->assertCompliance( $result );
 	}
 
+	public function testCommonsLinkConstraintInvalidGeoShapeMissingNS() {
+		$value = new StringValue( 'test data' );
+		$snak = new PropertyValueSnak( new PropertyId( self::GEO_SHAPE_PROPERTY ), $value );
+
+		$result = $this->commonsLinkChecker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'Data' ) )
+		);
+
+		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
+	}
+
+	public function testCommonsLinkConstraintValidTabularData() {
+		$value = new StringValue( 'Data:test data' );
+		$snak = new PropertyValueSnak( new PropertyId( self::TABULAR_DATA_PROPERTY ), $value );
+
+		$result = $this->commonsLinkChecker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'Data' ) )
+		);
+
+		$this->assertCompliance( $result );
+	}
+
+	public function testCommonsLinkConstraintInvalidTabularDataMissingNS() {
+		$value = new StringValue( 'test data' );
+		$snak = new PropertyValueSnak( new PropertyId( self::TABULAR_DATA_PROPERTY ), $value );
+
+		$result = $this->commonsLinkChecker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->namespaceParameter( 'Data' ) )
+		);
+
+		$this->assertViolation( $result, 'wbqc-violation-message-commons-link-not-well-formed' );
+	}
+
 	public function testCommonsLinkConstraintNotExistent() {
 		$value = new StringValue( 'no image.jpg' );
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+		$snak = new PropertyValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -167,7 +246,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 
 	public function testCommonsLinkConstraintNoStringValue() {
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), $value );
+		$snak = new PropertyValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ), $value );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -178,7 +257,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testCommonsLinkConstraintNoValueSnak() {
-		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
+		$snak = new PropertyNoValueSnak( new PropertyId( self::COMMONS_MEDIA_PROPERTY ) );
 
 		$result = $this->commonsLinkChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -189,7 +268,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testCommonsLinkConstraintDeprecatedStatement() {
-		$statement = NewStatement::forProperty( 'P1' )
+		$statement = NewStatement::forProperty( self::COMMONS_MEDIA_PROPERTY )
 				   ->withValue( 'not_well formed' )
 				   ->withDeprecatedRank()
 				   ->build();
@@ -213,7 +292,7 @@ class CommonsLinkCheckerTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @param string[] $parameters
+	 * @param array[] $parameters
 	 *
 	 * @return Constraint
 	 */

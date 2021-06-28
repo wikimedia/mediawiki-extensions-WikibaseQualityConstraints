@@ -156,7 +156,8 @@ return [
 		$pageNameNormalizer = new MediaWikiPageNameNormalizer();
 		return new CommonsLinkChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
-			$pageNameNormalizer
+			$pageNameNormalizer,
+			WikibaseRepo::getPropertyDataTypeLookup( $services )
 		);
 	},
 

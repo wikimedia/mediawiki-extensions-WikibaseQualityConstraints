@@ -15,6 +15,7 @@ use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -99,9 +100,12 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$pageNameNormalizer = $this->createMock( MediaWikiPageNameNormalizer::class );
 		$pageNameNormalizer->method( 'normalizePageName' )
 			->willReturnArgument( 0 );
+		$propertyDatatypeLookup = $this->createMock( PropertyDataTypeLookup::class );
+		$propertyDatatypeLookup->method( 'getDataTypeIdForProperty' )->willReturn( 'string' );
 		$commonsLinkChecker = new CommonsLinkChecker(
 			$constraintParameterParser,
-			$pageNameNormalizer
+			$pageNameNormalizer,
+			$propertyDatatypeLookup
 		);
 		$this->setService( ConstraintCheckerServices::COMMONS_LINK_CHECKER, $commonsLinkChecker );
 
