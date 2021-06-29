@@ -92,12 +92,14 @@ class TypeCheckerHelper {
 		}
 
 		$subclassId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
+		$statements = $item->getStatements()
+			->getByPropertyId( new PropertyId( $subclassId ) )
+			->getBestStatements();
 		/** @var Statement $statement */
-		foreach ( $item->getStatements()->getByPropertyId( new PropertyId( $subclassId ) ) as $statement ) {
+		foreach ( $statements as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
-			if ( !$this->hasCorrectType( $mainSnak ) ||
-				$statement->getRank() === Statement::RANK_DEPRECATED ) {
+			if ( !$this->hasCorrectType( $mainSnak ) ) {
 				continue;
 			}
 			/** @var PropertyValueSnak $mainSnak */
@@ -194,11 +196,10 @@ class TypeCheckerHelper {
 	public function hasClassInRelation( StatementList $statements, array $relationIds, array $classesToCheck ) {
 		$metadatas = [];
 
-		foreach ( $this->getStatementsByPropertyIds( $statements, $relationIds ) as $statement ) {
+		foreach ( $this->getBestStatementsByPropertyIds( $statements, $relationIds ) as $statement ) {
 			$mainSnak = $statement->getMainSnak();
 
-			if ( !$this->hasCorrectType( $mainSnak ) ||
-				$statement->getRank() === Statement::RANK_DEPRECATED ) {
+			if ( !$this->hasCorrectType( $mainSnak ) ) {
 				continue;
 			}
 			/** @var PropertyValueSnak $mainSnak */
@@ -245,7 +246,7 @@ class TypeCheckerHelper {
 	 *
 	 * @return Statement[]
 	 */
-	private function getStatementsByPropertyIds(
+	private function getBestStatementsByPropertyIds(
 		StatementList $statements,
 		array $propertyIdSerializations
 	) {
@@ -253,7 +254,10 @@ class TypeCheckerHelper {
 
 		foreach ( $propertyIdSerializations as $propertyIdSerialization ) {
 			$propertyId = new PropertyId( $propertyIdSerialization );
-			$statementArrays[] = $statements->getByPropertyId( $propertyId )->toArray();
+			$statementArrays[] = $statements
+				->getByPropertyId( $propertyId )
+				->getBestStatements()
+				->toArray();
 		}
 
 		return call_user_func_array( 'array_merge', $statementArrays );
