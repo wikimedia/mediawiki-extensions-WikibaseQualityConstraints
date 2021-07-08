@@ -183,6 +183,17 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
 	}
 
+	public function testHasClassInRelation_IgnoresNonBestSubclassOfStatement() {
+		$statement = new Statement( new PropertyValueSnak(
+			new PropertyId( 'P31' ),
+			new EntityIdValue( new ItemId( 'Q12' ) )
+			// Q12 has a normal-rank subclass of statement with Q4 as its value,
+			// and a preferred-rank subclass of statement with no value
+		) );
+		$statements = new StatementList( [ $statement ] );
+		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
+	}
+
 	public function provideRelations() {
 		return [
 			'direct instance' => [ 'instance', null, 'Q1', true ],
