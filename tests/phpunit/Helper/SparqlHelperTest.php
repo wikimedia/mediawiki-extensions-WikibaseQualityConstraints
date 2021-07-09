@@ -29,7 +29,7 @@ use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\DataValueFactory;
-use Wikibase\Lib\EntityTypeDefinitions;
+use Wikibase\Lib\SubEntityTypesMapper;
 use Wikibase\Repo\Rdf\RdfVocabulary;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -107,7 +107,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 				new RdfVocabulary(
 					[ '' => 'http://www.wikidata.org/entity/' ],
 					[ '' => 'http://www.wikidata.org/wiki/Special:EntityData/' ],
-					new EntitySourceDefinitions( [], new EntityTypeDefinitions( [] ) ),
+					new EntitySourceDefinitions( [], new SubEntityTypesMapper( [] ) ),
 					[ '' => 'wd' ],
 					[ '' => '' ]
 				),
@@ -799,7 +799,7 @@ END;
 					'',
 					'd'
 				)
-			], new EntityTypeDefinitions( [] ) ),
+			], new SubEntityTypesMapper( [] ) ),
 			[ 'wd' => 'wd' ],
 			[ 'wd' => '' ]
 		);
