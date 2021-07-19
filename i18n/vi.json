@@ -86,7 +86,7 @@
 	"wbqc-violation-message-commons-link-not-well-formed": "Liên kết đến Commons nên hợp lệ.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Chưa hỗ trợ kiểm tra không gian tên “$1”.",
 	"wbqc-violation-message-conflicts-with-property": "Thục thể không nên có lời tuyên bố cho cả $1 và $2.",
-	"wbqc-violation-message-conflicts-with-claim": "Thực thể không nên có lời tuyên bố cho $1 nếu nó cũng có lời tuyên bố cho $2 với giá trị $3.",
+	"wbqc-violation-message-conflicts-with-claim": "Thực thể không nên có lời tuyên bố $1 nếu nó cũng có lời tuyên bố $2 với giá trị $3.",
 	"wbqc-violation-message-contemporary-subject-earlier": "Các thực thể $1 và $3 phải cùng thời để có thể được liên kết thông qua $2, nhưng giá trị kết thúc trễ nhất của $1 là $4 còn giá trị bắt đầu sớm nhất của $3 là $5.",
 	"wbqc-violation-message-contemporary-value-earlier": "Các thực thể $1 và $3 phải cùng thời để có thể được liên kết thông qua $2, nhưng giá trị kết thúc trễ nhất của $3 là $4 còn giá trị bắt đầu sớm nhất của $1 là $5.",
 	"wbqc-violation-message-diff-within-range": "Hiệu số của $3 ($4) và $1 ($2) nên nằm trong khoảng từ $5 đến $6 kể cả $6.",
