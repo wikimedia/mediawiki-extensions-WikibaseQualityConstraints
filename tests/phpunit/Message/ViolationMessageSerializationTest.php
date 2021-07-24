@@ -37,7 +37,7 @@ class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private $deserializer;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->serializer = new ViolationMessageSerializer();
 		$this->deserializer = new ViolationMessageDeserializer(

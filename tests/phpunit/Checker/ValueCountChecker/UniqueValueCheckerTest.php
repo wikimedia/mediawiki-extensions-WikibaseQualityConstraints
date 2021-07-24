@@ -51,7 +51,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private $checker;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
 		$this->uniquePropertyId = new PropertyId( 'P31' );

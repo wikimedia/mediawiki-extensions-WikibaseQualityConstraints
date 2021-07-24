@@ -55,7 +55,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $p2067;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->timeValue = $this->getTimeValue( '1970-01-01' );
 		$rangeCheckerHelper = new RangeCheckerHelper(

@@ -34,7 +34,7 @@ class SingleValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private $checker;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->checker = new SingleValueChecker( $this->getConstraintParameterParser() );

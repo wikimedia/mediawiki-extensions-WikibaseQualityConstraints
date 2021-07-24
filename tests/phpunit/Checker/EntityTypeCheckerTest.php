@@ -34,7 +34,7 @@ class EntityTypeCheckerTest extends \MediaWikiTestCase {
 
 	private $propertyEntityType;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->entityTypeChecker = new EntityTypeChecker(
 			$this->getConstraintParameterParser()

@@ -74,7 +74,7 @@ class CheckConstraintsTest extends ApiTestCase {
 	 */
 	private static $checkerMap = [];
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		global $wgAPIModules;
 
@@ -164,13 +164,13 @@ class CheckConstraintsTest extends ApiTestCase {
 		};
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		self::$constraintLookupContents = [];
 		self::$checkerMap = [];
 		parent::tearDown();
 	}
 
-	public static function tearDownAfterClass() : void {
+	public static function tearDownAfterClass(): void {
 		global $wgAPIModules;
 		$wgAPIModules['wbcheckconstraints'] = self::$oldModuleDeclaration;
 

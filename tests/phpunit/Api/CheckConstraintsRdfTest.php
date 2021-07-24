@@ -170,7 +170,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		Article $article,
 		$mockResponse,
 		ResultsSource $cachingResultsSource = null
-	) : CheckConstraintsRdf {
+	): CheckConstraintsRdf {
 		if ( $cachingResultsSource === null ) {
 			$cachingResultsSource = $this->getCachingResultsSource();
 		}

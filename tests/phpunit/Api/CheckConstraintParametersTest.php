@@ -55,7 +55,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	 */
 	private $testMessageHtml;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		global $wgAPIModules;
 
 		$this->oldModuleDeclaration = $wgAPIModules['wbcheckconstraintparameters'];
@@ -114,7 +114,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		parent::setUp();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		global $wgAPIModules;
 
 		$wgAPIModules['wbcheckconstraintparameters'] = $this->oldModuleDeclaration;

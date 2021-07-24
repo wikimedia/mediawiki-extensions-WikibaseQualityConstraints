@@ -34,7 +34,7 @@ class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private $checker;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->checker = new MultiValueChecker( $this->getConstraintParameterParser() );

@@ -36,7 +36,7 @@ class LanguageCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $languageChecker;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->languageChecker = new LanguageChecker(
 			$this->getConstraintParameterParser(),

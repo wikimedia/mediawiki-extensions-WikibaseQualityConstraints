@@ -43,7 +43,7 @@ class InverseCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $checker;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->lookup = new InMemoryEntityLookup();
 		$this->connectionCheckerHelper = new ConnectionCheckerHelper();

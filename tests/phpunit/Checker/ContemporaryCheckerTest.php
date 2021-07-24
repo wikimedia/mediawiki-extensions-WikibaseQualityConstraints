@@ -59,7 +59,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @throws \ConfigException
 	 */
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->startPropertyIds = $this->getDefaultConfig()
 			->get( ContemporaryChecker::CONFIG_VARIABLE_START_PROPERTY_IDS );

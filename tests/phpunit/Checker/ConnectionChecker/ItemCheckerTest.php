@@ -34,7 +34,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 	 */
 	private $checker;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->checker = new ItemChecker(
 			$this->getConstraintParameterParser(),

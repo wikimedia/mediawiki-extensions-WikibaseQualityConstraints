@@ -51,7 +51,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 */
 	private static $hasSetup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		$this->tablesUsed[] = 'wbqc_constraints';
@@ -62,7 +62,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$this->setService( 'MainConfig', $config );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		parent::tearDown();
 	}
