@@ -58,7 +58,7 @@ class ConstraintRepositoryStore implements ConstraintStore {
 			$constraints
 		);
 
-		$dbw = $this->lb->getConnection( ILoadBalancer::DB_MASTER, [], $this->dbName );
+		$dbw = $this->lb->getConnection( ILoadBalancer::DB_PRIMARY, [], $this->dbName );
 		return $dbw->insert( 'wbqc_constraints', $accumulator, __METHOD__ );
 	}
 
@@ -70,7 +70,7 @@ class ConstraintRepositoryStore implements ConstraintStore {
 	 * @throws DBUnexpectedError
 	 */
 	public function deleteForProperty( PropertyId $propertyId ) {
-		$dbw = $this->lb->getConnection( ILoadBalancer::DB_MASTER, [], $this->dbName );
+		$dbw = $this->lb->getConnection( ILoadBalancer::DB_PRIMARY, [], $this->dbName );
 		$dbw->delete(
 			'wbqc_constraints',
 			[

@@ -165,7 +165,7 @@ class UpdateConstraintsTableJob extends Job {
 			if ( count( $constraints ) >= self::BATCH_SIZE ) {
 				$constraintStore->insertBatch( $constraints );
 				// interrupt transaction and wait for replication
-				$connection = $this->lbFactory->getMainLB()->getConnection( DB_MASTER );
+				$connection = $this->lbFactory->getMainLB()->getConnection( DB_PRIMARY );
 				$connection->endAtomic( __CLASS__ );
 				if ( !$connection->explicitTrxActive() ) {
 					$this->lbFactory->waitForReplication();
@@ -197,7 +197,7 @@ class UpdateConstraintsTableJob extends Job {
 			return true;
 		}
 
-		$connection = $this->lbFactory->getMainLB()->getConnection( DB_MASTER );
+		$connection = $this->lbFactory->getMainLB()->getConnection( DB_PRIMARY );
 		// start transaction (if not started yet) – using __CLASS__, not __METHOD__,
 		// because importConstraintsForProperty() can interrupt the transaction
 		$connection->startAtomic( __CLASS__ );
