@@ -195,9 +195,10 @@ class FormatChecker implements ConstraintChecker {
 		}
 		try {
 			$pattern = '/^' . str_replace( '/', '\/', $format ) . '$/';
-			$shellboxResponse = $this->shellboxClientFactory->getClient(
-				[ 'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000 ]
-			)->call(
+			$shellboxResponse = $this->shellboxClientFactory->getClient( [
+				'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000,
+				'service' => 'constraint-regex-checker',
+			] )->call(
 				'constraint-regex-checker',
 				'preg_match',
 				[ $pattern, $text ]
