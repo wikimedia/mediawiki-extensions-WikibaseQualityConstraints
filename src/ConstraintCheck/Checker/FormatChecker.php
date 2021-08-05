@@ -190,7 +190,7 @@ class FormatChecker implements ConstraintChecker {
 	}
 
 	private function runRegexCheckUsingShellbox( string $text, string $format ): string {
-		if ( !$this->shellboxClientFactory->isEnabled() ) {
+		if ( !$this->shellboxClientFactory->isEnabled( 'constraint-regex-checker' ) ) {
 			return CheckResult::STATUS_TODO;
 		}
 		try {
