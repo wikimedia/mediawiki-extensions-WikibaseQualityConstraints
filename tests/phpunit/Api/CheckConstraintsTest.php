@@ -120,7 +120,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				$config,
 				WikibaseRepo::getBaseDataModelDeserializerFactory(),
 				WikibaseRepo::getEntitySourceDefinitions()
-					->getSourceForEntityType( 'item' )
+					->getDatabaseSourceForEntityType( 'item' )
 					->getConceptBaseUri()
 			);
 			$dataFactory = new NullStatsdDataFactory();
