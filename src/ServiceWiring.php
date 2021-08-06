@@ -42,7 +42,7 @@ return [
 
 	ConstraintsServices::CONSTRAINT_STORE => static function ( MediaWikiServices $services ) {
 		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
-		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
+		$propertySource = $sourceDefinitions->getDatabaseSourceForEntityType( Property::ENTITY_TYPE );
 		$dbName = $propertySource->getDatabaseName();
 		$localEntitySourceName = WikibaseRepo::getLocalEntitySource( $services )->getSourceName();
 
@@ -58,7 +58,7 @@ return [
 
 	ConstraintsServices::CONSTRAINT_LOOKUP => static function ( MediaWikiServices $services ) {
 		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
-		$propertySource = $sourceDefinitions->getSourceForEntityType( Property::ENTITY_TYPE );
+		$propertySource = $sourceDefinitions->getDatabaseSourceForEntityType( Property::ENTITY_TYPE );
 		$dbName = $propertySource->getDatabaseName();
 		$rawLookup = new ConstraintRepositoryLookup(
 			$services->getDBLoadBalancerFactory()->getMainLB( $dbName ),
@@ -114,7 +114,7 @@ return [
 		return new ConstraintParameterParser(
 			$services->getMainConfig(),
 			$deserializerFactory,
-			$entitySourceDefinitions->getSourceForEntityType( 'item' )->getConceptBaseUri()
+			$entitySourceDefinitions->getDatabaseSourceForEntityType( 'item' )->getConceptBaseUri()
 		);
 	},
 
