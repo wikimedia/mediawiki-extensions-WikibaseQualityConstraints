@@ -322,9 +322,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 				id: [ entityId ],
 				status: gadget.config.CACHED_STATUSES
 			} ).returns( {
-				then: sinon.stub().returns( {
-					then: sinon.stub().yields( responseData )
-				} )
+				then: sinon.stub().yields( responseData )
 			} );
 			global.jQuery.withArgs( '.wbqc-constraint-warning' ).returns( {
 				remove: preExistingReportButtonsRemovedSpy

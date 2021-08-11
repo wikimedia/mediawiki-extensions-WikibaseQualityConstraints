@@ -75,8 +75,6 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			uselang: lang,
 			id: ids,
 			status: this.config.CACHED_STATUSES
-		} ).then( function ( result ) {
-			return result;
 		} );
 	};
 
