@@ -526,6 +526,30 @@ class ConstraintParameterParser {
 	}
 
 	/**
+	 * Parse language parameter.
+	 * @param array $constraintParameters
+	 * @throws ConstraintParameterException
+	 * @return string[]
+	 */
+	public function parseLanguageParameter( array $constraintParameters, $constraintTypeItemId ): array {
+		$this->checkError( $constraintParameters );
+		$languagePropertyId = $this->config->get( 'WBQualityConstraintsLanguagePropertyId' );
+		if ( !array_key_exists( $languagePropertyId, $constraintParameters ) ) {
+			throw new ConstraintParameterException(
+				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+					->withEntityId( new PropertyId( $languagePropertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+			);
+		}
+
+		$languages = [];
+		foreach ( $constraintParameters[$languagePropertyId] as $snak ) {
+			$languages[] = $this->parseStringParameter( $snak, $languagePropertyId );
+		}
+		return $languages;
+	}
+
+	/**
 	 * Parse a single string parameter.
 	 * @param array $snakSerialization
 	 * @param string $parameterId

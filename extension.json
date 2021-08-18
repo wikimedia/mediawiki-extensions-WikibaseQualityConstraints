@@ -464,6 +464,16 @@
 			"description": "The item ID of the 'lexeme language constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should only be used in lexeme that have the given language set.",
 			"public": true
 		},
+		"WBQualityConstraintsLabelInLanguageConstraintId": {
+			"value": "Q108139345",
+			"description": "The item ID of the 'label in language constraint' item, which, when used in a 'property constraint' statement on a property, indicates that the property should only be used in entities that have label in the given languages.",
+			"public": true
+		},
+		"WBQualityConstraintsLanguagePropertyId": {
+			"value": "P424",
+			"description": "The property ID of the 'Wikimedia language code' property (data type: string), which specifies the language code of a 'label in language' constraint.",
+			"public": true
+		},
 		"WBQualityConstraintsClassId": {
 			"value": "P2308",
 			"description": "The property ID of the 'class' property (data type: item), which specifies the class/type of a 'type' or 'value type' constraint.",

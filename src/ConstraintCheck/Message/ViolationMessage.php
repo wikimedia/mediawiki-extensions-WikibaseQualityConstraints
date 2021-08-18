@@ -97,6 +97,12 @@ class ViolationMessage {
 	public const TYPE_LANGUAGE = 'l';
 
 	/**
+	 * Argument type for list of languages.
+	 * Value type: string[] (language codes)
+	 */
+	public const TYPE_LANGUAGE_LIST = 'L';
+
+	/**
 	 * Argument type for a multilingual text value.
 	 * Value type: {@link MultilingualTextValue}
 	 */
@@ -329,6 +335,22 @@ class ViolationMessage {
 	 */
 	public function withLanguage( $languageCode ) {
 		return $this->withArgument( self::TYPE_LANGUAGE, null, $languageCode );
+	}
+
+	/**
+	 * Append a single language to the message arguments.
+	 * (This operation returns a modified copy, the original object is unchanged.)
+	 *
+	 * One language argument corresponds to two params in the final message,
+	 * one for the language name (autonym) and one for the language code.
+	 *
+	 * (Language arguments do not support roles.)
+	 *
+	 * @param string[] $languageCodes
+	 * @return ViolationMessage
+	 */
+	public function withLanguages( $languageCodes ) {
+		return $this->withArgument( self::TYPE_LANGUAGE_LIST, null, $languageCodes );
 	}
 
 	/**

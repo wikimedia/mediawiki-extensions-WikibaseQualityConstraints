@@ -229,6 +229,8 @@ return [
 				=> ConstraintCheckerServices::getContemporaryChecker( $services ),
 			$config->get( 'WBQualityConstraintsLexemeLanguageConstraintId' )
 				=> ConstraintCheckerServices::getLexemeLanguageChecker( $services ),
+			$config->get( 'WBQualityConstraintsLabelInLanguageConstraintId' )
+				=> ConstraintCheckerServices::getLabelInLanguageChecker( $services ),
 		];
 
 		return new DelegatingConstraintChecker(

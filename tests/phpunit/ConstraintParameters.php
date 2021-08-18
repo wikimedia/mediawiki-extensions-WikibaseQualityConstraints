@@ -88,6 +88,26 @@ trait ConstraintParameters {
 	}
 
 	/**
+	 * @param string[] $languageCode
+	 * @return array
+	 */
+	public function languageParameter( array $languageCodes ) {
+		$languageParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsLanguagePropertyId' );
+		$snaks = [];
+		foreach ( $languageCodes as $languageCode ) {
+			$snaks[] = $this->getSnakSerializer()->serialize(
+				new PropertyValueSnak(
+					new PropertyId( $languageParameterId ),
+					new StringValue( $languageCode )
+				)
+			);
+		}
+		return [
+			$languageParameterId => $snaks
+		];
+	}
+
+	/**
 	 * @param string $relation 'instance', 'subclass', or 'instanceOrSubclass'
 	 * @return array[]
 	 */

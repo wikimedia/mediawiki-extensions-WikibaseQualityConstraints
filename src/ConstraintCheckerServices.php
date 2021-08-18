@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\LabelInLanguageChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\Lexeme\LanguageChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
 
@@ -41,6 +42,7 @@ class ConstraintCheckerServices {
 	public const PROPERTY_SCOPE_CHECKER = 'WBQC_PropertyScopeChecker';
 	public const CONTEMPORARY_CHECKER = 'WBQC_ContemporaryChecker';
 	public const LEXEME_LANGUAGE_CHECKER = 'WBQC_Lexeme_LanguageChecker';
+	public const LABEL_IN_LANGUAGE_CHECKER = 'WBQC_LabelInLanguageChecker';
 
 	private static function getService( ?MediaWikiServices $services, $name ) {
 		if ( $services === null ) {
@@ -287,6 +289,14 @@ class ConstraintCheckerServices {
 	 */
 	public static function getLexemeLanguageChecker( MediaWikiServices $services = null ) {
 		return self::getService( $services, self::LEXEME_LANGUAGE_CHECKER );
+	}
+
+	/**
+	 * @param MediaWikiServices|null $services
+	 * @return LabelInLanguageChecker
+	 */
+	public static function getLabelInLanguageChecker( MediaWikiServices $services = null ) {
+		return self::getService( $services, self::LABEL_IN_LANGUAGE_CHECKER );
 	}
 
 }

@@ -988,7 +988,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertSame(
 			[
-				Message::plaintextParam( 'português' ),
+				Message::rawParam( 'português' ),
 				Message::plaintextParam( 'pt' ),
 			],
 			$params
