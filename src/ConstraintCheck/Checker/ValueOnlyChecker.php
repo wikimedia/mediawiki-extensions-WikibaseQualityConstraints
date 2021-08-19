@@ -36,6 +36,11 @@ class ValueOnlyChecker implements ConstraintChecker {
 		];
 	}
 
+	/** @codeCoverageIgnore This method is purely declarative. */
+	public function getSupportedEntityTypes() {
+		return self::ALL_ENTITY_TYPES_SUPPORTED;
+	}
+
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getType() === Context::TYPE_STATEMENT ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );

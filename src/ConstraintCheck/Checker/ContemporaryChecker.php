@@ -82,6 +82,11 @@ class ContemporaryChecker implements ConstraintChecker {
 		return [ Context::TYPE_STATEMENT ];
 	}
 
+	/** @codeCoverageIgnore This method is purely declarative. */
+	public function getSupportedEntityTypes() {
+		return self::ALL_ENTITY_TYPES_SUPPORTED;
+	}
+
 	/**
 	 * Checks 'Contemporary' constraint.
 	 *

@@ -70,6 +70,11 @@ class CommonsLinkChecker implements ConstraintChecker {
 		];
 	}
 
+	/** @codeCoverageIgnore This method is purely declarative. */
+	public function getSupportedEntityTypes() {
+		return self::ALL_ENTITY_TYPES_SUPPORTED;
+	}
+
 	/**
 	 * Get the number of a namespace on Wikimedia Commons (commonswiki).
 	 * All namespaces not known to this function will be looked up by the TitleParser.

@@ -70,6 +70,11 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		];
 	}
 
+	/** @codeCoverageIgnore This method is purely declarative. */
+	public function getSupportedEntityTypes() {
+		return self::ALL_ENTITY_TYPES_SUPPORTED;
+	}
+
 	/**
 	 * @param Constraint $constraint
 	 *
