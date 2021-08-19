@@ -25,9 +25,7 @@ trait SparqlHelperMock {
 		Statement $expectedStatement,
 		$result ) {
 
-		$mock = $this->getMockBuilder( SparqlHelper::class )
-			  ->disableOriginalConstructor()
-			  ->getMock();
+		$mock = $this->createMock( SparqlHelper::class );
 
 		$mock->expects( $this->exactly( 1 ) )
 			->method( 'findEntitiesWithSameStatement' )
@@ -43,9 +41,7 @@ trait SparqlHelperMock {
 		$expectedType,
 		$result
 	) {
-		$mock = $this->getMockBuilder( SparqlHelper::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$mock = $this->createMock( SparqlHelper::class );
 
 		$mock->expects( $this->exactly( 1 ) )
 			->method( 'findEntitiesWithSameQualifierOrReference' )

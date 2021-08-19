@@ -235,10 +235,8 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 			->setConstructorArgs( [ $content, $isSortable ] )
 			->onlyMethods( [ 'toHtml' ] )
 			->getMock();
-		$cellMock
-			->expects( $this->any() )
-			->method( 'toHtml' )
-			->will( $this->returnValue( "<th>$content</th>" ) );
+		$cellMock->method( 'toHtml' )
+			->willReturn( "<th>$content</th>" );
 
 		return $cellMock;
 	}
@@ -255,10 +253,8 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 			->getMockBuilder( HtmlTableCellBuilder::class )
 			->setConstructorArgs( [ $content ] )
 			->getMock();
-		$cellMock
-			->expects( $this->any() )
-			->method( 'toHtml' )
-			->will( $this->returnValue( "<td>$content</td>" ) );
+		$cellMock->method( 'toHtml' )
+			->willReturn( "<td>$content</td>" );
 
 		return $cellMock;
 	}

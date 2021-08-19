@@ -189,16 +189,11 @@ class SingleValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	 * @return Constraint
 	 */
 	private function getConstraintMock( array $parameters = [] ) {
-		$mock = $this
-			->getMockBuilder( Constraint::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$mock->expects( $this->any() )
-			->method( 'getConstraintParameters' )
-			->will( $this->returnValue( $parameters ) );
-		$mock->expects( $this->any() )
-			->method( 'getConstraintTypeItemId' )
-			->will( $this->returnValue( 'Q19474404' ) );
+		$mock = $this->createMock( Constraint::class );
+		$mock->method( 'getConstraintParameters' )
+			->willReturn( $parameters );
+		$mock->method( 'getConstraintTypeItemId' )
+			->willReturn( 'Q19474404' );
 
 		return $mock;
 	}

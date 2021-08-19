@@ -65,9 +65,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	 * @return CheckResultSerializer
 	 */
 	private function getCheckResultSerializer() {
-		$mock = $this->getMockBuilder( CheckResultSerializer::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$mock = $this->createMock( CheckResultSerializer::class );
 		$mock->method( 'serialize' )
 			->willReturnCallback( function ( CheckResult $checkResult ) {
 				$entityId = $checkResult->getContextCursor()->getEntityId();
@@ -84,9 +82,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	 * @return CheckResultDeserializer
 	 */
 	private function getCheckResultDeserializer() {
-		$mock = $this->getMockBuilder( CheckResultDeserializer::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$mock = $this->createMock( CheckResultDeserializer::class );
 		$mock->method( 'deserialize' )
 			->willReturnCallback( function ( $serialization ) {
 				if ( strpos( $serialization[0], 'NullResult for ' ) === 0 ) {

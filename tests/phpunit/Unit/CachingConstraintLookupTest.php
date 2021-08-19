@@ -20,10 +20,10 @@ class CachingConstraintLookupTest extends \MediaWikiUnitTestCase {
 		$p2 = new PropertyId( 'P2' );
 		$p3 = new PropertyId( 'P3' );
 
-		$mock = $this->getMockBuilder( ConstraintLookup::class )->getMock();
+		$mock = $this->createMock( ConstraintLookup::class );
 		$mock->expects( $this->exactly( 2 ) )
 			->method( 'queryConstraintsForProperty' )
-			->will( $this->returnValue( [] ) )
+			->willReturn( [] )
 			->withConsecutive(
 				[ $this->equalTo( $p2 ) ],
 				[ $this->equalTo( $p3 ) ]

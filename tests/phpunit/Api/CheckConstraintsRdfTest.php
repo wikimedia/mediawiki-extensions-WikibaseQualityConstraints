@@ -50,11 +50,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	 * @return MockObject
 	 */
 	private function getOutput() {
-		$output = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		return $output;
+		return $this->createMock( OutputPage::class );
 	}
 
 	/**
@@ -116,18 +112,14 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	 * @return CheckResultSerializer
 	 */
 	private function getCheckResultSerializer() {
-		return $this->getMockBuilder( CheckResultSerializer::class )
-			->disableOriginalConstructor()
-			->getMock();
+		return $this->createMock( CheckResultSerializer::class );
 	}
 
 	/**
 	 * @return CheckResultDeserializer
 	 */
 	private function getCheckResultDeserializer() {
-		return $this->getMockBuilder( CheckResultDeserializer::class )
-			->disableOriginalConstructor()
-			->getMock();
+		return $this->createMock( CheckResultDeserializer::class );
 	}
 
 	/**

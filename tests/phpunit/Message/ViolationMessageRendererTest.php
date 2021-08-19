@@ -314,9 +314,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
 	 */
 	public function testRender_unknownArgumentType() {
-		$message = $this->getMockBuilder( ViolationMessage::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$message = $this->createMock( ViolationMessage::class );
 		$message->method( 'getArguments' )
 			->willReturn( [ [ 'type' => 'unknown', 'value' => null, 'role' => null ] ] );
 		$renderer = $this->newViolationMessageRenderer();

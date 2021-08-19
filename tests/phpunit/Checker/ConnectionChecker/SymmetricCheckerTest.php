@@ -231,16 +231,11 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	 * @return Constraint
 	 */
 	private function getConstraintMock() {
-		$mock = $this
-			->getMockBuilder( Constraint::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( [] ) );
-		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'Q21510862' ) );
+		$mock = $this->createMock( Constraint::class );
+		$mock->method( 'getConstraintParameters' )
+			 ->willReturn( [] );
+		$mock->method( 'getConstraintTypeItemId' )
+			 ->willReturn( 'Q21510862' );
 
 		return $mock;
 	}

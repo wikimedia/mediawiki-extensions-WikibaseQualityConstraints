@@ -765,9 +765,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
-			$this->getMockBuilder( LoggingHelper::class )
-				->disableOriginalConstructor()
-				->getMock(),
+			$this->createMock( LoggingHelper::class ),
 			true,
 			false,
 			[ 'P1' ]
@@ -806,9 +804,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
-			$this->getMockBuilder( LoggingHelper::class )
-				->disableOriginalConstructor()
-				->getMock(),
+			$this->createMock( LoggingHelper::class ),
 			true,
 			true,
 			[]
@@ -844,9 +840,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
-			$this->getMockBuilder( LoggingHelper::class )
-				->disableOriginalConstructor()
-				->getMock(),
+			$this->createMock( LoggingHelper::class ),
 			true,
 			true,
 			[]
@@ -891,9 +885,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
-			$this->getMockBuilder( LoggingHelper::class )
-				->disableOriginalConstructor()
-				->getMock(),
+			$this->createMock( LoggingHelper::class ),
 			true,
 			true,
 			[]
@@ -940,9 +932,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
-			$this->getMockBuilder( LoggingHelper::class )
-				->disableOriginalConstructor()
-				->getMock(),
+			$this->createMock( LoggingHelper::class ),
 			true,
 			true,
 			[]
@@ -985,9 +975,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
-			$this->getMockBuilder( LoggingHelper::class )
-				->disableOriginalConstructor()
-				->getMock(),
+			$this->createMock( LoggingHelper::class ),
 			true,
 			true,
 			[]

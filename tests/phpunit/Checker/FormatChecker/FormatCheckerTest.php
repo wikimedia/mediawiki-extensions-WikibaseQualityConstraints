@@ -242,15 +242,13 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	public function testFormatConstraintShellboxDisabled() {
 		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
-		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$sparqlHelper = $this->createMock( SparqlHelper::class );
 		$shellboxClientFactory = $this->getMockBuilder( ShellboxClientFactory::class )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'isEnabled' ] )
 			->getMock();
 		$shellboxClientFactory->method( 'isEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
 			new HashConfig( [
@@ -271,9 +269,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 	public function testFormatConstraintShellboxError() {
 		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
-		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$sparqlHelper = $this->createMock( SparqlHelper::class );
 		$shellboxClient = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'call' ] )
@@ -285,9 +281,9 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			->onlyMethods( [ 'getClient', 'isEnabled' ] )
 			->getMock();
 		$shellboxClientFactory->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 		$shellboxClientFactory->method( 'getClient' )
-			->will( $this->returnValue( $shellboxClient ) );
+			->willReturn( $shellboxClient );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
@@ -342,16 +338,11 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	 * @return Constraint
 	 */
 	private function getConstraintMock( array $parameters ) {
-		$mock = $this
-			->getMockBuilder( Constraint::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( $parameters ) );
-		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'Q21502404' ) );
+		$mock = $this->createMock( Constraint::class );
+		$mock->method( 'getConstraintParameters' )
+			 ->willReturn( $parameters );
+		$mock->method( 'getConstraintTypeItemId' )
+			 ->willReturn( 'Q21502404' );
 
 		return $mock;
 	}
@@ -363,30 +354,30 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			->onlyMethods( [ 'matchesRegularExpression' ] )
 			->getMock();
 		$sparqlHelper->method( 'matchesRegularExpression' )
-			->will( $this->returnCallback(
+			->willReturnCallback(
 				function ( $text, $regex ) {
 					$pattern = '/^' . str_replace( '/', '\/', $regex ) . '$/';
 					return preg_match( $pattern, $text );
 				}
-			) );
+			);
 		$shellboxClient = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'call' ] )
 			->getMock();
 		$shellboxClient->method( 'call' )
-			->will( $this->returnCallback(
+			->willReturnCallback(
 				function ( $route, $func_name, $args ) {
 					return call_user_func_array( $func_name, $args );
 				}
-			) );
+			);
 		$shellboxClientFactory = $this->getMockBuilder( ShellboxClientFactory::class )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'getClient', 'isEnabled' ] )
 			->getMock();
 		$shellboxClientFactory->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 		$shellboxClientFactory->method( 'getClient' )
-			->will( $this->returnValue( $shellboxClient ) );
+			->willReturn( $shellboxClient );
 		return new FormatChecker(
 			$this->getConstraintParameterParser(),
 			$config,

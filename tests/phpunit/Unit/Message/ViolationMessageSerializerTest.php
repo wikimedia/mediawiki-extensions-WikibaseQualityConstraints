@@ -66,9 +66,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeArgument
 	 */
 	public function testSerialize_unknownArgument() {
-		$message = $this->getMockBuilder( ViolationMessage::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$message = $this->createMock( ViolationMessage::class );
 		$message->method( 'getMessageKey' )
 			->willReturn( 'wbqc-violation-message-unknown-argument-type' );
 		$message->method( 'getArguments' )

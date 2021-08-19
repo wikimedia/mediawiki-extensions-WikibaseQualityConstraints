@@ -437,7 +437,7 @@ EOF;
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
 				$this->createMock( ContextCursor::class ),
-				$this->getMockBuilder( Constraint::class )->disableOriginalConstructor()->getMock(),
+				$this->createMock( Constraint::class ),
 				[],
 				CheckResult::STATUS_VIOLATION,
 				$exception->getViolationMessage()

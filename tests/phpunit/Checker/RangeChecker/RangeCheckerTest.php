@@ -373,19 +373,13 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	 * @return Constraint
 	 */
 	private function getConstraintMock( array $parameters, $propertyId = 'P1' ) {
-		$mock = $this
-			->getMockBuilder( Constraint::class )
-			->disableOriginalConstructor()
-			->getMock();
-		$mock->expects( $this->any() )
-			 ->method( 'getConstraintParameters' )
-			 ->will( $this->returnValue( $parameters ) );
-		$mock->expects( $this->any() )
-			 ->method( 'getConstraintTypeItemId' )
-			 ->will( $this->returnValue( 'Q21510860' ) );
-		$mock->expects( $this->any() )
-			 ->method( 'getPropertyId' )
-			 ->will( $this->returnValue( new PropertyId( $propertyId ) ) );
+		$mock = $this->createMock( Constraint::class );
+		$mock->method( 'getConstraintParameters' )
+			 ->willReturn( $parameters );
+		$mock->method( 'getConstraintTypeItemId' )
+			 ->willReturn( 'Q21510860' );
+		$mock->method( 'getPropertyId' )
+			 ->willReturn( new PropertyId( $propertyId ) );
 
 		return $mock;
 	}

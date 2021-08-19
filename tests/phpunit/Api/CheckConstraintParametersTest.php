@@ -77,19 +77,19 @@ class CheckConstraintParametersTest extends ApiTestCase {
 
 			$delegatingConstraintChecker = $this->createMock( DelegatingConstraintChecker::class );
 			$delegatingConstraintChecker->method( 'checkConstraintParametersOnPropertyId' )
-				->will( $this->returnCallback(
+				->willReturnCallback(
 					function ( $propertyId ) {
 						$callable = $this->checkConstraintParametersOnPropertyId;
 						return $callable( $propertyId );
 					}
-				) );
+				);
 			$delegatingConstraintChecker->method( 'checkConstraintParametersOnConstraintId' )
-				->will( $this->returnCallback(
+				->willReturnCallback(
 					function ( $constraintId ) {
 						$callable = $this->checkConstraintParametersOnConstraintId;
 						return $callable( $constraintId );
 					}
-				) );
+				);
 
 			$violationMessageRenderer = $this->createMock( ViolationMessageRenderer::class );
 			$violationMessageRenderer->method( 'render' )

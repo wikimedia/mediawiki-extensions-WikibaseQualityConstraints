@@ -66,7 +66,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$spy = $this->createMock( EntityLookup::class );
 		$spy->expects( $this->exactly( $maxEntities ) )
 			->method( 'getEntity' )
-			->will( $this->returnCallback( [ $lookup, 'getEntity' ] ) );
+			->willReturnCallback( [ $lookup, 'getEntity' ] );
 
 		return $spy;
 	}

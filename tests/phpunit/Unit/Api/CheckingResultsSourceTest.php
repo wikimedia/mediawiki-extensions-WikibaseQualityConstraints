@@ -33,10 +33,9 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		DelegatingConstraintChecker $delegatingConstraintChecker = null
 	) {
 		if ( $delegatingConstraintChecker === null ) {
-			$delegatingConstraintChecker = $this->getMockBuilder(
+			$delegatingConstraintChecker = $this->createMock(
 				DelegatingConstraintChecker::class
-			)->disableOriginalConstructor()
-				->getMock();
+			);
 		}
 
 		return new CheckingResultsSource(
@@ -59,7 +58,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				[ $this->equalTo( $q1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
 				[ $this->equalTo( $q2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
 			)
-			->will( $this->returnCallback( function ( $entityId ) {
+			->willReturnCallback( function ( $entityId ) {
 				return [ new CheckResult(
 					new MainSnakContext(
 						new Item( $entityId ),
@@ -72,13 +71,13 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 						[]
 					)
 				) ];
-			} ) );
+			} );
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
 			->withConsecutive(
 				[ $this->equalTo( $s1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
 				[ $this->equalTo( $s2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
 			)
-			->will( $this->returnCallback( function ( $claimId ) {
+			->willReturnCallback( function ( $claimId ) {
 				$entityId = new ItemId( substr( $claimId, 0, 2 ) );
 				return [ new CheckResult(
 					new MainSnakContext(
@@ -92,7 +91,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 						[]
 					)
 				) ];
-			} ) );
+			} );
 
 		$results = $this->getResultsSource( $delegatingConstraintChecker )->getResults(
 			[ $q1, $q2 ],

@@ -60,9 +60,7 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 
 		$call = 0;
 		$this->maintenance->newUpdateConstraintsTableJob = function ( $propertyIdSerialization ) use ( &$call ) {
-			$mock = $this->getMockBuilder( UpdateConstraintsTableJob::class )
-				->disableOriginalConstructor()
-				->getMock();
+			$mock = $this->createMock( UpdateConstraintsTableJob::class );
 			$mock->expects( $this->once() )
 				->method( 'run' )
 				->with();

@@ -323,9 +323,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			->with( $property->getId(), 0, LookupConstants::LATEST_FROM_REPLICA )
 			->willReturn( new EntityRevision( $property ) );
 
-		$constraintRepository = $this->getMockBuilder( ConstraintRepositoryStore::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$constraintRepository = $this->createMock( ConstraintRepositoryStore::class );
 		$constraintRepository->expects( $this->once() )
 			->method( 'insertBatch' )
 			->with( $this->callback(
