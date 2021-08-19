@@ -155,4 +155,17 @@ trait ResultAssertions {
 		);
 	}
 
+	/**
+	 * Assert that $result indicates a skipped constraint check
+	 * due to invalid constraint parameters.
+	 */
+	public function assertBadParameters( CheckResult $result ): void {
+		$this->assertSame(
+			CheckResult::STATUS_BAD_PARAMETERS,
+			$result->getStatus(),
+			'Check should indicate that snak is out of scope of constraint; message: ' .
+				$this->renderMessage( $result )
+		);
+	}
+
 }

@@ -685,15 +685,15 @@ class ConstraintParameterParser {
 	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
-	 * @param string[]|null $validScopes a list of Context::TYPE_* constants which are valid where this parameter appears.
-	 * If this is not null and one of the specified scopes is not in this list, a ConstraintParameterException is thrown.
+	 * @param string[] $validScopes a list of Context::TYPE_* constants which are valid where this parameter appears.
+	 * If one of the specified scopes is not in this list, a ConstraintParameterException is thrown.
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return string[]|null Context::TYPE_* constants
 	 */
 	public function parseConstraintScopeParameter(
 		array $constraintParameters,
 		$constraintTypeItemId,
-		array $validScopes = null
+		array $validScopes
 	) {
 		$contextTypes = [];
 		$parameterId = $this->config->get( 'WBQualityConstraintsConstraintScopeId' );
@@ -712,17 +712,15 @@ class ConstraintParameterParser {
 			$contextTypes[] = $this->parseContextTypeItem( $item, 'constraint scope', $parameterId );
 		}
 
-		if ( $validScopes !== null ) {
-			$invalidScopes = array_diff( $contextTypes, $validScopes );
-			if ( $invalidScopes !== [] ) {
-				$invalidScope = array_pop( $invalidScopes );
-				throw new ConstraintParameterException(
-					( new ViolationMessage( 'wbqc-violation-message-invalid-scope' ) )
-						->withConstraintScope( $invalidScope, Role::CONSTRAINT_PARAMETER_VALUE )
-						->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-						->withConstraintScopeList( $validScopes, Role::CONSTRAINT_PARAMETER_VALUE )
-				);
-			}
+		$invalidScopes = array_diff( $contextTypes, $validScopes );
+		if ( $invalidScopes !== [] ) {
+			$invalidScope = array_pop( $invalidScopes );
+			throw new ConstraintParameterException(
+				( new ViolationMessage( 'wbqc-violation-message-invalid-scope' ) )
+					->withConstraintScope( $invalidScope, Role::CONSTRAINT_PARAMETER_VALUE )
+					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
+					->withConstraintScopeList( $validScopes, Role::CONSTRAINT_PARAMETER_VALUE )
+			);
 		}
 
 		return $contextTypes;

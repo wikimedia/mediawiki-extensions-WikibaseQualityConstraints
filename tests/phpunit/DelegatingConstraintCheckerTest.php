@@ -951,4 +951,53 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
 	}
 
+	public function testSupportedContextTypes_InvalidScope(): void {
+		$checker = $this->createMock( ConstraintChecker::class );
+		$checker->method( 'getSupportedContextTypes' )
+			->willReturn( [
+				Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+				Context::TYPE_QUALIFIER => CheckResult::STATUS_NOT_IN_SCOPE,
+			] );
+		$checker->method( 'getDefaultContextTypes' )
+			->willReturn( [ Context::TYPE_STATEMENT ] );
+		$checker->expects( $this->never() )
+			->method( 'checkConstraint' );
+		$lookup = new InMemoryEntityLookup();
+		$q2 = new ItemId( 'Q2' );
+		$lookup->addEntity(
+			NewItem::withId( $q2 )
+				->andStatement(
+					NewStatement::noValueFor( 'P1' )
+						->withQualifier( 'P1', 'value' )
+				)
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$lookup,
+			[ 'Q1' => $checker ],
+			new InMemoryConstraintLookup( [
+				new Constraint(
+					'',
+					new PropertyId( 'P1' ),
+					'Q1',
+					$this->constraintScopeParameter( [ Context::TYPE_QUALIFIER ] )
+				)
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->getMockBuilder( LoggingHelper::class )
+				->disableOriginalConstructor()
+				->getMock(),
+			true,
+			true,
+			[]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
+
+		$this->assertCount( 2, $results ); // main snak and qualifier
+		$this->assertBadParameters( $results[0] );
+		$this->assertBadParameters( $results[1] );
+	}
+
 }

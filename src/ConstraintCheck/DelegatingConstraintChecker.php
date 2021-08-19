@@ -610,7 +610,8 @@ class DelegatingConstraintChecker {
 		try {
 			$checkedContextTypes = $this->constraintParameterParser->parseConstraintScopeParameter(
 				$constraint->getConstraintParameters(),
-				$constraint->getConstraintTypeItemId()
+				$constraint->getConstraintTypeItemId(),
+				$this->getAllowedContextTypes( $constraint )
 			);
 		} catch ( ConstraintParameterException $e ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );

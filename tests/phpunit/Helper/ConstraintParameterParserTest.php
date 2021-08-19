@@ -1058,7 +1058,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 			[ $constraintScopeId => [
 				$this->getSnakSerializer()->serialize( $snak ),
 			] ],
-			'Q21502838'
+			'Q21502838',
+			[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ]
 		);
 
 		$this->assertSame( [ Context::TYPE_STATEMENT ], $parsed );
@@ -1076,14 +1077,15 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$this->getSnakSerializer()->serialize( $snak1 ),
 				$this->getSnakSerializer()->serialize( $snak2 ),
 			] ],
-			'Q21502838'
+			'Q21502838',
+			[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ]
 		);
 
 		$this->assertSame( [ Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ], $parsed );
 	}
 
 	public function testParseConstraintScopeParameter_Missing() {
-		$parsed = $this->getConstraintParameterParser()->parseConstraintScopeParameter( [], 'Q21502838' );
+		$parsed = $this->getConstraintParameterParser()->parseConstraintScopeParameter( [], 'Q21502838', [] );
 
 		$this->assertNull( $parsed );
 	}
@@ -1136,7 +1138,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$this->getSnakSerializer()->serialize( $snak1 ),
 					$this->getSnakSerializer()->serialize( $snak2 ),
 				] ],
-				'Q21502838'
+				'Q21502838',
+				[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ]
 			],
 			'wbqc-violation-message-parameter-oneof'
 		);
