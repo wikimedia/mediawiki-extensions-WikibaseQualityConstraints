@@ -2,12 +2,14 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 use Serializers\Serializer;
+use UnexpectedValueException;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -299,26 +301,23 @@ trait ConstraintParameters {
 
 	/**
 	 * @param string[] $contextTypes Context::TYPE_* constants
+	 * @param string[] $entityTypes
 	 * @return array
 	 */
-	public function constraintScopeParameter( array $contextTypes ) {
+	public function constraintScopeParameter( array $contextTypes, array $entityTypes = [] ) {
 		$config = $this->getDefaultConfig();
 		$constraintScopeParameterId = $config->get( 'WBQualityConstraintsConstraintScopeId' );
-		$itemIds = [];
+		$contextTypeItemIds = [];
 		foreach ( $contextTypes as $contextType ) {
-			switch ( $contextType ) {
-				case Context::TYPE_STATEMENT:
-					$itemIds[] = $config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
-					break;
-				case Context::TYPE_QUALIFIER:
-					$itemIds[] = $config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' );
-					break;
-				case Context::TYPE_REFERENCE:
-					$itemIds[] = $config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
-					break;
-				default:
-					$this->assertTrue( false, 'unknown context type ' . $contextType );
-			}
+			$contextTypeItemIds[] = $this->contextTypeToItemId( $config, $contextType );
+		}
+		// ConstraintParameterParser allows these to be different,
+		// but they default to the same property,
+		// so we assert that here to keep this function simpler
+		$this->assertSame( $constraintScopeParameterId, $config->get( 'WBQualityConstraintsConstraintEntityTypesId' ) );
+		$entityTypeItemIds = [];
+		foreach ( $entityTypes as $entityType ) {
+			$entityTypeItemIds[] = $this->entityTypeToItemId( $config, $entityType );
 		}
 		return [ $constraintScopeParameterId => array_map(
 			function ( $itemId ) use ( $constraintScopeParameterId ) {
@@ -329,8 +328,39 @@ trait ConstraintParameters {
 					)
 				);
 			},
-			$itemIds
+			array_merge( $contextTypeItemIds, $entityTypeItemIds )
 		) ];
+	}
+
+	private function contextTypeToItemId( Config $config, string $contextType ): string {
+		switch ( $contextType ) {
+			case Context::TYPE_STATEMENT:
+				return $config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
+			case Context::TYPE_QUALIFIER:
+				return $config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' );
+			case Context::TYPE_REFERENCE:
+				return $config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
+			default:
+				$this->assertTrue( false, 'unknown context type ' . $contextType );
+		}
+	}
+
+	private function entityTypeToItemId( Config $config, string $entityType ): string {
+		switch ( $entityType ) {
+			case 'item':
+				return $config->get( 'WBQualityConstraintsWikibaseItemId' );
+			case 'property':
+				return $config->get( 'WBQualityConstraintsWikibasePropertyId' );
+			case 'lexeme':
+			case 'form':
+			case 'sense':
+			case 'mediainfo':
+				throw new UnexpectedValueException(
+					"support for entity type $entityType omitted, add when needed"
+				);
+			default:
+				$this->assertTrue( false, 'unknown entity type ' . $entityType );
+		}
 	}
 
 	public function separatorsParameter( array $separators ) {

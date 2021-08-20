@@ -724,48 +724,95 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * Parse the constraint scope parameters:
+	 * the context types and entity types where the constraint should be checked.
+	 * Depending on configuration, this may be the same property ID or two different ones.
+	 *
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
-	 * @param string[] $validScopes a list of Context::TYPE_* constants which are valid where this parameter appears.
+	 * @param string[] $validContextTypes a list of Context::TYPE_* constants which are valid where this parameter appears.
 	 * If one of the specified scopes is not in this list, a ConstraintParameterException is thrown.
-	 * @throws ConstraintParameterException if the parameter is invalid
-	 * @return string[]|null Context::TYPE_* constants
+	 * @param string[] $validEntityTypes a list of entity types which are valid where this parameter appears.
+	 * If one of the specified entity types is not in this list, a ConstraintParameterException is thrown.
+	 * @throws ConstraintParameterException
+	 * @return array [ string[]|null $contextTypes, string[]|null $entityTypes ]
+	 * the context types and entity types in the parameters (each may be null if not specified)
+	 * @suppress PhanTypeArraySuspicious
 	 */
-	public function parseConstraintScopeParameter(
+	public function parseConstraintScopeParameters(
 		array $constraintParameters,
-		$constraintTypeItemId,
-		array $validScopes
-	) {
-		$contextTypes = [];
-		$parameterId = $this->config->get( 'WBQualityConstraintsConstraintScopeId' );
-		$itemIds = $this->parseItemIdsParameter(
+		string $constraintTypeItemId,
+		array $validContextTypes,
+		array $validEntityTypes
+	): array {
+		$contextTypeParameterId = $this->config->get( 'WBQualityConstraintsConstraintScopeId' );
+		$contextTypeItemIds = $this->parseItemIdsParameter(
 			$constraintParameters,
 			$constraintTypeItemId,
 			false,
-			$parameterId
+			$contextTypeParameterId
+		);
+		$entityTypeParameterId = $this->config->get( 'WBQualityConstraintsConstraintEntityTypesId' );
+		$entityTypeItemIds = $this->parseItemIdsParameter(
+			$constraintParameters,
+			$constraintTypeItemId,
+			false,
+			$entityTypeParameterId
 		);
 
-		if ( $itemIds === [] ) {
-			return null;
+		$contextTypeMapping = $this->getConstraintScopeContextTypeMapping();
+		$entityTypeMapping = $this->getEntityTypeMapping();
+
+		// these nulls will turn into arrays the first time $contextTypes[] or $entityTypes[] is reached,
+		// so they’ll be returned as null iff the parameter was not specified
+		$contextTypes = null;
+		$entityTypes = null;
+
+		if ( $contextTypeParameterId === $entityTypeParameterId ) {
+			$itemIds = $contextTypeItemIds;
+			$mapping = $contextTypeMapping + $entityTypeMapping;
+			foreach ( $itemIds as $itemId ) {
+				$mapped = $this->mapItemId( $itemId, $mapping, $contextTypeParameterId );
+				if ( in_array( $mapped, $contextTypeMapping, true ) ) {
+					$contextTypes[] = $mapped;
+				} else {
+					$entityTypes[] = $mapped;
+				}
+			}
+		} else {
+			foreach ( $contextTypeItemIds as $contextTypeItemId ) {
+				$contextTypes[] = $this->mapItemId(
+					$contextTypeItemId,
+					$contextTypeMapping,
+					$contextTypeParameterId
+				);
+			}
+			foreach ( $entityTypeItemIds as $entityTypeItemId ) {
+				$entityTypes[] = $this->mapItemId(
+					$entityTypeItemId,
+					$entityTypeMapping,
+					$entityTypeParameterId
+				);
+			}
 		}
 
-		$mapping = $this->getConstraintScopeContextTypeMapping();
-		foreach ( $itemIds as $itemId ) {
-			$contextTypes[] = $this->mapItemId( $itemId, $mapping, $parameterId );
-		}
+		$this->checkValidScope( $constraintTypeItemId, $contextTypes, $validContextTypes );
+		$this->checkValidScope( $constraintTypeItemId, $entityTypes, $validEntityTypes );
 
-		$invalidScopes = array_diff( $contextTypes, $validScopes );
-		if ( $invalidScopes !== [] ) {
-			$invalidScope = array_pop( $invalidScopes );
+		return [ $contextTypes, $entityTypes ];
+	}
+
+	private function checkValidScope( string $constraintTypeItemId, ?array $types, array $validTypes ): void {
+		$invalidTypes = array_diff( $types ?: [], $validTypes );
+		if ( $invalidTypes !== [] ) {
+			$invalidType = array_pop( $invalidTypes );
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-invalid-scope' ) )
-					->withConstraintScope( $invalidScope, Role::CONSTRAINT_PARAMETER_VALUE )
+					->withConstraintScope( $invalidType, Role::CONSTRAINT_PARAMETER_VALUE )
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-					->withConstraintScopeList( $validScopes, Role::CONSTRAINT_PARAMETER_VALUE )
+					->withConstraintScopeList( $validTypes, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
-
-		return $contextTypes;
 	}
 
 	/**

@@ -1034,4 +1034,126 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 		$this->assertNotInScope( $results[0] );
 	}
 
+	public function testSupportedEntityTypes_NotImplemented() {
+		$checker = $this->createMock( ConstraintChecker::class );
+		$checker->method( 'getSupportedContextTypes' )
+			->willReturn( [ Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE, ] );
+		$checker->method( 'getDefaultContextTypes' )
+			->willReturn( [ Context::TYPE_STATEMENT ] );
+		$checker->method( 'getSupportedEntityTypes' )
+			->willReturn( [ 'item' => CheckResult::STATUS_TODO ] );
+		$checker->expects( $this->never() )->method( 'checkConstraint' );
+		$lookup = new InMemoryEntityLookup();
+		$q2 = new ItemId( 'Q2' );
+		$lookup->addEntity(
+			NewItem::withId( $q2 )
+				->andStatement( NewStatement::noValueFor( 'P1' ) )
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$lookup,
+			[ 'Q1' => $checker ],
+			new InMemoryConstraintLookup( [
+				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->createMock( LoggingHelper::class ),
+			true,
+			true,
+			[]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
+
+		$this->assertCount( 1, $results );
+		$this->assertTodo( $results[0] );
+	}
+
+	public function testSupportedEntityTypes_ExplicitScope() {
+		$checker = $this->createMock( ConstraintChecker::class );
+		$checker->method( 'getSupportedContextTypes' )
+			->willReturn( [
+				Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+			] );
+		$checker->method( 'getDefaultContextTypes' )
+			->willReturn( [ Context::TYPE_STATEMENT ] );
+		$checker->method( 'getSupportedEntityTypes' )
+			->willReturn( ConstraintChecker::ALL_ENTITY_TYPES_SUPPORTED );
+		$checker->expects( $this->never() )
+			->method( 'checkConstraint' );
+		$lookup = new InMemoryEntityLookup();
+		$q2 = new ItemId( 'Q2' );
+		$lookup->addEntity(
+			NewItem::withId( $q2 )
+				->andStatement( NewStatement::noValueFor( 'P1' ) )
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$lookup,
+			[ 'Q1' => $checker ],
+			new InMemoryConstraintLookup( [
+				new Constraint(
+					'',
+					new PropertyId( 'P1' ),
+					'Q1',
+					$this->constraintScopeParameter( [], [ 'property' ] )
+				)
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->createMock( LoggingHelper::class ),
+			true,
+			true,
+			[]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
+
+		$this->assertCount( 1, $results );
+		$this->assertNotInScope( $results[0] );
+	}
+
+	public function testSupportedEntityTypes_InvalidScope(): void {
+		$checker = $this->createMock( ConstraintChecker::class );
+		$checker->method( 'getSupportedContextTypes' )
+			->willReturn( [ Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE ] );
+		$checker->method( 'getDefaultContextTypes' )
+			->willReturn( [ Context::TYPE_STATEMENT ] );
+		$checker->method( 'getSupportedEntityTypes' )
+			->willReturn( [ 'item' => CheckResult::STATUS_NOT_IN_SCOPE ] );
+		$checker->expects( $this->never() )
+			->method( 'checkConstraint' );
+		$lookup = new InMemoryEntityLookup();
+		$q2 = new ItemId( 'Q2' );
+		$lookup->addEntity(
+			NewItem::withId( $q2 )
+				->andStatement( NewStatement::noValueFor( 'P1' ) )
+				->build()
+		);
+		$delegatingConstraintChecker = new DelegatingConstraintChecker(
+			$lookup,
+			[ 'Q1' => $checker ],
+			new InMemoryConstraintLookup( [
+				new Constraint(
+					'',
+					new PropertyId( 'P1' ),
+					'Q1',
+					$this->constraintScopeParameter( [], [ 'item' ] )
+				)
+			] ),
+			$this->getConstraintParameterParser(),
+			new StatementGuidParser( new ItemIdParser() ),
+			$this->createMock( LoggingHelper::class ),
+			true,
+			true,
+			[]
+		);
+
+		$results = $delegatingConstraintChecker->checkAgainstConstraintsOnEntityId( $q2 );
+
+		$this->assertCount( 1, $results );
+		$this->assertBadParameters( $results[0] );
+	}
+
 }

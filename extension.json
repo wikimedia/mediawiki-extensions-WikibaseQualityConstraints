@@ -539,6 +539,11 @@
 			"description": "The property ID of the 'constraint scope' property (data type: item), which specifies the context(s) in which a constraint is checked.",
 			"public": true
 		},
+		"WBQualityConstraintsConstraintEntityTypesId": {
+			"value": "P4680",
+			"description": "The property ID of the property (data type: item) which specifies the entity types on which a constraint is checked. By default, this is the same as the 'constraint scope' property, but may also be set to a different one. The recognized values (items representing entity types) are the same as for the 'allowed entity types' constraint.",
+			"public": true
+		},
 		"WBQualityConstraintsSeparatorId": {
 			"value": "P4155",
 			"description": "The property ID of the 'separator' property (data type: property), which specifies the allowed separator(s) for “single value” and “single best value” constraints.",
