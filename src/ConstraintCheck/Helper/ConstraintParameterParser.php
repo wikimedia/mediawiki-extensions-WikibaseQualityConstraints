@@ -185,30 +185,18 @@ class ConstraintParameterParser {
 
 		$this->requireSingleParameter( $constraintParameters, $relationId );
 		$relationEntityId = $this->parseEntityIdParameter( $constraintParameters[$relationId][0], $relationId );
-		$instanceId = $this->config->get( 'WBQualityConstraintsInstanceOfRelationId' );
-		$subclassId = $this->config->get( 'WBQualityConstraintsSubclassOfRelationId' );
-		$instanceOrSubclassId = $this->config->get( 'WBQualityConstraintsInstanceOrSubclassOfRelationId' );
-		switch ( $relationEntityId->getSerialization() ) {
-			case $instanceId:
-				return 'instance';
-			case $subclassId:
-				return 'subclass';
-			case $instanceOrSubclassId:
-				return 'instanceOrSubclass';
-			default:
-				throw new ConstraintParameterException(
-					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
-						->withEntityId( new PropertyId( $relationId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-						->withEntityIdList(
-							[
-								new ItemId( $instanceId ),
-								new ItemId( $subclassId ),
-								new ItemId( $instanceOrSubclassId ),
-							],
-							Role::CONSTRAINT_PARAMETER_VALUE
-						)
-				);
+		if ( !( $relationEntityId instanceof ItemId ) ) {
+			throw new ConstraintParameterException(
+				( new ViolationMessage( 'wbqc-violation-message-parameter-item' ) )
+					->withEntityId( new PropertyId( $relationId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withDataValue( new EntityIdValue( $relationEntityId ), Role::CONSTRAINT_PARAMETER_VALUE )
+			);
 		}
+		return $this->mapItemId( $relationEntityId, [
+			$this->config->get( 'WBQualityConstraintsInstanceOfRelationId' ) => 'instance',
+			$this->config->get( 'WBQualityConstraintsSubclassOfRelationId' ) => 'subclass',
+			$this->config->get( 'WBQualityConstraintsInstanceOrSubclassOfRelationId' ) => 'instanceOrSubclass',
+		], $relationId );
 	}
 
 	/**
@@ -350,6 +338,27 @@ class ConstraintParameterParser {
 			$required,
 			$parameterId
 		) );
+	}
+
+	/**
+	 * Map an item ID parameter to a well-known value or throw an appropriate error.
+	 * @throws ConstraintParameterException
+	 * @return mixed elements of $mapping
+	 */
+	private function mapItemId( ItemId $itemId, array $mapping, string $parameterId ) {
+		$serialization = $itemId->getSerialization();
+		if ( array_key_exists( $serialization, $mapping ) ) {
+			return $mapping[$serialization];
+		} else {
+			$allowed = array_map( static function ( $id ) {
+				return new ItemId( $id );
+			}, array_keys( $mapping ) );
+			throw new ConstraintParameterException(
+				( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
+					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityIdList( $allowed, Role::CONSTRAINT_PARAMETER_VALUE )
+			);
+		}
 	}
 
 	/**
@@ -824,41 +833,18 @@ class ConstraintParameterParser {
 	}
 
 	private function parseEntityTypeItemId( ItemId $itemId ): EntityTypesParameter {
-		switch ( $itemId->getSerialization() ) {
-			case $this->config->get( 'WBQualityConstraintsWikibaseItemId' ):
-				$entityType = 'item';
-				break;
-			case $this->config->get( 'WBQualityConstraintsWikibasePropertyId' ):
-				$entityType = 'property';
-				break;
-			case $this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ):
-				$entityType = 'lexeme';
-				break;
-			case $this->config->get( 'WBQualityConstraintsWikibaseFormId' ):
-				$entityType = 'form';
-				break;
-			case $this->config->get( 'WBQualityConstraintsWikibaseSenseId' ):
-				$entityType = 'sense';
-				break;
-			case $this->config->get( 'WBQualityConstraintsWikibaseMediaInfoId' ):
-				$entityType = 'mediainfo';
-				break;
-			default:
-				$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-				$allowed = [
-					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseItemId' ) ),
-					new ItemId( $this->config->get( 'WBQualityConstraintsWikibasePropertyId' ) ),
-					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ) ),
-					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseFormId' ) ),
-					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseSenseId' ) ),
-					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseMediaInfoId' ) ),
-				];
-				throw new ConstraintParameterException(
-					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
-						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-						->withEntityIdList( $allowed, Role::CONSTRAINT_PARAMETER_VALUE )
-				);
-		}
+		$entityType = $this->mapItemId(
+			$itemId,
+			[
+				$this->config->get( 'WBQualityConstraintsWikibaseItemId' ) => 'item',
+				$this->config->get( 'WBQualityConstraintsWikibasePropertyId' ) => 'property',
+				$this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ) => 'lexeme',
+				$this->config->get( 'WBQualityConstraintsWikibaseFormId' ) => 'form',
+				$this->config->get( 'WBQualityConstraintsWikibaseSenseId' ) => 'sense',
+				$this->config->get( 'WBQualityConstraintsWikibaseMediaInfoId' ) => 'mediainfo',
+			],
+			$this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' )
+		);
 
 		return new EntityTypesParameter( [ $entityType ], [ $itemId ] );
 	}
@@ -930,34 +916,20 @@ class ConstraintParameterParser {
 	 */
 	private function parseContextTypeItemId( ItemId $itemId, $use, $parameterId ) {
 		if ( $use === 'constraint scope' ) {
-			$mainSnakId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
-			$qualifiersId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' );
-			$referencesId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
+			$mapping = [
+				$this->config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' ) => Context::TYPE_STATEMENT,
+				$this->config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) => Context::TYPE_QUALIFIER,
+				$this->config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' ) => Context::TYPE_REFERENCE,
+			];
 		} else {
-			$mainSnakId = $this->config->get( 'WBQualityConstraintsAsMainValueId' );
-			$qualifiersId = $this->config->get( 'WBQualityConstraintsAsQualifiersId' );
-			$referencesId = $this->config->get( 'WBQualityConstraintsAsReferencesId' );
+			$mapping = [
+				$this->config->get( 'WBQualityConstraintsAsMainValueId' ) => Context::TYPE_STATEMENT,
+				$this->config->get( 'WBQualityConstraintsAsQualifiersId' ) => Context::TYPE_QUALIFIER,
+				$this->config->get( 'WBQualityConstraintsAsReferencesId' ) => Context::TYPE_REFERENCE,
+			];
 		}
 
-		switch ( $itemId->getSerialization() ) {
-			case $mainSnakId:
-				return Context::TYPE_STATEMENT;
-			case $qualifiersId:
-				return Context::TYPE_QUALIFIER;
-			case $referencesId:
-				return Context::TYPE_REFERENCE;
-			default:
-				$allowed = [
-					new ItemId( $mainSnakId ),
-					new ItemId( $qualifiersId ),
-					new ItemId( $referencesId ),
-				];
-				throw new ConstraintParameterException(
-					( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
-						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-						->withEntityIdList( $allowed, Role::CONSTRAINT_PARAMETER_VALUE )
-				);
-		}
+		return $this->mapItemId( $itemId, $mapping, $parameterId );
 	}
 
 	/**
