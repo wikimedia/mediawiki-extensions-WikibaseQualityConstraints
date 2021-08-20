@@ -749,8 +749,9 @@ class ConstraintParameterParser {
 			return null;
 		}
 
+		$mapping = $this->getConstraintScopeContextTypeMapping();
 		foreach ( $itemIds as $itemId ) {
-			$contextTypes[] = $this->parseContextTypeItemId( $itemId, 'constraint scope', $parameterId );
+			$contextTypes[] = $this->mapItemId( $itemId, $mapping, $parameterId );
 		}
 
 		$invalidScopes = array_diff( $contextTypes, $validScopes );
@@ -832,21 +833,15 @@ class ConstraintParameterParser {
 		return new UnitsParameter( $unitItems, $unitQuantities, $unitlessAllowed );
 	}
 
-	private function parseEntityTypeItemId( ItemId $itemId ): EntityTypesParameter {
-		$entityType = $this->mapItemId(
-			$itemId,
-			[
-				$this->config->get( 'WBQualityConstraintsWikibaseItemId' ) => 'item',
-				$this->config->get( 'WBQualityConstraintsWikibasePropertyId' ) => 'property',
-				$this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ) => 'lexeme',
-				$this->config->get( 'WBQualityConstraintsWikibaseFormId' ) => 'form',
-				$this->config->get( 'WBQualityConstraintsWikibaseSenseId' ) => 'sense',
-				$this->config->get( 'WBQualityConstraintsWikibaseMediaInfoId' ) => 'mediainfo',
-			],
-			$this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' )
-		);
-
-		return new EntityTypesParameter( [ $entityType ], [ $itemId ] );
+	private function getEntityTypeMapping(): array {
+		return [
+			$this->config->get( 'WBQualityConstraintsWikibaseItemId' ) => 'item',
+			$this->config->get( 'WBQualityConstraintsWikibasePropertyId' ) => 'property',
+			$this->config->get( 'WBQualityConstraintsWikibaseLexemeId' ) => 'lexeme',
+			$this->config->get( 'WBQualityConstraintsWikibaseFormId' ) => 'form',
+			$this->config->get( 'WBQualityConstraintsWikibaseSenseId' ) => 'sense',
+			$this->config->get( 'WBQualityConstraintsWikibaseMediaInfoId' ) => 'mediainfo',
+		];
 	}
 
 	/**
@@ -858,17 +853,19 @@ class ConstraintParameterParser {
 	public function parseEntityTypesParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$entityTypes = [];
 		$entityTypeItemIds = [];
+		$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		$itemIds = $this->parseItemIdsParameter(
 			$constraintParameters,
 			$constraintTypeItemId,
 			true,
-			$this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' )
+			$parameterId
 		);
 
+		$mapping = $this->getEntityTypeMapping();
 		foreach ( $itemIds as $itemId ) {
-			$entityType = $this->parseEntityTypeItemId( $itemId );
-			$entityTypes = array_merge( $entityTypes, $entityType->getEntityTypes() );
-			$entityTypeItemIds = array_merge( $entityTypeItemIds, $entityType->getEntityTypeItemIds() );
+			$entityType = $this->mapItemId( $itemId, $mapping, $parameterId );
+			$entityTypes[] = $entityType;
+			$entityTypeItemIds[] = $itemId;
 		}
 
 		if ( empty( $entityTypes ) ) {
@@ -905,31 +902,20 @@ class ConstraintParameterParser {
 		return $separators;
 	}
 
-	/**
-	 * Turn an ItemId into a single context type parameter.
-	 *
-	 * @param ItemId $itemId
-	 * @param string $use 'constraint scope' or 'property scope'
-	 * @param string $parameterId used in error messages
-	 * @return string one of the Context::TYPE_* constants
-	 * @throws ConstraintParameterException
-	 */
-	private function parseContextTypeItemId( ItemId $itemId, $use, $parameterId ) {
-		if ( $use === 'constraint scope' ) {
-			$mapping = [
-				$this->config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' ) => Context::TYPE_STATEMENT,
-				$this->config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) => Context::TYPE_QUALIFIER,
-				$this->config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' ) => Context::TYPE_REFERENCE,
-			];
-		} else {
-			$mapping = [
-				$this->config->get( 'WBQualityConstraintsAsMainValueId' ) => Context::TYPE_STATEMENT,
-				$this->config->get( 'WBQualityConstraintsAsQualifiersId' ) => Context::TYPE_QUALIFIER,
-				$this->config->get( 'WBQualityConstraintsAsReferencesId' ) => Context::TYPE_REFERENCE,
-			];
-		}
+	private function getConstraintScopeContextTypeMapping(): array {
+		return [
+			$this->config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' ) => Context::TYPE_STATEMENT,
+			$this->config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) => Context::TYPE_QUALIFIER,
+			$this->config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' ) => Context::TYPE_REFERENCE,
+		];
+	}
 
-		return $this->mapItemId( $itemId, $mapping, $parameterId );
+	private function getPropertyScopeContextTypeMapping(): array {
+		return [
+			$this->config->get( 'WBQualityConstraintsAsMainValueId' ) => Context::TYPE_STATEMENT,
+			$this->config->get( 'WBQualityConstraintsAsQualifiersId' ) => Context::TYPE_QUALIFIER,
+			$this->config->get( 'WBQualityConstraintsAsReferencesId' ) => Context::TYPE_REFERENCE,
+		];
 	}
 
 	/**
@@ -948,8 +934,9 @@ class ConstraintParameterParser {
 			$parameterId
 		);
 
+		$mapping = $this->getPropertyScopeContextTypeMapping();
 		foreach ( $itemIds as $itemId ) {
-			$contextTypes[] = $this->parseContextTypeItemId( $itemId, 'property scope', $parameterId );
+			$contextTypes[] = $this->mapItemId( $itemId, $mapping, $parameterId );
 		}
 
 		if ( empty( $contextTypes ) ) {
