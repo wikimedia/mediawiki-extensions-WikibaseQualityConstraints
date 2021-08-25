@@ -1069,7 +1069,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$mediainfoId,
 			] ) ],
 			'Q21502838',
-			[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ],
+			Context::ALL_CONTEXT_TYPES,
 			array_keys( ConstraintChecker::ALL_ENTITY_TYPES_SUPPORTED )
 		);
 
@@ -1098,7 +1098,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				$senseId,
 			] ) ],
 			'Q21502838',
-			[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ],
+			Context::ALL_CONTEXT_TYPES,
 			array_keys( ConstraintChecker::ALL_ENTITY_TYPES_SUPPORTED )
 		);
 
@@ -1205,7 +1205,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					$this->getSnakSerializer()->serialize( $snak2 ),
 				] ],
 				'Q21502838',
-				[ Context::TYPE_STATEMENT, Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ],
+				Context::ALL_CONTEXT_TYPES,
 				array_keys( ConstraintChecker::ALL_ENTITY_TYPES_SUPPORTED )
 			],
 			'wbqc-violation-message-parameter-oneof'

@@ -32,6 +32,18 @@ interface Context {
 	 * @var string
 	 */
 	public const TYPE_REFERENCE = 'reference';
+
+	/**
+	 * Convenience constant combining the three context types,
+	 * e.g. for {@link ConstraintChecker::getDefaultContextTypes()}.
+	 * @see getType()
+	 */
+	public const ALL_CONTEXT_TYPES = [
+		self::TYPE_STATEMENT,
+		self::TYPE_QUALIFIER,
+		self::TYPE_REFERENCE,
+	];
+
 	/**
 	 * Grouping mode to include the snaks of all non-deprecated statements.
 	 * @see getSnakGroup()

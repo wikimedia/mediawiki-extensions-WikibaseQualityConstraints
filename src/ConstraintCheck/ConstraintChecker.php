@@ -29,6 +29,15 @@ interface ConstraintChecker {
 	];
 
 	/**
+	 * Convenience constant, returned by many {@link getSupportedContextTypes} implementations.
+	 */
+	public const ALL_CONTEXT_TYPES_SUPPORTED = [
+		Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
+		Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
+		Context::TYPE_REFERENCE => CheckResult::STATUS_COMPLIANCE,
+	];
+
+	/**
 	 * Determines which context types this constraint type supports.
 	 * checkConstraint() should only be called for contexts with one of the supported types.
 	 *
@@ -52,6 +61,8 @@ interface ConstraintChecker {
 	 * indicates that a constraint type makes sense on statements and qualifiers
 	 * (but not references), but has only been implemented on statements so far.
 	 *
+	 * Many implementations can just return {@link ALL_CONTEXT_TYPES_SUPPORTED}.
+	 *
 	 * @return string[]
 	 */
 	public function getSupportedContextTypes();
@@ -67,6 +78,8 @@ interface ConstraintChecker {
 	 * it might also be checked on other context types
 	 * if the constraint explicitly specifies a different scope
 	 * (which might not even include the “statement” scope).
+	 *
+	 * Many implementations can just return {@link Context::ALL_CONTEXT_TYPES}.
 	 *
 	 * @return string[]
 	 */

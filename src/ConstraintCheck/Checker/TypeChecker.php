@@ -49,11 +49,7 @@ class TypeChecker implements ConstraintChecker {
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
 	public function getSupportedContextTypes() {
-		return [
-			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
-			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
-			Context::TYPE_REFERENCE => CheckResult::STATUS_COMPLIANCE,
-		];
+		return self::ALL_CONTEXT_TYPES_SUPPORTED;
 	}
 
 	/**
