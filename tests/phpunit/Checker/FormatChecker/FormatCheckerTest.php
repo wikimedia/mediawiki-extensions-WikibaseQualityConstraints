@@ -59,6 +59,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			[ $taxonRegex, 'Encephalartos friderici-guilielmi' ],
 			[ $taxonRegex, 'Eruca vesicaria subsp. sativa' ],
 			[ $taxonRegex, 'Euxoa (Chorizagrotis) lidia' ],
+			[ '[Α-Ω]{3,5}', 'ΚΑΤΛ' ],
 		];
 	}
 
@@ -117,6 +118,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 			[ $taxonRegex, 'Plantago maritima agg.' ],
 			[ $taxonRegex, 'Deinococcus-Thermus' ],
 			[ $taxonRegex, 'Escherichia coli O157:H7' ],
+			[ 'ab|cd', 'abcd' ],
 		];
 	}
 
@@ -356,7 +358,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$sparqlHelper->method( 'matchesRegularExpression' )
 			->willReturnCallback(
 				function ( $text, $regex ) {
-					$pattern = '/^' . str_replace( '/', '\/', $regex ) . '$/';
+					$pattern = '/^(?:' . str_replace( '/', '\/', $regex ) . ')$/u';
 					return preg_match( $pattern, $text );
 				}
 			);

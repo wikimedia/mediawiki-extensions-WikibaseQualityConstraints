@@ -194,7 +194,7 @@ class FormatChecker implements ConstraintChecker {
 			return CheckResult::STATUS_TODO;
 		}
 		try {
-			$pattern = '/^' . str_replace( '/', '\/', $format ) . '$/';
+			$pattern = '/^(?:' . str_replace( '/', '\/', $format ) . ')$/u';
 			$shellboxResponse = $this->shellboxClientFactory->getClient( [
 				'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000,
 				'service' => 'constraint-regex-checker',
