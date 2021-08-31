@@ -18,19 +18,27 @@ trait SparqlHelperMock {
 	/**
 	 * @param Statement $expectedStatement
 	 * @param (EntityId|null)[] $result
+	 * @param (PropertyId|null)[] $separators
 	 *
 	 * @return SparqlHelper
 	 */
 	private function getSparqlHelperMockFindEntities(
 		Statement $expectedStatement,
-		$result ) {
-
+		$result,
+		$separators = null
+	) {
 		$mock = $this->createMock( SparqlHelper::class );
+
+		$consecutive = [ $this->equalTo( $expectedStatement ), $this->equalTo( true ) ];
+
+		if ( $separators ) {
+			$consecutive[] = $this->equalTo( $separators );
+		}
 
 		$mock->expects( $this->exactly( 1 ) )
 			->method( 'findEntitiesWithSameStatement' )
 			->willReturn( new CachedEntityIds( $result, Metadata::blank() ) )
-			->withConsecutive( [ $this->equalTo( $expectedStatement ), $this->equalTo( true ) ] );
+			->withConsecutive( $consecutive );
 
 		return $mock;
 	}

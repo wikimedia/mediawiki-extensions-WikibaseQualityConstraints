@@ -18,6 +18,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -318,15 +319,54 @@ EOF;
 	}
 
 	/**
+	 * Helper function used by findEntitiesWithSameStatement to filter
+	 * out entities with different qualifiers or no qualifier value.
+	 *
+	 * @param PropertyId $separator
+	 * @return string
+	 */
+	private function nestedSeparatorFilter( PropertyId $separator ) {
+		$filter = <<<EOF
+  MINUS {
+    ?statement pq:$separator ?qualifier.
+    FILTER NOT EXISTS {
+      ?otherStatement pq:$separator ?qualifier.
+    }
+  }
+  MINUS {
+    ?otherStatement pq:$separator ?qualifier.
+    FILTER NOT EXISTS {
+      ?statement pq:$separator ?qualifier.
+    }
+  }
+  MINUS {
+    ?statement a wdno:$separator.
+    FILTER NOT EXISTS {
+      ?otherStatement a wdno:$separator.
+    }
+  }
+  MINUS {
+    ?otherStatement a wdno:$separator.
+    FILTER NOT EXISTS {
+      ?statement a wdno:$separator.
+    }
+  }
+EOF;
+		return $filter;
+	}
+
+	/**
 	 * @param Statement $statement
 	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
+	 * @param PropertyId[] $separators
 	 *
 	 * @return CachedEntityIds
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	public function findEntitiesWithSameStatement(
 		Statement $statement,
-		$ignoreDeprecatedStatements
+		$ignoreDeprecatedStatements,
+		array $separators
 	) {
 		$pid = $statement->getPropertyId()->serialize();
 		$guid = str_replace( '$', '-', $statement->getGuid() );
@@ -335,6 +375,9 @@ EOF;
 		if ( $ignoreDeprecatedStatements ) {
 			$deprecatedFilter = 'MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }';
 		}
+
+		$separatorFilters = array_map( [ $this, 'nestedSeparatorFilter' ], $separators );
+		$finalSeparatorFilter = implode( "\n", $separatorFilters );
 
 		$query = <<<EOF
 SELECT DISTINCT ?otherEntity WHERE {
@@ -347,6 +390,7 @@ SELECT DISTINCT ?otherEntity WHERE {
   ?otherEntity ?p ?otherStatement.
   FILTER(?otherEntity != ?entity)
   $deprecatedFilter
+  $finalSeparatorFilter
 }
 LIMIT 10
 EOF;
