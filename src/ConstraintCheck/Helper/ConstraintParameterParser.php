@@ -321,6 +321,38 @@ class ConstraintParameterParser {
 	}
 
 	/**
+	 * Parse a parameter that must contain item IDs.
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
+	 * @param bool $required whether the parameter is required (error if absent) or not ([] if absent)
+	 * @param string $parameterId the property ID to use
+	 * @throws ConstraintParameterException
+	 * @return ItemId[]
+	 */
+	private function parseItemIdsParameter(
+		array $constraintParameters,
+		string $constraintTypeItemId,
+		bool $required,
+		string $parameterId
+	): array {
+		return array_map( static function ( ItemIdSnakValue $value ) use ( $parameterId ): ItemId {
+			if ( $value->isValue() ) {
+				return $value->getItemId();
+			} else {
+				throw new ConstraintParameterException(
+					( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
+						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+				);
+			}
+		}, $this->parseItemsParameter(
+			$constraintParameters,
+			$constraintTypeItemId,
+			$required,
+			$parameterId
+		) );
+	}
+
+	/**
 	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
@@ -697,19 +729,19 @@ class ConstraintParameterParser {
 	) {
 		$contextTypes = [];
 		$parameterId = $this->config->get( 'WBQualityConstraintsConstraintScopeId' );
-		$items = $this->parseItemsParameter(
+		$itemIds = $this->parseItemIdsParameter(
 			$constraintParameters,
 			$constraintTypeItemId,
 			false,
 			$parameterId
 		);
 
-		if ( $items === [] ) {
+		if ( $itemIds === [] ) {
 			return null;
 		}
 
-		foreach ( $items as $item ) {
-			$contextTypes[] = $this->parseContextTypeItem( $item, 'constraint scope', $parameterId );
+		foreach ( $itemIds as $itemId ) {
+			$contextTypes[] = $this->parseContextTypeItemId( $itemId, 'constraint scope', $parameterId );
 		}
 
 		$invalidScopes = array_diff( $contextTypes, $validScopes );
@@ -791,24 +823,7 @@ class ConstraintParameterParser {
 		return new UnitsParameter( $unitItems, $unitQuantities, $unitlessAllowed );
 	}
 
-	/**
-	 * Turn an ItemIdSnakValue into a single entity type parameter.
-	 *
-	 * @param ItemIdSnakValue $item
-	 * @return EntityTypesParameter
-	 * @throws ConstraintParameterException
-	 */
-	private function parseEntityTypeItem( ItemIdSnakValue $item ) {
-		$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-
-		if ( !$item->isValue() ) {
-			throw new ConstraintParameterException(
-				( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-			);
-		}
-
-		$itemId = $item->getItemId();
+	private function parseEntityTypeItemId( ItemId $itemId ): EntityTypesParameter {
 		switch ( $itemId->getSerialization() ) {
 			case $this->config->get( 'WBQualityConstraintsWikibaseItemId' ):
 				$entityType = 'item';
@@ -829,6 +844,7 @@ class ConstraintParameterParser {
 				$entityType = 'mediainfo';
 				break;
 			default:
+				$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 				$allowed = [
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibaseItemId' ) ),
 					new ItemId( $this->config->get( 'WBQualityConstraintsWikibasePropertyId' ) ),
@@ -856,10 +872,15 @@ class ConstraintParameterParser {
 	public function parseEntityTypesParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$entityTypes = [];
 		$entityTypeItemIds = [];
-		$items = $this->parseItemsParameter( $constraintParameters, $constraintTypeItemId, true );
+		$itemIds = $this->parseItemIdsParameter(
+			$constraintParameters,
+			$constraintTypeItemId,
+			true,
+			$this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' )
+		);
 
-		foreach ( $items as $item ) {
-			$entityType = $this->parseEntityTypeItem( $item );
+		foreach ( $itemIds as $itemId ) {
+			$entityType = $this->parseEntityTypeItemId( $itemId );
 			$entityTypes = array_merge( $entityTypes, $entityType->getEntityTypes() );
 			$entityTypeItemIds = array_merge( $entityTypeItemIds, $entityType->getEntityTypeItemIds() );
 		}
@@ -899,22 +920,15 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * Turn an ItemIdSnakValue into a single context type parameter.
+	 * Turn an ItemId into a single context type parameter.
 	 *
-	 * @param ItemIdSnakValue $item
+	 * @param ItemId $itemId
 	 * @param string $use 'constraint scope' or 'property scope'
 	 * @param string $parameterId used in error messages
 	 * @return string one of the Context::TYPE_* constants
 	 * @throws ConstraintParameterException
 	 */
-	private function parseContextTypeItem( ItemIdSnakValue $item, $use, $parameterId ) {
-		if ( !$item->isValue() ) {
-			throw new ConstraintParameterException(
-				( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-			);
-		}
-
+	private function parseContextTypeItemId( ItemId $itemId, $use, $parameterId ) {
 		if ( $use === 'constraint scope' ) {
 			$mainSnakId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' );
 			$qualifiersId = $this->config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' );
@@ -925,7 +939,6 @@ class ConstraintParameterParser {
 			$referencesId = $this->config->get( 'WBQualityConstraintsAsReferencesId' );
 		}
 
-		$itemId = $item->getItemId();
 		switch ( $itemId->getSerialization() ) {
 			case $mainSnakId:
 				return Context::TYPE_STATEMENT;
@@ -956,15 +969,15 @@ class ConstraintParameterParser {
 	public function parsePropertyScopeParameter( array $constraintParameters, $constraintTypeItemId ) {
 		$contextTypes = [];
 		$parameterId = $this->config->get( 'WBQualityConstraintsPropertyScopeId' );
-		$items = $this->parseItemsParameter(
+		$itemIds = $this->parseItemIdsParameter(
 			$constraintParameters,
 			$constraintTypeItemId,
 			true,
 			$parameterId
 		);
 
-		foreach ( $items as $item ) {
-			$contextTypes[] = $this->parseContextTypeItem( $item, 'property scope', $parameterId );
+		foreach ( $itemIds as $itemId ) {
+			$contextTypes[] = $this->parseContextTypeItemId( $itemId, 'property scope', $parameterId );
 		}
 
 		if ( empty( $contextTypes ) ) {
