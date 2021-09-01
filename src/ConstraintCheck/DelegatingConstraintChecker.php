@@ -229,6 +229,19 @@ class DelegatingConstraintChecker {
 		) );
 	}
 
+	private function getAllowedEntityTypes( Constraint $constraint ) {
+		if ( !array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
+			return array_keys( ConstraintChecker::ALL_ENTITY_TYPES_SUPPORTED );
+		}
+
+		return array_keys( array_filter(
+			$this->checkerMap[$constraint->getConstraintTypeItemId()]->getSupportedEntityTypes(),
+			static function ( $resultStatus ) {
+				return $resultStatus !== CheckResult::STATUS_NOT_IN_SCOPE;
+			}
+		) );
+	}
+
 	/**
 	 * Like ConstraintChecker::checkConstraintParameters,
 	 * but for meta-parameters common to all checkers.
@@ -257,10 +270,11 @@ class DelegatingConstraintChecker {
 			$problems[] = $e;
 		}
 		try {
-			$this->constraintParameterParser->parseConstraintScopeParameter(
+			$this->constraintParameterParser->parseConstraintScopeParameters(
 				$constraintParameters,
 				$constraint->getConstraintTypeItemId(),
-				$this->getAllowedContextTypes( $constraint )
+				$this->getAllowedContextTypes( $constraint ),
+				$this->getAllowedEntityTypes( $constraint )
 			);
 		} catch ( ConstraintParameterException $e ) {
 			$problems[] = $e;
@@ -606,29 +620,42 @@ class DelegatingConstraintChecker {
 		ConstraintChecker $checker,
 		Context $context,
 		Constraint $constraint
-	) {
+	): ?CheckResult {
+		$validContextTypes = $this->getAllowedContextTypes( $constraint );
+		$validEntityTypes = $this->getAllowedEntityTypes( $constraint );
 		try {
-			$checkedContextTypes = $this->constraintParameterParser->parseConstraintScopeParameter(
+			[ $checkedContextTypes, $checkedEntityTypes ] = $this->constraintParameterParser->parseConstraintScopeParameters(
 				$constraint->getConstraintParameters(),
 				$constraint->getConstraintTypeItemId(),
-				$this->getAllowedContextTypes( $constraint )
+				$validContextTypes,
+				$validEntityTypes
 			);
 		} catch ( ConstraintParameterException $e ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
 		}
+
 		if ( $checkedContextTypes === null ) {
 			$checkedContextTypes = $checker->getDefaultContextTypes();
 		}
-		if ( !in_array( $context->getType(), $checkedContextTypes ) ) {
+		$contextType = $context->getType();
+		if ( !in_array( $contextType, $checkedContextTypes ) ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE, null );
 		}
-		if ( $checker->getSupportedContextTypes()[$context->getType()] === CheckResult::STATUS_TODO ) {
+		if ( $checker->getSupportedContextTypes()[$contextType] === CheckResult::STATUS_TODO ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
 		}
-		$statusForEntityType = $checker->getSupportedEntityTypes()[$context->getEntity()->getType()];
-		if ( $statusForEntityType !== CheckResult::STATUS_COMPLIANCE ) {
-			return new CheckResult( $context, $constraint, [], $statusForEntityType, null );
+
+		if ( $checkedEntityTypes === null ) {
+			$checkedEntityTypes = $validEntityTypes;
 		}
+		$entityType = $context->getEntity()->getType();
+		if ( !in_array( $entityType, $checkedEntityTypes ) ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE, null );
+		}
+		if ( $checker->getSupportedEntityTypes()[$entityType] === CheckResult::STATUS_TODO ) {
+			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
+		}
+
 		return null;
 	}
 
