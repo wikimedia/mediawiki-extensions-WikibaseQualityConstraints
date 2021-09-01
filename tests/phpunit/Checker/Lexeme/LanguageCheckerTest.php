@@ -70,19 +70,6 @@ class LanguageCheckerTest extends \MediaWikiTestCase {
 		$this->assertViolation( $result, 'wbqc-violation-message-language' );
 	}
 
-	public function testLanguageConstraintWrongEntityType() {
-		$statement = NewStatement::forProperty( 'P123' )
-			->withValue( new StringValue( 'Q1' ) )
-			->build();
-
-		$result = $this->languageChecker->checkConstraint(
-			new FakeSnakContext( $statement->getMainSnak() ),
-			$this->getConstraintMock( $this->itemsParameter( [ 'Q1', 'Q2', 'Q3' ] ) )
-		);
-
-		$this->assertNotInScope( $result );
-	}
-
 	public function testLanguageConstraintWithFormViolation() {
 		$statement = NewStatement::forProperty( 'P123' )
 			->withValue( new StringValue( 'Q1' ) )

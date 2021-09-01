@@ -17,6 +17,18 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 interface ConstraintChecker {
 
 	/**
+	 * Convenience constant, returned by most {@link getSupportedEntityTypes} implementations.
+	 */
+	public const ALL_ENTITY_TYPES_SUPPORTED = [
+		'item' => CheckResult::STATUS_COMPLIANCE,
+		'property' => CheckResult::STATUS_COMPLIANCE,
+		'lexeme' => CheckResult::STATUS_COMPLIANCE,
+		'form' => CheckResult::STATUS_COMPLIANCE,
+		'sense' => CheckResult::STATUS_COMPLIANCE,
+		'mediainfo' => CheckResult::STATUS_COMPLIANCE,
+	];
+
+	/**
 	 * Determines which context types this constraint type supports.
 	 * checkConstraint() should only be called for contexts with one of the supported types.
 	 *
@@ -59,6 +71,20 @@ interface ConstraintChecker {
 	 * @return string[]
 	 */
 	public function getDefaultContextTypes();
+
+	/**
+	 * Determines which entity types this constraint type supports.
+	 * checkConstraint() should only be called for contexts with one of the supported entity types.
+	 *
+	 * Returns an array from entity types to result status (CheckResult::STATUS_* constants).
+	 * The meaning of STATUS_COMPLIANCE, STATUS_TODO and STATUS_NOT_IN_SCOPE
+	 * is the same as for {@link getSupportedContextTypes}.
+	 *
+	 * Most implementations can just return {@link ALL_ENTITY_TYPES_SUPPORTED}.
+	 *
+	 * @return string[]
+	 */
+	public function getSupportedEntityTypes();
 
 	/**
 	 * @param Context $context

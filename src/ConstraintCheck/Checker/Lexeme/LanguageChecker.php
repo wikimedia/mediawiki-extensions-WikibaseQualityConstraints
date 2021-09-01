@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\Lexeme;
 
-use ExtensionRegistry;
 use Wikibase\DataModel\Entity\EntityDocument;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Statement\Statement;
@@ -64,6 +63,18 @@ class LanguageChecker implements ConstraintChecker {
 		];
 	}
 
+	/** @codeCoverageIgnore This method is purely declarative. */
+	public function getSupportedEntityTypes() {
+		return [
+			'item' => CheckResult::STATUS_NOT_IN_SCOPE,
+			'property' => CheckResult::STATUS_NOT_IN_SCOPE,
+			'lexeme' => CheckResult::STATUS_COMPLIANCE,
+			'form' => CheckResult::STATUS_COMPLIANCE,
+			'sense' => CheckResult::STATUS_COMPLIANCE,
+			'mediainfo' => CheckResult::STATUS_NOT_IN_SCOPE,
+		];
+	}
+
 	/**
 	 * Checks 'Language' constraint.
 	 *
@@ -74,13 +85,6 @@ class LanguageChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
-		if ( !ExtensionRegistry::getInstance()->isLoaded( 'WikibaseLexeme' ) ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE );
-		}
-		$entityType = $context->getEntity()->getType();
-		if ( !in_array( $entityType, [ Lexeme::ENTITY_TYPE, Sense::ENTITY_TYPE, Form::ENTITY_TYPE ] ) ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE );
-		}
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}

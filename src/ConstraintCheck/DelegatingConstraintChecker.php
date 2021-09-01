@@ -625,6 +625,10 @@ class DelegatingConstraintChecker {
 		if ( $checker->getSupportedContextTypes()[$context->getType()] === CheckResult::STATUS_TODO ) {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
 		}
+		$statusForEntityType = $checker->getSupportedEntityTypes()[$context->getEntity()->getType()];
+		if ( $statusForEntityType !== CheckResult::STATUS_COMPLIANCE ) {
+			return new CheckResult( $context, $constraint, [], $statusForEntityType, null );
+		}
 		return null;
 	}
 
