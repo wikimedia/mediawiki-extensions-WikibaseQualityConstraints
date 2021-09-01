@@ -212,7 +212,7 @@ class DelegatingConstraintChecker {
 		return [];
 	}
 
-	private function getAllowedContextTypes( Constraint $constraint ) {
+	private function getValidContextTypes( Constraint $constraint ) {
 		if ( !array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
 			return [
 				Context::TYPE_STATEMENT,
@@ -229,7 +229,7 @@ class DelegatingConstraintChecker {
 		) );
 	}
 
-	private function getAllowedEntityTypes( Constraint $constraint ) {
+	private function getValidEntityTypes( Constraint $constraint ) {
 		if ( !array_key_exists( $constraint->getConstraintTypeItemId(), $this->checkerMap ) ) {
 			return array_keys( ConstraintChecker::ALL_ENTITY_TYPES_SUPPORTED );
 		}
@@ -273,8 +273,8 @@ class DelegatingConstraintChecker {
 			$this->constraintParameterParser->parseConstraintScopeParameters(
 				$constraintParameters,
 				$constraint->getConstraintTypeItemId(),
-				$this->getAllowedContextTypes( $constraint ),
-				$this->getAllowedEntityTypes( $constraint )
+				$this->getValidContextTypes( $constraint ),
+				$this->getValidEntityTypes( $constraint )
 			);
 		} catch ( ConstraintParameterException $e ) {
 			$problems[] = $e;
@@ -621,8 +621,8 @@ class DelegatingConstraintChecker {
 		Context $context,
 		Constraint $constraint
 	): ?CheckResult {
-		$validContextTypes = $this->getAllowedContextTypes( $constraint );
-		$validEntityTypes = $this->getAllowedEntityTypes( $constraint );
+		$validContextTypes = $this->getValidContextTypes( $constraint );
+		$validEntityTypes = $this->getValidEntityTypes( $constraint );
 		try {
 			[ $checkedContextTypes, $checkedEntityTypes ] = $this->constraintParameterParser->parseConstraintScopeParameters(
 				$constraint->getConstraintParameters(),

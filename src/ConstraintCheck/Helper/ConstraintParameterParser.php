@@ -730,9 +730,9 @@ class ConstraintParameterParser {
 	 *
 	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
-	 * @param string[] $validContextTypes a list of Context::TYPE_* constants which are valid where this parameter appears.
+	 * @param string[] $validContextTypes a list of Context::TYPE_* constants which are valid for this constraint type.
 	 * If one of the specified scopes is not in this list, a ConstraintParameterException is thrown.
-	 * @param string[] $validEntityTypes a list of entity types which are valid where this parameter appears.
+	 * @param string[] $validEntityTypes a list of entity types which are valid for this constraint type.
 	 * If one of the specified entity types is not in this list, a ConstraintParameterException is thrown.
 	 * @throws ConstraintParameterException
 	 * @return array [ string[]|null $contextTypes, string[]|null $entityTypes ]
