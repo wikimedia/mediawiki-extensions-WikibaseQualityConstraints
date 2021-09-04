@@ -14,7 +14,7 @@
 		"jasmine": "^3.3.1",
 		"module-alias": "^2.1.0",
 		"sinon": "^6.3.5",
-		"stylelint-config-wikimedia": "0.10.3",
+		"stylelint-config-wikimedia": "0.11.1",
 		"unexpected": "^10.40.2"
 	},
 	"_moduleAliases": {
