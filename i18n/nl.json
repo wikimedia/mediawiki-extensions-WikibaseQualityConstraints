@@ -6,6 +6,7 @@
 			"Macofe",
 			"Mainframe98",
 			"Mar(c)",
+			"McDutchie",
 			"RadioAzureus",
 			"Romaine",
 			"Siebrand",
@@ -136,6 +137,7 @@
 	"wbqc-violation-message-none-of": "De waarde voor $1 zou niet {{PLURAL:$2|1=$4 moeten zijn.|2=$4 of $5 moeten zijn.|een van de volgende moeten zijn:$3}}",
 	"wbqc-violation-message-integer": "De waarden voor $1 moeten een geheel getal zijn, maar $2 heeft getallen na de komma.",
 	"wbqc-violation-message-citationNeeded": "Verklaringen voor $1 zouden tenminste een bron moeten bevatten.",
+	"wbqc-violation-message-label-lacking": "Entiteiten met statements voor $1 moeten ook een label hebben in ten minste {{PLURAL:$2|1=de taal $4.|één van de volgende talen: $3}}",
 	"wbqc-violation-message-property-scope": "De eigenschap $1 zou niet op deze plek ($2) moeten worden gebruikt. De geldige {{PLURAL:$3|locatie is|locaties zijn}} voor deze eigenschap {{PLURAL:$3|$5.|: $4}}",
 	"wbqc-violation-message-exception": "Deze entiteit is gemarkeerd als een uitzondering op deze beperking."
 }
