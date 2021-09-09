@@ -17,7 +17,7 @@ use MediaWiki\Http\HttpRequestFactory;
 use MultiConfig;
 use NullStatsdDataFactory;
 use WANObjectCache;
-use Wikibase\DataAccess\EntitySource;
+use Wikibase\DataAccess\DatabaseEntitySource;
 use Wikibase\DataAccess\EntitySourceDefinitions;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -787,7 +787,7 @@ END;
 			[ 'wd' => 'http://wiki/entity/' ],
 			[ 'wd' => 'http://data.wiki/' ],
 			new EntitySourceDefinitions( [
-				new EntitySource(
+				new DataBaseEntitySource(
 					'wd',
 					false,
 					[
