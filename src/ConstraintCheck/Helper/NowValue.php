@@ -14,6 +14,7 @@ use LogicException;
  * other than {@link getTime} and {@link equals}.
  *
  * @license GPL-2.0-or-later
+ * @phan-file-suppress PhanPluginNeverReturnMethod
  */
 class NowValue extends TimeValue {
 

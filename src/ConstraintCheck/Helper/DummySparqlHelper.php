@@ -15,6 +15,7 @@ use Wikibase\DataModel\Statement\Statement;
  * See T196053#4514308 for details.
  *
  * @license GPL-2.0-or-later
+ * @phan-file-suppress PhanPluginNeverReturnMethod
  */
 class DummySparqlHelper extends SparqlHelper {
 

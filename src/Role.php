@@ -69,6 +69,7 @@ class Role {
 
 	/**
 	 * @codeCoverageIgnore
+	 * @return never
 	 */
 	private function __construct() {
 		throw new LogicException( 'This class should never be instantiated.' );
