@@ -26,6 +26,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDes
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
+use WikiMap;
 
 return [
 	ConstraintsServices::EXPIRY_LOCK => static function ( MediaWikiServices $services ) {
@@ -150,7 +151,7 @@ return [
 			$services->getStatsdDataFactory(),
 			ConstraintsServices::getExpiryLock( $services ),
 			ConstraintsServices::getLoggingHelper( $services ),
-			wfWikiID() . ' WikibaseQualityConstraints ' . Http::userAgent(),
+			WikiMap::getCurrentWikiId() . ' WikibaseQualityConstraints ' . Http::userAgent(),
 			$services->getHttpRequestFactory()
 		);
 	},
