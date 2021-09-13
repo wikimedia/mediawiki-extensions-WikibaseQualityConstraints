@@ -233,11 +233,11 @@ class ImportConstraintEntities extends Maintenance {
 	 * @param array[] $configUpdates
 	 */
 	private function outputConfigUpdatesWgConf( array $configUpdates ) {
+		$wikiIdCode = var_export( WikiMap::getCurrentWikiId(), true );
 		foreach ( $configUpdates as $key => $value ) {
 			$keyCode = var_export( "wg$key", true );
 			$wikidataValueCode = var_export( $value['wikidata'], true );
 			$localValueCode = var_export( $value['local'], true );
-			$wikiIdCode = var_export( WikiMap::getCurrentWikiId(), true );
 			$block = <<< EOF
 $keyCode => [
 	'default' => $wikidataValueCode,
