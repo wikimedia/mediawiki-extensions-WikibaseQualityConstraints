@@ -13,6 +13,7 @@ use Wikibase\Lib\Store\StorageException;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintEntities;
+use WikiMap;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintEntities
@@ -189,7 +190,7 @@ EOF;
 				'local' => 'Q"\'\\456',
 			],
 		];
-		$wikiId = wfWikiID();
+		$wikiId = WikiMap::getCurrentWikiId();
 		$expected = <<< EOF
 'wgWBQualityConstraintsFooId' => [
 	'default' => 'Q1',

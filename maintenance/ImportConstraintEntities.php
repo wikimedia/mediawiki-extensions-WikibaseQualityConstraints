@@ -15,6 +15,7 @@ use Wikibase\DataModel\Statement\StatementListProvider;
 use Wikibase\Lib\Store\EntityStore;
 use Wikibase\Lib\Store\StorageException;
 use Wikibase\Repo\WikibaseRepo;
+use WikiMap;
 
 // @codeCoverageIgnoreStart
 $basePath = getenv( "MW_INSTALL_PATH" ) !== false
@@ -236,7 +237,7 @@ class ImportConstraintEntities extends Maintenance {
 			$keyCode = var_export( "wg$key", true );
 			$wikidataValueCode = var_export( $value['wikidata'], true );
 			$localValueCode = var_export( $value['local'], true );
-			$wikiIdCode = var_export( wfWikiID(), true );
+			$wikiIdCode = var_export( WikiMap::getCurrentWikiId(), true );
 			$block = <<< EOF
 $keyCode => [
 	'default' => $wikidataValueCode,
