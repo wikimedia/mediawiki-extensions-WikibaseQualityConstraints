@@ -357,7 +357,6 @@ EOF;
 
 	/**
 	 * @param Statement $statement
-	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
 	 * @param PropertyId[] $separators
 	 *
 	 * @return CachedEntityIds
@@ -365,16 +364,10 @@ EOF;
 	 */
 	public function findEntitiesWithSameStatement(
 		Statement $statement,
-		$ignoreDeprecatedStatements,
 		array $separators
 	) {
 		$pid = $statement->getPropertyId()->serialize();
 		$guid = str_replace( '$', '-', $statement->getGuid() );
-
-		$deprecatedFilter = '';
-		if ( $ignoreDeprecatedStatements ) {
-			$deprecatedFilter = 'MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }';
-		}
 
 		$separatorFilters = array_map( [ $this, 'nestedSeparatorFilter' ], $separators );
 		$finalSeparatorFilter = implode( "\n", $separatorFilters );
@@ -389,7 +382,7 @@ SELECT DISTINCT ?otherEntity WHERE {
   ?otherStatement ?ps ?value.
   ?otherEntity ?p ?otherStatement.
   FILTER(?otherEntity != ?entity)
-  $deprecatedFilter
+  MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }
   $finalSeparatorFilter
 }
 LIMIT 10
