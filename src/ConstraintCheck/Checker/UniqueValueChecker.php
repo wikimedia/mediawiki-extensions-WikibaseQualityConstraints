@@ -91,7 +91,6 @@ class UniqueValueChecker implements ConstraintChecker {
 			if ( $context->getType() === 'statement' ) {
 				$result = $this->sparqlHelper->findEntitiesWithSameStatement(
 					$context->getSnakStatement(),
-					true, // ignore deprecated statements
 					$separators
 				);
 			} else {

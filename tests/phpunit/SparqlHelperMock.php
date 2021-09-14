@@ -29,7 +29,7 @@ trait SparqlHelperMock {
 	) {
 		$mock = $this->createMock( SparqlHelper::class );
 
-		$consecutive = [ $this->equalTo( $expectedStatement ), $this->equalTo( true ) ];
+		$consecutive = [ $this->equalTo( $expectedStatement ) ];
 
 		if ( $separators ) {
 			$consecutive[] = $this->equalTo( $separators );
