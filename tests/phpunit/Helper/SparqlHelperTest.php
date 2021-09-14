@@ -169,7 +169,79 @@ EOF;
 		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-	public function testFindEntitiesWithSameStatement() {
+	public function provideSeparatorIdsAndExpectedFilters() {
+		$p21 = new PropertyId( 'P21' );
+		$p22 = new PropertyId( 'P22' );
+
+		yield [
+			[],  // No separators shouldn't add filtering or declaration
+			''
+		];
+
+		yield [
+			[
+				$p21, $p22
+			],
+<<<EOF
+  MINUS {
+    ?statement pq:P21 ?qualifier.
+    FILTER NOT EXISTS {
+      ?otherStatement pq:P21 ?qualifier.
+    }
+  }
+  MINUS {
+    ?otherStatement pq:P21 ?qualifier.
+    FILTER NOT EXISTS {
+      ?statement pq:P21 ?qualifier.
+    }
+  }
+  MINUS {
+    ?statement a wdno:P21.
+    FILTER NOT EXISTS {
+      ?otherStatement a wdno:P21.
+    }
+  }
+  MINUS {
+    ?otherStatement a wdno:P21.
+    FILTER NOT EXISTS {
+      ?statement a wdno:P21.
+    }
+  }
+  MINUS {
+    ?statement pq:P22 ?qualifier.
+    FILTER NOT EXISTS {
+      ?otherStatement pq:P22 ?qualifier.
+    }
+  }
+  MINUS {
+    ?otherStatement pq:P22 ?qualifier.
+    FILTER NOT EXISTS {
+      ?statement pq:P22 ?qualifier.
+    }
+  }
+  MINUS {
+    ?statement a wdno:P22.
+    FILTER NOT EXISTS {
+      ?otherStatement a wdno:P22.
+    }
+  }
+  MINUS {
+    ?otherStatement a wdno:P22.
+    FILTER NOT EXISTS {
+      ?statement a wdno:P22.
+    }
+  }
+EOF
+		];
+	}
+
+	/**
+	 * @dataProvider provideSeparatorIdsAndExpectedFilters
+	 */
+	public function testFindEntitiesWithSameStatement(
+		array $separators,
+		$expectedFilter
+	) {
 		$guid = 'Q1$8542690f-dfab-4846-944f-8382df730d2c';
 		$statement = new Statement(
 			new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ),
@@ -179,7 +251,6 @@ EOF;
 		);
 
 		$sparqlHelper = $this->getSparqlHelper();
-
 		$query = <<<EOF
 SELECT DISTINCT ?otherEntity WHERE {
   BIND(wds:Q1-8542690f-dfab-4846-944f-8382df730d2c AS ?statement)
@@ -191,6 +262,7 @@ SELECT DISTINCT ?otherEntity WHERE {
   ?otherEntity ?p ?otherStatement.
   FILTER(?otherEntity != ?entity)
   MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }
+  $expectedFilter
 }
 LIMIT 10
 EOF;
@@ -204,7 +276,7 @@ EOF;
 			->withConsecutive( [ $this->equalTo( $query ) ] );
 
 		$this->assertEquals(
-			$sparqlHelper->findEntitiesWithSameStatement( $statement, true )->getArray(),
+			$sparqlHelper->findEntitiesWithSameStatement( $statement, true, $separators )->getArray(),
 			[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ]
 		);
 	}

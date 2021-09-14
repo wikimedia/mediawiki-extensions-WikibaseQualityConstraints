@@ -139,7 +139,8 @@ return [
 	ConstraintCheckerServices::UNIQUE_VALUE_CHECKER => static function ( MediaWikiServices $services ) {
 		// TODO return a different, dummy implementation if SPARQL is not available
 		return new UniqueValueChecker(
-			ConstraintsServices::getSparqlHelper( $services )
+			ConstraintsServices::getSparqlHelper( $services ),
+			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 

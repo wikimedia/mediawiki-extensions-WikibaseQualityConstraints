@@ -29,7 +29,8 @@ class DummySparqlHelper extends SparqlHelper {
 
 	public function findEntitiesWithSameStatement(
 		Statement $statement,
-		$ignoreDeprecatedStatements
+		$ignoreDeprecatedStatements,
+		array $separators
 	) {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
