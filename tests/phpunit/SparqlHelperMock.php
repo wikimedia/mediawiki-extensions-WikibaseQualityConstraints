@@ -29,16 +29,15 @@ trait SparqlHelperMock {
 	) {
 		$mock = $this->createMock( SparqlHelper::class );
 
-		$consecutive = [ $this->equalTo( $expectedStatement ) ];
-
+		$args = [ $expectedStatement ];
 		if ( $separators ) {
-			$consecutive[] = $this->equalTo( $separators );
+			$args[] = $separators;
 		}
 
 		$mock->expects( $this->exactly( 1 ) )
 			->method( 'findEntitiesWithSameStatement' )
-			->willReturn( new CachedEntityIds( $result, Metadata::blank() ) )
-			->withConsecutive( $consecutive );
+			->with( ...$args )
+			->willReturn( new CachedEntityIds( $result, Metadata::blank() ) );
 
 		return $mock;
 	}
