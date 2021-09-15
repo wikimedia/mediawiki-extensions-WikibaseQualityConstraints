@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use ApiTestCase;
 use NullStatsdDataFactory;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -68,7 +68,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		};
 
 		$this->testMessage = ( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
-			->withEntityId( new PropertyId( 'P1' ) );
+			->withEntityId( new NumericPropertyId( 'P1' ) );
 		$this->testMessageHtml = $this->testMessage->getMessageKey();
 
 		$wgAPIModules['wbcheckconstraintparameters']['factory'] = function ( $main, $name ) {

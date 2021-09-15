@@ -13,7 +13,7 @@ use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -217,10 +217,10 @@ class CheckConstraintsTest extends ApiTestCase {
 	public function testItemExistsAndHasViolation_WillGetOnlyThisViolationInTheResult() {
 		$this->givenItemWithPropertyExists(
 			new ItemId( 'Q1' ),
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			'46fc8ec9-4903-4592-9a0e-afdd1fa03183'
 		);
-		$this->givenPropertyHasStatus( new PropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
+		$this->givenPropertyHasStatus( new NumericPropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
 
 		$result = $this->doRequest( [ CheckConstraints::PARAM_ID => 'Q1' ] );
 
@@ -236,10 +236,10 @@ class CheckConstraintsTest extends ApiTestCase {
 	public function testItemWithClaimExistsAndHasViolation_WillGetOnlyThisViolationInTheResult() {
 		$this->givenItemWithPropertyExists(
 			new ItemId( 'Q1' ),
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			'46fc8ec9-4903-4592-9a0e-afdd1fa03183'
 		);
-		$this->givenPropertyHasStatus( new PropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
+		$this->givenPropertyHasStatus( new NumericPropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
 
 		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => 'Q1$46fc8ec9-4903-4592-9a0e-afdd1fa03183' ] );
 
@@ -257,11 +257,11 @@ class CheckConstraintsTest extends ApiTestCase {
 		$propertyId = 'P1';
 		$guid = 'q1$46FC8EC9-4903-4592-9A0E-AFDD1FA03183';
 		$item = new Item( new ItemId( $itemId ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( $propertyId ), new UnknownValue( null ) ) );
+		$statement = new Statement( new PropertyValueSnak( new NumericPropertyId( $propertyId ), new UnknownValue( null ) ) );
 		$statement->setGuid( $guid );
 		$item->getStatements()->addStatement( $statement );
 		self::$entityLookup->addEntity( $item );
-		$this->givenPropertyHasStatus( new PropertyId( $propertyId ), CheckResult::STATUS_VIOLATION );
+		$this->givenPropertyHasStatus( new NumericPropertyId( $propertyId ), CheckResult::STATUS_VIOLATION );
 
 		$result = $this->doRequest( [ CheckConstraints::PARAM_CLAIM_ID => $guid ] );
 
@@ -280,8 +280,8 @@ class CheckConstraintsTest extends ApiTestCase {
 			->andStatement( NewStatement::noValueFor( 'P2' ) )
 			->build();
 		self::$entityLookup->addEntity( $item );
-		$this->givenPropertyHasStatus( new PropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
-		$this->givenPropertyHasStatus( new PropertyId( 'P2' ), CheckResult::STATUS_COMPLIANCE );
+		$this->givenPropertyHasStatus( new NumericPropertyId( 'P1' ), CheckResult::STATUS_VIOLATION );
+		$this->givenPropertyHasStatus( new NumericPropertyId( 'P2' ), CheckResult::STATUS_COMPLIANCE );
 
 		$result = $this->doRequest( [
 			CheckConstraints::PARAM_ID => 'Q1',
@@ -311,7 +311,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		return $this->doApiRequest( $params, [], false, null )[0];
 	}
 
-	private function givenPropertyHasStatus( PropertyId $propertyId, $status ) {
+	private function givenPropertyHasStatus( NumericPropertyId $propertyId, $status ) {
 		static $itemIdNumber = 1234;
 		$itemId = 'Q' . $itemIdNumber++;
 		self::$checkerMap[$itemId] = new FakeChecker( $status );
@@ -325,7 +325,7 @@ class CheckConstraintsTest extends ApiTestCase {
 
 	private function givenItemWithPropertyExists(
 		ItemId $itemId,
-		PropertyId $propertyId,
+		NumericPropertyId $propertyId,
 		$statementId = 'some-id'
 	) {
 		$item = new Item(

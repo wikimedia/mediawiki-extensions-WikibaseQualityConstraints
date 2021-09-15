@@ -6,7 +6,7 @@ use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -46,12 +46,12 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	private $checker;
 
 	/**
-	 * @var PropertyId
+	 * @var NumericPropertyId
 	 */
 	private $p1457;
 
 	/**
-	 * @var PropertyId
+	 * @var NumericPropertyId
 	 */
 	private $p2067;
 
@@ -63,15 +63,15 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 			new UnitConverter( new CSVUnitStorage( __DIR__ . '/units.csv' ), '' )
 		);
 		$dataTypeLookup = new InMemoryDataTypeLookup();
-		$dataTypeLookup->setDataTypeForProperty( new PropertyId( 'P1' ), 'time' );
-		$dataTypeLookup->setDataTypeForProperty( new PropertyId( 'P2' ), 'quantity' );
+		$dataTypeLookup->setDataTypeForProperty( new NumericPropertyId( 'P1' ), 'time' );
+		$dataTypeLookup->setDataTypeForProperty( new NumericPropertyId( 'P2' ), 'quantity' );
 		$this->checker = new RangeChecker(
 			$dataTypeLookup,
 			$this->getConstraintParameterParser(),
 			$rangeCheckerHelper
 		);
-		$this->p1457 = new PropertyId( 'P1457' );
-		$this->p2067 = new PropertyId( 'P2067' );
+		$this->p1457 = new NumericPropertyId( 'P1457' );
+		$this->p2067 = new NumericPropertyId( 'P2067' );
 	}
 
 	public function testRangeConstraintWithinRange() {
@@ -181,7 +181,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testRangeConstraintNoValueSnak() {
-		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
+		$snak = new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) );
 		$constraintParameters = [];
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
@@ -379,7 +379,7 @@ class RangeCheckerTest extends \MediaWikiTestCase {
 		$mock->method( 'getConstraintTypeItemId' )
 			 ->willReturn( 'Q21510860' );
 		$mock->method( 'getPropertyId' )
-			 ->willReturn( new PropertyId( $propertyId ) );
+			 ->willReturn( new NumericPropertyId( $propertyId ) );
 
 		return $mock;
 	}

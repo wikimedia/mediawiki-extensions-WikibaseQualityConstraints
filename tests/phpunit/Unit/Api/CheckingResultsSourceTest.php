@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Unit\Api;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -62,11 +62,11 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				return [ new CheckResult(
 					new MainSnakContext(
 						new Item( $entityId ),
-						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+						new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
 					),
 					new Constraint(
 						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
-						new PropertyId( 'P1' ),
+						new NumericPropertyId( 'P1' ),
 						'Q1',
 						[]
 					)
@@ -82,11 +82,11 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				return [ new CheckResult(
 					new MainSnakContext(
 						new Item( $entityId ),
-						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+						new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
 					),
 					new Constraint(
 						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
-						new PropertyId( 'P1' ),
+						new NumericPropertyId( 'P1' ),
 						'Q1',
 						[]
 					)
@@ -176,11 +176,11 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				( new CheckResult(
 					new MainSnakContext(
 						new Item( new ItemId( 'Q1' ) ),
-						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+						new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
 					),
 					new Constraint(
 						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
-						new PropertyId( 'P1' ),
+						new NumericPropertyId( 'P1' ),
 						'Q1',
 						[]
 					)
@@ -192,16 +192,16 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				( new CheckResult(
 					new MainSnakContext(
 						new Item( new ItemId( 'Q2' ) ),
-						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+						new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
 					),
 					new Constraint(
 						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
-						new PropertyId( 'P1' ),
+						new NumericPropertyId( 'P1' ),
 						'Q1',
 						[]
 					)
 				) )->withMetadata( Metadata::ofDependencyMetadata(
-					DependencyMetadata::ofEntityId( new PropertyId( 'P100' ) ) ) )
+					DependencyMetadata::ofEntityId( new NumericPropertyId( 'P100' ) ) ) )
 			] );
 
 		$metadata = $this->getResultsSource( $delegatingConstraintChecker )->getResults(
@@ -211,7 +211,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 			[ CheckResult::STATUS_TODO ]
 		)->getMetadata();
 
-		$expected = [ new ItemId( 'Q100' ), new PropertyId( 'P100' ) ];
+		$expected = [ new ItemId( 'Q100' ), new NumericPropertyId( 'P100' ) ];
 		$actual = $metadata->getDependencyMetadata()->getEntityIds();
 		sort( $expected );
 		sort( $actual );
@@ -226,7 +226,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		$delegatingConstraintChecker = $mock->getMock();
 		$constraint = new Constraint(
 			'P1$47681880-d5f5-417d-96c3-570d6e94d234',
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			'Q1',
 			[]
 		);
@@ -235,7 +235,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				new CheckResult(
 					new MainSnakContext(
 						new Item( $q1 ),
-						new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+						new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
 					),
 					$constraint,
 					[],
@@ -244,7 +244,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 				new CheckResult(
 					new MainSnakContext(
 						new Item( $q1 ),
-						new Statement( new PropertySomeValueSnak( new PropertyId( 'P1' ) ) )
+						new Statement( new PropertySomeValueSnak( new NumericPropertyId( 'P1' ) ) )
 					),
 					$constraint,
 					[],
@@ -270,7 +270,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		$delegatingConstraintChecker = $mock->getMock();
 		$context = new MainSnakContext(
 			new Item( new ItemId( 'Q1' ) ),
-			new Statement( new PropertyNoValueSnak( new PropertyId( 'P1' ) ) )
+			new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
 		);
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
 			->willReturn( [
@@ -278,7 +278,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 					$context,
 					new Constraint(
 						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
-						new PropertyId( 'P1' ),
+						new NumericPropertyId( 'P1' ),
 						'Q1',
 						[]
 					),

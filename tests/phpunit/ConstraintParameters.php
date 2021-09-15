@@ -12,7 +12,7 @@ use Serializers\Serializer;
 use UnexpectedValueException;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -77,7 +77,7 @@ trait ConstraintParameters {
 				function ( $classId ) use ( $classParameterId ) {
 					return $this->getSnakSerializer()->serialize(
 						new PropertyValueSnak(
-							new PropertyId( $classParameterId ),
+							new NumericPropertyId( $classParameterId ),
 							new EntityIdValue( new ItemId( $classId ) )
 						)
 					);
@@ -97,7 +97,7 @@ trait ConstraintParameters {
 		foreach ( $languageCodes as $languageCode ) {
 			$snaks[] = $this->getSnakSerializer()->serialize(
 				new PropertyValueSnak(
-					new PropertyId( $languageParameterId ),
+					new NumericPropertyId( $languageParameterId ),
 					new StringValue( $languageCode )
 				)
 			);
@@ -129,7 +129,7 @@ trait ConstraintParameters {
 		return [
 			$relationParameterId => [ $this->getSnakSerializer()->serialize(
 				new PropertyValueSnak(
-					new PropertyId( $relationParameterId ),
+					new NumericPropertyId( $relationParameterId ),
 					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( $configKey ) ) )
 				)
 			) ]
@@ -145,8 +145,8 @@ trait ConstraintParameters {
 		return [
 			$propertyParameterId => [ $this->getSnakSerializer()->serialize(
 				new PropertyValueSnak(
-					new PropertyId( $propertyParameterId ),
-					new EntityIdValue( new PropertyId( $propertyId ) )
+					new NumericPropertyId( $propertyParameterId ),
+					new EntityIdValue( new NumericPropertyId( $propertyId ) )
 				)
 			) ]
 		];
@@ -161,8 +161,8 @@ trait ConstraintParameters {
 		return [
 			$propertyParameterId => array_map(
 				function ( $property ) use ( $propertyParameterId ) {
-					$value = new EntityIdValue( new PropertyId( $property ) );
-					$snak = new PropertyValueSnak( new PropertyId( $propertyParameterId ), $value );
+					$value = new EntityIdValue( new NumericPropertyId( $property ) );
+					$snak = new PropertyValueSnak( new NumericPropertyId( $propertyParameterId ), $value );
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
 				$properties
@@ -183,7 +183,7 @@ trait ConstraintParameters {
 						$snak = $item;
 					} else {
 						$value = new EntityIdValue( new ItemId( $item ) );
-						$snak = new PropertyValueSnak( new PropertyId( $qualifierParameterId ), $value );
+						$snak = new PropertyValueSnak( new NumericPropertyId( $qualifierParameterId ), $value );
 					}
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
@@ -206,7 +206,7 @@ trait ConstraintParameters {
 	 * @return Snak
 	 */
 	private function rangeEndpoint( $value, $property ) {
-		$propertyId = new PropertyId( $property );
+		$propertyId = new NumericPropertyId( $property );
 		if ( $value === null ) {
 			return new PropertyNoValueSnak( $propertyId );
 		} else {
@@ -250,7 +250,7 @@ trait ConstraintParameters {
 	public function namespaceParameter( $namespace ) {
 		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
 		$value = new StringValue( $namespace );
-		$snak = new PropertyValueSnak( new PropertyId( $namespaceId ), $value );
+		$snak = new PropertyValueSnak( new NumericPropertyId( $namespaceId ), $value );
 		return [ $namespaceId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
 	}
 
@@ -261,7 +261,7 @@ trait ConstraintParameters {
 	public function formatParameter( $format ) {
 		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		$value = new StringValue( $format );
-		$snak = new PropertyValueSnak( new PropertyId( $formatId ), $value );
+		$snak = new PropertyValueSnak( new NumericPropertyId( $formatId ), $value );
 		return [ $formatId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
 	}
 
@@ -273,7 +273,7 @@ trait ConstraintParameters {
 	public function syntaxClarificationParameter( $languageCode, $syntaxClarification ) {
 		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$value = new MonolingualTextValue( $languageCode, $syntaxClarificationId );
-		$snak = new PropertyValueSnak( new PropertyId( $syntaxClarificationId ), $value );
+		$snak = new PropertyValueSnak( new NumericPropertyId( $syntaxClarificationId ), $value );
 		return [ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
 	}
 
@@ -286,7 +286,7 @@ trait ConstraintParameters {
 		return [ $exceptionId => array_map(
 			function ( $exception ) use ( $exceptionId ) {
 				$value = new EntityIdValue( new ItemId( $exception ) );
-				$snak = new PropertyValueSnak( new PropertyId( $exceptionId ), $value );
+				$snak = new PropertyValueSnak( new NumericPropertyId( $exceptionId ), $value );
 				return $this->getSnakSerializer()->serialize( $snak );
 			},
 			$exceptions
@@ -312,7 +312,7 @@ trait ConstraintParameters {
 		return [
 			$statusParameterId => [ $this->getSnakSerializer()->serialize(
 				new PropertyValueSnak(
-					new PropertyId( $statusParameterId ),
+					new NumericPropertyId( $statusParameterId ),
 					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( $configKey ) ) )
 				)
 			) ]
@@ -343,7 +343,7 @@ trait ConstraintParameters {
 			function ( $itemId ) use ( $constraintScopeParameterId ) {
 				return $this->getSnakSerializer()->serialize(
 					new PropertyValueSnak(
-						new PropertyId( $constraintScopeParameterId ),
+						new NumericPropertyId( $constraintScopeParameterId ),
 						new EntityIdValue( new ItemId( $itemId ) )
 					)
 				);
@@ -388,8 +388,8 @@ trait ConstraintParameters {
 		return [
 			$separatorId => array_map(
 				function ( $separator ) use ( $separatorId ) {
-					$value = new EntityIdValue( new PropertyId( $separator ) );
-					$snak = new PropertyValueSnak( new PropertyId( $separatorId ), $value );
+					$value = new EntityIdValue( new NumericPropertyId( $separator ) );
+					$snak = new PropertyValueSnak( new NumericPropertyId( $separatorId ), $value );
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
 				$separators
@@ -417,7 +417,7 @@ trait ConstraintParameters {
 							$this->assertTrue( false, 'unknown context type ' . $contextType );
 					}
 					$value = new EntityIdValue( new ItemId( $itemId ) );
-					$snak = new PropertyValueSnak( new PropertyId( $parameterId ), $value );
+					$snak = new PropertyValueSnak( new NumericPropertyId( $parameterId ), $value );
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
 				$contextTypes

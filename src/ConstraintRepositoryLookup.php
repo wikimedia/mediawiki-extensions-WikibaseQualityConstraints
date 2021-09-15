@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\Logger\LoggerFactory;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\IResultWrapper;
@@ -72,7 +73,7 @@ class ConstraintRepositoryLookup implements ConstraintLookup {
 
 			$constraints[] = new Constraint(
 				$result->constraint_guid,
-				PropertyId::newFromNumber( $result->pid ),
+				NumericPropertyId::newFromNumber( $result->pid ),
 				$constraintTypeItemId,
 				$constraintParameters
 			);

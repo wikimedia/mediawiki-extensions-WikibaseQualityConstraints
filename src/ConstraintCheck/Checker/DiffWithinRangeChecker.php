@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Config;
 use DataValues\QuantityValue;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
@@ -71,7 +71,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	 * @param Constraint $constraint
 	 *
 	 * @throws ConstraintParameterException
-	 * @return array [ DataValue|null $min, DataValue|null $max, PropertyId $property, array $parameters ]
+	 * @return array [ DataValue|null $min, DataValue|null $max, NumericPropertyId $property, array $parameters ]
 	 */
 	private function parseConstraintParameters( Constraint $constraint ) {
 		list( $min, $max ) = $this->constraintParameterParser->parseQuantityRangeParameter(
@@ -141,7 +141,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		$minuend = $snak->getDataValue();
 		'@phan-var \DataValues\TimeValue|\DataValues\QuantityValue|\DataValues\UnboundedQuantityValue $minuend';
 
-		/** @var PropertyId $property */
+		/** @var NumericPropertyId $property */
 		list( $min, $max, $property, $parameters ) = $this->parseConstraintParameters( $constraint );
 
 		// checks only the first occurrence of the referenced property

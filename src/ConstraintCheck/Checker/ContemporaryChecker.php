@@ -7,7 +7,7 @@ use DataValues\DataValue;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
@@ -200,7 +200,7 @@ class ContemporaryChecker implements ConstraintChecker {
 		$extremeValue = null;
 		foreach ( $extremePropertyIds as $extremePropertyId ) {
 			$statementList = new StatementList( ...$statements );
-			$extremeStatements = $statementList->getByPropertyId( new PropertyId( $extremePropertyId ) );
+			$extremeStatements = $statementList->getByPropertyId( new NumericPropertyId( $extremePropertyId ) );
 			/** @var Statement $extremeStatement */
 			foreach ( $extremeStatements as $extremeStatement ) {
 				if ( $extremeStatement->getRank() !== Statement::RANK_DEPRECATED ) {

@@ -11,8 +11,8 @@ use MultiConfig;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\Property;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityRetrievingDataTypeLookup;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
@@ -436,7 +436,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			}
 			$entityIds = $checkResult->getMetadata()->getDependencyMetadata()->getEntityIds();
 			$this->assertContains( $entity->getId(), $entityIds );
-			$this->assertContainsEquals( new PropertyId( 'P1' ), $entityIds );
+			$this->assertContainsEquals( new NumericPropertyId( 'P1' ), $entityIds );
 		}
 	}
 
@@ -652,7 +652,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testCheckConstraintParametersOnPropertyId() {
-		$entity = new Property( new PropertyId( 'P1' ), null, 'time' );
+		$entity = new Property( new NumericPropertyId( 'P1' ), null, 'time' );
 		$this->lookup->addEntity( $entity );
 
 		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId(
@@ -668,7 +668,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testCheckConstraintParametersOnPropertyIdWithError() {
-		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new PropertyId( 'P8' ) );
+		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new NumericPropertyId( 'P8' ) );
 
 		$this->assertCount( 1, $result,
 			'Every constraint should be represented by one result' );
@@ -681,7 +681,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testCheckConstraintParametersOnPropertyIdWithMetaErrors() {
-		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new PropertyId( 'P9' ) );
+		$result = $this->constraintChecker->checkConstraintParametersOnPropertyId( new NumericPropertyId( 'P9' ) );
 
 		$this->assertCount( 1, $result,
 			'Every constraint should be represented by one result' );
@@ -736,18 +736,18 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 
 	public function testPropertiesWithViolatingQualifiers() {
 		$q1 = new ItemId( 'Q1' );
-		$p2 = new PropertyId( 'P2' );
+		$p2 = new NumericPropertyId( 'P2' );
 		$qualifierNotToCheck = new PropertyValueSnak( $p2, new StringValue( 'do not check this ' ) );
 		$qualifierToCheck = new PropertyValueSnak( $p2, new StringValue( 'do check this ' ) );
 		$entityLookup = new InMemoryEntityLookup();
 		$entityLookup->addEntity(
 			NewItem::withId( $q1 )
 				->andStatement( new Statement(
-					new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+					new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ),
 					new SnakList( [ $qualifierNotToCheck ] )
 				) )
 				->andStatement( new Statement(
-					new PropertyNoValueSnak( new PropertyId( 'P11' ) ),
+					new PropertyNoValueSnak( new NumericPropertyId( 'P11' ) ),
 					new SnakList( [ $qualifierToCheck ] )
 				) )
 				->build()
@@ -758,7 +758,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			new InMemoryConstraintLookup( [
 				new Constraint(
 					'P456$a34344b1-1843-4005-bd92-c082d7f7af2f',
-					new PropertyId( 'P2' ),
+					new NumericPropertyId( 'P2' ),
 					'Q1',
 					[]
 				),
@@ -802,7 +802,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -840,7 +840,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -887,7 +887,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -933,7 +933,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			new InMemoryConstraintLookup( [
 				new Constraint(
 					'',
-					new PropertyId( 'P1' ),
+					new NumericPropertyId( 'P1' ),
 					'Q1',
 					$this->constraintScopeParameter( [ Context::TYPE_STATEMENT ] )
 				)
@@ -978,7 +978,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			new InMemoryConstraintLookup( [
 				new Constraint(
 					'',
-					new PropertyId( 'P1' ),
+					new NumericPropertyId( 'P1' ),
 					'Q1',
 					$this->constraintScopeParameter( [ Context::TYPE_QUALIFIER ] )
 				)
@@ -1018,7 +1018,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -1054,7 +1054,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new PropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -1095,7 +1095,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			new InMemoryConstraintLookup( [
 				new Constraint(
 					'',
-					new PropertyId( 'P1' ),
+					new NumericPropertyId( 'P1' ),
 					'Q1',
 					$this->constraintScopeParameter( [], [ 'property' ] )
 				)
@@ -1137,7 +1137,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
 			new InMemoryConstraintLookup( [
 				new Constraint(
 					'',
-					new PropertyId( 'P1' ),
+					new NumericPropertyId( 'P1' ),
 					'Q1',
 					$this->constraintScopeParameter( [], [ 'item' ] )
 				)

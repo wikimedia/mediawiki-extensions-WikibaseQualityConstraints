@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\ValueCountChecker;
 
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
@@ -128,8 +128,8 @@ class SingleValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSingleValueConstraint_One_Qualifier() {
-		$qualifier1 = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
-		$qualifier2 = new PropertyNoValueSnak( new PropertyId( 'P2' ) );
+		$qualifier1 = new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) );
+		$qualifier2 = new PropertyNoValueSnak( new NumericPropertyId( 'P2' ) );
 		$statement = NewStatement::someValueFor( 'P10' )->build();
 		$statement->getQualifiers()->addSnak( $qualifier1 );
 		$statement->getQualifiers()->addSnak( $qualifier2 );
@@ -145,8 +145,8 @@ class SingleValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSingleValueConstraint_Two_Reference() {
-		$referenceSnak1 = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
-		$referenceSnak2 = new PropertySomeValueSnak( new PropertyId( 'P1' ) );
+		$referenceSnak1 = new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) );
+		$referenceSnak2 = new PropertySomeValueSnak( new NumericPropertyId( 'P1' ) );
 		$reference = new Reference( [ $referenceSnak1, $referenceSnak2 ] );
 		$statement = NewStatement::someValueFor( 'P10' )->build();
 		$statement->getReferences()->addReference( $reference );

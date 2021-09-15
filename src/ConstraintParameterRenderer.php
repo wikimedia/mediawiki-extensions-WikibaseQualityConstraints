@@ -7,7 +7,7 @@ use MessageLocalizer;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
@@ -67,7 +67,7 @@ class ConstraintParameterRenderer {
 	/**
 	 * Formats parameter values of constraints.
 	 *
-	 * @param string|ItemId|PropertyId|DataValue $value
+	 * @param string|ItemId|NumericPropertyId|DataValue $value
 	 *
 	 * @return string HTML
 	 */
@@ -91,7 +91,7 @@ class ConstraintParameterRenderer {
 	/**
 	 * Formats constraint parameters.
 	 *
-	 * @param (string|ItemId|PropertyId|DataValue)[][]|null $parameters
+	 * @param (string|ItemId|NumericPropertyId|DataValue)[][]|null $parameters
 	 *
 	 * @return string HTML
 	 */

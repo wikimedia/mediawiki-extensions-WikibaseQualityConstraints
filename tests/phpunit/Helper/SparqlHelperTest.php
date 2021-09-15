@@ -23,7 +23,7 @@ use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -170,8 +170,8 @@ EOF;
 	}
 
 	public function provideSeparatorIdsAndExpectedFilters() {
-		$p21 = new PropertyId( 'P21' );
-		$p22 = new PropertyId( 'P22' );
+		$p21 = new NumericPropertyId( 'P21' );
+		$p22 = new NumericPropertyId( 'P22' );
 
 		yield [
 			[],  // No separators shouldn't add filtering or declaration
@@ -244,7 +244,7 @@ EOF
 	) {
 		$guid = 'Q1$8542690f-dfab-4846-944f-8382df730d2c';
 		$statement = new Statement(
-			new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ),
+			new PropertyValueSnak( new NumericPropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ),
 			null,
 			null,
 			$guid
@@ -330,7 +330,7 @@ EOF;
 	}
 
 	public function provideSnaksWithSparqlValuesAndPropertyPaths() {
-		$pid = new PropertyId( 'P1' );
+		$pid = new NumericPropertyId( 'P1' );
 		$globeCoordinateValue = new GlobeCoordinateValue( new LatLongValue( 42.0, 13.37 ) );
 		$quantityValue = UnboundedQuantityValue::newFromNumber( -10, 'ms' );
 		$timeValue = new TimeValue(
@@ -392,7 +392,7 @@ EOF;
 				'pq:P1'
 			],
 			'property, reference' => [
-				new PropertyValueSnak( $pid, new EntityIdValue( new PropertyId( 'P100' ) ) ),
+				new PropertyValueSnak( $pid, new EntityIdValue( new NumericPropertyId( 'P100' ) ) ),
 				'wikibase-property',
 				'reference',
 				'wd:P100',

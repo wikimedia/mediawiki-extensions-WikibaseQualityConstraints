@@ -19,7 +19,7 @@ use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
@@ -398,7 +398,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$statusColumn = $this->formatStatus( $result->getStatus() );
 
 		// Property column
-		$propertyId = new PropertyId( $result->getContextCursor()->getSnakPropertyId() );
+		$propertyId = new NumericPropertyId( $result->getContextCursor()->getSnakPropertyId() );
 		$propertyColumn = $this->getClaimLink(
 			$entityId,
 			$propertyId,
@@ -417,7 +417,7 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 		$constraintLink = $this->getClaimLink(
 			$propertyId,
-			new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
+			new NumericPropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
 			$constraintTypeLabel
 		);
 		$constraintColumn = $this->buildExpandableElement(
@@ -631,12 +631,12 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Returns html link to given entity with anchor to specified property.
 	 *
 	 * @param EntityId $entityId
-	 * @param PropertyId $propertyId
+	 * @param NumericPropertyId $propertyId
 	 * @param string $text HTML
 	 *
 	 * @return string HTML
 	 */
-	private function getClaimLink( EntityId $entityId, PropertyId $propertyId, $text ) {
+	private function getClaimLink( EntityId $entityId, NumericPropertyId $propertyId, $text ) {
 		return Html::rawElement(
 			'a',
 			[
@@ -651,11 +651,11 @@ class SpecialConstraintReport extends SpecialPage {
 	 * Returns url of given entity with anchor to specified property.
 	 *
 	 * @param EntityId $entityId
-	 * @param PropertyId $propertyId
+	 * @param NumericPropertyId $propertyId
 	 *
 	 * @return string
 	 */
-	private function getClaimUrl( EntityId $entityId, PropertyId $propertyId ) {
+	private function getClaimUrl( EntityId $entityId, NumericPropertyId $propertyId ) {
 		$title = $this->entityTitleLookup->getTitleForId( $entityId );
 		$entityUrl = sprintf( '%s#%s', $title->getLocalURL(), $propertyId->getSerialization() );
 

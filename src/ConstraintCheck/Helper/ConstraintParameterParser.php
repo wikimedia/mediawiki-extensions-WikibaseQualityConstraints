@@ -14,6 +14,7 @@ use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
@@ -99,7 +100,7 @@ class ConstraintParameterParser {
 		if ( count( $parameters[$parameterId] ) !== 1 ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-single' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 	}
@@ -115,7 +116,7 @@ class ConstraintParameterParser {
 		if ( !( $snak instanceof PropertyValueSnak ) ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 	}
@@ -136,7 +137,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-entity' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 					->withDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
@@ -155,7 +156,7 @@ class ConstraintParameterParser {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-					->withEntityId( new PropertyId( $classId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $classId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -179,7 +180,7 @@ class ConstraintParameterParser {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-					->withEntityId( new PropertyId( $relationId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $relationId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -188,7 +189,7 @@ class ConstraintParameterParser {
 		if ( !( $relationEntityId instanceof ItemId ) ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-item' ) )
-					->withEntityId( new PropertyId( $relationId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $relationId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 					->withDataValue( new EntityIdValue( $relationEntityId ), Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
@@ -218,7 +219,7 @@ class ConstraintParameterParser {
 		}
 		throw new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-property' ) )
-				->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+				->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 				->withDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
 		);
 	}
@@ -237,7 +238,7 @@ class ConstraintParameterParser {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-					->withEntityId( new PropertyId( $propertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $propertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -255,7 +256,7 @@ class ConstraintParameterParser {
 		}
 		throw new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-item' ) )
-				->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+				->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 				->withDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
 		);
 	}
@@ -283,7 +284,7 @@ class ConstraintParameterParser {
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 						->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 				);
 			} else {
 				return [];
@@ -329,7 +330,7 @@ class ConstraintParameterParser {
 			} else {
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
-						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 				);
 			}
 		}, $this->parseItemsParameter(
@@ -355,7 +356,7 @@ class ConstraintParameterParser {
 			}, array_keys( $mapping ) );
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 					->withEntityIdList( $allowed, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
@@ -374,7 +375,7 @@ class ConstraintParameterParser {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-					->withEntityId( new PropertyId( $propertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $propertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -407,7 +408,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-value-or-novalue' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 	}
@@ -461,8 +462,8 @@ class ConstraintParameterParser {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-range-parameters-needed' ) )
 					->withDataValueType( $type )
-					->withEntityId( new PropertyId( $minimumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-					->withEntityId( new PropertyId( $maximumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $minimumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $maximumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 			);
 		}
@@ -483,8 +484,8 @@ class ConstraintParameterParser {
 			$min !== null && $max !== null && $min->equals( $max ) ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-range-parameters-same' ) )
-					->withEntityId( new PropertyId( $minimumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
-					->withEntityId( new PropertyId( $maximumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $minimumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $maximumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -538,7 +539,7 @@ class ConstraintParameterParser {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-					->withEntityId( new PropertyId( $languagePropertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $languagePropertyId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -565,7 +566,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-string' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 					->withDataValue( $value, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
@@ -601,7 +602,7 @@ class ConstraintParameterParser {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
-					->withEntityId( new PropertyId( $formatId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $formatId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 			);
 		}
 
@@ -666,7 +667,7 @@ class ConstraintParameterParser {
 		} else {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-oneof' ) )
-					->withEntityId( new PropertyId( $constraintStatusId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $constraintStatusId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 					->withEntityIdList(
 						$supportedStatuses,
 						Role::CONSTRAINT_PARAMETER_VALUE
@@ -686,7 +687,7 @@ class ConstraintParameterParser {
 		if ( !( $dataValue instanceof MonolingualTextValue ) ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-monolingualtext' ) )
-					->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+					->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 					->withDataValue( $dataValue, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
 		}
@@ -716,7 +717,7 @@ class ConstraintParameterParser {
 			if ( array_key_exists( $code, $result ) ) {
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-single-per-language' ) )
-						->withEntityId( new PropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withEntityId( new NumericPropertyId( $parameterId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 						->withLanguage( $code )
 				);
 			}
@@ -869,7 +870,7 @@ class ConstraintParameterParser {
 				$qualifierId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 				throw new ConstraintParameterException(
 					( new ViolationMessage( 'wbqc-violation-message-parameter-value-or-novalue' ) )
-						->withEntityId( new PropertyId( $qualifierId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
+						->withEntityId( new NumericPropertyId( $qualifierId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
 				);
 			case $item->isNoValue():
 				return new UnitsParameter( [], [], true );

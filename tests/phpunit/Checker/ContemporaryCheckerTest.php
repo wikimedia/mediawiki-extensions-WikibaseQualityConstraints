@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 use DataValues\TimeValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
@@ -295,7 +295,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 		$subjectItem = NewItem::withId( 'Q1' )
 			->andStatement( $this->newTimeStatement( $this->startPropertyIds[0], $this->timestamps[2] ) )
 			->andStatement( $this->newTimeStatement( $this->endPropertyIds[0], $this->timestamps[3] ) )
-			->andStatement( NewStatement::noValueFor( new PropertyId( $this->linkingPropertyId ) ) )
+			->andStatement( NewStatement::noValueFor( new NumericPropertyId( $this->linkingPropertyId ) ) )
 			->build();
 		$this->saveAndCheck( $subjectItem, null, CheckResult::STATUS_COMPLIANCE );
 	}
@@ -304,7 +304,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 		$subjectItem = NewItem::withId( 'Q1' )
 			->andStatement( $this->newTimeStatement( $this->startPropertyIds[0], $this->timestamps[0] ) )
 			->andStatement( $this->newTimeStatement( $this->endPropertyIds[0], $this->timestamps[2] ) )
-			->andStatement( NewStatement::someValueFor( new PropertyId( $this->linkingPropertyId ) ) )
+			->andStatement( NewStatement::someValueFor( new NumericPropertyId( $this->linkingPropertyId ) ) )
 			->build();
 		$this->saveAndCheck( $subjectItem, null, CheckResult::STATUS_COMPLIANCE );
 	}
@@ -1070,7 +1070,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 	private function getLinkingStatement( Item $subjectItem, $linkingPropertyId ) {
 		return $subjectItem
 			->getStatements()
-			->getByPropertyId( new PropertyId( $linkingPropertyId ) )
+			->getByPropertyId( new NumericPropertyId( $linkingPropertyId ) )
 			->toArray()[0];
 	}
 

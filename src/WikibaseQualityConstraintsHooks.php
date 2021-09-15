@@ -9,7 +9,7 @@ use JobSpecification;
 use MediaWiki\MediaWikiServices;
 use OutputPage;
 use Skin;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Changes\Change;
 use Wikibase\Lib\Changes\EntityChange;
 use Wikibase\Lib\Changes\EntityDiffChangedAspects;
@@ -91,7 +91,7 @@ final class WikibaseQualityConstraintsHooks {
 	public static function isConstraintStatementsChange( Config $config, Change $change ) {
 		if ( !( $change instanceof EntityChange ) ||
 			 $change->getAction() !== EntityChange::UPDATE ||
-			 !( $change->getEntityId() instanceof PropertyId )
+			 !( $change->getEntityId() instanceof NumericPropertyId )
 		) {
 			return false;
 		}

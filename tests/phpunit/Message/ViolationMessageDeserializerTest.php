@@ -76,7 +76,7 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 			[ [
 				'type' => ViolationMessage::TYPE_ENTITY_ID,
 				'role' => Role::CONSTRAINT_PROPERTY,
-				'value' => new PropertyId( 'P1' ),
+				'value' => new PropertyId( 'P1' ), // TODO: Change to NumericPropertyId when data-model is changed
 			] ],
 			$message->getArguments()
 		);
@@ -131,7 +131,7 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeEntityId
 	 */
 	public function testDeserializeEntityId() {
-		$propertyId = new PropertyId( 'P1' );
+		$propertyId = new PropertyId( 'P1' ); // TODO: Change to NumericPropertyId when data-model is changed
 		$mock = $this->createMock( EntityIdParser::class );
 		$mock->expects( $this->once() )
 			->method( 'parse' )
@@ -155,7 +155,10 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
 			->deserializeEntityIdList( $entityIdSerializations );
 
-		$this->assertEquals( [ new ItemId( 'Q1' ), new PropertyId( 'P1' ) ], $deserialized );
+		$this->assertEquals(
+			[ new ItemId( 'Q1' ), new PropertyId( 'P1' ) ],  // TODO: Change to NumericPropertyId when data-model is changed
+			$deserialized
+		);
 	}
 
 	/**

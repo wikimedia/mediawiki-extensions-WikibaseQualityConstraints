@@ -8,8 +8,8 @@ use JobQueueGroup;
 use MediaWiki\MediaWikiServices;
 use Serializers\Serializer;
 use Title;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\Property;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityRevisionLookup;
@@ -132,7 +132,7 @@ class UpdateConstraintsTableJob extends Job {
 	}
 
 	public function extractConstraintFromStatement(
-		PropertyId $propertyId,
+		NumericPropertyId $propertyId,
 		Statement $constraintStatement
 	) {
 		$constraintId = $constraintStatement->getGuid();
@@ -154,7 +154,7 @@ class UpdateConstraintsTableJob extends Job {
 	public function importConstraintsForProperty(
 		Property $property,
 		ConstraintStore $constraintStore,
-		PropertyId $propertyConstraintPropertyId
+		NumericPropertyId $propertyConstraintPropertyId
 	) {
 		$constraintsStatements = $property->getStatements()
 			->getByPropertyId( $propertyConstraintPropertyId )
@@ -185,7 +185,7 @@ class UpdateConstraintsTableJob extends Job {
 	public function run() {
 		// TODO in the future: only touch constraints affected by the edit (requires T163465)
 
-		$propertyId = new PropertyId( $this->propertyId );
+		$propertyId = new NumericPropertyId( $this->propertyId );
 		$propertyRevision = $this->entityRevisionLookup->getEntityRevision(
 			$propertyId,
 			0, // latest
@@ -210,7 +210,7 @@ class UpdateConstraintsTableJob extends Job {
 		$this->importConstraintsForProperty(
 			$property,
 			$this->constraintStore,
-			new PropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) )
+			new NumericPropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) )
 		);
 
 		$connection->endAtomic( __CLASS__ );

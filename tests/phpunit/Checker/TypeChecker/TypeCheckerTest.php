@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker\TypeChecker;
 use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\Snak;
@@ -64,7 +64,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 			),
 			$this->getDefaultConfig()
 		);
-		$this->typeSnak = new PropertyValueSnak( new PropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) );
+		$this->typeSnak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) );
 	}
 
 	public function testTypeConstraintInstanceValid() {
@@ -270,7 +270,7 @@ class TypeCheckerTest extends \MediaWikiTestCase {
 		$context = new QualifierContext(
 			$entity,
 			new Statement( $this->typeSnak ),
-			new PropertyNoValueSnak( new PropertyId( 'P2000' ) )
+			new PropertyNoValueSnak( new NumericPropertyId( 'P2000' ) )
 		);
 
 		$checkResult = $this->checker->checkConstraint( $context, $constraint );

@@ -12,7 +12,7 @@ use Shellbox\Client;
 use Shellbox\ShellboxError;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Repo\Tests\NewItem;
@@ -70,7 +70,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	public function testFormatConstraintComplianceSparql( string $pattern, string $text ) {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 0 ] );
 		$value = new StringValue( $text );
-		$snak = new PropertyValueSnak( new PropertyId( 'P345' ), $value );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P345' ), $value );
 		$formatChecker = $this->getChecker( $config );
 		$result = $formatChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -86,7 +86,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	public function testFormatConstraintComplianceShellbox( string $pattern, string $text ) {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 1 ] );
 		$value = new StringValue( $text );
-		$snak = new PropertyValueSnak( new PropertyId( 'P345' ), $value );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P345' ), $value );
 		$formatChecker = $this->getChecker( $config );
 		$result = $formatChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -129,7 +129,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	public function testFormatConstraintViolationSparql( string $pattern, string $text ) {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 0 ] );
 		$value = new StringValue( $text );
-		$snak = new PropertyValueSnak( new PropertyId( 'P345' ), $value );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P345' ), $value );
 		$formatChecker = $this->getChecker();
 		$result = $formatChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -145,7 +145,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	public function testFormatConstraintViolationShellbox( string $pattern, string $text ) {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 1 ] );
 		$value = new StringValue( $text );
-		$snak = new PropertyValueSnak( new PropertyId( 'P345' ), $value );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P345' ), $value );
 		$formatChecker = $this->getChecker( $config );
 		$result = $formatChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
@@ -177,7 +177,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 		$pattern = '(tt|nm|ch|co|ev)\d{7}';
 
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
-		$snak = new PropertyValueSnak( new PropertyId( 'P345' ), $value );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P345' ), $value );
 
 		$formatChecker = $this->getChecker();
 		$result = $formatChecker->checkConstraint(
@@ -189,7 +189,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 	public function testFormatConstraintNoValueSnak() {
 		$pattern = ".";
-		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
+		$snak = new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) );
 
 		$formatChecker = $this->getChecker();
 		$result = $formatChecker->checkConstraint(
@@ -201,7 +201,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 
 	public function testFormatConstraintWithoutSparql() {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 0 ] );
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
@@ -219,7 +219,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatConstraintDisabled() {
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
 					  ->disableOriginalConstructor()
@@ -242,7 +242,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatConstraintShellboxDisabled() {
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$sparqlHelper = $this->createMock( SparqlHelper::class );
 		$shellboxClientFactory = $this->getMockBuilder( ShellboxClientFactory::class )
@@ -270,7 +270,7 @@ class FormatCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatConstraintShellboxError() {
-		$snak = new PropertyValueSnak( new PropertyId( 'P1' ), new StringValue( '' ) );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
 		$sparqlHelper = $this->createMock( SparqlHelper::class );
 		$shellboxClient = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()

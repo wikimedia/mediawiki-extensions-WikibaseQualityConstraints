@@ -8,6 +8,7 @@ use OverflowException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -93,7 +94,7 @@ class TypeCheckerHelper {
 
 		$subclassId = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 		$statements = $item->getStatements()
-			->getByPropertyId( new PropertyId( $subclassId ) )
+			->getByPropertyId( new NumericPropertyId( $subclassId ) )
 			->getBestStatements();
 		/** @var Statement $statement */
 		foreach ( $statements as $statement ) {
@@ -253,7 +254,7 @@ class TypeCheckerHelper {
 		$statementArrays = [];
 
 		foreach ( $propertyIdSerializations as $propertyIdSerialization ) {
-			$propertyId = new PropertyId( $propertyIdSerialization );
+			$propertyId = new NumericPropertyId( $propertyIdSerialization );
 			$statementArrays[] = $statements
 				->getByPropertyId( $propertyId )
 				->getBestStatements()
@@ -272,7 +273,13 @@ class TypeCheckerHelper {
 	 *
 	 * @return ViolationMessage
 	 */
-	public function getViolationMessage( PropertyId $propertyId, EntityId $entityId, array $classes, $checker, $relation ) {
+	public function getViolationMessage(
+		PropertyId $propertyId,
+		EntityId $entityId,
+		array $classes,
+		$checker,
+		$relation
+	) {
 		$classes = array_map(
 			static function ( $itemIdSerialization ) {
 				return new ItemId( $itemIdSerialization );

@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Lib\Units\InMemoryUnitStorage;
@@ -47,7 +47,7 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testAllowedUnitsConstraint_UnknownValue() {
 		$checker = $this->getAllowedUnitsChecker();
-		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
+		$snak = new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) );
 		$context = new FakeSnakContext( $snak );
 		$constraint = $this->getConstraintMock( $this->itemsParameter( [ 'Q1' ] ) );
 
@@ -59,7 +59,7 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 	public function testAllowedUnitsConstraint_StringValue() {
 		$checker = $this->getAllowedUnitsChecker();
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			new StringValue( '0.25 portion' )
 		);
 		$context = new FakeSnakContext( $snak );
@@ -73,12 +73,12 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 	public function testAllowedUnitsConstraint_NoUnit_Allowed() {
 		$checker = $this->getAllowedUnitsChecker();
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, '1' )
 		);
 		$context = new FakeSnakContext( $snak );
 		$constraint = $this->getConstraintMock( $this->itemsParameter( [
-			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+			new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ),
 		] ) );
 
 		$checkResult = $checker->checkConstraint( $context, $constraint );
@@ -89,7 +89,7 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 	public function testAllowedUnitsConstraint_NoUnit_NotAllowed() {
 		$checker = $this->getAllowedUnitsChecker();
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, '1' )
 		);
 		$context = new FakeSnakContext( $snak );
@@ -103,7 +103,7 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 	public function testAllowedUnitsConstraint_SomeUnit_Allowed() {
 		$checker = $this->getAllowedUnitsChecker();
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, 'http://wikibase.example/entity/Q2' )
 		);
 		$context = new FakeSnakContext( $snak );
@@ -119,7 +119,7 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 			new InMemoryUnitStorage( [ 'Q2' => [ 'factor' => 1, 'unit' => 'Q3' ] ] )
 		);
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, 'http://wikibase.example/entity/Q2' )
 		);
 		$context = new FakeSnakContext( $snak );
@@ -135,7 +135,7 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 			new InMemoryUnitStorage( [ 'Q3' => [ 'factor' => 1, 'unit' => 'Q2' ] ] )
 		);
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, 'http://wikibase.example/entity/Q2' )
 		);
 		$context = new FakeSnakContext( $snak );
@@ -154,7 +154,7 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 			] )
 		);
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, 'http://wikibase.example/entity/Q2' )
 		);
 		$context = new FakeSnakContext( $snak );
@@ -168,7 +168,7 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 	public function testAllowedUnitsConstraint_SomeUnit_NotAllowed() {
 		$checker = $this->getAllowedUnitsChecker();
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, 'http://wikibase.example/entity/Q2' )
 		);
 		$context = new FakeSnakContext( $snak );
@@ -182,13 +182,13 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 	public function testAllowedUnitsConstraint_SomeUnit_NotAllowed_OrNone() {
 		$checker = $this->getAllowedUnitsChecker();
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, 'http://wikibase.example/entity/Q2' )
 		);
 		$context = new FakeSnakContext( $snak );
 		$constraint = $this->getConstraintMock( $this->itemsParameter( [
 			'Q1', 'Q3', 'Q4',
-			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+			new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ),
 		] ) );
 
 		$checkResult = $checker->checkConstraint( $context, $constraint );
@@ -199,12 +199,12 @@ class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
 	public function testAllowedUnitsConstraint_SomeUnit_NotAllowed_OnlyNone() {
 		$checker = $this->getAllowedUnitsChecker();
 		$snak = new PropertyValueSnak(
-			new PropertyId( 'P1' ),
+			new NumericPropertyId( 'P1' ),
 			UnboundedQuantityValue::newFromNumber( 0, 'http://wikibase.example/entity/Q2' )
 		);
 		$context = new FakeSnakContext( $snak );
 		$constraint = $this->getConstraintMock( $this->itemsParameter( [
-			new PropertyNoValueSnak( new PropertyId( 'P1' ) ),
+			new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ),
 		] ) );
 
 		$checkResult = $checker->checkConstraint( $context, $constraint );
