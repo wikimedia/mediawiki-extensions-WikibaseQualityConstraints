@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\Repo\Tests\NewItem;
@@ -81,8 +81,8 @@ class NoneOfCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testNoneOfConstraintArraySomevalueNovalue() {
-		$somevalueSnak = new PropertySomeValueSnak( new PropertyId( 'P123' ) );
-		$novalueSnak = new PropertyNoValueSnak( new PropertyId( 'P123' ) );
+		$somevalueSnak = new PropertySomeValueSnak( new NumericPropertyId( 'P123' ) );
+		$novalueSnak = new PropertyNoValueSnak( new NumericPropertyId( 'P123' ) );
 
 		foreach ( [ $somevalueSnak, $novalueSnak ] as $allowed ) {
 			foreach ( [ $somevalueSnak, $novalueSnak ] as $present ) {

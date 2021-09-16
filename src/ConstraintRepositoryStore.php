@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikimedia\Rdbms\DBUnexpectedError;
 use Wikimedia\Rdbms\ILoadBalancer;
 
@@ -65,11 +65,11 @@ class ConstraintRepositoryStore implements ConstraintStore {
 	/**
 	 * Delete all constraints for the property ID.
 	 *
-	 * @param PropertyId $propertyId
+	 * @param NumericPropertyId $propertyId
 	 *
 	 * @throws DBUnexpectedError
 	 */
-	public function deleteForProperty( PropertyId $propertyId ) {
+	public function deleteForProperty( NumericPropertyId $propertyId ) {
 		$dbw = $this->lb->getConnection( ILoadBalancer::DB_PRIMARY, [], $this->dbName );
 		$dbw->delete(
 			'wbqc_constraints',

@@ -67,28 +67,31 @@ class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
 			'no arguments' => [ new ViolationMessage( 'wbqc-violation-message-single-value' ) ],
 			'entity ID' => [
 				( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
-					->withEntityId( new PropertyId( 'P1' ) )
+					->withEntityId( new PropertyId( 'P1' ) ) // TODO: Change to NumericPropertyId after data-model is updated
 			],
 			'entity ID list' => [
 				( new ViolationMessage( 'wbqc-violation-message-unique-value' ) )
-					->withEntityIdList( [ new ItemId( 'Q1' ), new PropertyId( 'P1' ) ] )
+					->withEntityIdList( [
+						new ItemId( 'Q1' ),
+						new PropertyId( 'P1' ) // TODO: Change to NumericPropertyId after data-model is updated
+					] )
 			],
 			'entity ID + somevalue' => [
 				( new ViolationMessage( 'wbqc-violation-message-conflicts-with-claim' ) )
-					->withEntityId( new PropertyId( 'P1' ) )
-					->withEntityId( new PropertyId( 'P2' ) )
+					->withEntityId( new PropertyId( 'P1' ) ) // TODO: Change to NumericPropertyId after data-model is updated
+					->withEntityId( new PropertyId( 'P2' ) ) // TODO: Change to NumericPropertyId after data-model is updated
 					->withItemIdSnakValue( ItemIdSnakValue::someValue() )
 			],
 			'entity ID + quantities' => [
 				( new ViolationMessage( 'wbqc-violation-message-range-quantity-closed' ) )
-					->withEntityId( new PropertyId( 'P1' ) )
+					->withEntityId( new PropertyId( 'P1' ) ) // TODO: Change to NumericPropertyId after data-model is updated
 					->withDataValue( UnboundedQuantityValue::newFromNumber( -10 ) )
 					->withDataValue( UnboundedQuantityValue::newFromNumber( 0 ) )
 					->withDataValue( UnboundedQuantityValue::newFromNumber( 10000 ) )
 			],
 			'entity ID + times' => [
 				( new ViolationMessage( 'wbqc-violation-message-time-closed' ) )
-					->withEntityId( new PropertyId( 'P2' ) )
+					->withEntityId( new PropertyId( 'P2' ) ) // TODO: Change to NumericPropertyId after data-model is updated
 					->withDataValue( new TimeValue( '+19997-02-08T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
 					->withDataValue( new TimeValue( '+1001-01-01T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
 					->withDataValue( new TimeValue( '+2000-12-31T00:00:00Z', 0, 0, 0, 0, 'gregorian' ) )
@@ -107,13 +110,13 @@ class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
 			],
 			'entity ID + property scope + property scope list' => [
 				( new ViolationMessage( 'wbqc-violation-message-property-scope' ) )
-					->withEntityId( new PropertyId( 'P1' ) )
+					->withEntityId( new PropertyId( 'P1' ) ) // TODO: Change to NumericPropertyId after data-model is updated
 					->withPropertyScope( Context::TYPE_STATEMENT )
 					->withPropertyScopeList( [ Context::TYPE_QUALIFIER, Context::TYPE_REFERENCE ] )
 			],
 			'entity ID + string value + inline code + multilingual text' => [
 				( new ViolationMessage( 'wbqc-violation-message-format-clarification' ) )
-					->withEntityId( new PropertyId( 'P1' ) )
+					->withEntityId( new PropertyId( 'P1' ) ) // TODO: Change to NumericPropertyId after data-model is updated
 					->withDataValue( new StringValue( 'ftp://mirror.example/mirror.html' ) )
 					->withInlineCode( 'https?://[^/]+/.*' )
 					->withMultilingualText( new MultilingualTextValue( [

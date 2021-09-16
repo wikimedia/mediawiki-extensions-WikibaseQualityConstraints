@@ -8,7 +8,7 @@ use DataValues\StringValue;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
@@ -46,7 +46,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	 */
 	public function testSerialize_entityId_withRole() {
 		$message = ( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
-			->withEntityId( new PropertyId( 'P1' ), Role::CONSTRAINT_PROPERTY );
+			->withEntityId( new NumericPropertyId( 'P1' ), Role::CONSTRAINT_PROPERTY );
 		$serializer = new ViolationMessageSerializer();
 
 		$serialized = $serializer->serialize( $message );
@@ -107,7 +107,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeEntityId
 	 */
 	public function testSerializeEntityId() {
-		$entityId = new PropertyId( 'P1' );
+		$entityId = new NumericPropertyId( 'P1' );
 		$serializer = new ViolationMessageSerializer();
 
 		$serialized = TestingAccessWrapper::newFromObject( $serializer )
@@ -120,7 +120,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeEntityIdList
 	 */
 	public function testSerializeEntityIdList() {
-		$entityIds = [ new ItemId( 'Q1' ), new PropertyId( 'P1' ) ];
+		$entityIds = [ new ItemId( 'Q1' ), new NumericPropertyId( 'P1' ) ];
 		$serializer = new ViolationMessageSerializer();
 
 		$serialized = TestingAccessWrapper::newFromObject( $serializer )

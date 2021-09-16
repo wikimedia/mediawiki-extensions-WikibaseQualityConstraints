@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Checker\ConnectionChecker;
 
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Repo\Tests\NewItem;
@@ -48,7 +48,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$constraintParameters = $this->propertyParameter( 'P2' );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$statement = new Statement( new PropertyValueSnak( new NumericPropertyId( 'P188' ), $value ) );
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
@@ -64,7 +64,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		$constraintParameters = $this->propertyParameter( 'P2' );
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$statement = new Statement( new PropertyValueSnak( new NumericPropertyId( 'P188' ), $value ) );
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
@@ -83,7 +83,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		);
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$statement = new Statement( new PropertyValueSnak( new NumericPropertyId( 'P188' ), $value ) );
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 
@@ -102,7 +102,7 @@ class ItemCheckerTest extends \MediaWikiTestCase {
 		);
 
 		$value = new EntityIdValue( new ItemId( 'Q100' ) );
-		$statement = new Statement( new PropertyValueSnak( new PropertyId( 'P188' ), $value ) );
+		$statement = new Statement( new PropertyValueSnak( new NumericPropertyId( 'P188' ), $value ) );
 
 		$constraint = $this->getConstraintMock( $constraintParameters );
 

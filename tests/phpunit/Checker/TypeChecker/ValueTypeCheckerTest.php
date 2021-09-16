@@ -6,7 +6,7 @@ use DataValues\StringValue;
 use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\Repo\Tests\NewItem;
@@ -45,7 +45,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	private $checker;
 
 	/**
-	 * @var PropertyId
+	 * @var NumericPropertyId
 	 */
 	private $valueTypePropertyId;
 
@@ -64,7 +64,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 			),
 			$this->getDefaultConfig()
 		);
-		$this->valueTypePropertyId = new PropertyId( 'P1234' );
+		$this->valueTypePropertyId = new NumericPropertyId( 'P1234' );
 	}
 
 	public function testValueTypeConstraintInstanceValid() {
@@ -272,7 +272,7 @@ class ValueTypeCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testValueTypeConstraintNoValueSnak() {
-		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
+		$snak = new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) );
 		$constraintParameters = array_merge(
 			$this->relationParameter( 'instance' ),
 			$this->classParameter( [ 'Q100', 'Q101' ] )

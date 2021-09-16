@@ -3,7 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use MediaWiki\MediaWikiServices;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use WikibaseQuality\ConstraintReport\ConstraintRepositoryLookup;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
@@ -36,10 +36,10 @@ class ConstraintTest extends \MediaWikiTestCase {
 			false,
 			true
 		);
-		$constraints = $repo->queryConstraintsForProperty( new PropertyId( 'P1' ) );
+		$constraints = $repo->queryConstraintsForProperty( new NumericPropertyId( 'P1' ) );
 
 		$this->assertEquals( 'Item', $constraints[0]->getConstraintTypeItemId() );
-		$this->assertEquals( new PropertyId( 'P1' ), $constraints[0]->getPropertyId() );
+		$this->assertEquals( new NumericPropertyId( 'P1' ), $constraints[0]->getPropertyId() );
 		$this->assertSame( '1', $constraints[0]->getConstraintId() );
 		$constraintParameters = $constraints[0]->getConstraintParameters();
 		$this->assertCount( 2, $constraintParameters );

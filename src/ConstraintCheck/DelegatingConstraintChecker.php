@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck;
 use InvalidArgumentException;
 use LogicException;
 use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Reference;
@@ -317,7 +318,7 @@ class DelegatingConstraintChecker {
 	 */
 	public function checkConstraintParametersOnConstraintId( $constraintId ) {
 		$propertyId = $this->statementGuidParser->parse( $constraintId )->getEntityId();
-		'@phan-var PropertyId $propertyId';
+		'@phan-var NumericPropertyId $propertyId';
 		$constraints = $this->constraintLookup->queryConstraintsForProperty( $propertyId );
 
 		foreach ( $constraints as $constraint ) {

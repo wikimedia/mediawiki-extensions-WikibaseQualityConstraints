@@ -8,7 +8,7 @@ use MockMessageLocalizer;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
@@ -46,7 +46,7 @@ class ConstraintParameterRendererTest extends \MediaWikiTestCase {
 	}
 
 	public function testFormatEntityId() {
-		$value = new PropertyId( 'P1234' );
+		$value = new NumericPropertyId( 'P1234' );
 		$entityIdFormatter = $this->createMock( EntityIdFormatter::class );
 		$entityIdFormatter->expects( $this->once() )
 			->method( 'formatEntityId' )

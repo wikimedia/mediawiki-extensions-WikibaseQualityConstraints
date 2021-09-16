@@ -14,7 +14,7 @@ use WANObjectCache;
 use WebRequest;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemIdParser;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
 use Wikibase\Repo\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
@@ -66,7 +66,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 			),
 			new Constraint(
 				'P1$00000000-0000-0000-0000-000000000000',
-				new PropertyId( 'P1' ),
+				new NumericPropertyId( 'P1' ),
 				'Q12345',
 				[]
 			),

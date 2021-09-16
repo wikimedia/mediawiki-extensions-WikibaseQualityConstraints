@@ -11,7 +11,7 @@ use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Store\LookupConstants;
 use Wikibase\Lib\Store\Sql\WikiPageEntityMetaDataAccessor;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
@@ -51,7 +51,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 			),
 			new Constraint(
 				'P1$00000000-0000-0000-0000-000000000000',
-				new PropertyId( 'P1' ),
+				new NumericPropertyId( 'P1' ),
 				'Q12345',
 				[]
 			),
@@ -274,7 +274,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	public function testGetAndStoreResults_StoreLatestRevisionIds() {
 		$q100 = new ItemId( 'Q100' );
 		$q101 = new ItemId( 'Q101' );
-		$p102 = new PropertyId( 'P102' );
+		$p102 = new NumericPropertyId( 'P102' );
 		$expectedResults = new CachedCheckResults(
 			[ $this->getCheckResult( 'Q100' ) ],
 			Metadata::ofDependencyMetadata( DependencyMetadata::merge( [

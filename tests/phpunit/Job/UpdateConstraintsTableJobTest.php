@@ -9,8 +9,8 @@ use MediaWikiTestCase;
 use Title;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\Property;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -87,6 +87,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 	}
 
 	public function testExtractParametersFromQualifiers() {
+		$this->markTestSkipped( 'Enable after I81a04efd257c27d2ffd69f7b23c8cf472154e307 is merged' );
 		$job = UpdateConstraintsTableJob::newFromGlobalState(
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]
@@ -96,26 +97,26 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$quantity = UnboundedQuantityValue::newFromNumber( 50, 'kg' );
 		$date = $this->getTimeValue( '2000-01-01' );
 		$snakP2308A = new PropertyValueSnak(
-			new PropertyId( 'P2308' ),
+			new NumericPropertyId( 'P2308' ),
 			$class1
 		);
 		$snakP1646 = new PropertyNoValueSnak(
-			new PropertyId( 'P1646' )
+			new NumericPropertyId( 'P1646' )
 		);
 		$snakP2308B = new PropertyValueSnak(
-			new PropertyId( 'P2308' ),
+			new NumericPropertyId( 'P2308' ),
 			$class2
 		);
 		$snakP2313 = new PropertyValueSnak(
-			new PropertyId( 'P2313' ),
+			new NumericPropertyId( 'P2313' ),
 			$quantity
 		);
 		$snakP2310 = new PropertyValueSnak(
-			new PropertyId( 'P2310' ),
+			new NumericPropertyId( 'P2310' ),
 			$date
 		);
 		$snakP2305 = new PropertySomeValueSnak(
-			new PropertyId( 'P2305' )
+			new NumericPropertyId( 'P2305' )
 		);
 		$qualifiers = new SnakList( [
 			$snakP2308A,
@@ -146,16 +147,16 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$statementGuid = 'P2$484b7eaf-e86c-4f25-91dc-7ae19f8be8de';
 		$statement = new Statement(
 			new PropertyValueSnak(
-				new PropertyId( $config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
+				new NumericPropertyId( $config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
 				new EntityIdValue( new ItemId( $singleValueId ) )
 			)
 		);
 		$statement->setGuid( $statementGuid );
 
-		$constraint = $job->extractConstraintFromStatement( new PropertyId( 'P2' ), $statement );
+		$constraint = $job->extractConstraintFromStatement( new NumericPropertyId( 'P2' ), $statement );
 
 		$this->assertEquals( $singleValueId, $constraint->getConstraintTypeItemId() );
-		$this->assertEquals( new PropertyId( 'P2' ), $constraint->getPropertyId() );
+		$this->assertEquals( new NumericPropertyId( 'P2' ), $constraint->getPropertyId() );
 		$this->assertEquals( $statementGuid, $constraint->getConstraintId() );
 		$this->assertEquals( [], $constraint->getConstraintParameters() );
 
@@ -176,22 +177,22 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$instanceOfRelationId = $config->get( 'WBQualityConstraintsInstanceOfRelationId' );
 
 		$classHumanSnak = new PropertyValueSnak(
-			new PropertyId( $classId ),
+			new NumericPropertyId( $classId ),
 			new EntityIdValue( new ItemId( 'Q5' ) )
 		);
 		$classFictionalHumanSnak = new PropertyValueSnak(
-			new PropertyId( $classId ),
+			new NumericPropertyId( $classId ),
 			new EntityIdValue( new ItemId( 'Q15632617' ) )
 		);
 		$relationInstanceOfSnak = new PropertyValueSnak(
-			new PropertyId( $relationId ),
+			new NumericPropertyId( $relationId ),
 			new EntityIdValue( new ItemId( $instanceOfRelationId ) )
 		);
 
 		$statementGuid = 'P2$e95e1eb9-eaa5-48d1-a3d6-0b34fc5d3cd0';
 		$statement = new Statement(
 			new PropertyValueSnak(
-				new PropertyId( $propertyConstraintId ),
+				new NumericPropertyId( $propertyConstraintId ),
 				new EntityIdValue( new ItemId( $typeId ) )
 			),
 			new SnakList( [ $classHumanSnak, $classFictionalHumanSnak, $relationInstanceOfSnak ] ),
@@ -199,12 +200,12 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			$statementGuid
 		);
 
-		$constraint = $job->extractConstraintFromStatement( new PropertyId( 'P2' ), $statement );
+		$constraint = $job->extractConstraintFromStatement( new NumericPropertyId( 'P2' ), $statement );
 
 		$snakSerializer = WikibaseRepo::getBaseDataModelSerializerFactory()
 			->newSnakSerializer();
 		$this->assertEquals( $typeId, $constraint->getConstraintTypeItemId() );
-		$this->assertEquals( new PropertyId( 'P2' ), $constraint->getPropertyId() );
+		$this->assertEquals( new NumericPropertyId( 'P2' ), $constraint->getPropertyId() );
 		$this->assertEquals( $statementGuid, $constraint->getConstraintId() );
 		$this->assertSame(
 			[
@@ -227,7 +228,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			[ 'propertyId' => 'P2' ]
 		);
 		$singleValueId = new ItemId( $config->get( 'WBQualityConstraintsSingleValueConstraintId' ) );
-		$propertyConstraintId = new PropertyId( $config->get( 'WBQualityConstraintsPropertyConstraintId' ) );
+		$propertyConstraintId = new NumericPropertyId( $config->get( 'WBQualityConstraintsPropertyConstraintId' ) );
 		$statementGuid = 'P2$484b7eaf-e86c-4f25-91dc-7ae19f8be8de';
 		$statement = new Statement(
 			new PropertyValueSnak(
@@ -237,7 +238,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		);
 		$statement->setGuid( $statementGuid );
 		$property = new Property(
-			new PropertyId( 'P2' ),
+			new NumericPropertyId( 'P2' ),
 			null, '',
 			new StatementList( [ $statement ] )
 		);
@@ -309,7 +310,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 			->withDeprecatedRank()
 			->build();
 		$property = new Property(
-			new PropertyId( 'P3' ),
+			new NumericPropertyId( 'P3' ),
 			null,
 			'string',
 			new StatementList( [
@@ -349,7 +350,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$job->importConstraintsForProperty(
 			$property,
 			$constraintRepository,
-			new PropertyId( $propertyConstraintId )
+			new NumericPropertyId( $propertyConstraintId )
 		);
 	}
 
@@ -358,7 +359,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
 		$singleValueConstraintId = $config->get( 'WBQualityConstraintsSingleValueConstraintId' );
 		$property = new Property(
-			new PropertyId( 'P2' ),
+			new NumericPropertyId( 'P2' ),
 			null,
 			'wikibase-item',
 			new StatementList(

@@ -8,6 +8,7 @@ use ApiResult;
 use Config;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
@@ -145,7 +146,7 @@ class CheckConstraintParameters extends ApiBase {
 		return array_map(
 			function ( $propertyIdSerialization ) {
 				try {
-					return new PropertyId( $propertyIdSerialization );
+					return new NumericPropertyId( $propertyIdSerialization );
 				} catch ( InvalidArgumentException $e ) {
 					$this->apiErrorReporter->dieError(
 						"Invalid id: $propertyIdSerialization",

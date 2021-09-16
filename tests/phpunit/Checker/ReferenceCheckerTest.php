@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -30,7 +30,7 @@ class ReferenceCheckerTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider provideContextTypes
 	 */
 	public function testReferenceConstraint( $type, $messageKey ) {
-		$snak = new PropertyNoValueSnak( new PropertyId( 'P1' ) );
+		$snak = new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) );
 		$context = $this->createMock( Context::class );
 		$context->method( 'getType' )->willReturn( $type );
 		$context->method( 'getSnak' )->willReturn( $snak );

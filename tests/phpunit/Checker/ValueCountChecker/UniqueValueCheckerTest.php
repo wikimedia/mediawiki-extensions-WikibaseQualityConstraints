@@ -6,7 +6,7 @@ use DataValues\StringValue;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Snak\SnakList;
@@ -46,7 +46,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	private $lookup;
 
 	/**
-	 * @var PropertyId
+	 * @var NumericPropertyId
 	 */
 	private $uniquePropertyId;
 
@@ -58,7 +58,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->lookup = new JsonFileEntityLookup( __DIR__ );
-		$this->uniquePropertyId = new PropertyId( 'P31' );
+		$this->uniquePropertyId = new NumericPropertyId( 'P31' );
 	}
 
 	public function testCheckUniqueValueConstraintInvalid() {
@@ -82,7 +82,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 		$statement = new Statement( new PropertyValueSnak( $this->uniquePropertyId, new EntityIdValue( new ItemId( 'Q6' ) ) ) );
 		$statement->setGuid( 'Q6$e35707be-4a84-61fe-9b52-623784a316a7' );
 
-		$mock = $this->getSparqlHelperMockFindEntities( $statement, [ new PropertyId( 'P42' ) ] );
+		$mock = $this->getSparqlHelperMockFindEntities( $statement, [ new NumericPropertyId( 'P42' ) ] );
 
 		$this->checker = $this->newUniqueValueChecker( $mock );
 
@@ -116,7 +116,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 		$entity = NewItem::withId( 'Q6' )->build();
 		$statement = NewStatement::noValueFor( 'P1' )->build();
 		$entity->getStatements()->addStatement( $statement );
-		$snak = new PropertyValueSnak( new PropertyId( 'P7' ), new StringValue( 'O8' ) );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P7' ), new StringValue( 'O8' ) );
 		$sparqlHelper = $this->getSparqlHelperMockFindEntitiesQualifierReference(
 			new ItemId( 'Q6' ),
 			$snak,
@@ -138,7 +138,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 		$entity->getStatements()->addStatement( $statement );
 		$reference = new Reference();
 		$statement->getReferences()->addReference( $reference );
-		$snak = new PropertyValueSnak( new PropertyId( 'P7' ), new StringValue( 'O8' ) );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P7' ), new StringValue( 'O8' ) );
 		$reference->getSnaks()->addSnak( $snak );
 		$sparqlHelper = $this->getSparqlHelperMockFindEntitiesQualifierReference(
 			new ItemId( 'Q6' ),
@@ -194,12 +194,12 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUsesStatementValidQualifiersAsSeparators() {
-		$firstQualifier = new PropertyId( 'P10' );
-		$secondQualifier = new PropertyId( 'P11' );
+		$firstQualifier = new NumericPropertyId( 'P10' );
+		$secondQualifier = new NumericPropertyId( 'P11' );
 
 		$statement = new Statement(
 			new PropertyValueSnak(
-				new PropertyId( 'P1' ),
+				new NumericPropertyId( 'P1' ),
 				new StringValue( 'something' )
 			),
 			new SnakList(

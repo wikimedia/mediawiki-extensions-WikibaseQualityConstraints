@@ -3,8 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\ConnectionChecker;
 
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\Property;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\InMemoryEntityLookup;
 use Wikibase\Repo\Tests\NewItem;
 use Wikibase\Repo\Tests\NewStatement;
@@ -78,8 +78,8 @@ class SymmetricCheckerTest extends \MediaWikiTestCase {
 	}
 
 	public function testSymmetricConstraintOnProperty() {
-		$entityId = new PropertyId( 'P1' );
-		$otherEntityId = new PropertyId( 'P2' );
+		$entityId = new NumericPropertyId( 'P1' );
+		$otherEntityId = new NumericPropertyId( 'P2' );
 		$otherEntity = new Property( $otherEntityId, null, 'wikibase-property' );
 		$otherEntity->getStatements()->addStatement(
 			NewStatement::forProperty( 'P3' )
