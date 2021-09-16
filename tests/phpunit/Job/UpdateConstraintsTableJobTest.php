@@ -87,7 +87,6 @@ class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
 	}
 
 	public function testExtractParametersFromQualifiers() {
-		$this->markTestSkipped( 'Enable after I81a04efd257c27d2ffd69f7b23c8cf472154e307 is merged' );
 		$job = UpdateConstraintsTableJob::newFromGlobalState(
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]

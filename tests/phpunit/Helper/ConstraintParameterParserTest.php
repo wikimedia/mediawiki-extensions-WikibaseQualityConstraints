@@ -49,7 +49,6 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	private $constraint;
 
 	protected function setUp(): void {
-		$this->markTestSkipped( 'Enable after I81a04efd257c27d2ffd69f7b23c8cf472154e307 is merged' );
 		parent::setUp();
 		$this->constraint = new Constraint( 'constraint ID', new NumericPropertyId( 'P1' ), 'constraint type Q-ID', [] );
 	}
