@@ -63,7 +63,6 @@ class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function provideViolationMessages() {
-		$this->markTestSkipped( 'Skipped until data-model is changed to use NumericPropertyId' );
 		return [
 			'no arguments' => [ new ViolationMessage( 'wbqc-violation-message-single-value' ) ],
 			'entity ID' => [

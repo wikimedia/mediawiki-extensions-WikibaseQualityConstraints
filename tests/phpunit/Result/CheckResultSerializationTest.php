@@ -172,7 +172,6 @@ class CheckResultSerializationTest extends TestCase {
 			'Q21502404',
 			[]
 		);
-		$this->markTestSkipped( 'Skipped until data-model is changed to use NumericPropertyId' );
 		yield 'constraint with missing parameters' => [
 			( new CheckResult(
 				$contextCursor,

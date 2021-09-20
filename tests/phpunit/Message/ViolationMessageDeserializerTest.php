@@ -64,7 +64,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeArgument
 	 */
 	public function testDeserialize_entityId() {
-		$this->markTestSkipped( 'Skipped until data-model is changed to use NumericPropertyId' );
 		$serialized = [ 'k' => 'no-qualifiers', 'a' => [ [
 			't' => ViolationMessage::TYPE_ENTITY_ID,
 			'v' => 'P1',
@@ -132,7 +131,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeEntityId
 	 */
 	public function testDeserializeEntityId() {
-		$this->markTestSkipped( 'Skipped until data-model is changed to use NumericPropertyId' );
 		$propertyId = new NumericPropertyId( 'P1' );
 		$mock = $this->createMock( EntityIdParser::class );
 		$mock->expects( $this->once() )
@@ -157,7 +155,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$deserialized = TestingAccessWrapper::newFromObject( $deserializer )
 			->deserializeEntityIdList( $entityIdSerializations );
 
-		$this->markTestSkipped( 'Skipped until data-model is changed to use NumericPropertyId' );
 		$this->assertEquals(
 			[ new ItemId( 'Q1' ), new NumericPropertyId( 'P1' ) ],
 			$deserialized
