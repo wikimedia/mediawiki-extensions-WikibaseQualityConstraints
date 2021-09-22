@@ -11,7 +11,7 @@
 	"apihelp-wbcheckconstraints-param-id": "Liste d'ID des entités pour lesquelles ont veux les informations. Séparez les valeurs avec  '|' ou similaire.",
 	"apihelp-wbcheckconstraints-param-claimid": "Liste de GUID identifiant une demande de vérification d'un rapport de contraintes. Valeurs séparées par '|'.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Filtre optionnel pour ne retourner que les contraintes qui ont l'ID de contrainte spécifié.",
-	"apihelp-wbcheckconstraints-param-status": "Filtre facultatif pour ne renvoyer que les résultats avec les états sélectionnés.\n\nNoter que seuls les résultats pour les états 'violation', 'avertissement' et 'mauvais-paramètres' sont mis en cache, donc les requêtes qui sélectionnent un état autre que ces trois-là ne bénéficient pas du cache.",
+	"apihelp-wbcheckconstraints-param-status": "Filtre facultatif pour ne renvoyer que les résultats avec les états sélectionnés.\n\nNoter que seuls les résultats pour les états 'violation', 'avertissement', 'suggestion' et 'mauvais-paramètres' sont mis en cache, donc les requêtes qui sélectionnent un état autre que ces quatre-là ne bénéficient pas du cache.",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "La déclaration satisfait la contrainte.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "La déclaration viole la contrainte.",
 	"apihelp-wbcheckconstraints-paramvalue-status-exception": "L’entité sujet de la déclaration est une exception connue à la contrainte.",
