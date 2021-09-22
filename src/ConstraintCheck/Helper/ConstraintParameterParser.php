@@ -9,6 +9,7 @@ use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use LogicException;
+use Wikibase\DataModel\Deserializers\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -57,15 +58,14 @@ class ConstraintParameterParser {
 	/**
 	 * @param Config $config
 	 *   contains entity IDs used in constraint parameters (constraint statement qualifiers)
-	 * @param $factory
+	 * @param DeserializerFactory $factory
 	 *   used to parse constraint statement qualifiers into constraint parameters
 	 * @param string $unitItemConceptBaseUri
 	 *   concept base URI of items used for units
 	 */
-	// phpcs:ignore MediaWiki.Commenting.FunctionComment.NoParamType -- For T289040
 	public function __construct(
 		Config $config,
-		$factory,
+		DeserializerFactory $factory,
 		string $unitItemConceptBaseUri
 	) {
 		$this->config = $config;
