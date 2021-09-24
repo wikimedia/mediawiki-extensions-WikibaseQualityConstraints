@@ -6,9 +6,9 @@ use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use InvalidArgumentException;
-use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
+use Wikibase\DataModel\Entity\SerializableEntityId;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
@@ -189,7 +189,9 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	 */
 	public function testSerializeItemIdSnakValue_sanityCheck() {
 		$this->expectException( InvalidArgumentException::class );
-		$this->getMockBuilder( EntityId::class )
+
+		// Since EntityId is going to be an interface, not all EntityId implementations are guaranteed to use this constructor
+		$this->getMockBuilder( SerializableEntityId::class )
 			->setConstructorArgs( [ '::somevalue' ] )
 			->getMock();
 	}
