@@ -161,6 +161,7 @@ class UpdateConstraintsTableJob extends Job {
 			->getByRank( [ Statement::RANK_PREFERRED, Statement::RANK_NORMAL ] );
 		$constraints = [];
 		foreach ( $constraintsStatements->getIterator() as $constraintStatement ) {
+			// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 			$constraints[] = $this->extractConstraintFromStatement( $property->getId(), $constraintStatement );
 			if ( count( $constraints ) >= self::BATCH_SIZE ) {
 				$constraintStore->insertBatch( $constraints );

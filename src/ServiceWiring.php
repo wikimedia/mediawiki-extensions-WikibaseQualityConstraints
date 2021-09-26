@@ -6,6 +6,7 @@ use Http;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use ObjectCache;
+use RuntimeException;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
@@ -44,13 +45,16 @@ return [
 	ConstraintsServices::CONSTRAINT_STORE => static function ( MediaWikiServices $services ) {
 		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 		$propertySource = $sourceDefinitions->getDatabaseSourceForEntityType( Property::ENTITY_TYPE );
-		$dbName = $propertySource->getDatabaseName();
-		$localEntitySourceName = WikibaseRepo::getLocalEntitySource( $services )->getSourceName();
-
-		if ( $propertySource->getSourceName() !== $localEntitySourceName ) {
-			throw new \RuntimeException( 'Can\'t get a ConstraintStore for a non local entity source.' );
+		if ( $propertySource === null ) {
+			throw new RuntimeException( 'Can\'t get a ConstraintStore for properties not stored in a database.' );
 		}
 
+		$localEntitySourceName = WikibaseRepo::getLocalEntitySource( $services )->getSourceName();
+		if ( $propertySource->getSourceName() !== $localEntitySourceName ) {
+			throw new RuntimeException( 'Can\'t get a ConstraintStore for a non local entity source.' );
+		}
+
+		$dbName = $propertySource->getDatabaseName();
 		return new ConstraintRepositoryStore(
 			$services->getDBLoadBalancerFactory()->getMainLB( $dbName ),
 			$dbName
@@ -60,6 +64,10 @@ return [
 	ConstraintsServices::CONSTRAINT_LOOKUP => static function ( MediaWikiServices $services ) {
 		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 		$propertySource = $sourceDefinitions->getDatabaseSourceForEntityType( Property::ENTITY_TYPE );
+		if ( $propertySource === null ) {
+			throw new RuntimeException( 'Can\'t get a ConstraintStore for properties not stored in a database.' );
+		}
+
 		$dbName = $propertySource->getDatabaseName();
 		$rawLookup = new ConstraintRepositoryLookup(
 			$services->getDBLoadBalancerFactory()->getMainLB( $dbName ),
