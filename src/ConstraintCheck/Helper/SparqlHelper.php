@@ -810,7 +810,7 @@ EOF;
 				'format' => 'json',
 				'maxQueryTimeMillis' => $this->maxQueryTimeMillis,
 			],
-			null, ini_get( 'arg_separator.output' ),
+			'', ini_get( 'arg_separator.output' ),
 			// encode spaces with %20, not +
 			PHP_QUERY_RFC3986
 		);

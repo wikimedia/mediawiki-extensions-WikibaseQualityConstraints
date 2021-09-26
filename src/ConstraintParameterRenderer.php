@@ -93,7 +93,7 @@ class ConstraintParameterRenderer {
 	 *
 	 * @param (string|ItemId|NumericPropertyId|DataValue)[][]|null $parameters
 	 *
-	 * @return string HTML
+	 * @return string|null HTML
 	 */
 	public function formatParameters( $parameters ) {
 		if ( $parameters === null || $parameters === [] ) {
