@@ -171,10 +171,12 @@ class ContemporaryChecker implements ConstraintChecker {
 				$maxStartValue = $objectStartValue;
 			}
 			$message = $this->getViolationMessage(
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 				$earlierEntityId,
 				$subjectId,
 				$context->getSnak()->getPropertyId(),
 				$objectId,
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 				$minEndValue,
 				$maxStartValue
 			);
