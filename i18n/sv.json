@@ -137,10 +137,11 @@
 	"wbqc-violation-message-units-or-none": "Värde för $1 bör ha {{PLURAL:$2|1=enheten $4|2=enheten $4 eller $5|en av följande enheter}} eller vara {{PLURAL:$2|1=enhetslös.|2=enhetslösa.|enhetslösa: $3}}",
 	"wbqc-violation-message-entityType": "Egenskapen $1 bör inte användas på denna typ av entitet, {{PLURAL:$2|1=den enda giltiga entitetstypen är $4.|2=de enda giltiga entitetstyperna är $4 och $5.|de enda giltiga entitetstyperna är: $3}}",
 	"wbqc-violation-message-none-of": "Värdet för $1 bör {{PLURAL:$2|1=inte vara $4.|2=antingen inte vara $4 eller $5.|inte vara en av följande:$3}}",
-	"wbqc-violation-message-integer": "Värden för $1 borde vara heltal, men $1 har en bråkdel.",
+	"wbqc-violation-message-integer": "Värden för $1 borde vara heltal, men $2 har en bråkdel.",
 	"wbqc-violation-message-integer-bounds": "Värden för $1 bör vara heltal, men gränserna för $2 har en en bråkdel.",
 	"wbqc-violation-message-citationNeeded": "Uttalanden för $1 bör ha minst en referens.",
 	"wbqc-violation-message-language": "Uttalanden för $1 borde bara finnas på lexem som har ställt in {{PLURAL:$2|1=$4|2=antingen $4 eller $5|en av följande: $3,}} som språk.",
+	"wbqc-violation-message-label-lacking": "Entiteter med uttalanden för $1 borde också minst ha en etikett på {{PLURAL:$2|1=$4.|något av följande språk: $3}}",
 	"wbqc-violation-message-property-scope": "Egenskapen $1 borde inte användas på den här platsen ($2). {{PLURAL:$3|Den enda giltiga platsen|De enda giltiga platserna}} för denna egenskap {{PLURAL:$3|är $5.|är: $4}}",
 	"wbqc-violation-message-exception": "Denna entitet är ett känt undantag för denna begränsning och har märkts som sådan."
 }
