@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Fake;
 
-use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 use Wikimedia\Assert\Assert;
@@ -29,11 +29,11 @@ class InMemoryConstraintLookup implements ConstraintLookup {
 	}
 
 	/**
-	 * @param PropertyId $propertyId
+	 * @param NumericPropertyId $propertyId
 	 *
 	 * @return Constraint[]
 	 */
-	public function queryConstraintsForProperty( PropertyId $propertyId ) {
+	public function queryConstraintsForProperty( NumericPropertyId $propertyId ) {
 		return array_filter(
 			$this->constraints,
 			static function ( Constraint $constraint ) use ( $propertyId ) {

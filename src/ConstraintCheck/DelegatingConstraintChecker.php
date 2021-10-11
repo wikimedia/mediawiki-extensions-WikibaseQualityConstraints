@@ -286,11 +286,11 @@ class DelegatingConstraintChecker {
 	/**
 	 * Check the constraint parameters of all constraints for the given property ID.
 	 *
-	 * @param PropertyId $propertyId
+	 * @param NumericPropertyId $propertyId
 	 * @return ConstraintParameterException[][] first level indexed by constraint ID,
 	 * second level like checkConstraintParametersOnConstraintId (but without possibility of null)
 	 */
-	public function checkConstraintParametersOnPropertyId( PropertyId $propertyId ) {
+	public function checkConstraintParametersOnPropertyId( NumericPropertyId $propertyId ) {
 		$constraints = $this->constraintLookup->queryConstraintsForProperty( $propertyId );
 		$result = [];
 
@@ -422,6 +422,11 @@ class DelegatingConstraintChecker {
 	 * @return Constraint[]
 	 */
 	private function getConstraintsToUse( PropertyId $propertyId, array $constraintIds = null ) {
+		if ( !( $propertyId instanceof NumericPropertyId ) ) {
+			throw new InvalidArgumentException(
+				'Non-numeric property ID not supported:' . $propertyId->getSerialization()
+			);
+		}
 		$constraints = $this->constraintLookup->queryConstraintsForProperty( $propertyId );
 		if ( $constraintIds !== null ) {
 			$constraintsToUse = [];

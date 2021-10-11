@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\Logger\LoggerFactory;
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\IResultWrapper;
 
@@ -32,11 +31,11 @@ class ConstraintRepositoryLookup implements ConstraintLookup {
 	}
 
 	/**
-	 * @param PropertyId $propertyId
+	 * @param NumericPropertyId $propertyId
 	 *
 	 * @return Constraint[]
 	 */
-	public function queryConstraintsForProperty( PropertyId $propertyId ) {
+	public function queryConstraintsForProperty( NumericPropertyId $propertyId ) {
 		$dbr = $this->lb->getConnectionRef( ILoadBalancer::DB_REPLICA, [], $this->dbName );
 
 		$results = $dbr->select(

@@ -9,7 +9,6 @@ use Config;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
@@ -131,7 +130,7 @@ class CheckConstraintParameters extends ApiBase {
 
 	/**
 	 * @param array|null $propertyIdSerializations
-	 * @return PropertyId[]
+	 * @return NumericPropertyId[]
 	 */
 	private function parsePropertyIds( $propertyIdSerializations ) {
 		if ( $propertyIdSerializations === null ) {
@@ -178,7 +177,7 @@ class CheckConstraintParameters extends ApiBase {
 			function ( $constraintId ) {
 				try {
 					$propertyId = $this->statementGuidParser->parse( $constraintId )->getEntityId();
-					if ( !$propertyId instanceof PropertyId ) {
+					if ( !$propertyId instanceof NumericPropertyId ) {
 						$this->apiErrorReporter->dieError(
 							"Invalid property ID: {$propertyId->getSerialization()}",
 							'invalid-property-id',
@@ -201,7 +200,7 @@ class CheckConstraintParameters extends ApiBase {
 	}
 
 	/**
-	 * @param PropertyId[] $propertyIds
+	 * @param NumericPropertyId[] $propertyIds
 	 * @param ApiResult $result
 	 */
 	private function checkPropertyIds( array $propertyIds, ApiResult $result ) {
@@ -236,10 +235,10 @@ class CheckConstraintParameters extends ApiBase {
 	}
 
 	/**
-	 * @param PropertyId $propertyId
+	 * @param NumericPropertyId $propertyId
 	 * @return string[]
 	 */
-	private function getResultPathForPropertyId( PropertyId $propertyId ) {
+	private function getResultPathForPropertyId( NumericPropertyId $propertyId ) {
 		return [ $this->getModuleName(), $propertyId->getSerialization() ];
 	}
 
@@ -249,7 +248,7 @@ class CheckConstraintParameters extends ApiBase {
 	 */
 	private function getResultPathForConstraintId( $constraintId ) {
 		$propertyId = $this->statementGuidParser->parse( $constraintId )->getEntityId();
-		'@phan-var PropertyId $propertyId';
+		'@phan-var NumericPropertyId $propertyId';
 		return array_merge( $this->getResultPathForPropertyId( $propertyId ), [ $constraintId ] );
 	}
 
