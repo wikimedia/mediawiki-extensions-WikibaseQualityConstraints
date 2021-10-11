@@ -22,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class QualifierCheckerTest extends \MediaWikiTestCase {
+class QualifierCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	use ResultAssertions;
 

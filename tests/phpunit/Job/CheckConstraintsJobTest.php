@@ -3,7 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
 use Job;
-use MediaWikiTestCase;
+use MediaWikiIntegrationTestCase;
 use Title;
 use Wikibase\DataModel\Entity\ItemId;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
@@ -19,7 +19,7 @@ use WikibaseQuality\ConstraintReport\Job\CheckConstraintsJob;
  * @author Jonas Kress
  * @license GPL-2.0-or-later
  */
-class CheckConstraintsJobTest extends MediaWikiTestCase {
+class CheckConstraintsJobTest extends MediaWikiIntegrationTestCase {
 
 	private const ENTITY_ID = 'Q101';
 	private const JOB_TITLE_STRING = 'CheckConstraintsJobTitleString';

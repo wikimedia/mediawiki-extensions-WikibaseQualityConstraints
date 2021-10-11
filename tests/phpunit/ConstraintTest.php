@@ -18,7 +18,7 @@ use WikibaseQuality\ConstraintReport\ConstraintsServices;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class ConstraintTest extends \MediaWikiTestCase {
+class ConstraintTest extends \MediaWikiIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();

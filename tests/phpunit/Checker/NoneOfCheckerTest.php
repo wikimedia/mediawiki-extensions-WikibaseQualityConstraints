@@ -24,7 +24,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author Amir Sarabadani
  * @license GPL-2.0-or-later
  */
-class NoneOfCheckerTest extends \MediaWikiTestCase {
+class NoneOfCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintRepositoryStore;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class ConstraintRepositoryStoreTest extends \MediaWikiTestCase {
+class ConstraintRepositoryStoreTest extends \MediaWikiIntegrationTestCase {
 
 	private function newConstraintRepositoryStore() {
 		return new ConstraintRepositoryStore(

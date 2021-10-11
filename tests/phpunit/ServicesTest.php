@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use HashConfig;
 use MediaWiki\MediaWikiServices;
-use MediaWikiTestCase;
+use MediaWikiIntegrationTestCase;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
@@ -62,7 +62,7 @@ use WikibaseQuality\ConstraintReport\WikibaseServices;
  *
  * @license GPL-2.0-or-later
  */
-class ServicesTest extends MediaWikiTestCase {
+class ServicesTest extends MediaWikiIntegrationTestCase {
 
 	public function provideConstraintsServiceClasses() {
 		return [

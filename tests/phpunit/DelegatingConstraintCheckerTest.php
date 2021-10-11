@@ -50,7 +50,7 @@ use Wikimedia\Rdbms\DBUnexpectedError;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class DelegatingConstraintCheckerTest extends \MediaWikiTestCase {
+class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

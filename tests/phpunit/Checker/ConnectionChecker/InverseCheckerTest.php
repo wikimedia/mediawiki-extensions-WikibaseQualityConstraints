@@ -23,7 +23,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class InverseCheckerTest extends \MediaWikiTestCase {
+class InverseCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

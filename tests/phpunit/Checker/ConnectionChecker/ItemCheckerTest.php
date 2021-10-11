@@ -24,7 +24,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class ItemCheckerTest extends \MediaWikiTestCase {
+class ItemCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

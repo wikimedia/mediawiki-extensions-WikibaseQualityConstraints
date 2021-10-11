@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Job;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use MediaWiki\MediaWikiServices;
-use MediaWikiTestCase;
+use MediaWikiIntegrationTestCase;
 use Title;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -42,7 +42,7 @@ use Wikimedia\Rdbms\ILoadBalancer;
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class UpdateConstraintsTableJobTest extends MediaWikiTestCase {
+class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 	use DefaultConfig;
 

@@ -26,7 +26,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  *
  * @license GPL-2.0-or-later
  */
-class LanguageCheckerTest extends \MediaWikiTestCase {
+class LanguageCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

@@ -22,7 +22,7 @@ use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class ConstraintParameterRendererTest extends \MediaWikiTestCase {
+class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 
 	use DefaultConfig;
 

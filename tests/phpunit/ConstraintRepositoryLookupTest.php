@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintRepositoryLookup;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class ConstraintRepositoryLookupTest extends \MediaWikiTestCase {
+class ConstraintRepositoryLookupTest extends \MediaWikiIntegrationTestCase {
 
 	private function newConstraintRepositoryLookup() {
 		return new ConstraintRepositoryLookup(
