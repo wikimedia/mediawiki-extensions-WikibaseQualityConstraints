@@ -8,7 +8,7 @@
 		"eslint-plugin-jasmine": "^4.1.2",
 		"grunt": "1.4.1",
 		"grunt-banana-checker": "0.9.0",
-		"grunt-eslint": "23.0.0",
+		"grunt-eslint": "24.0.0",
 		"grunt-jasmine-nodejs": "^1.6.1",
 		"grunt-stylelint": "0.16.0",
 		"jasmine": "^3.10.0",
