@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Metalhead64"
+			"Metalhead64",
+			"Umherirrender"
 		]
 	},
 	"apihelp-wbcheckconstraints-description": "Führt Beschränkungsprüfungen zu jedem gewünschten Objekt aus und gibt das Ergebnis zurück.",
@@ -16,7 +17,12 @@
 	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "Die Beschränkungsparameter sind defekt.",
 	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "Die Beschränkung wurde nicht geprüft, da die Aussage veraltet ist.",
 	"apihelp-wbcheckconstraints-paramvalue-status-warning": "Die Aussage verletzt die Beschränkung, die Beschränkung ist jedoch nicht verpflichtend.",
+	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "Die Aussage verletzt die Beschränkung, die Beschränkung ist jedoch nur ein Vorschlag.",
+	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "Die Einschränkung wird bei dieser Art von Snak (Haupt-Snak, Qualifier oder Referenz) nicht geprüft, so dass die Einschränkungsprüfung übersprungen wird.",
 	"apihelp-wbcheckconstraintparameters-summary": "Überprüft die Beschränkungsparameter der Beschränkungsaussagen.",
+	"apihelp-wbcheckconstraintparameters-extended-description": "Einer oder beide der Parameter <var>property</var> und <var>constraintid</var> können angegeben werden; alle Einschränkungen, die durch einen der beiden Parameter ausgewählt wurden, werden überprüft.",
+	"apihelp-wbcheckconstraintparameters-param-propertyid": "Liste der zu prüfenden Eigenschafts-IDs. Es werden alle Constraint-Anweisungen dieser Eigenschaften geprüft.\n\nWenn dieser Parameter angegeben wird, darf er nicht leer sein.",
+	"apihelp-wbcheckconstraintparameters-param-constraintid": "Liste der zu prüfenden Constraint-IDs (GUIDs von Constraint-Anweisungen).\n\nWenn dieser Parameter angegeben wird, darf er nicht leer sein.",
 	"apihelp-wbcheckconstraints-example-1": "Überprüft alle Beschränkungen der Objekte Q5 und Q42.",
 	"apihelp-wbcheckconstraints-example-2": "Überprüft alle Beschränkungen einer einzelnen Aussage.",
 	"apihelp-wbcheckconstraints-example-3": "Überprüft eine bestimmte Beschränkung des Objekts Q2.",
