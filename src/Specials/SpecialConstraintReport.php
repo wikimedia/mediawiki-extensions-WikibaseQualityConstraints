@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Specials;
 
 use Config;
-use DataValues\DataValue;
 use Html;
 use HTMLForm;
 use IBufferingStatsdDataFactory;
@@ -13,11 +12,9 @@ use OOUI\LabelWidget;
 use SpecialPage;
 use UnexpectedValueException;
 use ValueFormatters\FormatterOptions;
-use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
-use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
@@ -59,11 +56,6 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @var EntityTitleLookup
 	 */
 	private $entityTitleLookup;
-
-	/**
-	 * @var ValueFormatter
-	 */
-	private $dataValueFormatter;
 
 	/**
 	 * @var EntityIdFormatter
@@ -144,7 +136,7 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$formatterOptions = new FormatterOptions();
 		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-		$this->dataValueFormatter = $valueFormatterFactory->getValueFormatter(
+		$dataValueFormatter = $valueFormatterFactory->getValueFormatter(
 			SnakFormatter::FORMAT_HTML,
 			$formatterOptions
 		);
@@ -161,13 +153,13 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$this->constraintParameterRenderer = new ConstraintParameterRenderer(
 			$this->entityIdLabelFormatter,
-			$this->dataValueFormatter,
+			$dataValueFormatter,
 			$this->getContext(),
 			$config
 		);
 		$this->violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
 			$this->entityIdLinkFormatter,
-			$this->dataValueFormatter,
+			$dataValueFormatter,
 			$this->getContext(),
 			$config
 		);
@@ -593,38 +585,6 @@ class SpecialConstraintReport extends SpecialPage {
 			);
 
 		return $formattedStatus;
-	}
-
-	/**
-	 * Parses data values to human-readable string
-	 *
-	 * @param DataValue|array $dataValues
-	 * @param string $separator
-	 *
-	 * @throws InvalidArgumentException
-	 *
-	 * @return string HTML
-	 */
-	protected function formatDataValues( $dataValues, $separator = ', ' ) {
-		if ( $dataValues instanceof DataValue ) {
-			$dataValues = [ $dataValues ];
-		} elseif ( !is_array( $dataValues ) ) {
-			throw new InvalidArgumentException( '$dataValues has to be instance of DataValue or an array of DataValues.' );
-		}
-
-		$formattedDataValues = [];
-		foreach ( $dataValues as $dataValue ) {
-			if ( !( $dataValue instanceof DataValue ) ) {
-				throw new InvalidArgumentException( '$dataValues has to be instance of DataValue or an array of DataValues.' );
-			}
-			if ( $dataValue instanceof EntityIdValue ) {
-				$formattedDataValues[ ] = $this->entityIdLabelFormatter->formatEntityId( $dataValue->getEntityId() );
-			} else {
-				$formattedDataValues[ ] = $this->dataValueFormatter->format( $dataValue );
-			}
-		}
-
-		return implode( $separator, $formattedDataValues );
 	}
 
 	/**
