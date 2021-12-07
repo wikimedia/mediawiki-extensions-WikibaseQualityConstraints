@@ -39,5 +39,7 @@
 	"wbqc-violation-message-target-required-claim": "$1 bør ha {{PLURAL:$3|0=ei $2-utsegn.|1=ei $2-utsegn med verdien $5.|ei $2-utsegn med ein av desse verdiane: $4}}",
 	"wbqc-violation-message-units-none": "Verdien til $1 bør ikkje ha ei eining.",
 	"wbqc-violation-message-units": "Verdien til $1 bør ha {{PLURAL:$2|1=eininga $4.|2=eininga $4 eller $5.|ein av desse einingane: $3}}",
-	"wbqc-violation-message-units-or-none": "Verdien til $1 bør ha {{PLURAL:$2|1=eininga $4.|2=eininga $4 eller $5.|ein av desse einingane}} eller vera utan {{PLURAL:$2|1=eining.|2=eining.|eining: $3}}"
+	"wbqc-violation-message-units-or-none": "Verdien til $1 bør ha {{PLURAL:$2|1=eininga $4.|2=eininga $4 eller $5.|ein av desse einingane}} eller vera utan {{PLURAL:$2|1=eining.|2=eining.|eining: $3}}",
+	"wbqc-violation-message-entityType": "Eigenskapen $1 bør ikkje nyttast for denne einingstypen, {{PLURAL:$2|den|dei}} einaste gyldige {{PLURAL:$2|1=einingstypen er $4.|2=einingstypane er $4 og $5.|einingstypane er desse: $3}}",
+	"wbqc-violation-message-citationNeeded": "Utsegner for $1 bør ha minst éin referanse."
 }

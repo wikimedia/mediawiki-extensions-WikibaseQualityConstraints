@@ -4,6 +4,9 @@
 			"Dr Lotus Black"
 		]
 	},
+	"wbqc-constraintreport-status-warning": "သတိပေးချက်",
 	"wbqc-constraintreport-status-suggestion": "အကြံပေးမှု",
-	"wbqc-suggestions-short": "အကြံပေးမှုများ"
+	"wbqc-constraintreport-result-table-header-status": "အခြေအနေ",
+	"wbqc-suggestions-short": "အကြံပေးမှုများ",
+	"wbqc-constrainttypehelp-short": "အကူအညီ"
 }
