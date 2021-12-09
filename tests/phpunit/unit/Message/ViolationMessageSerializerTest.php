@@ -187,7 +187,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	 * ItemIdSnakValue::someValue() and ItemIdSnakValue::noValue() might become ambiguous.
 	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
 	 */
-	public function testSerializeItemIdSnakValue_sanityCheck() {
+	public function testSerializeItemIdSnakValue_senseCheck() {
 		$this->expectException( InvalidArgumentException::class );
 
 		// Since EntityId is going to be an interface, not all EntityId implementations are guaranteed to use this constructor
