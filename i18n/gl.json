@@ -5,7 +5,8 @@
 			"Banjo",
 			"Elisardojm",
 			"Maria zaos",
-			"Toliño"
+			"Toliño",
+			"ArenaL5"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restrición",
@@ -93,13 +94,13 @@
 	"wbqc-violation-message-no-qualifiers": "As declaracións para $1 non deberían conter ningún calificador.",
 	"wbqc-violation-message-qualifiers": "A propiedade só debe usarse cos (non outras que) cualificadores definidos nos parámetros.",
 	"wbqc-violation-message-range-parameters-needed": "As propiedades con valores de tipo \"$1\" con constante \"Range\" precisan os parámetros \"$2\" e \"$3\".",
-	"wbqc-violation-message-range-quantity-closed": "O valor para $1 ($2) debe estar entre $3 e $4 ([$3; $4]).",
-	"wbqc-violation-message-range-quantity-leftopen": "O valor de $1 ($2) non debe ser maior de $3 ((−∞; $3]).",
-	"wbqc-violation-message-range-quantity-rightopen": "O valor de $1 ($2) non debe ser menor de $3 ([$3; ∞)).",
+	"wbqc-violation-message-range-quantity-closed": "O valor para $1 ($2) debe estar entre $3 e $4.",
+	"wbqc-violation-message-range-quantity-leftopen": "O valor de $1 ($2) non debe ser maior de $3.",
+	"wbqc-violation-message-range-quantity-rightopen": "O valor de $1 ($2) non debe ser menor de $3.",
 	"wbqc-violation-message-range-time-closed": "O valor para $1 ($2) debe estar entre $3 e $4",
 	"wbqc-violation-message-range-time-leftopen": "O valor para $1 ($2) non debe estar despois de $3.",
 	"wbqc-violation-message-range-time-rightopen": "O valor para $1 ($2) non debe estar antes de $3.",
 	"wbqc-violation-message-single-value": "Esta propiedade só debe ter un valor.",
-	"wbqc-violation-message-symmetric": "Esta propiedade só debe ser usada cando hai unha declaración no seu valor entidade coa mesma propiedade e este obxecto co seu valor.",
+	"wbqc-violation-message-symmetric": "$1 debería ter tamén a declaración simétrica $2 $3.",
 	"wbqc-violation-message-unique-value": "Este valor de propiedade non debe estar presente en ningún outro elemento, pero está presente {{PLURAL:$1|1=$3.|2=$3 and $4.|nos seguintes elementos: $2}}"
 }

@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"HairyFotr",
-			"Janezdrilc"
+			"Janezdrilc",
+			"Eleassar"
 		]
 	},
 	"wbqc-constraintreport": "Poročilo o omejitvi",
@@ -52,7 +53,7 @@
 	"wbq-subextension-name-wbqc": "Omejitve",
 	"wbqc-violation-header-parameters": "Parametri:",
 	"wbqc-violations-group": "Omejitve",
-	"wbqc-violation-message": "Preverjanje omejitev je zaznalo kršitev. Za dodatne informacije klikni na ikono.",
+	"wbqc-violation-message": "Preverjanje omejitev je zaznalo kršitev. Za dodatne informacije kliknite ikono.",
 	"wbqc-violation-message-not-yet-implemented": "Zaradi tehničnih razlogov preverjanje za omejitev \"$1\" ni bilo sprogramirano.",
 	"wbqc-violation-message-security-reason": "Zaradi varnostnih razlogov trenutno ni mogoče preveriti omejitve \"$1\". Iskanje rešitve še poteka.",
 	"wbqc-violation-message-value-needed-of-type": "Lastnosti z omejitvijo \"$1\" morajo imeti vrednosti vrste \"$2\".",
