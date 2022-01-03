@@ -15,7 +15,7 @@
 			{
 				"name": "pid",
 				"type": "integer",
-				"options": { "length": 11, "notnull": true }
+				"options": { "notnull": true }
 			},
 			{
 				"name": "constraint_type_qid",
