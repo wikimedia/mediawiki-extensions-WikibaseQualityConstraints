@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use DatabaseUpdater;
-use JobQueueGroup;
 use JobSpecification;
 use MediaWiki\MediaWikiServices;
 use OutputPage;
@@ -51,9 +50,11 @@ final class WikibaseQualityConstraintsHooks {
 		if ( !( $change instanceof EntityChange ) ) {
 			return;
 		}
-
 		/** @var EntityChange $change */
-		$config = MediaWikiServices::getInstance()->getMainConfig();
+
+		$services = MediaWikiServices::getInstance();
+		$config = $services->getMainConfig();
+		$jobQueueGroup = $services->getJobQueueGroup();
 
 		// If jobs are enabled and the results would be stored in some way run a job.
 		if (
@@ -62,7 +63,7 @@ final class WikibaseQualityConstraintsHooks {
 			self::isSelectedForJobRunBasedOnPercentage()
 		) {
 			$params = [ 'entityId' => $change->getEntityId()->getSerialization() ];
-			JobQueueGroup::singleton()->lazyPush(
+			$jobQueueGroup->lazyPush(
 				new JobSpecification( CheckConstraintsJob::COMMAND, $params )
 			);
 		}
@@ -75,7 +76,7 @@ final class WikibaseQualityConstraintsHooks {
 			if ( array_key_exists( 'rev_id', $metadata ) ) {
 				$params['revisionId'] = $metadata['rev_id'];
 			}
-			JobQueueGroup::singleton()->push(
+			$jobQueueGroup->push(
 				new JobSpecification( 'constraintsTableUpdate', $params )
 			);
 		}

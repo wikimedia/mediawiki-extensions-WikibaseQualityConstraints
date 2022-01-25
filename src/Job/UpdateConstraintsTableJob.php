@@ -51,7 +51,8 @@ class UpdateConstraintsTableJob extends Job {
 			$services->getDBLoadBalancerFactory(),
 			WikibaseRepo::getStore()->getEntityRevisionLookup( Store::LOOKUP_CACHING_DISABLED ),
 			WikibaseRepo::getBaseDataModelSerializerFactory( $services )
-				->newSnakSerializer()
+				->newSnakSerializer(),
+			$services->getJobQueueGroup()
 		);
 	}
 
@@ -89,6 +90,11 @@ class UpdateConstraintsTableJob extends Job {
 	private $snakSerializer;
 
 	/**
+	 * @var JobQueueGroup
+	 */
+	private $jobQueueGroup;
+
+	/**
 	 * @param Title $title
 	 * @param string[] $params should contain 'propertyId' => 'P...'
 	 * @param string $propertyId property ID of the property for this job (which has the constraint statements)
@@ -98,6 +104,7 @@ class UpdateConstraintsTableJob extends Job {
 	 * @param ILBFactory $lbFactory
 	 * @param EntityRevisionLookup $entityRevisionLookup
 	 * @param Serializer $snakSerializer
+	 * @param JobQueueGroup $jobQueueGroup
 	 */
 	public function __construct(
 		Title $title,
@@ -108,7 +115,8 @@ class UpdateConstraintsTableJob extends Job {
 		ConstraintStore $constraintStore,
 		ILBFactory $lbFactory,
 		EntityRevisionLookup $entityRevisionLookup,
-		Serializer $snakSerializer
+		Serializer $snakSerializer,
+		JobQueueGroup $jobQueueGroup
 	) {
 		parent::__construct( 'constraintsTableUpdate', $title, $params );
 
@@ -119,6 +127,7 @@ class UpdateConstraintsTableJob extends Job {
 		$this->lbFactory = $lbFactory;
 		$this->entityRevisionLookup = $entityRevisionLookup;
 		$this->snakSerializer = $snakSerializer;
+		$this->jobQueueGroup = $jobQueueGroup;
 	}
 
 	public function extractParametersFromQualifiers( SnakList $qualifiers ) {
@@ -194,7 +203,7 @@ class UpdateConstraintsTableJob extends Job {
 		);
 
 		if ( $this->revisionId !== null && $propertyRevision->getRevisionId() < $this->revisionId ) {
-			JobQueueGroup::singleton()->push( $this );
+			$this->jobQueueGroup->push( $this );
 			return true;
 		}
 

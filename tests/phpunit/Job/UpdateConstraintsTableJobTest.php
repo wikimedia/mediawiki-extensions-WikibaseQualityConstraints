@@ -344,7 +344,8 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 			$constraintRepository,
 			$this->mockLBFactory(),
 			$entityRevisionLookup,
-			WikibaseRepo::getBaseDataModelSerializerFactory()->newSnakSerializer()
+			WikibaseRepo::getBaseDataModelSerializerFactory()->newSnakSerializer(),
+			$this->getServiceContainer()->getJobQueueGroup()
 		);
 		$job->importConstraintsForProperty(
 			$property,
@@ -383,7 +384,8 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 			new ConstraintRepositoryStore( $lb, false ),
 			new FakeLBFactory( [ 'lb' => $lb ] ),
 			$entityRevisionLookup,
-			WikibaseRepo::getBaseDataModelSerializerFactory()->newSnakSerializer()
+			WikibaseRepo::getBaseDataModelSerializerFactory()->newSnakSerializer(),
+			$this->getServiceContainer()->getJobQueueGroup()
 		);
 
 		$job->run();
