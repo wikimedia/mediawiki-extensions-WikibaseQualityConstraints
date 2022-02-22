@@ -5,6 +5,7 @@
 			"Ioe2015",
 			"KhangND",
 			"Minh Nguyen",
+			"NguoiDungKhongDinhDanh",
 			"Vinhtantran"
 		]
 	},
@@ -25,7 +26,7 @@
 	"wbqc-constraintreport-status-exception": "Ngoại lệ",
 	"wbqc-constraintreport-status-todo": "Chờ kiểm tra",
 	"wbqc-constraintreport-status-bad-parameters": "Tham số hỏng",
-	"wbqc-constraintreport-status-deprecated": "Bị phản đối",
+	"wbqc-constraintreport-status-deprecated": "Lỗi thời",
 	"wbqc-constraintreport-status-warning": "Cảnh báo",
 	"wbqc-constraintreport-status-suggestion": "Gợi ý",
 	"wbqc-constraintreport-status-not-in-scope": "Ngoài phạm vi",
