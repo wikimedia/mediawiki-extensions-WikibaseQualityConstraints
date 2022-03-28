@@ -669,11 +669,6 @@
 			"description": "The unit used for a quantity that represents a difference between two dates, in seconds. Note that for entity units, the full concept URI must be used, not just the entity ID.",
 			"public": true
 		},
-		"WBQualityConstraintsSuggestionsBetaFeature": {
-			"value": false,
-			"description": "Make constraints suggestions for all properties a beta feature",
-			"public": true
-		},
 		"WBQualityConstraintsEnableSuggestionConstraintStatus": {
 			"value": false,
 			"description": "Whether to enable the 'constraint suggestion' constraint status or not. This is a temporary configuration that will be removed once constraint suggestions are permanently enabled on Wikidata.",
