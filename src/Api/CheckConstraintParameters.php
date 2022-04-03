@@ -18,6 +18,7 @@ use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module that checks whether the parameters of a constraint statement are valid.
@@ -302,12 +303,12 @@ class CheckConstraintParameters extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			self::PARAM_PROPERTY_ID => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => true
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => true
 			],
 			self::PARAM_CONSTRAINT_ID => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => true
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => true
 			]
 		];
 	}

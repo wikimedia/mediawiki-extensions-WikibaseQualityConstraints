@@ -19,6 +19,7 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module that performs constraint check of entities, claims and constraint ID
@@ -234,19 +235,19 @@ class CheckConstraints extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			self::PARAM_ID => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			self::PARAM_CLAIM_ID => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			self::PARAM_CONSTRAINT_ID => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			self::PARAM_STATUS => [
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_TYPE => [
 					CheckResult::STATUS_COMPLIANCE,
 					CheckResult::STATUS_VIOLATION,
 					CheckResult::STATUS_WARNING,
@@ -257,9 +258,9 @@ class CheckConstraints extends ApiBase {
 					CheckResult::STATUS_BAD_PARAMETERS,
 					CheckResult::STATUS_TODO,
 				],
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_ALL => true,
-				ApiBase::PARAM_DFLT => implode( '|', CachingResultsSource::CACHED_STATUSES ),
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ALL => true,
+				ParamValidator::PARAM_DEFAULT => implode( '|', CachingResultsSource::CACHED_STATUSES ),
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 		];
