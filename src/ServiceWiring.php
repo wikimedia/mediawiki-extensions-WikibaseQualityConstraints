@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
-use Http;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use ObjectCache;
@@ -159,7 +158,7 @@ return [
 			$services->getStatsdDataFactory(),
 			ConstraintsServices::getExpiryLock( $services ),
 			ConstraintsServices::getLoggingHelper( $services ),
-			WikiMap::getCurrentWikiId() . ' WikibaseQualityConstraints ' . Http::userAgent(),
+			WikiMap::getCurrentWikiId() . ' WikibaseQualityConstraints ' . $services->getHttpRequestFactory()->getUserAgent(),
 			$services->getHttpRequestFactory()
 		);
 	},
