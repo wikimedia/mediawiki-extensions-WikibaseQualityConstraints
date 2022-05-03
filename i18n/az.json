@@ -3,10 +3,13 @@
 		"authors": [
 			"NMW03",
 			"Neriman2003",
-			"Wertuose"
+			"Wertuose",
+			"Toghrul Rahimli"
 		]
 	},
+	"wbqc-suggestions-short": "Təkliflər",
 	"wbqc-constrainttypehelp-short": "Kömək",
-	"wbqc-constraintdiscuss-short": "Müzakirə edin",
-	"wbqc-constraintdiscuss-long": "Bu məhdudiyyət barədə müzakirə səhifəsi"
+	"wbqc-constraintdiscuss-short": "Müzakirə",
+	"wbqc-constraintdiscuss-long": "Bu məhdudiyyət barədə müzakirə səhifəsi",
+	"wbqc-violation-message-citationNeeded": "$1 üçün ən azı bir istinad tələb olunur."
 }
