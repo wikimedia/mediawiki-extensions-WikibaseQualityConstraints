@@ -7,9 +7,12 @@
 			"Wertuose"
 		]
 	},
+	"wbqc-potentialissues-short": "Potensial problemlər",
 	"wbqc-suggestions-short": "Təkliflər",
 	"wbqc-constrainttypehelp-short": "Kömək",
+	"wbqc-constrainttypehelp-long": "Bu məhdudiyyət növünün kömək səhifəsi",
 	"wbqc-constraintdiscuss-short": "Müzakirə",
 	"wbqc-constraintdiscuss-long": "Bu məhdudiyyət barədə müzakirə səhifəsi",
+	"wbqc-violation-message-target-required-claim": "$1 {{PLURAL:$3|0=$2 müddəasına|1=$2 $5 müddəasına|$2 müddəası $4 dəyərlərindən birinə}} malik olmalıdır.",
 	"wbqc-violation-message-citationNeeded": "$1 üçün ən azı bir istinad tələb olunur."
 }
