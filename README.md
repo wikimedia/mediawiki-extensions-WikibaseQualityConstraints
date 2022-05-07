@@ -183,7 +183,7 @@ To add a new constraint type, the following steps are necessary:
     $config->get( 'WBQualityConstraints…ConstraintId' )
     	=> ConstraintCheckerServices::get…Checker( $services ),
     ```
-    to the the `$checkerMap` array in the `DELEGATING_CONSTRAINT_CHECKER` function.
+    to the `$checkerMap` array in the `DELEGATING_CONSTRAINT_CHECKER` function.
   * In `ServicesTest.php`, append a new entry like
     ```php
     [ …Checker::class ],
