@@ -8,7 +8,7 @@
 	},
 	"wbqc-constraintreport": "דו\"ח אילוצים",
 	"wbqc-desc": "בדיקת אילוצים גם בפריטים וגם במאפיינים והצגת התוצאות בדף מיוחד",
-	"wbqc-constraintreport-explanation-part-one": "הדף המיוחד הזה מבצע בדיקות אילוצים על כל ישות שברצונך לבדוק. הישויות מאוחזרות מהמערכת החיה, כך שכל הפרת אילוץ שמתוקנת שם תוסר מהרשימה הזאת מיד.",
+	"wbqc-constraintreport-explanation-part-one": "הדף המיוחד הזה מבצע בדיקות אילוצים על כל ישות שברצונך לבדוק. הישויות מאוחזרות מהמערכת החיה, כך שכל הפרת אילוץ שמתוקנת שם תוסר מהרשימה הזאת מייד.",
 	"wbqc-constraintreport-explanation-part-two": "האילוצים מפוענחים מקביעות על מאפיינים בכל פעם שהקביעות האלה נערכות, בדרך־כלל אחרי כמה דקות.",
 	"wbqc-constraintreport-form-section": "בדיקת אילוצים של ישות",
 	"wbqc-constraintreport-form-submit-label": "לבדוק",
