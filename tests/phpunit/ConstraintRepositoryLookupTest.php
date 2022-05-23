@@ -43,8 +43,7 @@ class ConstraintRepositoryLookupTest extends \MediaWikiIntegrationTestCase {
 		$repo = $this->newConstraintRepositoryLookup();
 		$constraints = $repo->queryConstraintsForProperty( new NumericPropertyId( 'P2' ) );
 
-		$this->assertIsArray( $constraints );
-		$this->assertEmpty( $constraints );
+		$this->assertSame( [], $constraints );
 	}
 
 	public function testQueryConstraintsForPropertyBrokenParameters() {

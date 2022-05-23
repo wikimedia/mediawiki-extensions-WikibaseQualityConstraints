@@ -100,7 +100,7 @@ class IntegerCheckerTest extends \PHPUnit\Framework\TestCase {
 
 		$result = $checker->checkConstraintParameters( $constraint );
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	/**

@@ -451,7 +451,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	public function testCheckOnEntityIdNullResult() {
@@ -515,7 +515,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 
 		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	public function testCheckOnEntityIdKnownException() {
@@ -641,14 +641,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			$statement->getGuid()
 		);
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	public function testCheckOnClaimIdUnknownClaimId() {
 		$result = $this->constraintChecker->checkAgainstConstraintsOnClaimId(
 			'Q99$does-not-exist' );
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	public function testCheckConstraintParametersOnPropertyId() {

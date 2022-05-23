@@ -224,7 +224,7 @@ class SymmetricCheckerTest extends \MediaWikiIntegrationTestCase {
 
 		$result = $this->checker->checkConstraintParameters( $constraint );
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	/**

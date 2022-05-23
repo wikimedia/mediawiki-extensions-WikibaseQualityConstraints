@@ -180,7 +180,7 @@ class SingleValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
 		$result = $this->checker->checkConstraintParameters( $constraint );
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	/**

@@ -127,7 +127,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 			[ CheckResult::STATUS_TODO ]
 		)->getArray();
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	public function testGetResults_Empty_WithDefaultResults() {
