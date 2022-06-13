@@ -97,8 +97,8 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 
 		$localEntityArray = json_decode( $this->getActualOutput(), true );
 		$this->assertSame( 'type constraint', $localEntityArray['labels']['en']['value'] );
-		$this->assertEmpty( $localEntityArray['sitelinks'] );
-		$this->assertEmpty( $localEntityArray['claims'] );
+		$this->assertSame( [], $localEntityArray['sitelinks'] );
+		$this->assertSame( [], $localEntityArray['claims'] );
 	}
 
 	public function testImportEntityFromJson() {
@@ -112,8 +112,8 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 			->getEntity( WikibaseRepo::getEntityIdParser()->parse( $localEntityId ) );
 		$this->assertInstanceOf( Item::class, $localEntity );
 		$this->assertSame( 'type constraint', $localEntity->getLabels()->getByLanguage( 'en' )->getText() );
-		$this->assertEmpty( $localEntity->getSiteLinkList()->toArray() );
-		$this->assertEmpty( $localEntity->getStatements()->toArray() );
+		$this->assertSame( [], $localEntity->getSiteLinkList()->toArray() );
+		$this->assertSame( [], $localEntity->getStatements()->toArray() );
 	}
 
 	public function provideStorageExceptions() {

@@ -82,7 +82,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 		$result = $this->getResultsRenderer()->render( $checkResults );
 		$metadata = $result->getMetadata();
 
-		$this->assertEmpty( $result->getArray() );
+		$this->assertSame( [], $result->getArray() );
 		$this->assertSame( 300, $metadata->getCachingMetadata()->getMaximumAgeInSeconds() );
 		$this->assertSame( [ $q1 ], $metadata->getDependencyMetadata()->getEntityIds() );
 	}

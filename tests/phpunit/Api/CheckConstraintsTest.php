@@ -192,7 +192,7 @@ class CheckConstraintsTest extends ApiTestCase {
 
 		$this->assertArrayHasKey( $entityId, $result['wbcheckconstraints'] );
 		$this->assertArrayHasKey( 'claims', $result['wbcheckconstraints'][$entityId] );
-		$this->assertEmpty( $result['wbcheckconstraints'][$entityId]['claims'] );
+		$this->assertSame( [], $result['wbcheckconstraints'][$entityId]['claims'] );
 	}
 
 	public function testReportForNonexistentItemIsEmpty() {
@@ -203,7 +203,7 @@ class CheckConstraintsTest extends ApiTestCase {
 
 		$this->assertArrayHasKey( $entityId, $result['wbcheckconstraints'] );
 		$this->assertArrayHasKey( 'claims', $result['wbcheckconstraints'][$entityId] );
-		$this->assertEmpty( $result['wbcheckconstraints'][$entityId]['claims'] );
+		$this->assertSame( [], $result['wbcheckconstraints'][$entityId]['claims'] );
 	}
 
 	public function testReportForNonexistentClaimIsEmpty() {
@@ -211,7 +211,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			[ CheckConstraints::PARAM_CLAIM_ID => self::NONEXISTENT_CLAIM ]
 		);
 
-		$this->assertEmpty( $result['wbcheckconstraints'] );
+		$this->assertSame( [], $result['wbcheckconstraints'] );
 	}
 
 	public function testItemExistsAndHasViolation_WillGetOnlyThisViolationInTheResult() {

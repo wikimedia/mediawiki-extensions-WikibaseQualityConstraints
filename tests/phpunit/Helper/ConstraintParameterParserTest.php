@@ -1275,8 +1275,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				'Q21514353'
 			);
 
-		$this->assertEmpty( $unitsParameter->getUnitItemIds() );
-		$this->assertEmpty( $unitsParameter->getUnitQuantities() );
+		$this->assertSame( [], $unitsParameter->getUnitItemIds() );
+		$this->assertSame( [], $unitsParameter->getUnitQuantities() );
 		$this->assertTrue( $unitsParameter->getUnitlessAllowed() );
 	}
 
@@ -1393,7 +1393,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				[]
 			);
 
-		$this->assertEmpty( $separatorsParameter );
+		$this->assertSame( [], $separatorsParameter );
 	}
 
 	public function testParseSeparatorsParameter_ThreeSeparators() {

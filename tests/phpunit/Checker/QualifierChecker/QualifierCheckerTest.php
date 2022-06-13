@@ -87,7 +87,7 @@ class QualifierCheckerTest extends \MediaWikiIntegrationTestCase {
 
 		$result = $checker->checkConstraintParameters( $constraint );
 
-		$this->assertEmpty( $result );
+		$this->assertSame( [], $result );
 	}
 
 	/**
