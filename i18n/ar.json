@@ -4,7 +4,8 @@
 			"Azouz.anis",
 			"Meno25",
 			"Mr. Ibrahem",
-			"ديفيد"
+			"ديفيد",
+			"BAB ZAA"
 		]
 	},
 	"wbqc-constraintreport": "تقارير القيود",
@@ -96,10 +97,10 @@
 	"wbqc-violation-message-format-clarification": "قيمة $1 ($2) يجب أن تطابق “$4” (التعبير النمطي: $3).",
 	"wbqc-violation-message-inverse": "$1 ينبغي أن يكون لها أيضا بيان عكسي $2 $3.",
 	"wbqc-violation-message-item": "الكيان الذي يستخدم $1 يجب أن يحتوي على {{PLURAL:$3|0=بيان $2.|1=بيان $2 $5.|بيان لـ $2 مع واحدة من القيم التالية:$4}}",
-	"wbqc-violation-message-mandatory-qualifier": "هذا $1 البيان يفتقد تصفية $2.",
+	"wbqc-violation-message-mandatory-qualifier": "بيان $1 هذا يفتقد لتصفية $2.",
 	"wbqc-violation-message-multi-value": "هذه الخاصية يجب أن تحتوي على قيم متعددة.",
 	"wbqc-violation-message-multi-value-separators": "يجب أن تحتوي هذه الخاصية على قيم متعددة بنفس {{PLURAL:$2|1=$4 المؤهل.|مجموعة المؤهلات لهذه الخصائص: $3}}",
-	"wbqc-violation-message-one-of": "قيمة $1 يجب أن {{PLURAL:$2|1=$4.|2=إما $4 أو $5.|واحدة من التالي:$3}}",
+	"wbqc-violation-message-one-of": "قيمة $1 يجب أن تكون {{PLURAL:$2|1=$4.|2=إما $4 أو $5.|واحدة من الآتي:$3}}",
 	"wbqc-violation-message-qualifier": "هذه الخاصية يجب أن تستخدم كتصفية فقط.",
 	"wbqc-violation-message-no-qualifiers": "$1 لا ينبغي أن يكون للبيانات أي تصفيات.",
 	"wbqc-violation-message-qualifiers": "$2 ليست تصفية صالحة لـ $1 – التصفيات الصالحة {{PLURAL:$3|1=هي $5.|2=هي $5 و$6.|هي:$4}}",
