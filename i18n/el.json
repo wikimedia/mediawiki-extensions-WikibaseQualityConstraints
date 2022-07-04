@@ -4,7 +4,9 @@
 			"Glavkos",
 			"KATRINE1992",
 			"Nikosgranturismogt",
-			"Xaris333"
+			"Xaris333",
+			"NikosLikomitros",
+			"Philocypros"
 		]
 	},
 	"wbqc-constraintreport-result-table-header-property": "Ιδιότητα",
@@ -27,6 +29,7 @@
 	"wbqc-violation-message-conflicts-with-claim": "Μια οντότητα δεν πρέπει να έχει δήλωση για την ιδιότητα $1 εάν έχει δήλωση για την ιδιότητα $2 με τιμή $3.",
 	"wbqc-violation-message-contemporary-subject-earlier": "Οι οντότητες $1 και $3 πρέπει να είναι σύγχρονες για να συνδεθούν μέσω $2, αλλά η τελευταία τελική τιμή του $1 είναι $4 και η αρχική τιμή εκκίνησης του $3 είναι $5.",
 	"wbqc-violation-message-contemporary-value-earlier": "Οι οντότητες $1 και $3 πρέπει να είναι σύγχρονες για να συνδεθούν μέσω $2, αλλά η τελευταία τελική τιμή του $3 είναι $4 και η αρχική τιμή εκκίνησης του $1 είναι $5.",
+	"wbqc-violation-message-diff-within-range": "Η διαφορά μεταξύ $3 ($4) και $1 ($2) πρέπει να είναι μεταξύ $5 και $6.",
 	"wbqc-violation-message-format": "Η τιμή για $1 ($2) θα πρέπει να ταιριάζει με την κανονική έκφραση $3.",
 	"wbqc-violation-message-inverse": "$1 πρέπει επίσης να έχει την αντίστροφη δήλωση $2 $3.",
 	"wbqc-violation-message-item": "Μια οντότητα με $1 πρέπει επίσης να έχει {{PLURAL:$3|0=μια δήλωση $2.|1=μια δήλωση $2 $5.|μια δήλωση για $2 με μια από τις ακόλουθες τιμές:$4}}",
