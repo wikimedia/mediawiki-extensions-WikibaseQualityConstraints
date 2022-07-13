@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Ayack",
+			"Eihel",
 			"Envlh",
 			"Framawiki",
 			"Gomoko",
@@ -101,7 +102,7 @@
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "La propriété définie dans les paramètres doit avoir une valeur du même type que cette propriété.",
 	"wbqc-violation-message-format": "La valeur de la propriété $1 ($2) doit correspondre à l’expression rationnelle $3.",
 	"wbqc-violation-message-format-clarification": "La valeur de la propriété $1 ($2) doit correspondre à « $4 » (expression rationnelle : $3).",
-	"wbqc-violation-message-inverse": "L’élément $1 doit avoir également déclarer la propriété inverse $2 $3.",
+	"wbqc-violation-message-inverse": "$1 doit également avoir la déclaration de la propriété inverse $2 $3.",
 	"wbqc-violation-message-item": "Une entité déclarée avec la propriété $1 devrait également déclarer une propriété {{PLURAL:$3|0=$2.|$2 de valeur $5.|$2 avec une des valeurs suivantes : $4}}",
 	"wbqc-violation-message-mandatory-qualifier": "La propriété « $1 » doit être déclarée avec un qualificateur « $2 ».",
 	"wbqc-violation-message-multi-value": "<!--La propriété « $?1 »-->Cette propriété doit être déclarée avec plusieurs valeurs.",
