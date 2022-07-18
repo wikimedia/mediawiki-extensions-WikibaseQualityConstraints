@@ -195,7 +195,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return string
 	 */
 	public function getDescription() {
-		return $this->msg( 'wbqc-constraintreport' )->escaped();
+		return $this->msg( 'wbqc-constraintreport' )->text();
 	}
 
 	/**
