@@ -33,7 +33,7 @@
 	"wbqc-constraintreport-status-todo": "À faire",
 	"wbqc-constraintreport-status-bad-parameters": "Mauvais paramètres",
 	"wbqc-constraintreport-status-deprecated": "Désuet",
-	"wbqc-constraintreport-status-warning": "Attention",
+	"wbqc-constraintreport-status-warning": "Avertissement",
 	"wbqc-constraintreport-status-suggestion": "Suggestion",
 	"wbqc-constraintreport-status-not-in-scope": "Hors périmètre",
 	"wbqc-constraintreport-result-table-header-status": "État",
