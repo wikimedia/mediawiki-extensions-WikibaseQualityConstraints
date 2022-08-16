@@ -4,8 +4,10 @@
 			"Yupik"
 		]
 	},
+	"wbqc-constraintreport-status-bad-parameters": "Vââǥǥlaž paramettar",
 	"wbqc-issues-short": "Čuõlm",
 	"wbqc-suggestions-short": "Eʹtǩǩõõzz",
+	"wbqc-badparameters-short": "Vââǥǥlaž paramettar",
 	"wbqc-constraintdiscuss-short": "Saǥstõõl",
 	"wbqc-violation-header-parameters": "Paramettar:"
 }
