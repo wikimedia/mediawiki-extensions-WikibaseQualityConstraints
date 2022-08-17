@@ -239,7 +239,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 		$property = new Property(
 			new NumericPropertyId( 'P2' ),
 			null, '',
-			new StatementList( [ $statement ] )
+			new StatementList( $statement )
 		);
 
 		$job->importConstraintsForProperty(
@@ -312,11 +312,11 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 			new NumericPropertyId( 'P3' ),
 			null,
 			'string',
-			new StatementList( [
+			new StatementList(
 				$preferredConstraintStatement,
 				$normalConstraintStatement,
 				$deprecatedConstraintStatement
-			] )
+			)
 		);
 		$entityRevisionLookup = $this->createMock( EntityRevisionLookup::class );
 		$entityRevisionLookup->method( 'getEntityRevision' )

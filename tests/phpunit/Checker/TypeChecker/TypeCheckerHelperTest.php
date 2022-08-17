@@ -101,7 +101,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			new NumericPropertyId( 'P31' ),
 			new EntityIdValue( new ItemId( 'Q1' ) )
 		) );
-		$statements = new StatementList( [ $statement1, $statement2 ] );
+		$statements = new StatementList( $statement1, $statement2 );
 		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q1' ] )->getBool() );
 	}
 
@@ -113,7 +113,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$statement2 = new Statement(
 			new PropertyValueSnak( new NumericPropertyId( 'P31' ), new EntityIdValue( new ItemId( 'Q100' ) ) )
 		);
-		$statements = new StatementList( [ $statement1, $statement2 ] );
+		$statements = new StatementList( $statement1, $statement2 );
 		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q1' ] )->getBool() );
 	}
 
@@ -126,7 +126,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			new NumericPropertyId( 'P31' ),
 			new EntityIdValue( new ItemId( 'Q5' ) )
 		) );
-		$statements = new StatementList( [ $statement1, $statement2 ] );
+		$statements = new StatementList( $statement1, $statement2 );
 		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
 	}
 
@@ -188,7 +188,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			new EntityIdValue( new ItemId( 'Q1' ) )
 		) );
 		$statement->setRank( Statement::RANK_DEPRECATED );
-		$statements = new StatementList( [ $statement ] );
+		$statements = new StatementList( $statement );
 		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q1' ] )->getBool() );
 	}
 
@@ -197,7 +197,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			new NumericPropertyId( 'P31' ),
 			new EntityIdValue( new ItemId( 'Q11' ) ) // Q11 has a deprecated subclass of statement with Q4 as its value
 		) );
-		$statements = new StatementList( [ $statement ] );
+		$statements = new StatementList( $statement );
 		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
 	}
 
@@ -208,7 +208,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			// Q12 has a normal-rank subclass of statement with Q4 as its value,
 			// and a preferred-rank subclass of statement with no value
 		) );
-		$statements = new StatementList( [ $statement ] );
+		$statements = new StatementList( $statement );
 		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
 	}
 

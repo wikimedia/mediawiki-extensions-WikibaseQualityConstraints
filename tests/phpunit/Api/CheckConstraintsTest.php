@@ -333,14 +333,12 @@ class CheckConstraintsTest extends ApiTestCase {
 			null,
 			null,
 			new StatementList(
-				[
-					new Statement(
-						new PropertyValueSnak( $propertyId, new UnknownValue( null ) ),
-						null,
-						null,
-						$itemId->getSerialization() . '$' . $statementId
-					)
-				]
+				new Statement(
+					new PropertyValueSnak( $propertyId, new UnknownValue( null ) ),
+					null,
+					null,
+					$itemId->getSerialization() . '$' . $statementId
+				)
 			)
 		);
 		self::$entityLookup->addEntity( $item );
