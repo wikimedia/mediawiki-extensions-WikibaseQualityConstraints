@@ -16,7 +16,7 @@
 		"module-alias": "^2.1.0",
 		"sinon": "^14.0.0",
 		"stylelint-config-wikimedia": "0.13.1",
-		"unexpected": "^13.0.0"
+		"unexpected": "^13.0.1"
 	},
 	"_moduleAliases": {
 		"wikibase.quality.constraints.gadget": "./modules/gadget.js",
