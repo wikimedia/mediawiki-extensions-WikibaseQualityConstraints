@@ -5,10 +5,10 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Snak\SnakList;
+use Wikibase\DataModel\Tests\NewStatement;
 use Wikibase\Lib\Changes\Change;
 use Wikibase\Lib\Changes\EntityChange;
 use Wikibase\Lib\Tests\Changes\TestChanges;
-use Wikibase\Repo\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks;
 
 /**
