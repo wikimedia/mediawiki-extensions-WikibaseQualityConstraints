@@ -115,7 +115,7 @@
 	"wbqc-violation-message-range-quantity-rightopen": "De waarde voor $1 ($2) zou niet lager dan $3 moeten zijn.",
 	"wbqc-violation-message-range-time-closed": "De waarde voor $1 ($2) moet tussen $3 en $4 liggen.",
 	"wbqc-violation-message-range-time-closed-leftnow": "De waarde voor $1 ($2) zou in de toekomst moeten liggen, maar niet na $3.",
-	"wbqc-violation-message-range-time-closed-rightnow": "De waarde voor $1 ($2) zou in de verleden moet liggen, maar niet voor $3.",
+	"wbqc-violation-message-range-time-closed-rightnow": "De waarde voor $1 ($2) zou in het verleden moet liggen, maar niet voor $3.",
 	"wbqc-violation-message-range-time-leftopen": "De waarde voor $1 ($2) mag niet na $3 zijn.",
 	"wbqc-violation-message-range-time-leftopen-rightnow": "De waarde voor $1 ($2) zou niet in de toekomst moeten liggen.",
 	"wbqc-violation-message-range-time-rightopen": "De waarde voor $1 ($2) mag niet voor $3 zijn.",
