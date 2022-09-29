@@ -100,14 +100,10 @@ class ConstraintParameterRenderer {
 			return null;
 		}
 
-		$valueFormatter = function ( $value ) {
-			return $this->formatValue( $value );
-		};
-
 		$formattedParameters = [];
 		foreach ( $parameters as $parameterName => $parameterValue ) {
 			$formattedParameterValues = implode( ', ',
-				$this->limitArrayLength( array_map( $valueFormatter, $parameterValue ) ) );
+				$this->limitArrayLength( array_map( [ $this, 'formatValue' ], $parameterValue ) ) );
 			$formattedParameters[] = sprintf( '%s: %s', $parameterName, $formattedParameterValues );
 		}
 
