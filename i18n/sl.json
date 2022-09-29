@@ -7,11 +7,11 @@
 		]
 	},
 	"wbqc-constraintreport": "Poročilo o omejitvi",
-	"wbqc-desc": "Preveri omejitve za objekte in lastnosti in prikaži rezultate na posebni strani",
+	"wbqc-desc": "Preveri omejitve za objekte in lastnosti in prikaži zadetke na posebni strani",
 	"wbqc-constraintreport-form-section": "Preveri omejitve za stvari",
 	"wbqc-constraintreport-form-submit-label": "Preveri",
 	"wbqc-constraintreport-form-entityid-label": "ID stvari:",
-	"wbqc-constraintreport-result-headline": "Rezultat za",
+	"wbqc-constraintreport-result-headline": "Zadetek za",
 	"wbqc-constraintreport-invalid-entity-id": "Neveljaven ID stvari.",
 	"wbqc-constraintreport-not-existent-entity": "Stvar ne obstaja.",
 	"wbqc-constraintreport-empty-result": "Za to stvar ne obstajajo omejitve.",
@@ -134,6 +134,7 @@
 	"wbqc-violation-message-integer": "Vrednosti za $1 morajo biti cela števila, $2 pa vsebuje decimalke.",
 	"wbqc-violation-message-integer-bounds": "Vrednosti za $1 morajo biti cela števila, odstopanja pri $2 pa vsebujejo decimalke.",
 	"wbqc-violation-message-citationNeeded": "Izjave za $1 morajo imeti vsaj en vir.",
+	"wbqc-violation-message-label-lacking": "Entitete z izjavami za $1 morajo imeti tudi oznako v vsaj {{PLURAL:$2|1=$4 jeziku|katerem koli od naslednjih jezikov: $3}}",
 	"wbqc-violation-message-property-scope": "Lastnost $1 ne sme biti uporabljena na tem mestu ($2). {{PLURAL:$3|Ustrezno mesto|Ustrezni mesti|Ustrezna mesta}} za to lastnost {{PLURAL:$3|je $5.|so: $4}}",
 	"wbqc-violation-message-exception": "Ta stvar je znana izjema za to omejitev in je bila tako tudi označena."
 }
