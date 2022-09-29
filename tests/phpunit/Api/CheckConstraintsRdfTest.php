@@ -109,20 +109,6 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @return CheckResultSerializer
-	 */
-	private function getCheckResultSerializer() {
-		return $this->createMock( CheckResultSerializer::class );
-	}
-
-	/**
-	 * @return CheckResultDeserializer
-	 */
-	private function getCheckResultDeserializer() {
-		return $this->createMock( CheckResultDeserializer::class );
-	}
-
-	/**
 	 * @return LoggingHelper
 	 */
 	private function getLoggingHelper() {
@@ -146,8 +132,8 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 			->setConstructorArgs( [
 				$this->createMock( ResultsSource::class ),
 				new ResultsCache( WANObjectCache::newEmpty(), 'v2' ),
-				$this->getCheckResultSerializer(),
-				$this->getCheckResultDeserializer(),
+				$this->createMock( CheckResultSerializer::class ),
+				$this->createMock( CheckResultDeserializer::class ),
 				$this->createMock( WikiPageEntityMetaDataAccessor::class ),
 				new ItemIdParser(),
 				86400,

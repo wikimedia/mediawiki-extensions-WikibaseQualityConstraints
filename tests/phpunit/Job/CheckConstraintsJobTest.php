@@ -61,7 +61,7 @@ class CheckConstraintsJobTest extends MediaWikiIntegrationTestCase {
 		$resultSource = $this->createMock( CachingResultsSource::class );
 		$resultSource->expects( $this->once() )
 			->method( 'getResults' )
-			->with( $this->equalTo( [ new ItemId( self::ENTITY_ID ) ] ) );
+			->with( [ new ItemId( self::ENTITY_ID ) ] );
 
 		$job = $this->createJob( self::JOB_TITLE_STRING, [ 'entityId' => self::ENTITY_ID ] );
 		$job->setResultsSource( $resultSource );

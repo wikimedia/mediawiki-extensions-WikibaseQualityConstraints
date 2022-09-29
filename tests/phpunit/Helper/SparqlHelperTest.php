@@ -140,10 +140,10 @@ ASK {
 }
 EOF;
 
-		$sparqlHelper->expects( $this->exactly( 1 ) )
+		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
 			->willReturn( $this->askResult( true ) )
-			->withConsecutive( [ $this->equalTo( $query ) ] );
+			->withConsecutive( [ $query ] );
 
 		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
 	}
@@ -161,10 +161,10 @@ ASK {
 }
 EOF;
 
-		$sparqlHelper->expects( $this->exactly( 1 ) )
+		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
 			->willReturn( $this->askResult( true ) )
-			->withConsecutive( [ $this->equalTo( $query ) ] );
+			->withConsecutive( [ $query ] );
 
 		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
 	}
@@ -267,13 +267,13 @@ SELECT DISTINCT ?otherEntity WHERE {
 LIMIT 10
 EOF;
 
-		$sparqlHelper->expects( $this->exactly( 1 ) )
+		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
 			->willReturn( $this->selectResults( [
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
 			] ) )
-			->withConsecutive( [ $this->equalTo( $query ) ] );
+			->withConsecutive( [ $query ] );
 
 		$this->assertEquals(
 			$sparqlHelper->findEntitiesWithSameStatement( $statement, $separators )->getArray(),
@@ -310,13 +310,13 @@ SELECT DISTINCT ?otherEntity WHERE {
 LIMIT 10
 EOF;
 
-		$sparqlHelper->expects( $this->exactly( 1 ) )
+		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
 			->willReturn( $this->selectResults( [
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
 			] ) )
-			->withConsecutive( [ $this->equalTo( $query ) ] );
+			->withConsecutive( [ $query ] );
 
 		$this->assertEquals(
 			$sparqlHelper->findEntitiesWithSameQualifierOrReference(
@@ -479,7 +479,7 @@ EOF;
 
 		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
-			->with( $this->equalTo( $query ) )
+			->with( $query )
 			->willReturn( $this->selectResults( [ [ 'matches' => [ 'value' => 'false' ] ] ] ) );
 
 		$result = $sparqlHelper->matchesRegularExpressionWithSparql( $text, $regex );
@@ -496,13 +496,12 @@ EOF;
 
 		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
-			->with( $this->equalTo( $query ) )
+			->with( $query )
 			->willReturn( $this->selectResults( [ [] ] ) );
 
 		try {
 			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpressionWithSparql' ], [ $text, $regex ] );
-			$this->assertTrue(
-				false,
+			$this->fail(
 				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message "
 			. "⧼${messageKey}⧽."
 			);
@@ -629,7 +628,7 @@ EOF;
 		 $loggingHelper = $this->getLoggingHelperExpectingRetryAfterPresent( new ConvertibleTimestamp( $expectedTimestamp ) );
 		 $lock->expects( $this->once() )
 			 ->method( 'lock' )
-			 ->with( $this->equalTo( SparqlHelper::EXPIRY_LOCK_ID ),
+			 ->with( SparqlHelper::EXPIRY_LOCK_ID,
 				 $this->callback( function ( $actualTimestamp ) use ( $expectedTimestamp ) {
 					 $actualUnixTime = $actualTimestamp->format( 'U' );
 					 return $actualUnixTime == $expectedTimestamp;
@@ -766,7 +765,7 @@ EOF;
 		$lock->expects( $this->once() )
 			->method( 'lock' )
 			->with(
-				$this->equalTo( $expectedLockId ),
+				$expectedLockId,
 				$this->callback(
 					function ( $actualTimestamp ) use ( $expectedLockExpiryTimestamp ) {
 						$actualUnixTime = $actualTimestamp->format( 'U' );
@@ -797,7 +796,7 @@ EOF;
 		$helper = $this->createMock( LoggingHelper::class );
 		$helper->expects( $this->once() )
 			->method( 'logSparqlHelperTooManyRequestsRetryAfterPresent' )
-			->with( $this->equalTo( $retryTime ), $this->anything() );
+			->with( $retryTime, $this->anything() );
 		return $helper;
 	}
 

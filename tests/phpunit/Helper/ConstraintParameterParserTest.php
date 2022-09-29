@@ -88,7 +88,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	private function assertThrowsConstraintParameterException( $method, array $arguments, $messageKey ) {
 		try {
 			call_user_func_array( [ $this->getConstraintParameterParser(), $method ], $arguments );
-			$this->assertTrue( false,
+			$this->fail(
 				"$method should have thrown a ConstraintParameterException with message ⧼${messageKey}⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(

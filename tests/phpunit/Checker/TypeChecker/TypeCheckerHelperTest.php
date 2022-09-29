@@ -82,9 +82,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		if ( $arguments === null ) {
 			$arguments = [ $this->anything(), $this->anything() ];
 		}
-		$mock = $this->getMockBuilder( SparqlHelper::class )
-			  ->disableOriginalConstructor()
-			  ->getMock();
+		$mock = $this->createMock( SparqlHelper::class );
 		$mock->expects( $this->once() )
 			->method( 'hasType' )
 			->withConsecutive( $arguments )

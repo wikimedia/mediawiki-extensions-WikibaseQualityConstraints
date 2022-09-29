@@ -61,10 +61,10 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$this->oldModuleDeclaration = $wgAPIModules['wbcheckconstraintparameters'];
 
 		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
-			$this->assertTrue( false, 'checkConstraintParametersOnPropertyId method should not be called by this test.' );
+			$this->fail( 'checkConstraintParametersOnPropertyId method should not be called by this test.' );
 		};
 		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
-			$this->assertTrue( false, 'checkConstraintParametersOnConstraintId method should not be called by this test.' );
+			$this->fail( 'checkConstraintParametersOnConstraintId method should not be called by this test.' );
 		};
 
 		$this->testMessage = ( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )

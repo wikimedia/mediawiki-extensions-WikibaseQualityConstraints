@@ -361,7 +361,7 @@ trait ConstraintParameters {
 			case Context::TYPE_REFERENCE:
 				return $config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' );
 			default:
-				$this->assertTrue( false, 'unknown context type ' . $contextType );
+				$this->fail( 'unknown context type ' . $contextType );
 		}
 	}
 
@@ -414,7 +414,7 @@ trait ConstraintParameters {
 							$itemId = $config->get( 'WBQualityConstraintsAsReferencesId' );
 							break;
 						default:
-							$this->assertTrue( false, 'unknown context type ' . $contextType );
+							$this->fail( 'unknown context type ' . $contextType );
 					}
 					$value = new EntityIdValue( new ItemId( $itemId ) );
 					$snak = new PropertyValueSnak( new NumericPropertyId( $parameterId ), $value );

@@ -55,8 +55,8 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		$delegatingConstraintChecker = $mock->getMock();
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
 			->withConsecutive(
-				[ $this->equalTo( $q1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
-				[ $this->equalTo( $q2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
+				[ $q1, $constraintIds, $this->callback( 'is_callable' ) ],
+				[ $q2, $constraintIds, $this->callback( 'is_callable' ) ]
 			)
 			->willReturnCallback( function ( $entityId ) {
 				return [ new CheckResult(
@@ -74,8 +74,8 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 			} );
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
 			->withConsecutive(
-				[ $this->equalTo( $s1 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ],
-				[ $this->equalTo( $s2 ), $this->equalTo( $constraintIds ), $this->callback( 'is_callable' ) ]
+				[ $s1, $constraintIds, $this->callback( 'is_callable' ) ],
+				[ $s2, $constraintIds, $this->callback( 'is_callable' ) ]
 			)
 			->willReturnCallback( function ( $claimId ) {
 				$entityId = new ItemId( substr( $claimId, 0, 2 ) );
