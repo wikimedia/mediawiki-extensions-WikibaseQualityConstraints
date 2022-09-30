@@ -4,6 +4,7 @@
 			"Artsiom91",
 			"Chadyka",
 			"Da voli",
+			"Maksim L.",
 			"No Sleep till Krupki",
 			"Tomato Cream"
 		]
@@ -18,7 +19,7 @@
 	"wbqc-constraintreport-form-entityid-placeholder": "Qxx або Pxx",
 	"wbqc-constraintreport-result-headline": "Вынік для",
 	"wbqc-constraintreport-invalid-entity-id": "Няслушны ідэнтыфікатар сутнасці.",
-	"wbqc-constraintreport-not-existent-entity": "Сутнасці не існуе.",
+	"wbqc-constraintreport-not-existent-entity": "Такой сутнасці няма.",
 	"wbqc-constraintreport-empty-result": "Для гэтай сутнасці абмежаванні не вызначаныя.",
 	"wbqc-constraintreport-status-violation": "Парушэнне",
 	"wbqc-constraintreport-status-compliance": "Адпаведнасць",
