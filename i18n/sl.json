@@ -7,11 +7,11 @@
 		]
 	},
 	"wbqc-constraintreport": "Poročilo o omejitvi",
-	"wbqc-desc": "Preveri omejitve za objekte in lastnosti in prikaži rezultate na posebni strani",
+	"wbqc-desc": "Preveri omejitve za objekte in lastnosti in prikaži zadetke na posebni strani",
 	"wbqc-constraintreport-form-section": "Preveri omejitve za stvari",
 	"wbqc-constraintreport-form-submit-label": "Preveri",
 	"wbqc-constraintreport-form-entityid-label": "ID stvari:",
-	"wbqc-constraintreport-result-headline": "Rezultat za",
+	"wbqc-constraintreport-result-headline": "Zadetek za",
 	"wbqc-constraintreport-invalid-entity-id": "Neveljaven ID stvari.",
 	"wbqc-constraintreport-not-existent-entity": "Stvar ne obstaja.",
 	"wbqc-constraintreport-empty-result": "Za to stvar ne obstajajo omejitve.",
