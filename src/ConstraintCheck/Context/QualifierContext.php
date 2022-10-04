@@ -40,7 +40,7 @@ class QualifierContext extends AbstractContext {
 		return new QualifierContextCursor(
 			$this->entity->getId()->getSerialization(),
 			$this->statement->getPropertyId()->getSerialization(),
-			$this->statement->getGuid(),
+			$this->getStatementGuid( $this->statement ),
 			$this->snak->getHash(),
 			$this->snak->getPropertyId()->getSerialization()
 		);

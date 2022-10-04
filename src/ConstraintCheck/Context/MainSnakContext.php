@@ -167,7 +167,7 @@ class MainSnakContext extends AbstractContext {
 		return new MainSnakContextCursor(
 			$this->entity->getId()->getSerialization(),
 			$this->statement->getPropertyId()->getSerialization(),
-			$this->statement->getGuid(),
+			$this->getStatementGuid( $this->statement ),
 			$this->statement->getMainSnak()->getHash()
 		);
 	}
