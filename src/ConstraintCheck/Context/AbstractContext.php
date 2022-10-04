@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use InvalidArgumentException;
@@ -30,21 +32,21 @@ abstract class AbstractContext implements Context {
 		$this->snak = $snak;
 	}
 
-	public function getSnak() {
+	public function getSnak(): Snak {
 		return $this->snak;
 	}
 
-	public function getEntity() {
+	public function getEntity(): StatementListProvidingEntity {
 		return $this->entity;
 	}
 
 	// unimplemented: getType
 
-	public function getSnakRank() {
+	public function getSnakRank(): ?int {
 		return null;
 	}
 
-	public function getSnakStatement() {
+	public function getSnakStatement(): ?Statement {
 		return null;
 	}
 

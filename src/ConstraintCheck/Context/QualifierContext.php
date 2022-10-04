@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use Wikibase\DataModel\Entity\StatementListProvidingEntity;
@@ -27,16 +29,16 @@ class QualifierContext extends AbstractContext {
 		$this->statement = $statement;
 	}
 
-	public function getType() {
+	public function getType(): string {
 		return self::TYPE_QUALIFIER;
 	}
 
-	public function getSnakGroup( $groupingMode, array $separators = [] ) {
+	public function getSnakGroup( string $groupingMode, array $separators = [] ): array {
 		$snaks = $this->statement->getQualifiers();
 		return array_values( $snaks->getArrayCopy() );
 	}
 
-	public function getCursor() {
+	public function getCursor(): ContextCursor {
 		return new QualifierContextCursor(
 			$this->entity->getId()->getSerialization(),
 			$this->statement->getPropertyId()->getSerialization(),
