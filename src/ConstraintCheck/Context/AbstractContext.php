@@ -17,15 +17,9 @@ use Wikibase\DataModel\Statement\Statement;
  */
 abstract class AbstractContext implements Context {
 
-	/**
-	 * @var StatementListProvidingEntity
-	 */
-	protected $entity;
+	protected StatementListProvidingEntity $entity;
 
-	/**
-	 * @var Snak
-	 */
-	protected $snak;
+	protected Snak $snak;
 
 	public function __construct( StatementListProvidingEntity $entity, Snak $snak ) {
 		$this->entity = $entity;

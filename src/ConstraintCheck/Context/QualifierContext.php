@@ -15,10 +15,7 @@ use Wikibase\DataModel\Statement\Statement;
  */
 class QualifierContext extends AbstractContext {
 
-	/**
-	 * @var Statement
-	 */
-	private $statement;
+	private Statement $statement;
 
 	public function __construct(
 		StatementListProvidingEntity $entity,

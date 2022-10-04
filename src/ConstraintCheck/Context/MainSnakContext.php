@@ -19,10 +19,7 @@ use Wikibase\DataModel\Statement\StatementList;
  */
 class MainSnakContext extends AbstractContext {
 
-	/**
-	 * @var Statement
-	 */
-	private $statement;
+	private Statement $statement;
 
 	public function __construct( StatementListProvidingEntity $entity, Statement $statement ) {
 		parent::__construct( $entity, $statement->getMainSnak() );

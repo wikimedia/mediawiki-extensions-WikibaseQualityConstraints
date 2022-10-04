@@ -16,15 +16,9 @@ use Wikibase\DataModel\Statement\Statement;
  */
 class ReferenceContext extends AbstractContext {
 
-	/**
-	 * @var Statement
-	 */
-	private $statement;
+	private Statement $statement;
 
-	/**
-	 * @var Reference
-	 */
-	private $reference;
+	private Reference $reference;
 
 	public function __construct(
 		StatementListProvidingEntity $entity,

@@ -20,6 +20,14 @@
 		<severity>0</severity>
 	</rule>
 
+	<!-- Similarly, a typed property should be allowed to have no @var documentation. -->
+	<rule ref="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationProtected">
+		<severity>0</severity>
+	</rule>
+	<rule ref="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationPrivate">
+		<severity>0</severity>
+	</rule>
+
 	<!-- Starting a function's body with an empty line can be helpful after a very large header.
 		The code is not guaranteed to be easier to read if this is disallowed. -->
 	<rule ref="MediaWiki.WhiteSpace.DisallowEmptyLineFunctions">
