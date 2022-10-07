@@ -90,8 +90,10 @@ class UniqueValueChecker implements ConstraintChecker {
 			$parameters['separator'] = $separators;
 
 			if ( $context->getType() === 'statement' ) {
+				$statement = $context->getSnakStatement();
+				'@phan-var Statement $statement';
 				$result = $this->sparqlHelper->findEntitiesWithSameStatement(
-					$context->getSnakStatement(),
+					$statement,
 					$separators
 				);
 			} else {
