@@ -48,7 +48,7 @@ class ReferenceContext extends AbstractContext {
 		return new ReferenceContextCursor(
 			$this->entity->getId()->getSerialization(),
 			$this->statement->getPropertyId()->getSerialization(),
-			$this->statement->getGuid(),
+			$this->getStatementGuid( $this->statement ),
 			$this->snak->getHash(),
 			$this->snak->getPropertyId()->getSerialization(),
 			$this->reference->getHash()

@@ -367,14 +367,16 @@ EOF;
 		array $separators
 	) {
 		$pid = $statement->getPropertyId()->serialize();
-		$guid = str_replace( '$', '-', $statement->getGuid() );
+		$guid = $statement->getGuid();
+		'@phan-var string $guid'; // statement must have a non-null GUID
+		$guidForRdf = str_replace( '$', '-', $guid );
 
 		$separatorFilters = array_map( [ $this, 'nestedSeparatorFilter' ], $separators );
 		$finalSeparatorFilter = implode( "\n", $separatorFilters );
 
 		$query = <<<EOF
 SELECT DISTINCT ?otherEntity WHERE {
-  BIND(wds:$guid AS ?statement)
+  BIND(wds:$guidForRdf AS ?statement)
   BIND(p:$pid AS ?p)
   BIND(ps:$pid AS ?ps)
   ?entity ?p ?statement.

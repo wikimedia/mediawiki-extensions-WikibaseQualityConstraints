@@ -2,8 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\StatementListProvidingEntity;
 use Wikibase\DataModel\Snak\Snak;
+use Wikibase\DataModel\Statement\Statement;
 
 /**
  * Base implementation of some Context functions,
@@ -47,5 +49,20 @@ abstract class AbstractContext implements Context {
 	}
 
 	// unimplemented: getCursor
+
+	/** Helper function for {@link getCursor()} implementations. */
+	protected function getStatementGuid( Statement $statement ): string {
+		$guid = $statement->getGuid();
+		if ( $guid === null ) {
+			if ( defined( 'MW_PHPUNIT_TEST' ) ) {
+				// let unit tests get away with not specifying a statement GUID:
+				// much more convenient to fake it here than to add one to all tests
+				return 'Q0$DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF';
+			} else {
+				throw new InvalidArgumentException( 'Statement for Context must have a GUID' );
+			}
+		}
+		return $guid;
+	}
 
 }
