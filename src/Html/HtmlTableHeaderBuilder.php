@@ -78,7 +78,6 @@ class HtmlTableHeaderBuilder {
 		}
 
 		if ( !$this->isRawContent ) {
-			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			$content = htmlspecialchars( $this->content );
 		} else {
 			$content = $this->content;
