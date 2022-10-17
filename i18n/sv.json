@@ -3,7 +3,8 @@
 		"authors": [
 			"Jon Harald Søby",
 			"WikiPhoenix",
-			"Sabelöga"
+			"Sabelöga",
+			"Larske"
 		]
 	},
 	"wbqc-constraintreport": "Begränsningrapporter",
@@ -116,7 +117,7 @@
 	"wbqc-violation-message-range-time-rightopen-leftnow": "Värdet för $1 ($2) bör vara i det förflutna.",
 	"wbqc-violation-message-single-value": "Denna egenskap bör endast innehåll ett enda värde.",
 	"wbqc-violation-message-single-value-separators": "Denna egenskap bör endast ha ett enda värde med samma {{PLURAL:$2|1=$4 bestämning.|grupp av bestämningar för dessa egenskaper: $3}}",
-	"wbqc-violation-message-single-best-value-no-preferred": "Denna egenskap borde bara innehålla ett enda \"bästa\" värde. En av de nu flera värdena borde markeras med \"föredragen\" rank.",
+	"wbqc-violation-message-single-best-value-no-preferred": "Denna egenskap borde bara innehålla ett enda \"bästa\" värde. Ett av de nu flera värdena borde markeras med \"föredragen\" rank.",
 	"wbqc-violation-message-single-best-value-no-preferred-separators": "Den här egenskapen borde bara innehålla ett enda \"bästa\" värde med samma {{PLURAL:$2|1=$4-bestämning.|bestämningar för dessa egenskaper: $3}} En av de nu flera värdena borde markeras med \"föredragen\" rank.",
 	"wbqc-violation-message-single-best-value-multi-preferred": "Den här egenskapen borde bara innehålla ett enda \"bästa\" värde. En av de nu flera värdena borde markeras med \"föredragen\" rank.",
 	"wbqc-violation-message-single-best-value-multi-preferred-separators": "Den här egenskapen borde bara innehålla ett enda \"bästa\" värde med samma {{PLURAL:$2|1=$4-bestämning.|bestämningar för dessa egenskaper: $3}} Det ska inte finnas fler än ett värde med \"föredragen\" rank.",
