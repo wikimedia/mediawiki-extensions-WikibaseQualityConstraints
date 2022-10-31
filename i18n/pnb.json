@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Abbas dhothar"
+			"Abbas dhothar",
+			"Bgo eiu"
 		]
 	},
+	"wbqc-constraintreport-result-table-header-property": "وشیشتا",
 	"wbqc-constraintreport-no-parameter": "کوئی نئیں",
 	"wbqc-parameterissues-short": "اضافی مسئلے"
 }
