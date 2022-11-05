@@ -89,7 +89,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		try {
 			call_user_func_array( [ $this->getConstraintParameterParser(), $method ], $arguments );
 			$this->fail(
-				"$method should have thrown a ConstraintParameterException with message ⧼${messageKey}⧽." );
+				"$method should have thrown a ConstraintParameterException with message ⧼{$messageKey}⧽." );
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
 				new MainSnakContext(

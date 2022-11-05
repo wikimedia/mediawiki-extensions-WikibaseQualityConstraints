@@ -84,7 +84,7 @@ trait ResultAssertions {
 			$this->assertSame(
 				$messageKey,
 				$resultMessageKey,
-				"Violation message should be ⧼${messageKey}⧽."
+				"Violation message should be ⧼{$messageKey}⧽."
 			);
 		}
 	}

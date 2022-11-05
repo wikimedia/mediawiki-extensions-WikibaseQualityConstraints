@@ -503,7 +503,7 @@ EOF;
 			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpressionWithSparql' ], [ $text, $regex ] );
 			$this->fail(
 				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message "
-			. "⧼${messageKey}⧽."
+			. "⧼{$messageKey}⧽."
 			);
 		} catch ( ConstraintParameterException $exception ) {
 			$checkResult = new CheckResult(
