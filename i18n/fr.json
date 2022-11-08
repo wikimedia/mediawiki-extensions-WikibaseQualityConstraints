@@ -105,7 +105,7 @@
 	"wbqc-violation-message-inverse": "$1 doit également avoir la déclaration de la propriété inverse $2 $3.",
 	"wbqc-violation-message-item": "Une entité déclarée avec la propriété $1 devrait également déclarer une propriété {{PLURAL:$3|0=$2.|$2 de valeur $5.|$2 avec une des valeurs suivantes : $4}}",
 	"wbqc-violation-message-mandatory-qualifier": "La propriété « $1 » doit être déclarée avec un qualificateur « $2 ».",
-	"wbqc-violation-message-multi-value": "<!--La propriété « $?1 »-->Cette propriété doit être déclarée avec plusieurs valeurs.",
+	"wbqc-violation-message-multi-value": "Cette propriété doit être déclarée avec plusieurs valeurs.",
 	"wbqc-violation-message-multi-value-separators": "<!--La propriété « $?1 »-->Cette propriété doit déclarée avec plusieurs valeurs pour le même {{PLURAL:$2|qualificatif $4.|ensemble de qualificatifs : $3}}",
 	"wbqc-violation-message-one-of": "La propriété $1 doit être déclarée avec {{PLURAL:$2|la valeur $4.|2=une valeur $4 ou $5.|une des valeurs suivantes : $3}}",
 	"wbqc-violation-message-qualifier": "La propriété doit être utilisée uniquement comme qualificatif.",
