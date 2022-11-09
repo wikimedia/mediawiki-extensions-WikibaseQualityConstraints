@@ -417,6 +417,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			->andStatement(
 				NewStatement::forProperty( 'P1' )
 					->withValue( 'foo' )
+					->withGuid( 'Q1$faa95629-7aa1-48d1-8b4e-a1bcab1b8274' )
 			)
 			->build();
 		$this->lookup->addEntity( $entity );
