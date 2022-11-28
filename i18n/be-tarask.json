@@ -12,6 +12,7 @@
 	"wbqc-constraintreport-form-section": "Праверыць абмежаваньні для сутнасьці",
 	"wbqc-constraintreport-form-submit-label": "Праверыць",
 	"wbqc-constraintreport-form-entityid-label": "Ідэнтыфікатар сутнасьці:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx або Pxx",
 	"wbqc-constraintreport-result-headline": "Вынік для",
 	"wbqc-constraintreport-invalid-entity-id": "Памылковы ідэнтыфікатар сутнасьці.",
 	"wbqc-constraintreport-not-existent-entity": "Сутнасьці не існуе.",
