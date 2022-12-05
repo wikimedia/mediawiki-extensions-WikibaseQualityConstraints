@@ -25,11 +25,7 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 		'wbqc-violation-message-format-clarification' => 'wbqc-violation-message-format',
 	];
 
-	/**
-	 * @param ViolationMessage $violationMessage
-	 * @return string
-	 */
-	public function render( ViolationMessage $violationMessage ) {
+	public function render( ViolationMessage $violationMessage ): string {
 		if ( !array_key_exists( $violationMessage->getMessageKey(), self::ALTERNATIVE_MESSAGE_KEYS ) ) {
 			return parent::render( $violationMessage );
 		}
