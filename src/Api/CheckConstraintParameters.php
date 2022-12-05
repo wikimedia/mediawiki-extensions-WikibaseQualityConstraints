@@ -5,17 +5,13 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use ApiBase;
 use ApiMain;
 use ApiResult;
-use Config;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
-use MediaWiki\Languages\LanguageNameUtils;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
-use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
-use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
@@ -69,22 +65,12 @@ class CheckConstraintParameters extends ApiBase {
 	public static function newFromGlobalState(
 		ApiMain $main,
 		string $name,
-		LanguageNameUtils $languageNameUtils,
-		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		ApiHelperFactory $apiHelperFactory,
-		EntityIdFormatterFactory $entityIdFormatterFactory,
 		StatementGuidParser $statementGuidParser,
-		OutputFormatValueFormatterFactory $valueFormatterFactory,
-		DelegatingConstraintChecker $delegatingConstraintChecker
+		DelegatingConstraintChecker $delegatingConstraintChecker,
+		ViolationMessageRendererFactory $violationMessageRendererFactory
 	): self {
-		$violationMessageRendererFactory = new ViolationMessageRendererFactory(
-			$config,
-			$languageNameUtils,
-			$entityIdFormatterFactory,
-			$valueFormatterFactory
-		);
-
 		return new self(
 			$main,
 			$name,
