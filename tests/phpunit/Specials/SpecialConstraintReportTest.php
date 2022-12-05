@@ -77,6 +77,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			WikibaseRepo::getEntityIdParser(),
 			WikibaseRepo::getValueFormatterFactory(),
 			ConstraintsServices::getDelegatingConstraintChecker(),
+			$this->getServiceContainer()->getLanguageNameUtils(),
 			$this->getDefaultConfig(),
 			new NullStatsdDataFactory()
 		);

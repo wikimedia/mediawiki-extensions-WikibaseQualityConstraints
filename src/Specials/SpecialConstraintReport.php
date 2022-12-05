@@ -7,6 +7,7 @@ use Html;
 use HTMLForm;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
+use MediaWiki\Languages\LanguageNameUtils;
 use OOUI\IconWidget;
 use OOUI\LabelWidget;
 use SpecialPage;
@@ -93,6 +94,7 @@ class SpecialConstraintReport extends SpecialPage {
 	private $dataFactory;
 
 	public static function factory(
+		LanguageNameUtils $languageNameUtils,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		EntityIdFormatterFactory $entityIdFormatterFactory,
@@ -110,6 +112,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$entityIdParser,
 			$valueFormatterFactory,
 			$delegatingConstraintChecker,
+			$languageNameUtils,
 			$config,
 			$dataFactory
 		);
@@ -123,6 +126,7 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityIdParser $entityIdParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $constraintChecker,
+		LanguageNameUtils $languageNameUtils,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
@@ -160,6 +164,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$this->violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
 			$this->entityIdLinkFormatter,
 			$dataValueFormatter,
+			$languageNameUtils,
 			$this->getContext(),
 			$config
 		);

@@ -8,6 +8,7 @@ use ApiResult;
 use Config;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
+use MediaWiki\Languages\LanguageNameUtils;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
@@ -68,6 +69,7 @@ class CheckConstraintParameters extends ApiBase {
 	public static function newFromGlobalState(
 		ApiMain $main,
 		string $name,
+		LanguageNameUtils $languageNameUtils,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		ApiHelperFactory $apiHelperFactory,
@@ -78,6 +80,7 @@ class CheckConstraintParameters extends ApiBase {
 	): self {
 		$violationMessageRendererFactory = new ViolationMessageRendererFactory(
 			$config,
+			$languageNameUtils,
 			$main,
 			$entityIdFormatterFactory,
 			$valueFormatterFactory

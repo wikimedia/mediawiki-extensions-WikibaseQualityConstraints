@@ -6,6 +6,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use Config;
 use Language;
+use MediaWiki\Languages\LanguageNameUtils;
 use MessageLocalizer;
 use ValueFormatters\FormatterOptions;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
@@ -17,25 +18,21 @@ use Wikibase\View\EntityIdFormatterFactory;
  */
 class ViolationMessageRendererFactory {
 
-	/** @var Config */
-	private $config;
-
-	/** @var MessageLocalizer */
-	private $messageLocalizer;
-
-	/** @var EntityIdFormatterFactory */
-	private $entityIdHtmlLinkFormatterFactory;
-
-	/** @var OutputFormatValueFormatterFactory */
-	private $valueFormatterFactory;
+	private Config $config;
+	private LanguageNameUtils $languageNameUtils;
+	private MessageLocalizer $messageLocalizer;
+	private EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory;
+	private OutputFormatValueFormatterFactory $valueFormatterFactory;
 
 	public function __construct(
 		Config $config,
+		LanguageNameUtils $languageNameUtils,
 		MessageLocalizer $messageLocalizer,
 		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
 		OutputFormatValueFormatterFactory $valueFormatterFactory
 	) {
 		$this->config = $config;
+		$this->languageNameUtils = $languageNameUtils;
 		$this->messageLocalizer = $messageLocalizer;
 		$this->entityIdHtmlLinkFormatterFactory = $entityIdHtmlLinkFormatterFactory;
 		$this->valueFormatterFactory = $valueFormatterFactory;
@@ -49,6 +46,7 @@ class ViolationMessageRendererFactory {
 				->getEntityIdFormatter( $language ),
 			$this->valueFormatterFactory
 				->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions ),
+			$this->languageNameUtils,
 			$this->messageLocalizer,
 			$this->config
 		);

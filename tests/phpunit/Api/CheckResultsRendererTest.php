@@ -2,6 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
+use MediaWiki\MediaWikiServices;
 use MockMessageLocalizer;
 use Title;
 use ValueFormatters\ValueFormatter;
@@ -63,6 +64,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 			new ViolationMessageRenderer(
 				$entityIdFormatter,
 				$valueFormatter,
+				MediaWikiServices::getInstance()->getLanguageNameUtils(),
 				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			)

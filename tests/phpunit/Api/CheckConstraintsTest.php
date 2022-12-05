@@ -7,6 +7,7 @@ use DataValues\UnknownValue;
 use HashConfig;
 use Language;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
 use MockMessageLocalizer;
 use NullStatsdDataFactory;
 use ValueFormatters\FormatterOptions;
@@ -98,7 +99,6 @@ class CheckConstraintsTest extends ApiTestCase {
 				$language,
 				$languageFallbackChainFactory
 			);
-			$valueFormatter = $valueFormatterFactory->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions );
 
 			// we can’t use the DefaultConfig trait because we’re in a static method
 			$config = new HashConfig( [
@@ -161,6 +161,7 @@ class CheckConstraintsTest extends ApiTestCase {
 					$factory,
 					new ViolationMessageRendererFactory(
 						$config,
+						MediaWikiServices::getInstance()->getLanguageNameUtils(),
 						new MockMessageLocalizer(),
 						$factory,
 						$valueFormatterFactory

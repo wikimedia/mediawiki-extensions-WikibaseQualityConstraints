@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use HashConfig;
 use Language;
+use MediaWiki\MediaWikiServices;
 use MockMessageLocalizer;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\Formatters\UnDeserializableValueFormatter;
@@ -33,6 +34,7 @@ trait ResultAssertions {
 		$renderer = new ViolationMessageRenderer(
 			new PlainEntityIdFormatter(),
 			new UnDeserializableValueFormatter(),
+			MediaWikiServices::getInstance()->getLanguageNameUtils(),
 			new MockMessageLocalizer(),
 			new HashConfig( [
 				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
