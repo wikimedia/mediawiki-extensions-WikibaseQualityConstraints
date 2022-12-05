@@ -38,7 +38,6 @@
 			"class": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport",
 			"factory": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::factory",
 			"services": [
-				"LanguageNameUtils",
 				"MainConfig",
 				"StatsdDataFactory",
 				"WikibaseRepo.EntityIdHtmlLinkFormatterFactory",
@@ -46,7 +45,8 @@
 				"WikibaseRepo.EntityTitleLookup",
 				"WikibaseRepo.ValueFormatterFactory",
 				"WBQC_EntityLookup",
-				"WBQC_DelegatingConstraintChecker"
+				"WBQC_DelegatingConstraintChecker",
+				"WBQC_ViolationMessageRendererFactory"
 			]
 		}
 	},
