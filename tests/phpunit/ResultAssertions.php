@@ -35,6 +35,7 @@ trait ResultAssertions {
 			new PlainEntityIdFormatter(),
 			new UnDeserializableValueFormatter(),
 			MediaWikiServices::getInstance()->getLanguageNameUtils(),
+			'qqx',
 			new MockMessageLocalizer(),
 			new HashConfig( [
 				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',

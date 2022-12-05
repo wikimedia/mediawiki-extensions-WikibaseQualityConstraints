@@ -53,10 +53,11 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		if ( $dataValueFormatter === null ) {
 			$dataValueFormatter = new UnDeserializableValueFormatter();
 		}
+		$userLanguageCode = 'en';
 		$languageNameUtils = $this->createMock( LanguageNameUtils::class );
 		$languageNameUtils->method( 'getLanguageName' )
-			->with( 'pt' )
-			->willReturn( 'português' );
+			->with( 'pt', $userLanguageCode )
+			->willReturn( 'Portuguese' );
 		$messageLocalizer = new MockMessageLocalizer();
 		if ( $config === null ) {
 			$config = new HashConfig( [
@@ -72,6 +73,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 			$entityIdFormatter,
 			$dataValueFormatter,
 			$languageNameUtils,
+			$userLanguageCode,
 			$messageLocalizer,
 			$config,
 			$maxListLength
@@ -312,7 +314,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$rendered = $renderer->render( $message );
 
 		$expected = '(wbqc-violation-message-parameter-single-per-language: ' .
-			'P1, português, pt)';
+			'P1, Portuguese, pt)';
 		$this->assertSame( $expected, $rendered );
 	}
 
@@ -995,7 +997,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertSame(
 			[
-				Message::rawParam( 'português' ),
+				Message::rawParam( 'Portuguese' ),
 				Message::plaintextParam( 'pt' ),
 			],
 			$params

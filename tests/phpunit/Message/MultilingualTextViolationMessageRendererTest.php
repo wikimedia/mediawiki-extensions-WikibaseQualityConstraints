@@ -69,6 +69,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 			$entityIdFormatter,
 			$dataValueFormatter,
 			$this->createMock( LanguageNameUtils::class ),
+			'qqx',
 			$messageLocalizer,
 			$config,
 			$maxListLength

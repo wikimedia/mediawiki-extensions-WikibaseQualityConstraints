@@ -65,6 +65,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				$entityIdFormatter,
 				$valueFormatter,
 				MediaWikiServices::getInstance()->getLanguageNameUtils(),
+				'qqx',
 				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			)
