@@ -2,12 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
-use Config;
 use DataValues\MultilingualTextValue;
 use Message;
-use MessageLocalizer;
-use ValueFormatters\ValueFormatter;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 
 /**
  * Render a {@link ViolationMessage},
@@ -25,37 +21,16 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
  */
 class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer {
 
-	/**
-	 * @var string[]
-	 */
-	private $alternativeMessageKeys;
-
-	public function __construct(
-		EntityIdFormatter $entityIdFormatter,
-		ValueFormatter $dataValueFormatter,
-		MessageLocalizer $messageLocalizer,
-		Config $config,
-		$maxListLength = 10
-	) {
-		parent::__construct(
-			$entityIdFormatter,
-			$dataValueFormatter,
-			$messageLocalizer,
-			$config,
-			$maxListLength
-		);
-
-		$this->alternativeMessageKeys = [
-			'wbqc-violation-message-format-clarification' => 'wbqc-violation-message-format',
-		];
-	}
+	private const ALTERNATIVE_MESSAGE_KEYS = [
+		'wbqc-violation-message-format-clarification' => 'wbqc-violation-message-format',
+	];
 
 	/**
 	 * @param ViolationMessage $violationMessage
 	 * @return string
 	 */
 	public function render( ViolationMessage $violationMessage ) {
-		if ( !array_key_exists( $violationMessage->getMessageKey(), $this->alternativeMessageKeys ) ) {
+		if ( !array_key_exists( $violationMessage->getMessageKey(), self::ALTERNATIVE_MESSAGE_KEYS ) ) {
 			return parent::render( $violationMessage );
 		}
 
@@ -76,7 +51,7 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 
 		if ( $multilingualTextParams === null ) {
 			return $this->messageLocalizer
-				->msg( $this->alternativeMessageKeys[$violationMessage->getMessageKey()] )
+				->msg( self::ALTERNATIVE_MESSAGE_KEYS[$violationMessage->getMessageKey()] )
 				->params( $regularParams )
 				->escaped();
 		} else {
