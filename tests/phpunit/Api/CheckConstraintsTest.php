@@ -8,7 +8,6 @@ use HashConfig;
 use Language;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use MockMessageLocalizer;
 use NullStatsdDataFactory;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
@@ -162,7 +161,6 @@ class CheckConstraintsTest extends ApiTestCase {
 					new ViolationMessageRendererFactory(
 						$config,
 						MediaWikiServices::getInstance()->getLanguageNameUtils(),
-						new MockMessageLocalizer(),
 						$factory,
 						$valueFormatterFactory
 					)

@@ -81,7 +81,6 @@ class CheckConstraintParameters extends ApiBase {
 		$violationMessageRendererFactory = new ViolationMessageRendererFactory(
 			$config,
 			$languageNameUtils,
-			$main,
 			$entityIdFormatterFactory,
 			$valueFormatterFactory
 		);
@@ -283,7 +282,7 @@ class CheckConstraintParameters extends ApiBase {
 			);
 
 			$violationMessageRenderer = $this->violationMessageRendererFactory
-				->getViolationMessageRenderer( $this->getLanguage() );
+				->getViolationMessageRenderer( $this->getLanguage(), $this );
 			$problems = [];
 			foreach ( $constraintParameterExceptions as $constraintParameterException ) {
 				$problems[] = [

@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use Language;
+use MessageLocalizer;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
@@ -33,13 +34,16 @@ class CheckResultsRendererFactory {
 		$this->violationMessageRendererFactory = $violationMessageRendererFactory;
 	}
 
-	public function getCheckResultsRenderer( Language $language ): CheckResultsRenderer {
+	public function getCheckResultsRenderer(
+		Language $userLanguage,
+		MessageLocalizer $messageLocalizer
+	): CheckResultsRenderer {
 		return new CheckResultsRenderer(
 			$this->entityTitleLookup,
 			$this->entityIdLabelFormatterFactory
-				->getEntityIdFormatter( $language ),
+				->getEntityIdFormatter( $userLanguage ),
 			$this->violationMessageRendererFactory
-				->getViolationMessageRenderer( $language )
+				->getViolationMessageRenderer( $userLanguage, $messageLocalizer )
 		);
 	}
 
