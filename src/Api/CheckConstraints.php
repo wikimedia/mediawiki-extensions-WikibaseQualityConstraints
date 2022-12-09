@@ -4,20 +4,16 @@ namespace WikibaseQuality\ConstraintReport\Api;
 
 use ApiBase;
 use ApiMain;
-use Config;
 use IBufferingStatsdDataFactory;
-use MediaWiki\Languages\LanguageNameUtils;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
-use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use Wikibase\Repo\Api\ResultBuilder;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
-use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikimedia\ParamValidator\ParamValidator;
@@ -73,28 +69,20 @@ class CheckConstraints extends ApiBase {
 	public static function factory(
 		ApiMain $main,
 		string $name,
-		LanguageNameUtils $languageNameUtils,
-		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		ApiHelperFactory $apiHelperFactory,
-		EntityIdFormatterFactory $entityIdFormatterFactory,
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
 		StatementGuidValidator $statementGuidValidator,
-		OutputFormatValueFormatterFactory $valueFormatterFactory,
-		ResultsSource $resultsSource
+		ResultsSource $resultsSource,
+		ViolationMessageRendererFactory $violationMessageRendererFactory
 	): self {
 		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
 
 		$checkResultsRendererFactory = new CheckResultsRendererFactory(
 			$entityTitleLookup,
 			$entityIdLabelFormatterFactory,
-			new ViolationMessageRendererFactory(
-				$config,
-				$languageNameUtils,
-				$entityIdFormatterFactory,
-				$valueFormatterFactory
-			)
+			$violationMessageRendererFactory
 		);
 
 		return new self(

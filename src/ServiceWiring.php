@@ -23,6 +23,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\RangeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
@@ -307,5 +308,14 @@ return [
 		}
 
 		return $resultsSource;
+	},
+
+	ConstraintsServices::VIOLATION_MESSAGE_RENDERER_FACTORY => static function ( MediaWikiServices $services ) {
+		return new ViolationMessageRendererFactory(
+			$services->getMainConfig(),
+			$services->getLanguageNameUtils(),
+			WikibaseRepo::getEntityIdHtmlLinkFormatterFactory( $services ),
+			WikibaseRepo::getValueFormatterFactory( $services )
+		);
 	},
 ];
