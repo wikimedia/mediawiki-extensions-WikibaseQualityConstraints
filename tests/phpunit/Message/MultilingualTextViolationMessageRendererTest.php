@@ -8,6 +8,7 @@ use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use HashConfig;
 use Language;
+use MediaWiki\Languages\LanguageNameUtils;
 use Message;
 use MessageLocalizer;
 use MockMessageLocalizer;
@@ -67,6 +68,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		return new MultilingualTextViolationMessageRenderer(
 			$entityIdFormatter,
 			$dataValueFormatter,
+			$this->createMock( LanguageNameUtils::class ),
 			$messageLocalizer,
 			$config,
 			$maxListLength

@@ -6,6 +6,7 @@ use ApiBase;
 use ApiMain;
 use Config;
 use IBufferingStatsdDataFactory;
+use MediaWiki\Languages\LanguageNameUtils;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -72,6 +73,7 @@ class CheckConstraints extends ApiBase {
 	public static function factory(
 		ApiMain $main,
 		string $name,
+		LanguageNameUtils $languageNameUtils,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		ApiHelperFactory $apiHelperFactory,
@@ -89,6 +91,7 @@ class CheckConstraints extends ApiBase {
 			$entityIdLabelFormatterFactory,
 			new ViolationMessageRendererFactory(
 				$config,
+				$languageNameUtils,
 				$main,
 				$entityIdFormatterFactory,
 				$valueFormatterFactory

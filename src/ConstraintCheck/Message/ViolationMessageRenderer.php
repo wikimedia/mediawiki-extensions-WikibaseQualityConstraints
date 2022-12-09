@@ -5,8 +5,8 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 use Config;
 use DataValues\DataValue;
 use InvalidArgumentException;
-use Language;
 use LogicException;
+use MediaWiki\Languages\LanguageNameUtils;
 use Message;
 use MessageLocalizer;
 use ValueFormatters\ValueFormatter;
@@ -26,30 +26,12 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
  */
 class ViolationMessageRenderer {
 
-	/**
-	 * @var EntityIdFormatter
-	 */
-	private $entityIdFormatter;
-
-	/**
-	 * @var ValueFormatter
-	 */
-	private $dataValueFormatter;
-
-	/**
-	 * @var MessageLocalizer
-	 */
-	protected $messageLocalizer;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var int
-	 */
-	private $maxListLength;
+	private EntityIdFormatter $entityIdFormatter;
+	private ValueFormatter $dataValueFormatter;
+	private LanguageNameUtils $languageNameUtils;
+	protected MessageLocalizer $messageLocalizer;
+	private Config $config;
+	private int $maxListLength;
 
 	/**
 	 * @param EntityIdFormatter $entityIdFormatter
@@ -62,12 +44,14 @@ class ViolationMessageRenderer {
 	public function __construct(
 		EntityIdFormatter $entityIdFormatter,
 		ValueFormatter $dataValueFormatter,
+		LanguageNameUtils $languageNameUtils,
 		MessageLocalizer $messageLocalizer,
 		Config $config,
-		$maxListLength = 10
+		int $maxListLength = 10
 	) {
 		$this->entityIdFormatter = $entityIdFormatter;
 		$this->dataValueFormatter = $dataValueFormatter;
+		$this->languageNameUtils = $languageNameUtils;
 		$this->messageLocalizer = $messageLocalizer;
 		$this->config = $config;
 		$this->maxListLength = $maxListLength;
@@ -394,7 +378,9 @@ class ViolationMessageRenderer {
 		return [
 			// ::renderList (through ::renderLanguageList) requires 'raw' parameter
 			// so we effectively build Message::plaintextParam here
-			Message::rawParam( htmlspecialchars( Language::fetchLanguageName( $languageCode ) ) ),
+			Message::rawParam( htmlspecialchars(
+				$this->languageNameUtils->getLanguageName( $languageCode )
+			) ),
 			Message::plaintextParam( $languageCode ),
 		];
 	}

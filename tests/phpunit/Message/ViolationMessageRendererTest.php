@@ -6,6 +6,7 @@ use Config;
 use DataValues\StringValue;
 use HashConfig;
 use InvalidArgumentException;
+use MediaWiki\Languages\LanguageNameUtils;
 use Message;
 use MockMessageLocalizer;
 use ValueFormatters\StringFormatter;
@@ -52,6 +53,11 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		if ( $dataValueFormatter === null ) {
 			$dataValueFormatter = new UnDeserializableValueFormatter();
 		}
+		$languageNameUtils = $this->createMock( LanguageNameUtils::class );
+		$languageNameUtils->method( 'getLanguageName' )
+			->with( 'pt' )
+			->willReturn( 'português' );
+		$messageLocalizer = new MockMessageLocalizer();
 		if ( $config === null ) {
 			$config = new HashConfig( [
 				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
@@ -65,7 +71,8 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		return new ViolationMessageRenderer(
 			$entityIdFormatter,
 			$dataValueFormatter,
-			new MockMessageLocalizer(),
+			$languageNameUtils,
+			$messageLocalizer,
 			$config,
 			$maxListLength
 		);

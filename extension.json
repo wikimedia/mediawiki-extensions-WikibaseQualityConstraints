@@ -38,6 +38,7 @@
 			"class": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport",
 			"factory": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::factory",
 			"services": [
+				"LanguageNameUtils",
 				"MainConfig",
 				"StatsdDataFactory",
 				"WikibaseRepo.EntityIdHtmlLinkFormatterFactory",
@@ -54,6 +55,7 @@
 			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints",
 			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints::factory",
 			"services": [
+				"LanguageNameUtils",
 				"MainConfig",
 				"StatsdDataFactory",
 				"WikibaseRepo.ApiHelperFactory",
@@ -69,6 +71,7 @@
 			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters",
 			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters::newFromGlobalState",
 			"services": [
+				"LanguageNameUtils",
 				"MainConfig",
 				"StatsdDataFactory",
 				"WikibaseRepo.ApiHelperFactory",
