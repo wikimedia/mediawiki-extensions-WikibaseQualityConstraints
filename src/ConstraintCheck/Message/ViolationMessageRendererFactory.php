@@ -20,34 +20,35 @@ class ViolationMessageRendererFactory {
 
 	private Config $config;
 	private LanguageNameUtils $languageNameUtils;
-	private MessageLocalizer $messageLocalizer;
 	private EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory;
 	private OutputFormatValueFormatterFactory $valueFormatterFactory;
 
 	public function __construct(
 		Config $config,
 		LanguageNameUtils $languageNameUtils,
-		MessageLocalizer $messageLocalizer,
 		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
 		OutputFormatValueFormatterFactory $valueFormatterFactory
 	) {
 		$this->config = $config;
 		$this->languageNameUtils = $languageNameUtils;
-		$this->messageLocalizer = $messageLocalizer;
 		$this->entityIdHtmlLinkFormatterFactory = $entityIdHtmlLinkFormatterFactory;
 		$this->valueFormatterFactory = $valueFormatterFactory;
 	}
 
-	public function getViolationMessageRenderer( Language $language ): ViolationMessageRenderer {
+	public function getViolationMessageRenderer(
+		Language $userLanguage,
+		MessageLocalizer $messageLocalizer
+	): ViolationMessageRenderer {
+		$userLanguageCode = $userLanguage->getCode();
 		$formatterOptions = new FormatterOptions();
-		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
+		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $userLanguageCode );
 		return new MultilingualTextViolationMessageRenderer(
 			$this->entityIdHtmlLinkFormatterFactory
-				->getEntityIdFormatter( $language ),
+				->getEntityIdFormatter( $userLanguage ),
 			$this->valueFormatterFactory
 				->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions ),
 			$this->languageNameUtils,
-			$this->messageLocalizer,
+			$messageLocalizer,
 			$this->config
 		);
 	}

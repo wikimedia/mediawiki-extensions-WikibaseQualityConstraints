@@ -92,7 +92,6 @@ class CheckConstraints extends ApiBase {
 			new ViolationMessageRendererFactory(
 				$config,
 				$languageNameUtils,
-				$main,
 				$entityIdFormatterFactory,
 				$valueFormatterFactory
 			)
@@ -147,7 +146,7 @@ class CheckConstraints extends ApiBase {
 		$statuses = $params[self::PARAM_STATUS];
 
 		$checkResultsRenderer = $this->checkResultsRendererFactory
-			->getCheckResultsRenderer( $this->getLanguage() );
+			->getCheckResultsRenderer( $this->getLanguage(), $this );
 
 		$this->getResult()->addValue(
 			null,
