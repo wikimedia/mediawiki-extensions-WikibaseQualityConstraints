@@ -48,6 +48,7 @@ class ViolationMessageRendererFactory {
 			$this->valueFormatterFactory
 				->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions ),
 			$this->languageNameUtils,
+			$userLanguageCode,
 			$messageLocalizer,
 			$this->config
 		);

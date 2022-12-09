@@ -31,6 +31,7 @@ class ViolationMessageRenderer {
 	private EntityIdFormatter $entityIdFormatter;
 	private ValueFormatter $dataValueFormatter;
 	private LanguageNameUtils $languageNameUtils;
+	private string $userLanguageCode;
 	protected MessageLocalizer $messageLocalizer;
 	private Config $config;
 	private int $maxListLength;
@@ -47,6 +48,7 @@ class ViolationMessageRenderer {
 		EntityIdFormatter $entityIdFormatter,
 		ValueFormatter $dataValueFormatter,
 		LanguageNameUtils $languageNameUtils,
+		string $userLanguageCode,
 		MessageLocalizer $messageLocalizer,
 		Config $config,
 		int $maxListLength = 10
@@ -54,6 +56,7 @@ class ViolationMessageRenderer {
 		$this->entityIdFormatter = $entityIdFormatter;
 		$this->dataValueFormatter = $dataValueFormatter;
 		$this->languageNameUtils = $languageNameUtils;
+		$this->userLanguageCode = $userLanguageCode;
 		$this->messageLocalizer = $messageLocalizer;
 		$this->config = $config;
 		$this->maxListLength = $maxListLength;
@@ -377,7 +380,7 @@ class ViolationMessageRenderer {
 			// ::renderList (through ::renderLanguageList) requires 'raw' parameter
 			// so we effectively build Message::plaintextParam here
 			Message::rawParam( htmlspecialchars(
-				$this->languageNameUtils->getLanguageName( $languageCode )
+				$this->languageNameUtils->getLanguageName( $languageCode, $this->userLanguageCode )
 			) ),
 			Message::plaintextParam( $languageCode ),
 		];
