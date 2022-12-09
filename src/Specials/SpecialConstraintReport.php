@@ -7,7 +7,6 @@ use Html;
 use HTMLForm;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
-use MediaWiki\Languages\LanguageNameUtils;
 use OOUI\IconWidget;
 use OOUI\LabelWidget;
 use SpecialPage;
@@ -26,8 +25,8 @@ use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableBuilder;
@@ -94,7 +93,6 @@ class SpecialConstraintReport extends SpecialPage {
 	private $dataFactory;
 
 	public static function factory(
-		LanguageNameUtils $languageNameUtils,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
 		EntityIdFormatterFactory $entityIdFormatterFactory,
@@ -102,7 +100,8 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityTitleLookup $entityTitleLookup,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		EntityLookup $entityLookup,
-		DelegatingConstraintChecker $delegatingConstraintChecker
+		DelegatingConstraintChecker $delegatingConstraintChecker,
+		ViolationMessageRendererFactory $violationMessageRendererFactory
 	): self {
 		return new self(
 			$entityLookup,
@@ -112,7 +111,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$entityIdParser,
 			$valueFormatterFactory,
 			$delegatingConstraintChecker,
-			$languageNameUtils,
+			$violationMessageRendererFactory,
 			$config,
 			$dataFactory
 		);
@@ -126,7 +125,7 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityIdParser $entityIdParser,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $constraintChecker,
-		LanguageNameUtils $languageNameUtils,
+		ViolationMessageRendererFactory $violationMessageRendererFactory,
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory
 	) {
@@ -161,12 +160,9 @@ class SpecialConstraintReport extends SpecialPage {
 			$this->getContext(),
 			$config
 		);
-		$this->violationMessageRenderer = new MultilingualTextViolationMessageRenderer(
-			$this->entityIdLinkFormatter,
-			$dataValueFormatter,
-			$languageNameUtils,
-			$this->getContext(),
-			$config
+		$this->violationMessageRenderer = $violationMessageRendererFactory->getViolationMessageRenderer(
+			$language,
+			$this->getContext()
 		);
 
 		$this->config = $config;
