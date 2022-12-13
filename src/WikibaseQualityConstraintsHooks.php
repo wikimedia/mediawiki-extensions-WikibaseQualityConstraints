@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use Config;
 use DatabaseUpdater;
+use ExtensionRegistry;
 use JobSpecification;
 use MediaWiki\MediaWikiServices;
 use OutputPage;
@@ -135,6 +136,13 @@ final class WikibaseQualityConstraintsHooks {
 			return;
 		}
 		if ( empty( $out->getJsConfigVars()['wbIsEditView'] ) ) {
+			return;
+		}
+
+		$services = MediaWikiServices::getInstance();
+		$isMobileView = ExtensionRegistry::getInstance()->isLoaded( 'MobileFrontend' ) &&
+			$services->getService( 'MobileFrontend.Context' )->shouldDisplayMobileView();
+		if ( $isMobileView ) {
 			return;
 		}
 
