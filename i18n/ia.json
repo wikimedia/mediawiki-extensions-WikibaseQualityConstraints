@@ -131,5 +131,16 @@
 	"wbqc-violation-message-valueOnly": "Iste proprietate debe solmente esser usate pro le valor principal de un declaration, non pro qualificatores o referentias.",
 	"wbqc-violation-message-reference": "Le proprietate debe solmente esser usate in referentias, non pro le valor principal de un declaration o pro un qualificator.",
 	"wbqc-violation-message-noBounds": "Valores pro $1 non debe haber alcun limites.",
-	"wbqc-violation-message-units-none": "Le valor pro $1 non debe haber un unitate."
+	"wbqc-violation-message-units-none": "Le valor pro $1 non debe haber un unitate.",
+	"wbqc-violation-message-units": "Le valor pro $1 debe haber {{PLURAL:$2|1=le unitate $4.|2=le unitate $4 o $5.|un del sequente unitates: $3}}",
+	"wbqc-violation-message-units-or-none": "Le valor pro $1 debe haber {{PLURAL:$2|1=le unitate $4|2=le unitate $4 o $5|un del sequente unitates}} o esser {{PLURAL:$2|1=sin unitate.|2=sin unitate.|sin unitate: $3}}",
+	"wbqc-violation-message-entityType": "Le proprietate $1 non debe esser usate in iste typo de entitate, le unic {{PLURAL:$2|1=typo de entitate valide es $4.|2=typos de entitate valide es $4 e $5.|typos de entitate valide es: $3}}",
+	"wbqc-violation-message-none-of": "Le valor pro $1 non debe esser {{PLURAL:$2|1=$4.|2=$4 o $5.|un del sequentes:$3}}",
+	"wbqc-violation-message-integer": "Le valores pro $1 debe esser numeros integre, ma $2 ha un parte fractional.",
+	"wbqc-violation-message-integer-bounds": "Le valores pro $1 debe esser numeros integre, ma le limites de $2 ha un parte fractional.",
+	"wbqc-violation-message-citationNeeded": "Declarationes pro $1 debe haber al minus un referentia.",
+	"wbqc-violation-message-language": "Declarationes pro $1 debe esser solmente sur lexemas con le lingua fixate a {{PLURAL:$2|1=$4.|2=o $4 o $5.|un del sequentes: $3}}",
+	"wbqc-violation-message-label-lacking": "Entitates con declarationes pro $1 debe tamben haber un etiquetta al minus in {{PLURAL:$2|1=le lingua $4.|un del sequente linguas: $3}}",
+	"wbqc-violation-message-property-scope": "Le proprietate $1 non debe esser usate in iste loco ($2). Le sol {{PLURAL:$3|loco|locos}} valide pro iste proprietate {{PLURAL:$3|es $5.|es: $4}}",
+	"wbqc-violation-message-exception": "Iste entitate es un exception cognoscite pro iste restriction e ha essite marcate como tal."
 }
