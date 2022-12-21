@@ -8,6 +8,7 @@
 	},
 	"wbqc-constraintreport": "Poročilo o omejitvi",
 	"wbqc-desc": "Preveri omejitve za objekte in lastnosti in prikaži zadetke na posebni strani",
+	"wbqc-constraintreport-explanation-part-one": "Ta posebna stran izvaja preverjanje omejitev za katero koli entiteto, ki jo izberete. Entitete se pridobivajo iz aktivnega sistema, tako da bo vsaka kršitev omejitve, ki jo tam popravite, takoj odstranjena s tega seznama.",
 	"wbqc-constraintreport-form-section": "Preveri omejitve za entiteto",
 	"wbqc-constraintreport-form-submit-label": "Preveri",
 	"wbqc-constraintreport-form-entityid-label": "ID entitete:",
