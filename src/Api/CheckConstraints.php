@@ -71,14 +71,13 @@ class CheckConstraints extends ApiBase {
 		string $name,
 		IBufferingStatsdDataFactory $dataFactory,
 		ApiHelperFactory $apiHelperFactory,
+		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
 		StatementGuidValidator $statementGuidValidator,
 		ResultsSource $resultsSource,
 		ViolationMessageRendererFactory $violationMessageRendererFactory
 	): self {
-		$entityIdLabelFormatterFactory = new EntityIdLabelFormatterFactory();
-
 		$checkResultsRendererFactory = new CheckResultsRendererFactory(
 			$entityTitleLookup,
 			$entityIdLabelFormatterFactory,

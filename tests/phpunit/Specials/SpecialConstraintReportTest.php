@@ -14,7 +14,6 @@ use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Services\Statement\GuidGenerator;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
-use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
@@ -72,7 +71,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		return new SpecialConstraintReport(
 			WikibaseRepo::getEntityLookup(),
 			WikibaseRepo::getEntityTitleLookup(),
-			new EntityIdLabelFormatterFactory(),
+			WikibaseRepo::getEntityIdLabelFormatterFactory(),
 			WikibaseRepo::getEntityIdHtmlLinkFormatterFactory(),
 			WikibaseRepo::getEntityIdParser(),
 			WikibaseRepo::getValueFormatterFactory(),

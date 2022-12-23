@@ -95,7 +95,8 @@ class SpecialConstraintReport extends SpecialPage {
 	public static function factory(
 		Config $config,
 		IBufferingStatsdDataFactory $dataFactory,
-		EntityIdFormatterFactory $entityIdFormatterFactory,
+		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
+		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
@@ -106,8 +107,8 @@ class SpecialConstraintReport extends SpecialPage {
 		return new self(
 			$entityLookup,
 			$entityTitleLookup,
-			new EntityIdLabelFormatterFactory(),
-			$entityIdFormatterFactory,
+			$entityIdLabelFormatterFactory,
+			$entityIdHtmlLinkFormatterFactory,
 			$entityIdParser,
 			$valueFormatterFactory,
 			$delegatingConstraintChecker,

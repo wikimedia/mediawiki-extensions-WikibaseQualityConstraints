@@ -24,7 +24,6 @@ use Wikibase\DataModel\Tests\NewStatement;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Lib\LanguageFallbackChainFactory;
-use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraints;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
@@ -84,7 +83,7 @@ class CheckConstraintsTest extends ApiTestCase {
 		self::$entityLookup->addEntity( new Item( new ItemId( self::EMPTY_ITEM ) ) );
 
 		$wgAPIModules['wbcheckconstraints']['factory'] = function ( $main, $name ) {
-			$factory = new EntityIdLabelFormatterFactory();
+			$entityIdLabelFormatterFactory = WikibaseRepo::getEntityIdLabelFormatterFactory();
 			$languageFallbackChainFactory = new LanguageFallbackChainFactory();
 
 			$language = Language::factory( 'en' );
@@ -157,11 +156,11 @@ class CheckConstraintsTest extends ApiTestCase {
 				),
 				new CheckResultsRendererFactory(
 					WikibaseRepo::getEntityTitleLookup(),
-					$factory,
+					$entityIdLabelFormatterFactory,
 					new ViolationMessageRendererFactory(
 						$config,
 						MediaWikiServices::getInstance()->getLanguageNameUtils(),
-						$factory,
+						$entityIdLabelFormatterFactory,
 						$valueFormatterFactory
 					)
 				),
