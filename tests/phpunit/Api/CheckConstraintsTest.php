@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 use ApiTestCase;
 use DataValues\UnknownValue;
 use HashConfig;
-use Language;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use NullStatsdDataFactory;
@@ -87,7 +86,7 @@ class CheckConstraintsTest extends ApiTestCase {
 			$factory = new EntityIdLabelFormatterFactory();
 			$languageFallbackChainFactory = new LanguageFallbackChainFactory();
 
-			$language = Language::factory( 'en' );
+			$language = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'en' );
 
 			$formatterOptions = new FormatterOptions();
 			$factoryFunctions = [];

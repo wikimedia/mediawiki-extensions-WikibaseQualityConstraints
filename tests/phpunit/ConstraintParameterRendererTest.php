@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\StringValue;
-use Language;
 use MockMessageLocalizer;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;
@@ -98,7 +97,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
 		$constraintParameterRenderer->expects( $this->never() )->method( 'formatEntityId' );
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'en' ) ] );
+		$this->setUserLang( 'en' );
 
 		$formatted = $constraintParameterRenderer->formatItemIdSnakValue( $value );
 
@@ -117,7 +116,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
 		$constraintParameterRenderer->expects( $this->never() )->method( 'formatEntityId' );
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'en' ) ] );
+		$this->setUserLang( 'en' );
 
 		$formatted = $constraintParameterRenderer->formatItemIdSnakValue( $value );
 

@@ -7,7 +7,6 @@ use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use HashConfig;
-use Language;
 use MediaWiki\Languages\LanguageNameUtils;
 use Message;
 use MessageLocalizer;
@@ -131,7 +130,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 			->withMultilingualText( $multilingualText );
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'de-at' ) ] );
+		$this->setUserLang( 'de-at' );
 		$rendered = $renderer->render( $message );
 
 		$expected = '(wbqc-violation-message-format-clarification: Q1, ' .
@@ -154,7 +153,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 			->withMultilingualText( $multilingualText );
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'pt' ) ] );
+		$this->setUserLang( 'pt' );
 		$rendered = $renderer->render( $message );
 
 		$expected = '(wbqc-violation-message-format: Q1, ' .
@@ -171,7 +170,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$role = null;
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'en' ) ] );
+		$this->setUserLang( 'en' );
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
@@ -189,7 +188,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$role = null;
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'de' ) ] );
+		$this->setUserLang( 'de' );
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
@@ -207,7 +206,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$role = null;
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'de-at' ) ] );
+		$this->setUserLang( 'de-at' );
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
@@ -225,7 +224,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$role = null;
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'tlh' ) ] );
+		$this->setUserLang( 'tlh' );
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
@@ -247,7 +246,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$role = null;
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'pt' ) ] );
+		$this->setUserLang( 'pt' );
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
@@ -265,7 +264,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$role = null;
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'pt' ) ] );
+		$this->setUserLang( 'pt' );
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
@@ -295,7 +294,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$role = Role::CONSTRAINT_PARAMETER_VALUE;
 		$renderer = $this->newMultilingualTextViolationMessageRenderer( null, new StringFormatter() );
 
-		$this->setMwGlobals( [ 'wgLang' => Language::factory( 'en' ) ] );
+		$this->setUserLang( 'en' );
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
