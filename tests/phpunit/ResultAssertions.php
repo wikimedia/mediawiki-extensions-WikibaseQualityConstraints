@@ -3,8 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use HashConfig;
-use Language;
 use MediaWiki\MediaWikiServices;
+use Message;
 use MockMessageLocalizer;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\Formatters\UnDeserializableValueFormatter;
@@ -79,8 +79,8 @@ trait ResultAssertions {
 		);
 		$resultMessage = $result->getMessage();
 		$resultMessageKey = $resultMessage->getMessageKey();
-		$this->assertNotNull(
-			Language::getMessageFor( $resultMessageKey, 'en' ),
+		$this->assertTrue(
+			( new Message( $resultMessageKey ) )->inLanguage( 'en' )->exists(),
 			"Message should not refer to a non-existing message key (⧼{$resultMessageKey}⧽)."
 		);
 		if ( $messageKey !== null ) {
