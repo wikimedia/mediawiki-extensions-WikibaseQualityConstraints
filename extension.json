@@ -41,6 +41,7 @@
 				"MainConfig",
 				"StatsdDataFactory",
 				"WikibaseRepo.EntityIdHtmlLinkFormatterFactory",
+				"WikibaseRepo.EntityIdLabelFormatterFactory",
 				"WikibaseRepo.EntityIdParser",
 				"WikibaseRepo.EntityTitleLookup",
 				"WikibaseRepo.ValueFormatterFactory",
@@ -57,6 +58,7 @@
 			"services": [
 				"StatsdDataFactory",
 				"WikibaseRepo.ApiHelperFactory",
+				"WikibaseRepo.EntityIdLabelFormatterFactory",
 				"WikibaseRepo.EntityIdParser",
 				"WikibaseRepo.EntityTitleLookup",
 				"WikibaseRepo.StatementGuidValidator",
