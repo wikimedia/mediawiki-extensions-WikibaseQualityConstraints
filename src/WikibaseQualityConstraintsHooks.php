@@ -140,6 +140,8 @@ final class WikibaseQualityConstraintsHooks {
 		}
 
 		$services = MediaWikiServices::getInstance();
+		$config = $services->getMainConfig();
+
 		$isMobileView = ExtensionRegistry::getInstance()->isLoaded( 'MobileFrontend' ) &&
 			$services->getService( 'MobileFrontend.Context' )->shouldDisplayMobileView();
 		if ( $isMobileView ) {
@@ -148,11 +150,10 @@ final class WikibaseQualityConstraintsHooks {
 
 		$out->addModules( 'wikibase.quality.constraints.suggestions' );
 
-		if ( !$out->getUser()->isRegistered() ) {
-			return;
+		if ( $config->get( 'WBQualityConstraintsShowConstraintViolationToNonLoggedInUsers' )
+			|| $out->getUser()->isRegistered() ) {
+				$out->addModules( 'wikibase.quality.constraints.gadget' );
 		}
-
-		$out->addModules( 'wikibase.quality.constraints.gadget' );
 	}
 
 }
