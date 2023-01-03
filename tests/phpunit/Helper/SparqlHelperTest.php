@@ -14,6 +14,7 @@ use DataValues\UnboundedQuantityValue;
 use HashBagOStuff;
 use HashConfig;
 use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Revision\SlotRecord;
 use MultiConfig;
 use NullStatsdDataFactory;
 use WANObjectCache;
@@ -862,8 +863,8 @@ END;
 					'wd',
 					false,
 					[
-						'item' => [ 'namespaceId' => 100 ,'slot' => 'main' ],
-						'property' => [ 'namespaceId' => 200, 'slot' => 'main' ]
+						'item' => [ 'namespaceId' => 100 ,'slot' => SlotRecord::MAIN ],
+						'property' => [ 'namespaceId' => 200, 'slot' => SlotRecord::MAIN ]
 					],
 					'http://wiki/entity/',
 					'wd',
