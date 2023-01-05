@@ -19,7 +19,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
-use WikibaseQuality\ConstraintReport\Tests\Helper\JsonFileEntityLookup;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper
@@ -44,7 +43,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		SparqlHelper $sparqlHelper = null
 	) {
 		return new TypeCheckerHelper(
-			$entityLookup ?: new JsonFileEntityLookup( __DIR__ ),
+			$entityLookup ?: new InMemoryEntityLookup(),
 			$this->getDefaultConfig(),
 			$sparqlHelper ?: new DummySparqlHelper(),
 			new NullStatsdDataFactory()
@@ -52,15 +51,12 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @param EntityLookup $lookup The backing lookup of the mock (defaults to JsonFileEntityLookup).
+	 * @param EntityLookup $lookup The backing lookup of the mock.
 	 *
 	 * @return EntityLookup Expects that getEntity is called
 	 * exactly WBQualityConstraintsTypeCheckMaxEntities times.
 	 */
-	private function getMaxEntitiesLookup( EntityLookup $lookup = null ) {
-		if ( $lookup === null ) {
-			$lookup = new JsonFileEntityLookup( __DIR__ );
-		}
+	private function getMaxEntitiesLookup( EntityLookup $lookup ) {
 		$maxEntities = $this->getDefaultConfig()->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
 
 		$spy = $this->createMock( EntityLookup::class );
@@ -88,6 +84,41 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			->withConsecutive( $arguments )
 			->willReturn( new CachedBool( $return, Metadata::blank() ) );
 		return $mock;
+	}
+
+	/**
+	 * Each entity references the Item Id of the second entity
+	 * twice, creating a wide structure
+	 *
+	 * @return EntityLookup $lookup
+	 */
+	private function getWideEntityStructureLookup(): EntityLookup {
+		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$entityId = new ItemId( 'Q9' );
+		$otherEntityId = new ItemId( 'Q10' );
+		$entity = NewItem::withId( $entityId )
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( $otherEntityId )
+			)
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( $otherEntityId )
+			)
+			->build();
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( $entityId )
+			)
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( $entityId )
+			)
+			->build();
+		$lookup = new InMemoryEntityLookup( $entity, $otherEntity );
+
+		return $lookup;
 	}
 
 	public function testHasClassInRelation_Valid() {
@@ -125,7 +156,17 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			new EntityIdValue( new ItemId( 'Q5' ) )
 		) );
 		$statements = new StatementList( $statement1, $statement2 );
-		$this->assertTrue( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
+		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+
+		$indirectEntity = NewItem::withId( new ItemId( 'Q5' ) )
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( new ItemId( 'Q4' ) )
+			)
+			->build();
+
+		$lookup = new InMemoryEntityLookup( $indirectEntity );
+		$this->assertTrue( $this->getHelper( $lookup )->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
 	}
 
 	/**
@@ -223,34 +264,80 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsSubclassOf_ValidWithIndirection() {
+		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$entityId = new ItemId( 'Q6' );
+		$secondEntityId = new ItemId( 'Q5' );
+		$thirdEntityId = new ItemId( 'Q100' ); // entity for testing indirect relation, not part of the lookup itself
+		$entity = NewItem::withId( $entityId )
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( $secondEntityId )
+			)
+			->build();
+		$secondEntity = NewItem::withId( $secondEntityId )
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( $thirdEntityId )
+			)
+			->build();
+		$lookup = new InMemoryEntityLookup( $entity, $secondEntity );
+		$helper = $this->getHelper( $lookup );
 		$this->assertTrue(
-			$this->getHelper()->isSubclassOfWithSparqlFallback( new ItemId( 'Q6' ), [ 'Q100', 'Q101' ] )->getBool()
+			$helper->isSubclassOfWithSparqlFallback( $entityId, [ 'Q100', 'Q106' ] )->getBool()
 		);
 	}
 
 	public function testIsSubclassOf_Invalid() {
+		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$entityId = new ItemId( 'Q6' );
+		$entity = NewItem::withId( $entityId )
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( new ItemId( 'Q5' ) )
+			)
+			->build();
+		$lookup = new InMemoryEntityLookup( $entity );
 		$this->assertFalse(
-			$this->getHelper()->isSubclassOfWithSparqlFallback( new ItemId( 'Q6' ), [ 'Q200', 'Q201' ] )->getBool()
+			$this->getHelper( $lookup )->isSubclassOfWithSparqlFallback( $entityId, [ 'Q200', 'Q201' ] )->getBool()
 		);
 	}
 
 	public function testIsSubclassOf_Cyclic() {
-		$helper = $this->getHelper( $this->getMaxEntitiesLookup() );
-		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q7' ), [ 'Q100', 'Q101' ] )->getBool() );
+		$entityId = new ItemId( 'Q7' );
+		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$otherEntityId = new ItemId( 'Q8' );
+		$entity = NewItem::withId( $entityId )
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( $otherEntityId )
+			)
+			->build();
+		$otherEntity = NewItem::withId( $otherEntityId )
+			->andStatement(
+				NewStatement::forProperty( $subclassPid )
+					->withValue( $entityId )
+			)
+			->build();
+		$lookup = new InMemoryEntityLookup( $entity, $otherEntity );
+		$helper = $this->getHelper( $this->getMaxEntitiesLookup( $lookup ) );
+		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( $entityId, [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-	public function testIsSubclassOf_CyclicWide() {
-		$helper = $this->getHelper( $this->getMaxEntitiesLookup() );
+public function testIsSubclassOf_CyclicWide() {
+		$lookup = $this->getWideEntityStructureLookup();
+		$helper = $this->getHelper( $this->getMaxEntitiesLookup( $lookup ) );
 		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] )->getBool() );
-	}
+}
 
 	public function testIsSubclassOf_CyclicWideWithSparqlTrue() {
-		$helper = $this->getHelper( $this->getMaxEntitiesLookup(), $this->getSparqlHelper( true ) );
+		$lookup = $this->getWideEntityStructureLookup();
+		$helper = $this->getHelper( $this->getMaxEntitiesLookup( $lookup ), $this->getSparqlHelper( true ) );
 		$this->assertTrue( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
 	public function testIsSubclassOf_CyclicWideWithSparqlFalse() {
-		$helper = $this->getHelper( $this->getMaxEntitiesLookup(), $this->getSparqlHelper( false ) );
+		$lookup = $this->getWideEntityStructureLookup();
+		$helper = $this->getHelper( $this->getMaxEntitiesLookup( $lookup ), $this->getSparqlHelper( false ) );
 		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
