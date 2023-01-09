@@ -41,7 +41,7 @@ Extension to Wikibase Repository that performs constraint checks.
   * Alternatively, to check “format” constraints without running a full SPARQL server,
     you can use the [minisparql] server.
 
-* Run `php maintenance/runScript.php extensions/WikibaseQualityConstraints/maintenance/ImportConstraintStatements.php`.
+* Run `php maintenance/run.php extensions/WikibaseQualityConstraints/maintenance/ImportConstraintStatements.php`.
 
 [minisparql]: https://github.com/lucaswerkmeister/minisparql
 
