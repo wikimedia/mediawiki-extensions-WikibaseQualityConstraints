@@ -94,6 +94,9 @@
 			"scripts": "SpecialConstraintReportPage.js",
 			"dependencies": [
 				"oojs-ui-core.styles"
+			],
+			"targets": [
+				"desktop"
 			]
 		},
 		"wikibase.quality.constraints.icon": {
@@ -158,7 +161,10 @@
 				"wikibase.quality.constraints.icon",
 				"wikibase.quality.constraints.ui"
 			],
-			"skipFunction": "gadget-skip.js"
+			"skipFunction": "gadget-skip.js",
+			"targets": [
+				"desktop"
+			]
 		},
 		"wikibase.quality.constraints.suggestions": {
 			"packageFiles": [
@@ -177,6 +183,9 @@
 			],
 			"dependencies": [
 				"jquery.wikibase.entityselector"
+			],
+			"targets": [
+				"desktop"
 			]
 		}
 	},
