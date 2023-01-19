@@ -214,8 +214,6 @@ To add a new constraint type, the following steps are necessary:
     and one test for the `checkConstraintParameters` method.
   * Use the `ResultAssertions` trait’s methods to check constraint check results.
   * Use the `NewItem` and `NewStatement` builders to construct test data.
-    (You might see `JsonFileEntityLookup` and separate JSON files used in some existing tests,
-    but that’s a lot less readable.)
   * If the checker uses a `Config`, use the `DefaultConfig` trait.
   * If the constraint has parameters,
     add methods for them to the `ConstraintParameters` trait and use it in the tests.
