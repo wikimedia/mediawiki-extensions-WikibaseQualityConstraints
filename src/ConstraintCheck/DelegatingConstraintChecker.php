@@ -573,7 +573,6 @@ class DelegatingConstraintChecker {
 	 * @param Context $context
 	 * @param Constraint $constraint
 	 *
-	 * @throws InvalidArgumentException
 	 * @return CheckResult
 	 */
 	private function getCheckResultFor( Context $context, Constraint $constraint ) {
