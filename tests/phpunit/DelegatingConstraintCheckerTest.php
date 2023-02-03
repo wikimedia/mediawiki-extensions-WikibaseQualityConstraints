@@ -322,6 +322,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_parameters' => '{}'
 			],
 			[
+				'constraint_guid' => 'P12$8f54a63f-aea5-4ef5-9415-4343334ca3f1',
+				'pid' => 12,
+				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
+				'constraint_parameters' => json_encode(
+					$this->statusParameter( 'invalid' )
+				),
+			],
+			[
 				'constraint_guid' => 'P8$34c8af8e-bb50-4458-994b-f355ff899fff',
 				'pid' => 8,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
@@ -583,6 +591,19 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( 'suggestion', $result->getStatus() );
 		$this->assertArrayHasKey( 'constraint_status', $result->getParameters() );
 		$this->assertSame( [ 'suggestion' ], $result->getParameters()[ 'constraint_status' ] );
+	}
+
+	public function testCheckOnEntityIdInvalidConstraintStatus(): void {
+		$entity = NewItem::withId( 'Q12' )
+			->andStatement( NewStatement::noValueFor( 'P12' ) )
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
+		$this->assertSame( 'bad-parameters', $result[ 0 ]->getStatus() );
+		$entityIds = $result[ 0 ]->getMetadata()->getDependencyMetadata()->getEntityIds();
+		$this->assertContainsEquals( new NumericPropertyId( 'P12' ), $entityIds );
 	}
 
 	public function testCheckOnEntityIdSelectConstraintIds() {

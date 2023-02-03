@@ -294,7 +294,7 @@ trait ConstraintParameters {
 	}
 
 	/**
-	 * @param string $status ('mandatory' or 'suggestion')
+	 * @param string $status 'mandatory', 'suggestion', or 'invalid'
 	 * @return array[]
 	 */
 	public function statusParameter( $status ) {
@@ -305,6 +305,9 @@ trait ConstraintParameters {
 				break;
 			case 'suggestion':
 				$configKey = 'WBQualityConstraintsSuggestionConstraintId';
+				break;
+			case 'invalid':
+				$configKey = 'WBQualityConstraintsAsMainValueId'; // unrelated, invalid as a constraint status
 				break;
 			default:
 				throw new InvalidArgumentException( '$status must be mandatory or suggestion' );

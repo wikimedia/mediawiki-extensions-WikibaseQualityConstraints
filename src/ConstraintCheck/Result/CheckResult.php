@@ -188,6 +188,10 @@ class CheckResult {
 		return $this->message;
 	}
 
+	public function setMessage( ?ViolationMessage $message ) {
+		$this->message = $message;
+	}
+
 	public function withMetadata( Metadata $metadata ): self {
 		$this->metadata = $metadata;
 		return $this;

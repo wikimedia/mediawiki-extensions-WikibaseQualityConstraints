@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Result;
 
 use DataValues\StringValue;
@@ -97,6 +99,18 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 
 		$checkResult->setStatus( CheckResult::STATUS_WARNING );
 		$this->assertSame( CheckResult::STATUS_WARNING, $checkResult->getStatus() );
+	}
+
+	public function testSetMessage(): void {
+		$context = new FakeSnakContext( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) );
+		$constraint = new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] );
+		$checkResult = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION );
+
+		$this->assertNull( $checkResult->getMessage() );
+
+		$message = new ViolationMessage( 'wbqc-violation-message-single-value' );
+		$checkResult->setMessage( $message );
+		$this->assertSame( $message, $checkResult->getMessage() );
 	}
 
 }

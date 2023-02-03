@@ -577,7 +577,7 @@ class DelegatingConstraintChecker {
 
 			$this->addMetadata( $context, $result );
 
-			$this->downgradeResultStatus( $context, $result );
+			$this->downgradeResultStatus( $result );
 
 			$this->loggingHelper->logConstraintCheck(
 				$context,
@@ -647,14 +647,15 @@ class DelegatingConstraintChecker {
 		] ) );
 	}
 
-	private function downgradeResultStatus( Context $context, CheckResult &$result ): void {
+	private function downgradeResultStatus( CheckResult $result ): void {
 		$constraint = $result->getConstraint();
 		try {
 			$constraintStatus = $this->constraintParameterParser
 				->parseConstraintStatusParameter( $constraint->getConstraintParameters() );
 		} catch ( ConstraintParameterException $e ) {
-			$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
-			$constraintStatus = null;
+			$result->setStatus( CheckResult::STATUS_BAD_PARAMETERS );
+			$result->setMessage( $e->getViolationMessage() );
+			return;
 		}
 		if ( $constraintStatus === null ) {
 			// downgrade violation to warning
