@@ -717,6 +717,26 @@ class ConstraintParameterParser {
 	}
 
 	/**
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
+	 * @throws ConstraintParameterException if the parameter is invalid
+	 * @return MultilingualTextValue
+	 */
+	public function parseConstraintClarificationParameter( array $constraintParameters ): MultilingualTextValue {
+		$constraintClarificationId = $this->config->get( 'WBQualityConstraintsConstraintClarificationId' );
+
+		if ( !array_key_exists( $constraintClarificationId, $constraintParameters ) ) {
+			return new MultilingualTextValue( [] );
+		}
+
+		$constraintClarifications = $this->parseMultilingualTextParameter(
+			$constraintParameters[$constraintClarificationId],
+			$constraintClarificationId
+		);
+
+		return $constraintClarifications;
+	}
+
+	/**
 	 * Parse the constraint scope parameters:
 	 * the context types and entity types where the constraint should be checked.
 	 * Depending on configuration, this may be the same property ID or two different ones.

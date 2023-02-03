@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 
+use DataValues\MultilingualTextValue;
 use DataValues\TimeValue;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
@@ -66,6 +67,10 @@ class CheckResultDeserializer {
 				$violationMessage
 			);
 
+			$result->setConstraintClarification(
+				$this->getConstraintClarificationFromSerialization( $serialization )
+			);
+
 			$cachingMetadata = $this->deserializeCachingMetadata(
 				$serialization[CheckResultSerializer::KEY_CACHING_METADATA]
 			);
@@ -88,6 +93,18 @@ class CheckResultDeserializer {
 			);
 		} else {
 			return null;
+		}
+	}
+
+	private function getConstraintClarificationFromSerialization(
+		array $serialization
+	): MultilingualTextValue {
+		if ( array_key_exists( CheckResultSerializer::KEY_CONSTRAINT_CLARIFICATION, $serialization ) ) {
+			return MultilingualTextValue::newFromArray(
+				$serialization[CheckResultSerializer::KEY_CONSTRAINT_CLARIFICATION]
+			);
+		} else {
+			return new MultilingualTextValue( [] );
 		}
 	}
 

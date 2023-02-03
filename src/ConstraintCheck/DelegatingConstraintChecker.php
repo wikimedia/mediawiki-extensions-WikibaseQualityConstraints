@@ -245,6 +245,11 @@ class DelegatingConstraintChecker {
 			$problems[] = $e;
 		}
 		try {
+			$this->constraintParameterParser->parseConstraintClarificationParameter( $constraintParameters );
+		} catch ( ConstraintParameterException $e ) {
+			$problems[] = $e;
+		}
+		try {
 			$this->constraintParameterParser->parseConstraintStatusParameter( $constraintParameters );
 		} catch ( ConstraintParameterException $e ) {
 			$problems[] = $e;
@@ -577,6 +582,8 @@ class DelegatingConstraintChecker {
 
 			$this->addMetadata( $context, $result );
 
+			$this->addConstraintClarification( $result );
+
 			$this->downgradeResultStatus( $result );
 
 			$this->loggingHelper->logConstraintCheck(
@@ -645,6 +652,18 @@ class DelegatingConstraintChecker {
 				DependencyMetadata::ofEntityId( $result->getConstraint()->getPropertyId() ),
 			] ) ),
 		] ) );
+	}
+
+	private function addConstraintClarification( CheckResult $result ): void {
+		$constraint = $result->getConstraint();
+		try {
+			$constraintClarification = $this->constraintParameterParser
+				->parseConstraintClarificationParameter( $constraint->getConstraintParameters() );
+			$result->setConstraintClarification( $constraintClarification );
+		} catch ( ConstraintParameterException $e ) {
+			$result->setStatus( CheckResult::STATUS_BAD_PARAMETERS );
+			$result->setMessage( $e->getViolationMessage() );
+		}
 	}
 
 	private function downgradeResultStatus( CheckResult $result ): void {

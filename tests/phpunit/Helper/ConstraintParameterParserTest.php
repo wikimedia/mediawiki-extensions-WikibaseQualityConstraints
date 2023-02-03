@@ -1097,6 +1097,105 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # endregion
 
+# region parseConstraintClarificationParameter
+	public function testParseConstraintClarificationParameter_SingleClarification() {
+		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$value = new MonolingualTextValue( 'en', 'explanation' );
+		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value );
+
+		$parsed = $this->getConstraintParameterParser()->parseConstraintClarificationParameter(
+			[ $constraintClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ]
+		);
+
+		$this->assertEquals(
+			new MultilingualTextValue( [ $value ] ),
+			$parsed
+		);
+	}
+
+	public function testParseConstraintClarificationParameter_MultipleClarifications() {
+		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$value1 = new MonolingualTextValue( 'en', 'explanation' );
+		$snak1 = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value1 );
+		$value2 = new MonolingualTextValue( 'de', 'Erklärung' );
+		$snak2 = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value2 );
+		$value3 = new MonolingualTextValue( 'pt', 'explicação' );
+		$snak3 = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value3 );
+
+		$parsed = $this->getConstraintParameterParser()->parseConstraintClarificationParameter(
+			[ $constraintClarificationId => [
+				$this->getSnakSerializer()->serialize( $snak1 ),
+				$this->getSnakSerializer()->serialize( $snak2 ),
+				$this->getSnakSerializer()->serialize( $snak3 ),
+			] ]
+		);
+
+		$this->assertEquals(
+			new MultilingualTextValue( [ $value1, $value2, $value3 ] ),
+			$parsed
+		);
+	}
+
+	public function testParseConstraintClarificationParameter_NoClarifications() {
+		$parsed = $this->getConstraintParameterParser()->parseConstraintClarificationParameter(
+			[]
+		);
+
+		$this->assertEquals( new MultilingualTextValue( [] ), $parsed );
+	}
+
+	public function testParseConstraintClarificationParameter_Invalid_MultipleValuesForLanguage() {
+		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$value1 = new MonolingualTextValue( 'en', 'explanation' );
+		$snak1 = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value1 );
+		$value2 = new MonolingualTextValue( 'en', 'better explanation' );
+		$snak2 = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value2 );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseConstraintClarificationParameter',
+			[
+				[ $constraintClarificationId => [
+					$this->getSnakSerializer()->serialize( $snak1 ),
+					$this->getSnakSerializer()->serialize( $snak2 ),
+				] ]
+			],
+			'wbqc-violation-message-parameter-single-per-language'
+		);
+	}
+
+	public function testParseConstraintClarificationParameter_Invalid_String() {
+		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$value = new StringValue( 'explanation' );
+		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseConstraintClarificationParameter',
+			[
+				[ $constraintClarificationId => [
+					$this->getSnakSerializer()->serialize( $snak )
+				] ]
+			],
+			'wbqc-violation-message-parameter-monolingualtext'
+		);
+	}
+
+	public function testParseConstraintClarificationParameter_Invalid_Novalue() {
+		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$snak = new PropertyNoValueSnak( new NumericPropertyId( $constraintClarificationId ) );
+
+		$this->assertThrowsConstraintParameterException(
+			'parseConstraintClarificationParameter',
+			[
+				[ $constraintClarificationId => [
+					$this->getSnakSerializer()->serialize( $snak )
+				] ]
+			],
+			'wbqc-violation-message-parameter-value'
+		);
+	}
+
+# endregion
+
 # region parseConstraintScopeParameters
 	public function testParseConstraintScopeParameters_MainSnak_ItemPropertyMediainfo() {
 		$config = $this->getDefaultConfig();

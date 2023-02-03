@@ -552,7 +552,12 @@
 		},
 		"WBQualityConstraintsSyntaxClarificationId": {
 			"value": "P2916",
-			"description": "The property ID of the 'syntax clarification' property (data type: monolingual text), which specifies human-readable explanations of a 'format' constraint.",
+			"description": "The property ID of the 'syntax clarification' property (data type: monolingual text), which specifies human-readable explanations of a 'format' constraint. The syntax clarification is shown as part of the 'format' constraint violation message, clarifying the regular expression.",
+			"public": true
+		},
+		"WBQualityConstraintsConstraintClarificationId": {
+			"value": "P6607",
+			"description": "The property ID of the 'constraint clarification' property (data type: monolingual text), which specifies human-readable explanations of a constraint (of any constraint type). The constraint clarification is shown below the main constraint violation message.",
 			"public": true
 		},
 		"WBQualityConstraintsConstraintScopeId": {

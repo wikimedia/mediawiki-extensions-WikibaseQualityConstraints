@@ -26,6 +26,7 @@ class CheckResultSerializer {
 	public const KEY_CONSTRAINT = 'c';
 	public const KEY_CHECK_RESULT_STATUS = 's';
 	public const KEY_VIOLATION_MESSAGE = 'm';
+	public const KEY_CONSTRAINT_CLARIFICATION = 'l';
 	public const KEY_CACHING_METADATA = 'CM';
 	public const KEY_DEPENDENCY_METADATA = 'DM';
 	public const KEY_NULL_RESULT = '0';
@@ -72,6 +73,7 @@ class CheckResultSerializer {
 			$constraint = $checkResult->getConstraint();
 			$cachingMetadata = $checkResult->getMetadata()->getCachingMetadata();
 			$violationMessage = $checkResult->getMessage();
+			$clarification = $checkResult->getConstraintClarification();
 
 			$serialization[self::KEY_CONSTRAINT] =
 				$this->constraintSerializer->serialize( $constraint );
@@ -83,6 +85,10 @@ class CheckResultSerializer {
 			if ( $violationMessage !== null ) {
 				$serialization[self::KEY_VIOLATION_MESSAGE] =
 					$this->violationMessageSerializer->serialize( $violationMessage );
+			}
+			if ( $clarification->getTexts() !== [] ) {
+				$serialization[self::KEY_CONSTRAINT_CLARIFICATION] =
+					$clarification->getArrayValue();
 			}
 		}
 

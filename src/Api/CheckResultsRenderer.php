@@ -8,6 +8,7 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\Lib\Store\EntityTitleLookup;
+use Wikibase\Lib\TermLanguageFallbackChain;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckConstraintsResponse;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckResults;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
@@ -25,15 +26,18 @@ class CheckResultsRenderer {
 
 	private EntityTitleLookup $entityTitleLookup;
 	private EntityIdFormatter $entityIdLabelFormatter;
+	private TermLanguageFallbackChain $languageFallbackChain;
 	private ViolationMessageRenderer $violationMessageRenderer;
 
 	public function __construct(
 		EntityTitleLookup $entityTitleLookup,
 		EntityIdFormatter $entityIdLabelFormatter,
+		TermLanguageFallbackChain $languageFallbackChain,
 		ViolationMessageRenderer $violationMessageRenderer
 	) {
 		$this->entityTitleLookup = $entityTitleLookup;
 		$this->entityIdLabelFormatter = $entityIdLabelFormatter;
+		$this->languageFallbackChain = $languageFallbackChain;
 		$this->violationMessageRenderer = $violationMessageRenderer;
 	}
 
@@ -80,6 +84,10 @@ class CheckResultsRenderer {
 		if ( $message ) {
 			$result['message-html'] = $this->violationMessageRenderer->render( $message );
 		}
+		$constraintClarification = $this->renderConstraintClarification( $checkResult );
+		if ( $constraintClarification !== null ) {
+			$result['constraint-clarification'] = $constraintClarification;
+		}
 		if ( $checkResult->getContextCursor()->getType() === Context::TYPE_STATEMENT ) {
 			$result['claim'] = $checkResult->getContextCursor()->getStatementGuid();
 		}
@@ -89,6 +97,17 @@ class CheckResultsRenderer {
 		}
 
 		return $result;
+	}
+
+	private function renderConstraintClarification( CheckResult $result ): ?string {
+		$texts = $result->getConstraintClarification()->getTexts();
+		foreach ( $this->languageFallbackChain->getFetchLanguageCodes() as $languageCode ) {
+			if ( array_key_exists( $languageCode, $texts ) ) {
+				return $texts[$languageCode]->getText();
+			}
+		}
+
+		return null;
 	}
 
 }

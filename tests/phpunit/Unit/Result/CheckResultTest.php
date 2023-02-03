@@ -4,6 +4,8 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Result;
 
+use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -111,6 +113,20 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 		$message = new ViolationMessage( 'wbqc-violation-message-single-value' );
 		$checkResult->setMessage( $message );
 		$this->assertSame( $message, $checkResult->getMessage() );
+	}
+
+	public function testSetConstraintClarification(): void {
+		$context = new FakeSnakContext( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) );
+		$constraint = new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] );
+		$checkResult = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION );
+
+		$this->assertSame( [], $checkResult->getConstraintClarification()->getArrayValue() );
+
+		$constraintClarification = new MultilingualTextValue( [
+			new MonolingualTextValue( 'en', 'constraint clarification' ),
+		] );
+		$checkResult->setConstraintClarification( $constraintClarification );
+		$this->assertSame( $constraintClarification, $checkResult->getConstraintClarification() );
 	}
 
 }

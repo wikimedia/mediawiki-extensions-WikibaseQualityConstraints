@@ -2,6 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
+use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
 use MediaWiki\MediaWikiServices;
 use MockMessageLocalizer;
 use Title;
@@ -59,14 +61,15 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 			} );
 		$valueFormatter = $this->createMock( ValueFormatter::class );
 
-		$userLanguageCode = 'qqx';
+		$userLanguageCode = 'de-at';
 		$languageFallbackChain = $this->createConfiguredMock( TermLanguageFallbackChain::class, [
-			'getFetchLanguageCodes' => [ 'qqx' ],
+			'getFetchLanguageCodes' => [ 'de-at', 'de', 'en' ],
 		] );
 
 		return new CheckResultsRenderer(
 			$entityTitleLookup,
 			$entityIdFormatter,
+			$languageFallbackChain,
 			new ViolationMessageRenderer(
 				$entityIdFormatter,
 				$valueFormatter,
@@ -186,7 +189,11 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( 'http://wiki.test/Talk:P1', $constraint['discussLink'] );
 	}
 
-	public function testCheckResultToArray_Result() {
+	/** @dataProvider provideConstraintClarifications */
+	public function testCheckResultToArray_Result(
+		MultilingualTextValue $constraintClarification,
+		?string $expectedClarification
+	): void {
 		$checkResult = new CheckResult(
 			new MainSnakContext(
 				new Item( new ItemId( 'Q1' ) ),
@@ -208,14 +215,47 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 			( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
 				->withEntityId( new NumericPropertyId( 'P1' ) )
 		);
+		$checkResult->setConstraintClarification( $constraintClarification );
 
 		$result = $this->getResultsRenderer()->checkResultToArray( $checkResult );
 
 		$this->assertSame( 'status', $result['status'] );
 		$this->assertSame( 'P1', $result['property'] );
 		$this->assertSame( '(wbqc-violation-message-no-qualifiers: P1)', $result['message-html'] );
+		if ( $expectedClarification !== null ) {
+			$this->assertSame( $expectedClarification, $result['constraint-clarification'] );
+		} else {
+			$this->assertArrayNotHasKey( 'constraint-clarification', $result );
+		}
 		$this->assertSame( 'Q1$1deb7c9e-8de4-4bc2-baab-add9d4f538c3', $result['claim'] );
 		$this->assertArrayNotHasKey( 'cached', $result );
+	}
+
+	public function provideConstraintClarifications(): iterable {
+		yield 'exact match' => [
+			'constraintClarification' => new MultilingualTextValue( [
+				new MonolingualTextValue( 'de-at', 'de-at clarification' ),
+			] ),
+			'expectedClarification' => 'de-at clarification',
+		];
+		yield 'with language fallback' => [
+			'constraintClarification' => new MultilingualTextValue( [
+				new MonolingualTextValue( 'pt', 'pt clarification' ),
+				new MonolingualTextValue( 'de', 'de clarification' ),
+				new MonolingualTextValue( 'en', 'en clarification' ),
+			] ),
+			'expectedClarification' => 'de clarification',
+		];
+		yield 'no match in fallback chain' => [
+			'constraintClarification' => new MultilingualTextValue( [
+				new MonolingualTextValue( 'pt', 'pt clarification' ),
+			] ),
+			'expectedClarification' => null,
+		];
+		yield 'no clarification' => [
+			'constraintClarification' => new MultilingualTextValue( [] ),
+			'expectedClarification' => null,
+		];
 	}
 
 	public function testCheckResultToArray_Qualifier() {
