@@ -8,6 +8,7 @@ use Message;
 use MockMessageLocalizer;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\Formatters\UnDeserializableValueFormatter;
+use Wikibase\Lib\TermLanguageFallbackChain;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 
@@ -31,11 +32,17 @@ trait ResultAssertions {
 			return '';
 		}
 
+		$userLanguageCode = 'qqx';
+		$languageFallbackChain = $this->createMock( TermLanguageFallbackChain::class );
+		$languageFallbackChain->method( 'getFetchLanguageCodes' )
+			->willReturn( [ $userLanguageCode ] );
+
 		$renderer = new ViolationMessageRenderer(
 			new PlainEntityIdFormatter(),
 			new UnDeserializableValueFormatter(),
 			MediaWikiServices::getInstance()->getLanguageNameUtils(),
-			'qqx',
+			$userLanguageCode,
+			$languageFallbackChain,
 			new MockMessageLocalizer(),
 			new HashConfig( [
 				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',

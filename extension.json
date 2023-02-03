@@ -44,6 +44,7 @@
 				"WikibaseRepo.EntityIdLabelFormatterFactory",
 				"WikibaseRepo.EntityIdParser",
 				"WikibaseRepo.EntityTitleLookup",
+				"WikibaseRepo.LanguageFallbackChainFactory",
 				"WikibaseRepo.ValueFormatterFactory",
 				"WBQC_EntityLookup",
 				"WBQC_DelegatingConstraintChecker",
@@ -61,6 +62,7 @@
 				"WikibaseRepo.EntityIdLabelFormatterFactory",
 				"WikibaseRepo.EntityIdParser",
 				"WikibaseRepo.EntityTitleLookup",
+				"WikibaseRepo.LanguageFallbackChainFactory",
 				"WikibaseRepo.StatementGuidValidator",
 				"WBQC_ResultsSource",
 				"WBQC_ViolationMessageRendererFactory"
@@ -72,6 +74,7 @@
 			"services": [
 				"StatsdDataFactory",
 				"WikibaseRepo.ApiHelperFactory",
+				"WikibaseRepo.LanguageFallbackChainFactory",
 				"WikibaseRepo.StatementGuidParser",
 				"WBQC_DelegatingConstraintChecker",
 				"WBQC_ViolationMessageRendererFactory"

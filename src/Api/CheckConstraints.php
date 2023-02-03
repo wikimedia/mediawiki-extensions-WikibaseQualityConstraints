@@ -11,6 +11,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Services\Statement\StatementGuidValidator;
+use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
@@ -49,6 +50,7 @@ class CheckConstraints extends ApiBase {
 		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
+		LanguageFallbackChainFactory $languageFallbackChainFactory,
 		StatementGuidValidator $statementGuidValidator,
 		ResultsSource $resultsSource,
 		ViolationMessageRendererFactory $violationMessageRendererFactory
@@ -56,6 +58,7 @@ class CheckConstraints extends ApiBase {
 		$checkResultsRendererFactory = new CheckResultsRendererFactory(
 			$entityTitleLookup,
 			$entityIdLabelFormatterFactory,
+			$languageFallbackChainFactory,
 			$violationMessageRendererFactory
 		);
 
