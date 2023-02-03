@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use Config;
@@ -33,21 +35,14 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 	/**
 	 * Create a new MultilingualTextViolationMessageRenderer
 	 * with some constructor arguments defaulting to a simple base implementation.
-	 *
-	 * @param EntityIdFormatter|null $entityIdFormatter
-	 * @param ValueFormatter|null $dataValueFormatter
-	 * @param MessageLocalizer|null $messageLocalizer
-	 * @param Config|null $config
-	 * @param int $maxListLength
-	 * @return MultilingualTextViolationMessageRenderer
 	 */
 	private function newMultilingualTextViolationMessageRenderer(
 		EntityIdFormatter $entityIdFormatter = null,
 		ValueFormatter $dataValueFormatter = null,
 		MessageLocalizer $messageLocalizer = null,
 		Config $config = null,
-		$maxListLength = 10
-	) {
+		int $maxListLength = 10
+	): MultilingualTextViolationMessageRenderer {
 		if ( $entityIdFormatter === null ) {
 			$entityIdFormatter = new PlainEntityIdFormatter();
 		}

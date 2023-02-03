@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use Config;
@@ -40,20 +42,9 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class ConstraintParameterParser {
 
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var SnakDeserializer
-	 */
-	private $snakDeserializer;
-
-	/**
-	 * @var string
-	 */
-	private $unitItemConceptBaseUri;
+	private Config $config;
+	private SnakDeserializer $snakDeserializer;
+	private string $unitItemConceptBaseUri;
 
 	/**
 	 * @param Config $config
@@ -75,10 +66,9 @@ class ConstraintParameterParser {
 
 	/**
 	 * Check if any errors are recorded in the constraint parameters.
-	 * @param array $parameters
 	 * @throws ConstraintParameterException
 	 */
-	public function checkError( array $parameters ) {
+	public function checkError( array $parameters ): void {
 		if ( array_key_exists( '@error', $parameters ) ) {
 			$error = $parameters['@error'];
 			if ( array_key_exists( 'toolong', $error ) && $error['toolong'] ) {
@@ -92,11 +82,9 @@ class ConstraintParameterParser {
 
 	/**
 	 * Require that $parameters contains exactly one $parameterId parameter.
-	 * @param array $parameters
-	 * @param string $parameterId
 	 * @throws ConstraintParameterException
 	 */
-	private function requireSingleParameter( array $parameters, $parameterId ) {
+	private function requireSingleParameter( array $parameters, string $parameterId ): void {
 		if ( count( $parameters[$parameterId] ) !== 1 ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-single' ) )
@@ -107,12 +95,9 @@ class ConstraintParameterParser {
 
 	/**
 	 * Require that $snak is a {@link PropertyValueSnak}.
-	 * @param Snak $snak
-	 * @param string $parameterId
-	 * @return void
 	 * @throws ConstraintParameterException
 	 */
-	private function requireValueParameter( Snak $snak, $parameterId ) {
+	private function requireValueParameter( Snak $snak, string $parameterId ): void {
 		if ( !( $snak instanceof PropertyValueSnak ) ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-value' ) )
@@ -123,12 +108,9 @@ class ConstraintParameterParser {
 
 	/**
 	 * Parse a single entity ID parameter.
-	 * @param array $snakSerialization
-	 * @param string $parameterId
 	 * @throws ConstraintParameterException
-	 * @return EntityId
 	 */
-	private function parseEntityIdParameter( array $snakSerialization, $parameterId ) {
+	private function parseEntityIdParameter( array $snakSerialization, string $parameterId ): EntityId {
 		$snak = $this->snakDeserializer->deserialize( $snakSerialization );
 		$this->requireValueParameter( $snak, $parameterId );
 		$value = $snak->getDataValue();
@@ -149,7 +131,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string[] class entity ID serializations
 	 */
-	public function parseClassParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parseClassParameter( array $constraintParameters, string $constraintTypeItemId ): array {
 		$this->checkError( $constraintParameters );
 		$classId = $this->config->get( 'WBQualityConstraintsClassId' );
 		if ( !array_key_exists( $classId, $constraintParameters ) ) {
@@ -173,7 +155,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string 'instance', 'subclass', or 'instanceOrSubclass'
 	 */
-	public function parseRelationParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parseRelationParameter( array $constraintParameters, string $constraintTypeItemId ): string {
 		$this->checkError( $constraintParameters );
 		$relationId = $this->config->get( 'WBQualityConstraintsRelationId' );
 		if ( !array_key_exists( $relationId, $constraintParameters ) ) {
@@ -207,7 +189,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException
 	 * @return PropertyId
 	 */
-	private function parsePropertyIdParameter( array $snakSerialization, $parameterId ) {
+	private function parsePropertyIdParameter( array $snakSerialization, string $parameterId ): PropertyId {
 		$snak = $this->snakDeserializer->deserialize( $snakSerialization );
 		$this->requireValueParameter( $snak, $parameterId );
 		$value = $snak->getDataValue();
@@ -231,7 +213,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return PropertyId
 	 */
-	public function parsePropertyParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parsePropertyParameter( array $constraintParameters, string $constraintTypeItemId ): PropertyId {
 		$this->checkError( $constraintParameters );
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		if ( !array_key_exists( $propertyId, $constraintParameters ) ) {
@@ -246,7 +228,7 @@ class ConstraintParameterParser {
 		return $this->parsePropertyIdParameter( $constraintParameters[$propertyId][0], $propertyId );
 	}
 
-	private function parseItemIdParameter( PropertyValueSnak $snak, $parameterId ) {
+	private function parseItemIdParameter( PropertyValueSnak $snak, string $parameterId ): ItemIdSnakValue {
 		$dataValue = $snak->getDataValue();
 		if ( $dataValue instanceof EntityIdValue ) {
 			$entityId = $dataValue->getEntityId();
@@ -271,10 +253,10 @@ class ConstraintParameterParser {
 	 */
 	public function parseItemsParameter(
 		array $constraintParameters,
-		$constraintTypeItemId,
-		$required,
-		$parameterId = null
-	) {
+		string $constraintTypeItemId,
+		bool $required,
+		string $parameterId = null
+	): array {
 		$this->checkError( $constraintParameters );
 		if ( $parameterId === null ) {
 			$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
@@ -368,7 +350,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return PropertyId[]
 	 */
-	public function parsePropertiesParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parsePropertiesParameter( array $constraintParameters, string $constraintTypeItemId ): array {
 		$this->checkError( $constraintParameters );
 		$propertyId = $this->config->get( 'WBQualityConstraintsPropertyId' );
 		if ( !array_key_exists( $propertyId, $constraintParameters ) ) {
@@ -394,12 +376,9 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $snakSerialization
-	 * @param string $parameterId
 	 * @throws ConstraintParameterException
-	 * @return DataValue|null
 	 */
-	private function parseValueOrNoValueParameter( array $snakSerialization, $parameterId ) {
+	private function parseValueOrNoValueParameter( array $snakSerialization, string $parameterId ): ?DataValue {
 		$snak = $this->snakDeserializer->deserialize( $snakSerialization );
 		if ( $snak instanceof PropertyValueSnak ) {
 			return $snak->getDataValue();
@@ -413,12 +392,7 @@ class ConstraintParameterParser {
 		}
 	}
 
-	/**
-	 * @param array $snakSerialization
-	 * @param string $parameterId
-	 * @return DataValue|null
-	 */
-	private function parseValueOrNoValueOrNowParameter( array $snakSerialization, $parameterId ) {
+	private function parseValueOrNoValueOrNowParameter( array $snakSerialization, string $parameterId ): ?DataValue {
 		try {
 			return $this->parseValueOrNoValueParameter( $snakSerialization, $parameterId );
 		} catch ( ConstraintParameterException $e ) {
@@ -429,12 +403,8 @@ class ConstraintParameterParser {
 
 	/**
 	 * Checks whether there is exactly one non-null quantity with the given unit.
-	 * @param ?DataValue $min
-	 * @param ?DataValue $max
-	 * @param string $unit
-	 * @return bool
 	 */
-	private function exactlyOneQuantityWithUnit( ?DataValue $min, ?DataValue $max, $unit ) {
+	private function exactlyOneQuantityWithUnit( ?DataValue $min, ?DataValue $max, string $unit ): bool {
 		if ( !( $min instanceof UnboundedQuantityValue ) ||
 			!( $max instanceof UnboundedQuantityValue )
 		) {
@@ -454,7 +424,13 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return DataValue[] if the parameter is invalid or missing
 	 */
-	private function parseRangeParameter( array $constraintParameters, $minimumId, $maximumId, $constraintTypeItemId, $type ) {
+	private function parseRangeParameter(
+		array $constraintParameters,
+		string $minimumId,
+		string $maximumId,
+		string $constraintTypeItemId,
+		string $type
+	): array {
 		$this->checkError( $constraintParameters );
 		if ( !array_key_exists( $minimumId, $constraintParameters ) ||
 			!array_key_exists( $maximumId, $constraintParameters )
@@ -499,7 +475,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return DataValue[] a pair of two data values, either of which may be null to signify an open range
 	 */
-	public function parseQuantityRangeParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parseQuantityRangeParameter( array $constraintParameters, string $constraintTypeItemId ): array {
 		return $this->parseRangeParameter(
 			$constraintParameters,
 			$this->config->get( 'WBQualityConstraintsMinimumQuantityId' ),
@@ -516,7 +492,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return DataValue[] a pair of two data values, either of which may be null to signify an open range
 	 */
-	public function parseTimeRangeParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parseTimeRangeParameter( array $constraintParameters, string $constraintTypeItemId ): array {
 		return $this->parseRangeParameter(
 			$constraintParameters,
 			$this->config->get( 'WBQualityConstraintsMinimumDateId' ),
@@ -533,7 +509,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException
 	 * @return string[]
 	 */
-	public function parseLanguageParameter( array $constraintParameters, $constraintTypeItemId ): array {
+	public function parseLanguageParameter( array $constraintParameters, string $constraintTypeItemId ): array {
 		$this->checkError( $constraintParameters );
 		$languagePropertyId = $this->config->get( 'WBQualityConstraintsLanguagePropertyId' );
 		if ( !array_key_exists( $languagePropertyId, $constraintParameters ) ) {
@@ -553,12 +529,9 @@ class ConstraintParameterParser {
 
 	/**
 	 * Parse a single string parameter.
-	 * @param array $snakSerialization
-	 * @param string $parameterId
 	 * @throws ConstraintParameterException
-	 * @return string
 	 */
-	private function parseStringParameter( array $snakSerialization, $parameterId ) {
+	private function parseStringParameter( array $snakSerialization, string $parameterId ): string {
 		$snak = $this->snakDeserializer->deserialize( $snakSerialization );
 		$this->requireValueParameter( $snak, $parameterId );
 		$value = $snak->getDataValue();
@@ -579,7 +552,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string
 	 */
-	public function parseNamespaceParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parseNamespaceParameter( array $constraintParameters, string $constraintTypeItemId ): string {
 		$this->checkError( $constraintParameters );
 		$namespaceId = $this->config->get( 'WBQualityConstraintsNamespaceId' );
 		if ( !array_key_exists( $namespaceId, $constraintParameters ) ) {
@@ -596,7 +569,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string
 	 */
-	public function parseFormatParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parseFormatParameter( array $constraintParameters, string $constraintTypeItemId ): string {
 		$this->checkError( $constraintParameters );
 		$formatId = $this->config->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		if ( !array_key_exists( $formatId, $constraintParameters ) ) {
@@ -616,7 +589,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return EntityId[]
 	 */
-	public function parseExceptionParameter( array $constraintParameters ) {
+	public function parseExceptionParameter( array $constraintParameters ): array {
 		$this->checkError( $constraintParameters );
 		$exceptionId = $this->config->get( 'WBQualityConstraintsExceptionToConstraintId' );
 		if ( !array_key_exists( $exceptionId, $constraintParameters ) ) {
@@ -636,7 +609,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return string|null 'mandatory', 'suggestion' or null
 	 */
-	public function parseConstraintStatusParameter( array $constraintParameters ) {
+	public function parseConstraintStatusParameter( array $constraintParameters ): ?string {
 		$this->checkError( $constraintParameters );
 		$constraintStatusId = $this->config->get( 'WBQualityConstraintsConstraintStatusId' );
 		if ( !array_key_exists( $constraintStatusId, $constraintParameters ) ) {
@@ -679,12 +652,9 @@ class ConstraintParameterParser {
 
 	/**
 	 * Require that $dataValue is a {@link MonolingualTextValue}.
-	 * @param DataValue $dataValue
-	 * @param string $parameterId
-	 * @return void
 	 * @throws ConstraintParameterException
 	 */
-	private function requireMonolingualTextParameter( DataValue $dataValue, $parameterId ) {
+	private function requireMonolingualTextParameter( DataValue $dataValue, string $parameterId ): void {
 		if ( !( $dataValue instanceof MonolingualTextValue ) ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-monolingualtext' ) )
@@ -697,12 +667,9 @@ class ConstraintParameterParser {
 	/**
 	 * Parse a series of monolingual text snaks (serialized) into a map from language code to string.
 	 *
-	 * @param array $snakSerializations
-	 * @param string $parameterId
 	 * @throws ConstraintParameterException if invalid snaks are found or a language has multiple texts
-	 * @return MultilingualTextValue
 	 */
-	private function parseMultilingualTextParameter( array $snakSerializations, $parameterId ) {
+	private function parseMultilingualTextParameter( array $snakSerializations, string $parameterId ): MultilingualTextValue {
 		$result = [];
 
 		foreach ( $snakSerializations as $snakSerialization ) {
@@ -734,7 +701,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return MultilingualTextValue
 	 */
-	public function parseSyntaxClarificationParameter( array $constraintParameters ) {
+	public function parseSyntaxClarificationParameter( array $constraintParameters ): MultilingualTextValue {
 		$syntaxClarificationId = $this->config->get( 'WBQualityConstraintsSyntaxClarificationId' );
 
 		if ( !array_key_exists( $syntaxClarificationId, $constraintParameters ) ) {
@@ -843,22 +810,17 @@ class ConstraintParameterParser {
 
 	/**
 	 * Turn an item ID into a full unit string (using the concept URI).
-	 *
-	 * @param ItemId $unitId
-	 * @return string unit
 	 */
-	private function parseUnitParameter( ItemId $unitId ) {
+	private function parseUnitParameter( ItemId $unitId ): string {
 		return $this->unitItemConceptBaseUri . $unitId->getSerialization();
 	}
 
 	/**
 	 * Turn an ItemIdSnakValue into a single unit parameter.
 	 *
-	 * @param ItemIdSnakValue $item
-	 * @return UnitsParameter
 	 * @throws ConstraintParameterException
 	 */
-	private function parseUnitItem( ItemIdSnakValue $item ) {
+	private function parseUnitItem( ItemIdSnakValue $item ): UnitsParameter {
 		switch ( true ) {
 			case $item->isValue():
 				$unit = $this->parseUnitParameter( $item->getItemId() );
@@ -884,7 +846,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return UnitsParameter
 	 */
-	public function parseUnitsParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parseUnitsParameter( array $constraintParameters, string $constraintTypeItemId ): UnitsParameter {
 		$items = $this->parseItemsParameter( $constraintParameters, $constraintTypeItemId, true );
 		$unitItems = [];
 		$unitQuantities = [];
@@ -923,7 +885,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return EntityTypesParameter
 	 */
-	public function parseEntityTypesParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parseEntityTypesParameter( array $constraintParameters, string $constraintTypeItemId ): EntityTypesParameter {
 		$entityTypes = [];
 		$entityTypeItemIds = [];
 		$parameterId = $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
@@ -958,7 +920,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return PropertyId[]
 	 */
-	public function parseSeparatorsParameter( array $constraintParameters ) {
+	public function parseSeparatorsParameter( array $constraintParameters ): array {
 		$separatorId = $this->config->get( 'WBQualityConstraintsSeparatorId' );
 
 		if ( !array_key_exists( $separatorId, $constraintParameters ) ) {
@@ -997,7 +959,7 @@ class ConstraintParameterParser {
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string[] list of Context::TYPE_* constants
 	 */
-	public function parsePropertyScopeParameter( array $constraintParameters, $constraintTypeItemId ) {
+	public function parsePropertyScopeParameter( array $constraintParameters, string $constraintTypeItemId ): array {
 		$contextTypes = [];
 		$parameterId = $this->config->get( 'WBQualityConstraintsPropertyScopeId' );
 		$itemIds = $this->parseItemIdsParameter(

@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Specials;
 
 use Config;
@@ -42,55 +44,16 @@ use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
  */
 class SpecialConstraintReport extends SpecialPage {
 
-	/**
-	 * @var EntityIdParser
-	 */
-	private $entityIdParser;
-
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
-	 * @var EntityTitleLookup
-	 */
-	private $entityTitleLookup;
-
-	/**
-	 * @var EntityIdFormatter
-	 */
-	private $entityIdLabelFormatter;
-
-	/**
-	 * @var EntityIdFormatter
-	 */
-	private $entityIdLinkFormatter;
-
-	/**
-	 * @var DelegatingConstraintChecker
-	 */
-	private $constraintChecker;
-
-	/**
-	 * @var ConstraintParameterRenderer
-	 */
-	private $constraintParameterRenderer;
-
-	/**
-	 * @var ViolationMessageRenderer
-	 */
-	private $violationMessageRenderer;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var IBufferingStatsdDataFactory
-	 */
-	private $dataFactory;
+	private EntityIdParser $entityIdParser;
+	private EntityLookup $entityLookup;
+	private EntityTitleLookup $entityTitleLookup;
+	private EntityIdFormatter $entityIdLabelFormatter;
+	private EntityIdFormatter $entityIdLinkFormatter;
+	private DelegatingConstraintChecker $constraintChecker;
+	private ConstraintParameterRenderer $constraintParameterRenderer;
+	private ViolationMessageRenderer $violationMessageRenderer;
+	private Config $config;
+	private IBufferingStatsdDataFactory $dataFactory;
 
 	public static function factory(
 		Config $config,
@@ -175,7 +138,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string[]
 	 */
-	private function getModules() {
+	private function getModules(): array {
 		return [
 			'SpecialConstraintReportPage',
 			'wikibase.quality.constraints.icon',
@@ -272,7 +235,7 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * Builds html form for entity id input
 	 */
-	private function buildEntityIdForm() {
+	private function buildEntityIdForm(): void {
 		$formDescriptor = [
 			'entityid' => [
 				'class' => 'HTMLTextField',
@@ -302,14 +265,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string HTML
 	 */
-	private function buildNotice( $messageKey, $error = false ) {
-		if ( !is_string( $messageKey ) ) {
-			throw new InvalidArgumentException( '$message must be string.' );
-		}
-		if ( !is_bool( $error ) ) {
-			throw new InvalidArgumentException( '$error must be bool.' );
-		}
-
+	private function buildNotice( string $messageKey, bool $error = false ): string {
 		$cssClasses = 'wbqc-constraintreport-notice';
 		if ( $error ) {
 			$cssClasses .= ' wbqc-constraintreport-notice-error';
@@ -327,7 +283,7 @@ class SpecialConstraintReport extends SpecialPage {
 	/**
 	 * @return string HTML
 	 */
-	private function getExplanationText() {
+	private function getExplanationText(): string {
 		return Html::rawElement(
 			'div',
 			[ 'class' => 'wbqc-explanation' ],
@@ -351,7 +307,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @return string HTML
 	 * @suppress SecurityCheck-DoubleEscaped
 	 */
-	private function buildResultTable( EntityId $entityId, array $results ) {
+	private function buildResultTable( EntityId $entityId, array $results ): string {
 		// Set table headers
 		$table = new HtmlTableBuilder(
 			[
@@ -381,7 +337,11 @@ class SpecialConstraintReport extends SpecialPage {
 		return $table->toHtml();
 	}
 
-	private function appendToResultTable( HtmlTableBuilder $table, EntityId $entityId, CheckResult $result ) {
+	private function appendToResultTable(
+		HtmlTableBuilder $table,
+		EntityId $entityId,
+		CheckResult $result
+	): HtmlTableBuilder {
 		$message = $result->getMessage();
 		if ( $message === null ) {
 			// no row for this result
@@ -456,7 +416,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string HTML
 	 */
-	protected function buildResultHeader( EntityId $entityId ) {
+	protected function buildResultHeader( EntityId $entityId ): string {
 		$entityLink = sprintf( '%s (%s)',
 							   $this->entityIdLinkFormatter->formatEntityId( $entityId ),
 							   htmlspecialchars( $entityId->getSerialization() ) );
@@ -475,7 +435,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string HTML
 	 */
-	protected function buildSummary( array $results ) {
+	protected function buildSummary( array $results ): string {
 		$statuses = [];
 		foreach ( $results as $result ) {
 			$status = strtolower( $result->getStatus() );
@@ -500,21 +460,18 @@ class SpecialConstraintReport extends SpecialPage {
 	 * If $tooltipContent is null, no tooltip will be created
 	 *
 	 * @param string $content
-	 * @param string $expandableContent
+	 * @param string|null $expandableContent
 	 * @param string $indicator
 	 *
 	 * @throws InvalidArgumentException
 	 *
 	 * @return string HTML
 	 */
-	protected function buildExpandableElement( $content, $expandableContent, $indicator ) {
-		if ( !is_string( $content ) ) {
-			throw new InvalidArgumentException( '$content has to be string.' );
-		}
-		if ( $expandableContent && ( !is_string( $expandableContent ) ) ) {
-			throw new InvalidArgumentException( '$tooltipContent, if provided, has to be string.' );
-		}
-
+	protected function buildExpandableElement(
+		string $content,
+		?string $expandableContent,
+		string $indicator
+	): string {
 		if ( empty( $expandableContent ) ) {
 			return $content;
 		}
@@ -547,7 +504,7 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string HTML
 	 */
-	private function formatStatus( $status ) {
+	private function formatStatus( string $status ): string {
 		$messageName = "wbqc-constraintreport-status-" . strtolower( $status );
 		$statusIcons = [
 			CheckResult::STATUS_SUGGESTION => [
@@ -598,7 +555,11 @@ class SpecialConstraintReport extends SpecialPage {
 	 *
 	 * @return string HTML
 	 */
-	private function getClaimLink( EntityId $entityId, NumericPropertyId $propertyId, $text ) {
+	private function getClaimLink(
+		EntityId $entityId,
+		NumericPropertyId $propertyId,
+		string $text
+	): string {
 		return Html::rawElement(
 			'a',
 			[
@@ -611,13 +572,11 @@ class SpecialConstraintReport extends SpecialPage {
 
 	/**
 	 * Returns url of given entity with anchor to specified property.
-	 *
-	 * @param EntityId $entityId
-	 * @param NumericPropertyId $propertyId
-	 *
-	 * @return string
 	 */
-	private function getClaimUrl( EntityId $entityId, NumericPropertyId $propertyId ) {
+	private function getClaimUrl(
+		EntityId $entityId,
+		NumericPropertyId $propertyId
+	): string {
 		$title = $this->entityTitleLookup->getTitleForId( $entityId );
 		$entityUrl = sprintf( '%s#%s', $title->getLocalURL(), $propertyId->getSerialization() );
 

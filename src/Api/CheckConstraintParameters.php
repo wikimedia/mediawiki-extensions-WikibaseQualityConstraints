@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use ApiBase;
@@ -34,30 +36,11 @@ class CheckConstraintParameters extends ApiBase {
 	public const KEY_PROBLEMS = 'problems';
 	public const KEY_MESSAGE_HTML = 'message-html';
 
-	/**
-	 * @var ApiErrorReporter
-	 */
-	private $apiErrorReporter;
-
-	/**
-	 * @var DelegatingConstraintChecker
-	 */
-	private $delegatingConstraintChecker;
-
-	/**
-	 * @var ViolationMessageRendererFactory
-	 */
-	private $violationMessageRendererFactory;
-
-	/**
-	 * @var StatementGuidParser
-	 */
-	private $statementGuidParser;
-
-	/**
-	 * @var IBufferingStatsdDataFactory
-	 */
-	private $dataFactory;
+	private ApiErrorReporter $apiErrorReporter;
+	private DelegatingConstraintChecker $delegatingConstraintChecker;
+	private ViolationMessageRendererFactory $violationMessageRendererFactory;
+	private StatementGuidParser $statementGuidParser;
+	private IBufferingStatsdDataFactory $dataFactory;
 
 	/**
 	 * Creates new instance from global state.
@@ -121,7 +104,7 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param array|null $propertyIdSerializations
 	 * @return NumericPropertyId[]
 	 */
-	private function parsePropertyIds( $propertyIdSerializations ) {
+	private function parsePropertyIds( ?array $propertyIdSerializations ): array {
 		if ( $propertyIdSerializations === null ) {
 			return [];
 		} elseif ( empty( $propertyIdSerializations ) ) {
@@ -152,7 +135,7 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param array|null $constraintIds
 	 * @return string[]
 	 */
-	private function parseConstraintIds( $constraintIds ) {
+	private function parseConstraintIds( ?array $constraintIds ): array {
 		if ( $constraintIds === null ) {
 			return [];
 		} elseif ( empty( $constraintIds ) ) {
@@ -192,7 +175,7 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param NumericPropertyId[] $propertyIds
 	 * @param ApiResult $result
 	 */
-	private function checkPropertyIds( array $propertyIds, ApiResult $result ) {
+	private function checkPropertyIds( array $propertyIds, ApiResult $result ): void {
 		foreach ( $propertyIds as $propertyId ) {
 			$result->addArrayType( $this->getResultPathForPropertyId( $propertyId ), 'assoc' );
 			$allConstraintExceptions = $this->delegatingConstraintChecker
@@ -211,7 +194,7 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param string[] $constraintIds
 	 * @param ApiResult $result
 	 */
-	private function checkConstraintIds( array $constraintIds, ApiResult $result ) {
+	private function checkConstraintIds( array $constraintIds, ApiResult $result ): void {
 		foreach ( $constraintIds as $constraintId ) {
 			if ( $result->getResultData( $this->getResultPathForConstraintId( $constraintId ) ) ) {
 				// already checked as part of checkPropertyIds()
@@ -227,7 +210,7 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param NumericPropertyId $propertyId
 	 * @return string[]
 	 */
-	private function getResultPathForPropertyId( NumericPropertyId $propertyId ) {
+	private function getResultPathForPropertyId( NumericPropertyId $propertyId ): array {
 		return [ $this->getModuleName(), $propertyId->getSerialization() ];
 	}
 
@@ -235,7 +218,7 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param string $constraintId
 	 * @return string[]
 	 */
-	private function getResultPathForConstraintId( $constraintId ) {
+	private function getResultPathForConstraintId( string $constraintId ): array {
 		$propertyId = $this->statementGuidParser->parse( $constraintId )->getEntityId();
 		'@phan-var NumericPropertyId $propertyId';
 		return array_merge( $this->getResultPathForPropertyId( $propertyId ), [ $constraintId ] );
@@ -249,10 +232,10 @@ class CheckConstraintParameters extends ApiBase {
 	 * @param ApiResult $result
 	 */
 	private function addConstraintParameterExceptionsToResult(
-		$constraintId,
-		$constraintParameterExceptions,
+		string $constraintId,
+		?array $constraintParameterExceptions,
 		ApiResult $result
-	) {
+	): void {
 		$path = $this->getResultPathForConstraintId( $constraintId );
 		if ( $constraintParameterExceptions === null ) {
 			$result->addValue(

@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use ApiBase;
@@ -31,40 +33,13 @@ class CheckConstraints extends ApiBase {
 	public const PARAM_CONSTRAINT_ID = 'constraintid';
 	public const PARAM_STATUS = 'status';
 
-	/**
-	 * @var EntityIdParser
-	 */
-	private $entityIdParser;
-
-	/**
-	 * @var StatementGuidValidator
-	 */
-	private $statementGuidValidator;
-
-	/**
-	 * @var ResultBuilder
-	 */
-	private $resultBuilder;
-
-	/**
-	 * @var ApiErrorReporter
-	 */
-	private $errorReporter;
-
-	/**
-	 * @var ResultsSource
-	 */
-	private $resultsSource;
-
-	/**
-	 * @var CheckResultsRendererFactory
-	 */
-	private $checkResultsRendererFactory;
-
-	/**
-	 * @var IBufferingStatsdDataFactory
-	 */
-	private $dataFactory;
+	private EntityIdParser $entityIdParser;
+	private StatementGuidValidator $statementGuidValidator;
+	private ResultBuilder $resultBuilder;
+	private ApiErrorReporter $errorReporter;
+	private ResultsSource $resultsSource;
+	private CheckResultsRendererFactory $checkResultsRendererFactory;
+	private IBufferingStatsdDataFactory $dataFactory;
 
 	public static function factory(
 		ApiMain $main,
@@ -155,7 +130,7 @@ class CheckConstraints extends ApiBase {
 	 *
 	 * @return EntityId[]
 	 */
-	private function parseEntityIds( array $params ) {
+	private function parseEntityIds( array $params ): array {
 		$ids = $params[self::PARAM_ID];
 
 		if ( $ids === null ) {
@@ -180,7 +155,7 @@ class CheckConstraints extends ApiBase {
 	 *
 	 * @return string[]
 	 */
-	private function parseClaimIds( array $params ) {
+	private function parseClaimIds( array $params ): array {
 		$ids = $params[self::PARAM_CLAIM_ID];
 
 		if ( $ids === null ) {
@@ -200,7 +175,7 @@ class CheckConstraints extends ApiBase {
 		return $ids;
 	}
 
-	private function validateParameters( array $params ) {
+	private function validateParameters( array $params ): void {
 		if ( $params[self::PARAM_CONSTRAINT_ID] !== null
 			 && empty( $params[self::PARAM_CONSTRAINT_ID] )
 		) {

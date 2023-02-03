@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
 use Config;
@@ -34,19 +36,13 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Create a new ViolationMessageRenderer
 	 * with some constructor arguments defaulting to a simple base implementation.
-	 *
-	 * @param EntityIdFormatter|null $entityIdFormatter
-	 * @param ValueFormatter|null $dataValueFormatter
-	 * @param Config|null $config
-	 * @param int $maxListLength
-	 * @return ViolationMessageRenderer
 	 */
 	private function newViolationMessageRenderer(
 		EntityIdFormatter $entityIdFormatter = null,
 		ValueFormatter $dataValueFormatter = null,
 		Config $config = null,
-		$maxListLength = 10
-	) {
+		int $maxListLength = 10
+	): ViolationMessageRenderer {
 		if ( $entityIdFormatter === null ) {
 			$entityIdFormatter = new PlainEntityIdFormatter();
 		}

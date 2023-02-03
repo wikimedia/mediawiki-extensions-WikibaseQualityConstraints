@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use ApiTestCase;
@@ -45,15 +47,9 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	 */
 	private $checkConstraintParametersOnConstraintId;
 
-	/**
-	 * @var ViolationMessage
-	 */
-	private $testMessage;
+	private ViolationMessage $testMessage;
 
-	/**
-	 * @var string HTML
-	 */
-	private $testMessageHtml;
+	private string $testMessageHtml;
 
 	public function setUp(): void {
 		global $wgAPIModules;
@@ -126,7 +122,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	 * @param array $params
 	 * @return array wbcheckconstraintparameters response, slightly normalized
 	 */
-	private function doRequest( array $params ) {
+	private function doRequest( array $params ): array {
 		$params['action'] = 'wbcheckconstraintparameters';
 
 		$result = $this->doApiRequest( $params, [], false, null )[0];

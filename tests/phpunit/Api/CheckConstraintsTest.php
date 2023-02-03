@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use ApiTestCase;
@@ -57,20 +59,17 @@ class CheckConstraintsTest extends ApiTestCase {
 
 	private static $oldModuleDeclaration;
 
-	/**
-	 * @var InMemoryEntityLookup
-	 */
-	private static $entityLookup;
+	private static InMemoryEntityLookup $entityLookup;
 
 	/**
 	 * @var Constraint[]
 	 */
-	private static $constraintLookupContents = [];
+	private static array $constraintLookupContents = [];
 
 	/**
 	 * @var ConstraintChecker[]
 	 */
-	private static $checkerMap = [];
+	private static array $checkerMap = [];
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -303,12 +302,12 @@ class CheckConstraintsTest extends ApiTestCase {
 	 * @param array $params
 	 * @return array Array of violations
 	 */
-	private function doRequest( array $params ) {
+	private function doRequest( array $params ): array {
 		$params['action'] = 'wbcheckconstraints';
 		return $this->doApiRequest( $params, [], false, null )[0];
 	}
 
-	private function givenPropertyHasStatus( NumericPropertyId $propertyId, $status ) {
+	private function givenPropertyHasStatus( NumericPropertyId $propertyId, string $status ): void {
 		static $itemIdNumber = 1234;
 		$itemId = 'Q' . $itemIdNumber++;
 		self::$checkerMap[$itemId] = new FakeChecker( $status );
@@ -323,8 +322,8 @@ class CheckConstraintsTest extends ApiTestCase {
 	private function givenItemWithPropertyExists(
 		ItemId $itemId,
 		NumericPropertyId $propertyId,
-		$statementId = 'some-id'
-	) {
+		string $statementId = 'some-id'
+	): void {
 		$item = new Item(
 			$itemId,
 			null,

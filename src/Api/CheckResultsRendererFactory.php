@@ -15,14 +15,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRen
  */
 class CheckResultsRendererFactory {
 
-	/** @var EntityTitleLookup */
-	private $entityTitleLookup;
-
-	/** @var EntityIdLabelFormatterFactory */
-	private $entityIdLabelFormatterFactory;
-
-	/** @var ViolationMessageRendererFactory */
-	private $violationMessageRendererFactory;
+	private EntityTitleLookup $entityTitleLookup;
+	private EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory;
+	private ViolationMessageRendererFactory $violationMessageRendererFactory;
 
 	public function __construct(
 		EntityTitleLookup $entityTitleLookup,

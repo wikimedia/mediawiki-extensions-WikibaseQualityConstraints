@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use Wikibase\DataModel\Entity\ItemId;
@@ -21,20 +23,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
  */
 class CheckResultsRenderer {
 
-	/**
-	 * @var EntityTitleLookup
-	 */
-	private $entityTitleLookup;
-
-	/**
-	 * @var EntityIdFormatter
-	 */
-	private $entityIdLabelFormatter;
-
-	/**
-	 * @var ViolationMessageRenderer
-	 */
-	private $violationMessageRenderer;
+	private EntityTitleLookup $entityTitleLookup;
+	private EntityIdFormatter $entityIdLabelFormatter;
+	private ViolationMessageRenderer $violationMessageRenderer;
 
 	public function __construct(
 		EntityTitleLookup $entityTitleLookup,
@@ -46,11 +37,7 @@ class CheckResultsRenderer {
 		$this->violationMessageRenderer = $violationMessageRenderer;
 	}
 
-	/**
-	 * @param CachedCheckResults $checkResults
-	 * @return CachedCheckConstraintsResponse
-	 */
-	public function render( CachedCheckResults $checkResults ) {
+	public function render( CachedCheckResults $checkResults ): CachedCheckConstraintsResponse {
 		$response = [];
 		foreach ( $checkResults->getArray() as $checkResult ) {
 			$resultArray = $this->checkResultToArray( $checkResult );
@@ -62,7 +49,7 @@ class CheckResultsRenderer {
 		);
 	}
 
-	public function checkResultToArray( CheckResult $checkResult ) {
+	public function checkResultToArray( CheckResult $checkResult ): ?array {
 		if ( $checkResult instanceof NullResult ) {
 			return null;
 		}

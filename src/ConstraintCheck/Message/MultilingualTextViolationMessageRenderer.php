@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use DataValues\MultilingualTextValue;
@@ -65,7 +67,7 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 	 * @return array[]|null list of parameters as accepted by Message::params(),
 	 * or null if the text is not available in the user’s language
 	 */
-	protected function renderMultilingualText( MultilingualTextValue $text, $role ) {
+	protected function renderMultilingualText( MultilingualTextValue $text, ?string $role ): ?array {
 		global $wgLang;
 		$languageCodes = $wgLang->getFallbackLanguages();
 		array_unshift( $languageCodes, $wgLang->getCode() );
