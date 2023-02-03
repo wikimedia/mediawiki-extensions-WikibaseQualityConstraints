@@ -168,7 +168,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string 'instance', 'subclass', or 'instanceOrSubclass'
@@ -225,7 +225,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 *
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
@@ -262,7 +262,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @param bool $required whether the parameter is required (error if absent) or not ([] if absent)
 	 * @param string|null $parameterId the property ID to use, defaults to 'qualifier of property constraint'
@@ -363,7 +363,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return PropertyId[]
@@ -445,7 +445,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $minimumId
 	 * @param string $maximumId
 	 * @param string $constraintTypeItemId used in error messages
@@ -493,7 +493,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 *
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
@@ -510,7 +510,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 *
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
@@ -528,7 +528,8 @@ class ConstraintParameterParser {
 
 	/**
 	 * Parse language parameter.
-	 * @param array $constraintParameters
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
+	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException
 	 * @return string[]
 	 */
@@ -573,7 +574,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string
@@ -590,7 +591,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string
@@ -611,7 +612,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return EntityId[]
 	 */
@@ -631,7 +632,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return string|null 'mandatory', 'suggestion' or null
 	 */
@@ -729,7 +730,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return MultilingualTextValue
 	 */
@@ -878,7 +879,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return UnitsParameter
@@ -917,7 +918,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return EntityTypesParameter
@@ -953,7 +954,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @throws ConstraintParameterException if the parameter is invalid
 	 * @return PropertyId[]
 	 */
@@ -991,7 +992,7 @@ class ConstraintParameterParser {
 	}
 
 	/**
-	 * @param array $constraintParameters see {@link \WikibaseQuality\Constraint::getConstraintParameters()}
+	 * @param array $constraintParameters see {@link \WikibaseQuality\ConstraintReport\Constraint::getConstraintParameters()}
 	 * @param string $constraintTypeItemId used in error messages
 	 * @throws ConstraintParameterException if the parameter is invalid or missing
 	 * @return string[] list of Context::TYPE_* constants
