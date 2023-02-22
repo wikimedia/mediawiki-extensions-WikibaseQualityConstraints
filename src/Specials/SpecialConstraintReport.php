@@ -23,6 +23,7 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;
+use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\View\EntityIdFormatterFactory;
@@ -62,6 +63,7 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
+		LanguageFallbackChainFactory $languageFallbackChainFactory,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		EntityLookup $entityLookup,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
@@ -73,6 +75,7 @@ class SpecialConstraintReport extends SpecialPage {
 			$entityIdLabelFormatterFactory,
 			$entityIdHtmlLinkFormatterFactory,
 			$entityIdParser,
+			$languageFallbackChainFactory,
 			$valueFormatterFactory,
 			$delegatingConstraintChecker,
 			$violationMessageRendererFactory,
@@ -87,6 +90,7 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
 		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
 		EntityIdParser $entityIdParser,
+		LanguageFallbackChainFactory $languageFallbackChainFactory,
 		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $constraintChecker,
 		ViolationMessageRendererFactory $violationMessageRendererFactory,
@@ -126,6 +130,7 @@ class SpecialConstraintReport extends SpecialPage {
 		);
 		$this->violationMessageRenderer = $violationMessageRendererFactory->getViolationMessageRenderer(
 			$language,
+			$languageFallbackChainFactory->newFromLanguage( $language ),
 			$this->getContext()
 		);
 

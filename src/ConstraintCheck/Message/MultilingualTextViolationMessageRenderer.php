@@ -68,12 +68,8 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 	 * or null if the text is not available in the user’s language
 	 */
 	protected function renderMultilingualText( MultilingualTextValue $text, ?string $role ): ?array {
-		global $wgLang;
-		$languageCodes = $wgLang->getFallbackLanguages();
-		array_unshift( $languageCodes, $wgLang->getCode() );
-
 		$texts = $text->getTexts();
-		foreach ( $languageCodes as $languageCode ) {
+		foreach ( $this->languageFallbackChain->getFetchLanguageCodes() as $languageCode ) {
 			if ( array_key_exists( $languageCode, $texts ) ) {
 				return [ Message::rawParam( $this->addRole(
 					htmlspecialchars( $texts[$languageCode]->getText() ),

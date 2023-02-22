@@ -14,6 +14,7 @@ use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\Lib\Store\EntityTitleLookup;
+use Wikibase\Lib\TermLanguageFallbackChain;
 use WikibaseQuality\ConstraintReport\Api\CheckResultsRenderer;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckResults;
@@ -58,6 +59,11 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 			} );
 		$valueFormatter = $this->createMock( ValueFormatter::class );
 
+		$userLanguageCode = 'qqx';
+		$languageFallbackChain = $this->createConfiguredMock( TermLanguageFallbackChain::class, [
+			'getFetchLanguageCodes' => [ 'qqx' ],
+		] );
+
 		return new CheckResultsRenderer(
 			$entityTitleLookup,
 			$entityIdFormatter,
@@ -65,7 +71,8 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				$entityIdFormatter,
 				$valueFormatter,
 				MediaWikiServices::getInstance()->getLanguageNameUtils(),
-				'qqx',
+				$userLanguageCode,
+				$languageFallbackChain,
 				new MockMessageLocalizer(),
 				$this->getDefaultConfig()
 			)

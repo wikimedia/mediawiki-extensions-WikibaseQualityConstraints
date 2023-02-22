@@ -15,6 +15,7 @@ use ValueFormatters\ValueFormatter;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
+use Wikibase\Lib\TermLanguageFallbackChain;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
@@ -32,6 +33,7 @@ class ViolationMessageRenderer {
 	private ValueFormatter $dataValueFormatter;
 	private LanguageNameUtils $languageNameUtils;
 	private string $userLanguageCode;
+	protected TermLanguageFallbackChain $languageFallbackChain;
 	protected MessageLocalizer $messageLocalizer;
 	private Config $config;
 	private int $maxListLength;
@@ -49,6 +51,7 @@ class ViolationMessageRenderer {
 		ValueFormatter $dataValueFormatter,
 		LanguageNameUtils $languageNameUtils,
 		string $userLanguageCode,
+		TermLanguageFallbackChain $languageFallbackChain,
 		MessageLocalizer $messageLocalizer,
 		Config $config,
 		int $maxListLength = 10
@@ -57,6 +60,7 @@ class ViolationMessageRenderer {
 		$this->dataValueFormatter = $dataValueFormatter;
 		$this->languageNameUtils = $languageNameUtils;
 		$this->userLanguageCode = $userLanguageCode;
+		$this->languageFallbackChain = $languageFallbackChain;
 		$this->messageLocalizer = $messageLocalizer;
 		$this->config = $config;
 		$this->maxListLength = $maxListLength;

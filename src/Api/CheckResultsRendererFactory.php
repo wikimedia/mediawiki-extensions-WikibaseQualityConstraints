@@ -6,6 +6,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 
 use Language;
 use MessageLocalizer;
+use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
@@ -17,15 +18,18 @@ class CheckResultsRendererFactory {
 
 	private EntityTitleLookup $entityTitleLookup;
 	private EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory;
+	private LanguageFallbackChainFactory $languageFallbackChainFactory;
 	private ViolationMessageRendererFactory $violationMessageRendererFactory;
 
 	public function __construct(
 		EntityTitleLookup $entityTitleLookup,
 		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
+		LanguageFallbackChainFactory $languageFallbackChainFactory,
 		ViolationMessageRendererFactory $violationMessageRendererFactory
 	) {
 		$this->entityTitleLookup = $entityTitleLookup;
 		$this->entityIdLabelFormatterFactory = $entityIdLabelFormatterFactory;
+		$this->languageFallbackChainFactory = $languageFallbackChainFactory;
 		$this->violationMessageRendererFactory = $violationMessageRendererFactory;
 	}
 
@@ -38,7 +42,11 @@ class CheckResultsRendererFactory {
 			$this->entityIdLabelFormatterFactory
 				->getEntityIdFormatter( $userLanguage ),
 			$this->violationMessageRendererFactory
-				->getViolationMessageRenderer( $userLanguage, $messageLocalizer )
+				->getViolationMessageRenderer(
+					$userLanguage,
+					$this->languageFallbackChainFactory->newFromLanguage( $userLanguage ),
+					$messageLocalizer
+				)
 		);
 	}
 

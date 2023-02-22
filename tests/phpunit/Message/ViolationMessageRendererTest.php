@@ -18,6 +18,7 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\Formatters\UnDeserializableValueFormatter;
+use Wikibase\Lib\TermLanguageFallbackChain;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
@@ -54,6 +55,9 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$languageNameUtils->method( 'getLanguageName' )
 			->with( 'pt', $userLanguageCode )
 			->willReturn( 'Portuguese' );
+		$languageFallbackChain = $this->createConfiguredMock( TermLanguageFallbackChain::class, [
+			'getFetchLanguageCodes' => [ $userLanguageCode ],
+		] );
 		$messageLocalizer = new MockMessageLocalizer();
 		if ( $config === null ) {
 			$config = new HashConfig( [
@@ -70,6 +74,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 			$dataValueFormatter,
 			$languageNameUtils,
 			$userLanguageCode,
+			$languageFallbackChain,
 			$messageLocalizer,
 			$config,
 			$maxListLength

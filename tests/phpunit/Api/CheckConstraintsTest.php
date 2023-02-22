@@ -155,6 +155,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				new CheckResultsRendererFactory(
 					WikibaseRepo::getEntityTitleLookup(),
 					$entityIdLabelFormatterFactory,
+					WikibaseRepo::getLanguageFallbackChainFactory(),
 					new ViolationMessageRendererFactory(
 						$config,
 						MediaWikiServices::getInstance()->getLanguageNameUtils(),

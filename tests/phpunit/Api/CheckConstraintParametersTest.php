@@ -69,6 +69,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 
 		$wgAPIModules['wbcheckconstraintparameters']['factory'] = function ( $main, $name ) {
 			$apiHelperFactory = WikibaseRepo::getApiHelperFactory();
+			$languageFallbackChainFactory = WikibaseRepo::getLanguageFallbackChainFactory();
 			$statementGuidParser = WikibaseRepo::getStatementGuidParser();
 
 			$delegatingConstraintChecker = $this->createMock( DelegatingConstraintChecker::class );
@@ -100,6 +101,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				$main,
 				$name,
 				$apiHelperFactory,
+				$languageFallbackChainFactory,
 				$delegatingConstraintChecker,
 				$violationMessageRendererFactory,
 				$statementGuidParser,

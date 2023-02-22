@@ -11,6 +11,7 @@ use MessageLocalizer;
 use ValueFormatters\FormatterOptions;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;
+use Wikibase\Lib\TermLanguageFallbackChain;
 use Wikibase\View\EntityIdFormatterFactory;
 
 /**
@@ -37,6 +38,7 @@ class ViolationMessageRendererFactory {
 
 	public function getViolationMessageRenderer(
 		Language $userLanguage,
+		TermLanguageFallbackChain $languageFallbackChain,
 		MessageLocalizer $messageLocalizer
 	): ViolationMessageRenderer {
 		$userLanguageCode = $userLanguage->getCode();
@@ -49,6 +51,7 @@ class ViolationMessageRendererFactory {
 				->getValueFormatter( SnakFormatter::FORMAT_HTML, $formatterOptions ),
 			$this->languageNameUtils,
 			$userLanguageCode,
+			$languageFallbackChain,
 			$messageLocalizer,
 			$this->config
 		);

@@ -12,6 +12,7 @@ use InvalidArgumentException;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
+use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Repo\Api\ApiErrorReporter;
 use Wikibase\Repo\Api\ApiHelperFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -37,6 +38,7 @@ class CheckConstraintParameters extends ApiBase {
 	public const KEY_MESSAGE_HTML = 'message-html';
 
 	private ApiErrorReporter $apiErrorReporter;
+	private LanguageFallbackChainFactory $languageFallbackChainFactory;
 	private DelegatingConstraintChecker $delegatingConstraintChecker;
 	private ViolationMessageRendererFactory $violationMessageRendererFactory;
 	private StatementGuidParser $statementGuidParser;
@@ -50,6 +52,7 @@ class CheckConstraintParameters extends ApiBase {
 		string $name,
 		IBufferingStatsdDataFactory $dataFactory,
 		ApiHelperFactory $apiHelperFactory,
+		LanguageFallbackChainFactory $languageFallbackChainFactory,
 		StatementGuidParser $statementGuidParser,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
 		ViolationMessageRendererFactory $violationMessageRendererFactory
@@ -58,6 +61,7 @@ class CheckConstraintParameters extends ApiBase {
 			$main,
 			$name,
 			$apiHelperFactory,
+			$languageFallbackChainFactory,
 			$delegatingConstraintChecker,
 			$violationMessageRendererFactory,
 			$statementGuidParser,
@@ -69,6 +73,7 @@ class CheckConstraintParameters extends ApiBase {
 		ApiMain $main,
 		string $name,
 		ApiHelperFactory $apiHelperFactory,
+		LanguageFallbackChainFactory $languageFallbackChainFactory,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
 		ViolationMessageRendererFactory $violationMessageRendererFactory,
 		StatementGuidParser $statementGuidParser,
@@ -77,6 +82,7 @@ class CheckConstraintParameters extends ApiBase {
 		parent::__construct( $main, $name );
 
 		$this->apiErrorReporter = $apiHelperFactory->getErrorReporter( $this );
+		$this->languageFallbackChainFactory = $languageFallbackChainFactory;
 		$this->delegatingConstraintChecker = $delegatingConstraintChecker;
 		$this->violationMessageRendererFactory = $violationMessageRendererFactory;
 		$this->statementGuidParser = $statementGuidParser;
@@ -250,8 +256,13 @@ class CheckConstraintParameters extends ApiBase {
 				empty( $constraintParameterExceptions ) ? self::STATUS_OKAY : self::STATUS_NOT_OKAY
 			);
 
+			$language = $this->getLanguage();
 			$violationMessageRenderer = $this->violationMessageRendererFactory
-				->getViolationMessageRenderer( $this->getLanguage(), $this );
+				->getViolationMessageRenderer(
+					$language,
+					$this->languageFallbackChainFactory->newFromLanguage( $language ),
+					$this
+				);
 			$problems = [];
 			foreach ( $constraintParameterExceptions as $constraintParameterException ) {
 				$problems[] = [
