@@ -41,7 +41,7 @@ Extension to Wikibase Repository that performs constraint checks.
   * Alternatively, to check “format” constraints without running a full SPARQL server,
     you can use the [minisparql] server.
 
-* Run `php maintenance/run.php extensions/WikibaseQualityConstraints/maintenance/ImportConstraintStatements.php`.
+* Run `php maintenance/run.php WikibaseQualityConstraints:ImportConstraintStatements.php`.
 
 [minisparql]: https://github.com/lucaswerkmeister/minisparql
 
@@ -64,7 +64,7 @@ and then print a config snippet which you can append to your `LocalSettings.php`
 
 ```sh
 # working directory should be the MediaWiki installation folder, i.e. where LocalSettings.php is
-php extensions/WikibaseQualityConstraints/maintenance/ImportConstraintEntities.php | tee -a LocalSettings.php
+php maintenance/run.php WikibaseQualityConstraints:ImportConstraintEntities.php | tee -a LocalSettings.php
 ```
 
 (The new entities will not show up in your wiki’s recent changes until they have been processed in the job queue;
