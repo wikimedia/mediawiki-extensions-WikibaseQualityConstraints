@@ -3,6 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Result;
 
 use DataValues\Deserializers\DataValueDeserializer;
+use DataValues\MonolingualTextValue;
+use DataValues\MultilingualTextValue;
 use DataValues\TimeValue;
 use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\BasicEntityIdParser;
@@ -117,6 +119,7 @@ class CheckResultSerializationTest extends TestCase {
 			) )->withMetadata(
 				Metadata::ofCachingMetadata( $checkResult->getMetadata()->getCachingMetadata() )
 			);
+			$expected->setConstraintClarification( $checkResult->getConstraintClarification() );
 		}
 		$this->assertEquals( $expected, $deserialized );
 	}
@@ -134,8 +137,14 @@ class CheckResultSerializationTest extends TestCase {
 			'Q5',
 			[]
 		);
-		yield 'unimplemented constraint type' => [
-			new CheckResult( $contextCursor, $constraint ),
+
+		$checkResult = new CheckResult( $contextCursor, $constraint );
+		$checkResult->setConstraintClarification( new MultilingualTextValue( [
+			new MonolingualTextValue( 'de', 'de clarification' ),
+			new MonolingualTextValue( 'en', 'en clarification' ),
+		] ) );
+		yield 'unimplemented constraint type with constraint clarification' => [
+			$checkResult,
 			[
 				CheckResultSerializer::KEY_CONTEXT_CURSOR => [
 					't' => Context::TYPE_STATEMENT,
@@ -152,6 +161,10 @@ class CheckResultSerializationTest extends TestCase {
 				],
 				CheckResultSerializer::KEY_CHECK_RESULT_STATUS => CheckResult::STATUS_TODO,
 				CheckResultSerializer::KEY_CACHING_METADATA => [],
+				CheckResultSerializer::KEY_CONSTRAINT_CLARIFICATION => [
+					[ 'text' => 'de clarification', 'language' => 'de' ],
+					[ 'text' => 'en clarification', 'language' => 'en' ],
+				],
 				CheckResultSerializer::KEY_DEPENDENCY_METADATA => [
 					CheckResultSerializer::KEY_DEPENDENCY_METADATA_ENTITY_IDS => [],
 				],

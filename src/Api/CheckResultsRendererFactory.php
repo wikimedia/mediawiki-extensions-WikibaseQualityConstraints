@@ -37,14 +37,17 @@ class CheckResultsRendererFactory {
 		Language $userLanguage,
 		MessageLocalizer $messageLocalizer
 	): CheckResultsRenderer {
+		$languageFallbackChain = $this->languageFallbackChainFactory->newFromLanguage( $userLanguage );
+
 		return new CheckResultsRenderer(
 			$this->entityTitleLookup,
 			$this->entityIdLabelFormatterFactory
 				->getEntityIdFormatter( $userLanguage ),
+			$languageFallbackChain,
 			$this->violationMessageRendererFactory
 				->getViolationMessageRenderer(
 					$userLanguage,
-					$this->languageFallbackChainFactory->newFromLanguage( $userLanguage ),
+					$languageFallbackChain,
 					$messageLocalizer
 				)
 		);

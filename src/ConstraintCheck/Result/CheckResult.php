@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 
 use DataValues\DataValue;
+use DataValues\MultilingualTextValue;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
@@ -99,6 +100,8 @@ class CheckResult {
 
 	private ?DataValue $dataValue;
 
+	private MultilingualTextValue $constraintClarification;
+
 	/**
 	 * @param Context|ContextCursor $contextCursor
 	 * @param Constraint $constraint
@@ -134,6 +137,7 @@ class CheckResult {
 		$this->status = $status;
 		$this->message = $message;
 		$this->metadata = Metadata::blank();
+		$this->constraintClarification = new MultilingualTextValue( [] );
 	}
 
 	public function getContextCursor(): ContextCursor {
@@ -199,6 +203,14 @@ class CheckResult {
 
 	public function getMetadata(): Metadata {
 		return $this->metadata;
+	}
+
+	public function getConstraintClarification(): MultilingualTextValue {
+		return $this->constraintClarification;
+	}
+
+	public function setConstraintClarification( MultilingualTextValue $constraintClarification ) {
+		$this->constraintClarification = $constraintClarification;
 	}
 
 }

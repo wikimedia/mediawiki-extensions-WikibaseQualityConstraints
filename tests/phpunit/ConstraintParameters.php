@@ -323,6 +323,18 @@ trait ConstraintParameters {
 	}
 
 	/**
+	 * @param string $languageCode
+	 * @param string $constraintClarification
+	 * @return array[]
+	 */
+	public function constraintClarificationParameter( $languageCode, $constraintClarification ) {
+		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$value = new MonolingualTextValue( $languageCode, $constraintClarification );
+		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value );
+		return [ $constraintClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
+	}
+
+	/**
 	 * @param string[] $contextTypes Context::TYPE_* constants
 	 * @param string[] $entityTypes
 	 * @return array

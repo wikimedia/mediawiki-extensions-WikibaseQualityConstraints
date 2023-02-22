@@ -103,6 +103,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				'WBQualityConstraintsConstraintStatusId' => 'P3',
 				'WBQualityConstraintsConstraintScopeId' => 'P4',
 				'WBQualityConstraintsConstraintEntityTypesId' => 'P4',
+				'WBQualityConstraintsConstraintClarificationId' => 'P5',
 				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
 				'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
 				'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',

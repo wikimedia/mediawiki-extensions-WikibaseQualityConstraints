@@ -348,7 +348,29 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 						'snaktype' => 'novalue',
 						'property' => 'P2303',
 					] ],
+					'P6607' => [
+						$this->constraintClarificationParameter( 'en', 'en clarification 1' )[ 'P6607' ][ 0 ],
+						$this->constraintClarificationParameter( 'en', 'en clarification 2' )[ 'P6607' ][ 0 ],
+					],
 				] ),
+			],
+			[
+				'constraint_guid' => 'P13$c778eee1-2ef9-4826-ab89-389ca6e46b53',
+				'pid' => 13,
+				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
+				'constraint_parameters' => json_encode( array_merge_recursive(
+					$this->constraintClarificationParameter( 'de', 'de clarification' ),
+					$this->constraintClarificationParameter( 'en', 'en clarification' )
+				) ),
+			],
+			[
+				'constraint_guid' => 'P14$9418b916-544f-4f4b-bc4f-c87fb49a5aa2',
+				'pid' => 14,
+				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
+				'constraint_parameters' => json_encode( array_merge_recursive(
+					$this->constraintClarificationParameter( 'en', 'en clarification 1' ),
+					$this->constraintClarificationParameter( 'en', 'en clarification 2' )
+				) ),
 			],
 			[
 				'constraint_guid' => 'P1$a1b1f3d8-6215-4cb6-9edd-3af126ae134f',
@@ -606,6 +628,35 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertContainsEquals( new NumericPropertyId( 'P12' ), $entityIds );
 	}
 
+	public function testCheckOnEntityIdConstraintClarification(): void {
+		$entity = NewItem::withId( 'Q13' )
+			->andStatement( NewStatement::noValueFor( 'P13' ) )
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$results = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
+		$this->assertCount( 1, $results );
+		$result = $results[0];
+		$this->assertSame( [
+			[ 'text' => 'de clarification', 'language' => 'de' ],
+			[ 'text' => 'en clarification', 'language' => 'en' ],
+		], $result->getConstraintClarification()->getArrayValue() );
+	}
+
+	public function testCheckOnEntityIdConstraintClarificationInvalid(): void {
+		$entity = NewItem::withId( 'Q14' )
+			->andStatement( NewStatement::noValueFor( 'P14' ) )
+			->build();
+		$this->lookup->addEntity( $entity );
+
+		$result = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entity->getId() );
+
+		$this->assertSame( 'bad-parameters', $result[ 0 ]->getStatus() );
+		$entityIds = $result[ 0 ]->getMetadata()->getDependencyMetadata()->getEntityIds();
+		$this->assertContainsEquals( new NumericPropertyId( 'P14' ), $entityIds );
+	}
+
 	public function testCheckOnEntityIdSelectConstraintIds() {
 		$entity = NewItem::withId( 'Q1' )
 			->andStatement(
@@ -707,8 +758,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 
 		$this->assertCount( 1, $result,
 			'Every constraint should be represented by one result' );
-		$this->assertCount( 2, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'],
-			'The constraint should have two exceptions' );
+		$this->assertCount( 3, $result['P9$43053ee8-79da-4326-a2ac-f85098291db3'],
+			'The constraint should have three exceptions' );
 		$this->assertInstanceOf(
 			ConstraintParameterException::class,
 			$result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][0]
@@ -716,6 +767,10 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertInstanceOf(
 			ConstraintParameterException::class,
 			$result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][1]
+		);
+		$this->assertInstanceOf(
+			ConstraintParameterException::class,
+			$result['P9$43053ee8-79da-4326-a2ac-f85098291db3'][2]
 		);
 	}
 
@@ -750,10 +805,11 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			'P9$43053ee8-79da-4326-a2ac-f85098291db3'
 		);
 
-		$this->assertCount( 2, $result,
-			'The constraint should have two exceptions' );
+		$this->assertCount( 3, $result,
+			'The constraint should have three exceptions' );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[0] );
 		$this->assertInstanceOf( ConstraintParameterException::class, $result[1] );
+		$this->assertInstanceOf( ConstraintParameterException::class, $result[2] );
 	}
 
 	public function testPropertiesWithViolatingQualifiers() {
