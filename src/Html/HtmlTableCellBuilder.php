@@ -63,7 +63,6 @@ class HtmlTableCellBuilder {
 
 	/**
 	 * @return string HTML
-	 * @suppress SecurityCheck-DoubleEscaped
 	 */
 	public function toHtml() {
 		if ( $this->isRawContent ) {
