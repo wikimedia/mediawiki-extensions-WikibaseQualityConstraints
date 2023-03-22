@@ -143,6 +143,8 @@
 	"wbqc-violation-message-integer": "Verdier for $1 bør være heltall, men $2 har en desimaldel.",
 	"wbqc-violation-message-integer-bounds": "Verdier for $1 bør være heltall, men grensene til $2 har en desimaldel.",
 	"wbqc-violation-message-citationNeeded": "Påstander for $1 bør ha minst én referanse.",
+	"wbqc-violation-message-language": "Utsagn for $1 bør kun være på leksemer på {{PLURAL:$2|1=$4|2=$4 eller $5|ett av følgende språk: $3}}.",
+	"wbqc-violation-message-label-lacking": "Entiteter med utsagn for $1 bør også ha {{PLURAL:$2|en etikett på $4|etiketter på følgende språk: $3}}.",
 	"wbqc-violation-message-property-scope": "Egenskapen $1 bør ikke brukes for dette stedet ($2). {{PLURAL:$3|Det eneste gyldige stedet|De eneste gyldige stedene}} for denne egenskapen er {{PLURAL:$3|$5|$4}}.",
 	"wbqc-violation-message-exception": "Denne entiteten er et kjent unntak fra denne begrensningen og har blitt merket som det."
 }
