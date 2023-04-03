@@ -8,7 +8,7 @@
 	"apihelp-wbcheckconstraints-description": "Izvede preverjanje omejitev katerekoli želene stvari in izpiše rezultat.",
 	"apihelp-wbcheckconstraints-summary": "Izvede preverjanje omejitev katerekoli želene stvari in izpiše rezultat.",
 	"apihelp-wbcheckconstraints-param-id": "Seznam ID-jev entitet, katerih podatki naj se pridobijo. Vrednosti ločite z »|« ali podobnim.",
-	"apihelp-wbcheckconstraints-param-constraintid": "Izbrini filter za vrnitev samo omejitev, ki imajo podani ID omejitve.",
+	"apihelp-wbcheckconstraints-param-constraintid": "Izbirni filter za vrnitev samo tistih omejitev, ki imajo določen ID omejitve.",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "Izjava je v skladu z omejitvijo.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "Ta izjava krši omejitev.",
 	"apihelp-wbcheckconstraints-paramvalue-status-exception": "Entiteta teme izjave je znana izjema od te omejitve.",
