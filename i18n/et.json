@@ -122,6 +122,8 @@
 	"wbqc-violation-message-integer": "Omaduse $1 väärtus peaks olema täisarv, aga väärtusel $2 on murdosa.",
 	"wbqc-violation-message-integer-bounds": "Omaduse $1 väärtus peaks olema täisarv, aga väärtuse $2 piiridel on murdosa.",
 	"wbqc-violation-message-citationNeeded": "Avaldusel omaduse $1 kohta peaks olema vähemalt üks viide.",
+	"wbqc-violation-message-language": "Avaldus omadusega $1 peaks olema ainult lekseemil, mille keeleks on määratud {{PLURAL:$2|1=$4.|2=kas $4 või $5.|üks järgmistest: $3}}",
+	"wbqc-violation-message-label-lacking": "Olemil omadusega $1 peaks olema ka silt vähemalt {{PLURAL:$2|1=selles keeles: $4.|ühes järgmistest keeltest: $3}}",
 	"wbqc-violation-message-property-scope": "Omadust $1 ei peaks kasutama selles kohas ($2). {{PLURAL:$3|Seda omadust sobib kasutada ainult $5.|Ainsad sobivad kohad sellele omadusele on järgmised: $4}}",
 	"wbqc-violation-message-exception": "See olem on selle kitsenduse teadaolev erand ja see on erandina märgitud."
 }
