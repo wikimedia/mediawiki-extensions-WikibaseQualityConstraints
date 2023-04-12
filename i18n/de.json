@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Brettchenweber",
 			"Inkowik",
 			"Metalhead64",
 			"Purodha"
@@ -90,7 +91,7 @@
 	"wbqc-violation-message-diff-within-range": "Der Unterschied zwischen $3 ($4) und $1 ($2) sollte zwischen $5 und $6 liegen.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Der Unterschied zwischen $3 ($4) und $1 ($2) sollte nicht mehr als $5 betragen.",
 	"wbqc-violation-message-diff-within-range-rightopen": "Der Unterschied zwischen $3 ($4) und $1 ($2) sollte nicht weniger als $5 betragen.",
-	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Die in den Parametern definierte Eigenschaft muss einen Wert des gleichen Typs als diese Eigenschaft haben.",
+	"wbqc-violation-message-diff-within-range-must-have-equal-types": "Die in den Parametern definierte Eigenschaft muss einen Wert des gleichen Typs wie diese Eigenschaft haben.",
 	"wbqc-violation-message-format": "Der Wert für $1 ($2) sollte dem regulären Ausdruck $3 entsprechen.",
 	"wbqc-violation-message-format-clarification": "Der Wert für $1 ($2) sollte „$4“ entsprechen (regulärer Ausdruck: $3).",
 	"wbqc-violation-message-inverse": "$1 sollte auch die umgekehrte Aussage $2 $3 haben.",
@@ -117,9 +118,9 @@
 	"wbqc-violation-message-range-time-rightopen-leftnow": "Der Wert für $1 ($2) sollte nicht in der Vergangenheit liegen.",
 	"wbqc-violation-message-single-value": "Diese Eigenschaft sollte nur einen einzigen Wert enthalten.",
 	"wbqc-violation-message-single-value-separators": "Diese Eigenschaft sollte nur einen einzigen Wert mit dem gleichen {{PLURAL:$2|1=Qualifikator $4 haben.|Satz an Qualifikatoren für diese Eigenschaften haben: $3}}",
-	"wbqc-violation-message-single-best-value-no-preferred": "Diese Eigenschaft sollte einen einzigen Wert „am Besten“ enthalten. Von den derzeitigen mehreren Werten sollte ein Wert mit einem „bevorzugten“ Rang markiert werden.",
+	"wbqc-violation-message-single-best-value-no-preferred": "Diese Eigenschaft sollte einen einzigen „besten“ Wert enthalten. Von den derzeitigen mehreren Werten sollte ein Wert mit einem „bevorzugten“ Rang markiert werden.",
 	"wbqc-violation-message-single-best-value-no-preferred-separators": "Diese Eigenschaft sollte einen einzigen „besten“ Wert mit dem gleichen {{PLURAL:$2|1=Qualifikator $4 enthalten.|Satz an Qualifikatoren für diese Eigenschaften enthalten: $3.}} Von den derzeitigen mehreren Werten sollte ein Wert mit einem „bevorzugten“ Rang markiert werden.",
-	"wbqc-violation-message-single-best-value-multi-preferred": "Diese Eigenschaft sollte einen einzigen Wert „am Besten“ enthalten. Es sollte nicht mehr als einen Wert mit einem „bevorzugten“ Rang geben.",
+	"wbqc-violation-message-single-best-value-multi-preferred": "Diese Eigenschaft sollte einen einzigen „besten“ Wert enthalten. Es sollte nicht mehr als einen Wert mit einem „bevorzugten“ Rang geben.",
 	"wbqc-violation-message-single-best-value-multi-preferred-separators": "Diese Eigenschaft sollte einen einzigen „besten“ Wert mit dem gleichen {{PLURAL:$2|1=Qualifikator $4 enthalten.|Satz an Qualifikatoren für diese Eigenschaften enthalten: $3.}} Es sollte nicht mehr als einen Wert mit einem „bevorzugten“ Rang geben.",
 	"wbqc-violation-message-symmetric": "$1 sollte auch die symmetrische Aussage $2 $3 haben.",
 	"wbqc-violation-message-type-instance": "Objekte, die die Eigenschaft $1 verwenden, sollten Instanzen von {{PLURAL:$3|1=$5|2=$5 oder $6|einer der folgenden Klassen}} sein (oder von {{PLURAL:$3|1=einer ihrer Unterklasse|2=einer ihrer Unterklasse|einer ihrer Unterklassen}}), aber $2 ist sie derzeit {{PLURAL:$3|1=nicht.|2=nicht.|nicht: $4.}}",
