@@ -147,6 +147,7 @@ class SpecialConstraintReport extends SpecialPage {
 		return [
 			'SpecialConstraintReportPage',
 			'wikibase.quality.constraints.icon',
+			'wikibase.alltargets',
 		];
 	}
 
