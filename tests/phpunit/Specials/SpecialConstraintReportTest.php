@@ -127,15 +127,15 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
 					'constraint_type_qid' =>
 						$this->getDefaultConfig()->get( 'WBQualityConstraintsMultiValueConstraintId' ),
-					'constraint_parameters' => '{}'
+					'constraint_parameters' => '{}',
 				],
 				[
 					'constraint_guid' => '3',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
 					'constraint_type_qid' =>
 						$this->getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ),
-					'constraint_parameters' => '{}'
-				]
+					'constraint_parameters' => '{}',
+				],
 			]
 		);
 	}
@@ -217,14 +217,14 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			self::NOT_EXISTENT_ITEM_ID,
 			[],
 			$userLanguage,
-			$matchers
+			$matchers,
 		];
 
 		// Valid input and entity exists
 		unset( $matchers[ 'error' ] );
 		$matchers[ 'result for' ] = [
 			'tag' => 'h3',
-			'content' => '(wbqc-constraintreport-result-headline) '
+			'content' => '(wbqc-constraintreport-result-headline) ',
 		];
 
 		$matchers['result for'] = both(

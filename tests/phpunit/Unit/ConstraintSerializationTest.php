@@ -95,7 +95,7 @@ class ConstraintSerializationTest extends \MediaWikiUnitTestCase {
 				'pid' => $propertyIdSerialization,
 				'qid' => $constraintTypeItemId,
 				'params' => $constraintParameters,
-			]
+			],
 		];
 	}
 

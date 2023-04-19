@@ -78,16 +78,16 @@ class ServicesTest extends MediaWikiIntegrationTestCase {
 			[ ConnectionCheckerHelper::class ],
 			[ RangeCheckerHelper::class ],
 			[ SparqlHelper::class, [
-				'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ) ]
+				'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ) ],
 			],
 			[ SparqlHelper::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => '' ] ) ] ],
 			[ TypeCheckerHelper::class ],
 			[ DelegatingConstraintChecker::class ],
 			[ ResultsSource::class, [
-				'config' => new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => true ] ) ]
+				'config' => new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => true ] ) ],
 			],
 			[ ResultsSource::class, [
-				'config' => new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => false ] ) ]
+				'config' => new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => false ] ) ],
 			],
 		];
 	}

@@ -49,7 +49,7 @@ class CheckConstraintsJobTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame(
 			[
 				'type' => CheckConstraintsJob::COMMAND,
-				'params' => $params
+				'params' => $params,
 			],
 			$job->getDeduplicationInfo()
 		);

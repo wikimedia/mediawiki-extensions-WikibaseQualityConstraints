@@ -255,7 +255,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 			$this->getConstraintParameterParser(),
 			new HashConfig( [
 				'WBQualityConstraintsFormatCheckerShellboxRatio' => 1,
-				'WBQualityConstraintsCheckFormatConstraint' => true
+				'WBQualityConstraintsCheckFormatConstraint' => true,
 			] ),
 			$sparqlHelper,
 			$shellboxClientFactory
@@ -292,7 +292,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 			new HashConfig( [
 				'WBQualityConstraintsFormatCheckerShellboxRatio' => 1,
 				'WBQualityConstraintsSparqlMaxMillis' => 100,
-				'WBQualityConstraintsCheckFormatConstraint' => true
+				'WBQualityConstraintsCheckFormatConstraint' => true,
 			] ),
 			$sparqlHelper,
 			$shellboxClientFactory

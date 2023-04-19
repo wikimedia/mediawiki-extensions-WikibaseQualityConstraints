@@ -83,7 +83,7 @@ trait ConstraintParameters {
 					);
 				},
 				$classIds
-			)
+			),
 		];
 	}
 
@@ -103,7 +103,7 @@ trait ConstraintParameters {
 			);
 		}
 		return [
-			$languageParameterId => $snaks
+			$languageParameterId => $snaks,
 		];
 	}
 
@@ -132,7 +132,7 @@ trait ConstraintParameters {
 					new NumericPropertyId( $relationParameterId ),
 					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( $configKey ) ) )
 				)
-			) ]
+			) ],
 		];
 	}
 
@@ -148,7 +148,7 @@ trait ConstraintParameters {
 					new NumericPropertyId( $propertyParameterId ),
 					new EntityIdValue( new NumericPropertyId( $propertyId ) )
 				)
-			) ]
+			) ],
 		];
 	}
 
@@ -166,7 +166,7 @@ trait ConstraintParameters {
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
 				$properties
-			)
+			),
 		];
 	}
 
@@ -188,7 +188,7 @@ trait ConstraintParameters {
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
 				$items
-			)
+			),
 		];
 	}
 
@@ -239,7 +239,7 @@ trait ConstraintParameters {
 		$snakSerializer = $this->getSnakSerializer();
 		return [
 			$minimumId => [ $snakSerializer->serialize( $minimumSnak ) ],
-			$maximumId => [ $snakSerializer->serialize( $maximumSnak ) ]
+			$maximumId => [ $snakSerializer->serialize( $maximumSnak ) ],
 		];
 	}
 
@@ -318,7 +318,7 @@ trait ConstraintParameters {
 					new NumericPropertyId( $statusParameterId ),
 					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( $configKey ) ) )
 				)
-			) ]
+			) ],
 		];
 	}
 
@@ -408,7 +408,7 @@ trait ConstraintParameters {
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
 				$separators
-			)
+			),
 		];
 	}
 
@@ -436,7 +436,7 @@ trait ConstraintParameters {
 					return $this->getSnakSerializer()->serialize( $snak );
 				},
 				$contextTypes
-			)
+			),
 		];
 	}
 

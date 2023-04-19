@@ -217,7 +217,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 			new SnakList(
 				[
 					new PropertyValueSnak( $firstQualifier, new StringValue( 'something' ) ),
-					new PropertyValueSnak( $secondQualifier, new StringValue( 'something' ) )
+					new PropertyValueSnak( $secondQualifier, new StringValue( 'something' ) ),
 				]
 			)
 		);

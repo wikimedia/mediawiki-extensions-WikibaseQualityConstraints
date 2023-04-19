@@ -286,12 +286,12 @@ class CheckConstraintParameters extends ApiBase {
 		return [
 			self::PARAM_PROPERTY_ID => [
 				ParamValidator::PARAM_TYPE => 'string',
-				ParamValidator::PARAM_ISMULTI => true
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			self::PARAM_CONSTRAINT_ID => [
 				ParamValidator::PARAM_TYPE => 'string',
-				ParamValidator::PARAM_ISMULTI => true
-			]
+				ParamValidator::PARAM_ISMULTI => true,
+			],
 		];
 	}
 

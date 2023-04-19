@@ -71,7 +71,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
 				new MockMessageLocalizer(),
-				$this->getDefaultConfig()
+				$this->getDefaultConfig(),
 			] )
 			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
@@ -92,7 +92,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
 				new MockMessageLocalizer(),
-				$this->getDefaultConfig()
+				$this->getDefaultConfig(),
 			] )
 			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
@@ -111,7 +111,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
 				new MockMessageLocalizer(),
-				$this->getDefaultConfig()
+				$this->getDefaultConfig(),
 			] )
 			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();

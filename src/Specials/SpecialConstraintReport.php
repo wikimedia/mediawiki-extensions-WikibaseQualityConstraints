@@ -249,8 +249,8 @@ class SpecialConstraintReport extends SpecialPage {
 				'name' => 'entityid',
 				'label-message' => 'wbqc-constraintreport-form-entityid-label',
 				'cssclass' => 'wbqc-constraintreport-form-entity-id',
-				'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped()
-			]
+				'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped(),
+			],
 		];
 		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
 		$htmlForm->setSubmitText( $this->msg( 'wbqc-constraintreport-form-submit-label' )->escaped() );
@@ -280,7 +280,7 @@ class SpecialConstraintReport extends SpecialPage {
 		return Html::rawElement(
 				'p',
 				[
-					'class' => $cssClasses
+					'class' => $cssClasses,
 				],
 				$this->msg( $messageKey )->escaped()
 			);
@@ -332,7 +332,7 @@ class SpecialConstraintReport extends SpecialPage {
 				new HtmlTableHeaderBuilder(
 					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->escaped(),
 					true
-				)
+				),
 			]
 		);
 
@@ -408,7 +408,7 @@ class SpecialConstraintReport extends SpecialPage {
 					$constraintColumn,
 					[],
 					true
-				)
+				),
 			]
 		);
 
@@ -485,7 +485,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$tooltipIndicator = Html::element(
 			'span',
 			[
-				'class' => 'wbqc-expandable-content-indicator wbqc-indicator'
+				'class' => 'wbqc-expandable-content-indicator wbqc-indicator',
 			],
 			$indicator
 		);
@@ -493,7 +493,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$wrappedExpandableContent = Html::element(
 			'div',
 			[
-				'class' => 'wbqc-expandable-content'
+				'class' => 'wbqc-expandable-content',
 			],
 			$expandableContent
 		);
@@ -544,7 +544,7 @@ class SpecialConstraintReport extends SpecialPage {
 			Html::rawElement(
 				'span',
 				[
-					'class' => 'wbqc-status wbqc-status-' . $status
+					'class' => 'wbqc-status wbqc-status-' . $status,
 				],
 				$iconHtml . $labelHtml
 			);
@@ -570,7 +570,7 @@ class SpecialConstraintReport extends SpecialPage {
 			'a',
 			[
 				'href' => $this->getClaimUrl( $entityId, $propertyId ),
-				'target' => '_blank'
+				'target' => '_blank',
 			],
 			$text
 		);

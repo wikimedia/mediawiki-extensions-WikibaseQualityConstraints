@@ -43,7 +43,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiIntegrationTestCase {
 		$statement = new Statement(
 			new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ),
 			new SnakList( [
-				new PropertyNoValueSnak( new NumericPropertyId( 'P2' ) )
+				new PropertyNoValueSnak( new NumericPropertyId( 'P2' ) ),
 			] )
 		);
 		$entity = NewItem::withId( 'Q5' )
@@ -62,7 +62,7 @@ class MandatoryQualifiersCheckerTest extends \MediaWikiIntegrationTestCase {
 		$statement = new Statement(
 			new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ),
 			new SnakList( [
-				new PropertyNoValueSnak( new NumericPropertyId( 'P2' ) )
+				new PropertyNoValueSnak( new NumericPropertyId( 'P2' ) ),
 			] )
 		);
 		$entity = NewItem::withId( 'Q5' )

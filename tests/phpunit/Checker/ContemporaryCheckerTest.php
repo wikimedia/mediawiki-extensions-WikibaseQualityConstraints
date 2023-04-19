@@ -1009,7 +1009,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 		return [
 			$lookup,
 			$subjectItem,
-			$this->getLinkingStatement( $subjectItem, $linkingPropertyId )
+			$this->getLinkingStatement( $subjectItem, $linkingPropertyId ),
 		];
 	}
 

@@ -161,9 +161,9 @@ class CheckConstraintParametersTest extends ApiTestCase {
 			[
 				self::P1 => [
 					self::P1_NONEXISTENT => [
-						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_FOUND
-					]
-				]
+						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_FOUND,
+					],
+				],
 			],
 			$result
 		);
@@ -176,7 +176,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 
 		$result = $this->doRequest(
 			[
-				CheckConstraintParameters::PARAM_CONSTRAINT_ID => self::P1_GOOD
+				CheckConstraintParameters::PARAM_CONSTRAINT_ID => self::P1_GOOD,
 			]
 		);
 
@@ -185,9 +185,9 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				self::P1 => [
 					self::P1_GOOD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_OKAY,
-						CheckConstraintParameters::KEY_PROBLEMS => []
-					]
-				]
+						CheckConstraintParameters::KEY_PROBLEMS => [],
+					],
+				],
 			],
 			$result
 		);
@@ -200,7 +200,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 
 		$result = $this->doRequest(
 			[
-				CheckConstraintParameters::PARAM_CONSTRAINT_ID => self::P1_BAD
+				CheckConstraintParameters::PARAM_CONSTRAINT_ID => self::P1_BAD,
 			]
 		);
 
@@ -210,10 +210,10 @@ class CheckConstraintParametersTest extends ApiTestCase {
 					self::P1_BAD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_OKAY,
 						CheckConstraintParameters::KEY_PROBLEMS => [
-							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ]
-						]
-					]
-				]
+							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ],
+						],
+					],
+				],
 			],
 			$result
 		);
@@ -234,7 +234,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$result = $this->doRequest(
 			[
 				CheckConstraintParameters::PARAM_CONSTRAINT_ID =>
-					self::P1_NONEXISTENT . '|' . self::P1_GOOD . '|' . self::P1_BAD
+					self::P1_NONEXISTENT . '|' . self::P1_GOOD . '|' . self::P1_BAD,
 			]
 		);
 
@@ -242,19 +242,19 @@ class CheckConstraintParametersTest extends ApiTestCase {
 			[
 				self::P1 => [
 					self::P1_NONEXISTENT => [
-						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_FOUND
+						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_FOUND,
 					],
 					self::P1_GOOD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_OKAY,
-						CheckConstraintParameters::KEY_PROBLEMS => []
+						CheckConstraintParameters::KEY_PROBLEMS => [],
 					],
 					self::P1_BAD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_OKAY,
 						CheckConstraintParameters::KEY_PROBLEMS => [
-							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ]
-						]
-					]
-				]
+							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ],
+						],
+					],
+				],
 			],
 			$result
 		);
@@ -266,11 +266,11 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				case self::P1:
 					return [
 						self::P1_GOOD => [],
-						self::P1_BAD => [ new ConstraintParameterException( $this->testMessage ) ]
+						self::P1_BAD => [ new ConstraintParameterException( $this->testMessage ) ],
 					];
 				case self::P2:
 					return [
-						self::P2_GOOD => []
+						self::P2_GOOD => [],
 					];
 			}
 		};
@@ -278,7 +278,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$result = $this->doRequest(
 			[
 				CheckConstraintParameters::PARAM_PROPERTY_ID =>
-					self::P1 . '|' . self::P2
+					self::P1 . '|' . self::P2,
 			]
 		);
 
@@ -287,21 +287,21 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				self::P1 => [
 					self::P1_GOOD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_OKAY,
-						CheckConstraintParameters::KEY_PROBLEMS => []
+						CheckConstraintParameters::KEY_PROBLEMS => [],
 					],
 					self::P1_BAD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_OKAY,
 						CheckConstraintParameters::KEY_PROBLEMS => [
-							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ]
-						]
-					]
+							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ],
+						],
+					],
 				],
 				self::P2 => [
 					self::P2_GOOD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_OKAY,
-						CheckConstraintParameters::KEY_PROBLEMS => []
-					]
-				]
+						CheckConstraintParameters::KEY_PROBLEMS => [],
+					],
+				],
 			],
 			$result
 		);
@@ -313,14 +313,14 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		};
 		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
 			return [
-				self::P2_GOOD => []
+				self::P2_GOOD => [],
 			];
 		};
 
 		$result = $this->doRequest(
 			[
 				CheckConstraintParameters::PARAM_CONSTRAINT_ID => self::P1_BAD,
-				CheckConstraintParameters::PARAM_PROPERTY_ID => self::P2
+				CheckConstraintParameters::PARAM_PROPERTY_ID => self::P2,
 			]
 		);
 
@@ -330,16 +330,16 @@ class CheckConstraintParametersTest extends ApiTestCase {
 					self::P1_BAD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_NOT_OKAY,
 						CheckConstraintParameters::KEY_PROBLEMS => [
-							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ]
-						]
-					]
+							[ CheckConstraintParameters::KEY_MESSAGE_HTML => $this->testMessageHtml ],
+						],
+					],
 				],
 				self::P2 => [
 					self::P2_GOOD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_OKAY,
-						CheckConstraintParameters::KEY_PROBLEMS => []
-					]
-				]
+						CheckConstraintParameters::KEY_PROBLEMS => [],
+					],
+				],
 			],
 			$result
 		);
@@ -348,7 +348,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	public function testReportForConstraintAndPropertyOverlapping() {
 		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
 			return [
-				self::P2_GOOD => []
+				self::P2_GOOD => [],
 			];
 		};
 		// $this->checkConstraintParametersOnConstraintId not set:
@@ -357,7 +357,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 		$result = $this->doRequest(
 			[
 				CheckConstraintParameters::PARAM_CONSTRAINT_ID => self::P2_GOOD,
-				CheckConstraintParameters::PARAM_PROPERTY_ID => self::P2
+				CheckConstraintParameters::PARAM_PROPERTY_ID => self::P2,
 			]
 		);
 
@@ -366,9 +366,9 @@ class CheckConstraintParametersTest extends ApiTestCase {
 				self::P2 => [
 					self::P2_GOOD => [
 						CheckConstraintParameters::KEY_STATUS => CheckConstraintParameters::STATUS_OKAY,
-						CheckConstraintParameters::KEY_PROBLEMS => []
-					]
-				]
+						CheckConstraintParameters::KEY_PROBLEMS => [],
+					],
+				],
 			],
 			$result
 		);

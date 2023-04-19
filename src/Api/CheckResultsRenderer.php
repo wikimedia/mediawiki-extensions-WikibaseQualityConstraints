@@ -78,7 +78,7 @@ class CheckResultsRenderer {
 		$result = [
 			'status' => $checkResult->getStatus(),
 			'property' => $constraintPropertyId->getSerialization(),
-			'constraint' => $constraint
+			'constraint' => $constraint,
 		];
 		$message = $checkResult->getMessage();
 		if ( $message ) {

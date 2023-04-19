@@ -53,8 +53,8 @@ class ConstraintRepositoryLookupTest extends \MediaWikiIntegrationTestCase {
 				'constraint_guid' => 'P3$514751bb-1656-4d2d-a386-b0f0a69e02ed',
 				'pid' => 3,
 				'constraint_type_qid' => 'Multi value',
-				'constraint_parameters' => 'this is not valid JSON'
-			]
+				'constraint_parameters' => 'this is not valid JSON',
+			],
 		] );
 
 		$repo = $this->newConstraintRepositoryLookup();
@@ -70,13 +70,13 @@ class ConstraintRepositoryLookupTest extends \MediaWikiIntegrationTestCase {
 				'constraint_guid' => '1',
 				'pid' => 1,
 				'constraint_type_qid' => 'Multi value',
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => '3',
 				'pid' => 1,
 				'constraint_type_qid' => 'Single value',
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 		] );
 	}

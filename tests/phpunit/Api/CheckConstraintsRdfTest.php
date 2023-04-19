@@ -241,7 +241,7 @@ TEXT;
 				return new CachedCheckResults(
 					[
 						$this->getNullResult( $serialization ),
-						$this->getCheckResult( $serialization, CheckResult::STATUS_BAD_PARAMETERS )
+						$this->getCheckResult( $serialization, CheckResult::STATUS_BAD_PARAMETERS ),
 					],
 					Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 64800 ) )
 				);

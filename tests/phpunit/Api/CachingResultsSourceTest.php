@@ -155,7 +155,7 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 				86400,
 				[],
 				10000,
-				$this->getLoggingHelper()
+				$this->getLoggingHelper(),
 			] )
 			->onlyMethods( [ 'getStoredResults', 'getAndStoreResults' ] )
 			->getMock();

@@ -168,7 +168,7 @@ class CheckResultSerializationTest extends TestCase {
 				CheckResultSerializer::KEY_DEPENDENCY_METADATA => [
 					CheckResultSerializer::KEY_DEPENDENCY_METADATA_ENTITY_IDS => [],
 				],
-			]
+			],
 		];
 
 		$futureTime = new TimeValue(
@@ -233,7 +233,7 @@ class CheckResultSerializationTest extends TestCase {
 					CheckResultSerializer::KEY_DEPENDENCY_METADATA_ENTITY_IDS => [ 'Q42' ],
 					CheckResultSerializer::KEY_DEPENDENCY_METADATA_FUTURE_TIME => $futureTime->getArrayValue(),
 				],
-			]
+			],
 		];
 
 		yield 'NullResult' => [
@@ -255,7 +255,7 @@ class CheckResultSerializationTest extends TestCase {
 					CheckResultSerializer::KEY_DEPENDENCY_METADATA_ENTITY_IDS => [ 'Q42' ],
 					CheckResultSerializer::KEY_DEPENDENCY_METADATA_FUTURE_TIME => $futureTime->getArrayValue(),
 				],
-			]
+			],
 		];
 	}
 

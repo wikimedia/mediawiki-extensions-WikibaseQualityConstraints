@@ -382,7 +382,7 @@ public function testIsSubclassOf_CyclicWide() {
 			true,
 			[
 				$this->identicalTo( 'Q1' ),
-				$this->identicalTo( [ 'Q5' ] )
+				$this->identicalTo( [ 'Q5' ] ),
 			]
 		);
 		$helper = $this->getHelper( $this->getMaxEntitiesLookup( $lookup ), $sparqlHelper );

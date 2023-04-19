@@ -124,7 +124,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 				new ExpiryLock( new HashBagOStuff() ),
 				$loggingHelper,
 				'A fancy user agent',
-				$this->createMock( HttpRequestFactory::class )
+				$this->createMock( HttpRequestFactory::class ),
 			] )
 			->onlyMethods( [ 'runQuery' ] )
 			->getMock();
@@ -176,12 +176,12 @@ EOF;
 
 		yield [
 			[],  // No separators shouldn't add filtering or declaration
-			''
+			'',
 		];
 
 		yield [
 			[
-				$p21, $p22
+				$p21, $p22,
 			],
 <<<EOF
   MINUS {
@@ -232,7 +232,7 @@ EOF;
       ?statement a wdno:P22.
     }
   }
-EOF
+EOF,
 		];
 	}
 
@@ -348,84 +348,84 @@ EOF;
 				'string',
 				'qualifier',
 				'"foo"',
-				'pq:P1'
+				'pq:P1',
 			],
 			'external identifier, reference' => [
 				new PropertyValueSnak( $pid, new StringValue( 'f00' ) ),
 				'external-id',
 				'reference',
 				'"f00"',
-				'prov:wasDerivedFrom/pr:P1'
+				'prov:wasDerivedFrom/pr:P1',
 			],
 			'Commons media, qualifier' => [
 				new PropertyValueSnak( $pid, new StringValue( 'Bar.jpg' ) ),
 				'commonsMedia',
 				'qualifier',
 				'<http://commons.wikimedia.org/wiki/Special:FilePath/Bar.jpg>',
-				'pq:P1'
+				'pq:P1',
 			],
 			'geoshape, reference' => [
 				new PropertyValueSnak( $pid, new StringValue( 'Baznia.map' ) ),
 				'geo-shape',
 				'reference',
 				'<http://commons.wikimedia.org/data/main/Baznia.map>',
-				'prov:wasDerivedFrom/pr:P1'
+				'prov:wasDerivedFrom/pr:P1',
 			],
 			'tabular data, qualifier' => [
 				new PropertyValueSnak( $pid, new StringValue( 'Qux.tab' ) ),
 				'tabular-data',
 				'qualifier',
 				'<http://commons.wikimedia.org/data/main/Qux.tab>',
-				'pq:P1'
+				'pq:P1',
 			],
 			'url, reference' => [
 				new PropertyValueSnak( $pid, new StringValue( 'https://wikibase.example/url' ) ),
 				'url',
 				'reference',
 				'<https://wikibase.example/url>',
-				'prov:wasDerivedFrom/pr:P1'
+				'prov:wasDerivedFrom/pr:P1',
 			],
 			'item, qualifier' => [
 				new PropertyValueSnak( $pid, new EntityIdValue( new ItemId( 'Q100' ) ) ),
 				'wikibase-item',
 				'qualifier',
 				'wd:Q100',
-				'pq:P1'
+				'pq:P1',
 			],
 			'property, reference' => [
 				new PropertyValueSnak( $pid, new EntityIdValue( new NumericPropertyId( 'P100' ) ) ),
 				'wikibase-property',
 				'reference',
 				'wd:P100',
-				'prov:wasDerivedFrom/pr:P1'
+				'prov:wasDerivedFrom/pr:P1',
 			],
 			'monolingual text, qualifier' => [
 				new PropertyValueSnak( $pid, new MonolingualTextValue( 'qqx', 'lorem ipsum' ) ),
 				'monolingualtext',
 				'qualifier',
 				'"lorem ipsum"@qqx',
-				'pq:P1'
+				'pq:P1',
 			],
 			'globe coordinate, reference' => [
 				new PropertyValueSnak( $pid, $globeCoordinateValue ),
 				'globe-coordinate',
 				'reference',
 				"wdv:{$globeCoordinateValue->getHash()}",
-				'prov:wasDerivedFrom/prv:P1'
+				'prov:wasDerivedFrom/prv:P1',
 			],
 			'quantity, qualifier' => [
 				new PropertyValueSnak( $pid, $quantityValue ),
 				'quantity',
 				'qualifier',
 				"wdv:{$quantityValue->getHash()}",
-				'pqv:P1'
+				'pqv:P1',
 			],
 			'time, reference' => [
 				new PropertyValueSnak( $pid, $timeValue ),
 				'time',
 				'reference',
 				"wdv:{$timeValue->getHash()}",
-				'prov:wasDerivedFrom/prv:P1'
+				'prov:wasDerivedFrom/prv:P1',
 			],
 		];
 	}
@@ -536,7 +536,7 @@ EOF;
 					'(?!this may look like a regular expression)',
 					'/but should not be interpreted as one/',
 					'(x+x+)+y',
-				]
+				],
 			] )
 		);
 		$content = '(x+x+)+y';
@@ -550,12 +550,12 @@ EOF;
 		return [
 			'empty' => [
 				'',
-				false
+				false,
 			],
 			'syntax error' => [
 				'org.openrdf.query.MalformedQueryException: ' .
 					'Encountered "<EOF>" at line 1, column 6.',
-				false
+				false,
 			],
 			'QueryTimeoutException' => [
 				'java.util.concurrent.ExecutionException: ' .
@@ -565,14 +565,14 @@ EOF;
 					'java.util.concurrent.ExecutionException: ' .
 					'com.bigdata.bop.engine.QueryTimeoutException: ' .
 					'Query deadline is expired.',
-				true
+				true,
 			],
 			'TimeoutException' => [
 				"java.util.concurrent.TimeoutException\n" .
 					"\tat java.util.concurrent.FutureTask.get(FutureTask.java:205)\n" .
 					"\tat com.bigdata.rdf.sail.webapp.BigdataServlet.submitApiTask(BigdataServlet.java:289)\n" .
 					"\tat com.bigdata.rdf.sail.webapp.QueryServlet.doSparqlQuery(QueryServlet.java:653)\n",
-				true
+				true,
 			],
 		];
 	}
@@ -592,15 +592,15 @@ EOF;
 		 return [
 			 'WDQS hit' => [
 				 [ 'x-cache-status' => [ 'hit-front' ], 'cache-control' => [ 'public, max-age=300' ] ],
-				 300
+				 300,
 			 ],
 			 'WDQS miss' => [
 				 [ 'x-cache-status' => [ 'miss' ], 'cache-control' => [ 'public, max-age=300' ] ],
-				 false
+				 false,
 			 ],
 			 'generic hit' => [
 				 [ 'x-cache-status' => [ 'hit' ] ],
-				 true
+				 true,
 			 ],
 		 ];
 	 }
@@ -864,13 +864,13 @@ END;
 					false,
 					[
 						'item' => [ 'namespaceId' => 100 ,'slot' => SlotRecord::MAIN ],
-						'property' => [ 'namespaceId' => 200, 'slot' => SlotRecord::MAIN ]
+						'property' => [ 'namespaceId' => 200, 'slot' => SlotRecord::MAIN ],
 					],
 					'http://wiki/entity/',
 					'wd',
 					'',
 					'd'
-				)
+				),
 			], new SubEntityTypesMapper( [] ) ),
 			[ 'wd' => 'wd' ],
 			[ 'wd' => '' ]

@@ -77,6 +77,13 @@
 
 	<!-- END equivalent rules based on wikibase-codesniffer (T268831) -->
 
+	<rule ref="MediaWiki.Arrays.TrailingComma">
+		<properties>
+			<property name="singleLine" value="false" />
+			<property name="multiLine" value="true" />
+		</properties>
+	</rule>
+
 	<rule ref="Generic.Files.LineLength">
 		<properties>
 			<!-- FIXME: Should be lowered further, ideally to 100 (default). -->

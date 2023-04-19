@@ -141,7 +141,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'CommonsLink' ),
 				'constraint_parameters' => json_encode(
 					$this->namespaceParameter( 'File' )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P10$0bdbe1cb-8afb-4d16-9fd0-c1d0a5b717ce',
@@ -150,7 +150,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_parameters' => json_encode( array_merge(
 					$this->namespaceParameter( 'File' ),
 					$this->exceptionsParameter( [ 'Q5' ] )
-				) )
+				) ),
 			],
 			[
 				'constraint_guid' => 'P11$01c56d1f-b3ce-4a1a-bef7-8c652f395eb2',
@@ -158,9 +158,9 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
 				'constraint_parameters' => json_encode( [
 					$this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' ) => [
-						[ 'snaktype' => 'novalue', 'property' => 'P2316' ]
-					]
-				] )
+						[ 'snaktype' => 'novalue', 'property' => 'P2316' ],
+					],
+				] ),
 			],
 			[
 				'constraint_guid' => 'P1$6ad9eb64-13fd-43a1-afc8-84857108bd59',
@@ -168,7 +168,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'MandatoryQualifier' ),
 				'constraint_parameters' => json_encode(
 					$this->propertyParameter( 'P2' )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P1$cfff6d73-320c-43c5-8582-e9cbb98e2ca2',
@@ -176,7 +176,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'ConflictsWith' ),
 				'constraint_parameters' => json_encode(
 					$this->propertyParameter( 'P2' )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P1$c81a981e-4eab-44c9-8aa2-62c63072902e',
@@ -184,7 +184,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'Inverse' ),
 				'constraint_parameters' => json_encode(
 					$this->propertyParameter( 'P2' )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P1$2040dee1-8c9d-45b7-ac01-2ce8046f578b',
@@ -192,7 +192,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'AllowedQualifiers' ),
 				'constraint_parameters' => json_encode(
 					$this->propertiesParameter( [ 'P2', 'P3' ] )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P1$09a20b38-fe36-444b-b9ed-22eb46c3ea73',
@@ -201,7 +201,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_parameters' => json_encode( array_merge(
 					$this->propertyParameter( 'P2' ),
 					$this->rangeParameter( 'quantity', 0, 150 )
-				) )
+				) ),
 			],
 			[
 				'constraint_guid' => 'P1$3dac547d-3faf-4198-9b9c-0ba1eae32752',
@@ -209,37 +209,37 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'Format' ),
 				'constraint_parameters' => json_encode(
 					$this->formatParameter( '[0-9]' )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P1$cc5708c8-3ec8-4bf3-8931-409530e4d634',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'MultiValue' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$021b2558-8e7c-4c2c-ba14-4596dc11536e',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'DistinctValues' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$3ddc8c54-c056-425c-8745-d257004d585f',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'SingleValue' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$dc4464ed-42a5-47f6-b725-04b1d9d1dfc6',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'Symmetric' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$713ec92d-cd08-413d-b4dc-8e6eeb8c7861',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$a083d339-7bd6-4737-a987-b55ae8a1a5f3',
@@ -247,7 +247,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'OneOf' ),
 				'constraint_parameters' => json_encode(
 					$this->itemsParameter( [ 'Q2', 'Q3' ] )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P1$b8587fb1-7315-46ba-9d04-07f0e9af857d',
@@ -255,7 +255,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'Range' ),
 				'constraint_parameters' => json_encode(
 					$this->rangeParameter( 'time', '0', '2015' )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P1$83ee554c-41fd-4bfa-ae9b-960d0eee2fa4',
@@ -264,7 +264,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_parameters' => json_encode( array_merge(
 					$this->propertyParameter( 'P2' ),
 					$this->itemsParameter( [ 'Q2' ] )
-				) )
+				) ),
 			],
 			[
 				'constraint_guid' => 'P1$370a45b5-b007-455d-b5fa-03b90c629fe5',
@@ -273,7 +273,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_parameters' => json_encode( array_merge(
 					$this->propertyParameter( 'P2' ),
 					$this->itemsParameter( [ 'Q2', 'Q3' ] )
-				) )
+				) ),
 			],
 			[
 				'constraint_guid' => 'P1$831d9d5d-ed77-48f2-8433-fb80a9ef3aad',
@@ -282,7 +282,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_parameters' => json_encode( array_merge(
 					$this->relationParameter( 'instance' ),
 					$this->classParameter( [ 'Q2', 'Q3' ] )
-				) )
+				) ),
 			],
 			[
 				'constraint_guid' => 'P1$fe667c64-be46-4521-a54d-8a895b6005b0',
@@ -291,13 +291,13 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_parameters' => json_encode( array_merge(
 					$this->relationParameter( 'instance' ),
 					$this->classParameter( [ 'Q2', 'Q3' ] )
-				) )
+				) ),
 			],
 			[
 				'constraint_guid' => 'P3$0a011ed8-1e2b-470c-a306-fb8ea6953779',
 				'pid' => 3,
 				'constraint_type_qid' => 'Is not inside',
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P5$2234a1ee-0257-4e13-b619-11211c23734a',
@@ -313,13 +313,13 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
 				'constraint_parameters' => json_encode(
 					$this->statusParameter( 'mandatory' )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P7$a3f746e7-66a0-46fd-96ab-6ff6638332a4',
 				'pid' => 7,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P12$8f54a63f-aea5-4ef5-9415-4343334ca3f1',
@@ -333,7 +333,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_guid' => 'P8$34c8af8e-bb50-4458-994b-f355ff899fff',
 				'pid' => 8,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
-				'constraint_parameters' => '{"@error":{"toolong":true}}'
+				'constraint_parameters' => '{"@error":{"toolong":true}}',
 			],
 			[
 				'constraint_guid' => 'P9$43053ee8-79da-4326-a2ac-f85098291db3',
@@ -376,13 +376,13 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_guid' => 'P1$a1b1f3d8-6215-4cb6-9edd-3af126ae134f',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedForValuesOnly' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$d7398ac7-aee4-4a29-9e8c-79944e664b67',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsReference' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$e5da3fee-1097-49fa-a776-d4e96fe35c0b',
@@ -396,19 +396,19 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'AllowedUnits' ),
 				'constraint_parameters' => json_encode(
 					$this->itemsParameter( [ 'Q1' ] )
-				)
+				),
 			],
 			[
 				'constraint_guid' => 'P1$a6970e0d-d67d-4465-b8b6-8debff189332',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'SingleBestValue' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$398c030c-2ed8-4194-9fb1-3e38610f6a31',
 				'pid' => 1,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'Integer' ),
-				'constraint_parameters' => '{}'
+				'constraint_parameters' => '{}',
 			],
 			[
 				'constraint_guid' => 'P1$c16e14f7-9f71-4587-9ffd-47790e725cfa',
@@ -880,7 +880,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] ),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -918,7 +918,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] ),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -965,7 +965,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] ),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -1014,7 +1014,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 					new NumericPropertyId( 'P1' ),
 					'Q1',
 					$this->constraintScopeParameter( [ Context::TYPE_STATEMENT ] )
-				)
+				),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -1059,7 +1059,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 					new NumericPropertyId( 'P1' ),
 					'Q1',
 					$this->constraintScopeParameter( [ Context::TYPE_QUALIFIER ] )
-				)
+				),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -1096,7 +1096,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] ),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -1115,7 +1115,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 	public function testSupportedEntityTypes_NotImplemented() {
 		$checker = $this->createMock( ConstraintChecker::class );
 		$checker->method( 'getSupportedContextTypes' )
-			->willReturn( [ Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE, ] );
+			->willReturn( [ Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE ] );
 		$checker->method( 'getDefaultContextTypes' )
 			->willReturn( [ Context::TYPE_STATEMENT ] );
 		$checker->method( 'getSupportedEntityTypes' )
@@ -1132,7 +1132,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			$lookup,
 			[ 'Q1' => $checker ],
 			new InMemoryConstraintLookup( [
-				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] )
+				new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] ),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -1176,7 +1176,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 					new NumericPropertyId( 'P1' ),
 					'Q1',
 					$this->constraintScopeParameter( [], [ 'property' ] )
-				)
+				),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),
@@ -1218,7 +1218,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 					new NumericPropertyId( 'P1' ),
 					'Q1',
 					$this->constraintScopeParameter( [], [ 'item' ] )
-				)
+				),
 			] ),
 			$this->getConstraintParameterParser(),
 			new StatementGuidParser( new ItemIdParser() ),

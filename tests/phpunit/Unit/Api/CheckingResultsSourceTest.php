@@ -185,7 +185,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 						[]
 					)
 				) )->withMetadata( Metadata::ofDependencyMetadata(
-					DependencyMetadata::ofEntityId( new ItemId( 'Q100' ) ) ) )
+					DependencyMetadata::ofEntityId( new ItemId( 'Q100' ) ) ) ),
 			] );
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
 			->willReturn( [
@@ -201,7 +201,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 						[]
 					)
 				) )->withMetadata( Metadata::ofDependencyMetadata(
-					DependencyMetadata::ofEntityId( new NumericPropertyId( 'P100' ) ) ) )
+					DependencyMetadata::ofEntityId( new NumericPropertyId( 'P100' ) ) ) ),
 			] );
 
 		$metadata = $this->getResultsSource( $delegatingConstraintChecker )->getResults(
@@ -286,7 +286,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 					CheckResult::STATUS_COMPLIANCE
 				) )->withMetadata( Metadata::ofDependencyMetadata(
 					DependencyMetadata::ofEntityId( new ItemId( 'Q100' ) ) ) ),
-				( new NullResult( $context->getCursor() ) )
+				( new NullResult( $context->getCursor() ) ),
 			] );
 
 		$result = $this->getResultsSource( $delegatingConstraintChecker )->getResults(

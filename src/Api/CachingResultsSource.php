@@ -403,7 +403,7 @@ class CachingResultsSource implements ResultsSource {
 			static function ( DependencyMetadata $metadata, EntityId $entityId ) {
 				return DependencyMetadata::merge( [
 					$metadata,
-					DependencyMetadata::ofEntityId( $entityId )
+					DependencyMetadata::ofEntityId( $entityId ),
 				] );
 			},
 			$futureTimeDependencyMetadata

@@ -154,7 +154,7 @@ class ConnectionCheckerHelperTest extends \MediaWikiUnitTestCase {
 			[
 				ItemIdSnakValue::noValue(),
 				ItemIdSnakValue::fromItemId( new ItemId( 'Q100' ) ),
-				ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) )
+				ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ),
 			]
 		);
 

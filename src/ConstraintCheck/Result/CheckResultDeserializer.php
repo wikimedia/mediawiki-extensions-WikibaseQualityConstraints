@@ -155,7 +155,7 @@ class CheckResultDeserializer {
 
 				return DependencyMetadata::merge( [
 					$metadata,
-					DependencyMetadata::ofEntityId( $entityId )
+					DependencyMetadata::ofEntityId( $entityId ),
 				] );
 			},
 			$futureTimeDependencyMetadata

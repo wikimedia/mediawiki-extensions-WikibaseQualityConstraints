@@ -93,49 +93,49 @@ class RangeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$secondsPerLeapYear = 60 * 60 * 24 * 366;
 		$cases = [
 			'negative year difference, no leap year' => [
-				-$secondsPerYear, $this->getTimeValue( 1970 ), $this->getTimeValue( 1971 )
+				-$secondsPerYear, $this->getTimeValue( 1970 ), $this->getTimeValue( 1971 ),
 			],
 			'positive year difference, no leap year' => [
-				$secondsPerYear, $this->getTimeValue( 1971 ), $this->getTimeValue( 1970 )
+				$secondsPerYear, $this->getTimeValue( 1971 ), $this->getTimeValue( 1970 ),
 			],
 			'negative year difference, leap year' => [
-				-$secondsPerLeapYear, $this->getTimeValue( 1972 ), $this->getTimeValue( 1973 )
+				-$secondsPerLeapYear, $this->getTimeValue( 1972 ), $this->getTimeValue( 1973 ),
 			],
 			'positive year difference, leap year' => [
-				$secondsPerLeapYear, $this->getTimeValue( 1973 ), $this->getTimeValue( 1972 )
+				$secondsPerLeapYear, $this->getTimeValue( 1973 ), $this->getTimeValue( 1972 ),
 			],
 			'positive year difference, leap year, excluding leap day' => [
-				$secondsPerYear, $this->getTimeValue( 1973, 6 ), $this->getTimeValue( 1972, 6 )
+				$secondsPerYear, $this->getTimeValue( 1973, 6 ), $this->getTimeValue( 1972, 6 ),
 			],
 			'negative year difference, across epoch (1 BCE is leap year)' => [
-				-$secondsPerLeapYear, $this->getTimeValue( -1 ), $this->getTimeValue( 1 )
+				-$secondsPerLeapYear, $this->getTimeValue( -1 ), $this->getTimeValue( 1 ),
 			],
 			'positive year difference, across epoch (1 BCE is leap year)' => [
-				$secondsPerLeapYear, $this->getTimeValue( 1 ), $this->getTimeValue( -1 )
+				$secondsPerLeapYear, $this->getTimeValue( 1 ), $this->getTimeValue( -1 ),
 			],
 			'negative year difference, before Common Era' => [
-				-$secondsPerYear, $this->getTimeValue( -1971 ), $this->getTimeValue( -1970 )
+				-$secondsPerYear, $this->getTimeValue( -1971 ), $this->getTimeValue( -1970 ),
 			],
 			'positive year difference, before Common Era' => [
-				$secondsPerYear, $this->getTimeValue( -1970 ), $this->getTimeValue( -1971 )
+				$secondsPerYear, $this->getTimeValue( -1970 ), $this->getTimeValue( -1971 ),
 			],
 			'negative quantity difference' => [
-				-1295, $this->getQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 )
+				-1295, $this->getQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 ),
 			],
 			'positive quantity difference' => [
-				1295, $this->getQuantityValue( 1337.0 ), $this->getQuantityValue( 42.0 )
+				1295, $this->getQuantityValue( 1337.0 ), $this->getQuantityValue( 42.0 ),
 			],
 			'negative quantity difference, bounded/unbounded' => [
-				-1295, $this->getQuantityValue( 42.0 ), $this->getUnboundedQuantityValue( 1337.0 )
+				-1295, $this->getQuantityValue( 42.0 ), $this->getUnboundedQuantityValue( 1337.0 ),
 			],
 			'negative quantity difference, unbounded/bounded' => [
-				-1295, $this->getUnboundedQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 )
+				-1295, $this->getUnboundedQuantityValue( 42.0 ), $this->getQuantityValue( 1337.0 ),
 			],
 			'negative quantity difference, gram/kilogram' => [
-				-0.5, $this->getQuantityValue( 500.0, 'g' ), $this->getQuantityValue( 1.0, 'kg' )
+				-0.5, $this->getQuantityValue( 500.0, 'g' ), $this->getQuantityValue( 1.0, 'kg' ),
 			],
 			'positive quantity difference, gram/gram' => [
-				1.0, $this->getQuantityValue( 2000.0, 'g' ), $this->getQuantityValue( 1000, 'g' )
+				1.0, $this->getQuantityValue( 2000.0, 'g' ), $this->getQuantityValue( 1000, 'g' ),
 			],
 		];
 
@@ -185,10 +185,10 @@ class RangeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			'fall ’75 to spring ’75' => [ -0.9, -0.1, $fall75, $spring75 ],
 			'fall ’75 to fall ’75' => [ 0, 0, $fall75, $fall75 ],
 			'spring 1 BCE to fall 1 CE' => [
-				1.1, 1.9, $this->getTimeValue( -1, 04, 01 ), $this->getTimeValue( 1, 10, 01 )
+				1.1, 1.9, $this->getTimeValue( -1, 04, 01 ), $this->getTimeValue( 1, 10, 01 ),
 			],
 			'spring 10 CE to fall 10 BCE' => [
-				-18.9, -18.1, $this->getTimeValue( 10, 04, 01 ), $this->getTimeValue( -10, 10, 01 )
+				-18.9, -18.1, $this->getTimeValue( 10, 04, 01 ), $this->getTimeValue( -10, 10, 01 ),
 			],
 		];
 
