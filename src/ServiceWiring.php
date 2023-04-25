@@ -4,6 +4,7 @@ namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\WikiMap\WikiMap;
 use ObjectCache;
 use RuntimeException;
 use Wikibase\DataModel\Entity\Property;
@@ -27,7 +28,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRen
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
-use WikiMap;
 
 return [
 	ConstraintsServices::EXPIRY_LOCK => static function ( MediaWikiServices $services ) {

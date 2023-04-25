@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Maintenance;
 use HashConfig;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
+use MediaWiki\WikiMap\WikiMap;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Tests\NewItem;
 use Wikibase\InternalSerialization\Deserializers\EntityDeserializer;
@@ -13,7 +14,6 @@ use Wikibase\Lib\Store\EntityStore;
 use Wikibase\Lib\Store\StorageException;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintEntities;
-use WikiMap;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintEntities
