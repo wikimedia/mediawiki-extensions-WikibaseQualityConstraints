@@ -57,36 +57,10 @@ form {
 	}
 }
 
-/* Tooltip */
+/* Expandable content indicator */
 .wbqc-indicator {
 	color: @color-subtle;
 	font-weight: @font-weight-semi-bold;
-}
-
-.wbqc-tooltip {
-	margin-top: -40px;
-	margin-left: -5px;
-	// TODO: A tooltip should be a tooltip, not an interactive looking element.
-	// Revisit with Codex tooltip styles as soon as they are available.
-	background-color: @background-color-interactive-subtle;
-	border: @border-base;
-	// TODO: Non-standard border radius. It's too rounded in current Codex DS.
-	border-radius: 5px;
-	box-shadow: 2px 2px 1px rgba( 0, 0, 0, 0.2 );
-	padding: 2px 5px 2px 5px;
-	position: absolute;
-	float: left;
-	display: none;
-}
-
-.wbqc-indicator .wbqc-tooltip {
-	/* unset .wbqc-indicator styles */
-	color: initial;
-	font-weight: initial;
-}
-
-.wbqc-indicator:hover .wbqc-tooltip {
-	display: block;
 }
 
 .wbqc-expandable-content-indicator {
