@@ -7,7 +7,7 @@
 	},
 	"wbqc-constraintreport": "সীমাবদ্ধতার প্রতিবেদন",
 	"wbqc-constraintreport-form-submit-label": "পরীক্ষা করুন",
-	"wbqc-constraintreport-form-entityid-placeholder": "Qxx/Pxx",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx বা Pxx",
 	"wbqc-constraintreport-result-headline": "এর জন্য ফলাফল",
 	"wbqc-constraintreport-status-violation": "লঙ্ঘন",
 	"wbqc-constraintreport-status-compliance": "সম্মতি",
