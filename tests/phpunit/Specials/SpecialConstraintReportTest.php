@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Specials;
 use DataValues\StringValue;
 use HamcrestPHPUnitIntegration;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\FauxRequest;
 use MultiConfig;
 use NullStatsdDataFactory;
 use SpecialPageTestBase;
@@ -144,7 +145,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 * @dataProvider provideRequestsAndMatchers
 	 */
 	public function testExecute( $subPage, array $request, $userLanguage, array $matchers ) {
-		$request = new \FauxRequest( $request );
+		$request = new FauxRequest( $request );
 
 		// the added item is Q1; this solves the problem that the provider is executed before the test
 		$id = self::$idMap[ 'Q1' ];
