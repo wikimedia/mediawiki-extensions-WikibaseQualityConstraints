@@ -46,7 +46,7 @@ class ReferenceCheckerTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
-	public function provideContextTypes() {
+	public static function provideContextTypes() {
 		return [
 			[ Context::TYPE_STATEMENT, 'wbqc-violation-message-reference' ],
 			[ Context::TYPE_QUALIFIER, 'wbqc-violation-message-reference' ],

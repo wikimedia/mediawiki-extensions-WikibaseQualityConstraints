@@ -879,7 +879,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function provideConstraintScopes() {
+	public static function provideConstraintScopes() {
 		return [
 			[ Context::TYPE_STATEMENT, 'Q10', 'statement scope' ],
 			[ Context::TYPE_QUALIFIER, 'Q20', 'qualifier scope' ],

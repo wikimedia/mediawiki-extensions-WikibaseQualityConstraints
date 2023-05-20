@@ -46,7 +46,7 @@ class ValueOnlyCheckerTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
-	public function provideContextTypes() {
+	public static function provideContextTypes() {
 		return [
 			[ Context::TYPE_STATEMENT, null ],
 			[ Context::TYPE_QUALIFIER, 'wbqc-violation-message-valueOnly' ],

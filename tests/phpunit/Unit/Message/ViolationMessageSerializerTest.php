@@ -252,7 +252,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( $abbreviation, $serialized );
 	}
 
-	public function provideContextTypes() {
+	public static function provideContextTypes() {
 		return [
 			[ Context::TYPE_STATEMENT, 's' ],
 			[ Context::TYPE_QUALIFIER, 'q' ],

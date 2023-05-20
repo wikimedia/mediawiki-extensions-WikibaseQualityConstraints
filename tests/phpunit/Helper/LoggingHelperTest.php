@@ -102,7 +102,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function provideConstraintCheckDurationsAndLogLevels() {
+	public static function provideConstraintCheckDurationsAndLogLevels() {
 		return [
 			'short constraint check, nothing to log' => [ 0.5, null, null ],
 			'long but not extremely long constraint check, log as info' => [ 5.0, 'info', 1.0 ],
@@ -189,7 +189,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function provideConstraintCheckDurationsAndLogLevelsOnEntity() {
+	public static function provideConstraintCheckDurationsAndLogLevelsOnEntity() {
 		return [
 			'short constraint check, nothing to log' => [ 5.0, null, null ],
 			'long but not extremely long constraint check, log as info' => [ 10.0, 'info', 5.0 ],

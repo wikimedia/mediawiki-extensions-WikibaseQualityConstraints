@@ -93,7 +93,7 @@ class QualifierContextTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( [ $qualifier1, $qualifier2 ], $snakGroup );
 	}
 
-	public function provideGroupingModes() {
+	public static function provideGroupingModes() {
 		return [
 			[ Context::GROUP_NON_DEPRECATED ],
 			[ Context::GROUP_BEST_RANK ],

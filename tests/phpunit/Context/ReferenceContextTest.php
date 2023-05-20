@@ -116,7 +116,7 @@ class ReferenceContextTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( [ $referenceSnak1, $referenceSnak2 ], $snakGroup );
 	}
 
-	public function provideGroupingModes() {
+	public static function provideGroupingModes() {
 		return [
 			[ Context::GROUP_NON_DEPRECATED ],
 			[ Context::GROUP_BEST_RANK ],

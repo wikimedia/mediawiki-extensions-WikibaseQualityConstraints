@@ -38,7 +38,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 		$this->assertEquals( $expectedIsSortable, $htmlTable->isSortable() );
 	}
 
-	public function constructDataProvider() {
+	public static function constructDataProvider() {
 		return [
 			[
 				[
@@ -121,7 +121,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 	/**
 	 * Test cases for testAppendRows
 	 */
-	public function appendRowsDataProvider() {
+	public static function appendRowsDataProvider() {
 		return [
 			[
 				[

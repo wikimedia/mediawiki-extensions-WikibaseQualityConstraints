@@ -62,7 +62,7 @@ class ViolationMessageSerializationTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals( $message, $deserialized );
 	}
 
-	public function provideViolationMessages() {
+	public static function provideViolationMessages() {
 		return [
 			'no arguments' => [ new ViolationMessage( 'wbqc-violation-message-single-value' ) ],
 			'entity ID' => [

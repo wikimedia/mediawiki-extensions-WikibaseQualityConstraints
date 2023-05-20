@@ -170,7 +170,7 @@ EOF;
 		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-	public function provideSeparatorIdsAndExpectedFilters() {
+	public static function provideSeparatorIdsAndExpectedFilters() {
 		$p21 = new NumericPropertyId( 'P21' );
 		$p22 = new NumericPropertyId( 'P22' );
 
@@ -330,7 +330,7 @@ EOF;
 		);
 	}
 
-	public function provideSnaksWithSparqlValuesAndPropertyPaths() {
+	public static function provideSnaksWithSparqlValuesAndPropertyPaths() {
 		$pid = new NumericPropertyId( 'P1' );
 		$globeCoordinateValue = new GlobeCoordinateValue( new LatLongValue( 42.0, 13.37 ) );
 		$quantityValue = UnboundedQuantityValue::newFromNumber( -10, 'ms' );
@@ -546,7 +546,7 @@ EOF;
 		$this->assertTrue( $actual );
 	}
 
-	public function provideTimeoutMessages() {
+	public static function provideTimeoutMessages() {
 		return [
 			'empty' => [
 				'',
@@ -588,7 +588,7 @@ EOF;
 		$this->assertSame( $expected, $actual );
 	 }
 
-	 public function provideCacheHeaders() {
+	 public static function provideCacheHeaders() {
 		 return [
 			 'WDQS hit' => [
 				 [ 'x-cache-status' => [ 'hit-front' ], 'cache-control' => [ 'public, max-age=300' ] ],

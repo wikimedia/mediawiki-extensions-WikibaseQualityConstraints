@@ -124,7 +124,7 @@ class CheckResultSerializationTest extends TestCase {
 		$this->assertEquals( $expected, $deserialized );
 	}
 
-	public function provideCheckResultsWithSerializations() {
+	public static function provideCheckResultsWithSerializations() {
 		$contextCursor = new MainSnakContextCursor(
 			'Q42',
 			'P31',

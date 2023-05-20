@@ -40,7 +40,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 	use ConstraintParameters;
 	use ResultAssertions;
 
-	public function provideFormatConstraintCompliance() {
+	public static function provideFormatConstraintCompliance() {
 		$imdbRegex = '(tt|nm|ch|co|ev)\d{7}';
 		$taxonRegex = '(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+('
 			. '( [A-Z]?[a-z]+)|'
@@ -95,7 +95,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertCompliance( $result );
 	}
 
-	public function provideFormatConstraintViolation() {
+	public static function provideFormatConstraintViolation() {
 		$imdbRegex = '(tt|nm|ch|co|ev)\d{7}';
 		$taxonRegex = '(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+('
 			. '( [A-Z]?[a-z]+)|'

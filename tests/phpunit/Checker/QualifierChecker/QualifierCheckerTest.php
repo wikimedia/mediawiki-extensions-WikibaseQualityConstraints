@@ -58,7 +58,7 @@ class QualifierCheckerTest extends \MediaWikiIntegrationTestCase {
 		}
 	}
 
-	public function provideContextTypes() {
+	public static function provideContextTypes() {
 		return [
 			[ Context::TYPE_STATEMENT, 'wbqc-violation-message-qualifier' ],
 			[ Context::TYPE_QUALIFIER, null ],

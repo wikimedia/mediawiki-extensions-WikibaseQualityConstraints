@@ -1531,7 +1531,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$this->assertSame( $contextTypes, $scope );
 	}
 
-	public function provideContextTypeCombinations() {
+	public static function provideContextTypeCombinations() {
 		return [
 			[ [ Context::TYPE_STATEMENT ] ],
 			[ [ Context::TYPE_QUALIFIER ] ],

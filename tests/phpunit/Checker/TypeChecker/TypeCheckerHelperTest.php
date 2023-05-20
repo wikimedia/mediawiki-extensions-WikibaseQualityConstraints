@@ -251,7 +251,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse( $this->getHelper()->hasClassInRelation( $statements, [ 'P31' ], [ 'Q4' ] )->getBool() );
 	}
 
-	public function provideRelations() {
+	public static function provideRelations() {
 		return [
 			'direct instance' => [ 'instance', null, 'Q1', true ],
 			'direct subclass' => [ 'subclass', null, 'Q1', true ],

@@ -31,7 +31,7 @@ class HtmlTableHeaderBuilderTest extends \MediaWikiUnitTestCase {
 	/**
 	 * Test cases for testConstruct
 	 */
-	public function constructDataProvider() {
+	public static function constructDataProvider() {
 		return [
 			[
 				'foobar',
@@ -63,7 +63,7 @@ class HtmlTableHeaderBuilderTest extends \MediaWikiUnitTestCase {
 	/**
 	 * Test cases for testToHtml
 	 */
-	public function toHtmlDataProvider() {
+	public static function toHtmlDataProvider() {
 		return [
 			[
 				'foobar',

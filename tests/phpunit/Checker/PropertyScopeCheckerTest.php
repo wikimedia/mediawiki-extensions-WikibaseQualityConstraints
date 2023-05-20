@@ -45,7 +45,7 @@ class PropertyScopeCheckerTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
-	public function provideContextsAndContextTypes() {
+	public static function provideContextsAndContextTypes() {
 		$statement = NewStatement::noValueFor( 'P1' )
 			->build();
 		$snak = $statement->getMainSnak();

@@ -162,7 +162,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		}
 	}
 
-	public function provideRequestsAndMatchers() {
+	public static function provideRequestsAndMatchers() {
 		$userLanguage = 'qqx';
 		$cases = [];
 		$matchers = [];

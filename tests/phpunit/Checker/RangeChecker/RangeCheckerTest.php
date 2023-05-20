@@ -362,7 +362,7 @@ class RangeCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertCount( 1, $result );
 	}
 
-	public function providePropertyIds() {
+	public static function providePropertyIds() {
 		return [ [ 'P1' ], [ 'P2' ] ];
 	}
 

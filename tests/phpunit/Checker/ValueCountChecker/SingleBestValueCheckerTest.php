@@ -58,7 +58,7 @@ class SingleBestValueCheckerTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
-	public function provideRanksAndMessageKeys() {
+	public static function provideRanksAndMessageKeys() {
 		$normal = Statement::RANK_NORMAL;
 		$preferred = Statement::RANK_PREFERRED;
 

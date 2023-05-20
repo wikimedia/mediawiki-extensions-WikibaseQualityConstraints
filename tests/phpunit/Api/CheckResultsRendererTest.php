@@ -231,7 +231,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertArrayNotHasKey( 'cached', $result );
 	}
 
-	public function provideConstraintClarifications(): iterable {
+	public static function provideConstraintClarifications(): iterable {
 		yield 'exact match' => [
 			'constraintClarification' => new MultilingualTextValue( [
 				new MonolingualTextValue( 'de-at', 'de-at clarification' ),

@@ -70,7 +70,7 @@ class ConstraintSerializationTest extends \MediaWikiUnitTestCase {
 		$this->assertEquals( $expected, $deserialized );
 	}
 
-	public function provideConstraints() {
+	public static function provideConstraints() {
 		$constraintId = 'P569$EF034B4A-6C21-4199-A6FE-6F36B28FCDAE';
 		$propertyIdSerialization = 'P569';
 		$constraintTypeItemId = 'Q21502838';

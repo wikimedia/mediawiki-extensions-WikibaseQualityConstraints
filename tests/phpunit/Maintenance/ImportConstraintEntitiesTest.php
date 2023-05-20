@@ -116,7 +116,7 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 		$this->assertSame( [], $localEntity->getStatements()->toArray() );
 	}
 
-	public function provideStorageExceptions() {
+	public static function provideStorageExceptions() {
 		yield 'item in separate namespace' => [
 			new StorageException(
 				'Item [[Item:Q475|Q475]] already has label "as references" ' .
