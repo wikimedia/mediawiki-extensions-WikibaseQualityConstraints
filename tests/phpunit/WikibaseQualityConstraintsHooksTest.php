@@ -36,7 +36,7 @@ class WikibaseQualityConstraintsHooksTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $actual );
 	}
 
-	public function provideChanges() {
+	public static function provideChanges(): iterable {
 		$factory = TestChanges::getEntityChangeFactory();
 		$changes = TestChanges::getChanges();
 		$changeKeys = [];
