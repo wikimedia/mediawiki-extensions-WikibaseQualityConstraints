@@ -56,7 +56,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		$this->tablesUsed[] = 'wbqc_constraints';
 		$config = new MultiConfig( [
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			MediaWikiServices::getInstance()->getMainConfig(),
 		] );
 		$this->setService( 'MainConfig', $config );
@@ -79,7 +79,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			WikibaseRepo::getValueFormatterFactory(),
 			ConstraintsServices::getDelegatingConstraintChecker(),
 			ConstraintsServices::getViolationMessageRendererFactory(),
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			new NullStatsdDataFactory()
 		);
 	}
@@ -127,14 +127,14 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 					'constraint_guid' => '1',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
 					'constraint_type_qid' =>
-						$this->getDefaultConfig()->get( 'WBQualityConstraintsMultiValueConstraintId' ),
+						self::getDefaultConfig()->get( 'WBQualityConstraintsMultiValueConstraintId' ),
 					'constraint_parameters' => '{}',
 				],
 				[
 					'constraint_guid' => '3',
 					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
 					'constraint_type_qid' =>
-						$this->getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ),
+						self::getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ),
 					'constraint_parameters' => '{}',
 				],
 			]

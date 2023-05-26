@@ -63,18 +63,18 @@ class ValueTypeCheckerTest extends \MediaWikiIntegrationTestCase {
 		parent::setUp();
 
 		$this->lookup = new InMemoryEntityLookup();
-		$this->subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
-		$this->instanceOfId = $this->getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfId' );
+		$this->subclassPid = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$this->instanceOfId = self::getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfId' );
 		$this->checker = new ValueTypeChecker(
 			$this->lookup,
 			$this->getConstraintParameterParser(),
 			new TypeCheckerHelper(
 				$this->lookup,
-				$this->getDefaultConfig(),
+				self::getDefaultConfig(),
 				new DummySparqlHelper(),
 				new NullStatsdDataFactory()
 			),
-			$this->getDefaultConfig()
+			self::getDefaultConfig()
 		);
 		$this->valueTypePropertyId = new NumericPropertyId( 'P1234' );
 	}

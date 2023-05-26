@@ -125,7 +125,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$yearUnit = $config->get( 'WBQualityConstraintsYearUnit' );
 		$this->dob0to150Parameters = array_merge(
 			$this->propertyParameter( 'P569' ),
@@ -566,7 +566,7 @@ class DiffWithinRangeCheckerTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function testDiffWithinRangeConstraint_yearQuantityInYearRange() {
-		$yearUnit = $this->getDefaultConfig()->get( 'WBQualityConstraintsYearUnit' );
+		$yearUnit = self::getDefaultConfig()->get( 'WBQualityConstraintsYearUnit' );
 		$subtrahendStatement = NewStatement::forProperty( 'P1' )
 			->withValue( UnboundedQuantityValue::newFromNumber( 0, $yearUnit ) )
 			->build();

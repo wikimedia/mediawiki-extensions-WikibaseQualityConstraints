@@ -61,11 +61,11 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function setUp(): void {
 		parent::setUp();
-		$this->startPropertyIds = $this->getDefaultConfig()
+		$this->startPropertyIds = self::getDefaultConfig()
 			->get( ContemporaryChecker::CONFIG_VARIABLE_START_PROPERTY_IDS );
-		$this->endPropertyIds = $this->getDefaultConfig()
+		$this->endPropertyIds = self::getDefaultConfig()
 			->get( ContemporaryChecker::CONFIG_VARIABLE_END_PROPERTY_IDS );
-		$this->rangeCheckerHelper = new RangeCheckerHelper( $this->getDefaultConfig() );
+		$this->rangeCheckerHelper = new RangeCheckerHelper( self::getDefaultConfig() );
 		$this->linkingPropertyId = 'P123456';
 		$this->timestamps = [
 			'-000401862-05-31T00:00:00Z', // BCE
@@ -92,7 +92,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 		$expectedStatus
 	) {
 		$constraint = $this->getConstraintMock();
-		$checker = new ContemporaryChecker( $lookup, $this->rangeCheckerHelper, $this->getDefaultConfig() );
+		$checker = new ContemporaryChecker( $lookup, $this->rangeCheckerHelper, self::getDefaultConfig() );
 		$checkResult = $checker->checkConstraint( new MainSnakContext( $subjectItem, $statement ), $constraint );
 		if ( $expectedStatus === CheckResult::STATUS_COMPLIANCE ) {
 			$this->assertCompliance( $checkResult );
@@ -988,9 +988,9 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 		$valueStartTimestamp,
 		$valueEndTimestamp
 	) {
-		$this->startPropertyIds = $this->getDefaultConfig()
+		$this->startPropertyIds = self::getDefaultConfig()
 			->get( ContemporaryChecker::CONFIG_VARIABLE_START_PROPERTY_IDS );
-		$this->endPropertyIds = $this->getDefaultConfig()
+		$this->endPropertyIds = self::getDefaultConfig()
 			->get( ContemporaryChecker::CONFIG_VARIABLE_END_PROPERTY_IDS );
 		$subjectItem = NewItem::withId( $subjectItemId )
 			->andStatement( $this->newTimeStatement( $this->startPropertyIds[0], $subjectStartTimestamp ) )
@@ -1027,7 +1027,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 			$lookup->addEntity( $valueItem );
 		}
 		$constraint = $this->getConstraintMock();
-		$checker = new ContemporaryChecker( $lookup, $this->rangeCheckerHelper, $this->getDefaultConfig() );
+		$checker = new ContemporaryChecker( $lookup, $this->rangeCheckerHelper, self::getDefaultConfig() );
 		$statement = $this->getLinkingStatement( $subjectItem, $this->linkingPropertyId );
 		$checkResult = $checker->checkConstraint( new MainSnakContext( $subjectItem, $statement ), $constraint );
 		if ( $expectedStatus === CheckResult::STATUS_COMPLIANCE ) {

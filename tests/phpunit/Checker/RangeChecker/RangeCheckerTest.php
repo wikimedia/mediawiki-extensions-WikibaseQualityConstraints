@@ -59,7 +59,7 @@ class RangeCheckerTest extends \MediaWikiIntegrationTestCase {
 		parent::setUp();
 		$this->timeValue = $this->getTimeValue( '1970-01-01' );
 		$rangeCheckerHelper = new RangeCheckerHelper(
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			new UnitConverter( new CSVUnitStorage( __DIR__ . '/units.csv' ), '' )
 		);
 		$dataTypeLookup = new InMemoryDataTypeLookup();

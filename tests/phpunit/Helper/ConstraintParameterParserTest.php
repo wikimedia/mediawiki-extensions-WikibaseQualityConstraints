@@ -107,7 +107,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseClassParameter
 	public function testParseClassParameter() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$classId = $config->get( 'WBQualityConstraintsClassId' );
 		$parsed = $this->getConstraintParameterParser()->parseClassParameter(
 			[ $classId => [ $this->serializeItemId( 'Q100' ), $this->serializeItemId( 'Q101' ) ] ],
@@ -125,7 +125,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseClassParameter_NoValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$classId = $config->get( 'WBQualityConstraintsClassId' );
 		$this->assertThrowsConstraintParameterException(
 			'parseClassParameter',
@@ -142,7 +142,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseClassParameter_StringValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$classId = $config->get( 'WBQualityConstraintsClassId' );
 		$this->assertThrowsConstraintParameterException(
 			'parseClassParameter',
@@ -165,7 +165,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseRelationParameter
 	public function testParseRelationParameter() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$relationId = $config->get( 'WBQualityConstraintsRelationId' );
 		$instanceOfId = $config->get( 'WBQualityConstraintsInstanceOfRelationId' );
 		$parsed = $this->getConstraintParameterParser()->parseRelationParameter(
@@ -184,7 +184,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseRelationParameter_NoValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$relationId = $config->get( 'WBQualityConstraintsRelationId' );
 		$this->assertThrowsConstraintParameterException(
 			'parseRelationParameter',
@@ -201,7 +201,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseRelationParameter_StringValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$relationId = $config->get( 'WBQualityConstraintsRelationId' );
 		$this->assertThrowsConstraintParameterException(
 			'parseRelationParameter',
@@ -221,7 +221,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseRelationParameter_MultiValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$relationId = $config->get( 'WBQualityConstraintsRelationId' );
 		$instanceOfId = $config->get( 'WBQualityConstraintsInstanceOfRelationId' );
 		$subclassOfId = $config->get( 'WBQualityConstraintsSubclassOfRelationId' );
@@ -241,7 +241,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseRelationParameter_WrongValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$relationId = $config->get( 'WBQualityConstraintsRelationId' );
 		$this->assertThrowsConstraintParameterException(
 			'parseRelationParameter',
@@ -259,7 +259,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parsePropertyParameter
 	public function testParsePropertyParameter() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$parsed = $this->getConstraintParameterParser()->parsePropertyParameter(
 			[ $propertyId => [ $this->serializePropertyId( 'P100' ) ] ],
@@ -278,7 +278,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParsePropertyParameter_NoValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$this->assertThrowsConstraintParameterException(
 			'parsePropertyParameter',
@@ -295,7 +295,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParsePropertyParameter_StringValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$this->assertThrowsConstraintParameterException(
 			'parsePropertyParameter',
@@ -315,7 +315,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParsePropertyParameter_ItemId() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$this->assertThrowsConstraintParameterException(
 			'parsePropertyParameter',
@@ -332,7 +332,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParsePropertyParameter_MultiValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$this->assertThrowsConstraintParameterException(
 			'parsePropertyParameter',
@@ -353,7 +353,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseItemsParameter
 	public function testParseItemsParameter() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		$parsed = $this->getConstraintParameterParser()->parseItemsParameter(
 			[
@@ -392,7 +392,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseItemsParameter_StringValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		$this->assertThrowsConstraintParameterException(
 			'parseItemsParameter',
@@ -413,7 +413,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseItemsParameter_PropertyId() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$qualifierId = $config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		$this->assertThrowsConstraintParameterException(
 			'parseItemsParameter',
@@ -437,7 +437,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parsePropertiesParameter
 	public function testParsePropertiesParameter() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$parsed = $this->getConstraintParameterParser()->parsePropertiesParameter(
 			[ $propertyId => [ $this->serializePropertyId( 'P100' ), $this->serializePropertyId( 'P101' ) ] ],
@@ -456,7 +456,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParsePropertiesParameter_NoValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyId = $config->get( 'WBQualityConstraintsPropertyId' );
 		$parsed = $this->getConstraintParameterParser()->parsePropertiesParameter(
 			[ $propertyId => [
@@ -471,7 +471,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseQuantityRangeParameter
 	public function testParseQuantityRange_Bounded() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -490,7 +490,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseQuantityRange_LeftOpen() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -508,7 +508,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseQuantityRange_RightOpen() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -526,7 +526,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseQuantityRange_FullyOpen() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -545,7 +545,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseQuantityRange_SomeValue() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -564,7 +564,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseQuantityRange_Same() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -584,7 +584,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseQuantityRange_OneYear() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$yearUnit = $config->get( 'WBQualityConstraintsYearUnit' );
@@ -607,7 +607,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseQuantityRange_OneYear_LeftOpen() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumQuantityId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumQuantityId' );
 		$yearUnit = $config->get( 'WBQualityConstraintsYearUnit' );
@@ -630,7 +630,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseTimeRangeParameter
 	public function testParseTimeRange_Bounded() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -650,7 +650,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseTimeRange_Past() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -667,7 +667,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseTimeRange_Future() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -684,7 +684,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseTimeRange_BothNow() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -705,7 +705,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	public function testParseTimeRange_Wikidata() {
 		// range: from the inception of Wikidata until now
 		// (NowValue uses the same date internally, but that should not result in a “same range endpoints” error)
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimumDateId' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximumDateId' );
 		$propertyId = new NumericPropertyId( 'P1' );
@@ -748,7 +748,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseNamespaceParameter
 	public function testParseNamespaceParameter() {
-		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$namespaceId = self::getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
 		$value = new StringValue( 'File' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), $value );
 
@@ -770,7 +770,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseNamespaceParameter_ItemId() {
-		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$namespaceId = self::getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), $value );
 
@@ -785,7 +785,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseNamespaceParameter_Multiple() {
-		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$namespaceId = self::getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
 		$value1 = new StringValue( 'File' );
 		$snak1 = new PropertyValueSnak( new NumericPropertyId( 'P1' ), $value1 );
 		$value2 = new StringValue( 'Category' );
@@ -808,7 +808,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseFormatParameter
 	public function testParseFormatParameter() {
-		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$formatId = self::getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		$value = new StringValue( '\d\.(\d{1,2}|-{1})\.(\d{1,2}|-{1})\.(\d{1,3}|-{1})' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), $value );
 
@@ -832,7 +832,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseFormatParameter_ItemId() {
-		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$formatId = self::getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		$value = new EntityIdValue( new ItemId( 'Q1' ) );
 		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), $value );
 
@@ -847,7 +847,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseFormatParameter_Multiple() {
-		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$formatId = self::getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		$value1 = new StringValue( '\d\.(\d{1,2}|-{1})\.(\d{1,2}|-{1})\.(\d{1,3}|-{1})' );
 		$snak1 = new PropertyValueSnak( new NumericPropertyId( 'P1' ), $value1 );
 		$value2 = new StringValue( '\d+' );
@@ -870,7 +870,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseExceptionParameter
 	public function testParseExceptionParameter() {
-		$exceptionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
+		$exceptionId = self::getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
 		$entityId1 = new ItemId( 'Q100' );
 		$entityId2 = new NumericPropertyId( 'P100' );
 		$snak1 = new PropertyValueSnak( new NumericPropertyId( $exceptionId ), new EntityIdValue( $entityId1 ) );
@@ -895,7 +895,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseExceptionParameter_String() {
-		$exceptionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
+		$exceptionId = self::getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $exceptionId ), new StringValue( 'Q100' ) );
 
 		$this->assertThrowsConstraintParameterException(
@@ -917,8 +917,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseConstraintStatusParameter
 	public function testParseConstraintStatusParameter_mandatory() {
-		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
-		$mandatoryId = $this->getDefaultConfig()->get( 'WBQualityConstraintsMandatoryConstraintId' );
+		$constraintStatusId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$mandatoryId = self::getDefaultConfig()->get( 'WBQualityConstraintsMandatoryConstraintId' );
 		$snak = new PropertyValueSnak(
 			new NumericPropertyId( $constraintStatusId ),
 			new EntityIdValue( new ItemId( $mandatoryId ) )
@@ -932,8 +932,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintStatusParameter_suggestion_disabled() {
-		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
-		$suggestionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSuggestionConstraintId' );
+		$constraintStatusId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$suggestionId = self::getDefaultConfig()->get( 'WBQualityConstraintsSuggestionConstraintId' );
 		$snak = new PropertyValueSnak(
 			new NumericPropertyId( $constraintStatusId ),
 			new EntityIdValue( new ItemId( $suggestionId ) )
@@ -947,8 +947,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintStatusParameter_suggestion_enabled() {
-		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
-		$suggestionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSuggestionConstraintId' );
+		$constraintStatusId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$suggestionId = self::getDefaultConfig()->get( 'WBQualityConstraintsSuggestionConstraintId' );
 		$snak = new PropertyValueSnak(
 			new NumericPropertyId( $constraintStatusId ),
 			new EntityIdValue( new ItemId( $suggestionId ) )
@@ -956,7 +956,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 		$constraintParameterParser = new ConstraintParameterParser(
 			new MultiConfig( [
 				new HashConfig( [ 'WBQualityConstraintsEnableSuggestionConstraintStatus' => true ] ),
-				$this->getDefaultConfig(),
+				self::getDefaultConfig(),
 			] ),
 			WikibaseRepo::getBaseDataModelDeserializerFactory(),
 			'http://wikibase.example/entity/'
@@ -978,7 +978,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintStatusParameter_Invalid() {
-		$constraintStatusId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$constraintStatusId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintStatusId ), new EntityIdValue( new ItemId( 'Q1' ) ) );
 
 		$this->assertThrowsConstraintParameterException(
@@ -1000,7 +1000,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseSyntaxClarificationParameter
 	public function testParseSyntaxClarificationParameter_SingleClarification() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$syntaxClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$value = new MonolingualTextValue( 'en', 'explanation' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $syntaxClarificationId ), $value );
 
@@ -1015,7 +1015,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseSyntaxClarificationParameter_MultipleClarifications() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$syntaxClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$value1 = new MonolingualTextValue( 'en', 'explanation' );
 		$snak1 = new PropertyValueSnak( new NumericPropertyId( $syntaxClarificationId ), $value1 );
 		$value2 = new MonolingualTextValue( 'de', 'Erklärung' );
@@ -1046,7 +1046,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseSyntaxClarificationParameter_Invalid_MultipleValuesForLanguage() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$syntaxClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$value1 = new MonolingualTextValue( 'en', 'explanation' );
 		$snak1 = new PropertyValueSnak( new NumericPropertyId( $syntaxClarificationId ), $value1 );
 		$value2 = new MonolingualTextValue( 'en', 'better explanation' );
@@ -1065,7 +1065,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseSyntaxClarificationParameter_Invalid_String() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$syntaxClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$value = new StringValue( 'explanation' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $syntaxClarificationId ), $value );
 
@@ -1081,7 +1081,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseSyntaxClarificationParameter_Invalid_Novalue() {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$syntaxClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$snak = new PropertyNoValueSnak( new NumericPropertyId( $syntaxClarificationId ) );
 
 		$this->assertThrowsConstraintParameterException(
@@ -1099,7 +1099,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseConstraintClarificationParameter
 	public function testParseConstraintClarificationParameter_SingleClarification() {
-		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$constraintClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
 		$value = new MonolingualTextValue( 'en', 'explanation' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value );
 
@@ -1114,7 +1114,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintClarificationParameter_MultipleClarifications() {
-		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$constraintClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
 		$value1 = new MonolingualTextValue( 'en', 'explanation' );
 		$snak1 = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value1 );
 		$value2 = new MonolingualTextValue( 'de', 'Erklärung' );
@@ -1145,7 +1145,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintClarificationParameter_Invalid_MultipleValuesForLanguage() {
-		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$constraintClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
 		$value1 = new MonolingualTextValue( 'en', 'explanation' );
 		$snak1 = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value1 );
 		$value2 = new MonolingualTextValue( 'en', 'better explanation' );
@@ -1164,7 +1164,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintClarificationParameter_Invalid_String() {
-		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$constraintClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
 		$value = new StringValue( 'explanation' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value );
 
@@ -1180,7 +1180,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintClarificationParameter_Invalid_Novalue() {
-		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$constraintClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
 		$snak = new PropertyNoValueSnak( new NumericPropertyId( $constraintClarificationId ) );
 
 		$this->assertThrowsConstraintParameterException(
@@ -1198,7 +1198,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseConstraintScopeParameters
 	public function testParseConstraintScopeParameters_MainSnak_ItemPropertyMediainfo() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$constraintScopeId = $config->get( 'WBQualityConstraintsConstraintScopeId' );
 		$mainSnakId = new ItemId( $config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' ) );
 		$itemId = new ItemId( $config->get( 'WBQualityConstraintsWikibaseItemId' ) );
@@ -1225,7 +1225,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintScopeParameters_NotMainSnak_LexemeFormSense() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$constraintScopeId = $config->get( 'WBQualityConstraintsConstraintScopeId' );
 		$qualifiersId = new ItemId( $config->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) );
 		$referencesId = new ItemId( $config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' ) );
@@ -1269,7 +1269,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 				'WBQualityConstraintsConstraintScopeId' => $contextTypesParameter,
 				'WBQualityConstraintsConstraintEntityTypesId' => $entityTypesParameter,
 			] ),
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 		] );
 		$mainSnakId = new ItemId( $config->get( 'WBQualityConstraintsConstraintCheckedOnMainValueId' ) );
 		$itemId = new ItemId( $config->get( 'WBQualityConstraintsWikibaseItemId' ) );
@@ -1298,7 +1298,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintScopeParameters_InvalidContextType() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$constraintScopeId = $config->get( 'WBQualityConstraintsConstraintScopeId' );
 		$referencesId = new ItemId( $config->get( 'WBQualityConstraintsConstraintCheckedOnReferencesId' ) );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintScopeId ), new EntityIdValue( $referencesId ) );
@@ -1318,7 +1318,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintScopeParameters_InvalidEntityType() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$constraintScopeId = $config->get( 'WBQualityConstraintsConstraintScopeId' );
 		$lexemeId = new ItemId( $config->get( 'WBQualityConstraintsWikibaseLexemeId' ) );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintScopeId ), new EntityIdValue( $lexemeId ) );
@@ -1338,8 +1338,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseConstraintScopeParameter_UnknownScope() {
-		$constraintScopeId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintScopeId' );
-		$qualifiersId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) );
+		$constraintScopeId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintScopeId' );
+		$qualifiersId = new ItemId( self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintCheckedOnQualifiersId' ) );
 		$otherScopeId = new ItemId( 'Q1' );
 		$snak1 = new PropertyValueSnak( new NumericPropertyId( $constraintScopeId ), new EntityIdValue( $qualifiersId ) );
 		$snak2 = new PropertyValueSnak( new NumericPropertyId( $constraintScopeId ), new EntityIdValue( $otherScopeId ) );
@@ -1363,7 +1363,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseUnitsParameter
 	public function testParseUnitsParameter_NoUnitsAllowed() {
-		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$qualifierId = self::getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		$snak = new PropertyNoValueSnak( new NumericPropertyId( $qualifierId ) );
 
 		$unitsParameter = $this->getConstraintParameterParser()
@@ -1380,7 +1380,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseUnitsParameter_SomeUnitsAllowed() {
-		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$qualifierId = self::getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		$pid = new NumericPropertyId( $qualifierId );
 		$unitId1 = new ItemId( 'Q11573' );
 		$unitId2 = new ItemId( 'Q37110097' );
@@ -1407,7 +1407,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseUnitsParameter_SomeUnitsAndUnitlessAllowed() {
-		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$qualifierId = self::getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		$pid = new NumericPropertyId( $qualifierId );
 		$unitId1 = new ItemId( 'Q11573' );
 		$unitId2 = new ItemId( 'Q37110097' );
@@ -1439,8 +1439,8 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 # region parseEntityTypesParameter
 	public function testParseEntityTypesParameter_Item() {
-		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
-		$itemId = new ItemId( $this->getDefaultConfig()->get( 'WBQualityConstraintsWikibaseItemId' ) );
+		$qualifierId = self::getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$itemId = new ItemId( self::getDefaultConfig()->get( 'WBQualityConstraintsWikibaseItemId' ) );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $qualifierId ), new EntityIdValue( $itemId ) );
 
 		$entityTypesParameter = $this->getConstraintParameterParser()
@@ -1467,7 +1467,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseEntityTypesParameter_UnknownItem() {
-		$qualifierId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$qualifierId = self::getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		$itemId = new ItemId( 'Q1' );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $qualifierId ), new EntityIdValue( $itemId ) );
 
@@ -1496,7 +1496,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParseSeparatorsParameter_ThreeSeparators() {
-		$separatorId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSeparatorId' );
+		$separatorId = self::getDefaultConfig()->get( 'WBQualityConstraintsSeparatorId' );
 
 		$separatorsParameter = $this->getConstraintParameterParser()
 			->parseSeparatorsParameter( [ $separatorId => [
@@ -1549,7 +1549,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 	}
 
 	public function testParsePropertyScopeParameter_unknown() {
-		$parameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyScopeId' );
+		$parameterId = self::getDefaultConfig()->get( 'WBQualityConstraintsPropertyScopeId' );
 		$constraintParameters = [
 			$parameterId => [ $this->getSnakSerializer()->serialize(
 				new PropertyValueSnak(

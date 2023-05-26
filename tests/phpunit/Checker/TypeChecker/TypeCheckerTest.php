@@ -64,17 +64,17 @@ class TypeCheckerTest extends \MediaWikiIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->lookup = new InMemoryEntityLookup();
-		$this->subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
-		$this->instanceOfId = $this->getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfId' );
+		$this->subclassPid = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$this->instanceOfId = self::getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfId' );
 		$this->checker = new TypeChecker(
 			$this->getConstraintParameterParser(),
 			new TypeCheckerHelper(
 				$this->lookup,
-				$this->getDefaultConfig(),
+				self::getDefaultConfig(),
 				new DummySparqlHelper(),
 				new NullStatsdDataFactory()
 			),
-			$this->getDefaultConfig()
+			self::getDefaultConfig()
 		);
 		$this->typeSnak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q42' ) ) );
 	}

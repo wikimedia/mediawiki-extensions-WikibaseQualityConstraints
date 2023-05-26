@@ -280,7 +280,7 @@ class CommonsLinkCheckerTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function testCheckConstraintParameters() {
-		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$namespaceId = self::getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
 		$constraint = $this->getConstraintMock( [ $namespaceId => [] ] );
 
 		$result = $this->commonsLinkChecker->checkConstraintParameters( $constraint );

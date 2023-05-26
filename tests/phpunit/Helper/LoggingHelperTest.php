@@ -92,7 +92,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 				)
 			);
 
-		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $this->getDefaultConfig() );
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, self::getDefaultConfig() );
 
 		$loggingHelper->logConstraintCheck(
 			$context, $constraint,
@@ -179,7 +179,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 				)
 			);
 
-		$loggingHelper = new LoggingHelper( $dataFactory, $logger, $this->getDefaultConfig() );
+		$loggingHelper = new LoggingHelper( $dataFactory, $logger, self::getDefaultConfig() );
 
 		$loggingHelper->logConstraintCheckOnEntity(
 			$entityId,

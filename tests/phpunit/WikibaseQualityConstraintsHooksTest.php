@@ -30,7 +30,7 @@ class WikibaseQualityConstraintsHooksTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testIsConstraintStatementsChange( Change $change, $expected ) {
 		$actual = WikibaseQualityConstraintsHooks::isConstraintStatementsChange(
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			$change
 		);
 		$this->assertSame( $expected, $actual );
@@ -77,7 +77,7 @@ class WikibaseQualityConstraintsHooksTest extends \PHPUnit\Framework\TestCase {
 		$old = $new->copy();
 
 		// changes on properties affecting constraint statements
-		$p2302 = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyConstraintId' );
+		$p2302 = self::getDefaultConfig()->get( 'WBQualityConstraintsPropertyConstraintId' );
 		$statement = NewStatement::noValueFor( $p2302 )->build();
 		$new->getStatements()->addStatement( $statement );
 		$change = $factory->newFromUpdate( EntityChange::UPDATE, $old, $new );

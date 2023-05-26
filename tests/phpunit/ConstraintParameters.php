@@ -46,7 +46,7 @@ trait ConstraintParameters {
 	public function getConstraintParameterParser() {
 		if ( $this->parser === null ) {
 			$this->parser = new ConstraintParameterParser(
-				$this->getDefaultConfig(),
+				self::getDefaultConfig(),
 				WikibaseRepo::getBaseDataModelDeserializerFactory(),
 				'http://wikibase.example/entity/'
 			);
@@ -71,7 +71,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function classParameter( array $classIds ) {
-		$classParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
+		$classParameterId = self::getDefaultConfig()->get( 'WBQualityConstraintsClassId' );
 		return [
 			$classParameterId => array_map(
 				function ( $classId ) use ( $classParameterId ) {
@@ -92,7 +92,7 @@ trait ConstraintParameters {
 	 * @return array
 	 */
 	public function languageParameter( array $languageCodes ) {
-		$languageParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsLanguagePropertyId' );
+		$languageParameterId = self::getDefaultConfig()->get( 'WBQualityConstraintsLanguagePropertyId' );
 		$snaks = [];
 		foreach ( $languageCodes as $languageCode ) {
 			$snaks[] = $this->getSnakSerializer()->serialize(
@@ -112,7 +112,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function relationParameter( $relation ) {
-		$relationParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
+		$relationParameterId = self::getDefaultConfig()->get( 'WBQualityConstraintsRelationId' );
 		switch ( $relation ) {
 			case 'instance':
 				$configKey = 'WBQualityConstraintsInstanceOfRelationId';
@@ -130,7 +130,7 @@ trait ConstraintParameters {
 			$relationParameterId => [ $this->getSnakSerializer()->serialize(
 				new PropertyValueSnak(
 					new NumericPropertyId( $relationParameterId ),
-					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( $configKey ) ) )
+					new EntityIdValue( new ItemId( self::getDefaultConfig()->get( $configKey ) ) )
 				)
 			) ],
 		];
@@ -141,7 +141,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function propertyParameter( $propertyId ) {
-		$propertyParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
+		$propertyParameterId = self::getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
 		return [
 			$propertyParameterId => [ $this->getSnakSerializer()->serialize(
 				new PropertyValueSnak(
@@ -157,7 +157,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function propertiesParameter( array $properties ) {
-		$propertyParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
+		$propertyParameterId = self::getDefaultConfig()->get( 'WBQualityConstraintsPropertyId' );
 		return [
 			$propertyParameterId => array_map(
 				function ( $property ) use ( $propertyParameterId ) {
@@ -175,7 +175,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function itemsParameter( array $items ) {
-		$qualifierParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
+		$qualifierParameterId = self::getDefaultConfig()->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );
 		return [
 			$qualifierParameterId => array_map(
 				function ( $item ) use ( $qualifierParameterId ) {
@@ -231,7 +231,7 @@ trait ConstraintParameters {
 	 */
 	public function rangeParameter( $type, $min, $max ) {
 		$configKey = $type === 'quantity' ? 'Quantity' : 'Date';
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$minimumId = $config->get( 'WBQualityConstraintsMinimum' . $configKey . 'Id' );
 		$maximumId = $config->get( 'WBQualityConstraintsMaximum' . $configKey . 'Id' );
 		$minimumSnak = $this->rangeEndpoint( $min, $minimumId );
@@ -248,7 +248,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function namespaceParameter( $namespace ) {
-		$namespaceId = $this->getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
+		$namespaceId = self::getDefaultConfig()->get( 'WBQualityConstraintsNamespaceId' );
 		$value = new StringValue( $namespace );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $namespaceId ), $value );
 		return [ $namespaceId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
@@ -259,7 +259,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function formatParameter( $format ) {
-		$formatId = $this->getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
+		$formatId = self::getDefaultConfig()->get( 'WBQualityConstraintsFormatAsARegularExpressionId' );
 		$value = new StringValue( $format );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $formatId ), $value );
 		return [ $formatId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
@@ -271,7 +271,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function syntaxClarificationParameter( $languageCode, $syntaxClarification ) {
-		$syntaxClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
+		$syntaxClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$value = new MonolingualTextValue( $languageCode, $syntaxClarificationId );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $syntaxClarificationId ), $value );
 		return [ $syntaxClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
@@ -282,7 +282,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function exceptionsParameter( $exceptions ) {
-		$exceptionId = $this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
+		$exceptionId = self::getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' );
 		return [ $exceptionId => array_map(
 			function ( $exception ) use ( $exceptionId ) {
 				$value = new EntityIdValue( new ItemId( $exception ) );
@@ -298,7 +298,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function statusParameter( $status ) {
-		$statusParameterId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
+		$statusParameterId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintStatusId' );
 		switch ( $status ) {
 			case 'mandatory':
 				$configKey = 'WBQualityConstraintsMandatoryConstraintId';
@@ -316,7 +316,7 @@ trait ConstraintParameters {
 			$statusParameterId => [ $this->getSnakSerializer()->serialize(
 				new PropertyValueSnak(
 					new NumericPropertyId( $statusParameterId ),
-					new EntityIdValue( new ItemId( $this->getDefaultConfig()->get( $configKey ) ) )
+					new EntityIdValue( new ItemId( self::getDefaultConfig()->get( $configKey ) ) )
 				)
 			) ],
 		];
@@ -328,7 +328,7 @@ trait ConstraintParameters {
 	 * @return array[]
 	 */
 	public function constraintClarificationParameter( $languageCode, $constraintClarification ) {
-		$constraintClarificationId = $this->getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
+		$constraintClarificationId = self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintClarificationId' );
 		$value = new MonolingualTextValue( $languageCode, $constraintClarification );
 		$snak = new PropertyValueSnak( new NumericPropertyId( $constraintClarificationId ), $value );
 		return [ $constraintClarificationId => [ $this->getSnakSerializer()->serialize( $snak ) ] ];
@@ -340,7 +340,7 @@ trait ConstraintParameters {
 	 * @return array
 	 */
 	public function constraintScopeParameter( array $contextTypes, array $entityTypes = [] ) {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$constraintScopeParameterId = $config->get( 'WBQualityConstraintsConstraintScopeId' );
 		$contextTypeItemIds = [];
 		foreach ( $contextTypes as $contextType ) {
@@ -399,7 +399,7 @@ trait ConstraintParameters {
 	}
 
 	public function separatorsParameter( array $separators ) {
-		$separatorId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSeparatorId' );
+		$separatorId = self::getDefaultConfig()->get( 'WBQualityConstraintsSeparatorId' );
 		return [
 			$separatorId => array_map(
 				function ( $separator ) use ( $separatorId ) {
@@ -413,7 +413,7 @@ trait ConstraintParameters {
 	}
 
 	public function propertyScopeParameter( array $contextTypes ) {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$parameterId = $config->get( 'WBQualityConstraintsPropertyScopeId' );
 		return [
 			$parameterId => array_map(

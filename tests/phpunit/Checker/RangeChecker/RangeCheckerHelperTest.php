@@ -31,7 +31,7 @@ class RangeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private function getRangeCheckerHelper() {
 		return new RangeCheckerHelper(
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			new UnitConverter(
 				new CSVUnitStorage( __DIR__ . '/units.csv' ),
 				''

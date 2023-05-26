@@ -59,7 +59,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function addDBData() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', [
 			// a constraint imported from a template (UUID)
@@ -137,7 +137,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testExtractConstraintFromStatement_NoParameters() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$job = UpdateConstraintsTableJob::newFromGlobalState(
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]
@@ -168,7 +168,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 			[ 'propertyId' => 'P2' ]
 		);
 
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
 		$typeId = $config->get( 'WBQualityConstraintsTypeConstraintId' );
 		$classId = $config->get( 'WBQualityConstraintsClassId' );
@@ -221,7 +221,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testImportConstraintsForProperty() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$job = UpdateConstraintsTableJob::newFromGlobalState(
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]
@@ -291,7 +291,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testImportConstraintsForProperty_Deprecated() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
 		$usedForValuesOnlyId = $config->get( 'WBQualityConstraintsUsedForValuesOnlyConstraintId' );
 		$usedAsQualifierId = $config->get( 'WBQualityConstraintsUsedAsQualifierConstraintId' );
@@ -355,7 +355,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testRun() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$propertyConstraintId = $config->get( 'WBQualityConstraintsPropertyConstraintId' );
 		$singleValueConstraintId = $config->get( 'WBQualityConstraintsSingleValueConstraintId' );
 		$property = new Property(
@@ -380,7 +380,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 			[],
 			'P2',
 			null,
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			new ConstraintRepositoryStore( $lb, false ),
 			new FakeLBFactory( [ 'lb' => $lb ] ),
 			$entityRevisionLookup,

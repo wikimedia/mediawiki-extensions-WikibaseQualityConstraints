@@ -36,7 +36,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 			new PlainEntityIdFormatter(),
 			$valueFormatter,
 			new MockMessageLocalizer(),
-			$this->getDefaultConfig()
+			self::getDefaultConfig()
 		);
 
 		$formatted = $constraintParameterRenderer->formatDataValue( $value );
@@ -55,7 +55,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 			$entityIdFormatter,
 			new StringFormatter(),
 			new MockMessageLocalizer(),
-			$this->getDefaultConfig()
+			self::getDefaultConfig()
 		);
 
 		$formatted = $constraintParameterRenderer->formatEntityId( $value );
@@ -71,7 +71,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
 				new MockMessageLocalizer(),
-				$this->getDefaultConfig(),
+				self::getDefaultConfig(),
 			] )
 			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
@@ -92,7 +92,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
 				new MockMessageLocalizer(),
-				$this->getDefaultConfig(),
+				self::getDefaultConfig(),
 			] )
 			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
@@ -111,7 +111,7 @@ class ConstraintParameterRendererTest extends \MediaWikiIntegrationTestCase {
 				new PlainEntityIdFormatter(),
 				new StringFormatter(),
 				new MockMessageLocalizer(),
-				$this->getDefaultConfig(),
+				self::getDefaultConfig(),
 			] )
 			->onlyMethods( [ 'formatEntityId' ] )
 			->getMock();
