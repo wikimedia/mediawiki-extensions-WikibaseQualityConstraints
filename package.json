@@ -14,7 +14,7 @@
 		"grunt-stylelint": "0.18.0",
 		"jasmine": "^4.6.0",
 		"module-alias": "^2.1.0",
-		"sinon": "^15.0.4",
+		"sinon": "^15.1.0",
 		"stylelint-config-wikimedia": "0.14.0",
 		"unexpected": "^13.1.0"
 	},
