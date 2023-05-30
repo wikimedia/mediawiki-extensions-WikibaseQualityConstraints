@@ -39,8 +39,8 @@ class EntityTypeCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->entityTypeChecker = new EntityTypeChecker(
 			$this->getConstraintParameterParser()
 		);
-		$this->itemEntityType = $this->getDefaultConfig()->get( 'WBQualityConstraintsWikibaseItemId' );
-		$this->propertyEntityType = $this->getDefaultConfig()->get( 'WBQualityConstraintsWikibasePropertyId' );
+		$this->itemEntityType = self::getDefaultConfig()->get( 'WBQualityConstraintsWikibaseItemId' );
+		$this->propertyEntityType = self::getDefaultConfig()->get( 'WBQualityConstraintsWikibasePropertyId' );
 	}
 
 	public function testEntityTypeConstraintValid() {

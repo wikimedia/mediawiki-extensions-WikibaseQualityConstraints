@@ -80,7 +80,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 
 		$config = new MultiConfig( [
 			new HashConfig( [ 'WBQualityConstraintsEnableSuggestionConstraintStatus' => true ] ),
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			MediaWikiServices::getInstance()->getMainConfig(),
 		] );
 		$this->setService( 'MainConfig', $config );
@@ -124,7 +124,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 	 * @param string $name
 	 */
 	private function getConstraintTypeItemId( $name ) {
-		return $this->getDefaultConfig()->get( 'WBQualityConstraints' . $name . 'ConstraintId' );
+		return self::getDefaultConfig()->get( 'WBQualityConstraints' . $name . 'ConstraintId' );
 	}
 
 	/**
@@ -133,7 +133,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 	 * @throws DBUnexpectedError
 	 */
 	public function addDBData() {
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$constraints = [
 			[
 				'constraint_guid' => 'P1$ecb8f617-90f1-4ef3-afab-f4bf3881ec28',
@@ -157,7 +157,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 				'pid' => 11,
 				'constraint_type_qid' => $this->getConstraintTypeItemId( 'UsedAsQualifier' ),
 				'constraint_parameters' => json_encode( [
-					$this->getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' ) => [
+					self::getDefaultConfig()->get( 'WBQualityConstraintsExceptionToConstraintId' ) => [
 						[ 'snaktype' => 'novalue', 'property' => 'P2316' ],
 					],
 				] ),

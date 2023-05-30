@@ -77,7 +77,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				$userLanguageCode,
 				$languageFallbackChain,
 				new MockMessageLocalizer(),
-				$this->getDefaultConfig()
+				self::getDefaultConfig()
 			)
 		);
 	}

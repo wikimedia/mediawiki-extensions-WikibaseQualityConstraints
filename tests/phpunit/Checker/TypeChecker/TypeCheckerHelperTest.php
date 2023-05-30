@@ -44,7 +44,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	) {
 		return new TypeCheckerHelper(
 			$entityLookup ?: new InMemoryEntityLookup(),
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			$sparqlHelper ?: new DummySparqlHelper(),
 			new NullStatsdDataFactory()
 		);
@@ -57,7 +57,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	 * exactly WBQualityConstraintsTypeCheckMaxEntities times.
 	 */
 	private function getMaxEntitiesLookup( EntityLookup $lookup ) {
-		$maxEntities = $this->getDefaultConfig()->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
+		$maxEntities = self::getDefaultConfig()->get( 'WBQualityConstraintsTypeCheckMaxEntities' );
 
 		$spy = $this->createMock( EntityLookup::class );
 		$spy->expects( $this->exactly( $maxEntities ) )
@@ -93,7 +93,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	 * @return EntityLookup $lookup
 	 */
 	private function getWideEntityStructureLookup(): EntityLookup {
-		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$subclassPid = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
 		$entityId = new ItemId( 'Q9' );
 		$otherEntityId = new ItemId( 'Q10' );
 		$entity = NewItem::withId( $entityId )
@@ -156,7 +156,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			new EntityIdValue( new ItemId( 'Q5' ) )
 		) );
 		$statements = new StatementList( $statement1, $statement2 );
-		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$subclassPid = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
 
 		$indirectEntity = NewItem::withId( new ItemId( 'Q5' ) )
 			->andStatement(
@@ -186,8 +186,8 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$class,
 		$expected
 	) {
-		$instanceOfId = $this->getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfId' );
-		$subclassOfId = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$instanceOfId = self::getDefaultConfig()->get( 'WBQualityConstraintsInstanceOfId' );
+		$subclassOfId = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
 		$relationIds = [ $instanceOfId, $subclassOfId ];
 
 		$statements = new StatementList(
@@ -264,7 +264,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsSubclassOf_ValidWithIndirection() {
-		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$subclassPid = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
 		$entityId = new ItemId( 'Q6' );
 		$secondEntityId = new ItemId( 'Q5' );
 		$thirdEntityId = new ItemId( 'Q100' ); // entity for testing indirect relation, not part of the lookup itself
@@ -288,7 +288,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsSubclassOf_Invalid() {
-		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$subclassPid = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
 		$entityId = new ItemId( 'Q6' );
 		$entity = NewItem::withId( $entityId )
 			->andStatement(
@@ -304,7 +304,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 
 	public function testIsSubclassOf_Cyclic() {
 		$entityId = new ItemId( 'Q7' );
-		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$subclassPid = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
 		$otherEntityId = new ItemId( 'Q8' );
 		$entity = NewItem::withId( $entityId )
 			->andStatement(
@@ -343,7 +343,7 @@ public function testIsSubclassOf_CyclicWide() {
 
 	public function testIsSubclassOf_Tree() {
 		$lookup = new InMemoryEntityLookup();
-		$subclassPid = $this->getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
+		$subclassPid = self::getDefaultConfig()->get( 'WBQualityConstraintsSubclassOfId' );
 
 		$q1 = NewItem::withId( 'Q1' )
 			->andStatement(

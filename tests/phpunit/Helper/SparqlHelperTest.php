@@ -104,7 +104,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 
 		return $this->getMockBuilder( SparqlHelper::class )
 			->setConstructorArgs( [
-				new MultiConfig( [ $config, $this->getDefaultConfig() ] ),
+				new MultiConfig( [ $config, self::getDefaultConfig() ] ),
 				new RdfVocabulary(
 					[ '' => 'http://www.wikidata.org/entity/' ],
 					[ '' => 'http://www.wikidata.org/wiki/Special:EntityData/' ],
@@ -637,7 +637,7 @@ EOF;
 			 );
 
 		 $sparqlHelper = new SparqlHelper(
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
@@ -669,7 +669,7 @@ EOF;
 		$requestFactoryMock->method( 'create' )
 			->willReturn( $requestMock );
 
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$defaultWait = 154;
 		$config->set( 'WBQualityConstraintsSparqlThrottlingFallbackDuration', $defaultWait );
 
@@ -710,7 +710,7 @@ EOF;
 			 ->willReturn( $requestMock );
 
 		 $sparqlHelper = new SparqlHelper(
-			 $this->getDefaultConfig(),
+			 self::getDefaultConfig(),
 			 $this->createMock( RdfVocabulary::class ),
 			 $this->createMock( EntityIdParser::class ),
 			 $this->createMock( PropertyDataTypeLookup::class ),
@@ -732,7 +732,7 @@ EOF;
 
 		$requestFactoryMock = $this->getMock429RequestFactory( [ 'Retry-After' => 'malformedthing' ] );
 
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$defaultWait = 154;
 		$config->set( 'WBQualityConstraintsSparqlThrottlingFallbackDuration', $defaultWait );
 		$fakeNow = 5000;
@@ -852,7 +852,7 @@ END;
 			)
 			->willReturn( $request );
 
-		$config = $this->getDefaultConfig();
+		$config = self::getDefaultConfig();
 		$config->set( 'WBQualityConstraintsSparqlHasWikibaseSupport', false );
 
 		$rdfVocabulary = new RdfVocabulary(
@@ -877,7 +877,7 @@ END;
 		);
 
 		$sparqlHelper = new SparqlHelper(
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			$rdfVocabulary,
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
@@ -921,7 +921,7 @@ END;
 		$dataFactory = new BufferingStatsdDataFactory( '' );
 
 		$sparqlHelper = new SparqlHelper(
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
@@ -971,7 +971,7 @@ END;
 		$dataFactory = new BufferingStatsdDataFactory( '' );
 
 		$sparqlHelper = new SparqlHelper(
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),

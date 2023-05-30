@@ -155,7 +155,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function testFormatConstraintWithSyntaxClarification() {
-		$syntaxClarificationId = $this->getDefaultConfig()
+		$syntaxClarificationId = self::getDefaultConfig()
 			->get( 'WBQualityConstraintsSyntaxClarificationId' );
 		$statement = NewStatement::forProperty( $syntaxClarificationId )
 			->withValue( '' )
@@ -350,7 +350,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	private function getChecker( ?Config $config = null ): FormatChecker {
-		$config = $config ?? $this->getDefaultConfig();
+		$config = $config ?? self::getDefaultConfig();
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'matchesRegularExpression' ] )
@@ -391,7 +391,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 	private function getMultiConfig( array $overrides = [] ): Config {
 		return new MultiConfig( [
 			new HashConfig( $overrides ),
-			$this->getDefaultConfig(),
+			self::getDefaultConfig(),
 			MediaWikiServices::getInstance()->getMainConfig(),
 		] );
 	}
