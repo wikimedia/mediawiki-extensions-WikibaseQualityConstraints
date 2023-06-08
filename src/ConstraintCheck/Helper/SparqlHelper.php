@@ -11,8 +11,8 @@ use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
 use MediaWiki\Http\HttpRequestFactory;
-use MWException;
 use MWHttpRequest;
+use UnexpectedValueException;
 use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -630,7 +630,7 @@ EOF;
 				$matches['type'] == ConstraintParameterException::class ) {
 				throw $this->deserializeConstraintParameterException( $matches );
 			} else {
-				throw new MWException(
+				throw new UnexpectedValueException(
 					'Value of unknown type in object cache (' .
 					'cache key: ' . $cacheKey . ', ' .
 					'cache map key: ' . $textHash . ', ' .
