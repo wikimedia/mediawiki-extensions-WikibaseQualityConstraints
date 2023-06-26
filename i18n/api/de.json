@@ -6,7 +6,6 @@
 			"Umherirrender"
 		]
 	},
-	"apihelp-wbcheckconstraints-description": "Führt Beschränkungsprüfungen zu jeder gewünschten Entität aus und gibt das Ergebnis zurück.",
 	"apihelp-wbcheckconstraints-summary": "Führt Beschränkungsprüfungen für jedes beliebige Objekt durch und gibt das Ergebnis aus.",
 	"apihelp-wbcheckconstraints-param-id": "Kennung der Objektliste, von der die Daten abgerufen werden sollen. Mehrere Werte mit „|“ oder Ähnlichem trennen.",
 	"apihelp-wbcheckconstraints-param-claimid": "GUID-Liste, die eine Behauptung erkennt, um einen Beschränkungsbericht zu prüfen. Mehrere Werte mit „|“ trennen.",

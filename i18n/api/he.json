@@ -5,7 +5,6 @@
 			"Guycn2"
 		]
 	},
-	"apihelp-wbcheckconstraints-description": "ביצוע בדיקות אילוצים על ישות כלשהי והחזרת התוצאה.",
 	"apihelp-wbcheckconstraints-summary": "ביצוע בדיקת אילוצים על כל ישות והחזרת התוצאה.",
 	"apihelp-wbcheckconstraints-param-id": "רשימת מזהי ישויות שמהן צריך לקבל נתונים. יש להפריד את הערכים בתו '|' או חלופות.",
 	"apihelp-wbcheckconstraints-param-claimid": "רשימת GUID־ים שמזהים טענה שצריך לבדוק אל מול דו\"ח אילוצים. יש להפריד ערכים בתו '|'.",

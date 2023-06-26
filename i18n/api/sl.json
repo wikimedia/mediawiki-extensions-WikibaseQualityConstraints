@@ -5,7 +5,6 @@
 			"Janezdrilc"
 		]
 	},
-	"apihelp-wbcheckconstraints-description": "Izvede preverjanje omejitev katerekoli želene stvari in izpiše rezultat.",
 	"apihelp-wbcheckconstraints-summary": "Izvede preverjanje omejitev katerekoli želene stvari in izpiše rezultat.",
 	"apihelp-wbcheckconstraints-param-id": "Seznam ID-jev entitet, katerih podatki naj se pridobijo. Vrednosti ločite z »|« ali podobnim.",
 	"apihelp-wbcheckconstraints-param-claimid": "Seznam GUID, ki identificira zahtevek za preverjanje poročila o omejitvah. Vrednosti ločite z »|«.",

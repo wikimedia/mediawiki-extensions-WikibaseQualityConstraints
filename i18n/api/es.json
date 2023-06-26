@@ -7,7 +7,6 @@
 			"Fitoschido"
 		]
 	},
-	"apihelp-wbcheckconstraints-description": "Realiza comprobaciones de restricciones en cualquier entidad y devuelve el resultado.",
 	"apihelp-wbcheckconstraints-summary": "Realiza comprobaciones de restricciones en cualquier entidad y devuelve el resultado.",
 	"apihelp-wbcheckconstraints-param-id": "Lista de identificadores de las entidades de las que se obtendrán datos. Separa los valores con «|» u otra alternativa.",
 	"apihelp-wbcheckconstraints-param-constraintid": "Filtro opcional para devolver solo las restricciones que tengan el identificador de restricción especificado.",

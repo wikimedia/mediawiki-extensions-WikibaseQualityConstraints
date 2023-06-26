@@ -5,7 +5,6 @@
 			"Sjoerddebruin"
 		]
 	},
-	"apihelp-wbcheckconstraints-description": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
 	"apihelp-wbcheckconstraints-summary": "Voert een beperkingen controle uit op de gewenste entiteit en toont het resultaat.",
 	"apihelp-wbcheckconstraints-example-1": "Alle beperkingen voor de items Q5 en Q42 controleren.",
 	"apihelp-wbcheckconstraints-example-2": "Alle beperkingen voor een losse verklaring controleren."
