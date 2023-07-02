@@ -80,7 +80,7 @@ There are two ways to run the tests of this extension:
 
   ```sh
   # from the MediaWiki installation folder
-  php tests/phpunit/phpunit.php -c extensions/WikibaseQualityConstraints/phpunit.xml.dist
+  composer phpunit -- -c extensions/WikibaseQualityConstraints/phpunit.xml.dist
   ```
 
   This creates test coverage reports
@@ -91,7 +91,7 @@ There are two ways to run the tests of this extension:
 
   ```sh
   # from the MediaWiki installation folder
-  php tests/phpunit/phpunit.php extensions/WikibaseQualityConstraints/tests/phpunit/
+  composer phpunit:entrypoint extensions/WikibaseQualityConstraints/tests/phpunit/
   ```
 
   This runs the tests without coverage report
