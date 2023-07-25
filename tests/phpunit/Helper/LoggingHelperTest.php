@@ -48,7 +48,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$checkResult = new CheckResult(
 			$context,
 			$constraint,
-			[ 'test' => 'params' ],
+			[],
 			CheckResult::STATUS_VIOLATION,
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);
@@ -86,7 +86,6 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 						'entityId' => 'Q1',
 						'statementGuid' => $statement->getGuid(),
 						'resultStatus' => CheckResult::STATUS_VIOLATION,
-						'resultParameters' => json_encode( [ 'test' => 'params' ] ),
 						'resultMessage' => 'wbqc-violation-message-single-value',
 					]
 				)
