@@ -76,7 +76,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			WikibaseRepo::getEntityIdHtmlLinkFormatterFactory(),
 			WikibaseRepo::getEntityIdParser(),
 			WikibaseRepo::getLanguageFallbackChainFactory(),
-			WikibaseRepo::getValueFormatterFactory(),
 			ConstraintsServices::getDelegatingConstraintChecker(),
 			ConstraintsServices::getViolationMessageRendererFactory(),
 			self::getDefaultConfig(),

@@ -13,7 +13,6 @@ use OOUI\IconWidget;
 use OOUI\LabelWidget;
 use SpecialPage;
 use UnexpectedValueException;
-use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -21,8 +20,6 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
-use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
-use Wikibase\Lib\Formatters\SnakFormatter;
 use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
@@ -31,7 +28,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use WikibaseQuality\ConstraintReport\ConstraintParameterRenderer;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableCellBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
@@ -51,7 +47,6 @@ class SpecialConstraintReport extends SpecialPage {
 	private EntityIdFormatter $entityIdLabelFormatter;
 	private EntityIdFormatter $entityIdLinkFormatter;
 	private DelegatingConstraintChecker $constraintChecker;
-	private ConstraintParameterRenderer $constraintParameterRenderer;
 	private ViolationMessageRenderer $violationMessageRenderer;
 	private Config $config;
 	private IBufferingStatsdDataFactory $dataFactory;
@@ -64,7 +59,6 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityIdParser $entityIdParser,
 		EntityTitleLookup $entityTitleLookup,
 		LanguageFallbackChainFactory $languageFallbackChainFactory,
-		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		EntityLookup $entityLookup,
 		DelegatingConstraintChecker $delegatingConstraintChecker,
 		ViolationMessageRendererFactory $violationMessageRendererFactory
@@ -76,7 +70,6 @@ class SpecialConstraintReport extends SpecialPage {
 			$entityIdHtmlLinkFormatterFactory,
 			$entityIdParser,
 			$languageFallbackChainFactory,
-			$valueFormatterFactory,
 			$delegatingConstraintChecker,
 			$violationMessageRendererFactory,
 			$config,
@@ -91,7 +84,6 @@ class SpecialConstraintReport extends SpecialPage {
 		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
 		EntityIdParser $entityIdParser,
 		LanguageFallbackChainFactory $languageFallbackChainFactory,
-		OutputFormatValueFormatterFactory $valueFormatterFactory,
 		DelegatingConstraintChecker $constraintChecker,
 		ViolationMessageRendererFactory $violationMessageRendererFactory,
 		Config $config,
@@ -105,13 +97,6 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$language = $this->getLanguage();
 
-		$formatterOptions = new FormatterOptions();
-		$formatterOptions->setOption( SnakFormatter::OPT_LANG, $language->getCode() );
-		$dataValueFormatter = $valueFormatterFactory->getValueFormatter(
-			SnakFormatter::FORMAT_HTML,
-			$formatterOptions
-		);
-
 		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter(
 			$language
 		);
@@ -122,12 +107,6 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$this->constraintChecker = $constraintChecker;
 
-		$this->constraintParameterRenderer = new ConstraintParameterRenderer(
-			$this->entityIdLabelFormatter,
-			$dataValueFormatter,
-			$this->getContext(),
-			$config
-		);
 		$this->violationMessageRenderer = $violationMessageRendererFactory->getViolationMessageRenderer(
 			$language,
 			$languageFallbackChainFactory->newFromLanguage( $language ),
@@ -375,15 +354,10 @@ class SpecialConstraintReport extends SpecialPage {
 		} catch ( InvalidArgumentException $e ) {
 			$constraintTypeLabel = htmlspecialchars( $constraintTypeItemId );
 		}
-		$constraintLink = $this->getClaimLink(
+		$constraintColumn = $this->getClaimLink(
 			$propertyId,
 			new NumericPropertyId( $this->config->get( 'WBQualityConstraintsPropertyConstraintId' ) ),
 			$constraintTypeLabel
-		);
-		$constraintColumn = $this->buildExpandableElement(
-			$constraintLink,
-			$this->constraintParameterRenderer->formatParameters( $result->getParameters() ),
-			'[...]'
 		);
 
 		// Append cells
@@ -459,46 +433,6 @@ class SpecialConstraintReport extends SpecialPage {
 		}
 
 		return Html::rawElement( 'p', [], implode( ', ', $statusElements ) );
-	}
-
-	/**
-	 * Builds a html div element with given content and a tooltip with given tooltip content
-	 * If $tooltipContent is null, no tooltip will be created
-	 *
-	 * @param string $content
-	 * @param string|null $expandableContent
-	 * @param string $indicator
-	 *
-	 * @throws InvalidArgumentException
-	 *
-	 * @return string HTML
-	 */
-	protected function buildExpandableElement(
-		string $content,
-		?string $expandableContent,
-		string $indicator
-	): string {
-		if ( empty( $expandableContent ) ) {
-			return $content;
-		}
-
-		$tooltipIndicator = Html::element(
-			'span',
-			[
-				'class' => 'wbqc-expandable-content-indicator wbqc-indicator',
-			],
-			$indicator
-		);
-
-		$wrappedExpandableContent = Html::element(
-			'div',
-			[
-				'class' => 'wbqc-expandable-content',
-			],
-			$expandableContent
-		);
-
-		return sprintf( '%s %s %s', $content, $tooltipIndicator, $wrappedExpandableContent );
 	}
 
 	/**

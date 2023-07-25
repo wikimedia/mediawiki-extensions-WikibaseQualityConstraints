@@ -45,7 +45,6 @@
 				"WikibaseRepo.EntityIdParser",
 				"WikibaseRepo.EntityTitleLookup",
 				"WikibaseRepo.LanguageFallbackChainFactory",
-				"WikibaseRepo.ValueFormatterFactory",
 				"WBQC_EntityLookup",
 				"WBQC_DelegatingConstraintChecker",
 				"WBQC_ViolationMessageRendererFactory"
