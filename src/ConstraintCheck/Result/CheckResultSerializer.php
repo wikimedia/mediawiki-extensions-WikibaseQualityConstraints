@@ -12,8 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintSerializer;
 
 /**
  * A serializer for {@link CheckResult}s.
- * Note that serializing the {@link CheckResult::getParameters parameters} is not (yet?) supported.
- * Also, caching metadata for {@link NullResult}s is never serialized,
+ * Caching metadata for {@link NullResult}s is never serialized,
  * since it doesn’t make sense for those results to be cached
  * (though they can carry dependency metadata, which is serialized correctly).
  *

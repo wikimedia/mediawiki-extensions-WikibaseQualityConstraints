@@ -585,8 +585,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertCount( 1, $results );
 		$result = $results[0];
 		$this->assertViolation( $result );
-		$this->assertArrayHasKey( 'constraint_status', $result->getParameters() );
-		$this->assertSame( [ 'mandatory' ], $result->getParameters()[ 'constraint_status' ] );
 	}
 
 	public function testCheckOnEntityIdNonMandatoryConstraint() {
@@ -611,8 +609,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertCount( 1, $results );
 		$result = $results[0];
 		$this->assertSame( 'suggestion', $result->getStatus() );
-		$this->assertArrayHasKey( 'constraint_status', $result->getParameters() );
-		$this->assertSame( [ 'suggestion' ], $result->getParameters()[ 'constraint_status' ] );
 	}
 
 	public function testCheckOnEntityIdInvalidConstraintStatus(): void {
