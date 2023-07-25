@@ -93,7 +93,6 @@
 	"ResourceModules": {
 		"SpecialConstraintReportPage": {
 			"styles": "SpecialConstraintReportPage.less",
-			"scripts": "SpecialConstraintReportPage.js",
 			"dependencies": [
 				"oojs-ui-core.styles"
 			]
