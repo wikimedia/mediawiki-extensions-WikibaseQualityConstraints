@@ -686,7 +686,6 @@ class DelegatingConstraintChecker {
 			if ( $result->getStatus() === CheckResult::STATUS_VIOLATION ) {
 				$result->setStatus( CheckResult::STATUS_SUGGESTION );
 			}
-			$result->addParameter( 'constraint_status', $constraintStatus );
 		} else {
 			if ( $constraintStatus !== 'mandatory' ) {
 				// @codeCoverageIgnoreStart
@@ -696,7 +695,6 @@ class DelegatingConstraintChecker {
 				);
 				// @codeCoverageIgnoreEnd
 			}
-			$result->addParameter( 'constraint_status', $constraintStatus );
 		}
 	}
 

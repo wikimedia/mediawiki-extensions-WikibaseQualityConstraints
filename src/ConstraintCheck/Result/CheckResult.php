@@ -82,12 +82,6 @@ class CheckResult {
 	private ContextCursor $contextCursor;
 
 	/**
-	 * @var array[]
-	 * Includes arrays of ItemIds or PropertyIds or strings.
-	 */
-	private array $parameters;
-
-	/**
 	 * @var string One of the self::STATUS_… constants
 	 */
 	private string $status;
@@ -105,15 +99,14 @@ class CheckResult {
 	/**
 	 * @param Context|ContextCursor $contextCursor
 	 * @param Constraint $constraint
-	 * @param array[] $parameters (string => string[]) parsed constraint parameters
-	 * ($constraint->getParameters() contains the unparsed parameters)
+	 * @param mixed $unused Will be removed soon (T338593)
 	 * @param string $status One of the self::STATUS_… constants
 	 * @param ViolationMessage|null $message
 	 */
 	public function __construct(
 		$contextCursor,
 		Constraint $constraint,
-		array $parameters = [],
+		$unused = [],
 		string $status = self::STATUS_TODO,
 		ViolationMessage $message = null
 	) {
@@ -133,7 +126,6 @@ class CheckResult {
 			$this->dataValue = null;
 		}
 		$this->constraint = $constraint;
-		$this->parameters = $parameters;
 		$this->status = $status;
 		$this->message = $message;
 		$this->metadata = Metadata::blank();
@@ -164,17 +156,6 @@ class CheckResult {
 
 	public function getConstraintId(): string {
 		return $this->constraint->getConstraintId();
-	}
-
-	/**
-	 * @return array[]
-	 */
-	public function getParameters(): array {
-		return $this->parameters;
-	}
-
-	public function addParameter( string $key, string $value ): void {
-		$this->parameters[$key][] = $value;
 	}
 
 	/**

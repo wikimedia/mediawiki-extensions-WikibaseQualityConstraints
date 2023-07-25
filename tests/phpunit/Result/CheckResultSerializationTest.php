@@ -113,7 +113,7 @@ class CheckResultSerializationTest extends TestCase {
 			$expected = ( new CheckResult(
 				$checkResult->getContextCursor(),
 				$checkResult->getConstraint(),
-				$checkResult->getParameters(),
+				[],
 				$checkResult->getStatus(),
 				$checkResult->getMessage()
 			) )->withMetadata(

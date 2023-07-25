@@ -34,14 +34,13 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 		$entityId = new ItemId( 'Q1' );
 		$snak = new PropertyValueSnak( $propertyId, new StringValue( 'Foo' ) );
 		$constraintId = '1';
-		$parameters = [ 'test' => 'parameters' ];
-		$constraint = new Constraint( $constraintId, new NumericPropertyId( 'P1' ), 'Q100', $parameters );
+		$constraint = new Constraint( $constraintId, new NumericPropertyId( 'P1' ), 'Q100', [] );
 		$status = CheckResult::STATUS_COMPLIANCE;
 		$message = new ViolationMessage( 'wbqc-violation-message-single-value' );
 		$context = new FakeSnakContext( $snak, new Item( $entityId ) );
 		$metadata = Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 42 ) );
 
-		$checkResult = new CheckResult( $context, $constraint, $parameters, $status, $message );
+		$checkResult = new CheckResult( $context, $constraint, [], $status, $message );
 		$checkResult->withMetadata( $metadata );
 
 		$this->assertEquals( $context->getCursor(), $checkResult->getContextCursor() );
@@ -49,7 +48,6 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( $snak->getDataValue(), $checkResult->getDataValue() );
 		$this->assertSame( $constraint, $checkResult->getConstraint() );
 		$this->assertSame( $constraintId, $checkResult->getConstraintId() );
-		$this->assertSame( $parameters, $checkResult->getParameters() );
 		$this->assertSame( $status, $checkResult->getStatus() );
 		$this->assertSame( $message, $checkResult->getMessage() );
 		$this->assertSame( $metadata, $checkResult->getMetadata() );
@@ -60,14 +58,13 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 		$entityId = new ItemId( 'Q1' );
 		$snak = new PropertyValueSnak( $propertyId, new StringValue( 'Foo' ) );
 		$constraintId = '1';
-		$parameters = [ 'test' => 'parameters' ];
-		$constraint = new Constraint( $constraintId, new NumericPropertyId( 'P1' ), 'Q100', $parameters );
+		$constraint = new Constraint( $constraintId, new NumericPropertyId( 'P1' ), 'Q100', [] );
 		$status = CheckResult::STATUS_COMPLIANCE;
 		$message = new ViolationMessage( 'wbqc-violation-message-single-value' );
 		$context = new AppendingContextCursor();
 		$metadata = Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 42 ) );
 
-		$checkResult = new CheckResult( $context, $constraint, $parameters, $status, $message );
+		$checkResult = new CheckResult( $context, $constraint, [], $status, $message );
 		$checkResult->withMetadata( $metadata );
 
 		$this->assertSame( $context, $checkResult->getContextCursor() );
@@ -75,21 +72,9 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 		$this->assertNull( $checkResult->getDataValue() );
 		$this->assertSame( $constraint, $checkResult->getConstraint() );
 		$this->assertSame( $constraintId, $checkResult->getConstraintId() );
-		$this->assertSame( $parameters, $checkResult->getParameters() );
 		$this->assertSame( $status, $checkResult->getStatus() );
 		$this->assertSame( $message, $checkResult->getMessage() );
 		$this->assertSame( $metadata, $checkResult->getMetadata() );
-	}
-
-	public function testAddParameter() {
-		$context = new FakeSnakContext( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) );
-		$constraint = new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] );
-		$checkResult = new CheckResult( $context, $constraint );
-
-		$this->assertSame( [], $checkResult->getParameters() );
-
-		$checkResult->addParameter( 'constraint_status', 'mandatory' );
-		$this->assertSame( [ 'constraint_status' => [ 'mandatory' ] ], $checkResult->getParameters() );
 	}
 
 	public function testSetStatus() {
