@@ -68,12 +68,9 @@ class SingleBestValueChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
-		$parameters = [];
-
 		$separators = $this->constraintParameterParser->parseSeparatorsParameter(
 			$constraint->getConstraintParameters()
 		);
-		$parameters['separator'] = $separators;
 
 		$propertyId = $context->getSnak()->getPropertyId();
 		$bestRankCount = $this->valueCountCheckerHelper->getPropertyCount(
@@ -98,7 +95,7 @@ class SingleBestValueChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_COMPLIANCE;
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, [], $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

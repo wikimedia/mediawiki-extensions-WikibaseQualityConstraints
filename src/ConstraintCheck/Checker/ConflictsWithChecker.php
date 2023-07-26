@@ -81,7 +81,6 @@ class ConflictsWithChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
-		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
@@ -89,14 +88,12 @@ class ConflictsWithChecker implements ConstraintChecker {
 			$constraintParameters,
 			$constraintTypeItemId
 		);
-		$parameters['property'] = [ $propertyId ];
 
 		$items = $this->constraintParameterParser->parseItemsParameter(
 			$constraintParameters,
 			$constraintTypeItemId,
 			false
 		);
-		$parameters['items'] = $items;
 
 		$statementList = $context->getEntity()
 			->getStatements()
@@ -140,7 +137,7 @@ class ConflictsWithChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, [], $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

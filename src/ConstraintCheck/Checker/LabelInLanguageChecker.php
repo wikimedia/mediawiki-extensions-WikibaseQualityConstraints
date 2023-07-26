@@ -73,14 +73,12 @@ class LabelInLanguageChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
 		}
 
-		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 
 		$languages = $this->constraintParameterParser->parseLanguageParameter(
 			$constraintParameters,
 			$constraint->getConstraintTypeItemId()
 		);
-		$parameters['language'] = $languages;
 
 		$status = CheckResult::STATUS_VIOLATION;
 		$message = ( new ViolationMessage( 'wbqc-violation-message-label-lacking' ) )
@@ -99,7 +97,7 @@ class LabelInLanguageChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, $status, $message );
+		return new CheckResult( $context, $constraint, [], $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ): array {

@@ -210,7 +210,7 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				'Q1',
 				[]
 			),
-			[ 'parameters' => [] ],
+			[],
 			'status',
 			( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
 				->withEntityId( new NumericPropertyId( 'P1' ) )

@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Config;
-use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ConstraintChecker;
@@ -84,19 +83,12 @@ class TypeChecker implements ConstraintChecker {
 			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE );
 		}
 
-		$parameters = [];
 		$constraintParameters = $constraint->getConstraintParameters();
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
 		$classes = $this->constraintParameterParser->parseClassParameter(
 			$constraintParameters,
 			$constraintTypeItemId
-		);
-		$parameters['class'] = array_map(
-			static function ( $id ) {
-				return new ItemId( $id );
-			},
-			$classes
 		);
 
 		$relation = $this->constraintParameterParser->parseRelationParameter(
@@ -110,7 +102,6 @@ class TypeChecker implements ConstraintChecker {
 		if ( $relation === 'subclass' || $relation === 'instanceOrSubclass' ) {
 			$relationIds[] = $this->config->get( 'WBQualityConstraintsSubclassOfId' );
 		}
-		$parameters['relation'] = [ $relation ];
 
 		$result = $this->typeCheckerHelper->hasClassInRelation(
 			$context->getEntity()->getStatements(),
@@ -132,7 +123,7 @@ class TypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return ( new CheckResult( $context, $constraint, $parameters, $status, $message ) )
+		return ( new CheckResult( $context, $constraint, [], $status, $message ) )
 			->withMetadata( $result->getMetadata() );
 	}
 

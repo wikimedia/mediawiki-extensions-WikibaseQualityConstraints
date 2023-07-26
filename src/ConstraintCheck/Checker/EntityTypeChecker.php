@@ -58,9 +58,6 @@ class EntityTypeChecker implements ConstraintChecker {
 			$constraintParameters,
 			$constraint->getConstraintTypeItemId()
 		);
-		$parameters = [
-			'item' => $entityTypes->getEntityTypes(),
-		];
 
 		if ( !in_array( $context->getEntity()->getType(), $entityTypes->getEntityTypes() ) ) {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-entityType' ) )
@@ -76,7 +73,7 @@ class EntityTypeChecker implements ConstraintChecker {
 			);
 		}
 
-		return new CheckResult( $context, $constraint, $parameters, CheckResult::STATUS_COMPLIANCE );
+		return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

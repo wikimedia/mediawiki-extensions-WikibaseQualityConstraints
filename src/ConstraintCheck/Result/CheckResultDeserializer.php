@@ -53,8 +53,6 @@ class CheckResultDeserializer {
 				$serialization[CheckResultSerializer::KEY_CONSTRAINT]
 			);
 
-			$parameters = []; // serialization of parameters not supported yet
-
 			$status = $serialization[CheckResultSerializer::KEY_CHECK_RESULT_STATUS];
 
 			$violationMessage = $this->getViolationMessageFromSerialization( $serialization );
@@ -62,7 +60,7 @@ class CheckResultDeserializer {
 			$result = new CheckResult(
 				$contextCursor,
 				$constraint,
-				$parameters,
+				[],
 				$status,
 				$violationMessage
 			);
