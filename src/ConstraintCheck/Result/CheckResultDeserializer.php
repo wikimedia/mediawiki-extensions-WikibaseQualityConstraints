@@ -60,7 +60,6 @@ class CheckResultDeserializer {
 			$result = new CheckResult(
 				$contextCursor,
 				$constraint,
-				[],
 				$status,
 				$violationMessage
 			);

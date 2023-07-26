@@ -83,7 +83,7 @@ class RangeChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
 
 		$constraintParameters = $constraint->getConstraintParameters();
@@ -92,7 +92,7 @@ class RangeChecker implements ConstraintChecker {
 
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_COMPLIANCE );
 		}
 
 		$dataValue = $snak->getDataValue();
@@ -128,7 +128,7 @@ class RangeChecker implements ConstraintChecker {
 			$dependencyMetadata = DependencyMetadata::blank();
 		}
 
-		return ( new CheckResult( $context, $constraint, [], $status, $message ) )
+		return ( new CheckResult( $context, $constraint, $status, $message ) )
 			->withMetadata( Metadata::ofDependencyMetadata( $dependencyMetadata ) );
 	}
 

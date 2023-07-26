@@ -238,7 +238,6 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 						new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
 					),
 					$constraint,
-					[],
 					CheckResult::STATUS_VIOLATION
 				),
 				new CheckResult(
@@ -247,7 +246,6 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 						new Statement( new PropertySomeValueSnak( new NumericPropertyId( 'P1' ) ) )
 					),
 					$constraint,
-					[],
 					CheckResult::STATUS_COMPLIANCE
 				),
 			] );
@@ -282,7 +280,6 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 						'Q1',
 						[]
 					),
-					[],
 					CheckResult::STATUS_COMPLIANCE
 				) )->withMetadata( Metadata::ofDependencyMetadata(
 					DependencyMetadata::ofEntityId( new ItemId( 'Q100' ) ) ) ),

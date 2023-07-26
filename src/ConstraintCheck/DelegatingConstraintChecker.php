@@ -454,15 +454,15 @@ class DelegatingConstraintChecker {
 				$result[] = new CheckResult(
 					$context,
 					$constraint,
-					[],
-					CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage()
+					CheckResult::STATUS_BAD_PARAMETERS,
+					$e->getViolationMessage()
 				);
 				continue;
 			}
 
 			if ( in_array( $entity->getId(), $exceptions ) ) {
 				$message = new ViolationMessage( 'wbqc-violation-message-exception' );
-				$result[] = new CheckResult( $context, $constraint, [], CheckResult::STATUS_EXCEPTION, $message );
+				$result[] = new CheckResult( $context, $constraint, CheckResult::STATUS_EXCEPTION, $message );
 				continue;
 			}
 
@@ -570,13 +570,12 @@ class DelegatingConstraintChecker {
 				$result = new CheckResult(
 					$context,
 					$constraint,
-					[],
 					CheckResult::STATUS_BAD_PARAMETERS,
 					$e->getViolationMessage()
 				);
 			} catch ( SparqlHelperException $e ) {
 				$message = new ViolationMessage( 'wbqc-violation-message-sparql-error' );
-				$result = new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, $message );
+				$result = new CheckResult( $context, $constraint, CheckResult::STATUS_TODO, $message );
 			}
 			$endTime = microtime( true );
 
@@ -597,7 +596,7 @@ class DelegatingConstraintChecker {
 
 			return $result;
 		} else {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_TODO, null );
 		}
 	}
 
@@ -616,7 +615,7 @@ class DelegatingConstraintChecker {
 				$validEntityTypes
 			);
 		} catch ( ConstraintParameterException $e ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
 		}
 
 		if ( $checkedContextTypes === null ) {
@@ -624,10 +623,10 @@ class DelegatingConstraintChecker {
 		}
 		$contextType = $context->getType();
 		if ( !in_array( $contextType, $checkedContextTypes ) ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE, null );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_NOT_IN_SCOPE, null );
 		}
 		if ( $checker->getSupportedContextTypes()[$contextType] === CheckResult::STATUS_TODO ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_TODO, null );
 		}
 
 		if ( $checkedEntityTypes === null ) {
@@ -635,10 +634,10 @@ class DelegatingConstraintChecker {
 		}
 		$entityType = $context->getEntity()->getType();
 		if ( !in_array( $entityType, $checkedEntityTypes ) ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE, null );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_NOT_IN_SCOPE, null );
 		}
 		if ( $checker->getSupportedEntityTypes()[$entityType] === CheckResult::STATUS_TODO ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_TODO, null );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_TODO, null );
 		}
 
 		return null;

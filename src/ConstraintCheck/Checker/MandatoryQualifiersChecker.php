@@ -69,7 +69,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
 
 		$constraintParameters = $constraint->getConstraintParameters();
@@ -94,7 +94,7 @@ class MandatoryQualifiersChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $context, $constraint, [], $status, $message );
+		return new CheckResult( $context, $constraint, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ) {

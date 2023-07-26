@@ -510,7 +510,6 @@ EOF;
 			$checkResult = new CheckResult(
 				$this->createMock( ContextCursor::class ),
 				$this->createMock( Constraint::class ),
-				[],
 				CheckResult::STATUS_VIOLATION,
 				$exception->getViolationMessage()
 			);

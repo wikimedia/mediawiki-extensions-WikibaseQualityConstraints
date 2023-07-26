@@ -78,7 +78,7 @@ class UniqueValueChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
 
 		if ( !( $this->sparqlHelper instanceof DummySparqlHelper ) ) {
@@ -98,7 +98,7 @@ class UniqueValueChecker implements ConstraintChecker {
 				$snak = $context->getSnak();
 				if ( !$snak instanceof PropertyValueSnak ) {
 					// nothing to check
-					return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
+					return new CheckResult( $context, $constraint, CheckResult::STATUS_COMPLIANCE );
 				}
 				$result = $this->sparqlHelper->findEntitiesWithSameQualifierOrReference(
 					$context->getEntity()->getId(),
@@ -127,7 +127,7 @@ class UniqueValueChecker implements ConstraintChecker {
 			$metadata = Metadata::blank();
 		}
 
-		return ( new CheckResult( $context, $constraint, [], $status, $message ) )
+		return ( new CheckResult( $context, $constraint, $status, $message ) )
 			->withMetadata( $metadata );
 	}
 

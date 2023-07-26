@@ -99,14 +99,12 @@ class CheckResult {
 	/**
 	 * @param Context|ContextCursor $contextCursor
 	 * @param Constraint $constraint
-	 * @param mixed $unused Will be removed soon (T338593)
 	 * @param string $status One of the self::STATUS_… constants
 	 * @param ViolationMessage|null $message
 	 */
 	public function __construct(
 		$contextCursor,
 		Constraint $constraint,
-		$unused = [],
 		string $status = self::STATUS_TODO,
 		ViolationMessage $message = null
 	) {

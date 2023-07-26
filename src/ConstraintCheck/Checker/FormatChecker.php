@@ -111,7 +111,7 @@ class FormatChecker implements ConstraintChecker {
 
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_COMPLIANCE );
 		}
 
 		$dataValue = $snak->getDataValue();
@@ -134,7 +134,7 @@ class FormatChecker implements ConstraintChecker {
 					->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 					->withDataValueType( 'string' )
 					->withDataValueType( 'monolingualtext' );
-				return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+				return new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION, $message );
 		}
 		$status = $this->runRegexCheck( $text, $format );
 		$message = $this->formatMessage(
@@ -145,7 +145,7 @@ class FormatChecker implements ConstraintChecker {
 			$syntaxClarifications,
 			$constraintTypeItemId
 		);
-		return new CheckResult( $context, $constraint, [], $status, $message );
+		return new CheckResult( $context, $constraint, $status, $message );
 	}
 
 	private function formatMessage(

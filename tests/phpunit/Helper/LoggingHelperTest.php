@@ -48,7 +48,6 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$checkResult = new CheckResult(
 			$context,
 			$constraint,
-			[],
 			CheckResult::STATUS_VIOLATION,
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);
@@ -117,7 +116,6 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$checkResult = new CheckResult(
 			$context,
 			$constraint,
-			[],
 			CheckResult::STATUS_VIOLATION,
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);

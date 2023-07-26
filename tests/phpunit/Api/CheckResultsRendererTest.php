@@ -118,7 +118,6 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				'a35ee6b06a0f0e78614b517e4b72029b535479c0'
 			),
 			$constraint,
-			[],
 			CheckResult::STATUS_VIOLATION,
 			new ViolationMessage( 'wbqc-violation-message-multi-value' )
 		) )->withMetadata(
@@ -132,7 +131,6 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				'8d7709b2902c132ce035a10367b7b6044e6bbc07'
 			),
 			$constraint,
-			[],
 			CheckResult::STATUS_COMPLIANCE
 		) )->withMetadata(
 			Metadata::ofDependencyMetadata( DependencyMetadata::ofEntityId( $q4 ) )
@@ -210,7 +208,6 @@ class CheckResultsRendererTest extends \PHPUnit\Framework\TestCase {
 				'Q1',
 				[]
 			),
-			[],
 			'status',
 			( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
 				->withEntityId( new NumericPropertyId( 'P1' ) )

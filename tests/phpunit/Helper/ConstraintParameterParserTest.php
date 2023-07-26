@@ -97,7 +97,6 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 					new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
 				),
 				$this->constraint,
-				[],
 				CheckResult::STATUS_VIOLATION,
 				$exception->getViolationMessage()
 			);

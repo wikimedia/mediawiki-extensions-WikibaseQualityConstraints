@@ -90,7 +90,7 @@ class ValueTypeChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
 
 		$constraintParameters = $constraint->getConstraintParameters();
@@ -117,7 +117,7 @@ class ValueTypeChecker implements ConstraintChecker {
 
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_COMPLIANCE );
 		}
 
 		$dataValue = $snak->getDataValue();
@@ -130,7 +130,7 @@ class ValueTypeChecker implements ConstraintChecker {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
 				->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 				->withDataValueType( 'wikibase-entityid' );
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		try {
@@ -142,7 +142,7 @@ class ValueTypeChecker implements ConstraintChecker {
 
 		if ( !( $item instanceof StatementListProvidingEntity ) ) {
 			$message = new ViolationMessage( 'wbqc-violation-message-value-entity-must-exist' );
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$statements = $item->getStatements();
@@ -167,7 +167,7 @@ class ValueTypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return ( new CheckResult( $context, $constraint, [], $status, $message ) )
+		return ( new CheckResult( $context, $constraint, $status, $message ) )
 			->withMetadata( $result->getMetadata() );
 	}
 

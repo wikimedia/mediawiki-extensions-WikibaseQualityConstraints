@@ -113,7 +113,6 @@ class CheckResultSerializationTest extends TestCase {
 			$expected = ( new CheckResult(
 				$checkResult->getContextCursor(),
 				$checkResult->getConstraint(),
-				[],
 				$checkResult->getStatus(),
 				$checkResult->getMessage()
 			) )->withMetadata(
@@ -189,7 +188,6 @@ class CheckResultSerializationTest extends TestCase {
 			( new CheckResult(
 				$contextCursor,
 				$constraint,
-				[],
 				CheckResult::STATUS_BAD_PARAMETERS,
 				( new ViolationMessage( 'wbqc-violation-message-parameter-needed' ) )
 					->withEntityId( new ItemId( 'Q21502404' ), Role::CONSTRAINT_TYPE_ITEM )

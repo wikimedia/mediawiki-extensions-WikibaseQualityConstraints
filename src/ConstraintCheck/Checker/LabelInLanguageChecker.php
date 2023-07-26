@@ -70,7 +70,7 @@ class LabelInLanguageChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
 
 		$constraintParameters = $constraint->getConstraintParameters();
@@ -97,7 +97,7 @@ class LabelInLanguageChecker implements ConstraintChecker {
 			}
 		}
 
-		return new CheckResult( $context, $constraint, [], $status, $message );
+		return new CheckResult( $context, $constraint, $status, $message );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ): array {

@@ -40,7 +40,7 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 		$context = new FakeSnakContext( $snak, new Item( $entityId ) );
 		$metadata = Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 42 ) );
 
-		$checkResult = new CheckResult( $context, $constraint, [], $status, $message );
+		$checkResult = new CheckResult( $context, $constraint, $status, $message );
 		$checkResult->withMetadata( $metadata );
 
 		$this->assertEquals( $context->getCursor(), $checkResult->getContextCursor() );
@@ -64,7 +64,7 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 		$context = new AppendingContextCursor();
 		$metadata = Metadata::ofCachingMetadata( CachingMetadata::ofMaximumAgeInSeconds( 42 ) );
 
-		$checkResult = new CheckResult( $context, $constraint, [], $status, $message );
+		$checkResult = new CheckResult( $context, $constraint, $status, $message );
 		$checkResult->withMetadata( $metadata );
 
 		$this->assertSame( $context, $checkResult->getContextCursor() );
@@ -80,7 +80,7 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 	public function testSetStatus() {
 		$context = new FakeSnakContext( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) );
 		$constraint = new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] );
-		$checkResult = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION );
+		$checkResult = new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION );
 
 		$this->assertSame( CheckResult::STATUS_VIOLATION, $checkResult->getStatus() );
 
@@ -91,7 +91,7 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 	public function testSetMessage(): void {
 		$context = new FakeSnakContext( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) );
 		$constraint = new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] );
-		$checkResult = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION );
+		$checkResult = new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION );
 
 		$this->assertNull( $checkResult->getMessage() );
 
@@ -103,7 +103,7 @@ class CheckResultTest extends \MediaWikiUnitTestCase {
 	public function testSetConstraintClarification(): void {
 		$context = new FakeSnakContext( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) );
 		$constraint = new Constraint( '', new NumericPropertyId( 'P1' ), 'Q1', [] );
-		$checkResult = new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION );
+		$checkResult = new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION );
 
 		$this->assertSame( [], $checkResult->getConstraintClarification()->getArrayValue() );
 

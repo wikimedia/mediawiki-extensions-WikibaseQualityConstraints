@@ -115,7 +115,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 
 		if ( !$snak instanceof PropertyValueSnak ) {
 			// nothing to check
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_COMPLIANCE );
 		}
 
 		$dataValue = $snak->getDataValue();
@@ -129,12 +129,12 @@ class CommonsLinkChecker implements ConstraintChecker {
 			$message = ( new ViolationMessage( 'wbqc-violation-message-value-needed-of-type' ) )
 				->withEntityId( new ItemId( $constraintTypeItemId ), Role::CONSTRAINT_TYPE_ITEM )
 				->withDataValueType( 'string' );
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION, $message );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION, $message );
 		}
 
 		$commonsLink = $dataValue->getValue();
 		if ( !$this->commonsLinkIsWellFormed( $commonsLink ) ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION,
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION,
 				new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' ) );
 		}
 
@@ -143,7 +143,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 			case 'geo-shape':
 			case 'tabular-data':
 				if ( strpos( $commonsLink, $namespace . ':' ) !== 0 ) {
-					return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION,
+					return new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION,
 						new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' ) );
 				}
 				$pageName = $commonsLink;
@@ -160,14 +160,14 @@ class CommonsLinkChecker implements ConstraintChecker {
 		);
 		if ( $normalizedTitle === false ) {
 			if ( $this->valueIncludesNamespace( $commonsLink, $namespace ) ) {
-				return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION,
+				return new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION,
 					new ViolationMessage( 'wbqc-violation-message-commons-link-not-well-formed' ) );
 			}
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_VIOLATION,
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_VIOLATION,
 				new ViolationMessage( 'wbqc-violation-message-commons-link-no-existent' ) );
 		}
 
-		return new CheckResult( $context, $constraint, [], CheckResult::STATUS_COMPLIANCE, null );
+		return new CheckResult( $context, $constraint, CheckResult::STATUS_COMPLIANCE, null );
 	}
 
 	public function checkConstraintParameters( Constraint $constraint ): array {

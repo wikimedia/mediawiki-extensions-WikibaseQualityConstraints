@@ -55,7 +55,6 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 				'Q12345',
 				[]
 			),
-			[],
 			$status,
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);

@@ -77,10 +77,10 @@ class TypeChecker implements ConstraintChecker {
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_DEPRECATED );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
 		if ( $context->getType() === Context::TYPE_REFERENCE ) {
-			return new CheckResult( $context, $constraint, [], CheckResult::STATUS_NOT_IN_SCOPE );
+			return new CheckResult( $context, $constraint, CheckResult::STATUS_NOT_IN_SCOPE );
 		}
 
 		$constraintParameters = $constraint->getConstraintParameters();
@@ -123,7 +123,7 @@ class TypeChecker implements ConstraintChecker {
 			$status = CheckResult::STATUS_VIOLATION;
 		}
 
-		return ( new CheckResult( $context, $constraint, [], $status, $message ) )
+		return ( new CheckResult( $context, $constraint, $status, $message ) )
 			->withMetadata( $result->getMetadata() );
 	}
 
