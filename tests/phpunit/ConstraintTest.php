@@ -12,7 +12,7 @@ use WikibaseQuality\ConstraintReport\ConstraintsServices;
  * @covers WikibaseQuality\ConstraintReport\Constraint
  *
  * @group WikibaseQualityConstraints
- * @group database
+ * @group Database
  * @group medium
  *
  * @author BP2014N1

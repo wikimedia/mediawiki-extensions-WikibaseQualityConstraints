@@ -11,7 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintRepositoryLookup;
  * @covers WikibaseQuality\ConstraintReport\ConstraintRepositoryLookup
  *
  * @group WikibaseQualityConstraints
- * @group database
+ * @group Database
  * @group medium
  *
  * @author BP2014N1
