@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 use Article;
 use HashConfig;
 use IContextSource;
+use MediaWiki\Request\WebResponse;
 use MediaWiki\Title\Title;
 use NullStatsdDataFactory;
 use OutputPage;
@@ -172,7 +173,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 				);
 			} );
 
-		$mockResponse = $this->createMock( \WebResponse::class );
+		$mockResponse = $this->createMock( WebResponse::class );
 		$mockResponse->expects( $this->never() )->method( 'statusHeader' );
 		$mockResponse->expects( $this->once() )->method( 'header' )
 			->with( 'Content-Type: text/turtle; charset=UTF-8' );
@@ -201,7 +202,7 @@ TEXT;
 	}
 
 	public function testShow404() {
-		$mockResponse = $this->createMock( \WebResponse::class );
+		$mockResponse = $this->createMock( WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 404 );
 		$action = $this->getCheckConstraintsRdf(
 			new Article( Title::newFromText( 'something strange' ) ),
@@ -217,7 +218,7 @@ TEXT;
 	}
 
 	public function testShowNoResults() {
-		$mockResponse = $this->createMock( \WebResponse::class );
+		$mockResponse = $this->createMock( WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
 		$action = $this->getCheckConstraintsRdf(
 			new Article( Title::newFromText( 'Item:Q1' ) ),
@@ -246,7 +247,7 @@ TEXT;
 				);
 			} );
 
-		$mockResponse = $this->createMock( \WebResponse::class );
+		$mockResponse = $this->createMock( WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 204 );
 		$action = $this->getCheckConstraintsRdf(
 			new Article( Title::newFromText( 'Property:P1' ) ),
