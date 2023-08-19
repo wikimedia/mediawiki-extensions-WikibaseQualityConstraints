@@ -862,7 +862,7 @@ END;
 					'wd',
 					false,
 					[
-						'item' => [ 'namespaceId' => 100 ,'slot' => SlotRecord::MAIN ],
+						'item' => [ 'namespaceId' => 100 , 'slot' => SlotRecord::MAIN ],
 						'property' => [ 'namespaceId' => 200, 'slot' => SlotRecord::MAIN ],
 					],
 					'http://wiki/entity/',
