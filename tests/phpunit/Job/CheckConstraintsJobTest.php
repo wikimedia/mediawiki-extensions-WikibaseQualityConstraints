@@ -3,8 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
 use Job;
+use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
-use Title;
 use Wikibase\DataModel\Entity\ItemId;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Job\CheckConstraintsJob;
