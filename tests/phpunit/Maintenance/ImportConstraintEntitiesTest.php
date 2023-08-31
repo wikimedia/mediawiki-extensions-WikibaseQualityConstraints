@@ -19,6 +19,7 @@ use WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintEntities;
  * @covers \WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintEntities
  *
  * @group WikibaseQualityConstraints
+ * @group Database
  *
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
