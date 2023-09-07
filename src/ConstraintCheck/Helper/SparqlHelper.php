@@ -366,7 +366,7 @@ EOF;
 		Statement $statement,
 		array $separators
 	) {
-		$pid = $statement->getPropertyId()->serialize();
+		$pid = $statement->getPropertyId()->getSerialization();
 		$guid = $statement->getGuid();
 		'@phan-var string $guid'; // statement must have a non-null GUID
 		$guidForRdf = str_replace( '$', '-', $guid );
