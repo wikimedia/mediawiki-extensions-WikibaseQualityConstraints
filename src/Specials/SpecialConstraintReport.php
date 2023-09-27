@@ -6,6 +6,7 @@ namespace WikibaseQuality\ConstraintReport\Specials;
 
 use Config;
 use Html;
+use HtmlArmor;
 use HTMLForm;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
@@ -290,26 +291,25 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @param CheckResult[] $results
 	 *
 	 * @return string HTML
-	 * @suppress SecurityCheck-DoubleEscaped
 	 */
 	private function buildResultTable( EntityId $entityId, array $results ): string {
 		// Set table headers
 		$table = new HtmlTableBuilder(
 			[
 				new HtmlTableHeaderBuilder(
-					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->escaped(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-status' )->text(),
 					true
 				),
 				new HtmlTableHeaderBuilder(
-					$this->msg( 'wbqc-constraintreport-result-table-header-property' )->escaped(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-property' )->text(),
 					true
 				),
 				new HtmlTableHeaderBuilder(
-					$this->msg( 'wbqc-constraintreport-result-table-header-message' )->escaped(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-message' )->text(),
 					true
 				),
 				new HtmlTableHeaderBuilder(
-					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->escaped(),
+					$this->msg( 'wbqc-constraintreport-result-table-header-constraint' )->text(),
 					true
 				),
 			]
@@ -364,24 +364,16 @@ class SpecialConstraintReport extends SpecialPage {
 		$table->appendRow(
 			[
 				new HtmlTableCellBuilder(
-					$statusColumn,
-					[],
-					true
+					new HtmlArmor( $statusColumn )
 				),
 				new HtmlTableCellBuilder(
-					$propertyColumn,
-					[],
-					true
+					new HtmlArmor( $propertyColumn )
 				),
 				new HtmlTableCellBuilder(
-					$messageColumn,
-					[],
-					true
+					new HtmlArmor( $messageColumn )
 				),
 				new HtmlTableCellBuilder(
-					$constraintColumn,
-					[],
-					true
+					new HtmlArmor( $constraintColumn )
 				),
 			]
 		);
