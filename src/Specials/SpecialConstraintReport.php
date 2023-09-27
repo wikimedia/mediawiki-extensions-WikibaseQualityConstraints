@@ -141,12 +141,10 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	/**
-	 * @see SpecialPage::getDescription
-	 *
-	 * @return string
+	 * @inheritDoc
 	 */
 	public function getDescription() {
-		return $this->msg( 'wbqc-constraintreport' )->text();
+		return $this->msg( 'wbqc-constraintreport' );
 	}
 
 	/**
