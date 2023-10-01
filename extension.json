@@ -28,10 +28,18 @@
 		"src/ServiceWiring-Wikibase.php"
 	],
 	"Hooks": {
-		"LoadExtensionSchemaUpdates": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onCreateSchema",
+		"LoadExtensionSchemaUpdates": "schema",
 		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange",
-		"ArticlePurge": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onArticlePurge",
-		"BeforePageDisplay": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onBeforePageDisplay"
+		"ArticlePurge": "main",
+		"BeforePageDisplay": "main"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks"
+		},
+		"schema": {
+			"class": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsSchemaHooks"
+		}
 	},
 	"SpecialPages": {
 		"ConstraintReport": {
