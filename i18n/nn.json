@@ -47,5 +47,6 @@
 	"wbqc-violation-message-units-or-none": "Verdien til $1 bør ha {{PLURAL:$2|1=eininga $4.|2=eininga $4 eller $5.|ein av desse einingane}} eller vera utan {{PLURAL:$2|1=eining.|2=eining.|eining: $3}}",
 	"wbqc-violation-message-entityType": "Eigenskapen $1 bør ikkje nyttast for denne einingstypen, {{PLURAL:$2|den|dei}} einaste gyldige {{PLURAL:$2|1=einingstypen er $4.|2=einingstypane er $4 og $5.|einingstypane er desse: $3}}",
 	"wbqc-violation-message-none-of": "Verdien for $1 skal ikkje vera {{PLURAL:$2|1=$4|2=anten $4 eller $5|éin av desse: $3}}.",
-	"wbqc-violation-message-citationNeeded": "Utsegner for $1 bør ha minst éin referanse."
+	"wbqc-violation-message-citationNeeded": "Utsegner for $1 bør ha minst éin referanse.",
+	"wbqc-violation-message-label-lacking": "Einingar med utsegner for $1 skal òg ha {{PLURAL:$2|1=ein merkelapp på $4|merkelappar på desse språka: $3}}"
 }
