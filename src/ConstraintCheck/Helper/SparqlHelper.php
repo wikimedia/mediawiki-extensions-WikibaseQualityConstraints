@@ -756,7 +756,7 @@ EOF;
 		}
 
 		$trimmedRetryAfterValue = trim( $retryAfterValue );
-		if ( empty( $trimmedRetryAfterValue ) ) {
+		if ( $trimmedRetryAfterValue === '' ) {
 			return self::EMPTY_RETRY_AFTER;
 		}
 
@@ -767,7 +767,7 @@ EOF;
 			}
 		} else {
 			$return = strtotime( $trimmedRetryAfterValue );
-			if ( !empty( $return ) ) {
+			if ( $return !== false ) {
 				return new ConvertibleTimestamp( $return );
 			}
 		}
