@@ -923,7 +923,7 @@ class ConstraintParameterParser {
 			$entityTypeItemIds[] = $itemId;
 		}
 
-		if ( empty( $entityTypes ) ) {
+		if ( !$entityTypes ) {
 			// @codeCoverageIgnoreStart
 			throw new LogicException(
 				'The "entity types" parameter is required, ' .
@@ -994,7 +994,7 @@ class ConstraintParameterParser {
 			$contextTypes[] = $this->mapItemId( $itemId, $mapping, $parameterId );
 		}
 
-		if ( empty( $contextTypes ) ) {
+		if ( !$contextTypes ) {
 			// @codeCoverageIgnoreStart
 			throw new LogicException(
 				'The "property scope" parameter is required, ' .
