@@ -93,7 +93,7 @@ class QualifiersChecker implements ConstraintChecker {
 				}
 			}
 			if ( !$allowedQualifier ) {
-				if ( !$properties || $properties === [ '' ] ) {
+				if ( $properties === [] || $properties === [ '' ] ) {
 					$message = ( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
 						->withEntityId( $context->getSnak()->getPropertyId(), Role::CONSTRAINT_PROPERTY );
 				} else {

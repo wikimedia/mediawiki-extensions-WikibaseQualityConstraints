@@ -113,7 +113,7 @@ class CheckConstraintParameters extends ApiBase {
 	private function parsePropertyIds( ?array $propertyIdSerializations ): array {
 		if ( $propertyIdSerializations === null ) {
 			return [];
-		} elseif ( !$propertyIdSerializations ) {
+		} elseif ( $propertyIdSerializations === [] ) {
 			$this->apiErrorReporter->dieError(
 				'If ' . self::PARAM_PROPERTY_ID . ' is specified, it must be nonempty.',
 				'no-data'
@@ -144,7 +144,7 @@ class CheckConstraintParameters extends ApiBase {
 	private function parseConstraintIds( ?array $constraintIds ): array {
 		if ( $constraintIds === null ) {
 			return [];
-		} elseif ( !$constraintIds ) {
+		} elseif ( $constraintIds === [] ) {
 			$this->apiErrorReporter->dieError(
 				'If ' . self::PARAM_CONSTRAINT_ID . ' is specified, it must be nonempty.',
 				'no-data'
@@ -253,7 +253,7 @@ class CheckConstraintParameters extends ApiBase {
 			$result->addValue(
 				$path,
 				self::KEY_STATUS,
-				!$constraintParameterExceptions ? self::STATUS_OKAY : self::STATUS_NOT_OKAY
+				$constraintParameterExceptions === [] ? self::STATUS_OKAY : self::STATUS_NOT_OKAY
 			);
 
 			$language = $this->getLanguage();
