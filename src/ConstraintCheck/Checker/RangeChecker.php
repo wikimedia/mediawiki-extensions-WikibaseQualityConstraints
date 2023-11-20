@@ -97,7 +97,7 @@ class RangeChecker implements ConstraintChecker {
 
 		$dataValue = $snak->getDataValue();
 
-		list( $min, $max ) = $this->parseRangeParameter(
+		[ $min, $max ] = $this->parseRangeParameter(
 			$constraintParameters,
 			$constraint->getConstraintTypeItemId(),
 			$dataValue->getType()

@@ -74,7 +74,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 	 * @return array [ DataValue|null $min, DataValue|null $max, NumericPropertyId $property ]
 	 */
 	private function parseConstraintParameters( Constraint $constraint ) {
-		list( $min, $max ) = $this->constraintParameterParser->parseQuantityRangeParameter(
+		[ $min, $max ] = $this->constraintParameterParser->parseQuantityRangeParameter(
 			$constraint->getConstraintParameters(),
 			$constraint->getConstraintTypeItemId()
 		);
@@ -131,7 +131,7 @@ class DiffWithinRangeChecker implements ConstraintChecker {
 		'@phan-var \DataValues\TimeValue|\DataValues\QuantityValue|\DataValues\UnboundedQuantityValue $minuend';
 
 		/** @var NumericPropertyId $property */
-		list( $min, $max, $property ) = $this->parseConstraintParameters( $constraint );
+		[ $min, $max, $property ] = $this->parseConstraintParameters( $constraint );
 
 		// checks only the first occurrence of the referenced property
 		foreach ( $context->getSnakGroup( Context::GROUP_NON_DEPRECATED ) as $otherSnak ) {

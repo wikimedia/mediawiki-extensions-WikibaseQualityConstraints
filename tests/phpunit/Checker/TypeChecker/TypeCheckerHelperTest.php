@@ -323,11 +323,11 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( $entityId, [ 'Q100', 'Q101' ] )->getBool() );
 	}
 
-public function testIsSubclassOf_CyclicWide() {
+	public function testIsSubclassOf_CyclicWide() {
 		$lookup = $this->getWideEntityStructureLookup();
 		$helper = $this->getHelper( $this->getMaxEntitiesLookup( $lookup ) );
 		$this->assertFalse( $helper->isSubclassOfWithSparqlFallback( new ItemId( 'Q9' ), [ 'Q100', 'Q101' ] )->getBool() );
-}
+	}
 
 	public function testIsSubclassOf_CyclicWideWithSparqlTrue() {
 		$lookup = $this->getWideEntityStructureLookup();

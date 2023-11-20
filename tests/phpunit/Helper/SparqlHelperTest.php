@@ -579,32 +579,32 @@ EOF;
 	/**
 	 * @dataProvider provideCacheHeaders
 	 */
-	 public function testGetCacheMaxAge( $responseHeaders, $expected ) {
+	public function testGetCacheMaxAge( $responseHeaders, $expected ) {
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->getCacheMaxAge( $responseHeaders );
 
 		$this->assertSame( $expected, $actual );
-	 }
+	}
 
-	 public static function provideCacheHeaders() {
-		 return [
-			 'WDQS hit' => [
-				 [ 'x-cache-status' => [ 'hit-front' ], 'cache-control' => [ 'public, max-age=300' ] ],
-				 300,
-			 ],
-			 'WDQS miss' => [
-				 [ 'x-cache-status' => [ 'miss' ], 'cache-control' => [ 'public, max-age=300' ] ],
-				 false,
-			 ],
-			 'generic hit' => [
-				 [ 'x-cache-status' => [ 'hit' ] ],
-				 true,
-			 ],
-		 ];
-	 }
+	public static function provideCacheHeaders() {
+		return [
+			'WDQS hit' => [
+				[ 'x-cache-status' => [ 'hit-front' ], 'cache-control' => [ 'public, max-age=300' ] ],
+				300,
+			],
+			'WDQS miss' => [
+				[ 'x-cache-status' => [ 'miss' ], 'cache-control' => [ 'public, max-age=300' ] ],
+				false,
+			],
+			'generic hit' => [
+				[ 'x-cache-status' => [ 'hit' ] ],
+				true,
+			],
+		];
+	}
 
-	 public function testrunQuerySetsLock_if429HeadersAndRetryAfterSet() {
+	public function testrunQuerySetsLock_if429HeadersAndRetryAfterSet() {
 		$lock = $this->createMock( ExpiryLock::class );
 		$retryAfter = 1000;
 
@@ -621,21 +621,21 @@ EOF;
 		$requestFactoryMock->method( 'create' )
 			->willReturn( $requestMock );
 
-		 $fakeNow = 5000;
-		 ConvertibleTimestamp::setFakeTime( $fakeNow );
-		 $expectedTimestamp = $retryAfter + $fakeNow;
+		$fakeNow = 5000;
+		ConvertibleTimestamp::setFakeTime( $fakeNow );
+		$expectedTimestamp = $retryAfter + $fakeNow;
 
-		 $loggingHelper = $this->getLoggingHelperExpectingRetryAfterPresent( new ConvertibleTimestamp( $expectedTimestamp ) );
-		 $lock->expects( $this->once() )
-			 ->method( 'lock' )
-			 ->with( SparqlHelper::EXPIRY_LOCK_ID,
-				 $this->callback( function ( $actualTimestamp ) use ( $expectedTimestamp ) {
-					 $actualUnixTime = $actualTimestamp->format( 'U' );
-					 return $actualUnixTime == $expectedTimestamp;
-				 } )
-			 );
+		$loggingHelper = $this->getLoggingHelperExpectingRetryAfterPresent( new ConvertibleTimestamp( $expectedTimestamp ) );
+		$lock->expects( $this->once() )
+			->method( 'lock' )
+			->with( SparqlHelper::EXPIRY_LOCK_ID,
+				$this->callback( function ( $actualTimestamp ) use ( $expectedTimestamp ) {
+					$actualUnixTime = $actualTimestamp->format( 'U' );
+					return $actualUnixTime == $expectedTimestamp;
+				} )
+			);
 
-		 $sparqlHelper = new SparqlHelper(
+		$sparqlHelper = new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
@@ -652,7 +652,7 @@ EOF;
 
 		$this->expectException( TooManySparqlRequestsException::class );
 		$sparqlHelper->runQuery( 'fake query' );
-	 }
+	}
 
 	public function testRunQuerySetsLock_if429HeadersButRetryAfterMissing() {
 		$fakeNow = 5000;
@@ -695,37 +695,37 @@ EOF;
 		$sparqlHelper->runQuery( 'fake query' );
 	}
 
-	 public function testRunQueryDoesNotQuery_ifLockIsLocked() {
-		 $lock = $this->createMock( ExpiryLock::class );
-		 $lock->method( 'isLocked' )
-			 ->willReturn( true );
+	public function testRunQueryDoesNotQuery_ifLockIsLocked() {
+		$lock = $this->createMock( ExpiryLock::class );
+		$lock->method( 'isLocked' )
+			->willReturn( true );
 
-		 $requestMock = $this->createMock( \MWHttpRequest::class );
-		 $requestMock->expects( $this->never() )
-			 ->method( 'execute' );
+		$requestMock = $this->createMock( \MWHttpRequest::class );
+		$requestMock->expects( $this->never() )
+			->method( 'execute' );
 
-		 $requestFactoryMock = $this->createMock( HttpRequestFactory::class );
-		 $requestFactoryMock->method( 'create' )
-			 ->willReturn( $requestMock );
+		$requestFactoryMock = $this->createMock( HttpRequestFactory::class );
+		$requestFactoryMock->method( 'create' )
+			->willReturn( $requestMock );
 
-		 $sparqlHelper = new SparqlHelper(
-			 self::getDefaultConfig(),
-			 $this->createMock( RdfVocabulary::class ),
-			 $this->createMock( EntityIdParser::class ),
-			 $this->createMock( PropertyDataTypeLookup::class ),
-			 WANObjectCache::newEmpty(),
-			 $this->createMock( ViolationMessageSerializer::class ),
-			 $this->createMock( ViolationMessageDeserializer::class ),
-			 $this->createMock( \IBufferingStatsdDataFactory::class ),
-			 $lock,
-			 $this->createMock( LoggingHelper::class ),
-			 '',
-			 $requestFactoryMock
-		 );
+		$sparqlHelper = new SparqlHelper(
+			self::getDefaultConfig(),
+			$this->createMock( RdfVocabulary::class ),
+			$this->createMock( EntityIdParser::class ),
+			$this->createMock( PropertyDataTypeLookup::class ),
+			WANObjectCache::newEmpty(),
+			$this->createMock( ViolationMessageSerializer::class ),
+			$this->createMock( ViolationMessageDeserializer::class ),
+			$this->createMock( \IBufferingStatsdDataFactory::class ),
+			$lock,
+			$this->createMock( LoggingHelper::class ),
+			'',
+			$requestFactoryMock
+		);
 
-		 $this->expectException( TooManySparqlRequestsException::class );
-		 $sparqlHelper->runQuery( 'foo baz' );
-	 }
+		$this->expectException( TooManySparqlRequestsException::class );
+		$sparqlHelper->runQuery( 'foo baz' );
+	}
 
 	public function testRunQuerySetsLock_if429HeadersPresentAndRetryAfterMalformed() {
 

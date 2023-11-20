@@ -121,7 +121,7 @@ class LoggingHelper {
 		);
 
 		// find the longest limit (and associated log level) that the duration exceeds
-		list( $limitSeconds, $logLevel ) = $this->findLimit(
+		[ $limitSeconds, $logLevel ] = $this->findLimit(
 			$this->constraintCheckDurationLimits,
 			$durationSeconds
 		);
@@ -188,7 +188,7 @@ class LoggingHelper {
 		);
 
 		// find the longest limit (and associated log level) that the duration exceeds
-		list( $limitSeconds, $logLevel ) = $this->findLimit(
+		[ $limitSeconds, $logLevel ] = $this->findLimit(
 			$this->constraintCheckOnEntityDurationLimits,
 			$durationSeconds
 		);

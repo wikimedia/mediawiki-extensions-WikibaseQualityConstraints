@@ -151,7 +151,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$subPage = str_replace( '$id', $id->getSerialization(), $subPage );
 
 		// assert matchers
-		list( $output, ) = $this->executeSpecialPage( $subPage, $request, $userLanguage );
+		[ $output ] = $this->executeSpecialPage( $subPage, $request, $userLanguage );
 		foreach ( $matchers as $key => $matcher ) {
 			$this->assertThatHamcrest(
 				"Failed to assert output: $key",
