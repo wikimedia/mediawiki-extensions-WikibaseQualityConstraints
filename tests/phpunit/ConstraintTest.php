@@ -48,7 +48,6 @@ class ConstraintTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function addDBData() {
-		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', [
 			[
 				'constraint_guid' => '1',

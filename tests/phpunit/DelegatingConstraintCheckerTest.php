@@ -110,9 +110,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->setService( ConstraintCheckerServices::COMMONS_LINK_CHECKER, $commonsLinkChecker );
 
 		$this->constraintChecker = ConstraintsServices::getDelegatingConstraintChecker();
-
-		// specify database tables used by this test
-		$this->tablesUsed[] = 'wbqc_constraints';
 	}
 
 	protected function tearDown(): void {
@@ -438,7 +435,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			}
 		) );
 
-		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', $constraints );
 	}
 

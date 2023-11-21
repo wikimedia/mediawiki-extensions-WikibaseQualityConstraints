@@ -50,7 +50,6 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 		parent::setUp();
 
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
-		$this->tablesUsed[] = 'wbqc_constraints';
 	}
 
 	protected function tearDown(): void {
@@ -60,7 +59,6 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 	public function addDBData() {
 		$config = self::getDefaultConfig();
-		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', [
 			// a constraint imported from a template (UUID)
 			[

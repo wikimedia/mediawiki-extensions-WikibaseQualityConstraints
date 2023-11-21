@@ -47,7 +47,6 @@ class ConstraintRepositoryLookupTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function testQueryConstraintsForPropertyBrokenParameters() {
-		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', [
 			[
 				'constraint_guid' => 'P3$514751bb-1656-4d2d-a386-b0f0a69e02ed',
@@ -64,7 +63,6 @@ class ConstraintRepositoryLookupTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	private function insertTestData() {
-		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', [
 			[
 				'constraint_guid' => '1',

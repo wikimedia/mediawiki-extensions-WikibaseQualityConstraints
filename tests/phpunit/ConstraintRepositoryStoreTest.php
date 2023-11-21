@@ -82,8 +82,6 @@ class ConstraintRepositoryStoreTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function testInsertBatchTooLongParameters() {
-		$this->db->delete( 'wbqc_constraints', '*' );
-
 		$constraintParameters = [ 'known_exception' => [] ];
 		for ( $i = 0; $i < 10000; $i++ ) {
 			$constraintParameters['known_exception'][] = [
@@ -128,7 +126,6 @@ class ConstraintRepositoryStoreTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	private function insertTestData() {
-		$this->db->delete( 'wbqc_constraints', '*' );
 		$this->db->insert( 'wbqc_constraints', [
 			[
 				'constraint_guid' => '1',
