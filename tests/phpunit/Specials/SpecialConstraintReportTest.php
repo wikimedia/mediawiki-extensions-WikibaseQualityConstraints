@@ -19,7 +19,6 @@ use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
-use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
@@ -46,15 +45,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 */
 	private static $idMap;
 
-	/**
-	 * @var bool
-	 */
-	private static $hasSetup;
-
 	protected function setUp(): void {
 		parent::setUp();
 		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
-		$this->tablesUsed[] = 'wbqc_constraints';
 		$config = new MultiConfig( [
 			self::getDefaultConfig(),
 			MediaWikiServices::getInstance()->getMainConfig(),
@@ -83,42 +76,32 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		);
 	}
 
-	/**
-	 * Adds temporary test data to database
-	 *
-	 * @throws DBUnexpectedError
-	 */
+	public function addDBDataOnce() {
+		$store = WikibaseRepo::getEntityStore();
+
+		$editor = $this->getTestUser()->getUser();
+
+		$propertyP1 = Property::newFromType( 'string' );
+		$store->saveEntity( $propertyP1, 'TestEntityP1', $editor, EDIT_NEW );
+		self::$idMap[ 'P1' ] = $propertyP1->getId();
+
+		$itemQ1 = new Item();
+		$store->saveEntity( $itemQ1, 'TestEntityQ1', $editor, EDIT_NEW );
+		self::$idMap[ 'Q1' ] = $itemQ1->getId();
+
+		$statementGuidGenerator = new GuidGenerator();
+
+		$dataValue = new StringValue( 'foo' );
+		$snak = new PropertyValueSnak( self::$idMap[ 'P1' ], $dataValue );
+		$statement = new Statement( $snak );
+		$statementGuid = $statementGuidGenerator->newGuid( self::$idMap[ 'Q1' ] );
+		$statement->setGuid( $statementGuid );
+		$itemQ1->getStatements()->addStatement( $statement );
+
+		$store->saveEntity( $itemQ1, 'TestEntityQ1', $editor, EDIT_UPDATE );
+	}
+
 	public function addDBData() {
-		if ( !self::$hasSetup ) {
-			$store = WikibaseRepo::getEntityStore();
-
-			$editor = $this->getTestUser()->getUser();
-
-			$propertyP1 = Property::newFromType( 'string' );
-			$store->saveEntity( $propertyP1, 'TestEntityP1', $editor, EDIT_NEW );
-			self::$idMap[ 'P1' ] = $propertyP1->getId();
-
-			$itemQ1 = new Item();
-			$store->saveEntity( $itemQ1, 'TestEntityQ1', $editor, EDIT_NEW );
-			self::$idMap[ 'Q1' ] = $itemQ1->getId();
-
-			$statementGuidGenerator = new GuidGenerator();
-
-			$dataValue = new StringValue( 'foo' );
-			$snak = new PropertyValueSnak( self::$idMap[ 'P1' ], $dataValue );
-			$statement = new Statement( $snak );
-			$statementGuid = $statementGuidGenerator->newGuid( self::$idMap[ 'Q1' ] );
-			$statement->setGuid( $statementGuid );
-			$itemQ1->getStatements()->addStatement( $statement );
-
-			$store->saveEntity( $itemQ1, 'TestEntityQ1', $editor, EDIT_UPDATE );
-
-			self::$hasSetup = true;
-		}
-
-		// Truncate table
-		$this->db->delete( 'wbqc_constraints', '*' );
-
 		$this->db->insert(
 			'wbqc_constraints',
 			[
