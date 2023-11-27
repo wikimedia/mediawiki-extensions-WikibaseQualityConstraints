@@ -75,14 +75,13 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	 * is called exactly once and returns $return.
 	 */
 	private function getSparqlHelper( $return, array $arguments = null ) {
-		if ( $arguments === null ) {
-			$arguments = [ $this->anything(), $this->anything() ];
-		}
 		$mock = $this->createMock( SparqlHelper::class );
-		$mock->expects( $this->once() )
+		$invocationMocker = $mock->expects( $this->once() )
 			->method( 'hasType' )
-			->withConsecutive( $arguments )
 			->willReturn( new CachedBool( $return, Metadata::blank() ) );
+		if ( $arguments !== null ) {
+			$invocationMocker->with( ...$arguments );
+		}
 		return $mock;
 	}
 

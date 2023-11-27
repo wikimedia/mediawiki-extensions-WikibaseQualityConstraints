@@ -144,7 +144,7 @@ EOF;
 		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
 			->willReturn( $this->askResult( true ) )
-			->withConsecutive( [ $query ] );
+			->with( $query );
 
 		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
 	}
@@ -165,7 +165,7 @@ EOF;
 		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
 			->willReturn( $this->askResult( true ) )
-			->withConsecutive( [ $query ] );
+			->with( $query );
 
 		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
 	}
@@ -274,7 +274,7 @@ EOF;
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
 			] ) )
-			->withConsecutive( [ $query ] );
+			->with( $query );
 
 		$this->assertEquals(
 			$sparqlHelper->findEntitiesWithSameStatement( $statement, $separators )->getArray(),
@@ -317,7 +317,7 @@ EOF;
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
 				[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
 			] ) )
-			->withConsecutive( [ $query ] );
+			->with( $query );
 
 		$this->assertEquals(
 			$sparqlHelper->findEntitiesWithSameQualifierOrReference(

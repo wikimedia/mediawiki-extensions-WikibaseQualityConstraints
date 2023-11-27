@@ -21,13 +21,13 @@ class CachingConstraintLookupTest extends \MediaWikiUnitTestCase {
 		$p3 = new NumericPropertyId( 'P3' );
 
 		$mock = $this->createMock( ConstraintLookup::class );
+		$expectedArgs = [ $p2, $p3 ];
 		$mock->expects( $this->exactly( 2 ) )
 			->method( 'queryConstraintsForProperty' )
-			->willReturn( [] )
-			->withConsecutive(
-				[ $p2 ],
-				[ $p3 ]
-			);
+			->willReturnCallback( function ( $propertyId ) use ( &$expectedArgs ): array {
+				$this->assertSame( array_shift( $expectedArgs ), $propertyId );
+				return [];
+			} );
 
 		/** @var ConstraintLookup $mock */
 		$lookup = new CachingConstraintLookup( $mock );

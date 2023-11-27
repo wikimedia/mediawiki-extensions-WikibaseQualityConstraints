@@ -49,35 +49,35 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		$s1 = 'Q3$7f6d761c-bad5-47b6-a335-89635f102771';
 		$s2 = 'Q4$41dcb5ec-2ca5-4cfa-822b-a602038fc99f';
 		$constraintIds = [ 'P1$47681880-d5f5-417d-96c3-570d6e94d234' ];
-		$mock = $this->getMockBuilder( DelegatingConstraintChecker::class )
+		$delegatingConstraintChecker = $this->getMockBuilder( DelegatingConstraintChecker::class )
 			->disableOriginalConstructor()
-			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] );
-		$delegatingConstraintChecker = $mock->getMock();
+			->onlyMethods( [ 'checkAgainstConstraintsOnEntityId', 'checkAgainstConstraintsOnClaimId' ] )
+			->getMock();
+		$expectedEntityIds = [ $q1, $q2 ];
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
-			->withConsecutive(
-				[ $q1, $constraintIds, $this->callback( 'is_callable' ) ],
-				[ $q2, $constraintIds, $this->callback( 'is_callable' ) ]
-			)
-			->willReturnCallback( function ( $entityId ) {
-				return [ new CheckResult(
-					new MainSnakContext(
-						new Item( $entityId ),
-						new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
-					),
-					new Constraint(
-						'P1$47681880-d5f5-417d-96c3-570d6e94d234',
-						new NumericPropertyId( 'P1' ),
-						'Q1',
-						[]
-					)
-				) ];
-			} );
+			->willReturnCallback(
+				function ( $entityId, $actualConstraintIds ) use ( &$expectedEntityIds, $constraintIds ) {
+					$this->assertSame( array_shift( $expectedEntityIds ), $entityId );
+					$this->assertSame( $constraintIds, $actualConstraintIds );
+					return [ new CheckResult(
+						new MainSnakContext(
+							new Item( $entityId ),
+							new Statement( new PropertyNoValueSnak( new NumericPropertyId( 'P1' ) ) )
+						),
+						new Constraint(
+							'P1$47681880-d5f5-417d-96c3-570d6e94d234',
+							new NumericPropertyId( 'P1' ),
+							'Q1',
+							[]
+						)
+					) ];
+				}
+			);
+		$expectedGuids = [ $s1, $s2 ];
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnClaimId' )
-			->withConsecutive(
-				[ $s1, $constraintIds, $this->callback( 'is_callable' ) ],
-				[ $s2, $constraintIds, $this->callback( 'is_callable' ) ]
-			)
-			->willReturnCallback( function ( $claimId ) {
+			->willReturnCallback( function ( $claimId, $actualConstraintIds ) use ( &$expectedGuids, $constraintIds ) {
+				$this->assertSame( array_shift( $expectedGuids ), $claimId );
+				$this->assertSame( $constraintIds, $actualConstraintIds );
 				$entityId = new ItemId( substr( $claimId, 0, 2 ) );
 				return [ new CheckResult(
 					new MainSnakContext(
