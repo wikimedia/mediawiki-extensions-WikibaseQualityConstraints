@@ -27,8 +27,12 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 				d.claims[ constraintsPropertyId ].forEach( function ( c ) {
 					if ( c.mainsnak.datavalue.value.id === constraintId && c.qualifiers && c.qualifiers[ constraintQualifierOfPropertyId ] ) {
 						oneOfIds = oneOfIds.concat( c.qualifiers[ constraintQualifierOfPropertyId ]
-							.filter( function ( filterD ) { return filterD.datavalue; } )
-							.map( function ( mapD ) { return mapD.datavalue.value.id; } ) );
+							.filter( function ( filterD ) {
+								return filterD.datavalue;
+							} )
+							.map( function ( mapD ) {
+								return mapD.datavalue.value.id;
+							} ) );
 					}
 				} );
 
