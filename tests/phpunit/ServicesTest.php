@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use HashConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
@@ -78,16 +77,16 @@ class ServicesTest extends MediaWikiIntegrationTestCase {
 			[ ConnectionCheckerHelper::class ],
 			[ RangeCheckerHelper::class ],
 			[ SparqlHelper::class, [
-				'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ) ],
+				'config' => [ 'WBQualityConstraintsSparqlEndpoint' => 'http://f.oo/sparql' ] ],
 			],
-			[ SparqlHelper::class, [ 'config' => new HashConfig( [ 'WBQualityConstraintsSparqlEndpoint' => '' ] ) ] ],
+			[ SparqlHelper::class, [ 'config' => [ 'WBQualityConstraintsSparqlEndpoint' => '' ] ] ],
 			[ TypeCheckerHelper::class ],
 			[ DelegatingConstraintChecker::class ],
 			[ ResultsSource::class, [
-				'config' => new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => true ] ) ],
+				'config' => [ 'WBQualityConstraintsCacheCheckConstraintsResults' => true ] ],
 			],
 			[ ResultsSource::class, [
-				'config' => new HashConfig( [ 'WBQualityConstraintsCacheCheckConstraintsResults' => false ] ) ],
+				'config' => [ 'WBQualityConstraintsCacheCheckConstraintsResults' => false ] ],
 			],
 		];
 	}
@@ -144,8 +143,10 @@ class ServicesTest extends MediaWikiIntegrationTestCase {
 	 * @dataProvider provideAllServiceClasses
 	 */
 	public function testServiceWiring( $serviceClass, array $options = [] ) {
-		$options += [ 'config' => null, 'expectedClass' => $serviceClass ];
-		$this->overrideMwServices( $options['config'] );
+		$options += [ 'expectedClass' => $serviceClass ];
+		if ( isset( $options['config'] ) ) {
+			$this->overrideConfigValues( $options['config'] );
+		}
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$serviceName = 'WBQC_' . end( $serviceClassParts );
 
@@ -158,8 +159,10 @@ class ServicesTest extends MediaWikiIntegrationTestCase {
 	 * @dataProvider provideConstraintsServiceClasses
 	 */
 	public function testConstraintsServices( $serviceClass, array $options = [] ) {
-		$options += [ 'config' => null, 'expectedClass' => $serviceClass ];
-		$this->overrideMwServices( $options['config'] );
+		$options += [ 'expectedClass' => $serviceClass ];
+		if ( isset( $options['config'] ) ) {
+			$this->overrideConfigValues( $options['config'] );
+		}
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$getterName = 'get' . end( $serviceClassParts );
 
@@ -172,8 +175,10 @@ class ServicesTest extends MediaWikiIntegrationTestCase {
 	 * @dataProvider provideConstraintCheckerServiceClasses
 	 */
 	public function testConstraintCheckerServices( $serviceClass, array $options = [] ) {
-		$options += [ 'config' => null, 'expectedClass' => $serviceClass ];
-		$this->overrideMwServices( $options['config'] );
+		$options += [ 'expectedClass' => $serviceClass ];
+		if ( isset( $options['config'] ) ) {
+			$this->overrideConfigValues( $options['config'] );
+		}
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$getterName = 'get' . end( $serviceClassParts );
 
@@ -186,8 +191,10 @@ class ServicesTest extends MediaWikiIntegrationTestCase {
 	 * @dataProvider provideWikibaseServiceClasses
 	 */
 	public function testWikibaseServices( $serviceClass, array $options = [] ) {
-		$options += [ 'config' => null, 'expectedClass' => $serviceClass ];
-		$this->overrideMwServices( $options['config'] );
+		$options += [ 'expectedClass' => $serviceClass ];
+		if ( isset( $options['config'] ) ) {
+			$this->overrideConfigValues( $options['config'] );
+		}
 		$serviceClassParts = explode( '\\', $serviceClass );
 		$getterName = 'get' . end( $serviceClassParts );
 
