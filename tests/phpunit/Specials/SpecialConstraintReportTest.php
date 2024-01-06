@@ -4,9 +4,9 @@ namespace WikibaseQuality\ConstraintReport\Tests\Specials;
 
 use DataValues\StringValue;
 use HamcrestPHPUnitIntegration;
+use MediaWiki\Config\MultiConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
-use MultiConfig;
 use NullStatsdDataFactory;
 use SpecialPageTestBase;
 use Wikibase\DataModel\Entity\EntityId;

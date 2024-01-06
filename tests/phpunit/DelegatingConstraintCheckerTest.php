@@ -3,11 +3,11 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use DataValues\StringValue;
-use HashConfig;
+use MediaWiki\Config\HashConfig;
+use MediaWiki\Config\MultiConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Site\MediaWikiPageNameNormalizer;
 use MockHttpTrait;
-use MultiConfig;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;

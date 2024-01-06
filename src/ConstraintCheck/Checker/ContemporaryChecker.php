@@ -2,8 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
-use Config;
 use DataValues\DataValue;
+use MediaWiki\Config\Config;
+use MediaWiki\Config\ConfigException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -94,7 +95,7 @@ class ContemporaryChecker implements ConstraintChecker {
 	 * @param Constraint $constraint
 	 *
 	 * @return CheckResult
-	 * @throws \ConfigException
+	 * @throws ConfigException
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ) {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {

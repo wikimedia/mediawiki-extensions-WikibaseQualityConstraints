@@ -2,12 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
+use MediaWiki\Config\Config;
 use Serializers\Serializer;
 use UnexpectedValueException;
 use Wikibase\DataModel\Entity\EntityIdValue;

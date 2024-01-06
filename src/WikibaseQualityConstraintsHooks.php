@@ -2,9 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
-use Config;
 use ExtensionRegistry;
 use JobSpecification;
+use MediaWiki\Config\Config;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\Hook\ArticlePurgeHook;

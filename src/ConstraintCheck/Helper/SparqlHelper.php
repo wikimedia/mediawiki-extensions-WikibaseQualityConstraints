@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
 use DateInterval;
@@ -10,6 +9,7 @@ use FormatJson;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
+use MediaWiki\Config\Config;
 use MediaWiki\Http\HttpRequestFactory;
 use MWHttpRequest;
 use UnexpectedValueException;

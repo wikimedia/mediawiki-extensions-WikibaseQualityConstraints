@@ -2,8 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Html;
 
-use Html;
 use InvalidArgumentException;
+use MediaWiki\Html\Html;
 use Wikimedia\Assert\Assert;
 
 /**

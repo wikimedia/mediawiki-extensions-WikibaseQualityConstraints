@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use DataValues\TimeValue;
 use HashBagOStuff;
-use HashConfig;
+use MediaWiki\Config\HashConfig;
 use NullStatsdDataFactory;
 use Psr\Log\NullLogger;
 use WANObjectCache;

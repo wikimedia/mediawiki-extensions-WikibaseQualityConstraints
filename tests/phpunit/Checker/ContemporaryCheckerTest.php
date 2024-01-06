@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use DataValues\TimeValue;
+use MediaWiki\Config\ConfigException;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -57,7 +58,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 	private $endPropertyIds;
 
 	/**
-	 * @throws \ConfigException
+	 * @throws ConfigException
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -83,7 +84,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 	 * @param Statement $statement
 	 * @param string $expectedStatus
 	 *
-	 * @throws \ConfigException
+	 * @throws ConfigException
 	 */
 	public function testContemporaryConstraintStandardStatements(
 		InMemoryEntityLookup $lookup,
@@ -107,7 +108,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @throws \ConfigException
+	 * @throws ConfigException
 	 */
 	public static function provideStandardStatements(): iterable {
 		$orderedTimestamps = [
@@ -975,7 +976,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 	 * @param string $valueEndTimestamp
 	 *
 	 * @return array with lookup, subject item and linking statement
-	 * @throws \ConfigException
+	 * @throws ConfigException
 	 */
 	private static function generateLinkedItemPair(
 		InMemoryEntityLookup $lookup,
@@ -1017,7 +1018,7 @@ class ContemporaryCheckerTest extends \PHPUnit\Framework\TestCase {
 	 * @param ?Item $valueItem
 	 * @param string $expectedStatus
 	 *
-	 * @throws \ConfigException
+	 * @throws ConfigException
 	 */
 	private function saveAndCheck( Item $subjectItem, ?Item $valueItem, $expectedStatus ) {
 		$lookup = new InMemoryEntityLookup();

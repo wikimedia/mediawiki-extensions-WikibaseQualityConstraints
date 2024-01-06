@@ -4,10 +4,10 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests\Message;
 
-use Config;
 use DataValues\StringValue;
-use HashConfig;
 use InvalidArgumentException;
+use MediaWiki\Config\Config;
+use MediaWiki\Config\HashConfig;
 use MediaWiki\Languages\LanguageNameUtils;
 use Message;
 use MockMessageLocalizer;

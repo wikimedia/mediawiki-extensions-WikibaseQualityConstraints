@@ -4,13 +4,13 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use Config;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
 use LogicException;
+use MediaWiki\Config\Config;
 use Wikibase\DataModel\Deserializers\DeserializerFactory;
 use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;

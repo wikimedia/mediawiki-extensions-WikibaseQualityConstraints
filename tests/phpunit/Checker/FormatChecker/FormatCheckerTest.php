@@ -2,12 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\FormatChecker;
 
-use Config;
 use DataValues\StringValue;
-use HashConfig;
+use MediaWiki\Config\Config;
+use MediaWiki\Config\HashConfig;
+use MediaWiki\Config\MultiConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Shell\ShellboxClientFactory;
-use MultiConfig;
 use Shellbox\Client;
 use Shellbox\ShellboxError;
 use Wikibase\DataModel\Entity\EntityIdValue;

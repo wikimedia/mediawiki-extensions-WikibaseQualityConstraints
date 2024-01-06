@@ -2,10 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
-use Config;
 use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
+use MediaWiki\Config\Config;
 use MediaWiki\Shell\ShellboxClientFactory;
 use Shellbox\ShellboxError;
 use Wikibase\DataModel\Entity\ItemId;

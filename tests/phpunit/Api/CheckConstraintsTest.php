@@ -6,7 +6,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use ApiTestCase;
 use DataValues\UnknownValue;
-use HashConfig;
+use MediaWiki\Config\HashConfig;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use NullStatsdDataFactory;

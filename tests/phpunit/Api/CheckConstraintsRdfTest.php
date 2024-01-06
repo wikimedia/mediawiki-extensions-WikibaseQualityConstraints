@@ -3,16 +3,16 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use Article;
-use HashConfig;
 use IContextSource;
+use MediaWiki\Config\HashConfig;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\WebRequest;
 use MediaWiki\Request\WebResponse;
 use MediaWiki\Title\Title;
 use NullStatsdDataFactory;
-use OutputPage;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
 use WANObjectCache;
-use WebRequest;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemIdParser;
 use Wikibase\DataModel\Entity\NumericPropertyId;

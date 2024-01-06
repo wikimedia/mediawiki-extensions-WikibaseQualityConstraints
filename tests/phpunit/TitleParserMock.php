@@ -2,8 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use TitleParser;
-use TitleValue;
+use MediaWiki\Title\TitleParser;
+use MediaWiki\Title\TitleValue;
 
 /**
  * @author Lucas Werkmeister

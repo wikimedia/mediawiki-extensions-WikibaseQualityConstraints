@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Maintenance;
 
-use HashConfig;
+use MediaWiki\Config\HashConfig;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
 use Wikibase\Lib\Tests\Store\MockPropertyInfoLookup;
 use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;

@@ -2,8 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use Config;
 use IBufferingStatsdDataFactory;
+use MediaWiki\Config\Config;
 use MWHttpRequest;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\EntityId;

@@ -2,8 +2,8 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use Config;
 use IBufferingStatsdDataFactory;
+use MediaWiki\Config\Config;
 use OverflowException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;

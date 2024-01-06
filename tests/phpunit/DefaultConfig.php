@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use HashConfig;
+use MediaWiki\Config\HashConfig;
 
 /**
  * @author Lucas Werkmeister

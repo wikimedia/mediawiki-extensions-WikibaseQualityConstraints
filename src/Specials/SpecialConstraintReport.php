@@ -4,15 +4,15 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Specials;
 
-use Config;
-use Html;
 use HtmlArmor;
 use HTMLForm;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
+use MediaWiki\Config\Config;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
 use OOUI\IconWidget;
 use OOUI\LabelWidget;
-use SpecialPage;
 use UnexpectedValueException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;

@@ -2,13 +2,13 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use Config;
 use DataValues\DataValue;
 use DataValues\QuantityValue;
 use DataValues\TimeValue;
 use DataValues\TimeValueCalculator;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
+use MediaWiki\Config\Config;
 use ValueParsers\IsoTimestampParser;
 use ValueParsers\ValueParser;
 use Wikibase\Lib\Units\UnitConverter;

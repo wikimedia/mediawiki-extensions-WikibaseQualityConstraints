@@ -2,14 +2,14 @@
 
 namespace WikibaseQuality\ConstraintReport\Maintenance;
 
-use Config;
 use Deserializers\Deserializer;
 use Maintenance;
+use MediaWiki\Config\Config;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use MediaWiki\WikiMap\WikiMap;
 use Serializers\Serializer;
-use User;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\SiteLinkList;
 use Wikibase\DataModel\Statement\StatementListProvider;

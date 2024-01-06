@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
 use BufferingStatsdDataFactory;
-use Config;
 use DataValues\Deserializers\DataValueDeserializer;
 use DataValues\Geo\Values\GlobeCoordinateValue;
 use DataValues\Geo\Values\LatLongValue;
@@ -12,10 +11,12 @@ use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
 use HashBagOStuff;
-use HashConfig;
+use MediaWiki\Config\Config;
+use MediaWiki\Config\HashConfig;
+use MediaWiki\Config\MultiConfig;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Revision\SlotRecord;
-use MultiConfig;
+use MediaWiki\Status\Status;
 use NullStatsdDataFactory;
 use WANObjectCache;
 use Wikibase\DataAccess\DatabaseEntitySource;
@@ -818,7 +819,7 @@ EOF;
 		$request->method( 'getResponseHeaders' )
 			->willReturn( [] );
 		$request->method( 'execute' )
-			->willReturn( \Status::newGood() );
+			->willReturn( Status::newGood() );
 		$request->method( 'getContent' )->willReturn( '{}' );
 
 		$requestFactory = $this->createMock( HttpRequestFactory::class );
@@ -909,7 +910,7 @@ END;
 		$request->method( 'getResponseHeaders' )
 			->willReturn( [] );
 		$request->method( 'execute' )
-			->willReturn( \Status::newFatal( 'http-bad-status' ) );
+			->willReturn( Status::newFatal( 'http-bad-status' ) );
 		$request->method( 'getContent' )
 			->willReturn( '' );
 
@@ -959,7 +960,7 @@ END;
 		$request->method( 'getResponseHeaders' )
 			->willReturn( [] );
 		$request->method( 'execute' )
-			->willReturn( \Status::newGood() );
+			->willReturn( Status::newGood() );
 		$request->method( 'getContent' )
 			->willReturn( '{"truncated json":' );
 
