@@ -250,3 +250,16 @@ To add a new constraint type, the following steps are necessary:
  should be added to the switch/case within the method `parseEntityTypeItem()`.
  Don't forget to add it to the default case as well!
  * To be able to test the newly added allowed entity type locally, please perform the steps described in section "Data import".
+
+### Chore: Dependency Updates
+
+#### NodeJS
+
+You can see which dependencies have new releases by first running `npm ci` to ensure your local dependencies are up-to-date, and then running `npm outdated`.
+
+ - [Jasmine 5](https://jasmine.github.io/tutorials/upgrading_to_Jasmine_5.0) and [Sinon 17](https://github.com/sinonjs/sinon/blob/main/CHANGES.md) are declared not compatible with Node 16, which we still use in CI. Until [T331180](https://phabricator.wikimedia.org/T331180) is done, we should use the latest versions of Jasmine 4 and Sinon 16.
+ - Unexpected: This shows up in the npm outdated output due to a bad “latest” tag on npm; we want to be using the highest version number (currently 13.2.1), not the one tagged as latest (currently 12.0.5).
+
+#### PHP
+
+Running `composer update` and `composer outdated --direct` will give you a list of any outdated PHP dependencies. There are currently no notes or restrictions on package updates.
