@@ -150,10 +150,6 @@
 			"styles": [
 				"ui/ConstraintReportPanel.less",
 				"ui/ConstraintReportGroup.less"
-			],
-			"targets": [
-				"mobile",
-				"desktop"
 			]
 		},
 		"wikibase.quality.constraints.gadget": {
