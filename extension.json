@@ -106,7 +106,7 @@
 			]
 		},
 		"wikibase.quality.constraints.icon": {
-			"class": "ResourceLoaderImageModule",
+			"class": "MediaWiki\\ResourceLoader\\ImageModule",
 			"selector": ".oo-ui-icon-{name}",
 			"images": {
 				"mandatory-constraint-violation": "icon/mandatory-constraint-violation.svg",
