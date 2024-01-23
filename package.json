@@ -21,8 +21,5 @@
 	"_moduleAliases": {
 		"wikibase.quality.constraints.gadget": "./modules/gadget.js",
 		"wikibase.quality.constraints.suggestions.EntitySelectorHookHandlerFactory": "./modules/suggestions/EntitySelectorHookHandlerFactory.js"
-	},
-	"browserslist": [
-		"ie 11"
-	]
+	}
 }

@@ -75,28 +75,26 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 	}
 
 	function createItemsFromIds( repoApiUrl, language, ids, filter, articlePathPattern ) {
-		const $deferred = $.Deferred(),
-			promises = [];
-		let itemList = [];
-		const addItems = function ( items ) {
-			itemList = itemList.concat( items );
-		};
-
-		while ( ids.length > 0 ) {
-			promises.push( createItemsFromIdsFetchLabels(
-				repoApiUrl,
-				language,
-				ids.splice( 0, MAX_LABELS_API_LIMIT ),
-				filter,
-				articlePathPattern
-			).then( addItems ) );
-		}
-
-		$.when.apply( $, promises ).then( function () {
-			$deferred.resolve( itemList );
+		let promise = new Promise( function ( resolve ) {
+			resolve( [] );
 		} );
 
-		return $deferred.promise();
+		while ( ids.length > 0 ) {
+			const currentIds = ids.splice( 0, MAX_LABELS_API_LIMIT );
+			promise = promise.then( function ( itemList ) {
+				return createItemsFromIdsFetchLabels(
+					repoApiUrl,
+					language,
+					currentIds,
+					filter,
+					articlePathPattern
+				).then( function ( items ) {
+					return itemList.concat( items );
+				} );
+			} );
+		}
+
+		return promise;
 	}
 
 	return function ( data, addPromise ) {

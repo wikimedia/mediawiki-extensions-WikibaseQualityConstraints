@@ -29,10 +29,6 @@ describe( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandler', 
 
 		// TODO: Find a better way to mock jQuery and mw
 		mockJquery.getJSON = sinon.stub().resolves( {} );
-		mockJquery.Deferred = sinon.stub().returns( {
-			resolve: sinon.stub(),
-			promise: sinon.stub()
-		} );
 		mockJquery.when = sinon.stub();
 		mockJquery.when.apply = sinon.stub().resolves( {} );
 		mockMediaWiki.config = sinon.stub();
