@@ -360,61 +360,49 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * or null if the results could not be extracted.
 	 */
 	SELF.prototype._extractResultsForStatement = function ( entityData, propertyId, statementId ) {
-		if ( 'claims' in entityData ) {
-			// API v2 format
-			const statements = entityData.claims[ propertyId ];
-			if ( statements === undefined ) {
-				return null;
+		const statements = entityData.claims[ propertyId ];
+		if ( statements === undefined ) {
+			return null;
+		}
+		let statement;
+		for ( const index in statements ) {
+			if ( statements[ index ].id === statementId ) {
+				statement = statements[ index ];
+				break;
 			}
-			let statement;
-			for ( const index in statements ) {
-				if ( statements[ index ].id === statementId ) {
-					statement = statements[ index ];
-					break;
-				}
-			}
-			if ( statement === undefined ) {
-				return null;
-			}
+		}
+		if ( statement === undefined ) {
+			return null;
+		}
 
-			const results = {};
-			results.mainsnak = statement.mainsnak.results;
+		const results = {};
+		results.mainsnak = statement.mainsnak.results;
 
-			results.qualifiers = [];
-			for ( const qualifierPID in statement.qualifiers ) {
-				for ( const index in statement.qualifiers[ qualifierPID ] ) {
-					results.qualifiers.push(
-						statement.qualifiers[ qualifierPID ][ index ]
+		results.qualifiers = [];
+		for ( const qualifierPID in statement.qualifiers ) {
+			for ( const index in statement.qualifiers[ qualifierPID ] ) {
+				results.qualifiers.push(
+					statement.qualifiers[ qualifierPID ][ index ]
+				);
+			}
+		}
+
+		results.references = [];
+		for ( const referenceIndex in statement.references ) {
+			const referenceHash = statement.references[ referenceIndex ].hash;
+			if ( !( referenceHash in results.references ) ) {
+				results.references[ referenceHash ] = [];
+			}
+			for ( const referencePID in statement.references[ referenceIndex ].snaks ) {
+				for ( const index in statement.references[ referenceIndex ].snaks[ referencePID ] ) {
+					results.references[ referenceHash ].push(
+						statement.references[ referenceIndex ].snaks[ referencePID ][ index ]
 					);
 				}
 			}
-
-			results.references = [];
-			for ( const referenceIndex in statement.references ) {
-				const referenceHash = statement.references[ referenceIndex ].hash;
-				if ( !( referenceHash in results.references ) ) {
-					results.references[ referenceHash ] = [];
-				}
-				for ( const referencePID in statement.references[ referenceIndex ].snaks ) {
-					for ( const index in statement.references[ referenceIndex ].snaks[ referencePID ] ) {
-						results.references[ referenceHash ].push(
-							statement.references[ referenceIndex ].snaks[ referencePID ][ index ]
-						);
-					}
-				}
-			}
-
-			return results;
-		} else {
-			// API v1 format
-			if ( propertyId in entityData && statementId in entityData[ propertyId ] ) {
-				return {
-					mainsnak: entityData[ propertyId ][ statementId ]
-				};
-			} else {
-				return null;
-			}
 		}
+
+		return results;
 	};
 
 	/**
