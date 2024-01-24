@@ -1,14 +1,12 @@
 ( function ( mw, wb, $ ) {
 	'use strict';
-	var config = require( './config.json' ),
+	const config = require( './config.json' ),
 		makeHandler = require( './suggestions/EntitySelectorHookHandlerFactory.js' );
 
 	function isQualifierContext( element ) {
-		var $statementview, statementview;
-
 		try {
-			$statementview = element.closest( ':wikibase-statementview' );
-			statementview = $statementview.data( 'statementview' );
+			const $statementview = element.closest( ':wikibase-statementview' );
+			const statementview = $statementview.data( 'statementview' );
 
 			if ( !statementview ) {
 				return false;
@@ -22,17 +20,14 @@
 	}
 
 	function getMainSnakPropertyId( element ) {
-		var snakview, snakPropertyId;
-
 		try {
-			snakview = element.closest( '.wikibase-statementlistview' )
+			const snakview = element.closest( '.wikibase-statementlistview' )
 				.find( '.wikibase-snakview.wb-edit' ).data( 'snakview' );
-			snakPropertyId = snakview ? snakview.propertyId() : null;
+			const snakPropertyId = snakview ? snakview.propertyId() : null;
+			return snakPropertyId;
 		} catch ( e ) {
 			return null;
 		}
-
-		return snakPropertyId;
 	}
 
 	mw.hook( 'wikibase.entityselector.search' ).add( makeHandler( $, mw, config, isQualifierContext, getMainSnakPropertyId ) );

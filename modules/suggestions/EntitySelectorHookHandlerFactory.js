@@ -1,17 +1,15 @@
 module.exports = function ( $, mw, config, isQualifierContext, getMainSnakPropertyId ) {
 	'use strict';
 
-	var MAX_LABELS_API_LIMIT = 50,
+	const MAX_LABELS_API_LIMIT = 50,
 		jsonCache = {};
 
 	function getJsonCached( url ) {
-		var promise = null;
-
 		if ( jsonCache[ url ] ) {
 			return jsonCache[ url ];
 		}
 
-		promise = $.getJSON( url );
+		const promise = $.getJSON( url );
 		jsonCache[ url ] = promise;
 		return promise;
 	}
@@ -19,7 +17,7 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 	function getConstraintDefinition( repoApiUrl, propertyId, constraintsPropertyId, constraintId, constraintQualifierOfPropertyId ) {
 		return getJsonCached( repoApiUrl + '?action=wbgetclaims&format=json&entity=' + propertyId + '&property=' + constraintsPropertyId ).then(
 			function ( d ) {
-				var oneOfIds = [];
+				let oneOfIds = [];
 				if ( !d.claims || !d.claims[ constraintsPropertyId ] ) {
 					return oneOfIds;
 				}
@@ -42,10 +40,10 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 
 	function createItemsFromIdsFetchLabels( repoApiUrl, language, ids, filter, articlePathPattern ) {
 		return getJsonCached( repoApiUrl + '?action=wbgetentities&props=labels|descriptions&format=json&languages=' + language + '&ids=' + ids.join( '|' ) ).then( function ( ld ) {
-			var data = [],
-				item = null;
+			const data = [];
+			let item = null;
 			ids.forEach( function ( id ) {
-				var filterTerm = '';
+				let filterTerm = '';
 				item = {
 					id: id,
 					display: {},
@@ -77,12 +75,12 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 	}
 
 	function createItemsFromIds( repoApiUrl, language, ids, filter, articlePathPattern ) {
-		var $deferred = $.Deferred(),
-			promises = [],
-			itemList = [],
-			addItems = function ( items ) {
-				itemList = itemList.concat( items );
-			};
+		const $deferred = $.Deferred(),
+			promises = [];
+		let itemList = [];
+		const addItems = function ( items ) {
+			itemList = itemList.concat( items );
+		};
 
 		while ( ids.length > 0 ) {
 			promises.push( createItemsFromIdsFetchLabels(
@@ -102,7 +100,7 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 	}
 
 	return function ( data, addPromise ) {
-		var propertyConstraintId = config.WBQualityConstraintsPropertyConstraintId,
+		const propertyConstraintId = config.WBQualityConstraintsPropertyConstraintId,
 			oneOfConstraintId = config.WBQualityConstraintsOneOfConstraintId,
 			allowedQualifiersConstraintId = config.WBQualityConstraintsAllowedQualifiersConstraintId,
 			constraintsPropertyId = config.WBQualityConstraintsPropertyId,
@@ -110,10 +108,8 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 			mainSnakPropertyId = getMainSnakPropertyId( data.element ),
 			wbRepo = mw.config.get( 'wbRepo' ),
 			articlePathPattern = wbRepo.url + wbRepo.articlePath,
-			constraintId = null,
-			qualifierId = null,
 			filterFunction = function ( term ) {
-				var filter = false;
+				let filter = false;
 				data.term.split( ' ' ).forEach( function ( t ) {
 					if ( term.toLowerCase().indexOf( t.toLowerCase() ) === -1 ) {
 						filter = true;
@@ -121,6 +117,8 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 				} );
 				return filter;
 			};
+		let constraintId = null,
+			qualifierId = null;
 
 		if ( isQualifierContext( data.element ) && data.options.type === 'property' ) {
 			constraintId = allowedQualifiersConstraintId;

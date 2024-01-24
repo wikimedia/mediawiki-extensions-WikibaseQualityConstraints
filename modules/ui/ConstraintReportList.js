@@ -8,7 +8,7 @@
 	 * Use the static method {@link wikibase.quality.constraints.ui.ConstraintReportList.fromPanels} for that:
 	 *
 	 *     @example
-	 *     var report = new wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
+	 *     const report = new wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
 	 *         [
 	 *             new wikibase.quality.constraints.ui.ConstraintReportPanel( {
 	 *                 status: 'compliance',
@@ -52,7 +52,7 @@
 	 * You can also explicitly provide the groups to the constructor:
 	 *
 	 *     @example
-	 *     var report = new wikibase.quality.constraints.ui.ConstraintReportList( {
+	 *     const report = new wikibase.quality.constraints.ui.ConstraintReportList( {
 	 *         items: [
 	 *             new wikibase.quality.constraints.ui.ConstraintReportGroup( {
 	 *                 items: [
@@ -133,7 +133,7 @@
 	 * @static
 	 */
 	wb.quality.constraints.ui.ConstraintReportList.static.fromPanels = function ( panels, config ) {
-		var panelsByStatus = {},
+		const panelsByStatus = {},
 			items = [];
 
 		panels.forEach( function ( panel ) {
@@ -142,7 +142,7 @@
 		} );
 
 		config.statuses.forEach( function ( statusConfig ) {
-			var status = statusConfig.status,
+			const status = statusConfig.status,
 				statusPanels = panelsByStatus[ status ];
 
 			if ( statusPanels === undefined ) {

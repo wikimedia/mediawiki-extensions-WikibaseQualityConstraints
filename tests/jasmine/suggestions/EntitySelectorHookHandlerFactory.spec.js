@@ -1,5 +1,5 @@
 describe( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandler', function () {
-	var expect = require( 'unexpected' ).clone(),
+	const expect = require( 'unexpected' ).clone(),
 		sinon = require( 'sinon' ),
 		makeHookHandler = require( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandlerFactory' ),
 		defaultMockConfig = {
@@ -18,7 +18,7 @@ describe( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandler', 
 		};
 
 	function getHookHandler( isQualifierContext, config ) {
-		var mockContextChecker = function () {
+		const mockContextChecker = function () {
 				return isQualifierContext !== undefined ? isQualifierContext : true;
 			},
 			mockMainSnakPropertyIdGetter = sinon.stub().returns( 'P42' ),
@@ -40,7 +40,7 @@ describe( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandler', 
 			url: 'test'
 		} );
 
-		for ( var key in defaultMockConfig ) {
+		for ( const key in defaultMockConfig ) {
 			mockConfig[ key ] = ensuredConfig[ key ] || defaultMockConfig[ key ];
 		}
 
@@ -59,28 +59,28 @@ describe( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandler', 
 
 	describe( 'getSearchHandler', function () {
 		it( 'Returns a handler function', function () {
-			var handler = getHookHandler();
+			const handler = getHookHandler();
 			expect( handler, 'to be a', 'function' );
 		} );
 	} );
 
 	describe( 'returned search handler', function () {
 		it( 'calls passed callback', function () {
-			var handler = getHookHandler(),
+			const handler = getHookHandler(),
 				mockCB = sinon.spy();
 			handler( defaultMockPayload, mockCB );
 			expect( mockCB.called, 'to be true' );
 		} );
 
 		it( 'doesn\'t call passed callback for items with qualifier context', function () {
-			var handler = getHookHandler(),
+			const handler = getHookHandler(),
 				mockCB = sinon.spy();
 			handler( { options: { type: 'item' } }, mockCB );
 			expect( mockCB.called, 'to be false' );
 		} );
 
 		it( 'doesn\'t call passed callback for properties without qualifier context', function () {
-			var handler = getHookHandler( false ),
+			const handler = getHookHandler( false ),
 				mockCB = sinon.spy();
 			handler( { options: { type: 'property' } }, mockCB );
 			expect( mockCB.called, 'to be false' );

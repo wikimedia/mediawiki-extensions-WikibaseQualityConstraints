@@ -1,7 +1,7 @@
 describe( 'wikibase.quality.constraints.gadget', function () {
-	var expect = require( 'unexpected' ).clone(),
-		sinon = require( 'sinon' ),
-		Gadget,
+	const expect = require( 'unexpected' ).clone(),
+		sinon = require( 'sinon' );
+	let Gadget,
 		loadedEntity;
 
 	beforeEach( function () {
@@ -15,18 +15,17 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 		// poor man's Promise.all()
 		global.jQuery.when = function () {
-			var promises = arguments,
+			const promises = arguments,
 				length = promises.length,
-				results = [],
-				i;
-			for ( i = 0; i < length; i++ ) {
+				results = [];
+			for ( let i = 0; i < length; i++ ) {
 				promises[ i ].then( function ( data ) {
 					results.push( data );
 				} );
 			}
 			return {
 				then: function ( func ) {
-					var thenResult = func.apply( {}, results );
+					const thenResult = func.apply( {}, results );
 					return {
 						then: function ( func2 ) {
 							func2( thenResult );
@@ -40,12 +39,10 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		};
 		// poor man's Object.assign()
 		global.jQuery.extend = function () {
-			var objects = Array.from( arguments ),
-				target = objects.shift(),
-				i,
-				name;
-			for ( i = 0; i < objects.length; i++ ) {
-				for ( name in objects[ i ] ) {
+			const objects = Array.from( arguments ),
+				target = objects.shift();
+			for ( let i = 0; i < objects.length; i++ ) {
+				for ( const name in objects[ i ] ) {
 					target[ name ] = objects[ i ][ name ];
 				}
 			}
@@ -75,20 +72,20 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 	describe( 'config', function () {
 		it( 'has default values', function () {
-			var gadget = new Gadget();
+			const gadget = new Gadget();
 			expect( gadget.config.CACHED_STATUSES, 'to equal', 'violation|warning|suggestion|bad-parameters' );
 			expect( gadget.config.WBCHECKCONSTRAINTS_MAX_ID_COUNT, 'to equal', 50 );
 		} );
 
 		it( 'can be overwritten by constructor parameter', function () {
-			var gadget = new Gadget( { WBCHECKCONSTRAINTS_MAX_ID_COUNT: 3 } );
+			const gadget = new Gadget( { WBCHECKCONSTRAINTS_MAX_ID_COUNT: 3 } );
 			expect( gadget.config.WBCHECKCONSTRAINTS_MAX_ID_COUNT, 'to equal', 3 );
 		} );
 	} );
 
 	describe( 'default behavior', function () {
 		it( 'gets entity id from wbEntityId', function () {
-			var gadget = new Gadget();
+			const gadget = new Gadget();
 
 			global.mediaWiki.config = sinon.stub();
 			global.mediaWiki.config.get = sinon.stub();
@@ -99,7 +96,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'checks if wbIsEditView true', function () {
-			var gadget = new Gadget();
+			const gadget = new Gadget();
 
 			global.mediaWiki.config = sinon.stub();
 			global.mediaWiki.config.get = sinon.stub();
@@ -111,7 +108,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'sets entity from newFromEntityLoadedHook', function () {
-			var gadget = new Gadget();
+			const gadget = new Gadget();
 
 			gadget.fullCheck = sinon.stub();
 			global.mediaWiki.config = sinon.stub();
@@ -142,7 +139,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'invokes mw loader and resumes once it is ready', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				done = sinon.stub();
 
 			global.mediaWiki.config = sinon.stub();
@@ -160,7 +157,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'runs a fullCheck once mw loader is done and entityView.rendered fires', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				statementSavedSpy = sinon.spy(),
 				entityViewRenderedSpy = sinon.stub(),
 				wgUserLanguage = 'de',
@@ -219,7 +216,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 	describe( 'setting and getting an entity', function () {
 		it( 'gets the same entity as set', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				entity = sinon.stub();
 			gadget.setEntity( entity );
 			expect( gadget.getEntity(), 'to equal', entity );
@@ -228,7 +225,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 	describe( 'fullCheck', function () {
 		it( 'tracks usage', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				lang = 'fr',
 				entityId = 'Q42',
 				api = {
@@ -249,7 +246,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'calls api with correct parameters', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				lang = 'fr',
 				entityId = 'Q42',
 				api = {
@@ -278,7 +275,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'uses api response to update DOM statements', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				lang = 'fr',
 				entityId = 'Q42',
 				api = {
@@ -342,7 +339,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 	describe( '_fullCheckAllIds', function () {
 		it( 'chunks requests', function () {
-			var gadget = new Gadget( { WBCHECKCONSTRAINTS_MAX_ID_COUNT: 2 } ),
+			const gadget = new Gadget( { WBCHECKCONSTRAINTS_MAX_ID_COUNT: 2 } ),
 				api = sinon.stub(),
 				lang = 'fr';
 
@@ -366,7 +363,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 	describe( '_aggregateMultipleWbcheckconstraintsResponses', function () {
 		it( 'can combine multiple responses\' entity information', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				responseOne = {
 					wbcheckconstraints: {
 						L2: {
@@ -380,10 +377,9 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 							data: 'more of it'
 						}
 					}
-				},
-				combinedResponse;
+				};
 
-			combinedResponse = gadget._aggregateMultipleWbcheckconstraintsResponses( responseOne, responseTwo );
+			const combinedResponse = gadget._aggregateMultipleWbcheckconstraintsResponses( responseOne, responseTwo );
 
 			expect( combinedResponse.L2, 'to equal', responseOne.wbcheckconstraints.L2 );
 			expect( combinedResponse[ 'L2-F1' ], 'to equal', responseTwo.wbcheckconstraints[ 'L2-F1' ] );
@@ -391,7 +387,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 	} );
 
 	describe( '_addReportsToStatement', function () {
-		var entityData = {
+		const entityData = {
 				claims: {
 					P9: [ {
 						id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
@@ -464,7 +460,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 			};
 
 		it( 'extracts result for statement with property id and statement id', function () {
-			var gadget = new Gadget();
+			const gadget = new Gadget();
 
 			gadget._extractResultsForStatement = sinon.stub();
 			gadget._extractResultsForStatement.returns( null );
@@ -480,7 +476,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'adds results to main snak', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				$mainsnak = {};
 
 			gadget._extractResultsForStatement = sinon.stub()
@@ -499,7 +495,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'adds results to qualifiers', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				$qualifierSnak = {};
 
 			gadget._extractResultsForStatement = sinon.stub()
@@ -522,7 +518,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'adds results to references', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				$referenceSnak = {},
 				entityViewrenderedHook = sinon.stub().yields(),
 				togglerToggledSpy = sinon.spy();
@@ -568,7 +564,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 	describe( '_extractResultsForStatement', function () {
 		it( 'finds constraint violation result in entity data', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				entityData = {
 					claims: {
 						P9: [ {
@@ -591,10 +587,9 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 							}
 						} ]
 					}
-				},
-				result;
+				};
 
-			result = gadget._extractResultsForStatement( entityData, 'P9', 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' );
+			const result = gadget._extractResultsForStatement( entityData, 'P9', 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' );
 
 			expect( result.qualifiers, 'to equal', [] );
 			expect( result.references, 'to equal', [] );
@@ -604,32 +599,31 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 	describe( '_getEntityDataByStatementId', function () {
 		it( 'extracts the entity data when the statementId exists', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				entityData = {
 					claims: {
 						P9: [ {
 							id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
 						} ]
 					}
-				},
-				result;
-			result = gadget._getEntityDataByStatementId( { wbcheckconstraints: { Q42: entityData } },
+				};
+			const result = gadget._getEntityDataByStatementId( { wbcheckconstraints: { Q42: entityData } },
 				'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' );
 
 			expect( result, 'to equal', entityData );
 		} );
 
 		it( 'returns null when the statementId isn\'t present', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				entityData = {
 					claims: {
 						P9: [ {
 							id: 'noid'
 						} ]
 					}
-				},
-				result;
-			result = gadget._getEntityDataByStatementId( { wbcheckconstraints: { Q42: entityData } },
+				};
+
+			const result = gadget._getEntityDataByStatementId( { wbcheckconstraints: { Q42: entityData } },
 				'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2' );
 
 			expect( result, 'to equal', null );
@@ -638,7 +632,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 
 	describe( 'snackCheck', function () {
 		it( 'runs a full check', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				api = sinon.stub(),
 				lang = sinon.stub(),
 				statementId = sinon.stub();
@@ -652,14 +646,12 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'adds reports to statement from response', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				api = sinon.stub(),
 				lang = sinon.stub(),
-				statementId = 'Q42$ae34ea61-4b81-db2b-4220-28f115fff19b',
-				responseData,
-				entityData;
+				statementId = 'Q42$ae34ea61-4b81-db2b-4220-28f115fff19b';
 
-			entityData = { claims: { P3: [
+			const entityData = { claims: { P3: [
 				{
 					id: 'Q42$ae34ea61-4b81-db2b-4220-28f115fff19b',
 					mainsnak: {
@@ -669,7 +661,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 				}
 			] } };
 
-			responseData = { wbcheckconstraints: { Q42: entityData } };
+			const responseData = { wbcheckconstraints: { Q42: entityData } };
 
 			api.get = sinon.stub().returns( { then: sinon.stub().yields( responseData ) } );
 			gadget.fullCheck = sinon.stub().returns( { then: sinon.stub() } );
@@ -680,7 +672,7 @@ describe( 'wikibase.quality.constraints.gadget', function () {
 		} );
 
 		it( 'calls api with statement id', function () {
-			var gadget = new Gadget(),
+			const gadget = new Gadget(),
 				api = sinon.stub(),
 				lang = 'de',
 				statementId = 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2';

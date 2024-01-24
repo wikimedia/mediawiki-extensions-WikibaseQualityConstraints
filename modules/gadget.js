@@ -1,7 +1,7 @@
 module.exports = ( function ( mw, wb, $, OO ) {
 	'use strict';
 
-	var defaultConfig = {
+	const defaultConfig = {
 		CACHED_STATUSES: 'violation|warning|suggestion|bad-parameters',
 		WBCHECKCONSTRAINTS_MAX_ID_COUNT: 50
 	};
@@ -19,7 +19,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	};
 
 	SELF.prototype.defaultBehavior = function () {
-		var entityId = mw.config.get( 'wbEntityId' );
+		const entityId = mw.config.get( 'wbEntityId' );
 
 		if ( entityId === null || mw.config.get( 'wgMFMode' ) || !mw.config.get( 'wbIsEditView' ) ) {
 			// no entity, mobile frontend, or not editing (diff, oldid, …) – skip
@@ -35,7 +35,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			'wikibase.quality.constraints.ui',
 			'wikibase.EntityInitializer'
 		] ).done( function () {
-			var api = new mw.Api(),
+			const api = new mw.Api(),
 				lang = mw.config.get( 'wgUserLanguage' );
 
 			wb.EntityInitializer.newFromEntityLoadedHook().getEntity().done( function ( entity ) {
@@ -56,8 +56,8 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	};
 
 	SELF.prototype.fullCheck = function ( api, lang ) {
-		var entity = this.getEntity(),
-			entityIds = [ entity.getId() ];
+		const entity = this.getEntity();
+		let entityIds = [ entity.getId() ];
 
 		if ( typeof entity.getSubEntityIds === 'function' ) {
 			entityIds = entityIds.concat( entity.getSubEntityIds() );
@@ -79,12 +79,11 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	};
 
 	SELF.prototype._fullCheckAllIds = function ( api, lang, ids ) {
-		var i,
-			j = ids.length,
+		const j = ids.length,
 			chunk = this.config.WBCHECKCONSTRAINTS_MAX_ID_COUNT,
 			promises = [];
 
-		for ( i = 0; i < j; i += chunk ) {
+		for ( let i = 0; i < j; i += chunk ) {
 			promises.push(
 				this._wbcheckconstraints( api, lang, ids.slice( i, i + chunk ) )
 			);
@@ -103,13 +102,12 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @param {Object} data Map of entity ids and constraint check information
 	 */
 	SELF.prototype._renderWbcheckconstraintsResult = function ( data ) {
-		var self = this;
+		const self = this;
 
 		$( '.wbqc-constraint-warning' ).remove();
 		$( '.wikibase-statementgroupview .wikibase-statementview' )
 			.each( function () {
-				var entityId;
-				for ( entityId in data ) {
+				for ( const entityId in data ) {
 					if ( !Object.prototype.hasOwnProperty.call( data, entityId ) ) {
 						continue;
 					}
@@ -119,12 +117,11 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	};
 
 	SELF.prototype._aggregateMultipleWbcheckconstraintsResponses = function ( /* multiple responses */ ) {
-		var responses = [].slice.call( arguments ),
-			i = 0,
+		const responses = [].slice.call( arguments ),
 			responseCount = responses.length,
 			entityConstraints = {};
 
-		for ( i; i < responseCount; i++ ) {
+		for ( let i = 0; i < responseCount; i++ ) {
 			$.extend( entityConstraints, responses[ i ].wbcheckconstraints );
 		}
 
@@ -132,20 +129,16 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	};
 
 	SELF.prototype._getEntityDataByStatementId = function ( response, statementId ) {
-		var entities = response.wbcheckconstraints,
-			entity,
-			property,
-			properties,
-			index;
+		const entities = response.wbcheckconstraints;
 
-		for ( entity in entities ) {
+		for ( const entity in entities ) {
 
 			if ( Object.prototype.hasOwnProperty.call( entities, entity ) ) {
-				properties = entities[ entity ].claims;
-				for ( property in properties ) {
+				const properties = entities[ entity ].claims;
+				for ( const property in properties ) {
 
 					if ( Object.prototype.hasOwnProperty.call( properties, property ) ) {
-						for ( index = 0; index < entities[ entity ].claims[ property ].length; index++ ) {
+						for ( let index = 0; index < entities[ entity ].claims[ property ].length; index++ ) {
 
 							if ( entities[ entity ].claims[ property ][ index ].id === statementId ) {
 								return entities[ entity ];
@@ -163,8 +156,8 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	};
 
 	SELF.prototype.snakCheck = function ( api, lang, statementId ) {
-		var isUpdated = false,
-			statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' ),
+		let isUpdated = false;
+		const statementClass = 'wikibase-statement-' + statementId.replace( /\$/, '\\$$' ),
 			self = this;
 
 		api.get( {
@@ -175,11 +168,10 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			claimid: statementId,
 			status: this.config.CACHED_STATUSES
 		} ).then( function ( data ) {
-			var entityData;
 			if ( isUpdated ) {
 				return;
 			}
-			entityData = self._getEntityDataByStatementId( data, statementId );
+			const entityData = self._getEntityDataByStatementId( data, statementId );
 			if ( entityData !== null ) {
 				self._addReportsToStatement( entityData,
 					$( '.wikibase-statementgroupview .wikibase-statementview.' + statementClass )
@@ -216,7 +208,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 */
 	SELF.prototype._buildPopup = function ( $content, $container, icon, titleMessageKey, classes, flags /* = '' */ ) {
 		// eslint-disable-next-line mediawiki/class-doc
-		var widget = new OO.ui.PopupButtonWidget( {
+		const widget = new OO.ui.PopupButtonWidget( {
 			icon: icon,
 			// eslint-disable-next-line mediawiki/msg-doc
 			title: mw.message( titleMessageKey ).text(),
@@ -245,23 +237,20 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @return {string} HTML
 	 */
 	SELF.prototype._getCachedMessage = function ( cached ) {
-		var maximumAgeInMinutes,
-			maximumAgeInHours,
-			maximumAgeInDays;
 		if ( typeof cached === 'object' && cached.maximumAgeInSeconds ) {
 			if ( cached.maximumAgeInSeconds < 60 * 90 ) {
-				maximumAgeInMinutes = Math.ceil( cached.maximumAgeInSeconds / 60 );
+				const maximumAgeInMinutes = Math.ceil( cached.maximumAgeInSeconds / 60 );
 				return mw.message( 'wbqc-cached-minutes' )
 					.params( [ maximumAgeInMinutes ] )
 					.escaped();
 			}
 			if ( cached.maximumAgeInSeconds < 60 * 60 * 36 ) {
-				maximumAgeInHours = Math.ceil( cached.maximumAgeInSeconds / ( 60 * 60 ) );
+				const maximumAgeInHours = Math.ceil( cached.maximumAgeInSeconds / ( 60 * 60 ) );
 				return mw.message( 'wbqc-cached-hours' )
 					.params( [ maximumAgeInHours ] )
 					.escaped();
 			}
-			maximumAgeInDays = Math.ceil( cached.maximumAgeInSeconds / ( 60 * 60 * 24 ) );
+			const maximumAgeInDays = Math.ceil( cached.maximumAgeInSeconds / ( 60 * 60 * 24 ) );
 			return mw.message( 'wbqc-cached-days' )
 				.params( [ maximumAgeInDays ] )
 				.escaped();
@@ -278,7 +267,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @return {wikibase.quality.constraints.ui.ConstraintReportPanel}
 	 */
 	SELF.prototype._buildReport = function ( result ) {
-		var config = {
+		const config = {
 			status: result.status,
 			constraint: result.constraint,
 			message: result[ 'message-html' ],
@@ -298,13 +287,11 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @return {OO.ui.PanelLayout}
 	 */
 	SELF.prototype._buildParameterReport = function ( problem ) {
-		var $report, $heading, $body;
-
-		$report = $( '<div>' )
+		const $report = $( '<div>' )
 			.addClass( 'wbqc-parameter-report' );
-		$heading = $( '<h4>' ); // empty for now
+		const $heading = $( '<h4>' ); // empty for now
 		$report.append( $heading );
-		$body = $( '<p>' )
+		const $body = $( '<p>' )
 			.html( problem[ 'message-html' ] );
 		$report.append( $body );
 
@@ -325,7 +312,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * otherwise null.
 	 */
 	SELF.prototype._buildReportList = function ( reports ) {
-		var list = wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
+		const list = wikibase.quality.constraints.ui.ConstraintReportList.static.fromPanels(
 			reports,
 			{
 				statuses: [
@@ -373,14 +360,14 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * or null if the results could not be extracted.
 	 */
 	SELF.prototype._extractResultsForStatement = function ( entityData, propertyId, statementId ) {
-		var statements, index, statement, results = {}, qualifierPID, referenceIndex, referenceHash, referencePID;
 		if ( 'claims' in entityData ) {
 			// API v2 format
-			statements = entityData.claims[ propertyId ];
+			const statements = entityData.claims[ propertyId ];
 			if ( statements === undefined ) {
 				return null;
 			}
-			for ( index in statements ) {
+			let statement;
+			for ( const index in statements ) {
 				if ( statements[ index ].id === statementId ) {
 					statement = statements[ index ];
 					break;
@@ -390,11 +377,12 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				return null;
 			}
 
+			const results = {};
 			results.mainsnak = statement.mainsnak.results;
 
 			results.qualifiers = [];
-			for ( qualifierPID in statement.qualifiers ) {
-				for ( index in statement.qualifiers[ qualifierPID ] ) {
+			for ( const qualifierPID in statement.qualifiers ) {
+				for ( const index in statement.qualifiers[ qualifierPID ] ) {
 					results.qualifiers.push(
 						statement.qualifiers[ qualifierPID ][ index ]
 					);
@@ -402,13 +390,13 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			}
 
 			results.references = [];
-			for ( referenceIndex in statement.references ) {
-				referenceHash = statement.references[ referenceIndex ].hash;
+			for ( const referenceIndex in statement.references ) {
+				const referenceHash = statement.references[ referenceIndex ].hash;
 				if ( !( referenceHash in results.references ) ) {
 					results.references[ referenceHash ] = [];
 				}
-				for ( referencePID in statement.references[ referenceIndex ].snaks ) {
-					for ( index in statement.references[ referenceIndex ].snaks[ referencePID ] ) {
+				for ( const referencePID in statement.references[ referenceIndex ].snaks ) {
+					for ( const index in statement.references[ referenceIndex ].snaks[ referencePID ] ) {
 						results.references[ referenceHash ].push(
 							statement.references[ referenceIndex ].snaks[ referencePID ][ index ]
 						);
@@ -438,10 +426,9 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @return {boolean} Whether any results were added to the snak or not.
 	 */
 	SELF.prototype._addResultsToSnak = function ( results, $snak ) {
-		var reports = results.map( this._buildReport.bind( this ) ),
-			list = this._buildReportList( reports ),
-			icon,
-			titleMessageKey;
+		const reports = results.map( this._buildReport.bind( this ) ),
+			list = this._buildReportList( reports );
+		let icon, titleMessageKey;
 
 		if ( list !== null ) {
 			switch ( list.items[ 0 ].status ) {
@@ -481,17 +468,12 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @param {jQuery} $statement The statement.
 	 */
 	SELF.prototype._addReportsToStatement = function ( entityData, $statement ) {
-		var match = $statement[ 0 ].className.match(
+		const match = $statement[ 0 ].className.match(
 				/\bwikibase-statement-([^\s$]+\$[\dA-F-]+)\b/i
 			),
 			statementId = match && match[ 1 ],
 			propertyId = $statement.parents( '.wikibase-statementgroupview' ).data( 'property-id' ),
-			results = this._extractResultsForStatement( entityData, propertyId, statementId ),
-			index,
-			qualifier,
-			hash,
-			reference,
-			hasResults;
+			results = this._extractResultsForStatement( entityData, propertyId, statementId );
 
 		if ( results === null ) {
 			return;
@@ -502,8 +484,8 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			$statement.find( '.wikibase-statementview-mainsnak' )
 		);
 
-		for ( index in results.qualifiers ) {
-			qualifier = results.qualifiers[ index ];
+		for ( const index in results.qualifiers ) {
+			const qualifier = results.qualifiers[ index ];
 			this._addResultsToSnak(
 				qualifier.results,
 				$statement.find(
@@ -513,10 +495,10 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			);
 		}
 
-		for ( hash in results.references ) {
-			for ( index in results.references[ hash ] ) {
-				reference = results.references[ hash ][ index ];
-				hasResults = this._addResultsToSnak(
+		for ( const hash in results.references ) {
+			for ( const index in results.references[ hash ] ) {
+				const reference = results.references[ hash ][ index ];
+				const hasResults = this._addResultsToSnak(
 					reference.results,
 					$statement.find(
 						'.wikibase-statementview-references ' +
@@ -526,7 +508,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				);
 				if ( hasResults ) {
 					mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( function () {
-						var $referenceToggler = $statement
+						const $referenceToggler = $statement
 							.find( '.wikibase-statementview-references-heading .ui-toggler-toggle-collapsed' );
 						if ( $referenceToggler.length > 0 ) {
 							$referenceToggler.data( 'toggler' ).toggle();
@@ -544,23 +526,16 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * to results for that parameter (overall status and list of problems).
 	 */
 	SELF.prototype._addParameterReports = function ( parameterReports ) {
-		var constraintId,
-			status,
-			problems,
-			reports,
-			list,
-			$snak;
-
-		for ( constraintId in parameterReports ) {
-			status = parameterReports[ constraintId ].status;
+		for ( const constraintId in parameterReports ) {
+			const status = parameterReports[ constraintId ].status;
 			if ( status === 'okay' ) {
 				continue;
 			}
 
-			problems = parameterReports[ constraintId ].problems;
-			reports = problems.map( this._buildParameterReport.bind( this ) );
+			const problems = parameterReports[ constraintId ].problems;
+			const reports = problems.map( this._buildParameterReport.bind( this ) );
 
-			list = new wikibase.quality.constraints.ui.ConstraintReportList( {
+			const list = new wikibase.quality.constraints.ui.ConstraintReportList( {
 				items: [
 					new wikibase.quality.constraints.ui.ConstraintReportGroup( {
 						items: reports,
@@ -570,7 +545,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				expanded: false // expanded: true does not work within a popup
 			} );
 
-			$snak = $( '.wikibase-statement-' + constraintId.replace( /\$/g, '\\$' ) +
+			const $snak = $( '.wikibase-statement-' + constraintId.replace( /\$/g, '\\$' ) +
 				' .wikibase-statementview-mainsnak .wikibase-snakview' );
 			this._buildPopup(
 				list.$element,

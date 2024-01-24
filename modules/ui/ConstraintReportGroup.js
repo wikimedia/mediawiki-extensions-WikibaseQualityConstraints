@@ -5,7 +5,7 @@
 	 * A panel for a group of constraint report results.
 	 *
 	 *     @example
-	 *     var group = new wikibase.quality.constraints.ui.ConstraintReportGroup( {
+	 *     const group = new wikibase.quality.constraints.ui.ConstraintReportGroup( {
 	 *         items: [
 	 *             new wikibase.quality.constraints.ui.ConstraintReportPanel( {
 	 *                 status: 'compliance',
@@ -39,11 +39,10 @@
 	 */
 	wb.quality.constraints.ui.ConstraintReportGroup = function WBQCConstraintReportGroup( config ) {
 
-		var collapsible = config.collapsible || config.collapsed || false,
+		const collapsible = config.collapsible || config.collapsed || false,
 			collapsed = config.collapsed || false,
 			subheading = config.subheading || null,
-			status = config.status || null,
-			$subheadingContainer;
+			status = config.status || null;
 
 		// Configuration initialization
 		config.continuous = true;
@@ -76,7 +75,7 @@
 		}
 		this.$element.prepend( this.$label );
 		if ( subheading !== null ) {
-			$subheadingContainer = collapsible ?
+			const $subheadingContainer = collapsible ?
 				this.$element.find( '.mw-collapsible-content' ) :
 				this.$element;
 			$subheadingContainer.prepend(
