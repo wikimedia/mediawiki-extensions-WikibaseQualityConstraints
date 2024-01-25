@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\TypeChecker;
 
-use NullStatsdDataFactory;
+use Psr\Log\NullLogger;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -19,6 +19,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use Wikimedia\Stats\Emitters\NullEmitter;
+use Wikimedia\Stats\StatsCache;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper
@@ -46,7 +49,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 			$entityLookup ?: new InMemoryEntityLookup(),
 			self::getDefaultConfig(),
 			$sparqlHelper ?: new DummySparqlHelper(),
-			new NullStatsdDataFactory()
+			new StatsFactory( new StatsCache(), new NullEmitter(), new NullLogger() )
 		);
 	}
 

@@ -3,7 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\TypeChecker;
 
 use DataValues\StringValue;
-use NullStatsdDataFactory;
+use Psr\Log\NullLogger;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -20,6 +20,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
+use Wikimedia\Stats\Emitters\NullEmitter;
+use Wikimedia\Stats\StatsCache;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
@@ -72,7 +75,7 @@ class ValueTypeCheckerTest extends \MediaWikiIntegrationTestCase {
 				$this->lookup,
 				self::getDefaultConfig(),
 				new DummySparqlHelper(),
-				new NullStatsdDataFactory()
+				new StatsFactory( new StatsCache(), new NullEmitter(), new NullLogger() )
 			),
 			self::getDefaultConfig()
 		);

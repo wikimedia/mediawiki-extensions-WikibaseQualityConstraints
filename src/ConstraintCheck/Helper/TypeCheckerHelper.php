@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use IBufferingStatsdDataFactory;
 use MediaWiki\Config\Config;
 use OverflowException;
 use Wikibase\DataModel\Entity\EntityId;
@@ -20,6 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\Role;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * Class for helper functions for range checkers.
@@ -45,26 +45,26 @@ class TypeCheckerHelper {
 	private $sparqlHelper;
 
 	/**
-	 * @var IBufferingStatsdDataFactory
+	 * @var StatsFactory
 	 */
-	private $dataFactory;
+	private $statsFactory;
 
 	/**
 	 * @param EntityLookup $lookup
 	 * @param Config $config
 	 * @param SparqlHelper $sparqlHelper
-	 * @param IBufferingStatsdDataFactory $dataFactory
+	 * @param StatsFactory $statsFactory
 	 */
 	public function __construct(
 		EntityLookup $lookup,
 		Config $config,
 		SparqlHelper $sparqlHelper,
-		IBufferingStatsdDataFactory $dataFactory
+		StatsFactory $statsFactory
 	) {
 		$this->entityLookup = $lookup;
 		$this->config = $config;
 		$this->sparqlHelper = $sparqlHelper;
-		$this->dataFactory = $dataFactory;
+		$this->statsFactory = $statsFactory;
 	}
 
 	/**
@@ -136,43 +136,47 @@ class TypeCheckerHelper {
 	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function isSubclassOfWithSparqlFallback( EntityId $comparativeClass, array $classesToCheck ) {
+		$timing = $this->statsFactory->getTiming( 'isSubclassOf_duration_seconds' )
+			->setLabel( 'result', 'success' )
+			->setLabel( 'TypeCheckerImplementation', 'php' )
+			->copyToStatsdAt( 'wikibase.quality.constraints.type.php.success.timing' );
+		$timing->start();
+
 		try {
 			$entitiesChecked = 0;
-			$start1 = microtime( true );
 			$isSubclass = $this->isSubclassOf( $comparativeClass, $classesToCheck, $entitiesChecked );
-			$end1 = microtime( true );
-			$this->dataFactory->timing(
-				'wikibase.quality.constraints.type.php.success.timing',
-				( $end1 - $start1 ) * 1000
-			);
-			$this->dataFactory->timing( // not really a timing, but works like one (we want percentiles etc.)
-				'wikibase.quality.constraints.type.php.success.entities',
-				$entitiesChecked
-			);
+			$timing->stop();
+
+			// not really a timing, but works like one (we want percentiles etc.)
+			// TODO: probably a good candidate for T348796
+			$this->statsFactory->getTiming( 'isSubclassOf_entities_total' )
+				->setLabel( 'TypeCheckerImplementation', 'php' )
+				->setLabel( 'result', 'success' )
+				->copyToStatsdAt( 'wikibase.quality.constraints.type.php.success.entities' )
+				->observe( $entitiesChecked );
 
 			return new CachedBool( $isSubclass, Metadata::blank() );
 		} catch ( OverflowException $e ) {
-			$end1 = microtime( true );
-			$this->dataFactory->timing(
-				'wikibase.quality.constraints.type.php.overflow.timing',
-				( $end1 - $start1 ) * 1000
-			);
+			$timing->setLabel( 'result', 'overflow' )
+				->copyToStatsdAt( 'wikibase.quality.constraints.type.php.overflow.timing' )
+				->stop();
 
 			if ( !( $this->sparqlHelper instanceof DummySparqlHelper ) ) {
-				$this->dataFactory->increment(
-					'wikibase.quality.constraints.sparql.typeFallback'
-				);
+				$this->statsFactory->getCounter( 'sparql_typeFallback_total' )
+					->copyToStatsdAt( 'wikibase.quality.constraints.sparql.typeFallback' )
+					->increment();
 
-				$start2 = microtime( true );
+				$timing->setLabel( 'TypeCheckerImplementation', 'sparql' )
+					->setLabel( 'result', 'success' )
+					->copyToStatsdAt( 'wikibase.quality.constraints.type.sparql.success.timing' )
+					->start();
+
 				$hasType = $this->sparqlHelper->hasType(
 					$comparativeClass->getSerialization(),
 					$classesToCheck
 				);
-				$end2 = microtime( true );
-				$this->dataFactory->timing(
-					'wikibase.quality.constraints.type.sparql.success.timing',
-					( $end2 - $start2 ) * 1000
-				);
+
+				$timing->stop();
 
 				return $hasType;
 			} else {

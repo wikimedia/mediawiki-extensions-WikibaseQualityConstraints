@@ -169,7 +169,7 @@ return [
 			WikibaseServices::getEntityLookup( $services ),
 			$services->getMainConfig(),
 			ConstraintsServices::getSparqlHelper( $services ),
-			$services->getStatsdDataFactory()
+			$services->getStatsFactory()->withComponent( 'WikibaseQualityConstraints' )
 		);
 	},
 
