@@ -4,9 +4,13 @@
 			"McSalama",
 			"Moj",
 			"Nike",
-			"Pyscowicz"
+			"Pyscowicz",
+			"Samoasambia"
 		]
 	},
+	"wbqc-constraintreport-form-submit-label": "Tarkasta",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx tai Pxx",
+	"wbqc-constraintreport-result-headline": "Tulos kohteelle",
 	"wbqc-constraintreport-not-existent-entity": "Yhteisöä ei ole!",
 	"wbqc-constraintreport-status-bad-parameters": "Kelvottomat parametrit",
 	"wbqc-constraintreport-status-deprecated": "Vanhentunut",
