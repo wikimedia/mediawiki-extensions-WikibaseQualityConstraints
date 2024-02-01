@@ -13,6 +13,7 @@ use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\CheckingResultsSource;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
+use WikibaseQuality\ConstraintReport\Api\ResultsSource;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -30,11 +31,11 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeseriali
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 
 return [
-	ConstraintsServices::EXPIRY_LOCK => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::EXPIRY_LOCK => static function ( MediaWikiServices $services ): ExpiryLock {
 		return new ExpiryLock( ObjectCache::getInstance( CACHE_ANYTHING ) );
 	},
 
-	ConstraintsServices::LOGGING_HELPER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::LOGGING_HELPER => static function ( MediaWikiServices $services ): LoggingHelper {
 		return new LoggingHelper(
 			$services->getStatsdDataFactory(),
 			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
@@ -42,7 +43,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::CONSTRAINT_STORE => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::CONSTRAINT_STORE => static function ( MediaWikiServices $services ): ConstraintRepositoryStore {
 		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 		$propertySource = $sourceDefinitions->getDatabaseSourceForEntityType( Property::ENTITY_TYPE );
 		if ( $propertySource === null ) {
@@ -61,7 +62,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::CONSTRAINT_LOOKUP => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::CONSTRAINT_LOOKUP => static function ( MediaWikiServices $services ): ConstraintLookup {
 		$sourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 		$propertySource = $sourceDefinitions->getDatabaseSourceForEntityType( Property::ENTITY_TYPE );
 		if ( $propertySource === null ) {
@@ -76,7 +77,7 @@ return [
 		return new CachingConstraintLookup( $rawLookup );
 	},
 
-	ConstraintsServices::CHECK_RESULT_SERIALIZER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::CHECK_RESULT_SERIALIZER => static function ( MediaWikiServices $services ): CheckResultSerializer {
 		return new CheckResultSerializer(
 			new ConstraintSerializer(
 				false // constraint parameters are not exposed
@@ -87,7 +88,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::CHECK_RESULT_DESERIALIZER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::CHECK_RESULT_DESERIALIZER => static function ( MediaWikiServices $services ): CheckResultDeserializer {
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
 		$dataValueFactory = WikibaseRepo::getDataValueFactory( $services );
 
@@ -102,11 +103,15 @@ return [
 		);
 	},
 
-	ConstraintsServices::VIOLATION_MESSAGE_SERIALIZER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::VIOLATION_MESSAGE_SERIALIZER => static function (
+		MediaWikiServices $services
+	): ViolationMessageSerializer {
 		return new ViolationMessageSerializer();
 	},
 
-	ConstraintsServices::VIOLATION_MESSAGE_DESERIALIZER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::VIOLATION_MESSAGE_DESERIALIZER => static function (
+		MediaWikiServices $services
+	): ViolationMessageDeserializer {
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
 		$dataValueFactory = WikibaseRepo::getDataValueFactory( $services );
 
@@ -116,7 +121,9 @@ return [
 		);
 	},
 
-	ConstraintsServices::CONSTRAINT_PARAMETER_PARSER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::CONSTRAINT_PARAMETER_PARSER => static function (
+		MediaWikiServices $services
+	): ConstraintParameterParser {
 		$deserializerFactory = WikibaseRepo::getBaseDataModelDeserializerFactory( $services );
 		$entitySourceDefinitions = WikibaseRepo::getEntitySourceDefinitions( $services );
 
@@ -127,18 +134,18 @@ return [
 		);
 	},
 
-	ConstraintsServices::CONNECTION_CHECKER_HELPER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::CONNECTION_CHECKER_HELPER => static function ( MediaWikiServices $services ): ConnectionCheckerHelper {
 		return new ConnectionCheckerHelper();
 	},
 
-	ConstraintsServices::RANGE_CHECKER_HELPER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::RANGE_CHECKER_HELPER => static function ( MediaWikiServices $services ): RangeCheckerHelper {
 		return new RangeCheckerHelper(
 			$services->getMainConfig(),
 			WikibaseRepo::getUnitConverter( $services )
 		);
 	},
 
-	ConstraintsServices::SPARQL_HELPER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::SPARQL_HELPER => static function ( MediaWikiServices $services ): SparqlHelper {
 		$endpoint = $services->getMainConfig()->get( 'WBQualityConstraintsSparqlEndpoint' );
 		if ( $endpoint === '' ) {
 			return new DummySparqlHelper();
@@ -164,7 +171,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::TYPE_CHECKER_HELPER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::TYPE_CHECKER_HELPER => static function ( MediaWikiServices $services ): TypeCheckerHelper {
 		return new TypeCheckerHelper(
 			WikibaseServices::getEntityLookup( $services ),
 			$services->getMainConfig(),
@@ -173,7 +180,9 @@ return [
 		);
 	},
 
-	ConstraintsServices::DELEGATING_CONSTRAINT_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::DELEGATING_CONSTRAINT_CHECKER => static function (
+		MediaWikiServices $services
+	): DelegatingConstraintChecker {
 		$statementGuidParser = WikibaseRepo::getStatementGuidParser( $services );
 
 		$config = $services->getMainConfig();
@@ -255,7 +264,7 @@ return [
 		);
 	},
 
-	ConstraintsServices::RESULTS_SOURCE => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::RESULTS_SOURCE => static function ( MediaWikiServices $services ): ResultsSource {
 		$config = $services->getMainConfig();
 		$resultsSource = new CheckingResultsSource(
 			ConstraintsServices::getDelegatingConstraintChecker( $services )
@@ -310,7 +319,9 @@ return [
 		return $resultsSource;
 	},
 
-	ConstraintsServices::VIOLATION_MESSAGE_RENDERER_FACTORY => static function ( MediaWikiServices $services ) {
+	ConstraintsServices::VIOLATION_MESSAGE_RENDERER_FACTORY => static function (
+		MediaWikiServices $services
+	): ViolationMessageRendererFactory {
 		return new ViolationMessageRendererFactory(
 			$services->getMainConfig(),
 			$services->getLanguageNameUtils(),

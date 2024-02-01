@@ -38,21 +38,23 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueOnlyChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker;
 
 return [
-	ConstraintCheckerServices::CONFLICTS_WITH_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::CONFLICTS_WITH_CHECKER => static function ( MediaWikiServices $services ): ConflictsWithChecker {
 		return new ConflictsWithChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			ConstraintsServices::getConnectionCheckerHelper( $services )
 		);
 	},
 
-	ConstraintCheckerServices::ITEM_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::ITEM_CHECKER => static function ( MediaWikiServices $services ): ItemChecker {
 		return new ItemChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			ConstraintsServices::getConnectionCheckerHelper( $services )
 		);
 	},
 
-	ConstraintCheckerServices::TARGET_REQUIRED_CLAIM_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::TARGET_REQUIRED_CLAIM_CHECKER => static function (
+		MediaWikiServices $services
+	): TargetRequiredClaimChecker {
 		return new TargetRequiredClaimChecker(
 			WikibaseServices::getEntityLookup( $services ),
 			ConstraintsServices::getConstraintParameterParser( $services ),
@@ -60,14 +62,14 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::SYMMETRIC_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::SYMMETRIC_CHECKER => static function ( MediaWikiServices $services ): SymmetricChecker {
 		return new SymmetricChecker(
 			WikibaseServices::getEntityLookupWithoutCache( $services ),
 			ConstraintsServices::getConnectionCheckerHelper( $services )
 		);
 	},
 
-	ConstraintCheckerServices::INVERSE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::INVERSE_CHECKER => static function ( MediaWikiServices $services ): InverseChecker {
 		return new InverseChecker(
 			WikibaseServices::getEntityLookup( $services ),
 			ConstraintsServices::getConstraintParameterParser( $services ),
@@ -75,23 +77,25 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::QUALIFIER_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::QUALIFIER_CHECKER => static function ( MediaWikiServices $services ): QualifierChecker {
 		return new QualifierChecker();
 	},
 
-	ConstraintCheckerServices::QUALIFIERS_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::QUALIFIERS_CHECKER => static function ( MediaWikiServices $services ): QualifiersChecker {
 		return new QualifiersChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::MANDATORY_QUALIFIERS_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::MANDATORY_QUALIFIERS_CHECKER => static function (
+		MediaWikiServices $services
+	): MandatoryQualifiersChecker {
 		return new MandatoryQualifiersChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::RANGE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::RANGE_CHECKER => static function ( MediaWikiServices $services ): RangeChecker {
 		return new RangeChecker(
 			WikibaseServices::getPropertyDataTypeLookup( $services ),
 			ConstraintsServices::getConstraintParameterParser( $services ),
@@ -99,7 +103,9 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::DIFF_WITHIN_RANGE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::DIFF_WITHIN_RANGE_CHECKER => static function (
+		MediaWikiServices $services
+	): DiffWithinRangeChecker {
 		return new DiffWithinRangeChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			ConstraintsServices::getRangeCheckerHelper( $services ),
@@ -107,7 +113,7 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::TYPE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::TYPE_CHECKER => static function ( MediaWikiServices $services ): TypeChecker {
 		return new TypeChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			ConstraintsServices::getTypeCheckerHelper( $services ),
@@ -115,7 +121,7 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::VALUE_TYPE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::VALUE_TYPE_CHECKER => static function ( MediaWikiServices $services ): ValueTypeChecker {
 		return new ValueTypeChecker(
 			WikibaseServices::getEntityLookup( $services ),
 			ConstraintsServices::getConstraintParameterParser( $services ),
@@ -124,19 +130,19 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::SINGLE_VALUE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::SINGLE_VALUE_CHECKER => static function ( MediaWikiServices $services ): SingleValueChecker {
 		return new SingleValueChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::MULTI_VALUE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::MULTI_VALUE_CHECKER => static function ( MediaWikiServices $services ): MultiValueChecker {
 		return new MultiValueChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::UNIQUE_VALUE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::UNIQUE_VALUE_CHECKER => static function ( MediaWikiServices $services ): UniqueValueChecker {
 		// TODO return a different, dummy implementation if SPARQL is not available
 		return new UniqueValueChecker(
 			ConstraintsServices::getSparqlHelper( $services ),
@@ -144,7 +150,7 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::FORMAT_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::FORMAT_CHECKER => static function ( MediaWikiServices $services ): FormatChecker {
 		// TODO return a different, dummy implementation if SPARQL is not available
 		return new FormatChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
@@ -154,7 +160,7 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::COMMONS_LINK_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::COMMONS_LINK_CHECKER => static function ( MediaWikiServices $services ): CommonsLinkChecker {
 		$pageNameNormalizer = new MediaWikiPageNameNormalizer();
 		return new CommonsLinkChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
@@ -163,64 +169,66 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::ONE_OF_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::ONE_OF_CHECKER => static function ( MediaWikiServices $services ): OneOfChecker {
 		return new OneOfChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::VALUE_ONLY_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::VALUE_ONLY_CHECKER => static function ( MediaWikiServices $services ): ValueOnlyChecker {
 		return new ValueOnlyChecker();
 	},
 
-	ConstraintCheckerServices::REFERENCE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::REFERENCE_CHECKER => static function ( MediaWikiServices $services ): ReferenceChecker {
 		return new ReferenceChecker();
 	},
 
-	ConstraintCheckerServices::NO_BOUNDS_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::NO_BOUNDS_CHECKER => static function ( MediaWikiServices $services ): NoBoundsChecker {
 		return new NoBoundsChecker();
 	},
 
-	ConstraintCheckerServices::ALLOWED_UNITS_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::ALLOWED_UNITS_CHECKER => static function ( MediaWikiServices $services ): AllowedUnitsChecker {
 		return new AllowedUnitsChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			WikibaseRepo::getUnitConverter( $services )
 		);
 	},
 
-	ConstraintCheckerServices::SINGLE_BEST_VALUE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::SINGLE_BEST_VALUE_CHECKER => static function (
+		MediaWikiServices $services
+	): SingleBestValueChecker {
 		return new SingleBestValueChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::ENTITY_TYPE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::ENTITY_TYPE_CHECKER => static function ( MediaWikiServices $services ): EntityTypeChecker {
 		return new EntityTypeChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::NONE_OF_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::NONE_OF_CHECKER => static function ( MediaWikiServices $services ): NoneOfChecker {
 		return new NoneOfChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::INTEGER_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::INTEGER_CHECKER => static function ( MediaWikiServices $services ): IntegerChecker {
 		return new IntegerChecker();
 	},
 
-	ConstraintCheckerServices::CITATION_NEEDED_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::CITATION_NEEDED_CHECKER => static function ( MediaWikiServices $services ): CitationNeededChecker {
 		return new CitationNeededChecker();
 	},
 
-	ConstraintCheckerServices::PROPERTY_SCOPE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::PROPERTY_SCOPE_CHECKER => static function ( MediaWikiServices $services ): PropertyScopeChecker {
 		return new PropertyScopeChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
 	},
 
-	ConstraintCheckerServices::CONTEMPORARY_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::CONTEMPORARY_CHECKER => static function ( MediaWikiServices $services ): ContemporaryChecker {
 		return new ContemporaryChecker(
 			WikibaseServices::getEntityLookup( $services ),
 			ConstraintsServices::getRangeCheckerHelper( $services ),
@@ -228,14 +236,16 @@ return [
 		);
 	},
 
-	ConstraintCheckerServices::LEXEME_LANGUAGE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::LEXEME_LANGUAGE_CHECKER => static function ( MediaWikiServices $services ): LanguageChecker {
 		return new LanguageChecker(
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			WikibaseServices::getEntityLookup( $services )
 		);
 	},
 
-	ConstraintCheckerServices::LABEL_IN_LANGUAGE_CHECKER => static function ( MediaWikiServices $services ) {
+	ConstraintCheckerServices::LABEL_IN_LANGUAGE_CHECKER => static function (
+		MediaWikiServices $services
+	): LabelInLanguageChecker {
 		return new LabelInLanguageChecker(
 			ConstraintsServices::getConstraintParameterParser( $services )
 		);
