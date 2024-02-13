@@ -38,7 +38,7 @@ class ExpiryLock {
 	 * @throws \Wikimedia\Assert\ParameterTypeException
 	 */
 	private function makeKey( $id ) {
-		if ( empty( trim( $id ) ) ) {
+		if ( trim( $id ) === '' ) {
 			throw new ParameterTypeException( '$id', 'non-empty string' );
 		}
 
