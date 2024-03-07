@@ -176,7 +176,7 @@ EOF;
 		$p22 = new NumericPropertyId( 'P22' );
 
 		yield [
-			[],  // No separators shouldn't add filtering or declaration
+			[], // No separators shouldn't add filtering or declaration
 			'',
 		];
 
@@ -233,7 +233,8 @@ EOF;
       ?statement a wdno:P22.
     }
   }
-EOF,
+EOF
+,
 		];
 	}
 
