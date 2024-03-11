@@ -41,9 +41,9 @@ class TimeValueComparerTest extends \MediaWikiUnitTestCase {
 			[ -1, self::getTimeValue( 1970 ), self::getTimeValue( 1971 ) ],
 			[ 0, self::getTimeValue( 1970 ), self::getTimeValue( 1970 ) ],
 			[ 1, self::getTimeValue( 1971 ), self::getTimeValue( 1970 ) ],
-			[ -1, self::getTimeValue( 1970, 6, 1 ), self::getTimeValue( 1970, 6, 2 ) ] ,
-			[ 0, self::getTimeValue( 1970, 6, 1 ), self::getTimeValue( 1970, 6, 1 ) ] ,
-			[ 1, self::getTimeValue( 1970, 6, 1 ), self::getTimeValue( 1970, 5, 31 ) ] ,
+			[ -1, self::getTimeValue( 1970, 6, 1 ), self::getTimeValue( 1970, 6, 2 ) ],
+			[ 0, self::getTimeValue( 1970, 6, 1 ), self::getTimeValue( 1970, 6, 1 ) ],
+			[ 1, self::getTimeValue( 1970, 6, 1 ), self::getTimeValue( 1970, 5, 31 ) ],
 		];
 
 		return $cases;
