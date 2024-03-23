@@ -456,8 +456,9 @@ class ConstraintParameterParser {
 				new ViolationMessage( 'wbqc-violation-message-range-parameters-one-year' )
 			);
 		}
-		if ( $min === null && $max === null ||
-			$min !== null && $max !== null && $min->equals( $max ) ) {
+		if ( ( $min === null && $max === null ) ||
+			( $min !== null && $max !== null && $min->equals( $max ) )
+		) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-range-parameters-same' ) )
 					->withEntityId( new NumericPropertyId( $minimumId ), Role::CONSTRAINT_PARAMETER_PROPERTY )
