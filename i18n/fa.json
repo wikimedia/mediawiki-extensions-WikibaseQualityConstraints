@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Beginneruser",
+			"Ebraminio",
 			"FarsiNevis",
 			"Ladsgroup",
 			"Reza1615",
@@ -18,7 +19,7 @@
 	"wbqc-constraintreport-result-headline": "نتیجه برای",
 	"wbqc-constraintreport-invalid-entity-id": "شناسهٔ نادرست ورودی.",
 	"wbqc-constraintreport-not-existent-entity": "ورودی وجود ندارد.",
-	"wbqc-constraintreport-empty-result": "هیچ محدودیتی برای این ورودی (جوهره) تعریف نشده‌است.",
+	"wbqc-constraintreport-empty-result": "هیچ محدودیتی برای این ورودی (جوهره) تعریف نشده است.",
 	"wbqc-constraintreport-status-violation": "خرابکاری",
 	"wbqc-constraintreport-status-compliance": "مطلوبیت",
 	"wbqc-constraintreport-status-exception": "استثنا",
