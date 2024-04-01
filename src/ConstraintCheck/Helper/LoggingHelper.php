@@ -76,7 +76,7 @@ class LoggingHelper {
 		foreach ( $limits as $level => $limit ) {
 			if (
 				// duration exceeds this limit
-				isset( $limit ) && $durationSeconds > $limit &&
+				$limit !== null && $durationSeconds > $limit &&
 				// this limit is longer than previous longest limit
 				( $limitSeconds === null || $limit > $limitSeconds )
 			) {
