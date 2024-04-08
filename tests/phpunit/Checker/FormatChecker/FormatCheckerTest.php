@@ -130,7 +130,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 0 ] );
 		$value = new StringValue( $text );
 		$snak = new PropertyValueSnak( new NumericPropertyId( 'P345' ), $value );
-		$formatChecker = $this->getChecker();
+		$formatChecker = $this->getChecker( $config );
 		$result = $formatChecker->checkConstraint(
 			new FakeSnakContext( $snak ),
 			$this->getConstraintMock( $this->formatParameter( $pattern ) )
