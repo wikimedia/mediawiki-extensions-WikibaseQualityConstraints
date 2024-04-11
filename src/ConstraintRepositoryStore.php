@@ -43,9 +43,12 @@ class ConstraintRepositoryStore implements ConstraintStore {
 	 * @param Constraint[] $constraints
 	 *
 	 * @throws DBUnexpectedError
-	 * @return bool
 	 */
 	public function insertBatch( array $constraints ) {
+		if ( !$constraints ) {
+			return;
+		}
+
 		$accumulator = array_map(
 			function ( Constraint $constraint ) {
 				return [
@@ -59,7 +62,11 @@ class ConstraintRepositoryStore implements ConstraintStore {
 		);
 
 		$dbw = $this->lb->getConnection( ILoadBalancer::DB_PRIMARY, [], $this->dbName );
-		return $dbw->insert( 'wbqc_constraints', $accumulator, __METHOD__ );
+		$dbw->newInsertQueryBuilder()
+			->insertInto( 'wbqc_constraints' )
+			->rows( $accumulator )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
@@ -71,13 +78,13 @@ class ConstraintRepositoryStore implements ConstraintStore {
 	 */
 	public function deleteForProperty( NumericPropertyId $propertyId ) {
 		$dbw = $this->lb->getConnection( ILoadBalancer::DB_PRIMARY, [], $this->dbName );
-		$dbw->delete(
-			'wbqc_constraints',
-			[
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'wbqc_constraints' )
+			->where( [
 				'pid' => $propertyId->getNumericId(),
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }

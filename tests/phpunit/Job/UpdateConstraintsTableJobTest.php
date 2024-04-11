@@ -59,29 +59,31 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 	public function addDBData() {
 		$config = self::getDefaultConfig();
-		$this->db->insert( 'wbqc_constraints', [
+		$this->db->newInsertQueryBuilder()
+			->insertInto( 'wbqc_constraints' )
 			// a constraint imported from a template (UUID)
-			[
+			->row( [
 				'constraint_guid' => 'afbbe0c2-2bc4-47b6-958c-a318a53814ac',
 				'pid' => 42,
 				'constraint_type_qid' => 'TestConstraint',
 				'constraint_parameters' => '{}',
-			],
+			] )
 			// a constraint imported from the statement under test (statement ID)
-			[
+			->row( [
 				'constraint_guid' => 'P2$2892c48c-53e5-40ef-94a2-274ebf35075c',
 				'pid' => 2,
 				'constraint_type_qid' => $config->get( 'WBQualityConstraintsSingleValueConstraintId' ),
 				'constraint_parameters' => '{}',
-			],
+			] )
 			// a constraint imported from a different statement (statement ID)
-			[
+			->row( [
 				'constraint_guid' => 'P3$1926459f-a4d6-42f5-a46e-e1866a2499ed',
 				'pid' => 3,
 				'constraint_type_qid' => $config->get( 'WBQualityConstraintsSingleValueConstraintId' ),
 				'constraint_parameters' => '{}',
-			],
-		] );
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	public function testExtractParametersFromQualifiers() {

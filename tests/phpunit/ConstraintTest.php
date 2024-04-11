@@ -48,14 +48,16 @@ class ConstraintTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function addDBData() {
-		$this->db->insert( 'wbqc_constraints', [
-			[
+		$this->db->newInsertQueryBuilder()
+			->insertInto( 'wbqc_constraints' )
+			->row( [
 				'constraint_guid' => '1',
 				'pid' => 1,
 				'constraint_type_qid' => 'Item',
 				'constraint_parameters' => '{"property":"P21","constraint_status":"mandatory"}',
-			],
-		] );
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }

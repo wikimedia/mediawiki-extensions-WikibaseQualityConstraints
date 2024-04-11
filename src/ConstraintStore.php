@@ -13,7 +13,6 @@ interface ConstraintStore {
 	/**
 	 * @param Constraint[] $constraints
 	 *
-	 * @return bool
 	 * @throws DBUnexpectedError
 	 */
 	public function insertBatch( array $constraints );

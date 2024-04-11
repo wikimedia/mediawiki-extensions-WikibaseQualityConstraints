@@ -102,25 +102,24 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	public function addDBData() {
-		$this->db->insert(
-			'wbqc_constraints',
-			[
-				[
-					'constraint_guid' => '1',
-					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
-					'constraint_type_qid' =>
-						self::getDefaultConfig()->get( 'WBQualityConstraintsMultiValueConstraintId' ),
-					'constraint_parameters' => '{}',
-				],
-				[
-					'constraint_guid' => '3',
-					'pid' => self::$idMap[ 'P1' ]->getNumericId(),
-					'constraint_type_qid' =>
-						self::getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ),
-					'constraint_parameters' => '{}',
-				],
-			]
-		);
+		$this->db->newInsertQueryBuilder()
+			->insertInto( 'wbqc_constraints' )
+			->row( [
+				'constraint_guid' => '1',
+				'pid' => self::$idMap[ 'P1' ]->getNumericId(),
+				'constraint_type_qid' =>
+					self::getDefaultConfig()->get( 'WBQualityConstraintsMultiValueConstraintId' ),
+				'constraint_parameters' => '{}',
+			] )
+			->row( [
+				'constraint_guid' => '3',
+				'pid' => self::$idMap[ 'P1' ]->getNumericId(),
+				'constraint_type_qid' =>
+					self::getDefaultConfig()->get( 'WBQualityConstraintsSingleValueConstraintId' ),
+				'constraint_parameters' => '{}',
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**

@@ -126,20 +126,22 @@ class ConstraintRepositoryStoreTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	private function insertTestData() {
-		$this->db->insert( 'wbqc_constraints', [
-			[
+		$this->db->newInsertQueryBuilder()
+			->insertInto( 'wbqc_constraints' )
+			->row( [
 				'constraint_guid' => '1',
 				'pid' => 1,
 				'constraint_type_qid' => 'Multi value',
 				'constraint_parameters' => '{}',
-			],
-			[
+			] )
+			->row( [
 				'constraint_guid' => '3',
 				'pid' => 1,
 				'constraint_type_qid' => 'Single value',
 				'constraint_parameters' => '{}',
-			],
-		] );
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }

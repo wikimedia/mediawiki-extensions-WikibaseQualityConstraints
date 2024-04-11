@@ -47,14 +47,16 @@ class ConstraintRepositoryLookupTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function testQueryConstraintsForPropertyBrokenParameters() {
-		$this->db->insert( 'wbqc_constraints', [
-			[
+		$this->db->newInsertQueryBuilder()
+			->insertInto( 'wbqc_constraints' )
+			->row( [
 				'constraint_guid' => 'P3$514751bb-1656-4d2d-a386-b0f0a69e02ed',
 				'pid' => 3,
 				'constraint_type_qid' => 'Multi value',
 				'constraint_parameters' => 'this is not valid JSON',
-			],
-		] );
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$repo = $this->newConstraintRepositoryLookup();
 		$constraints = $repo->queryConstraintsForProperty( new NumericPropertyId( 'P3' ) );
@@ -63,20 +65,22 @@ class ConstraintRepositoryLookupTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	private function insertTestData() {
-		$this->db->insert( 'wbqc_constraints', [
-			[
+		$this->db->newInsertQueryBuilder()
+			->insertInto( 'wbqc_constraints' )
+			->row( [
 				'constraint_guid' => '1',
 				'pid' => 1,
 				'constraint_type_qid' => 'Multi value',
 				'constraint_parameters' => '{}',
-			],
-			[
+			] )
+			->row( [
 				'constraint_guid' => '3',
 				'pid' => 1,
 				'constraint_type_qid' => 'Single value',
 				'constraint_parameters' => '{}',
-			],
-		] );
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }
