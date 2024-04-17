@@ -9,10 +9,10 @@ use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use DataValues\UnboundedQuantityValue;
+use Deserializers\Deserializer;
 use LogicException;
 use MediaWiki\Config\Config;
 use Wikibase\DataModel\Deserializers\DeserializerFactory;
-use Wikibase\DataModel\Deserializers\SnakDeserializer;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
@@ -43,7 +43,7 @@ use WikibaseQuality\ConstraintReport\Role;
 class ConstraintParameterParser {
 
 	private Config $config;
-	private SnakDeserializer $snakDeserializer;
+	private Deserializer $snakDeserializer;
 	private string $unitItemConceptBaseUri;
 
 	/**
