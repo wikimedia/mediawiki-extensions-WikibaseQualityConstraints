@@ -63,10 +63,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		];
 	}
 
-	/** @dataProvider provideFormatConstraintCompliance
-	 * @param string $pattern
-	 * @param string $text
-	 */
+	/** @dataProvider provideFormatConstraintCompliance */
 	public function testFormatConstraintComplianceSparql( string $pattern, string $text ) {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 0 ] );
 		$value = new StringValue( $text );
@@ -79,10 +76,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertCompliance( $result );
 	}
 
-	/** @dataProvider provideFormatConstraintCompliance
-	 * @param string $pattern
-	 * @param string $text
-	 */
+	/** @dataProvider provideFormatConstraintCompliance */
 	public function testFormatConstraintComplianceShellbox( string $pattern, string $text ) {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 1 ] );
 		$value = new StringValue( $text );
@@ -122,10 +116,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		];
 	}
 
-	/** @dataProvider provideFormatConstraintViolation
-	 * @param string $pattern
-	 * @param string $text
-	 */
+	/** @dataProvider provideFormatConstraintViolation */
 	public function testFormatConstraintViolationSparql( string $pattern, string $text ) {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 0 ] );
 		$value = new StringValue( $text );
@@ -138,10 +129,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 	}
 
-	/** @dataProvider provideFormatConstraintViolation
-	 * @param string $pattern
-	 * @param string $text
-	 */
+	/** @dataProvider provideFormatConstraintViolation */
 	public function testFormatConstraintViolationShellbox( string $pattern, string $text ) {
 		$config = $this->getMultiConfig( [ 'WBQualityConstraintsFormatCheckerShellboxRatio' => 1 ] );
 		$value = new StringValue( $text );
@@ -222,9 +210,9 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
-					  ->disableOriginalConstructor()
-					  ->onlyMethods( [ 'matchesRegularExpression' ] )
-					  ->getMock();
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'matchesRegularExpression' ] )
+			->getMock();
 		$sparqlHelper->expects( $this->never() )->method( 'matchesRegularExpression' );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
@@ -308,9 +296,9 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	public function testFormatConstraintDeprecatedStatement() {
 		$statement = NewStatement::forProperty( 'P1' )
-				   ->withValue( 'abc' )
-				   ->withDeprecatedRank()
-				   ->build();
+			->withValue( 'abc' )
+			->withDeprecatedRank()
+			->build();
 		$constraint = $this->getConstraintMock( $this->formatParameter( 'a.b.' ) );
 		$entity = NewItem::withId( 'Q1' )
 				->build();
