@@ -248,16 +248,15 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 			$propertyConstraintId
 		);
 
-		$this->assertSelect(
-			'wbqc_constraints',
-			[
+		$this->newSelectQueryBuilder()
+			->select( [
 				'constraint_guid',
 				'pid',
 				'constraint_type_qid',
 				'constraint_parameters',
-			],
-			[],
-			[
+			] )
+			->from( 'wbqc_constraints' )
+			->assertResultSet( [
 				// constraint previously imported from the property under test is still there
 				[
 					'P2$2892c48c-53e5-40ef-94a2-274ebf35075c',
@@ -286,8 +285,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 					'TestConstraint',
 					'{}',
 				],
-			]
-		);
+			] );
 	}
 
 	public function testImportConstraintsForProperty_Deprecated() {
@@ -390,16 +388,15 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 		$job->run();
 
-		$this->assertSelect(
-			'wbqc_constraints',
-			[
+		$this->newSelectQueryBuilder()
+			->select( [
 				'constraint_guid',
 				'pid',
 				'constraint_type_qid',
 				'constraint_parameters',
-			],
-			[],
-			[
+			] )
+			->from( 'wbqc_constraints' )
+			->assertResultSet( [
 				// constraint previously imported from the property under test was removed
 				// new constraint imported from the statement under test is there
 				[
@@ -422,8 +419,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 					'TestConstraint',
 					'{}',
 				],
-			]
-		);
+			] );
 	}
 
 	private function getTimeValue( $date ): TimeValue {

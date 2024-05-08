@@ -37,16 +37,15 @@ class ConstraintRepositoryStoreTest extends \MediaWikiIntegrationTestCase {
 		$repo = $this->newConstraintRepositoryStore();
 		$repo->insertBatch( $constraints );
 
-		$this->assertSelect(
-			'wbqc_constraints',
-			[
+		$this->newSelectQueryBuilder()
+			->select( [
 				'constraint_guid',
 				'pid',
 				'constraint_type_qid',
 				'constraint_parameters',
-			],
-			[],
-			[
+			] )
+			->from( 'wbqc_constraints' )
+			->assertResultSet( [
 				[
 					'1',
 					1,
@@ -77,8 +76,7 @@ class ConstraintRepositoryStoreTest extends \MediaWikiIntegrationTestCase {
 					'TestConstraint',
 					'{"foo":"bar"}',
 				],
-			]
-		);
+			] );
 	}
 
 	public function testInsertBatchTooLongParameters() {
@@ -105,24 +103,22 @@ class ConstraintRepositoryStoreTest extends \MediaWikiIntegrationTestCase {
 			),
 		] );
 
-		$this->assertSelect(
-			'wbqc_constraints',
-			[
+		$this->newSelectQueryBuilder()
+			->select( [
 				'constraint_guid',
 				'pid',
 				'constraint_type_qid',
 				'constraint_parameters',
-			],
-			[],
-			[
+			] )
+			->from( 'wbqc_constraints' )
+			->assertResultSet( [
 				[
 					'P1$13510cdc-0f91-4ea3-b71d-db2a33c27dff',
 					'1',
 					'Q1',
 					'{"@error":{"toolong":true}}',
 				],
-			]
-		);
+			] );
 	}
 
 	private function insertTestData() {
