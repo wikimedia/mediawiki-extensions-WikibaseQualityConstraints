@@ -257,8 +257,8 @@ To add a new constraint type, the following steps are necessary:
 
 You can see which dependencies have new releases by first running `npm ci` to ensure your local dependencies are up-to-date, and then running `npm outdated`.
 
- - [Jasmine 5](https://jasmine.github.io/tutorials/upgrading_to_Jasmine_5.0) and [Sinon 17](https://github.com/sinonjs/sinon/blob/main/CHANGES.md) are declared not compatible with Node 16, which we still use in CI. Until [T331180](https://phabricator.wikimedia.org/T331180) is done, we should use the latest versions of Jasmine 4 and Sinon 16.
- - Unexpected: This shows up in the npm outdated output due to a bad “latest” tag on npm; we want to be using the highest version number (currently 13.2.1), not the one tagged as latest (currently 12.0.5).
+ - [grunt-eslint](https://github.com/sindresorhus/grunt-eslint) no longer supports "flat" eslint config files (i.e. `.eslintrc.json`) since version 25.0.0 because of changes since eslint 9 (see issue [#176](https://github.com/sindresorhus/grunt-eslint/issues/176)). See [T364065](https://phabricator.wikimedia.org/T364065) for progress with our eslint 9 migration.
+ - [grunt-stylelint](https://github.com/wikimedia/grunt-stylelint) switched to Stylelint 16+ in version 0.20.0, which no longer supports stylelint-stylistic, depended upon by [stylelint-config-wikimedia](https://github.com/wikimedia/stylelint-config-wikimedia). See issue [#225](https://github.com/wikimedia/stylelint-config-wikimedia/issues/225)
 
 #### PHP
 
