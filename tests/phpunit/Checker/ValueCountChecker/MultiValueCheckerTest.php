@@ -13,6 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MultiValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
+use WikibaseQuality\ConstraintReport\Tests\Checker\PropertyResolvingMediaWikiIntegrationTestCase;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
@@ -24,7 +25,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class MultiValueCheckerTest extends \PHPUnit\Framework\TestCase {
+class MultiValueCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

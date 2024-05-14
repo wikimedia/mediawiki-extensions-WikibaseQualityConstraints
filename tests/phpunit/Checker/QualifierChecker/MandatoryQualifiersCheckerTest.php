@@ -11,6 +11,7 @@ use Wikibase\DataModel\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\MandatoryQualifiersChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\Checker\PropertyResolvingMediaWikiIntegrationTestCase;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
@@ -22,7 +23,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class MandatoryQualifiersCheckerTest extends \MediaWikiIntegrationTestCase {
+class MandatoryQualifiersCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

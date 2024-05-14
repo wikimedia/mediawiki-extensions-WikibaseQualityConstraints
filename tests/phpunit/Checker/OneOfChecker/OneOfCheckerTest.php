@@ -12,6 +12,7 @@ use Wikibase\DataModel\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\OneOfChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\Checker\PropertyResolvingMediaWikiIntegrationTestCase;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -24,7 +25,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class OneOfCheckerTest extends \MediaWikiIntegrationTestCase {
+class OneOfCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

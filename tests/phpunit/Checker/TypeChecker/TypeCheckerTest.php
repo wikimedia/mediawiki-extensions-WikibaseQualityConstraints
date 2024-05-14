@@ -19,6 +19,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TypeCheckerHelper;
+use WikibaseQuality\ConstraintReport\Tests\Checker\PropertyResolvingMediaWikiIntegrationTestCase;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
@@ -34,7 +35,7 @@ use Wikimedia\Stats\StatsFactory;
  * @author BP2014N1
  * @license GPL-2.0-or-later
  */
-class TypeCheckerTest extends \MediaWikiIntegrationTestCase {
+class TypeCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

@@ -27,7 +27,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class AllowedUnitsCheckerTest extends \PHPUnit\Framework\TestCase {
+class AllowedUnitsCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;
