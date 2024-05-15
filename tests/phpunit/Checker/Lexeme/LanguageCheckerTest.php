@@ -39,6 +39,9 @@ class LanguageCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase 
 
 	protected function setUp(): void {
 		parent::setUp();
+
+		$this->markTestSkippedIfExtensionNotLoaded( 'WikibaseLexeme' );
+
 		$this->languageChecker = new LanguageChecker(
 			$this->getConstraintParameterParser(),
 			$this->getEntityLookup()
