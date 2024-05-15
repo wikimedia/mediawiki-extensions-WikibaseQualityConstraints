@@ -21,6 +21,7 @@ use Wikibase\DataModel\Tests\NewStatement;
 use Wikibase\Lib\Store\EntityRevision;
 use Wikibase\Lib\Store\EntityRevisionLookup;
 use Wikibase\Lib\Store\LookupConstants;
+use Wikibase\Lib\Store\PropertyInfoLookup;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLBFactory;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use Wikibase\Repo\WikibaseRepo;
@@ -91,6 +92,12 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 			Title::newFromText( 'constraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]
 		);
+
+		$propertyInfoLookup = $this->createMock( PropertyInfoLookup::class );
+		$propertyInfoLookup->method( 'getPropertyInfo' )
+			->willReturn( [ 'type' => 'anything' ] );
+		$this->setService( 'WikibaseRepo.PropertyInfoLookup', $propertyInfoLookup );
+
 		$class1 = new EntityIdValue( new ItemId( 'Q5' ) );
 		$class2 = new EntityIdValue( new ItemId( 'Q15632617' ) );
 		$quantity = UnboundedQuantityValue::newFromNumber( 50, 'kg' );
