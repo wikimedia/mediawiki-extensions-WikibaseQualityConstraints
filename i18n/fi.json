@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"McSalama",
 			"Moj",
 			"Nike",
@@ -55,7 +56,7 @@
 	"wbqc-violation-message-one-of": "Ominaisuuden $1 arvo tulisi olla {{PLURAL:$2|1=$4.|2=joko $4 tai $5.|jokin seuraavista:$3}}",
 	"wbqc-violation-message-qualifier": "Tätä ominaisuutta tulisi käyttää vain tarkenteena.",
 	"wbqc-violation-message-no-qualifiers": "Esitysten ominaisuudesta $1 ei tulisi sisältää tarkenteita.",
-	"wbqc-violation-message-qualifiers": "$2 ei ole kelvollinen tarkenne ominaisuudelle $1 –  {{PLURAL:$3|1=ainoa kelvollinen tarkenne on $5.|2=ainoat kelvolliset tarkenteet ovat $5 ja $6.|ainoat kelvolliset tarkenteet ovat:$4}}",
+	"wbqc-violation-message-qualifiers": "$2 ei ole kelvollinen tarkenne ominaisuudelle $1 – {{PLURAL:$3|1=ainoa kelvollinen tarkenne on $5.|2=ainoat kelvolliset tarkenteet ovat $5 ja $6.|ainoat kelvolliset tarkenteet ovat:$4}}",
 	"wbqc-violation-message-range-quantity-closed": "Ominaisuuden $1 arvo ($2) tulisi olla välillä $3–$4.",
 	"wbqc-violation-message-range-quantity-leftopen": "Ominaisuuden $1 arvo ($2) ei tulisi olla suurempi kuin $3.",
 	"wbqc-violation-message-range-quantity-rightopen": "Ominaisuuden $1 arvo ($2) ei tulisi olla pienempi kuin $3.",

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"Brettchenweber",
 			"Inkowik",
 			"Metalhead64",
@@ -10,7 +11,7 @@
 	},
 	"wbqc-constraintreport": "Beschränkungsbericht",
 	"wbqc-desc": "Ermöglicht die Überprüfung von Beschränkungen bei Objekten und Eigenschaften und zeigt die Ergebnisse auf einer Spezialseite an",
-	"wbqc-constraintreport-explanation-part-one": "Diese Spezialseite führt  Beschränkungsprüfungen zu einer beliebigen Entität durch. Die vom Live-System abgerufenen Entitäten und jede behobene Beschränkungsverletzung werden sofort von dieser Liste entfernt.",
+	"wbqc-constraintreport-explanation-part-one": "Diese Spezialseite führt Beschränkungsprüfungen zu einer beliebigen Entität durch. Die vom Live-System abgerufenen Entitäten und jede behobene Beschränkungsverletzung werden sofort von dieser Liste entfernt.",
 	"wbqc-constraintreport-explanation-part-two": "Die Beschränkungen werden von den Aussagen der Eigenschaften jedes Mal geparst, wenn diese Aussagen bearbeitet werden, für gewöhnlich innerhalb weniger Minuten.",
 	"wbqc-constraintreport-form-section": "Beschränkungen für die Entität überprüfen",
 	"wbqc-constraintreport-form-submit-label": "Überprüfen",

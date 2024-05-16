@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"Bdijkstra",
 			"Festina90",
 			"Macofe",
@@ -129,10 +130,10 @@
 	"wbqc-violation-message-single-best-value-multi-preferred": "Deze eigenschap moet één “beste” waarde bevatten. Er mag niet meer dan één waarde met de rang “voorkeur” zijn.",
 	"wbqc-violation-message-single-best-value-multi-preferred-separators": "Deze eigenschap moet één “beste” waarde bevatten met dezelfde {{PLURAL:$2|1=kwalificatie: $4.|verzameling kwalificaties voor deze eigenschappen: $3}} Er mag niet meer dan één waarde zijn met de rang “voorkeur”.",
 	"wbqc-violation-message-symmetric": "$1 moet ook de symmetrische verklaring $2 $3 hebben.",
-	"wbqc-violation-message-type-instance": "Entiteiten die de eigenschap $1 gebruiken moeten instanties zijn van {{PLURAL:$3|1=$5|2=$5 of $6|één van de volgende klassen}}  (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
-	"wbqc-violation-message-type-subclass": "Entiteiten die de eigenschap $1 gebruiken moeten subklassen zijn van {{PLURAL:$3|1=$5|2=$5 of $6|één van de volgende klassen}}  (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
+	"wbqc-violation-message-type-instance": "Entiteiten die de eigenschap $1 gebruiken moeten instanties zijn van {{PLURAL:$3|1=$5|2=$5 of $6|één van de volgende klassen}} (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
+	"wbqc-violation-message-type-subclass": "Entiteiten die de eigenschap $1 gebruiken moeten subklassen zijn van {{PLURAL:$3|1=$5|2=$5 of $6|één van de volgende klassen}} (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
 	"wbqc-violation-message-type-instanceOrSubclass": "Entiteiten die de eigenschap $1 gebruiken moeten instanties of subklassen zijn van {{PLURAL:$3|1=$5|2=$5 of $6|één van de volgende klassen}} (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
-	"wbqc-violation-message-valueType-instance": "Waarden van $1-verklaringen moeten instanties zijn van  {{PLURAL:$3|1=$5|2=$5 of $6|één van de volgende klassen}} (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
+	"wbqc-violation-message-valueType-instance": "Waarden van $1-verklaringen moeten instanties zijn van {{PLURAL:$3|1=$5|2=$5 of $6|één van de volgende klassen}} (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
 	"wbqc-violation-message-valueType-subclass": "Waarden van $1-verklaringen moeten subklassen zijn van {{PLURAL:$3|1=$5|2=$5 of $6|een van de volgende klassen}} (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
 	"wbqc-violation-message-valueType-instanceOrSubclass": "Waarden van $1-verklaringen moeten instanties of subklassen zijn van {{PLURAL:$3|1=$5|2=$5 of $6|een van de volgende klassen}} (of een subklasse ervan), maar $2 is dat op dit moment {{PLURAL:$3|1=niet.|2=niet.|niet: $4}}",
 	"wbqc-violation-message-target-required-claim": "$1 moet {{PLURAL:$3|0=een verklaring $2 hebben.|1=een verklaring $2 $5 hebben.|een verklaring voor $2 met één van de volgende waarden hebben: $4}}",
