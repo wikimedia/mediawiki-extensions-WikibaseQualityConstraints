@@ -4,7 +4,8 @@
 			"Les Meloures",
 			"Robby",
 			"Soued031",
-			"Volvox"
+			"Volvox",
+			"Amire80"
 		]
 	},
 	"wbqc-constraintreport": "Rapport vun de Limitatiounen",
@@ -41,9 +42,9 @@
 	"wbqc-constraintdiscuss-short": "Diskutéieren",
 	"wbqc-constraintdiscuss-long": "Diskussiounssäit iwwer dës Limitatioun",
 	"wbqc-cached-generic": "Dëst Resultat kënnt aus dem Tëschespäicher a kéint vereelzt sinn.",
-	"wbqc-cached-minutes": "Dëst Resultat kënnt aus dem Tëschespäicher a ka bis zu  {{PLURAL:$1|1=enger MInutt|$1&nbsp;MInutten}} al sinn.",
-	"wbqc-cached-hours": "Dëst Resultat kënnt aus dem Tëschespäicher a ka bis zu  {{PLURAL:$1|1=enger Stonn|$1&nbsp;Stonnen}} al sinn.",
-	"wbqc-cached-days": "Dëst Resultat kënnt aus dem Tëschespäicher a ka bis zu  {{PLURAL:$1|1=engem Dag|$1&nbsp;Deeg}} al sinn.",
+	"wbqc-cached-minutes": "Dëst Resultat kënnt aus dem Tëschespäicher a ka bis zu {{PLURAL:$1|1=enger MInutt|$1&nbsp;MInutten}} al sinn.",
+	"wbqc-cached-hours": "Dëst Resultat kënnt aus dem Tëschespäicher a ka bis zu {{PLURAL:$1|1=enger Stonn|$1&nbsp;Stonnen}} al sinn.",
+	"wbqc-cached-days": "Dëst Resultat kënnt aus dem Tëschespäicher a ka bis zu {{PLURAL:$1|1=engem Dag|$1&nbsp;Deeg}} al sinn.",
 	"wbqc-dataValueType-wikibase-entityid": "ID vun der Entitéit",
 	"wbq-subextension-name-wbqc": "Limitatiounen",
 	"wbqc-violation-header-parameters": "Parameteren:",
