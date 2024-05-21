@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\WikiMap\WikiMap;
-use ObjectCache;
 use RuntimeException;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\Repo\WikibaseRepo;
@@ -32,7 +31,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerialize
 
 return [
 	ConstraintsServices::EXPIRY_LOCK => static function ( MediaWikiServices $services ): ExpiryLock {
-		return new ExpiryLock( ObjectCache::getInstance( CACHE_ANYTHING ) );
+		return new ExpiryLock( $services->getObjectCacheFactory()->getInstance( CACHE_ANYTHING ) );
 	},
 
 	ConstraintsServices::LOGGING_HELPER => static function ( MediaWikiServices $services ): LoggingHelper {
