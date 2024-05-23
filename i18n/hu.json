@@ -4,7 +4,8 @@
 			"Csigabi",
 			"Máté",
 			"Tacsipacsi",
-			"Urbalazs"
+			"Urbalazs",
+			"Amire80"
 		]
 	},
 	"wbqc-constraintreport": "Kikötésjelentés",
@@ -99,7 +100,7 @@
 	"wbqc-violation-message-one-of": "A(z) $1 tulajdonság értékének a {{PLURAL:$2|következőnek|következők egyikének}} kell lennie: {{PLURAL:$2|1=$4.|2=$4 vagy $5.|$3}}",
 	"wbqc-violation-message-qualifier": "A tulajdonság csak minősítőként használható.",
 	"wbqc-violation-message-no-qualifiers": "A(z) $1 állításoknak nem lehet minősítőjük.",
-	"wbqc-violation-message-qualifiers": "$2 nem érvényes minősítő ehhez: $1 – csak a következő {{PLURAL:$3|1=minősítő engedélyezett:  $5.|2=minősítők engedélyezettek: $5 és $6.|minősítők engedélyezettek: $4}}",
+	"wbqc-violation-message-qualifiers": "$2 nem érvényes minősítő ehhez: $1 – csak a következő {{PLURAL:$3|1=minősítő engedélyezett: $5.|2=minősítők engedélyezettek: $5 és $6.|minősítők engedélyezettek: $4}}",
 	"wbqc-violation-message-range-parameters-needed": "A(z) „$1” adattípusú, „$4” kikötéssel rendelkező tulajdonságoknak meg kell adni a(z) „$2” és „$3” paramétereket.",
 	"wbqc-violation-message-range-parameters-one-year": "Egy időtartam végpontjai közül vagy mindkettő, vagy egyik sem lehet „év” egységben, mert az éveket nem lehet veszteségmentesen másodpercekké konvertálni.",
 	"wbqc-violation-message-range-parameters-same": "Egy intervallum kezdő- ($1) és végpontja ($2) nem lehet azonos.",
