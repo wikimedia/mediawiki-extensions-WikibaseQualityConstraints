@@ -8,6 +8,7 @@ use Wikibase\DataModel\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SingleBestValueChecker;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
+use WikibaseQuality\ConstraintReport\Tests\Checker\PropertyResolvingMediaWikiIntegrationTestCase;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
@@ -19,7 +20,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class SingleBestValueCheckerTest extends \PHPUnit\Framework\TestCase {
+class SingleBestValueCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;

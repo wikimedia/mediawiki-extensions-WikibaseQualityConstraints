@@ -28,6 +28,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
+use WikibaseQuality\ConstraintReport\Tests\PropertyDataTypeLookupMockingTrait;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
@@ -42,6 +43,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;
+	use PropertyDataTypeLookupMockingTrait;
 
 	/**
 	 * @var Constraint
@@ -50,6 +52,7 @@ class ConstraintParameterParserTest extends \MediaWikiLangTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
+		$this->mockPropertyDataTypeLookup();
 		$this->constraint = new Constraint( 'constraint ID', new NumericPropertyId( 'P1' ), 'constraint type Q-ID', [] );
 	}
 

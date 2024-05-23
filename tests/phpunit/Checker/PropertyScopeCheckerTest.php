@@ -22,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class PropertyScopeCheckerTest extends \PHPUnit\Framework\TestCase {
+class PropertyScopeCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase {
 	use ResultAssertions;
 	use ConstraintParameters;
 

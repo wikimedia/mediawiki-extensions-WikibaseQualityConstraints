@@ -20,7 +20,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
  * @author Amir Sarabadani
  * @license GPL-2.0-or-later
  */
-class EntityTypeCheckerTest extends \MediaWikiIntegrationTestCase {
+class EntityTypeCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCase {
 
 	use ConstraintParameters;
 	use ResultAssertions;
