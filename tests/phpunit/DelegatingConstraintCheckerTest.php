@@ -23,6 +23,7 @@ use Wikibase\DataModel\Snak\SnakList;
 use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Tests\NewItem;
 use Wikibase\DataModel\Tests\NewStatement;
+use Wikibase\Lib\Store\PropertyInfoLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker;
@@ -84,6 +85,11 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			MediaWikiServices::getInstance()->getMainConfig(),
 		] );
 		$this->setService( 'MainConfig', $config );
+
+		$propertyInfoLookup = $this->createMock( PropertyInfoLookup::class );
+		$propertyInfoLookup->method( 'getPropertyInfo' )
+			->willReturn( [ 'type' => 'anything' ] );
+		$this->setService( 'WikibaseRepo.PropertyInfoLookup', $propertyInfoLookup );
 
 		$constraintParameterParser = new ConstraintParameterParser(
 			$config,
