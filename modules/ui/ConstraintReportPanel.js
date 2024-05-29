@@ -24,18 +24,24 @@
 	 *
 	 * @constructor
 	 * @param {Object} config Configuration options
-	 * @cfg {string} status The status of the report, e.g. 'violation' or 'compliance'.
-	 * @cfg {Object} constraint The constraint of the report, as returned by the wbcheckconstraints API.
-	 * @cfg {string} [message=''] The message (HTML) of the report, if present.
-	 * @cfg {string} [constraintClarification] The constraint clarification (plain text) of the report, if any.
-	 * @cfg {string[]} [ancillaryMessages=[]] Additional messages (HTML) attached to the report, if any.
-	 * @cfg {jQuery} [$heading] The heading element of the panel. Should not yet contain the heading links.
-	 * @cfg {jQuery} [$headingLinks] The container for the links in the heading of the panel. Should not yet contain the help link or the discussion link.
-	 * @cfg {jQuery} [$helpLink] The help link for the heading.
-	 * @cfg {jQuery} [$discussLink] The link to the discussion page.
-	 * @cfg {jQuery} [$message] The message paragraph of the panel.
-	 * @cfg {jQuery} [$constraintClarification] The constraint clarification paragraph of the panel.
-	 * @cfg {jQuery} [$ancillaryMessages] The container of the additional messages.
+	 * @param {string} config.status The status of the report, e.g. 'violation' or 'compliance'.
+	 * @param {Object} config.constraint The constraint of the report, as returned by the
+	 *   wbcheckconstraints API.
+	 * @param {string} [config.message=''] The message (HTML) of the report, if present.
+	 * @param {string} [config.constraintClarification] The constraint clarification (plain text)
+	 *   of the report, if any.
+	 * @param {string[]} [config.ancillaryMessages=[]] Additional messages (HTML) attached to the
+	 *   report, if any.
+	 * @param {jQuery} [config.$heading] The heading element of the panel. Should not yet contain
+	 *   the heading links.
+	 * @param {jQuery} [config.$headingLinks] The container for the links in the heading of the
+	 *   panel. Should not yet contain the help link or the discussion link.
+	 * @param {jQuery} [config.$helpLink] The help link for the heading.
+	 * @param {jQuery} [config.$discussLink] The link to the discussion page.
+	 * @param {jQuery} [config.$message] The message paragraph of the panel.
+	 * @param {jQuery} [config.$constraintClarification] The constraint clarification paragraph
+	 *   of the panel.
+	 * @param {jQuery} [config.$ancillaryMessages] The container of the additional messages.
 	 */
 	wb.quality.constraints.ui.ConstraintReportPanel = function WBQCConstraintReportPanel( config ) {
 		// Configuration initialization

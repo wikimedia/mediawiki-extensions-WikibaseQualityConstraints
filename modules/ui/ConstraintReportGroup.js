@@ -31,11 +31,16 @@
 	 *
 	 * @constructor
 	 * @param {Object} config Configuration options
-	 * @cfg {wikibase.quality.constraints.ui.ConstraintReportPanel[]} items The individual constraint report results.
-	 * @cfg {string} [subheading] The subheading of the group. Unlike the label, it is part of the collapsed content if `collapsible` is `true`.
-	 * @cfg {boolean} [collapsible=false] Whether the group can be collapsed or not. If `true`, a `label` is recommended.
-	 * @cfg {boolean} [collapsed=false] Whether the group is collapsed by default or not. (If `true`, implies `collapsible=true` as well.)
-	 * @cfg {string} [status] The status of all reports in this group. Unused by this class, but assigned by `ConstraintReportList.fromPanels`.
+	 * @param {wikibase.quality.constraints.ui.ConstraintReportPanel[]} config.items The
+	 *   individual constraint report results.
+	 * @param {string} [config.subheading] The subheading of the group. Unlike the label, it
+	 *   is part of the collapsed content if `collapsible` is `true`.
+	 * @param {boolean} [config.collapsible=false] Whether the group can be collapsed or not.
+	 *   If `true`, a `label` is recommended.
+	 * @param {boolean} [config.collapsed=false] Whether the group is collapsed by default or
+	 *   not. (If `true`, implies `collapsible=true` as well.)
+	 * @param {string} [config.status] The status of all reports in this group. Unused by
+	 *   this class, but assigned by `ConstraintReportList.fromPanels`.
 	 */
 	wb.quality.constraints.ui.ConstraintReportGroup = function WBQCConstraintReportGroup( config ) {
 

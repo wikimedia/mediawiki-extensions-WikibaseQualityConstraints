@@ -96,7 +96,8 @@
 	 *
 	 * @constructor
 	 * @param {Object} config Configuration options
-	 * @cfg {wikibase.quality.constraints.ui.ConstraintReportGroup[]} items The constraint report groups.
+	 * @param {wikibase.quality.constraints.ui.ConstraintReportGroup[]} config.items The
+	 *   constraint report groups.
 	 */
 	wb.quality.constraints.ui.ConstraintReportList = function WBQCConstraintReportList( config ) {
 
