@@ -27,7 +27,7 @@
 	 * @class
 	 * @extends OO.ui.StackLayout
 	 * eslint-disable-next-line jsdoc/check-tag-names T268378
-	 * @mixins OO.ui.mixin.LabelElement
+	 * @mixes OO.ui.mixin.LabelElement
 	 *
 	 * @constructor
 	 * @param {Object} config Configuration options
