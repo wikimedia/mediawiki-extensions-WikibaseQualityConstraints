@@ -87,9 +87,7 @@
 			( this.constraintClarification && $( '<p>' ).text( this.constraintClarification ) );
 		this.ancillaryMessages = config.ancillaryMessages;
 		this.$ancillaryMessages = config.$ancillaryMessages || $( '<div class="wbqc-ancillary-messages">' ).append(
-			this.ancillaryMessages.map( function ( ancillaryMessage ) {
-				return $( '<p>' ).html( ancillaryMessage );
-			} )
+			this.ancillaryMessages.map( ( ancillaryMessage ) => $( '<p>' ).html( ancillaryMessage ) )
 		);
 
 		// Events

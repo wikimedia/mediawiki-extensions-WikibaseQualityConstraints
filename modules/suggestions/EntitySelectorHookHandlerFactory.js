@@ -16,21 +16,17 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 
 	function getConstraintDefinition( repoApiUrl, propertyId, constraintsPropertyId, constraintId, constraintQualifierOfPropertyId ) {
 		return getJsonCached( repoApiUrl + '?action=wbgetclaims&format=json&entity=' + propertyId + '&property=' + constraintsPropertyId ).then(
-			function ( d ) {
+			( d ) => {
 				let oneOfIds = [];
 				if ( !d.claims || !d.claims[ constraintsPropertyId ] ) {
 					return oneOfIds;
 				}
 
-				d.claims[ constraintsPropertyId ].forEach( function ( c ) {
+				d.claims[ constraintsPropertyId ].forEach( ( c ) => {
 					if ( c.mainsnak.datavalue.value.id === constraintId && c.qualifiers && c.qualifiers[ constraintQualifierOfPropertyId ] ) {
 						oneOfIds = oneOfIds.concat( c.qualifiers[ constraintQualifierOfPropertyId ]
-							.filter( function ( filterD ) {
-								return filterD.datavalue;
-							} )
-							.map( function ( mapD ) {
-								return mapD.datavalue.value.id;
-							} ) );
+							.filter( ( filterD ) => filterD.datavalue )
+							.map( ( mapD ) => mapD.datavalue.value.id ) );
 					}
 				} );
 
@@ -39,10 +35,10 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 	}
 
 	function createItemsFromIdsFetchLabels( repoApiUrl, language, ids, filter, articlePathPattern ) {
-		return getJsonCached( repoApiUrl + '?action=wbgetentities&props=labels|descriptions&format=json&languages=' + language + '&ids=' + ids.join( '|' ) ).then( function ( ld ) {
+		return getJsonCached( repoApiUrl + '?action=wbgetentities&props=labels|descriptions&format=json&languages=' + language + '&ids=' + ids.join( '|' ) ).then( ( ld ) => {
 			const data = [];
 			let item = null;
-			ids.forEach( function ( id ) {
+			ids.forEach( ( id ) => {
 				let filterTerm = '';
 				item = {
 					id: id,
@@ -75,23 +71,19 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 	}
 
 	function createItemsFromIds( repoApiUrl, language, ids, filter, articlePathPattern ) {
-		let promise = new Promise( function ( resolve ) {
+		let promise = new Promise( ( resolve ) => {
 			resolve( [] );
 		} );
 
 		while ( ids.length > 0 ) {
 			const currentIds = ids.splice( 0, MAX_LABELS_API_LIMIT );
-			promise = promise.then( function ( itemList ) {
-				return createItemsFromIdsFetchLabels(
-					repoApiUrl,
-					language,
-					currentIds,
-					filter,
-					articlePathPattern
-				).then( function ( items ) {
-					return itemList.concat( items );
-				} );
-			} );
+			promise = promise.then( ( itemList ) => createItemsFromIdsFetchLabels(
+				repoApiUrl,
+				language,
+				currentIds,
+				filter,
+				articlePathPattern
+			).then( ( items ) => itemList.concat( items ) ) );
 		}
 
 		return promise;
@@ -108,7 +100,7 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 			articlePathPattern = wbRepo.url + wbRepo.articlePath,
 			filterFunction = function ( term ) {
 				let filter = false;
-				data.term.split( ' ' ).forEach( function ( t ) {
+				data.term.split( ' ' ).forEach( ( t ) => {
 					if ( term.toLowerCase().indexOf( t.toLowerCase() ) === -1 ) {
 						filter = true;
 					}
@@ -138,9 +130,7 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 			propertyConstraintId,
 			constraintId,
 			qualifierId
-		).then( function ( oneOfIds ) {
-			return createItemsFromIds( data.options.url, data.options.language, oneOfIds, filterFunction, articlePathPattern );
-		} ) );
+		).then( ( oneOfIds ) => createItemsFromIds( data.options.url, data.options.language, oneOfIds, filterFunction, articlePathPattern ) ) );
 
 	};
 };

@@ -1,4 +1,4 @@
-describe( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandler', function () {
+describe( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandler', () => {
 	const expect = require( 'unexpected' ).clone(),
 		sinon = require( 'sinon' ),
 		makeHookHandler = require( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandlerFactory' ),
@@ -49,33 +49,33 @@ describe( 'wikibase.quality.constraints.suggestions.EntitySelectorHookHandler', 
 		);
 	}
 
-	it( 'exports an invokable module', function () {
+	it( 'exports an invokable module', () => {
 		expect( makeHookHandler, 'to be a', 'function' );
 	} );
 
-	describe( 'getSearchHandler', function () {
-		it( 'Returns a handler function', function () {
+	describe( 'getSearchHandler', () => {
+		it( 'Returns a handler function', () => {
 			const handler = getHookHandler();
 			expect( handler, 'to be a', 'function' );
 		} );
 	} );
 
-	describe( 'returned search handler', function () {
-		it( 'calls passed callback', function () {
+	describe( 'returned search handler', () => {
+		it( 'calls passed callback', () => {
 			const handler = getHookHandler(),
 				mockCB = sinon.spy();
 			handler( defaultMockPayload, mockCB );
 			expect( mockCB.called, 'to be true' );
 		} );
 
-		it( 'doesn\'t call passed callback for items with qualifier context', function () {
+		it( 'doesn\'t call passed callback for items with qualifier context', () => {
 			const handler = getHookHandler(),
 				mockCB = sinon.spy();
 			handler( { options: { type: 'item' } }, mockCB );
 			expect( mockCB.called, 'to be false' );
 		} );
 
-		it( 'doesn\'t call passed callback for properties without qualifier context', function () {
+		it( 'doesn\'t call passed callback for properties without qualifier context', () => {
 			const handler = getHookHandler( false ),
 				mockCB = sinon.spy();
 			handler( { options: { type: 'property' } }, mockCB );

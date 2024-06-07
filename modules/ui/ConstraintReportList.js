@@ -137,12 +137,12 @@
 		const panelsByStatus = {},
 			items = [];
 
-		panels.forEach( function ( panel ) {
+		panels.forEach( ( panel ) => {
 			panelsByStatus[ panel.status ] = panelsByStatus[ panel.status ] || [];
 			panelsByStatus[ panel.status ].push( panel );
 		} );
 
-		config.statuses.forEach( function ( statusConfig ) {
+		config.statuses.forEach( ( statusConfig ) => {
 			const status = statusConfig.status,
 				statusPanels = panelsByStatus[ status ];
 

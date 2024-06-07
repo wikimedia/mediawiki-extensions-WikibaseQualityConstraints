@@ -34,25 +34,25 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			'wikibase.quality.constraints.icon',
 			'wikibase.quality.constraints.ui',
 			'wikibase.EntityInitializer'
-		] ).done( function () {
+		] ).done( () => {
 			const api = new mw.Api(),
 				lang = mw.config.get( 'wgUserLanguage' );
 
-			wb.EntityInitializer.newFromEntityLoadedHook().getEntity().done( function ( entity ) {
+			wb.EntityInitializer.newFromEntityLoadedHook().getEntity().done( ( entity ) => {
 				this.setEntity( entity );
-				mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( function () {
+				mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( () => {
 					this.fullCheck( api, lang );
 					if ( mw.config.get( 'wgPageContentModel' ) === 'wikibase-property' ) {
 						this.propertyParameterCheck( api, lang, entityId );
 					}
-				}.bind( this ) );
-			}.bind( this ) );
+				} );
+			} );
 
-			mw.hook( 'wikibase.statement.saved' ).add( function ( savedEntityId, statementId ) {
+			mw.hook( 'wikibase.statement.saved' ).add( ( savedEntityId, statementId ) => {
 				mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
 				this.snakCheck( api, lang, statementId );
-			}.bind( this ) );
-		}.bind( this ) );
+			} );
+		} );
 	};
 
 	SELF.prototype.fullCheck = function ( api, lang ) {
@@ -167,7 +167,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			uselang: lang,
 			claimid: statementId,
 			status: this.config.CACHED_STATUSES
-		} ).then( function ( data ) {
+		} ).then( ( data ) => {
 			if ( isUpdated ) {
 				return;
 			}
@@ -178,7 +178,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 				);
 			}
 		} );
-		this.fullCheck( api, lang ).then( function () {
+		this.fullCheck( api, lang ).then( () => {
 			isUpdated = true;
 		} );
 	};
@@ -191,9 +191,9 @@ module.exports = ( function ( mw, wb, $, OO ) {
 			formatversion: 2,
 			uselang: lang,
 			propertyid: entityId
-		} ).then( function ( data ) {
+		} ).then( ( data ) => {
 			this._addParameterReports( data.wbcheckconstraintparameters[ entityId ] );
-		}.bind( this ) );
+		} );
 	};
 
 	/**
@@ -495,7 +495,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 					)
 				);
 				if ( hasResults ) {
-					mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( function () {
+					mw.hook( 'wikibase.entityPage.entityView.rendered' ).add( () => {
 						const $referenceToggler = $statement
 							.find( '.wikibase-statementview-references-heading .ui-toggler-toggle-collapsed' );
 						if ( $referenceToggler.length > 0 ) {
