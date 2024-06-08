@@ -30,7 +30,7 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 
 		$this->maintenance->execute();
 
-		$this->expectOutputString( 'Constraint statements are not enabled. Aborting.' );
+		$this->expectOutputString( "Constraint statements are not enabled. Aborting.\n" );
 	}
 
 	public function testNoProperties() {
