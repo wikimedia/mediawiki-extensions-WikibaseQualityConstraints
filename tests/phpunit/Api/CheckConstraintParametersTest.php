@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
-use ApiTestCase;
+use MediaWiki\Tests\Api\ApiTestCase;
 use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Repo\WikibaseRepo;

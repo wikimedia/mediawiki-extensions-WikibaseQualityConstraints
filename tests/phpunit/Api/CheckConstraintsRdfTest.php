@@ -3,8 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use Article;
-use IContextSource;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Request\WebResponse;

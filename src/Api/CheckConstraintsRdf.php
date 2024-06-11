@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 
 use Article;
 use FormlessAction;
-use IContextSource;
+use MediaWiki\Context\IContextSource;
 use Wikibase\Lib\Store\EntityIdLookup;
 use Wikibase\Repo\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;

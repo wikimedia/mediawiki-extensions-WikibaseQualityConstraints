@@ -4,7 +4,7 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 
 use MediaWiki\Config\HashConfig;
 use MediaWiki\MediaWikiServices;
-use Message;
+use MediaWiki\Message\Message;
 use MockMessageLocalizer;
 use Wikibase\DataModel\Services\EntityId\PlainEntityIdFormatter;
 use Wikibase\Lib\Formatters\UnDeserializableValueFormatter;

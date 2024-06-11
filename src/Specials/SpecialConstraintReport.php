@@ -5,11 +5,11 @@ declare( strict_types = 1 );
 namespace WikibaseQuality\ConstraintReport\Specials;
 
 use HtmlArmor;
-use HTMLForm;
 use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MediaWiki\Config\Config;
 use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLForm;
 use MediaWiki\SpecialPage\SpecialPage;
 use OOUI\IconWidget;
 use OOUI\LabelWidget;

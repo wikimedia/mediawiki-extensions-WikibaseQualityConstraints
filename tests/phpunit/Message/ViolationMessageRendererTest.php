@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Languages\LanguageNameUtils;
-use Message;
+use MediaWiki\Message\Message;
 use MockMessageLocalizer;
 use ValueFormatters\StringFormatter;
 use ValueFormatters\ValueFormatter;

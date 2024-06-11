@@ -4,11 +4,11 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
-use ApiTestCase;
 use DataValues\UnknownValue;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Tests\Api\ApiTestCase;
 use NullStatsdDataFactory;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;

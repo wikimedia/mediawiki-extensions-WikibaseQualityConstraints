@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use DataValues\MultilingualTextValue;
-use Message;
+use MediaWiki\Message\Message;
 
 /**
  * Render a {@link ViolationMessage},
