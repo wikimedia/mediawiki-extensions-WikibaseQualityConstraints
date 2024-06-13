@@ -15,7 +15,7 @@
 	"apihelp-wbcheckconstraints-paramvalue-status-exception": "ישות הנושא של הקביעה היא חריגה ידועה של האילוץ.",
 	"apihelp-wbcheckconstraints-paramvalue-status-todo": "האילוץ אינו מיושם.",
 	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "הפרמטרים של האילוץ אינם תקינים.",
-	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "האילוץ לא נבדק משום שהקביעה יצאה משימוש.",
+	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "האילוץ לא נבדק משום שהקביעה הוכרזה כירודה.",
 	"apihelp-wbcheckconstraints-paramvalue-status-warning": "הקביעה מפרה את האילוץ, אבל האילוץ אינו חובה.",
 	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "הקביעה הזאת מפרה את האילוץ, אבל האילוץ הוא רק הצעה.",
 	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "האילוץ אינו נבדק בסוג הסנאק הזה (סנאק ראשי, מבחין או מקור), ולכן דילגנו על בדיקת האילוץ הזה.",
