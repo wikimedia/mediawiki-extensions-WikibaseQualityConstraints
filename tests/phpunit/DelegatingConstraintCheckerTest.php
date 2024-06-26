@@ -441,7 +441,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			}
 		) );
 
-		$this->db->newInsertQueryBuilder()
+		$this->getDb()->newInsertQueryBuilder()
 			->insertInto( 'wbqc_constraints' )
 			->rows( $constraints )
 			->caller( __METHOD__ )

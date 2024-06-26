@@ -60,7 +60,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 	public function addDBData() {
 		$config = self::getDefaultConfig();
-		$this->db->newInsertQueryBuilder()
+		$this->getDb()->newInsertQueryBuilder()
 			->insertInto( 'wbqc_constraints' )
 			// a constraint imported from a template (UUID)
 			->row( [
