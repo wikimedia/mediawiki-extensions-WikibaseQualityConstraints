@@ -7,7 +7,6 @@ use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
 use Wikibase\Lib\Tests\Store\MockPropertyInfoLookup;
 use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintStatements;
-use Wikimedia\Rdbms\ILBFactory;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Maintenance\ImportConstraintStatements
@@ -36,7 +35,6 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 	public function testNoProperties() {
 		$this->maintenance->setupServices = function () {
 			$this->maintenance->propertyInfoLookup = new MockPropertyInfoLookup( [] );
-			$this->maintenance->lbFactory = $this->createMock( ILBFactory::class );
 		};
 		$this->maintenance->newUpdateConstraintsTableJob = function () {
 			$this->fail( 'newUpdateConstraintsTableJob should not be called' );
@@ -53,9 +51,6 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 				'P1' => [],
 				'P3' => [],
 			] );
-			$this->maintenance->lbFactory = $this->createMock( ILBFactory::class );
-			$this->maintenance->lbFactory->expects( $this->once() )
-				->method( 'waitForReplication' );
 		};
 
 		$call = 0;
@@ -94,9 +89,6 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 				$propertyInfos[$id] = [];
 			}
 			$this->maintenance->propertyInfoLookup = new MockPropertyInfoLookup( $propertyInfos );
-			$this->maintenance->lbFactory = $this->createMock( ILBFactory::class );
-			$this->maintenance->lbFactory->expects( $this->exactly( 2 ) )
-				->method( 'waitForReplication' );
 		};
 		$call = 0;
 		$this->maintenance->newUpdateConstraintsTableJob = function ( $_ ) use ( &$call ) {

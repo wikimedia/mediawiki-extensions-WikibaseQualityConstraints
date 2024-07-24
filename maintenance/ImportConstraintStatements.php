@@ -8,7 +8,6 @@ use MediaWiki\Title\Title;
 use Wikibase\Lib\Store\PropertyInfoLookup;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
-use Wikimedia\Rdbms\ILBFactory;
 
 // @codeCoverageIgnoreStart
 $basePath = getenv( "MW_INSTALL_PATH" ) !== false
@@ -28,9 +27,6 @@ class ImportConstraintStatements extends Maintenance {
 	 * @var PropertyInfoLookup
 	 */
 	private $propertyInfoLookup;
-
-	/** @var ILBFactory */
-	private $lbFactory;
 
 	/**
 	 * @var callable
@@ -62,7 +58,6 @@ class ImportConstraintStatements extends Maintenance {
 		$this->setupServices = function () {
 			$services = MediaWikiServices::getInstance();
 			$this->propertyInfoLookup = WikibaseRepo::getStore( $services )->getPropertyInfoLookup();
-			$this->lbFactory = $services->getDBLoadBalancerFactory();
 		};
 	}
 
@@ -93,7 +88,7 @@ class ImportConstraintStatements extends Maintenance {
 
 			$this->output( 'Waiting for replication... ', 'waitForReplication' );
 			$startTime = microtime( true );
-			$this->lbFactory->waitForReplication();
+			$this->waitForReplication();
 			$endTime = microtime( true );
 			$millis = ( $endTime - $startTime ) * 1000;
 			$this->output( sprintf( 'done in % 6.2f ms.', $millis ), 'waitForReplication' );
