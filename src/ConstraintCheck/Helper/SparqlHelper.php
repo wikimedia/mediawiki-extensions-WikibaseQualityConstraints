@@ -137,7 +137,12 @@ class SparqlHelper {
 	/**
 	 * @var string
 	 */
-	private $endpoint;
+	private $primaryEndpoint;
+
+	/**
+	 * @var string[]
+	 */
+	private $additionalEndpoints;
 
 	/**
 	 * @var int
@@ -204,7 +209,8 @@ class SparqlHelper {
 			$this->entityPrefixes[] = $rdfVocabulary->getNamespaceURI( $namespaceName );
 		}
 
-		$this->endpoint = $config->get( 'WBQualityConstraintsSparqlEndpoint' );
+		$this->primaryEndpoint = $config->get( 'WBQualityConstraintsSparqlEndpoint' );
+		$this->additionalEndpoints = $config->get( 'WBQualityConstraintsAdditionalSparqlEndpoints' ) ?: [];
 		$this->maxQueryTimeMillis = $config->get( 'WBQualityConstraintsSparqlMaxMillis' );
 		$this->instanceOfId = $config->get( 'WBQualityConstraintsInstanceOfId' );
 		$this->subclassOfId = $config->get( 'WBQualityConstraintsSubclassOfId' );
@@ -302,7 +308,7 @@ ASK {
 }
 EOF;
 
-			$result = $this->runQuery( $query );
+			$result = $this->runQuery( $query, $this->primaryEndpoint );
 			$metadatas[] = $result->getMetadata();
 			if ( $result->getArray()['boolean'] ) {
 				return new CachedBool(
@@ -390,9 +396,12 @@ SELECT DISTINCT ?otherEntity WHERE {
 LIMIT 10
 EOF;
 
-		$result = $this->runQuery( $query );
+		$results = [ $this->runQuery( $query, $this->primaryEndpoint ) ];
+		foreach ( $this->additionalEndpoints as $endpoint ) {
+			$results[] = $this->runQuery( $query, $endpoint );
+		}
 
-		return $this->getOtherEntities( $result );
+		return $this->getOtherEntities( $results );
 	}
 
 	/**
@@ -446,9 +455,12 @@ $deprecatedFilter
 LIMIT 10
 EOF;
 
-		$result = $this->runQuery( $query );
+		$results = [ $this->runQuery( $query, $this->primaryEndpoint ) ];
+		foreach ( $this->additionalEndpoints as $endpoint ) {
+			$results[] = $this->runQuery( $query, $endpoint );
+		}
 
-		return $this->getOtherEntities( $result );
+		return $this->getOtherEntities( $results );
 	}
 
 	/**
@@ -463,14 +475,22 @@ EOF;
 	}
 
 	/**
-	 * Extract and parse entity IDs from the ?otherEntity column of a SPARQL query result.
+	 * Extract and parse entity IDs from the ?otherEntity column of SPARQL query results.
 	 *
-	 * @param CachedQueryResults $results
+	 * @param CachedQueryResults[] $results
 	 *
 	 * @return CachedEntityIds
 	 */
-	private function getOtherEntities( CachedQueryResults $results ) {
-		return new CachedEntityIds( array_map(
+	private function getOtherEntities( array $results ) {
+		$allResultBindings = [];
+		$metadatas = [];
+
+		foreach ( $results as $result ) {
+			$metadatas[] = $result->getMetadata();
+			$allResultBindings = array_merge( $allResultBindings, $result->getArray()['results']['bindings'] );
+		}
+
+		$entityIds = array_map(
 			function ( $resultBindings ) {
 				$entityIRI = $resultBindings['otherEntity']['value'];
 				foreach ( $this->entityPrefixes as $entityPrefix ) {
@@ -490,8 +510,13 @@ EOF;
 
 				return null;
 			},
-			$results->getArray()['results']['bindings']
-		), $results->getMetadata() );
+			$allResultBindings
+		);
+
+		return new CachedEntityIds(
+			array_values( array_filter( array_unique( $entityIds ) ) ),
+			Metadata::merge( $metadatas )
+		);
 	}
 
 	// phpcs:disable Generic.Metrics.CyclomaticComplexity,Squiz.WhiteSpace.FunctionSpacing
@@ -677,7 +702,7 @@ EOF;
 SELECT (REGEX($textStringLiteral, $regexStringLiteral) AS ?matches) {}
 EOF;
 
-		$result = $this->runQuery( $query, false );
+		$result = $this->runQuery( $query, $this->primaryEndpoint, false );
 
 		$vars = $result->getArray()['results']['bindings'][0];
 		if ( array_key_exists( 'matches', $vars ) ) {
@@ -784,14 +809,14 @@ EOF;
 	 * TODO: See if Sparql Client in core can be used instead of rolling our own
 	 *
 	 * @param string $query The query, unencoded (plain string).
+	 * @param string $endpoint The endpoint to query.
 	 * @param bool $needsPrefixes Whether the query requires prefixes or they can be omitted.
 	 *
 	 * @return CachedQueryResults
 	 *
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	public function runQuery( $query, $needsPrefixes = true ) {
-
+	protected function runQuery( string $query, string $endpoint, bool $needsPrefixes = true ) {
 		if ( $this->throttlingLock->isLocked( self::EXPIRY_LOCK_ID ) ) {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
 			throw new TooManySparqlRequestsException();
@@ -806,7 +831,7 @@ EOF;
 		}
 		$query = "#wbqc\n" . $query;
 
-		$url = $this->endpoint . '?' . http_build_query(
+		$url = $endpoint . '?' . http_build_query(
 			[
 				'query' => $query,
 				'format' => 'json',

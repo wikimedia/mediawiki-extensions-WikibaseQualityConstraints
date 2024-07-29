@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
 /**
  * A list of entity IDs, along with information whether and how they were cached.
  *
- * (Note that list entries may also be null,
+ * (Note that an unknown amount of errors may have been discarded,
  * in case it was not possible to parse an entity ID from the SPARQL response.)
  *
  * @license GPL-2.0-or-later

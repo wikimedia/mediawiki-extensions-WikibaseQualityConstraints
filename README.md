@@ -36,7 +36,9 @@ Extension to Wikibase Repository that performs constraint checks.
   * Specify the entity IDs of entities that are used to define constraints.
     See the “Data import” section for an automatic way to do this.
 
-  * If you have a SPARQL endpoint, configure it in `WBQualityConstraintsSparqlEndpoint`.
+  * If you have one or more SPARQL endpoints, configure the primary endpoint in
+    `WBQualityConstraintsSparqlEndpoint`, and any additional endpoints in
+    `WBQualityConstraintsAdditionalSparqlEndpoints`.
 
   * Alternatively, to check “format” constraints without running a full SPARQL server,
     you can use the [minisparql] server.

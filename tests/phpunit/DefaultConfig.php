@@ -25,6 +25,7 @@ trait DefaultConfig {
 			self::$defaultConfig->set( 'WBQualityConstraintsTypeCheckMaxEntities', 10 );
 			// never query remote servers
 			self::$defaultConfig->set( 'WBQualityConstraintsSparqlEndpoint', 'http://localhost:65536/' );
+			self::$defaultConfig->set( 'WBQualityConstraintsAdditionalSparqlEndpoints', [] );
 		}
 
 		return clone self::$defaultConfig;

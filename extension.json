@@ -242,7 +242,12 @@
 		},
 		"WBQualityConstraintsSparqlEndpoint": {
 			"value": "",
-			"description": "The URL of the SPARQL endpoint. Should accept the URL parameters 'query', 'format' and 'maxQueryTimeMillis'. Set to '' (empty string, default) to disable SPARQL functionality.",
+			"description": "The URL of the primary SPARQL endpoint. Should accept the URL parameters 'query', 'format' and 'maxQueryTimeMillis'. Set to '' (empty string, default) to disable SPARQL functionality.",
+			"public": true
+		},
+		"WBQualityConstraintsAdditionalSparqlEndpoints": {
+			"value": [],
+			"description": "The URLs of SPARQL endpoints to query in addition to the primary one. Should accept the URL parameters 'query', 'format' and 'maxQueryTimeMillis'. Set to [] (empty array, default) to only use the primary endpoint.",
 			"public": true
 		},
 		"WBQualityConstraintsSparqlMaxMillis": {

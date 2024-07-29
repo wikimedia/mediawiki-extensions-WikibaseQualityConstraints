@@ -132,7 +132,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasTypeWithoutHint() {
-		$sparqlHelper = $this->getSparqlHelper();
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
 
 		$query = <<<EOF
 ASK {
@@ -151,9 +151,9 @@ EOF;
 	}
 
 	public function testHasTypeWithHint() {
-		$sparqlHelper = $this->getSparqlHelper( new HashConfig( [
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper( new HashConfig( [
 			'WBQualityConstraintsSparqlHasWikibaseSupport' => true,
-		] ) );
+		] ) ) );
 
 		$query = <<<EOF
 ASK {
@@ -253,7 +253,7 @@ EOF
 			$guid
 		);
 
-		$sparqlHelper = $this->getSparqlHelper();
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
 		$query = <<<EOF
 SELECT DISTINCT ?otherEntity WHERE {
   BIND(wds:Q1-8542690f-dfab-4846-944f-8382df730d2c AS ?statement)
@@ -297,7 +297,7 @@ EOF;
 		$dtLookup = $this->createMock( PropertyDataTypeLookup::class );
 		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
 
-		$sparqlHelper = $this->getSparqlHelper( null, $dtLookup );
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper( null, $dtLookup ) );
 
 		$query = <<<EOF
 SELECT DISTINCT ?otherEntity WHERE {
@@ -432,6 +432,187 @@ EOF;
 		];
 	}
 
+	/**
+	 * @dataProvider provideEndpointsAndResults
+	 */
+	public function testFindEntitiesWithSameStatementWithAdditionalEndpoints(
+		$primaryResult,
+		$additionalResults,
+		$expectedResult
+	) {
+		$separators = [];
+		$expectedFilter = "";
+		$guid = 'Q1$8542690f-dfab-4846-944f-8382df730d2c';
+		$statement = new Statement(
+			new PropertyValueSnak( new NumericPropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ),
+			null,
+			null,
+			$guid
+		);
+
+		$primaryEndpoint = self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' );
+
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper( new HashConfig( [
+			'WBQualityConstraintsAdditionalSparqlEndpoints' => array_keys( $additionalResults ),
+		] ) ) );
+
+		$query = <<<EOF
+SELECT DISTINCT ?otherEntity WHERE {
+  BIND(wds:Q1-8542690f-dfab-4846-944f-8382df730d2c AS ?statement)
+  BIND(p:P1 AS ?p)
+  BIND(ps:P1 AS ?ps)
+  ?entity ?p ?statement.
+  ?statement ?ps ?value.
+  ?otherStatement ?ps ?value.
+  ?otherEntity ?p ?otherStatement.
+  FILTER(?otherEntity != ?entity)
+  MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }
+  $expectedFilter
+}
+LIMIT 10
+EOF;
+
+		$sparqlHelper->expects( $this->exactly( count( $additionalResults ) + 1 ) )
+			->method( 'runQuery' )
+			->willReturnCallback(
+				function ( $query, $endpoint ) use ( $additionalResults, $primaryResult, $primaryEndpoint ) {
+					return $this->selectResults(
+						$endpoint === $primaryEndpoint ? $primaryResult : $additionalResults[ $endpoint ]
+					);
+				} )
+			->with( $query, $this->callback( function ( $endpoint ) use ( $additionalResults, $primaryEndpoint ) {
+				return $endpoint === $primaryEndpoint || array_key_exists( $endpoint, $additionalResults );
+			} ) );
+
+		$this->assertEquals(
+			$expectedResult,
+			$sparqlHelper->findEntitiesWithSameStatement( $statement, $separators )->getArray(),
+		);
+	}
+
+	/**
+	 * @dataProvider provideEndpointsAndResults
+	 */
+	public function testFindEntitiesWithSameQualifierOrReferenceWithAdditionalEndpoints(
+		$primaryResult,
+		$additionalResults,
+		$expectedResult
+	) {
+		$pid = new NumericPropertyId( 'P1' );
+		$snak = new PropertyValueSnak( $pid, new StringValue( 'foo' ) );
+		$dataType = 'string';
+		$contextType = 'qualifier';
+		$sparqlValue = '"foo"';
+		$sparqlPath = 'pq:P1';
+
+		$dtLookup = $this->createMock( PropertyDataTypeLookup::class );
+		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
+
+		$primaryEndpoint = self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' );
+
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper( new HashConfig( [
+			'WBQualityConstraintsAdditionalSparqlEndpoints' => array_keys( $additionalResults ),
+		] ), $dtLookup ) );
+
+		$query = <<<EOF
+SELECT DISTINCT ?otherEntity WHERE {
+  BIND(wd:Q10 AS ?entity)
+  BIND($sparqlValue AS ?value)
+  ?entity ?p ?statement.
+  ?statement $sparqlPath ?value.
+  ?otherStatement $sparqlPath ?value.
+  ?otherEntity ?otherP ?otherStatement.
+  FILTER(?otherEntity != ?entity)
+
+}
+LIMIT 10
+EOF;
+		$sparqlHelper->expects( $this->exactly( count( $additionalResults ) + 1 ) )
+			->method( 'runQuery' )
+			->willReturnCallback(
+				function ( $query, $endpoint ) use ( $additionalResults, $primaryResult, $primaryEndpoint ) {
+					return $this->selectResults(
+						$endpoint === $primaryEndpoint ? $primaryResult : $additionalResults[ $endpoint ]
+					);
+				} )
+			->with( $query, $this->callback( function ( $endpoint ) use ( $additionalResults, $primaryEndpoint ) {
+				return $endpoint === $primaryEndpoint || array_key_exists( $endpoint, $additionalResults );
+			} ) );
+
+		$this->assertEquals(
+			$expectedResult,
+			$sparqlHelper->findEntitiesWithSameQualifierOrReference(
+				new ItemId( 'Q10' ),
+				$snak,
+				$contextType,
+				false
+			)->getArray()
+		);
+	}
+
+	public static function provideEndpointsAndResults() {
+		return [
+			'default has matches, no additional endpoints' => [
+				[
+					[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
+					[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
+				],
+				[],
+				[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ],
+			],
+			'default has matches, additional endpoints have none' => [
+				[
+					[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
+					[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
+				],
+				[
+					'firstAdditionalEndpoint' => [],
+					'secondAdditionalEndpoint' => [],
+				],
+				[ new ItemId( 'Q100' ), new ItemId( 'Q101' ) ],
+			],
+			'default and additional endpoints have matches' => [
+				[
+					[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q100' ] ],
+					[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q101' ] ],
+				],
+				[
+					'firstAdditionalEndpoint' => [
+						[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q102' ] ],
+					],
+					'secondAdditionalEndpoint' => [
+						[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q103' ] ],
+						[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q104' ] ],
+					],
+				],
+				[
+					new ItemId( 'Q100' ),
+					new ItemId( 'Q101' ),
+					new ItemId( 'Q102' ),
+					new ItemId( 'Q103' ),
+					new ItemId( 'Q104' ),
+				],
+			],
+			'default has no matches, additional endpoints do' => [
+				[],
+				[
+					'firstAdditionalEndpoint' => [
+						[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q102' ] ],
+					],
+					'secondAdditionalEndpoint' => [
+						[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q103' ] ],
+						[ 'otherEntity' => [ 'type' => 'uri', 'value' => 'http://www.wikidata.org/entity/Q104' ] ],
+					],
+				],
+				[
+					new ItemId( 'Q102' ),
+					new ItemId( 'Q103' ),
+					new ItemId( 'Q104' ),
+				],
+			],
+		];
+	}
+
 	public function testSerializeConstraintParameterException() {
 		$cpe = new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
@@ -478,7 +659,7 @@ EOF;
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
 		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^(?:\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\")$") AS ?matches) {}';
-		$sparqlHelper = $this->getSparqlHelper();
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
 
 		$sparqlHelper->expects( $this->once() )
 			->method( 'runQuery' )
@@ -494,7 +675,7 @@ EOF;
 		$text = '';
 		$regex = '(.{2,5)?';
 		$query = 'SELECT (REGEX("", "^(?:(.{2,5)?)$") AS ?matches) {}';
-		$sparqlHelper = $this->getSparqlHelper();
+		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
 		$messageKey = 'wbqc-violation-message-parameter-regex';
 
 		$sparqlHelper->expects( $this->once() )
@@ -637,7 +818,7 @@ EOF;
 				} )
 			);
 
-		$sparqlHelper = new SparqlHelper(
+		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
@@ -650,10 +831,10 @@ EOF;
 			$loggingHelper,
 			'',
 			$requestFactoryMock
-		);
+		) );
 
 		$this->expectException( TooManySparqlRequestsException::class );
-		$sparqlHelper->runQuery( 'fake query' );
+		$sparqlHelper->runQuery( 'fake query', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
 	public function testRunQuerySetsLock_if429HeadersButRetryAfterMissing() {
@@ -678,7 +859,7 @@ EOF;
 
 		$loggingHelper = $this->getLoggingHelperExpectingRetryAfterMissing();
 
-		$sparqlHelper = new SparqlHelper(
+		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			$config,
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
@@ -691,10 +872,10 @@ EOF;
 			$loggingHelper,
 			'',
 			$requestFactoryMock
-		);
+		) );
 
 		$this->expectException( TooManySparqlRequestsException::class );
-		$sparqlHelper->runQuery( 'fake query' );
+		$sparqlHelper->runQuery( 'fake query', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
 	public function testRunQueryDoesNotQuery_ifLockIsLocked() {
@@ -710,7 +891,7 @@ EOF;
 		$requestFactoryMock->method( 'create' )
 			->willReturn( $requestMock );
 
-		$sparqlHelper = new SparqlHelper(
+		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
@@ -723,10 +904,10 @@ EOF;
 			$this->createMock( LoggingHelper::class ),
 			'',
 			$requestFactoryMock
-		);
+		) );
 
 		$this->expectException( TooManySparqlRequestsException::class );
-		$sparqlHelper->runQuery( 'foo baz' );
+		$sparqlHelper->runQuery( 'foo baz', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
 	public function testRunQuerySetsLock_if429HeadersPresentAndRetryAfterMalformed() {
@@ -743,7 +924,7 @@ EOF;
 
 		$loggingHelper = $this->getLoggingHelperExpectingRetryAfterMissing();
 
-		$sparqlHelper = new SparqlHelper(
+		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			$config,
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
@@ -756,10 +937,10 @@ EOF;
 			$loggingHelper,
 			'',
 			$requestFactoryMock
-		);
+		) );
 
 		$this->expectException( TooManySparqlRequestsException::class );
-		$sparqlHelper->runQuery( 'foo baz' );
+		$sparqlHelper->runQuery( 'foo baz', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
 	private function getMockLock( $expectedLockId, $expectedLockExpiryTimestamp ) {
@@ -877,7 +1058,7 @@ END;
 			[ 'wd' => '' ]
 		);
 
-		$sparqlHelper = new SparqlHelper(
+		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$rdfVocabulary,
 			$this->createMock( EntityIdParser::class ),
@@ -890,7 +1071,7 @@ END;
 			$this->createMock( LoggingHelper::class ),
 			'',
 			$requestFactory
-		);
+		) );
 
 		$query = <<<END
 SELECT ?item ?itemLabel
@@ -901,7 +1082,11 @@ WHERE
 }
 END;
 
-		$sparqlHelper->runQuery( $query, $needsPrefixes = true );
+		$sparqlHelper->runQuery(
+			$query,
+			self::$defaultConfig->get( 'WBQualityConstraintsSparqlEndpoint' ),
+			true
+		);
 	}
 
 	public function testRunQueryTracksError_http() {
@@ -921,7 +1106,7 @@ END;
 
 		$dataFactory = new BufferingStatsdDataFactory( '' );
 
-		$sparqlHelper = new SparqlHelper(
+		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
@@ -934,10 +1119,10 @@ END;
 			$this->createMock( LoggingHelper::class ),
 			'',
 			$requestFactory
-		);
+		) );
 
 		try {
-			$sparqlHelper->runQuery( 'query' );
+			$sparqlHelper->runQuery( 'query', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 			$this->fail( 'should have thrown' );
 		} catch ( SparqlHelperException $e ) {
 			$statsdData = $dataFactory->getData();
@@ -971,7 +1156,7 @@ END;
 
 		$dataFactory = new BufferingStatsdDataFactory( '' );
 
-		$sparqlHelper = new SparqlHelper(
+		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->createMock( RdfVocabulary::class ),
 			$this->createMock( EntityIdParser::class ),
@@ -984,10 +1169,10 @@ END;
 			$this->createMock( LoggingHelper::class ),
 			'',
 			$requestFactory
-		);
+		) );
 
 		try {
-			$sparqlHelper->runQuery( 'query' );
+			$sparqlHelper->runQuery( 'query', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 			$this->fail( 'should have thrown' );
 		} catch ( SparqlHelperException $e ) {
 			$statsdData = $dataFactory->getData();
