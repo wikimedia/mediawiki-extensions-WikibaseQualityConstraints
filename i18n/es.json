@@ -13,7 +13,8 @@
 			"Macofe",
 			"MarcoAurelio",
 			"Themasterriot",
-			"Tiberius1701"
+			"Tiberius1701",
+			"No se"
 		]
 	},
 	"wbqc-constraintreport": "Informe de restricción",
@@ -136,9 +137,11 @@
 	"wbqc-violation-message-reference": "Esta propiedad solo debería usarse para referencias, no para el valor principal de la declaración o calificativos.",
 	"wbqc-violation-message-noBounds": "Los valores de $1 no deberían tener límites.",
 	"wbqc-violation-message-units-none": "El valor de $1 no debe incluir una unidad.",
+	"wbqc-violation-message-entityType": "La propiedad $1 no debe utilizarse en este tipo de entidad, {{plural:$2|1=el único tipo de entidad válido es $4.|los únicos tipos de entidad válidos son $4 y $5.|los tipos de entidad son: $3}}",
 	"wbqc-violation-message-integer": "Los valores de $1 deberían ser enteros, pero $2 tiene una parte fraccional.",
 	"wbqc-violation-message-integer-bounds": "Los valores de $1 deberían ser enteros, pero los límites de $2 tienen una parte fraccional.",
 	"wbqc-violation-message-citationNeeded": "Las declaraciones de $1 deberían tener al menos una referencia.",
 	"wbqc-violation-message-label-lacking": "Entidades con declaraciones para $1 deben también tener una etiqueta por lo menos en {{PLURAL:$2|1=idioma $4.|cualquiera de los siguientes idiomas: $3}}",
+	"wbqc-violation-message-property-scope": "La propiedad $1 no debe utilizarse en esta ubicación ($2). L{{plural:$3|a única ubicación válida|as únicas ubicaciones válidas}} para esta propiedad {{plural:$3|es $5.|son: $4}}",
 	"wbqc-violation-message-exception": "Esta entidad es una excepción conocida a esta restricción y ha sido marcada como tal."
 }
