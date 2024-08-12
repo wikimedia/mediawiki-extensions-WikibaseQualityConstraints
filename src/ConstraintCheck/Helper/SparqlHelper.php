@@ -634,7 +634,7 @@ EOF;
 					'Value of unknown type in object cache (' .
 					'cache key: ' . $cacheKey . ', ' .
 					'cache map key: ' . $textHash . ', ' .
-					'value type: ' . gettype( $matches ) . ')'
+					'value type: ' . get_debug_type( $matches ) . ')'
 				);
 			}
 		} else {
