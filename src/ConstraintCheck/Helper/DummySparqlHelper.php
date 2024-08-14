@@ -1,11 +1,16 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use LogicException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
 
 /**
  * A fake {@link SparqlHelper} that only serves as a default implementation
@@ -23,31 +28,31 @@ class DummySparqlHelper extends SparqlHelper {
 		// no parent::__construct() call
 	}
 
-	public function hasType( $id, array $classes ) {
+	public function hasType( string $id, array $classes ): CachedBool {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
 
 	public function findEntitiesWithSameStatement(
 		Statement $statement,
 		array $separators
-	) {
+	): CachedEntityIds {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
 
 	public function findEntitiesWithSameQualifierOrReference(
 		EntityId $entityId,
 		PropertyValueSnak $snak,
-		$type,
-		$ignoreDeprecatedStatements
-	) {
+		string $type,
+		bool $ignoreDeprecatedStatements
+	): CachedEntityIds {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
 
-	public function matchesRegularExpression( $text, $regex ) {
+	public function matchesRegularExpression( string $text, string $regex ): bool {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
 
-	public function runQuery( $query, $endpoint, $needsPrefixes = true ) {
+	public function runQuery( string $query, string $endpoint, bool $needsPrefixes = true ): CachedQueryResults {
 		throw new LogicException( 'methods of this class should never be called' );
 	}
 

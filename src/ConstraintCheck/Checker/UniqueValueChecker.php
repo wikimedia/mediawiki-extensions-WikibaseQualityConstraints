@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Entity\ItemId;
@@ -24,20 +26,10 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class UniqueValueChecker implements ConstraintChecker {
 
-	/**
-	 * @var SparqlHelper
-	 */
-	private $sparqlHelper;
+	private SparqlHelper $sparqlHelper;
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
+	private ConstraintParameterParser $constraintParameterParser;
 
-	/**
-	 * @param SparqlHelper $sparqlHelper
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 */
 	public function __construct(
 		SparqlHelper $sparqlHelper,
 		ConstraintParameterParser $constraintParameterParser
@@ -49,34 +41,30 @@ class UniqueValueChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return self::ALL_CONTEXT_TYPES_SUPPORTED;
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT,
 		];
 	}
 
 	/** @codeCoverageIgnore This method is purely declarative. */
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return self::ALL_ENTITY_TYPES_SUPPORTED;
 	}
 
 	/**
 	 * Checks 'Unique value' constraint.
 	 *
-	 * @param Context $context
-	 * @param Constraint $constraint
-	 *
 	 * @throws SparqlHelperException if the checker uses SPARQL and the query times out or some other error occurs
-	 * @return CheckResult
 	 */
-	public function checkConstraint( Context $context, Constraint $constraint ) {
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
 			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
@@ -130,7 +118,7 @@ class UniqueValueChecker implements ConstraintChecker {
 			->withMetadata( $metadata );
 	}
 
-	public function checkConstraintParameters( Constraint $constraint ) {
+	public function checkConstraintParameters( Constraint $constraint ): array {
 		$constraintParameters = $constraint->getConstraintParameters();
 		$exceptions = [];
 		try {

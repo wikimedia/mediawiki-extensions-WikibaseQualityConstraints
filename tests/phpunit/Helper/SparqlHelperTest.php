@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
 use BufferingStatsdDataFactory;
@@ -72,14 +74,14 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 		parent::tearDown();
 	}
 
-	private function selectResults( array $bindings ) {
+	private function selectResults( array $bindings ): CachedQueryResults {
 		return new CachedQueryResults(
 			[ 'results' => [ 'bindings' => $bindings ] ],
 			Metadata::blank()
 		);
 	}
 
-	private function askResult( $boolean ) {
+	private function askResult( $boolean ): CachedQueryResults {
 		return new CachedQueryResults(
 			[ 'boolean' => $boolean ],
 			Metadata::blank()
@@ -121,7 +123,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 	}
 
-	public function testHasTypeWithoutHint() {
+	public function testHasTypeWithoutHint(): void {
 		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
 
 		$query = <<<EOF
@@ -233,8 +235,8 @@ EOF
 	 */
 	public function testFindEntitiesWithSameStatement(
 		array $separators,
-		$expectedFilter
-	) {
+		string $expectedFilter
+	): void {
 		$guid = 'Q1$8542690f-dfab-4846-944f-8382df730d2c';
 		$statement = new Statement(
 			new PropertyValueSnak( new NumericPropertyId( 'P1' ), new EntityIdValue( new ItemId( 'Q1' ) ) ),
@@ -279,11 +281,11 @@ EOF;
 	 */
 	public function testFindEntitiesWithSameQualifierOrReference(
 		PropertyValueSnak $snak,
-		$dataType,
-		$contextType,
-		$sparqlValue,
-		$sparqlPath
-	) {
+		string $dataType,
+		string $contextType,
+		string $sparqlValue,
+		string $sparqlPath
+	): void {
 		$dtLookup = $this->createMock( PropertyDataTypeLookup::class );
 		$dtLookup->method( 'getDataTypeIdForProperty' )->willReturn( $dataType );
 
@@ -322,7 +324,7 @@ EOF;
 		);
 	}
 
-	public static function provideSnaksWithSparqlValuesAndPropertyPaths() {
+	public static function provideSnaksWithSparqlValuesAndPropertyPaths(): iterable {
 		$pid = new NumericPropertyId( 'P1' );
 		$globeCoordinateValue = new GlobeCoordinateValue( new LatLongValue( 42.0, 13.37 ) );
 		$quantityValue = UnboundedQuantityValue::newFromNumber( -10, 'ms' );
@@ -426,10 +428,10 @@ EOF;
 	 * @dataProvider provideEndpointsAndResults
 	 */
 	public function testFindEntitiesWithSameStatementWithAdditionalEndpoints(
-		$primaryResult,
-		$additionalResults,
-		$expectedResult
-	) {
+		array $primaryResult,
+		array $additionalResults,
+		array $expectedResult
+	): void {
 		$separators = [];
 		$expectedFilter = "";
 		$guid = 'Q1$8542690f-dfab-4846-944f-8382df730d2c';
@@ -484,10 +486,10 @@ EOF;
 	 * @dataProvider provideEndpointsAndResults
 	 */
 	public function testFindEntitiesWithSameQualifierOrReferenceWithAdditionalEndpoints(
-		$primaryResult,
-		$additionalResults,
-		$expectedResult
-	) {
+		array $primaryResult,
+		array $additionalResults,
+		array $expectedResult
+	): void {
 		$pid = new NumericPropertyId( 'P1' );
 		$snak = new PropertyValueSnak( $pid, new StringValue( 'foo' ) );
 		$dataType = 'string';
@@ -540,7 +542,7 @@ EOF;
 		);
 	}
 
-	public static function provideEndpointsAndResults() {
+	public static function provideEndpointsAndResults(): iterable {
 		return [
 			'default has matches, no additional endpoints' => [
 				[
@@ -603,7 +605,7 @@ EOF;
 		];
 	}
 
-	public function testSerializeConstraintParameterException() {
+	public function testSerializeConstraintParameterException(): void {
 		$cpe = new ConstraintParameterException(
 			( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
 				->withInlineCode( '[', Role::CONSTRAINT_PARAMETER_VALUE )
@@ -624,7 +626,7 @@ EOF;
 		$this->assertSame( $expected, $serialization );
 	}
 
-	public function testDeserializeConstraintParameterException() {
+	public function testDeserializeConstraintParameterException(): void {
 		$serialization = [
 			'type' => ConstraintParameterException::class,
 			'violationMessage' => [
@@ -645,7 +647,7 @@ EOF;
 		$this->assertEquals( $expected, $cpe );
 	}
 
-	public function testMatchesRegularExpressionWithSparql() {
+	public function testMatchesRegularExpressionWithSparql(): void {
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
 		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^(?:\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\")$") AS ?matches) {}';
@@ -661,7 +663,7 @@ EOF;
 		$this->assertFalse( $result );
 	}
 
-	public function testMatchesRegularExpressionWithSparqlBadRegex() {
+	public function testMatchesRegularExpressionWithSparqlBadRegex(): void {
 		$text = '';
 		$regex = '(.{2,5)?';
 		$query = 'SELECT (REGEX("", "^(?:(.{2,5)?)$") AS ?matches) {}';
@@ -693,7 +695,7 @@ EOF;
 	/**
 	 * @dataProvider provideTimeoutMessages
 	 */
-	public function testIsTimeout( $content, $expected ) {
+	public function testIsTimeout( string $content, bool $expected ): void {
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->isTimeout( $content );
@@ -701,7 +703,7 @@ EOF;
 		$this->assertSame( $expected, $actual );
 	}
 
-	public function testIsTimeoutRegex() {
+	public function testIsTimeoutRegex(): void {
 		$sparqlHelper = $this->getSparqlHelper(
 			new HashConfig( [
 				'WBQualityConstraintsSparqlTimeoutExceptionClasses' => [
@@ -718,7 +720,7 @@ EOF;
 		$this->assertTrue( $actual );
 	}
 
-	public static function provideTimeoutMessages() {
+	public static function provideTimeoutMessages(): iterable {
 		return [
 			'empty' => [
 				'',
@@ -752,7 +754,7 @@ EOF;
 	/**
 	 * @dataProvider provideCacheHeaders
 	 */
-	public function testGetCacheMaxAge( $responseHeaders, $expected ) {
+	public function testGetCacheMaxAge( array $responseHeaders, $expected ) {
 		$sparqlHelper = $this->getSparqlHelper();
 
 		$actual = $sparqlHelper->getCacheMaxAge( $responseHeaders );
@@ -760,7 +762,7 @@ EOF;
 		$this->assertSame( $expected, $actual );
 	}
 
-	public static function provideCacheHeaders() {
+	public static function provideCacheHeaders(): iterable {
 		return [
 			'WDQS hit' => [
 				[ 'x-cache-status' => [ 'hit-front' ], 'cache-control' => [ 'public, max-age=300' ] ],
@@ -777,7 +779,7 @@ EOF;
 		];
 	}
 
-	public function testrunQuerySetsLock_if429HeadersAndRetryAfterSet() {
+	public function testrunQuerySetsLock_if429HeadersAndRetryAfterSet(): void {
 		$lock = $this->createMock( ExpiryLock::class );
 		$retryAfter = 1000;
 
@@ -786,7 +788,7 @@ EOF;
 			->with( $this->callback( function ( $headerName ) {
 				return strtolower( $headerName ) === 'retry-after';
 			} ) )
-			->willReturn( $retryAfter );
+			->willReturn( (string)$retryAfter );
 		$requestMock->method( 'getStatus' )
 			->willReturn( 429 );
 
@@ -827,7 +829,7 @@ EOF;
 		$sparqlHelper->runQuery( 'fake query', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
-	public function testRunQuerySetsLock_if429HeadersButRetryAfterMissing() {
+	public function testRunQuerySetsLock_if429HeadersButRetryAfterMissing(): void {
 		$fakeNow = 5000;
 		ConvertibleTimestamp::setFakeTime( $fakeNow );
 
@@ -868,7 +870,7 @@ EOF;
 		$sparqlHelper->runQuery( 'fake query', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
-	public function testRunQueryDoesNotQuery_ifLockIsLocked() {
+	public function testRunQueryDoesNotQuery_ifLockIsLocked(): void {
 		$lock = $this->createMock( ExpiryLock::class );
 		$lock->method( 'isLocked' )
 			->willReturn( true );
@@ -900,7 +902,7 @@ EOF;
 		$sparqlHelper->runQuery( 'foo baz', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
-	public function testRunQuerySetsLock_if429HeadersPresentAndRetryAfterMalformed() {
+	public function testRunQuerySetsLock_if429HeadersPresentAndRetryAfterMalformed(): void {
 
 		$requestFactoryMock = $this->getMock429RequestFactory( [ 'Retry-After' => 'malformedthing' ] );
 
@@ -933,7 +935,7 @@ EOF;
 		$sparqlHelper->runQuery( 'foo baz', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
-	private function getMockLock( $expectedLockId, $expectedLockExpiryTimestamp ) {
+	private function getMockLock( string $expectedLockId, int $expectedLockExpiryTimestamp ) {
 		$lock = $this->createMock( ExpiryLock::class );
 		$lock->expects( $this->once() )
 			->method( 'lock' )
@@ -965,7 +967,7 @@ EOF;
 		return $requestFactoryMock;
 	}
 
-	private function getLoggingHelperExpectingRetryAfterPresent( $retryTime ) {
+	private function getLoggingHelperExpectingRetryAfterPresent( ConvertibleTimestamp $retryTime ) {
 		$helper = $this->createMock( LoggingHelper::class );
 		$helper->expects( $this->once() )
 			->method( 'logSparqlHelperTooManyRequestsRetryAfterPresent' )
@@ -980,7 +982,7 @@ EOF;
 		return $helper;
 	}
 
-	public function testGivenNeedsPrefixesFlagTrue_RunQueryIncludesPrefixesInResultingQuery() {
+	public function testGivenNeedsPrefixesFlagTrue_RunQueryIncludesPrefixesInResultingQuery(): void {
 		$lock = $this->createMock( ExpiryLock::class );
 		$lock->method( 'isLocked' )
 			->willReturn( false );
@@ -1079,7 +1081,7 @@ END;
 		);
 	}
 
-	public function testRunQueryTracksError_http() {
+	public function testRunQueryTracksError_http(): void {
 		$request = $this->createMock( \MWHttpRequest::class );
 		$request->method( 'getStatus' )
 			->willReturn( 500 );
@@ -1129,7 +1131,7 @@ END;
 		}
 	}
 
-	public function testRunQueryTracksError_json() {
+	public function testRunQueryTracksError_json(): void {
 		$request = $this->createMock( \MWHttpRequest::class );
 		$request->method( 'getStatus' )
 			->willReturn( 200 );

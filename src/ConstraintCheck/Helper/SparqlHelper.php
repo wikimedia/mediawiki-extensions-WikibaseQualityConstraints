@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use DataValues\DataValue;
@@ -44,65 +46,32 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  */
 class SparqlHelper {
 
-	/**
-	 * @var RdfVocabulary
-	 */
-	private $rdfVocabulary;
+	private RdfVocabulary $rdfVocabulary;
 
 	/**
 	 * @var string[]
 	 */
-	private $entityPrefixes;
+	private array $entityPrefixes;
 
-	/**
-	 * @var string
-	 */
-	private $prefixes;
+	private string $prefixes;
 
-	/**
-	 * @var EntityIdParser
-	 */
-	private $entityIdParser;
+	private EntityIdParser $entityIdParser;
 
-	/**
-	 * @var PropertyDataTypeLookup
-	 */
-	private $propertyDataTypeLookup;
+	private PropertyDataTypeLookup $propertyDataTypeLookup;
 
-	/**
-	 * @var WANObjectCache
-	 */
-	private $cache;
+	private WANObjectCache $cache;
 
-	/**
-	 * @var ViolationMessageSerializer
-	 */
-	private $violationMessageSerializer;
+	private ViolationMessageSerializer $violationMessageSerializer;
 
-	/**
-	 * @var ViolationMessageDeserializer
-	 */
-	private $violationMessageDeserializer;
+	private ViolationMessageDeserializer $violationMessageDeserializer;
 
-	/**
-	 * @var IBufferingStatsdDataFactory
-	 */
-	private $dataFactory;
+	private IBufferingStatsdDataFactory $dataFactory;
 
-	/**
-	 * @var LoggingHelper
-	 */
-	private $loggingHelper;
+	private LoggingHelper $loggingHelper;
 
-	/**
-	 * @var string
-	 */
-	private $defaultUserAgent;
+	private string $defaultUserAgent;
 
-	/**
-	 * @var ExpiryLock
-	 */
-	private $throttlingLock;
+	private ExpiryLock $throttlingLock;
 
 	/**
 	 * @var int stands for: No Retry-After header-field was sent back
@@ -127,57 +96,31 @@ class SparqlHelper {
 	 */
 	private const HTTP_TOO_MANY_REQUESTS = 429;
 
-	/**
-	 * @var HttpRequestFactory
-	 */
-	private $requestFactory;
+	private HttpRequestFactory $requestFactory;
 
-	// config variables
-
-	/**
-	 * @var string
-	 */
-	private $primaryEndpoint;
+	private string $primaryEndpoint;
 
 	/**
 	 * @var string[]
 	 */
-	private $additionalEndpoints;
+	private array $additionalEndpoints;
 
-	/**
-	 * @var int
-	 */
-	private $maxQueryTimeMillis;
+	private int $maxQueryTimeMillis;
 
-	/**
-	 * @var string
-	 */
-	private $instanceOfId;
+	private string $instanceOfId;
 
-	/**
-	 * @var string
-	 */
-	private $subclassOfId;
+	private string $subclassOfId;
 
-	/**
-	 * @var int
-	 */
-	private $cacheMapSize;
+	private int $cacheMapSize;
 
 	/**
 	 * @var string[]
 	 */
-	private $timeoutExceptionClasses;
+	private array $timeoutExceptionClasses;
 
-	/**
-	 * @var bool
-	 */
-	private $sparqlHasWikibaseSupport;
+	private bool $sparqlHasWikibaseSupport;
 
-	/**
-	 * @var int
-	 */
-	private $sparqlThrottlingFallbackDuration;
+	private int $sparqlThrottlingFallbackDuration;
 
 	public function __construct(
 		Config $config,
@@ -228,8 +171,8 @@ class SparqlHelper {
 		$this->prefixes = $this->getQueryPrefixes( $rdfVocabulary );
 	}
 
-	private function getQueryPrefixes( RdfVocabulary $rdfVocabulary ) {
-		// TODO: it would probably be smarter that RdfVocubulary exposed these prefixes somehow
+	private function getQueryPrefixes( RdfVocabulary $rdfVocabulary ): string {
+		// TODO: it would probably be smarter that RdfVocabulary exposed these prefixes somehow
 		$prefixes = '';
 		foreach ( $rdfVocabulary->entityNamespaceNames as $sourceName => $namespaceName ) {
 			$prefixes .= <<<END
@@ -284,7 +227,7 @@ END;
 	 * @return CachedBool
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	public function hasType( $id, array $classes ) {
+	public function hasType( string $id, array $classes ): CachedBool {
 		// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
 		$gearingHint = $this->sparqlHasWikibaseSupport ?
 			' hint:Prior hint:gearing "forward".' :
@@ -327,11 +270,8 @@ EOF;
 	/**
 	 * Helper function used by findEntitiesWithSameStatement to filter
 	 * out entities with different qualifiers or no qualifier value.
-	 *
-	 * @param PropertyId $separator
-	 * @return string
 	 */
-	private function nestedSeparatorFilter( PropertyId $separator ) {
+	private function nestedSeparatorFilter( PropertyId $separator ): string {
 		$filter = <<<EOF
   MINUS {
     ?statement pq:$separator ?qualifier.
@@ -368,10 +308,7 @@ EOF;
 	 * @return CachedEntityIds
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	public function findEntitiesWithSameStatement(
-		Statement $statement,
-		array $separators
-	) {
+	public function findEntitiesWithSameStatement( Statement $statement, array $separators ): CachedEntityIds {
 		$pid = $statement->getPropertyId()->getSerialization();
 		$guid = $statement->getGuid();
 		'@phan-var string $guid'; // statement must have a non-null GUID
@@ -416,9 +353,9 @@ EOF;
 	public function findEntitiesWithSameQualifierOrReference(
 		EntityId $entityId,
 		PropertyValueSnak $snak,
-		$type,
-		$ignoreDeprecatedStatements
-	) {
+		string $type,
+		bool $ignoreDeprecatedStatements
+	): CachedEntityIds {
 		$eid = $entityId->getSerialization();
 		$pid = $snak->getPropertyId()->getSerialization();
 		$prefix = $type === Context::TYPE_QUALIFIER ? 'pq' : 'pr';
@@ -465,12 +402,8 @@ EOF;
 
 	/**
 	 * Return SPARQL code for a string literal with $text as content.
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	private function stringLiteral( $text ) {
+	private function stringLiteral( string $text ): string {
 		return '"' . strtr( $text, [ '"' => '\\"', '\\' => '\\\\' ] ) . '"';
 	}
 
@@ -481,7 +414,7 @@ EOF;
 	 *
 	 * @return CachedEntityIds
 	 */
-	private function getOtherEntities( array $results ) {
+	private function getOtherEntities( array $results ): CachedEntityIds {
 		$allResultBindings = [];
 		$metadatas = [];
 
@@ -523,13 +456,10 @@ EOF;
 	/**
 	 * Get an RDF literal or IRI with which the given data value can be matched in a query.
 	 *
-	 * @param string $dataType
-	 * @param DataValue $dataValue
-	 *
 	 * @return array the literal or IRI as a string in SPARQL syntax,
 	 * and a boolean indicating whether it refers to a full value node or not
 	 */
-	private function getRdfLiteral( $dataType, DataValue $dataValue ) {
+	private function getRdfLiteral( string $dataType, DataValue $dataValue ): array {
 		switch ( $dataType ) {
 			case 'string':
 			case 'external-id':
@@ -578,14 +508,10 @@ EOF;
 	// phpcs:enable
 
 	/**
-	 * @param string $text
-	 * @param string $regex
-	 *
-	 * @return boolean
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 * @throws ConstraintParameterException if the $regex is invalid
 	 */
-	public function matchesRegularExpression( $text, $regex ) {
+	public function matchesRegularExpression( string $text, string $regex ): bool {
 		// caching wrapper around matchesRegularExpressionWithSparql
 
 		$textHash = hash( 'sha256', $text );
@@ -669,14 +595,14 @@ EOF;
 		}
 	}
 
-	private function serializeConstraintParameterException( ConstraintParameterException $cpe ) {
+	private function serializeConstraintParameterException( ConstraintParameterException $cpe ): array {
 		return [
 			'type' => ConstraintParameterException::class,
 			'violationMessage' => $this->violationMessageSerializer->serialize( $cpe->getViolationMessage() ),
 		];
 	}
 
-	private function deserializeConstraintParameterException( array $serialization ) {
+	private function deserializeConstraintParameterException( array $serialization ): ConstraintParameterException {
 		$message = $this->violationMessageDeserializer->deserialize(
 			$serialization['violationMessage']
 		);
@@ -687,14 +613,10 @@ EOF;
 	 * This function is only public for testing purposes;
 	 * use matchesRegularExpression, which is equivalent but caches results.
 	 *
-	 * @param string $text
-	 * @param string $regex
-	 *
-	 * @return boolean
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 * @throws ConstraintParameterException if the $regex is invalid
 	 */
-	public function matchesRegularExpressionWithSparql( $text, $regex ) {
+	public function matchesRegularExpressionWithSparql( string $text, string $regex ): bool {
 		$textStringLiteral = $this->stringLiteral( $text );
 		$regexStringLiteral = $this->stringLiteral( '^(?:' . $regex . ')$' );
 
@@ -719,12 +641,8 @@ EOF;
 
 	/**
 	 * Check whether the text content of an error response indicates a query timeout.
-	 *
-	 * @param string $responseContent
-	 *
-	 * @return boolean
 	 */
-	public function isTimeout( $responseContent ) {
+	public function isTimeout( string $responseContent ): bool {
 		$timeoutRegex = implode( '|', array_map(
 			static function ( $fqn ) {
 				return preg_quote( $fqn, '/' );
@@ -743,7 +661,7 @@ EOF;
 	 * @return int|boolean the max-age (in seconds)
 	 * or a plain boolean if no max-age can be determined
 	 */
-	public function getCacheMaxAge( $responseHeaders ) {
+	public function getCacheMaxAge( array $responseHeaders ) {
 		if (
 			array_key_exists( 'x-cache-status', $responseHeaders ) &&
 			preg_match( '/^hit(?:-.*)?$/', $responseHeaders['x-cache-status'][0] )
@@ -816,7 +734,7 @@ EOF;
 	 *
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	protected function runQuery( string $query, string $endpoint, bool $needsPrefixes = true ) {
+	protected function runQuery( string $query, string $endpoint, bool $needsPrefixes = true ): CachedQueryResults {
 		if ( $this->throttlingLock->isLocked( self::EXPIRY_LOCK_ID ) ) {
 			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
 			throw new TooManySparqlRequestsException();

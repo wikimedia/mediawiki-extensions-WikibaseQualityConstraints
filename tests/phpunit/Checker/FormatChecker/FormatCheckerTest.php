@@ -346,7 +346,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 			->willReturnCallback(
 				function ( $text, $regex ) {
 					$pattern = '/^(?:' . str_replace( '/', '\/', $regex ) . ')$/u';
-					return preg_match( $pattern, $text );
+					return (bool)preg_match( $pattern, $text );
 				}
 			);
 		$shellboxClient = $this->getMockBuilder( Client::class )
