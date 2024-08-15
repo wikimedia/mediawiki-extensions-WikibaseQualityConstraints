@@ -63,7 +63,7 @@ interface ConstraintChecker {
 	 *
 	 * Many implementations can just return {@link ALL_CONTEXT_TYPES_SUPPORTED}.
 	 *
-	 * @return string[]
+	 * @return array<string,string> Context type => result status
 	 */
 	public function getSupportedContextTypes();
 
@@ -95,7 +95,7 @@ interface ConstraintChecker {
 	 *
 	 * Most implementations can just return {@link ALL_ENTITY_TYPES_SUPPORTED}.
 	 *
-	 * @return string[]
+	 * @return array<string,string> Entity type => result status
 	 */
 	public function getSupportedEntityTypes();
 
