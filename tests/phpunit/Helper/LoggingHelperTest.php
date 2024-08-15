@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
-use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\ItemId;
@@ -223,7 +222,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 	public function testlogSparqlHelperMadeTooManyRequestsRetryAfterPresent_CallsNotice() {
 		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
 		$logger = $this->createMock( LoggerInterface::class );
-		$config = $this->createMock( Config::class );
+		$config = self::getDefaultConfig();
 		$timestamp = $this->createMock( ConvertibleTimestamp::class );
 		$request = $this->createMock( \MWHttpRequest::class );
 
@@ -237,8 +236,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 	public function testlogSparqlHelperMadeTooManyRequestsRetryAfterMissing_CallsWarning() {
 		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
 		$logger = $this->createMock( LoggerInterface::class );
-		$config = $this->createMock( Config::class );
-		$timestamp = $this->createMock( ConvertibleTimestamp::class );
+		$config = self::getDefaultConfig();
 		$request = $this->createMock( \MWHttpRequest::class );
 
 		$logger->expects( $this->once() )
