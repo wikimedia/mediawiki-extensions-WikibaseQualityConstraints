@@ -338,7 +338,6 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	private function getChecker( ?Config $config = null ): FormatChecker {
-		$config = $config ?? self::getDefaultConfig();
 		$sparqlHelper = $this->getMockBuilder( SparqlHelper::class )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'matchesRegularExpression' ] )
@@ -370,7 +369,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 			->willReturn( $shellboxClient );
 		return new FormatChecker(
 			$this->getConstraintParameterParser(),
-			$config,
+			$config ?? self::getDefaultConfig(),
 			$sparqlHelper,
 			$shellboxClientFactory
 		);

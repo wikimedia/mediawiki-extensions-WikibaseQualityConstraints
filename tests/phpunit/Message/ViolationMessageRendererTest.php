@@ -44,12 +44,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		Config $config = null,
 		int $maxListLength = 10
 	): ViolationMessageRenderer {
-		if ( $entityIdFormatter === null ) {
-			$entityIdFormatter = new PlainEntityIdFormatter();
-		}
-		if ( $dataValueFormatter === null ) {
-			$dataValueFormatter = new UnDeserializableValueFormatter();
-		}
 		$userLanguageCode = 'en';
 		$languageNameUtils = $this->createMock( LanguageNameUtils::class );
 		$languageNameUtils->method( 'getLanguageName' )
@@ -58,24 +52,21 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$languageFallbackChain = $this->createConfiguredMock( TermLanguageFallbackChain::class, [
 			'getFetchLanguageCodes' => [ $userLanguageCode ],
 		] );
-		$messageLocalizer = new MockMessageLocalizer();
-		if ( $config === null ) {
-			$config = new HashConfig( [
-				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
-				'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
-				'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
-				'WBQualityConstraintsAsMainValueId' => 'Q4',
-				'WBQualityConstraintsAsQualifiersId' => 'Q5',
-				'WBQualityConstraintsAsReferencesId' => 'Q6',
-			] );
-		}
+		$config ??= new HashConfig( [
+			'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
+			'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
+			'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
+			'WBQualityConstraintsAsMainValueId' => 'Q4',
+			'WBQualityConstraintsAsQualifiersId' => 'Q5',
+			'WBQualityConstraintsAsReferencesId' => 'Q6',
+		] );
 		return new ViolationMessageRenderer(
-			$entityIdFormatter,
-			$dataValueFormatter,
+			$entityIdFormatter ?? new PlainEntityIdFormatter(),
+			$dataValueFormatter ?? new UnDeserializableValueFormatter(),
 			$languageNameUtils,
 			$userLanguageCode,
 			$languageFallbackChain,
-			$messageLocalizer,
+			new MockMessageLocalizer(),
 			$config,
 			$maxListLength
 		);

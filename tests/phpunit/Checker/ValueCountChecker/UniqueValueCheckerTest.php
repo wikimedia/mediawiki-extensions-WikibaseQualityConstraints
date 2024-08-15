@@ -237,8 +237,10 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 		SparqlHelper $sparqlHelper,
 		ConstraintParameterParser $paramParser = null
 	): UniqueValueChecker {
-		$paramParser = $paramParser ?? $this->getConstraintParameterParserMock();
-		return new UniqueValueChecker( $sparqlHelper, $paramParser );
+		return new UniqueValueChecker(
+			$sparqlHelper,
+			$paramParser ?? $this->getConstraintParameterParserMock()
+		);
 	}
 
 	private function getConstraintParameterParserMock( array $separators = [] ): ConstraintParameterParser {

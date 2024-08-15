@@ -30,17 +30,10 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 	private const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
 
 	private function getResultsSource(
-		DelegatingConstraintChecker $delegatingConstraintChecker = null
+		DelegatingConstraintChecker $checker = null
 	) {
-		if ( $delegatingConstraintChecker === null ) {
-			$delegatingConstraintChecker = $this->createMock(
-				DelegatingConstraintChecker::class
-			);
-		}
-
-		return new CheckingResultsSource(
-			$delegatingConstraintChecker
-		);
+		$checker ??= $this->createMock( DelegatingConstraintChecker::class );
+		return new CheckingResultsSource( $checker );
 	}
 
 	public function testGetResults() {

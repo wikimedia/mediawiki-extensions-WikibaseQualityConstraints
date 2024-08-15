@@ -41,9 +41,7 @@ class ConstraintsServices {
 	public const VIOLATION_MESSAGE_RENDERER_FACTORY = 'WBQC_ViolationMessageRendererFactory';
 
 	private static function getService( ?MediaWikiServices $services, $name ) {
-		if ( $services === null ) {
-			$services = MediaWikiServices::getInstance();
-		}
+		$services ??= MediaWikiServices::getInstance();
 		return $services->getService( $name );
 	}
 

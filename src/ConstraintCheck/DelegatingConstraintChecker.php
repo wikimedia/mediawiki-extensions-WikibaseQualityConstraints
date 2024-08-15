@@ -203,9 +203,7 @@ class DelegatingConstraintChecker {
 
 		return array_keys( array_filter(
 			$this->checkerMap[$constraint->getConstraintTypeItemId()]->getSupportedContextTypes(),
-			static function ( $resultStatus ) {
-				return $resultStatus !== CheckResult::STATUS_NOT_IN_SCOPE;
-			}
+			static fn ( $status ) => $status !== CheckResult::STATUS_NOT_IN_SCOPE
 		) );
 	}
 
@@ -216,9 +214,7 @@ class DelegatingConstraintChecker {
 
 		return array_keys( array_filter(
 			$this->checkerMap[$constraint->getConstraintTypeItemId()]->getSupportedEntityTypes(),
-			static function ( $resultStatus ) {
-				return $resultStatus !== CheckResult::STATUS_NOT_IN_SCOPE;
-			}
+			static fn ( $status ) => $status !== CheckResult::STATUS_NOT_IN_SCOPE
 		) );
 	}
 
@@ -618,9 +614,7 @@ class DelegatingConstraintChecker {
 			return new CheckResult( $context, $constraint, CheckResult::STATUS_BAD_PARAMETERS, $e->getViolationMessage() );
 		}
 
-		if ( $checkedContextTypes === null ) {
-			$checkedContextTypes = $checker->getDefaultContextTypes();
-		}
+		$checkedContextTypes ??= $checker->getDefaultContextTypes();
 		$contextType = $context->getType();
 		if ( !in_array( $contextType, $checkedContextTypes ) ) {
 			return new CheckResult( $context, $constraint, CheckResult::STATUS_NOT_IN_SCOPE, null );
@@ -629,9 +623,7 @@ class DelegatingConstraintChecker {
 			return new CheckResult( $context, $constraint, CheckResult::STATUS_TODO, null );
 		}
 
-		if ( $checkedEntityTypes === null ) {
-			$checkedEntityTypes = $validEntityTypes;
-		}
+		$checkedEntityTypes ??= $validEntityTypes;
 		$entityType = $context->getEntity()->getType();
 		if ( !in_array( $entityType, $checkedEntityTypes ) ) {
 			return new CheckResult( $context, $constraint, CheckResult::STATUS_NOT_IN_SCOPE, null );
