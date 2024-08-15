@@ -91,21 +91,11 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 		PropertyDataTypeLookup $dataTypeLookup = null,
 		LoggingHelper $loggingHelper = null
 	) {
-		if ( $config === null ) {
-			$config = new HashConfig();
-		}
-		if ( $dataTypeLookup === null ) {
-			$dataTypeLookup = new InMemoryDataTypeLookup();
-		}
-		if ( $loggingHelper === null ) {
-			$loggingHelper = $this->createMock( LoggingHelper::class );
-		}
-
 		$entityIdParser = new ItemIdParser();
 
 		return $this->getMockBuilder( SparqlHelper::class )
 			->setConstructorArgs( [
-				new MultiConfig( [ $config, self::getDefaultConfig() ] ),
+				new MultiConfig( [ $config ?? new HashConfig(), self::getDefaultConfig() ] ),
 				new RdfVocabulary(
 					[ '' => 'http://www.wikidata.org/entity/' ],
 					[ '' => 'http://www.wikidata.org/wiki/Special:EntityData/' ],
@@ -114,7 +104,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 					[ '' => '' ]
 				),
 				$entityIdParser,
-				$dataTypeLookup,
+				$dataTypeLookup ?? new InMemoryDataTypeLookup(),
 				WANObjectCache::newEmpty(),
 				new ViolationMessageSerializer(),
 				new ViolationMessageDeserializer(
@@ -123,7 +113,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 				),
 				new NullStatsdDataFactory(),
 				new ExpiryLock( new HashBagOStuff() ),
-				$loggingHelper,
+				$loggingHelper ?? $this->createMock( LoggingHelper::class ),
 				'A fancy user agent',
 				$this->createMock( HttpRequestFactory::class ),
 			] )

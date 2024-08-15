@@ -45,9 +45,7 @@ class ConstraintCheckerServices {
 	public const LABEL_IN_LANGUAGE_CHECKER = 'WBQC_LabelInLanguageChecker';
 
 	private static function getService( ?MediaWikiServices $services, $name ) {
-		if ( $services === null ) {
-			$services = MediaWikiServices::getInstance();
-		}
+		$services ??= MediaWikiServices::getInstance();
 		return $services->getService( $name );
 	}
 

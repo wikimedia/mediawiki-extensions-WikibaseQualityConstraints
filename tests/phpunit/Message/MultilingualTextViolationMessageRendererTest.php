@@ -45,33 +45,22 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		Config $config = null,
 		int $maxListLength = 10
 	): MultilingualTextViolationMessageRenderer {
-		if ( $entityIdFormatter === null ) {
-			$entityIdFormatter = new PlainEntityIdFormatter();
-		}
-		if ( $dataValueFormatter === null ) {
-			$dataValueFormatter = new UnDeserializableValueFormatter();
-		}
-		if ( $messageLocalizer === null ) {
-			$messageLocalizer = new MockMessageLocalizer();
-		}
-		if ( $config === null ) {
-			$config = new HashConfig( [
-				'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
-				'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
-				'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
-			] );
-		}
+		$config ??= new HashConfig( [
+			'WBQualityConstraintsConstraintCheckedOnMainValueId' => 'Q1',
+			'WBQualityConstraintsConstraintCheckedOnQualifiersId' => 'Q2',
+			'WBQualityConstraintsConstraintCheckedOnReferencesId' => 'Q3',
+		] );
 		$languageFallbackChain = WikibaseRepo::getLanguageFallbackChainFactory(
 			$this->getServiceContainer()
 		)->newFromLanguageCode( $userLanguageCode );
 
 		return new MultilingualTextViolationMessageRenderer(
-			$entityIdFormatter,
-			$dataValueFormatter,
+			$entityIdFormatter ?? new PlainEntityIdFormatter(),
+			$dataValueFormatter ?? new UnDeserializableValueFormatter(),
 			$this->createMock( LanguageNameUtils::class ),
 			$userLanguageCode,
 			$languageFallbackChain,
-			$messageLocalizer,
+			$messageLocalizer ?? new MockMessageLocalizer(),
 			$config,
 			$maxListLength
 		);

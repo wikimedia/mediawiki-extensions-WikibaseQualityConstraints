@@ -33,13 +33,10 @@ class AllowedUnitsCheckerTest extends PropertyResolvingMediaWikiIntegrationTestC
 	use ResultAssertions;
 
 	private function getAllowedUnitsChecker( UnitStorage $unitStorage = null ) {
-		if ( $unitStorage === null ) {
-			$unitStorage = new InMemoryUnitStorage( [] );
-		}
 		return new AllowedUnitsChecker(
 			$this->getConstraintParameterParser(),
 			new UnitConverter(
-				$unitStorage,
+				$unitStorage ?? new InMemoryUnitStorage( [] ),
 				'http://wikibase.example/entity/'
 			)
 		);

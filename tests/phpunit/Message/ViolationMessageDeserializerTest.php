@@ -31,14 +31,10 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		EntityIdParser $entityIdParser = null,
 		DataValueFactory $dataValueFactory = null
 	) {
-		if ( $entityIdParser === null ) {
-			$entityIdParser = new BasicEntityIdParser();
-		}
-		if ( $dataValueFactory === null ) {
-			$dataValueFactory = new DataValueFactory( new DataValueDeserializer() );
-		}
-
-		return new ViolationMessageDeserializer( $entityIdParser, $dataValueFactory );
+		return new ViolationMessageDeserializer(
+			$entityIdParser ?? new BasicEntityIdParser(),
+			$dataValueFactory ?? new DataValueFactory( new DataValueDeserializer() )
+		);
 	}
 
 	/**

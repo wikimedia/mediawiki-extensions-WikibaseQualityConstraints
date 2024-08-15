@@ -149,14 +149,10 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		$mockResponse,
 		ResultsSource $cachingResultsSource = null
 	): CheckConstraintsRdf {
-		if ( $cachingResultsSource === null ) {
-			$cachingResultsSource = $this->getCachingResultsSource();
-		}
-
 		return new CheckConstraintsRdf(
 			$article,
 			$this->getContext( $mockResponse ),
-			$cachingResultsSource,
+			$cachingResultsSource ?? $this->getCachingResultsSource(),
 			WikibaseRepo::getEntityIdLookup(),
 			WikibaseRepo::getRdfVocabulary()
 		);
