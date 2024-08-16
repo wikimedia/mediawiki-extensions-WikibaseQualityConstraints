@@ -88,12 +88,18 @@ class LabelInLanguageChecker implements ConstraintChecker {
 		/** @var LabelsProvider $entity */
 		$entity = $context->getEntity();
 		'@phan-var LabelsProvider $entity';
+		$labels = $entity->getLabels();
 
-		foreach ( $languages as $language ) {
-			if ( $entity->getLabels()->hasTermForLanguage( $language ) ) {
-				$message = null;
-				$status = CheckResult::STATUS_COMPLIANCE;
-				break;
+		if ( $labels->hasTermForLanguage( 'mul' ) ) {
+			$message = null;
+			$status = CheckResult::STATUS_COMPLIANCE;
+		} else {
+			foreach ( $languages as $language ) {
+				if ( $labels->hasTermForLanguage( $language ) ) {
+					$message = null;
+					$status = CheckResult::STATUS_COMPLIANCE;
+					break;
+				}
 			}
 		}
 
