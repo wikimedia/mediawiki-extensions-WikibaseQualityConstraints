@@ -57,6 +57,7 @@ class CheckConstraintsTest extends ApiTestCase {
 	private const NONEXISTENT_ITEM = 'Q99';
 	private const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
 
+	/** @var mixed */
 	private static $oldModuleDeclaration;
 
 	private static InMemoryEntityLookup $entityLookup;
