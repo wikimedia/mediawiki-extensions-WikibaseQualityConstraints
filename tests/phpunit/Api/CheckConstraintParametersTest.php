@@ -35,6 +35,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	private const P1_BAD = 'P1$4f7462a4-4523-4371-a35c-d246fa7159ee';
 	private const P2_GOOD = 'P2$82648667-ca79-40e1-8839-4ed4abbb4c6d';
 
+	/** @var mixed */
 	private $oldModuleDeclaration;
 
 	/**

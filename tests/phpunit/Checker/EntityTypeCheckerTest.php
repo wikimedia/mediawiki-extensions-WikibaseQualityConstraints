@@ -30,8 +30,10 @@ class EntityTypeCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCas
 	 */
 	private $entityTypeChecker;
 
+	/** @var string */
 	private $itemEntityType;
 
+	/** @var string */
 	private $propertyEntityType;
 
 	protected function setUp(): void {
