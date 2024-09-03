@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use Wikibase\DataModel\Entity\ItemId;
@@ -25,16 +27,11 @@ class EntityTypeCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCas
 	use ConstraintParameters;
 	use ResultAssertions;
 
-	/**
-	 * @var EntityTypeChecker
-	 */
-	private $entityTypeChecker;
+	private EntityTypeChecker $entityTypeChecker;
 
-	/** @var string */
-	private $itemEntityType;
+	private string $itemEntityType;
 
-	/** @var string */
-	private $propertyEntityType;
+	private string $propertyEntityType;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -97,10 +94,8 @@ class EntityTypeCheckerTest extends PropertyResolvingMediaWikiIntegrationTestCas
 
 	/**
 	 * @param string[] $parameters
-	 *
-	 * @return Constraint
 	 */
-	private function getConstraintMock( array $parameters ) {
+	private function getConstraintMock( array $parameters ): Constraint {
 		$mock = $this->createMock( Constraint::class );
 		$mock->method( 'getConstraintParameters' )
 			->willReturn( $parameters );
