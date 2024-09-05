@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -26,7 +25,6 @@ use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLBFactory;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintRepositoryStore;
-use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use Wikimedia\Rdbms\IDatabase;
@@ -46,17 +44,6 @@ use Wikimedia\Rdbms\ILoadBalancer;
 class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 	use DefaultConfig;
-
-	protected function setUp(): void {
-		parent::setUp();
-
-		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
-	}
-
-	protected function tearDown(): void {
-		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
-		parent::tearDown();
-	}
 
 	public function addDBData() {
 		$config = self::getDefaultConfig();

@@ -77,7 +77,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->installMockHttp( $this->makeFakeHttpRequest( '', 0 ) );
-		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 
 		$config = new MultiConfig( [
 			new HashConfig( [ 'WBQualityConstraintsEnableSuggestionConstraintStatus' => true ] ),
@@ -116,11 +115,6 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->setService( ConstraintCheckerServices::COMMONS_LINK_CHECKER, $commonsLinkChecker );
 
 		$this->constraintChecker = ConstraintsServices::getDelegatingConstraintChecker();
-	}
-
-	protected function tearDown(): void {
-		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
-		parent::tearDown();
 	}
 
 	/**

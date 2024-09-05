@@ -47,17 +47,11 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
 		$config = new MultiConfig( [
 			self::getDefaultConfig(),
 			MediaWikiServices::getInstance()->getMainConfig(),
 		] );
 		$this->setService( 'MainConfig', $config );
-	}
-
-	protected function tearDown(): void {
-		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
-		parent::tearDown();
 	}
 
 	protected function newSpecialPage() {

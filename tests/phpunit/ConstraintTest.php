@@ -2,11 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use WikibaseQuality\ConstraintReport\ConstraintRepositoryLookup;
-use WikibaseQuality\ConstraintReport\ConstraintsServices;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Constraint
@@ -19,16 +17,6 @@ use WikibaseQuality\ConstraintReport\ConstraintsServices;
  * @license GPL-2.0-or-later
  */
 class ConstraintTest extends \MediaWikiIntegrationTestCase {
-
-	protected function setUp(): void {
-		parent::setUp();
-		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
-	}
-
-	protected function tearDown(): void {
-		MediaWikiServices::getInstance()->resetServiceForTesting( ConstraintsServices::CONSTRAINT_LOOKUP );
-		parent::tearDown();
-	}
 
 	public function testConstructAndGetters() {
 		$repo = new ConstraintRepositoryLookup(
