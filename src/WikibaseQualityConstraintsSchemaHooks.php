@@ -22,16 +22,6 @@ final class WikibaseQualityConstraintsSchemaHooks implements LoadExtensionSchema
 			'wbqc_constraints',
 			$dir . "/{$updater->getDB()->getType()}/tables-generated.sql"
 		);
-		$updater->addExtensionField(
-			'wbqc_constraints',
-			'constraint_id',
-			$dir . '/patch-wbqc_constraints-constraint_id.sql'
-		);
-		$updater->addExtensionIndex(
-			'wbqc_constraints',
-			'wbqc_constraints_guid_uniq',
-			$dir . '/patch-wbqc_constraints-wbqc_constraints_guid_uniq.sql'
-		);
 	}
 
 }
