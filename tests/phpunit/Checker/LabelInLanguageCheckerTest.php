@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Checker;
 
 use Wikibase\DataModel\Entity\ItemId;
@@ -8,6 +10,7 @@ use Wikibase\DataModel\Tests\NewItem;
 use Wikibase\DataModel\Tests\NewStatement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\LabelInLanguageChecker;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
@@ -25,10 +28,7 @@ class LabelInLanguageCheckerTest extends \MediaWikiIntegrationTestCase {
 	use ConstraintParameters;
 	use ResultAssertions;
 
-	/**
-	 * @var LabelInLanguageChecker
-	 */
-	private $labelInLanguageChecker;
+	private LabelInLanguageChecker $labelInLanguageChecker;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -60,7 +60,7 @@ class LabelInLanguageCheckerTest extends \MediaWikiIntegrationTestCase {
 		yield 'mul' => [ 'mul', [ 'en' ] ];
 	}
 
-	public function testLabelInLanguageConstraintInvalid() {
+	public function testLabelInLanguageConstraintInvalid(): void {
 		$statement = NewStatement::forProperty( 'P123' )
 			->withValue( new ItemId( 'Q1' ) )
 			->build();
@@ -73,7 +73,7 @@ class LabelInLanguageCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertViolation( $result, 'wbqc-violation-message-label-lacking' );
 	}
 
-	public function testLabelInLanguageConstraintDeprecatedStatement() {
+	public function testLabelInLanguageConstraintDeprecatedStatement(): void {
 		$statement = NewStatement::noValueFor( 'P1' )
 			->withDeprecatedRank()
 			->build();
@@ -90,7 +90,7 @@ class LabelInLanguageCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertDeprecation( $checkResult );
 	}
 
-	public function testCheckConstraintParameters() {
+	public function testCheckConstraintParameters(): void {
 		$constraint = $this->getConstraintMock( [] );
 
 		$result = $this->labelInLanguageChecker->checkConstraintParameters( $constraint );
@@ -98,12 +98,7 @@ class LabelInLanguageCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertCount( 1, $result );
 	}
 
-	/**
-	 * @param string[] $parameters
-	 *
-	 * @return Constraint
-	 */
-	private function getConstraintMock( array $parameters ) {
+	private function getConstraintMock( array $parameters ): Constraint {
 		$mock = $this->createMock( Constraint::class );
 		$mock->expects( $this->any() )
 			->method( 'getConstraintParameters' )
@@ -115,7 +110,7 @@ class LabelInLanguageCheckerTest extends \MediaWikiIntegrationTestCase {
 		return $mock;
 	}
 
-	private function getContext( Snak $snak, string $languageCode ) {
+	private function getContext( Snak $snak, string $languageCode ): Context {
 		$item = NewItem::withId( 'Q1' )
 			->andLabel( $languageCode, 'Foo' )
 			->build();

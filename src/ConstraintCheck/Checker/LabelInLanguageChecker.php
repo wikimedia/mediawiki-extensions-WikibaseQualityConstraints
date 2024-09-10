@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Checker;
 
 use Wikibase\DataModel\Statement\Statement;
@@ -17,10 +19,8 @@ use WikibaseQuality\ConstraintReport\Role;
  * @license GPL-2.0-or-later
  */
 class LabelInLanguageChecker implements ConstraintChecker {
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
+
+	private ConstraintParameterParser $constraintParameterParser;
 
 	public function __construct( ConstraintParameterParser $constraintParameterParser ) {
 		$this->constraintParameterParser = $constraintParameterParser;
@@ -29,7 +29,7 @@ class LabelInLanguageChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
 			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
@@ -40,7 +40,7 @@ class LabelInLanguageChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT,
 			Context::TYPE_QUALIFIER,
@@ -48,7 +48,7 @@ class LabelInLanguageChecker implements ConstraintChecker {
 		];
 	}
 
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return [
 			'item' => CheckResult::STATUS_COMPLIANCE,
 			'property' => CheckResult::STATUS_COMPLIANCE,
@@ -62,11 +62,7 @@ class LabelInLanguageChecker implements ConstraintChecker {
 	/**
 	 * Checks 'Language' constraint.
 	 *
-	 * @param Context $context
-	 * @param Constraint $constraint
-	 *
 	 * @throws ConstraintParameterException
-	 * @return CheckResult
 	 */
 	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
