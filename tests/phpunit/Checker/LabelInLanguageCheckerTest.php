@@ -37,17 +37,27 @@ class LabelInLanguageCheckerTest extends \MediaWikiIntegrationTestCase {
 		);
 	}
 
-	public function testLabelInLanguageConstraintValid() {
+	/** @dataProvider provideValidLanguageCodes */
+	public function testLabelInLanguageConstraintValid(
+		string $existingLanguageCode,
+		array $expectedLanguageCodes
+	): void {
 		$statement = NewStatement::forProperty( 'P123' )
 			->withValue( new ItemId( 'Q9' ) )
 			->build();
 
 		$result = $this->labelInLanguageChecker->checkConstraint(
-			$this->getContext( $statement->getMainSnak(), 'en' ),
-			$this->getConstraintMock( $this->languageParameter( [ 'en', 'fr' ] ) )
+			$this->getContext( $statement->getMainSnak(), $existingLanguageCode ),
+			$this->getConstraintMock( $this->languageParameter( $expectedLanguageCodes ) )
 		);
 
 		$this->assertCompliance( $result );
+	}
+
+	public static function provideValidLanguageCodes(): iterable {
+		yield 'first language' => [ 'en', [ 'en', 'fr' ] ];
+		yield 'second language' => [ 'fr', [ 'en', 'fr' ] ];
+		yield 'mul' => [ 'mul', [ 'en' ] ];
 	}
 
 	public function testLabelInLanguageConstraintInvalid() {
