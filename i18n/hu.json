@@ -5,7 +5,8 @@
 			"Máté",
 			"Tacsipacsi",
 			"Urbalazs",
-			"Amire80"
+			"Amire80",
+			"Adam78"
 		]
 	},
 	"wbqc-constraintreport": "Kikötésjelentés",
@@ -115,7 +116,7 @@
 	"wbqc-violation-message-range-time-rightopen": "A(z) $1 értéke ($2) nem lehet korábban mint $3.",
 	"wbqc-violation-message-range-time-rightopen-leftnow": "A(z) $1 értéke ($2) nem lehet a múltban.",
 	"wbqc-violation-message-single-value": "Ennek a tulajdonságnak egyféle értékkel kell rendelkeznie.",
-	"wbqc-violation-message-single-value-separators": "Ennek a tulajdonságnak egyféle {{PLURAL:$2|1=azonos $4 minősítőjű értékkel rendelkeznie.|a következő minősítőkben azonos értékkel kell rendelkeznie: $3}}",
+	"wbqc-violation-message-single-value-separators": "Ennek a tulajdonságnak egyféle {{PLURAL:$2|1=azonos $4 minősítőjű értékkel kell rendelkeznie.|az alábbi minősítőkben azonos értékkel kell rendelkeznie: $3}}",
 	"wbqc-violation-message-single-best-value-no-preferred": "Ennek a tulajdonságnak egyféle „legjobb” értékkel kell rendelkeznie. A jelenlegi több érték közül egyet meg kell jelölni „preferált” ranggal.",
 	"wbqc-violation-message-single-best-value-no-preferred-separators": "Ennek a tulajdonságnak többféle {{PLURAL:$2|1=azonos $4 minősítőjű „legjobb” értékkel rendelkeznie.|a következő minősítőkben azonos „legjobb” értékkel kell rendelkeznie: $3}} A jelenlegi több érték közül egyet meg kell jelölni „preferált” ranggal.",
 	"wbqc-violation-message-single-best-value-multi-preferred": "Ennek a tulajdonságnak egyféle „legjobb” értékkel kell rendelkeznie. Nem lehetne egynél több „preferált” rangú érték.",
