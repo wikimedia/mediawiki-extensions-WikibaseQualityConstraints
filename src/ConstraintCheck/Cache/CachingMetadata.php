@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
 
 use Wikimedia\Assert\Assert;
@@ -21,7 +23,7 @@ class CachingMetadata {
 	/**
 	 * @return self Indication that a value is fresh, i. e. not cached.
 	 */
-	public static function fresh() {
+	public static function fresh(): self {
 		return new self;
 	}
 
@@ -29,8 +31,7 @@ class CachingMetadata {
 	 * @param int $maxAge The maximum age of the cached value (in seconds).
 	 * @return self Indication that a value is possibly outdated by up to this many seconds.
 	 */
-	public static function ofMaximumAgeInSeconds( $maxAge ) {
-		Assert::parameterType( 'integer', $maxAge, '$maxAge' );
+	public static function ofMaximumAgeInSeconds( int $maxAge ): self {
 		Assert::parameter( $maxAge > 0, '$maxAge', '$maxage > 0' );
 		$ret = new self;
 		$ret->maxAge = $maxAge;
@@ -42,7 +43,7 @@ class CachingMetadata {
 	 * @param array|null $array As returned by toArray.
 	 * @return self
 	 */
-	public static function ofArray( array $array = null ) {
+	public static function ofArray( array $array = null ): self {
 		$ret = new self;
 		if ( $array !== null ) {
 			$ret->maxAge = $array['maximumAgeInSeconds'];
@@ -54,7 +55,7 @@ class CachingMetadata {
 	 * @param self[] $metadatas
 	 * @return self
 	 */
-	public static function merge( array $metadatas ) {
+	public static function merge( array $metadatas ): self {
 		Assert::parameterElementType( self::class, $metadatas, '$metadatas' );
 		$ret = new self;
 		foreach ( $metadatas as $metadata ) {
@@ -66,7 +67,7 @@ class CachingMetadata {
 	/**
 	 * @return bool Whether the value is cached or not (fresh).
 	 */
-	public function isCached() {
+	public function isCached(): bool {
 		return $this->maxAge !== false;
 	}
 
@@ -75,7 +76,7 @@ class CachingMetadata {
 	 * the value might be outdated by up to this many seconds.
 	 * For a fresh value, returns 0.
 	 */
-	public function getMaximumAgeInSeconds() {
+	public function getMaximumAgeInSeconds(): int {
 		if ( is_int( $this->maxAge ) ) {
 			return $this->maxAge;
 		} else {
@@ -87,7 +88,7 @@ class CachingMetadata {
 	 * Serializes the metadata into an array (or null if the value is fresh).
 	 * @return array|null
 	 */
-	public function toArray() {
+	public function toArray(): ?array {
 		return $this->isCached() ?
 			[
 				'maximumAgeInSeconds' => $this->maxAge,

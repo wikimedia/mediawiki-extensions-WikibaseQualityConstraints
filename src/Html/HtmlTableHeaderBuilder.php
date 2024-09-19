@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Html;
 
 use HtmlArmor;
@@ -22,10 +24,8 @@ class HtmlTableHeaderBuilder {
 
 	/**
 	 * Determines, whether the column should be sortable or not.
-	 *
-	 * @var bool
 	 */
-	private $isSortable;
+	private bool $isSortable;
 
 	/**
 	 * @param string|HtmlArmor $content
@@ -33,9 +33,8 @@ class HtmlTableHeaderBuilder {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $content, $isSortable = false ) {
+	public function __construct( $content, bool $isSortable = false ) {
 		Assert::parameterType( [ 'string', HtmlArmor::class ], $content, '$content' );
-		Assert::parameterType( 'boolean', $isSortable, '$isSortable' );
 
 		$this->content = $content;
 		$this->isSortable = $isSortable;
@@ -44,14 +43,11 @@ class HtmlTableHeaderBuilder {
 	/**
 	 * @return string HTML
 	 */
-	public function getContent() {
+	public function getContent(): string {
 		return HtmlArmor::getHtml( $this->content );
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function getIsSortable() {
+	public function getIsSortable(): bool {
 		return $this->isSortable;
 	}
 
@@ -60,7 +56,7 @@ class HtmlTableHeaderBuilder {
 	 *
 	 * @return string HTML
 	 */
-	public function toHtml() {
+	public function toHtml(): string {
 		$attributes = [ 'role' => 'columnheader button' ];
 
 		if ( !$this->isSortable ) {

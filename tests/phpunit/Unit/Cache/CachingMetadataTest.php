@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Cache;
 
 use InvalidArgumentException;
@@ -7,7 +9,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\DependencyMetadata;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use Wikimedia\Assert\ParameterElementTypeException;
-use Wikimedia\Assert\ParameterTypeException;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachingMetadata
@@ -43,12 +44,6 @@ class CachingMetadataTest extends \MediaWikiUnitTestCase {
 		$this->expectException( InvalidArgumentException::class );
 
 		CachingMetadata::ofMaximumAgeInSeconds( -42 );
-	}
-
-	public function testOfMaximumAgeInSeconds_string() {
-		$this->expectException( ParameterTypeException::class );
-
-		CachingMetadata::ofMaximumAgeInSeconds( '42' );
 	}
 
 	public function testMerge() {

@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Html;
 
 use InvalidArgumentException;
@@ -40,11 +42,6 @@ class HtmlTableHeaderBuilderTest extends \MediaWikiUnitTestCase {
 			[
 				42,
 				true,
-				InvalidArgumentException::class,
-			],
-			[
-				'fooar',
-				42,
 				InvalidArgumentException::class,
 			],
 		];

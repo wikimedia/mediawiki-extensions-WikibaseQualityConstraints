@@ -1,9 +1,10 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use BagOStuff;
-use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\ParameterTypeException;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 use Wikimedia\Timestamp\TimestampException;
@@ -18,14 +19,8 @@ use Wikimedia\Timestamp\TimestampException;
  */
 class ExpiryLock {
 
-	/**
-	 * @var BagOStuff
-	 */
-	private $cache;
+	private BagOStuff $cache;
 
-	/**
-	 * @param BagOStuff $cache
-	 */
 	public function __construct( BagOStuff $cache ) {
 		$this->cache = $cache;
 	}
@@ -37,17 +32,15 @@ class ExpiryLock {
 	 *
 	 * @throws \Wikimedia\Assert\ParameterTypeException
 	 */
-	private function makeKey( $id ) {
+	private function makeKey( string $id ): string {
 		if ( trim( $id ) === '' ) {
 			throw new ParameterTypeException( '$id', 'non-empty string' );
 		}
 
-		Assert::parameterType( 'string', $id, '$id' );
-
 		return $this->cache->makeKey(
 			'WikibaseQualityConstraints',
 			'ExpiryLock',
-			(string)$id
+			$id
 		);
 	}
 
@@ -59,7 +52,7 @@ class ExpiryLock {
 	 *
 	 * @throws \Wikimedia\Assert\ParameterTypeException
 	 */
-	public function lock( $id, ConvertibleTimestamp $expiryTimestamp ) {
+	public function lock( string $id, ConvertibleTimestamp $expiryTimestamp ): bool {
 
 		$cacheId = $this->makeKey( $id );
 
@@ -81,7 +74,7 @@ class ExpiryLock {
 	 *
 	 * @throws \Wikimedia\Assert\ParameterTypeException
 	 */
-	private function isLockedInternal( $cacheId ) {
+	private function isLockedInternal( string $cacheId ): bool {
 		$expiryTime = $this->cache->get( $cacheId );
 		if ( !$expiryTime ) {
 			return false;
@@ -108,7 +101,7 @@ class ExpiryLock {
 	 *
 	 * @throws \Wikimedia\Assert\ParameterTypeException
 	 */
-	public function isLocked( $id ) {
+	public function isLocked( string $id ): bool {
 		return $this->isLockedInternal( $this->makeKey( $id ) );
 	}
 

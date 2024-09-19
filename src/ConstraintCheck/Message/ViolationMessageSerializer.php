@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use DataValues\DataValue;
@@ -19,7 +21,7 @@ use Wikimedia\Assert\Assert;
  */
 class ViolationMessageSerializer implements Serializer {
 
-	private function abbreviateViolationMessageKey( $fullMessageKey ) {
+	private function abbreviateViolationMessageKey( string $fullMessageKey ): string {
 		return substr( $fullMessageKey, strlen( ViolationMessage::MESSAGE_KEY_PREFIX ) );
 	}
 
@@ -27,7 +29,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param ViolationMessage $object
 	 * @return array
 	 */
-	public function serialize( $object ) {
+	public function serialize( $object ): array {
 		/** @var ViolationMessage $object */
 		Assert::parameterType( ViolationMessage::class, $object, '$object' );
 
@@ -47,7 +49,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param array $argument element of ViolationMessage::getArguments()
 	 * @return array [ 't' => ViolationMessage::TYPE_*, 'v' => serialized value, 'r' => $role ]
 	 */
-	private function serializeArgument( array $argument ) {
+	private function serializeArgument( array $argument ): array {
 		$methods = [
 			ViolationMessage::TYPE_ENTITY_ID => 'serializeEntityId',
 			ViolationMessage::TYPE_ENTITY_ID_LIST => 'serializeEntityIdList',
@@ -91,8 +93,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param string $string any value that shall simply be serialized to itself
 	 * @return string that same value, unchanged
 	 */
-	private function serializeStringByIdentity( $string ) {
-		Assert::parameterType( 'string', $string, '$string' );
+	private function serializeStringByIdentity( string $string ): string {
 		return $string;
 	}
 
@@ -100,7 +101,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param string[] $strings
 	 * @return string[]
 	 */
-	private function serializeStringListByIdentity( $strings ) {
+	private function serializeStringListByIdentity( array $strings ): array {
 		Assert::parameterElementType( 'string', $strings, '$strings' );
 		return $strings;
 	}
@@ -109,7 +110,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param EntityId $entityId
 	 * @return string entity ID serialization
 	 */
-	private function serializeEntityId( EntityId $entityId ) {
+	private function serializeEntityId( EntityId $entityId ): string {
 		return $entityId->getSerialization();
 	}
 
@@ -117,7 +118,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param EntityId[] $entityIdList
 	 * @return string[] entity ID serializations
 	 */
-	private function serializeEntityIdList( array $entityIdList ) {
+	private function serializeEntityIdList( array $entityIdList ): array {
 		return array_map( [ $this, 'serializeEntityId' ], $entityIdList );
 	}
 
@@ -126,7 +127,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @return string entity ID serialization, '::somevalue', or '::novalue'
 	 * (according to EntityId::PATTERN, entity ID serializations can never begin with two colons)
 	 */
-	private function serializeItemIdSnakValue( ItemIdSnakValue $value ) {
+	private function serializeItemIdSnakValue( ItemIdSnakValue $value ): string {
 		switch ( true ) {
 			case $value->isValue():
 				return $this->serializeEntityId( $value->getItemId() );
@@ -147,7 +148,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param ItemIdSnakValue[] $valueList
 	 * @return string[] array of entity ID serializations, '::somevalue's or '::novalue's
 	 */
-	private function serializeItemIdSnakValueList( array $valueList ) {
+	private function serializeItemIdSnakValueList( array $valueList ): array {
 		return array_map( [ $this, 'serializeItemIdSnakValue' ], $valueList );
 	}
 
@@ -155,7 +156,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param DataValue $dataValue
 	 * @return array the data value in array form
 	 */
-	private function serializeDataValue( DataValue $dataValue ) {
+	private function serializeDataValue( DataValue $dataValue ): array {
 		return $dataValue->toArray();
 	}
 
@@ -163,7 +164,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param string $contextType one of the Context::TYPE_* constants
 	 * @return string the abbreviated context type
 	 */
-	private function serializeContextType( $contextType ) {
+	private function serializeContextType( string $contextType ): string {
 		switch ( $contextType ) {
 			case Context::TYPE_STATEMENT:
 				return 's';
@@ -184,7 +185,7 @@ class ViolationMessageSerializer implements Serializer {
 	 * @param string[] $contextTypeList Context::TYPE_* constants
 	 * @return string[] abbreviated context types
 	 */
-	private function serializeContextTypeList( array $contextTypeList ) {
+	private function serializeContextTypeList( array $contextTypeList ): array {
 		return array_map( [ $this, 'serializeContextType' ], $contextTypeList );
 	}
 
