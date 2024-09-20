@@ -107,8 +107,6 @@ class SparqlHelper {
 
 	private int $maxQueryTimeMillis;
 
-	private string $instanceOfId;
-
 	private string $subclassOfId;
 
 	private int $cacheMapSize;
@@ -155,7 +153,6 @@ class SparqlHelper {
 		$this->primaryEndpoint = $config->get( 'WBQualityConstraintsSparqlEndpoint' );
 		$this->additionalEndpoints = $config->get( 'WBQualityConstraintsAdditionalSparqlEndpoints' ) ?: [];
 		$this->maxQueryTimeMillis = $config->get( 'WBQualityConstraintsSparqlMaxMillis' );
-		$this->instanceOfId = $config->get( 'WBQualityConstraintsInstanceOfId' );
 		$this->subclassOfId = $config->get( 'WBQualityConstraintsSubclassOfId' );
 		$this->cacheMapSize = $config->get( 'WBQualityConstraintsFormatCacheMapSize' );
 		$this->timeoutExceptionClasses = $config->get(
