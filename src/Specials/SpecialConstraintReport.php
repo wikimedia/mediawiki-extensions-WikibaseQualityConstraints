@@ -9,6 +9,7 @@ use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MediaWiki\Config\Config;
 use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\Field\HTMLTextField;
 use MediaWiki\HTMLForm\HTMLForm;
 use MediaWiki\SpecialPage\SpecialPage;
 use OOUI\IconWidget;
@@ -222,7 +223,7 @@ class SpecialConstraintReport extends SpecialPage {
 	private function buildEntityIdForm(): void {
 		$formDescriptor = [
 			'entityid' => [
-				'class' => 'HTMLTextField',
+				'class' => HTMLTextField::class,
 				'section' => 'section',
 				'name' => 'entityid',
 				'label-message' => 'wbqc-constraintreport-form-entityid-label',
