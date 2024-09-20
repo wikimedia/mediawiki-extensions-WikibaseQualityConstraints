@@ -97,7 +97,7 @@ return [
 
 	ConstraintCheckerServices::RANGE_CHECKER => static function ( MediaWikiServices $services ): RangeChecker {
 		return new RangeChecker(
-			WikibaseServices::getPropertyDataTypeLookup( $services ),
+			WikibaseRepo::getPropertyDataTypeLookup( $services ),
 			ConstraintsServices::getConstraintParameterParser( $services ),
 			ConstraintsServices::getRangeCheckerHelper( $services )
 		);
