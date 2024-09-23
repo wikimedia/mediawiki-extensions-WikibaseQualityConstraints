@@ -5,7 +5,6 @@ namespace WikibaseQuality\ConstraintReport\Tests;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
-use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Api\ResultsSource;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker;
@@ -129,7 +128,6 @@ class ServicesTest extends MediaWikiIntegrationTestCase {
 		return [
 			[ EntityLookup::class ],
 			[ 'EntityLookupWithoutCache', [ 'expectedClass' => EntityLookup::class ] ],
-			[ PropertyDataTypeLookup::class ],
 		];
 	}
 

@@ -100,7 +100,14 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->lookup = new InMemoryEntityLookup();
 		$this->setService( WikibaseServices::ENTITY_LOOKUP, $this->lookup );
 		$dataTypeLookup = new EntityRetrievingDataTypeLookup( $this->lookup );
-		$this->setService( WikibaseServices::PROPERTY_DATA_TYPE_LOOKUP, $dataTypeLookup );
+		$this->setService( 'WikibaseRepo.PropertyDataTypeLookup', $dataTypeLookup );
+
+		// make sure the “constraint scope” property exists (and its data type can be looked up)
+		$this->lookup->addEntity( new Property(
+			new NumericPropertyId( self::getDefaultConfig()->get( 'WBQualityConstraintsConstraintScopeId' ) ),
+			null,
+			'wikibase-item'
+		) );
 
 		$pageNameNormalizer = $this->createMock( MediaWikiPageNameNormalizer::class );
 		$pageNameNormalizer->method( 'normalizePageName' )
