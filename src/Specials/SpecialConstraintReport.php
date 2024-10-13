@@ -229,6 +229,7 @@ class SpecialConstraintReport extends SpecialPage {
 				'label-message' => 'wbqc-constraintreport-form-entityid-label',
 				'cssclass' => 'wbqc-constraintreport-form-entity-id',
 				'placeholder' => $this->msg( 'wbqc-constraintreport-form-entityid-placeholder' )->escaped(),
+				'required' => true,
 			],
 		];
 		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext(), 'wbqc-constraintreport-form' );
