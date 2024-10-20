@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
-use BufferingStatsdDataFactory;
 use DataValues\Deserializers\DataValueDeserializer;
 use DataValues\Geo\Values\GlobeCoordinateValue;
 use DataValues\Geo\Values\LatLongValue;
@@ -12,15 +11,12 @@ use DataValues\MonolingualTextValue;
 use DataValues\StringValue;
 use DataValues\TimeValue;
 use DataValues\UnboundedQuantityValue;
-use HashBagOStuff;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Config\MultiConfig;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Status\Status;
-use NullStatsdDataFactory;
-use WANObjectCache;
 use Wikibase\DataAccess\DatabaseEntitySource;
 use Wikibase\DataAccess\EntitySourceDefinitions;
 use Wikibase\DataModel\Entity\EntityIdParser;
@@ -52,6 +48,11 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Role;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
+use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\ObjectCache\WANObjectCache;
+use Wikimedia\Stats\BufferingStatsdDataFactory;
+use Wikimedia\Stats\IBufferingStatsdDataFactory;
+use Wikimedia\Stats\NullStatsdDataFactory;
 use Wikimedia\TestingAccessWrapper;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
@@ -818,7 +819,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( \IBufferingStatsdDataFactory::class ),
+			$this->createMock( IBufferingStatsdDataFactory::class ),
 			$lock,
 			$loggingHelper,
 			'',
@@ -859,7 +860,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( \IBufferingStatsdDataFactory::class ),
+			$this->createMock( IBufferingStatsdDataFactory::class ),
 			$this->getMockLock( SparqlHelper::EXPIRY_LOCK_ID, $expectedTimestamp ),
 			$loggingHelper,
 			'',
@@ -891,7 +892,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( \IBufferingStatsdDataFactory::class ),
+			$this->createMock( IBufferingStatsdDataFactory::class ),
 			$lock,
 			$this->createMock( LoggingHelper::class ),
 			'',
@@ -924,7 +925,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( \IBufferingStatsdDataFactory::class ),
+			$this->createMock( IBufferingStatsdDataFactory::class ),
 			$lock,
 			$loggingHelper,
 			'',
@@ -1058,7 +1059,7 @@ END;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( \IBufferingStatsdDataFactory::class ),
+			$this->createMock( IBufferingStatsdDataFactory::class ),
 			$lock,
 			$this->createMock( LoggingHelper::class ),
 			'',

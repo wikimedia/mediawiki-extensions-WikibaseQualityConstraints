@@ -2,12 +2,12 @@
 
 namespace WikibaseQuality\ConstraintReport;
 
-use ExtensionRegistry;
 use JobSpecification;
 use MediaWiki\Config\Config;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\Hook\BeforePageDisplayHook;
 use MediaWiki\Page\Hook\ArticlePurgeHook;
+use MediaWiki\Registration\ExtensionRegistry;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Changes\Change;
 use Wikibase\Lib\Changes\EntityChange;

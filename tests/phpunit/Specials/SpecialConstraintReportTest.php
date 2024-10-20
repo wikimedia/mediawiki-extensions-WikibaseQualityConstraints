@@ -7,7 +7,6 @@ use HamcrestPHPUnitIntegration;
 use MediaWiki\Config\MultiConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
-use NullStatsdDataFactory;
 use SpecialPageTestBase;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\Item;
@@ -19,6 +18,7 @@ use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
+use Wikimedia\Stats\NullStatsdDataFactory;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport

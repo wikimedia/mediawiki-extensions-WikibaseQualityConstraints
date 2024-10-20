@@ -3,11 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use DataValues\TimeValue;
-use HashBagOStuff;
 use MediaWiki\Config\HashConfig;
-use NullStatsdDataFactory;
 use Psr\Log\NullLogger;
-use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\ItemIdParser;
@@ -30,6 +27,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
+use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\ObjectCache\WANObjectCache;
+use Wikimedia\Stats\NullStatsdDataFactory;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CachingResultsSource

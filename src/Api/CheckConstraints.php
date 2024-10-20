@@ -4,9 +4,8 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
-use ApiBase;
-use ApiMain;
-use IBufferingStatsdDataFactory;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -20,6 +19,7 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\Stats\IBufferingStatsdDataFactory;
 
 /**
  * API module that performs constraint check of entities, claims and constraint ID

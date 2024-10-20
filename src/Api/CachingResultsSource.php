@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use DataValues\TimeValue;
-use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\Lib\Store\LookupConstants;
@@ -18,6 +17,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
  * A ResultsSource that wraps another ResultsSource,

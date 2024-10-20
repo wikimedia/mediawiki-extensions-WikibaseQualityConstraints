@@ -5,7 +5,6 @@ declare( strict_types = 1 );
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use MediaWiki\Tests\Api\ApiTestCase;
-use NullStatsdDataFactory;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters;
@@ -14,6 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterE
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
+use Wikimedia\Stats\NullStatsdDataFactory;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters

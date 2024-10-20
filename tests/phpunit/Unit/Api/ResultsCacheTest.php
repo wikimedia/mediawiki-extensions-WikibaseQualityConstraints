@@ -2,11 +2,11 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Api;
 
-use HashBagOStuff;
-use WANObjectCache;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use WikibaseQuality\ConstraintReport\Api\ResultsCache;
+use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\ResultsCache

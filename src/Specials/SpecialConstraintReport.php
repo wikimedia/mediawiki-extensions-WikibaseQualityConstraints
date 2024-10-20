@@ -5,7 +5,6 @@ declare( strict_types = 1 );
 namespace WikibaseQuality\ConstraintReport\Specials;
 
 use HtmlArmor;
-use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MediaWiki\Config\Config;
 use MediaWiki\Html\Html;
@@ -33,6 +32,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableCellBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
+use Wikimedia\Stats\IBufferingStatsdDataFactory;
 
 /**
  * Special page that displays all constraints that are defined on an Entity with additional information

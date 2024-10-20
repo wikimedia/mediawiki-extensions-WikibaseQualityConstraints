@@ -4,11 +4,10 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
-use ApiBase;
-use ApiMain;
-use ApiResult;
-use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
+use MediaWiki\Api\ApiResult;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Services\Statement\StatementGuidParser;
 use Wikibase\DataModel\Services\Statement\StatementGuidParsingException;
@@ -19,6 +18,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\Stats\IBufferingStatsdDataFactory;
 
 /**
  * API module that checks whether the parameters of a constraint statement are valid.

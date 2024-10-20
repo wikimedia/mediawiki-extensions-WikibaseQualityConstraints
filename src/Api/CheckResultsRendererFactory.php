@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
-use Language;
+use MediaWiki\Language\Language;
 use MessageLocalizer;
 use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Lib\Store\EntityTitleLookup;

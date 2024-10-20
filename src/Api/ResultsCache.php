@@ -3,8 +3,8 @@
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use MediaWiki\MediaWikiServices;
-use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
  * A thin wrapper around a WANObjectCache

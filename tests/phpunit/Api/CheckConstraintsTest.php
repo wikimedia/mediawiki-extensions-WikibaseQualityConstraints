@@ -9,7 +9,6 @@ use MediaWiki\Config\HashConfig;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Tests\Api\ApiTestCase;
-use NullStatsdDataFactory;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -39,6 +38,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Stats\NullStatsdDataFactory;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraints

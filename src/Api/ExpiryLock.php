@@ -4,8 +4,8 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
-use BagOStuff;
 use Wikimedia\Assert\ParameterTypeException;
+use Wikimedia\ObjectCache\BagOStuff;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 use Wikimedia\Timestamp\TimestampException;
 

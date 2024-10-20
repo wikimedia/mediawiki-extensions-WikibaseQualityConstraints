@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use IBufferingStatsdDataFactory;
 use MediaWiki\Config\Config;
 use MWHttpRequest;
 use Psr\Log\LoggerInterface;
@@ -10,6 +9,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
+use Wikimedia\Stats\IBufferingStatsdDataFactory;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**

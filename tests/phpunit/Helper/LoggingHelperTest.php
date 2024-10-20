@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
-use IBufferingStatsdDataFactory;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
 use Psr\Log\LoggerInterface;
@@ -16,6 +15,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
+use Wikimedia\Stats\IBufferingStatsdDataFactory;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**

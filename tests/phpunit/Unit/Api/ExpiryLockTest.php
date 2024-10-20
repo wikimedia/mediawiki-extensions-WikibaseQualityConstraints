@@ -4,9 +4,9 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Api;
 
-use HashBagOStuff;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InvalidConvertibleTimestamp;
+use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**

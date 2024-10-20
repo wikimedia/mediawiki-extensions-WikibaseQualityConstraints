@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Maintenance;
 
-use Maintenance;
+use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Wikibase\Lib\Store\PropertyInfoLookup;

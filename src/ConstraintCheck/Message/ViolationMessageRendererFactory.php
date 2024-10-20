@@ -4,8 +4,8 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
-use Language;
 use MediaWiki\Config\Config;
+use MediaWiki\Language\Language;
 use MediaWiki\Languages\LanguageNameUtils;
 use MessageLocalizer;
 use ValueFormatters\FormatterOptions;

@@ -7,15 +7,13 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 use DataValues\DataValue;
 use DataValues\MonolingualTextValue;
 use DateInterval;
-use FormatJson;
-use IBufferingStatsdDataFactory;
 use InvalidArgumentException;
 use MapCacheLRU;
 use MediaWiki\Config\Config;
 use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Json\FormatJson;
 use MWHttpRequest;
 use UnexpectedValueException;
-use WANObjectCache;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
@@ -36,6 +34,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\Role;
+use Wikimedia\ObjectCache\WANObjectCache;
+use Wikimedia\Stats\IBufferingStatsdDataFactory;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**

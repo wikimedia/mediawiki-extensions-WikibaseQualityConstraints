@@ -3,9 +3,9 @@
 namespace WikibaseQuality\ConstraintReport\Maintenance;
 
 use Deserializers\Deserializer;
-use Maintenance;
 use MediaWiki\Config\Config;
 use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use MediaWiki\WikiMap\WikiMap;
