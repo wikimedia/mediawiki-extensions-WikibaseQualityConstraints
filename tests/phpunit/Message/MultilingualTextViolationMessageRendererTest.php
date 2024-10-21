@@ -162,7 +162,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( 'explanation' ) ],
 			$params
 		);
@@ -179,7 +179,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( 'Erklärung' ) ],
 			$params
 		);
@@ -196,7 +196,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( 'Erklärung' ) ],
 			$params
 		);
@@ -213,7 +213,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( 'explanation' ) ],
 			$params
 		);
@@ -234,7 +234,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( 'explicação' ) ],
 			$params
 		);
@@ -280,7 +280,7 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderMultilingualText( $text, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam(
 				'<span class="wbqc-role wbqc-role-constraint-parameter-value">' .
 					'explanation' .

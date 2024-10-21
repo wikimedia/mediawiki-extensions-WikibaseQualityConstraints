@@ -6,6 +6,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use DataValues\MultilingualTextValue;
 use MediaWiki\Message\Message;
+use Wikimedia\Message\MessageParam;
 
 /**
  * Render a {@link ViolationMessage},
@@ -64,7 +65,7 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 	/**
 	 * @param MultilingualTextValue $text
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[]|null list of parameters as accepted by Message::params(),
+	 * @return MessageParam[]|null list of parameters as accepted by Message::params(),
 	 * or null if the text is not available in the user’s language
 	 */
 	protected function renderMultilingualText( MultilingualTextValue $text, ?string $role ): ?array {

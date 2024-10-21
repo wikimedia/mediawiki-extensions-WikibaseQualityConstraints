@@ -350,7 +350,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderList( $valueList, $role, $renderFunction );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 2 ),
 				Message::rawParam( '<ul><li><any value></li><li>any kind of value</li></ul>' ),
@@ -378,7 +378,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderList( $valueList, $role, $renderFunction );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 0 ),
 				Message::rawParam( '<ul></ul>' ),
@@ -409,7 +409,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderList( $valueList, $role, $renderFunction );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 2 ),
 				Message::rawParam( '<ul><li>Q1</li><li>P2</li><li>(ellipsis)</li></ul>' ),
@@ -441,7 +441,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderList( $valueList, $role, $renderFunction );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 1 ),
 				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
@@ -468,7 +468,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderEntityId( $entityId, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '<test property>' ) ],
 			$params
 		);
@@ -490,7 +490,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderEntityId( $entityId, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '<span class="wbqc-role wbqc-role-predicate"><test property></span>' ) ],
 			$params
 		);
@@ -512,7 +512,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderEntityIdList( $entityIdList, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 2 ),
 				Message::rawParam( '<ul><li>Q1</li><li>P2</li></ul>' ),
@@ -539,7 +539,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderEntityIdList( $entityIdList, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 1 ),
 				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
@@ -567,7 +567,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '<test item>' ) ],
 			$params
 		);
@@ -588,7 +588,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-somevaluesnak">' .
 					'(wikibase-snakview-snaktypeselector-somevalue)' .
@@ -613,7 +613,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-novaluesnak">' .
 				'(wikibase-snakview-snaktypeselector-novalue)' .
@@ -640,7 +640,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValue( $itemIdSnakValue, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '<span class="wbqc-role wbqc-role-object"><test item></span>' ) ],
 			$params
 		);
@@ -665,7 +665,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValueList( $valueList, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 2 ),
 				Message::rawParam( '<ul><li>Q1</li><li>Q2</li></ul>' ),
@@ -692,7 +692,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderItemIdSnakValueList( $valueList, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 1 ),
 				Message::rawParam( '<ul><li><span class="wbqc-role wbqc-role-object"><test item></span></li></ul>' ),
@@ -719,7 +719,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderDataValue( $dataValue, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '<a&amp;nbsp;string>' ) ],
 			$params
 		);
@@ -741,7 +741,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderDataValue( $dataValue, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '<span class="wbqc-role wbqc-role-object">test</span>' ) ],
 			$params
 		);
@@ -758,7 +758,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderDataValueType( $dataValueType, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '(datatypes-type-string)' ) ],
 			$params
 		);
@@ -775,7 +775,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderDataValueType( $dataValueType, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '(wbqc-dataValueType-wikibase-entityid)' ) ],
 			$params
 		);
@@ -793,7 +793,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderInlineCode( $code, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( '<code>https?://[^/]+/.*</code>' ) ],
 			$params
 		);
@@ -810,7 +810,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderInlineCode( $code, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam(
 				'<code>' .
 					'&lt;script&gt;alert(&quot;im in ur html&quot;)&lt;/script&gt;' .
@@ -832,7 +832,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderInlineCode( $code, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam(
 				'<span class="wbqc-role wbqc-role-constraint-parameter-value">' .
 					'<code>https?://[^/]+/.*</code>' .
@@ -866,7 +866,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderConstraintScope( $scope, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam( $returnValue ) ],
 			$params
 		);
@@ -894,7 +894,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderConstraintScope( $scope, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam(
 				'<span class="wikibase-snakview-variation-somevaluesnak">' .
 					'(wikibase-snakview-snaktypeselector-somevalue)' .
@@ -916,7 +916,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderConstraintScope( $scope, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[ Message::rawParam(
 				'<span class="wbqc-role wbqc-role-constraint-parameter-value">Q1</span>'
 			) ],
@@ -940,7 +940,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderConstraintScopeList( $scopeList, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 2 ),
 				Message::rawParam( '<ul><li>Q1</li><li>Q3</li></ul>' ),
@@ -968,7 +968,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 			->renderConstraintScopeList( $scopeList, $role );
 
 		$html = '<span class="wbqc-role wbqc-role-constraint-parameter-value"><test scope></span>';
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::numParam( 1 ),
 				Message::rawParam( '<ul><li>' . $html . '</li></ul>' ),
@@ -989,7 +989,7 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$params = TestingAccessWrapper::newFromObject( $renderer )
 			->renderLanguage( $languageCode, $role );
 
-		$this->assertSame(
+		$this->assertEquals(
 			[
 				Message::rawParam( 'Portuguese' ),
 				Message::plaintextParam( 'pt' ),
