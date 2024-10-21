@@ -39,7 +39,7 @@
 	"wbqc-issues-short": "Problemas",
 	"wbqc-issues-long": "Esta declaración ten algúns problemas.",
 	"wbqc-potentialissues-short": "Problemas potenciais",
-	"wbqc-potentialissues-long": "Esta instrucciónten problemas potenciais.",
+	"wbqc-potentialissues-long": "Esta declaración pode ter algún problema.",
 	"wbqc-badparameters-short": "Parámetros incorrectos",
 	"wbqc-badparameters-long": "Esta declaración de restrición ten algúns parámetros non válidos.",
 	"wbqc-parameterissues-short": "Problemas complexos",
