@@ -18,6 +18,7 @@ use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\Lib\TermLanguageFallbackChain;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
+use Wikimedia\Message\MessageParam;
 
 /**
  * Render a {@link ViolationMessage} into a localized string.
@@ -105,7 +106,7 @@ class ViolationMessageRenderer {
 
 	/**
 	 * @param array $argument
-	 * @return array[] params (for Message::params)
+	 * @return MessageParam[] params (for Message::params)
 	 */
 	protected function renderArgument( array $argument ): array {
 		$methods = [
@@ -145,7 +146,7 @@ class ViolationMessageRenderer {
 	 * @param string|null $role one of the Role::* constants
 	 * @param callable $render must accept $list elements and $role as parameters
 	 * and return a single-element array with a raw message param (i. e. [ Message::rawParam( … ) ])
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderList( array $list, ?string $role, callable $render ): array {
 		if ( $list === [] ) {
@@ -166,7 +167,7 @@ class ViolationMessageRenderer {
 			array_fill( 0, count( $list ), $role )
 		);
 		$renderedParams = array_column( $renderedParamsLists, 0 );
-		$renderedElements = array_column( $renderedParams, 'raw' );
+		$renderedElements = array_map( fn ( MessageParam $msg ) => $msg->getValue(), $renderedParams );
 		if ( isset( $truncated ) ) {
 			$renderedElements[] = $this->msgEscaped( 'ellipsis' );
 		}
@@ -187,7 +188,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param EntityId $entityId
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
+	 * @return MessageParam[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
 	 */
 	private function renderEntityId( EntityId $entityId, ?string $role ): array {
 		return [ Message::rawParam( $this->addRole(
@@ -199,7 +200,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param EntityId[] $entityIdList
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderEntityIdList( array $entityIdList, ?string $role ): array {
 		return $this->renderList( $entityIdList, $role, [ $this, 'renderEntityId' ] );
@@ -208,7 +209,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param ItemIdSnakValue $value
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
+	 * @return MessageParam[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
 	 */
 	private function renderItemIdSnakValue( ItemIdSnakValue $value, ?string $role ): array {
 		switch ( true ) {
@@ -240,7 +241,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param ItemIdSnakValue[] $valueList
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderItemIdSnakValueList( array $valueList, ?string $role ): array {
 		return $this->renderList( $valueList, $role, [ $this, 'renderItemIdSnakValue' ] );
@@ -249,7 +250,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param DataValue $dataValue
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderDataValue( DataValue $dataValue, ?string $role ): array {
 		return [ Message::rawParam( $this->addRole(
@@ -261,7 +262,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param string $dataValueType
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderDataValueType( string $dataValueType, ?string $role ): array {
 		$messageKeys = [
@@ -289,7 +290,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param string $code (not yet HTML-escaped)
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderInlineCode( string $code, ?string $role ): array {
 		return [ Message::rawParam( $this->addRole(
@@ -301,7 +302,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param string $scope one of the Context::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
+	 * @return MessageParam[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
 	 */
 	private function renderConstraintScope( string $scope, ?string $role ): array {
 		switch ( $scope ) {
@@ -333,7 +334,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param string[] $scopeList Context::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderConstraintScopeList( array $scopeList, ?string $role ): array {
 		return $this->renderList( $scopeList, $role, [ $this, 'renderConstraintScope' ] );
@@ -342,7 +343,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param string $scope one of the Context::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
+	 * @return MessageParam[] list of a single raw message param (i. e. [ Message::rawParam( … ) ])
 	 */
 	private function renderPropertyScope( string $scope, ?string $role ): array {
 		switch ( $scope ) {
@@ -368,7 +369,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param string[] $scopeList Context::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderPropertyScopeList( array $scopeList, ?string $role ): array {
 		return $this->renderList( $scopeList, $role, [ $this, 'renderPropertyScope' ] );
@@ -377,7 +378,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param string $languageCode MediaWiki language code
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderLanguage( string $languageCode, ?string $role ): array {
 		return [
@@ -393,7 +394,7 @@ class ViolationMessageRenderer {
 	/**
 	 * @param string[] $languageCodes MediaWiki language codes
 	 * @param string|null $role one of the Role::* constants
-	 * @return array[] list of parameters as accepted by Message::params()
+	 * @return MessageParam[] list of parameters as accepted by Message::params()
 	 */
 	private function renderLanguageList( array $languageCodes, ?string $role ): array {
 		return $this->renderList( $languageCodes, $role, [ $this, 'renderLanguage' ] );
