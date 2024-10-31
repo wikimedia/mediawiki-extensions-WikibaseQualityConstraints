@@ -39,10 +39,10 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 	 */
 	private function newMultilingualTextViolationMessageRenderer(
 		string $userLanguageCode = 'qqx',
-		EntityIdFormatter $entityIdFormatter = null,
-		ValueFormatter $dataValueFormatter = null,
-		MessageLocalizer $messageLocalizer = null,
-		Config $config = null,
+		?EntityIdFormatter $entityIdFormatter = null,
+		?ValueFormatter $dataValueFormatter = null,
+		?MessageLocalizer $messageLocalizer = null,
+		?Config $config = null,
 		int $maxListLength = 10
 	): MultilingualTextViolationMessageRenderer {
 		$config ??= new HashConfig( [

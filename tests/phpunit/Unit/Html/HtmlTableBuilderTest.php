@@ -105,7 +105,7 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 	 */
 	public function testAppendRows(
 		array $rows,
-		array $expectedRows = null,
+		?array $expectedRows = null,
 		$expectedException = null
 	) {
 		if ( $expectedException ) {

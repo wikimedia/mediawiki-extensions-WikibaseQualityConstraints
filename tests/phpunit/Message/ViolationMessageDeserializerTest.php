@@ -28,8 +28,8 @@ use Wikimedia\TestingAccessWrapper;
 class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	private function getViolationMessageDeserializer(
-		EntityIdParser $entityIdParser = null,
-		DataValueFactory $dataValueFactory = null
+		?EntityIdParser $entityIdParser = null,
+		?DataValueFactory $dataValueFactory = null
 	) {
 		return new ViolationMessageDeserializer(
 			$entityIdParser ?? new BasicEntityIdParser(),

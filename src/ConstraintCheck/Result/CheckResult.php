@@ -106,7 +106,7 @@ class CheckResult {
 		$contextCursor,
 		Constraint $constraint,
 		string $status = self::STATUS_TODO,
-		ViolationMessage $message = null
+		?ViolationMessage $message = null
 	) {
 		if ( $contextCursor instanceof Context ) {
 			$context = $contextCursor;

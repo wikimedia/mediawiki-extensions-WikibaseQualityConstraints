@@ -42,8 +42,8 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	 * @return TypeCheckerHelper
 	 */
 	private function getHelper(
-		EntityLookup $entityLookup = null,
-		SparqlHelper $sparqlHelper = null
+		?EntityLookup $entityLookup = null,
+		?SparqlHelper $sparqlHelper = null
 	) {
 		return new TypeCheckerHelper(
 			$entityLookup ?: new InMemoryEntityLookup(),
@@ -77,7 +77,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	 * @return SparqlHelper expects that {@link SparqlHelper::hasType}
 	 * is called exactly once and returns $return.
 	 */
-	private function getSparqlHelper( $return, array $arguments = null ) {
+	private function getSparqlHelper( $return, ?array $arguments = null ) {
 		$mock = $this->createMock( SparqlHelper::class );
 		$invocationMocker = $mock->expects( $this->once() )
 			->method( 'hasType' )

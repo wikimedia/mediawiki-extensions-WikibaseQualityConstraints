@@ -118,9 +118,9 @@ class DelegatingConstraintChecker {
 	 */
 	public function checkAgainstConstraintsOnEntityId(
 		EntityId $entityId,
-		array $constraintIds = null,
-		callable $defaultResultsPerContext = null,
-		callable $defaultResultsPerEntity = null
+		?array $constraintIds = null,
+		?callable $defaultResultsPerContext = null,
+		?callable $defaultResultsPerEntity = null
 	): array {
 		$checkResults = [];
 		$entity = $this->entityLookup->getEntity( $entityId );
@@ -168,8 +168,8 @@ class DelegatingConstraintChecker {
 	 */
 	public function checkAgainstConstraintsOnClaimId(
 		string $guid,
-		array $constraintIds = null,
-		callable $defaultResults = null
+		?array $constraintIds = null,
+		?callable $defaultResults = null
 	): array {
 
 		$parsedGuid = $this->statementGuidParser->parse( $guid );

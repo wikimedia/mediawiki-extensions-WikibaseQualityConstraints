@@ -30,7 +30,7 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 	private const NONEXISTENT_CLAIM = 'Q99$dfb32791-ffd5-4420-a1d9-2bc2a0775968';
 
 	private function getResultsSource(
-		DelegatingConstraintChecker $checker = null
+		?DelegatingConstraintChecker $checker = null
 	) {
 		$checker ??= $this->createMock( DelegatingConstraintChecker::class );
 		return new CheckingResultsSource( $checker );
@@ -131,9 +131,9 @@ class CheckingResultsSourceTest extends \MediaWikiUnitTestCase {
 		$delegatingConstraintChecker->method( 'checkAgainstConstraintsOnEntityId' )
 			->willReturnCallback( function (
 				EntityId $entityId,
-				array $constraintIds = null,
-				callable $defaultResultsPerContext = null,
-				callable $defaultResultsPerEntity = null
+				?array $constraintIds = null,
+				?callable $defaultResultsPerContext = null,
+				?callable $defaultResultsPerEntity = null
 			) {
 				if ( $defaultResultsPerEntity !== null ) {
 					return $defaultResultsPerEntity( $entityId );

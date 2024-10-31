@@ -16,7 +16,7 @@ class TimeValueComparer {
 	 */
 	private $timeValueCalculator;
 
-	public function __construct( TimeValueCalculator $timeValueCalculator = null ) {
+	public function __construct( ?TimeValueCalculator $timeValueCalculator = null ) {
 		$this->timeValueCalculator = $timeValueCalculator ?: new TimeValueCalculator();
 	}
 

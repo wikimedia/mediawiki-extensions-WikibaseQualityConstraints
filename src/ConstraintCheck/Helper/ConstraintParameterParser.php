@@ -255,7 +255,7 @@ class ConstraintParameterParser {
 		array $constraintParameters,
 		string $constraintTypeItemId,
 		bool $required,
-		string $parameterId = null
+		?string $parameterId = null
 	): array {
 		$this->checkError( $constraintParameters );
 		$parameterId ??= $this->config->get( 'WBQualityConstraintsQualifierOfPropertyConstraintId' );

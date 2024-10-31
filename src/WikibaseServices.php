@@ -37,7 +37,7 @@ class WikibaseServices {
 	 * this lookup ignores exceptions (such as unresolved redirects, T93273),
 	 * as it is more convenient to treat them all as missing entities in WBQC.
 	 */
-	public static function getEntityLookup( MediaWikiServices $services = null ): EntityLookup {
+	public static function getEntityLookup( ?MediaWikiServices $services = null ): EntityLookup {
 		return self::getService( $services, self::ENTITY_LOOKUP );
 	}
 
@@ -48,7 +48,7 @@ class WikibaseServices {
 	 * were exceeding the request memory limit when they were all added to the cache (T227450).
 	 * Also, like {@link self::getEntityLookup()}, this lookup ignores exceptions.
 	 */
-	public static function getEntityLookupWithoutCache( MediaWikiServices $services = null ): EntityLookup {
+	public static function getEntityLookupWithoutCache( ?MediaWikiServices $services = null ): EntityLookup {
 		return self::getService( $services, self::ENTITY_LOOKUP_WITHOUT_CACHE );
 	}
 
