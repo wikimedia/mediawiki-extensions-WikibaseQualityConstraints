@@ -25,7 +25,7 @@ class FakeSnakContext extends AbstractContext {
 	 */
 	public function __construct(
 		Snak $snak,
-		StatementListProvidingEntity $entity = null
+		?StatementListProvidingEntity $entity = null
 	) {
 		parent::__construct(
 			$entity ?: new Item( new ItemId( 'Q1' ) ),

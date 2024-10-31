@@ -147,7 +147,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	private function getCheckConstraintsRdf(
 		Article $article,
 		$mockResponse,
-		ResultsSource $cachingResultsSource = null
+		?ResultsSource $cachingResultsSource = null
 	): CheckConstraintsRdf {
 		return new CheckConstraintsRdf(
 			$article,

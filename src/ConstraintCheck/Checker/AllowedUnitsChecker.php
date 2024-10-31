@@ -38,7 +38,7 @@ class AllowedUnitsChecker implements ConstraintChecker {
 	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser,
-		UnitConverter $unitConverter = null
+		?UnitConverter $unitConverter = null
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->unitConverter = $unitConverter;

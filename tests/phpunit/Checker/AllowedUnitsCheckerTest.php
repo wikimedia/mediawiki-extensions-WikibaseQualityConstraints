@@ -32,7 +32,7 @@ class AllowedUnitsCheckerTest extends PropertyResolvingMediaWikiIntegrationTestC
 	use ConstraintParameters;
 	use ResultAssertions;
 
-	private function getAllowedUnitsChecker( UnitStorage $unitStorage = null ) {
+	private function getAllowedUnitsChecker( ?UnitStorage $unitStorage = null ) {
 		return new AllowedUnitsChecker(
 			$this->getConstraintParameterParser(),
 			new UnitConverter(

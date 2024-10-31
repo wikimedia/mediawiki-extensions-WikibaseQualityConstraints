@@ -45,84 +45,84 @@ class ConstraintsServices {
 		return $services->getService( $name );
 	}
 
-	public static function getLoggingHelper( MediaWikiServices $services = null ): LoggingHelper {
+	public static function getLoggingHelper( ?MediaWikiServices $services = null ): LoggingHelper {
 		return self::getService( $services, self::LOGGING_HELPER );
 	}
 
 	public static function getConstraintStore(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): ConstraintStore {
 		return self::getService( $services, self::CONSTRAINT_STORE );
 	}
 
-	public static function getConstraintLookup( MediaWikiServices $services = null ): ConstraintLookup {
+	public static function getConstraintLookup( ?MediaWikiServices $services = null ): ConstraintLookup {
 		return self::getService( $services, self::CONSTRAINT_LOOKUP );
 	}
 
 	public static function getCheckResultSerializer(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): CheckResultSerializer {
 		return self::getService( $services, self::CHECK_RESULT_SERIALIZER );
 	}
 
 	public static function getCheckResultDeserializer(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): CheckResultDeserializer {
 		return self::getService( $services, self::CHECK_RESULT_DESERIALIZER );
 	}
 
 	public static function getViolationMessageSerializer(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): ViolationMessageSerializer {
 		return self::getService( $services, self::VIOLATION_MESSAGE_SERIALIZER );
 	}
 
 	public static function getViolationMessageDeserializer(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): ViolationMessageDeserializer {
 		return self::getService( $services, self::VIOLATION_MESSAGE_DESERIALIZER );
 	}
 
 	public static function getConstraintParameterParser(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): ConstraintParameterParser {
 		return self::getService( $services, self::CONSTRAINT_PARAMETER_PARSER );
 	}
 
 	public static function getConnectionCheckerHelper(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): ConnectionCheckerHelper {
 		return self::getService( $services, self::CONNECTION_CHECKER_HELPER );
 	}
 
-	public static function getRangeCheckerHelper( MediaWikiServices $services = null ): RangeCheckerHelper {
+	public static function getRangeCheckerHelper( ?MediaWikiServices $services = null ): RangeCheckerHelper {
 		return self::getService( $services, self::RANGE_CHECKER_HELPER );
 	}
 
-	public static function getSparqlHelper( MediaWikiServices $services = null ): SparqlHelper {
+	public static function getSparqlHelper( ?MediaWikiServices $services = null ): SparqlHelper {
 		return self::getService( $services, self::SPARQL_HELPER );
 	}
 
-	public static function getTypeCheckerHelper( MediaWikiServices $services = null ): TypeCheckerHelper {
+	public static function getTypeCheckerHelper( ?MediaWikiServices $services = null ): TypeCheckerHelper {
 		return self::getService( $services, self::TYPE_CHECKER_HELPER );
 	}
 
 	public static function getDelegatingConstraintChecker(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): DelegatingConstraintChecker {
 		return self::getService( $services, self::DELEGATING_CONSTRAINT_CHECKER );
 	}
 
-	public static function getResultsSource( MediaWikiServices $services = null ): ResultsSource {
+	public static function getResultsSource( ?MediaWikiServices $services = null ): ResultsSource {
 		return self::getService( $services, self::RESULTS_SOURCE );
 	}
 
-	public static function getExpiryLock( MediaWikiServices $services = null ): ExpiryLock {
+	public static function getExpiryLock( ?MediaWikiServices $services = null ): ExpiryLock {
 		return self::getService( $services, self::EXPIRY_LOCK );
 	}
 
 	public static function getViolationMessageRendererFactory(
-		MediaWikiServices $services = null
+		?MediaWikiServices $services = null
 	): ViolationMessageRendererFactory {
 		return self::getService( $services, self::VIOLATION_MESSAGE_RENDERER_FACTORY );
 	}

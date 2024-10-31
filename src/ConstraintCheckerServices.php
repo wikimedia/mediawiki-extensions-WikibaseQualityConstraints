@@ -53,7 +53,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getConflictsWithChecker( MediaWikiServices $services = null ) {
+	public static function getConflictsWithChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::CONFLICTS_WITH_CHECKER );
 	}
 
@@ -61,7 +61,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getItemChecker( MediaWikiServices $services = null ) {
+	public static function getItemChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::ITEM_CHECKER );
 	}
 
@@ -69,7 +69,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getTargetRequiredClaimChecker( MediaWikiServices $services = null ) {
+	public static function getTargetRequiredClaimChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::TARGET_REQUIRED_CLAIM_CHECKER );
 	}
 
@@ -77,7 +77,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getSymmetricChecker( MediaWikiServices $services = null ) {
+	public static function getSymmetricChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::SYMMETRIC_CHECKER );
 	}
 
@@ -85,7 +85,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getInverseChecker( MediaWikiServices $services = null ) {
+	public static function getInverseChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::INVERSE_CHECKER );
 	}
 
@@ -93,7 +93,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getQualifierChecker( MediaWikiServices $services = null ) {
+	public static function getQualifierChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::QUALIFIER_CHECKER );
 	}
 
@@ -101,7 +101,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getQualifiersChecker( MediaWikiServices $services = null ) {
+	public static function getQualifiersChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::QUALIFIERS_CHECKER );
 	}
 
@@ -109,7 +109,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getMandatoryQualifiersChecker( MediaWikiServices $services = null ) {
+	public static function getMandatoryQualifiersChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::MANDATORY_QUALIFIERS_CHECKER );
 	}
 
@@ -117,7 +117,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getRangeChecker( MediaWikiServices $services = null ) {
+	public static function getRangeChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::RANGE_CHECKER );
 	}
 
@@ -125,7 +125,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getDiffWithinRangeChecker( MediaWikiServices $services = null ) {
+	public static function getDiffWithinRangeChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::DIFF_WITHIN_RANGE_CHECKER );
 	}
 
@@ -133,7 +133,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getTypeChecker( MediaWikiServices $services = null ) {
+	public static function getTypeChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::TYPE_CHECKER );
 	}
 
@@ -141,7 +141,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getValueTypeChecker( MediaWikiServices $services = null ) {
+	public static function getValueTypeChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::VALUE_TYPE_CHECKER );
 	}
 
@@ -149,7 +149,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getSingleValueChecker( MediaWikiServices $services = null ) {
+	public static function getSingleValueChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::SINGLE_VALUE_CHECKER );
 	}
 
@@ -157,7 +157,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getMultiValueChecker( MediaWikiServices $services = null ) {
+	public static function getMultiValueChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::MULTI_VALUE_CHECKER );
 	}
 
@@ -165,7 +165,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getUniqueValueChecker( MediaWikiServices $services = null ) {
+	public static function getUniqueValueChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::UNIQUE_VALUE_CHECKER );
 	}
 
@@ -173,7 +173,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getFormatChecker( MediaWikiServices $services = null ) {
+	public static function getFormatChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::FORMAT_CHECKER );
 	}
 
@@ -181,7 +181,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getCommonsLinkChecker( MediaWikiServices $services = null ) {
+	public static function getCommonsLinkChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::COMMONS_LINK_CHECKER );
 	}
 
@@ -189,7 +189,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getOneOfChecker( MediaWikiServices $services = null ) {
+	public static function getOneOfChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::ONE_OF_CHECKER );
 	}
 
@@ -197,7 +197,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getValueOnlyChecker( MediaWikiServices $services = null ) {
+	public static function getValueOnlyChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::VALUE_ONLY_CHECKER );
 	}
 
@@ -205,7 +205,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getReferenceChecker( MediaWikiServices $services = null ) {
+	public static function getReferenceChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::REFERENCE_CHECKER );
 	}
 
@@ -213,7 +213,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getNoBoundsChecker( MediaWikiServices $services = null ) {
+	public static function getNoBoundsChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::NO_BOUNDS_CHECKER );
 	}
 
@@ -221,7 +221,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getAllowedUnitsChecker( MediaWikiServices $services = null ) {
+	public static function getAllowedUnitsChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::ALLOWED_UNITS_CHECKER );
 	}
 
@@ -229,7 +229,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getSingleBestValueChecker( MediaWikiServices $services = null ) {
+	public static function getSingleBestValueChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::SINGLE_BEST_VALUE_CHECKER );
 	}
 
@@ -237,7 +237,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getEntityTypeChecker( MediaWikiServices $services = null ) {
+	public static function getEntityTypeChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::ENTITY_TYPE_CHECKER );
 	}
 
@@ -245,7 +245,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getNoneOfChecker( MediaWikiServices $services = null ) {
+	public static function getNoneOfChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::NONE_OF_CHECKER );
 	}
 
@@ -253,7 +253,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getIntegerChecker( MediaWikiServices $services = null ) {
+	public static function getIntegerChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::INTEGER_CHECKER );
 	}
 
@@ -261,7 +261,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getCitationNeededChecker( MediaWikiServices $services = null ) {
+	public static function getCitationNeededChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::CITATION_NEEDED_CHECKER );
 	}
 
@@ -269,7 +269,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getPropertyScopeChecker( MediaWikiServices $services = null ) {
+	public static function getPropertyScopeChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::PROPERTY_SCOPE_CHECKER );
 	}
 
@@ -277,7 +277,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return ConstraintChecker
 	 */
-	public static function getContemporaryChecker( MediaWikiServices $services = null ) {
+	public static function getContemporaryChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::CONTEMPORARY_CHECKER );
 	}
 
@@ -285,7 +285,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return LanguageChecker
 	 */
-	public static function getLexemeLanguageChecker( MediaWikiServices $services = null ) {
+	public static function getLexemeLanguageChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::LEXEME_LANGUAGE_CHECKER );
 	}
 
@@ -293,7 +293,7 @@ class ConstraintCheckerServices {
 	 * @param MediaWikiServices|null $services
 	 * @return LabelInLanguageChecker
 	 */
-	public static function getLabelInLanguageChecker( MediaWikiServices $services = null ) {
+	public static function getLabelInLanguageChecker( ?MediaWikiServices $services = null ) {
 		return self::getService( $services, self::LABEL_IN_LANGUAGE_CHECKER );
 	}
 

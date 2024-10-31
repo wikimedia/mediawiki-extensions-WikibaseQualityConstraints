@@ -90,9 +90,9 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function getSparqlHelper(
-		Config $config = null,
-		PropertyDataTypeLookup $dataTypeLookup = null,
-		LoggingHelper $loggingHelper = null
+		?Config $config = null,
+		?PropertyDataTypeLookup $dataTypeLookup = null,
+		?LoggingHelper $loggingHelper = null
 	) {
 		$entityIdParser = new ItemIdParser();
 

@@ -48,7 +48,7 @@ class RangeCheckerHelper {
 
 	public function __construct(
 		Config $config,
-		UnitConverter $unitConverter = null
+		?UnitConverter $unitConverter = null
 	) {
 		$this->config = $config;
 		$this->timeParser = new IsoTimestampParser();
@@ -86,7 +86,7 @@ class RangeCheckerHelper {
 	 *                 when $lhs is respectively less than, equal to, or greater than $rhs.
 	 *                 (In other words, just like the “spaceship” operator <=>.)
 	 */
-	public function getComparison( DataValue $lhs = null, DataValue $rhs = null ) {
+	public function getComparison( ?DataValue $lhs = null, ?DataValue $rhs = null ) {
 		if ( $lhs === null || $rhs === null ) {
 			return 0;
 		}

@@ -39,9 +39,9 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	 * with some constructor arguments defaulting to a simple base implementation.
 	 */
 	private function newViolationMessageRenderer(
-		EntityIdFormatter $entityIdFormatter = null,
-		ValueFormatter $dataValueFormatter = null,
-		Config $config = null,
+		?EntityIdFormatter $entityIdFormatter = null,
+		?ValueFormatter $dataValueFormatter = null,
+		?Config $config = null,
 		int $maxListLength = 10
 	): ViolationMessageRenderer {
 		$userLanguageCode = 'en';

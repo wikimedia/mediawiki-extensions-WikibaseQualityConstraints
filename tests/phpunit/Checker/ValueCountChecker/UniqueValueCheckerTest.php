@@ -235,7 +235,7 @@ class UniqueValueCheckerTest extends \PHPUnit\Framework\TestCase {
 
 	private function newUniqueValueChecker(
 		SparqlHelper $sparqlHelper,
-		ConstraintParameterParser $paramParser = null
+		?ConstraintParameterParser $paramParser = null
 	): UniqueValueChecker {
 		return new UniqueValueChecker(
 			$sparqlHelper,

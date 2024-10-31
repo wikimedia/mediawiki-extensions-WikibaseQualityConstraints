@@ -43,7 +43,7 @@ class CachingMetadata {
 	 * @param array|null $array As returned by toArray.
 	 * @return self
 	 */
-	public static function ofArray( array $array = null ): self {
+	public static function ofArray( ?array $array = null ): self {
 		$ret = new self;
 		if ( $array !== null ) {
 			$ret->maxAge = $array['maximumAgeInSeconds'];
