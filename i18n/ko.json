@@ -11,7 +11,6 @@
 		]
 	},
 	"wbqc-constraintreport": "제약 보고서",
-	"wbqc-desc": "항목과 속성 모두에 대한 제약 조건을 확인하고 결과를 특수 문서에 표시함",
 	"wbqc-constraintreport-explanation-part-one": "이 특수 문서는 당신이 원하는 모든 개체에 대한 제약을 검사합니다. 개체는 라이브 시스템으로부터 불러오므로, 제약 위반사항을 고치는 대로 이 목록에서 제거됩니다.",
 	"wbqc-constraintreport-explanation-part-two": "제약 조건은 일반적으로 몇 분 내에 편집할 때마다 해당 명제에서 속성이 분석됨.",
 	"wbqc-constraintreport-form-section": "개체의 제약 사항을 검사",
