@@ -4,6 +4,7 @@
 			"Azouz.anis",
 			"BAB ZAA",
 			"Meno25",
+			"Michel Bakni",
 			"Mr. Ibrahem",
 			"ديفيد"
 		]
@@ -51,9 +52,9 @@
 	"wbqc-constraintdiscuss-short": "ناقش",
 	"wbqc-constraintdiscuss-long": "صفحة النقاش حول هذا القيد",
 	"wbqc-cached-generic": "هذه النتيجة مخزنة مؤقتاً وقد تكون قديمة.",
-	"wbqc-cached-minutes": "هذه النتيجة مخزنة مؤقتا وقد تكون قديمة بحوالي {{PLURAL:$1|1=دقيقة واحدة|$1&nbsp;دقائق}}.",
-	"wbqc-cached-hours": "هذه النتيجة مخزنة مؤقتا وقد تكون قديمة بحوالي {{PLURAL:$1|1=ساعة واحدة|$1&nbsp;ساعات}}.",
-	"wbqc-cached-days": "هذه النتيجة مخزنة مؤقتا وقد تكون قديمة بحوالي {{PLURAL:$1|1=يوم واح|$1&nbsp;أيام}}.",
+	"wbqc-cached-minutes": "هذه النتيجة مخزنة مؤقتًا وقد تكون متقادمة، منذ {{PLURAL:$1|1=دقيقة واحدة|$1&nbsp;دقائق}}.",
+	"wbqc-cached-hours": "هذه النتيجة مخزنة مؤقتًا وقد تكون متقادمة، منذ {{PLURAL:$1|1=دقيقة واحدة|$1&nbsp;دقائق}}.",
+	"wbqc-cached-days": "هذه النتيجة مخزنة مؤقتًا وقد تكون متقادمة، منذ {{PLURAL:$1|1=دقيقة واحدة|$1&nbsp;دقائق}}.",
 	"wbqc-dataValueType-wikibase-entityid": "معرف الكيان",
 	"wbq-subextension-name-wbqc": "محددات",
 	"wbqc-violation-header-parameters": "المعلمات:",
