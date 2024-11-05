@@ -76,9 +76,8 @@ class CheckResult {
 	 * * update PARAM_STATUS type in CheckConstraints::getAllowedParams
 	 */
 
-	/** @var Constraint */
+	// phpcs:ignore MediaWiki.Commenting.PropertyDocumentation.WrongStyle
 	private Constraint $constraint;
-
 	private ContextCursor $contextCursor;
 
 	/**
