@@ -78,7 +78,7 @@ class DependencyMetadata {
 	 * @param TimeValue|null $t2
 	 * @return TimeValue|null
 	 */
-	private static function minTimeValue( ?TimeValue $t1 = null, ?TimeValue $t2 = null ) {
+	private static function minTimeValue( ?TimeValue $t1, ?TimeValue $t2 ) {
 		if ( $t1 === null ) {
 			return $t2;
 		}
