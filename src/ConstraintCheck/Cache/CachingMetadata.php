@@ -39,19 +39,6 @@ class CachingMetadata {
 	}
 
 	/**
-	 * Deserializes the metadata from an array (or null if the value is fresh).
-	 * @param array|null $array As returned by toArray.
-	 * @return self
-	 */
-	public static function ofArray( ?array $array = null ): self {
-		$ret = new self;
-		if ( $array !== null ) {
-			$ret->maxAge = $array['maximumAgeInSeconds'];
-		}
-		return $ret;
-	}
-
-	/**
 	 * @param self[] $metadatas
 	 * @return self
 	 */

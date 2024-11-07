@@ -95,38 +95,4 @@ class CachingMetadataTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( [ 'maximumAgeInSeconds' => 42 ], $array );
 	}
 
-	public function testOfArray_fresh() {
-		$array = null;
-
-		$cm = CachingMetadata::ofArray( $array );
-
-		$this->assertFalse( $cm->isCached() );
-	}
-
-	public function testOfArray_ofMaximumAgeInSeconds() {
-		$array = [ 'maximumAgeInSeconds' => 45 ];
-
-		$cm = CachingMetadata::ofArray( $array );
-
-		$this->assertTrue( $cm->isCached() );
-		$this->assertSame( 45, $cm->getMaximumAgeInSeconds() );
-	}
-
-	/**
-	 * @dataProvider provideCachingMetadata
-	 */
-	public function testOfArray_RoundTrip( CachingMetadata $cm ) {
-		$array = $cm->toArray();
-		$cm_ = CachingMetadata::ofArray( $array );
-
-		$this->assertEquals( $cm, $cm_ );
-	}
-
-	public static function provideCachingMetadata() {
-		return [
-			[ CachingMetadata::fresh() ],
-			[ CachingMetadata::ofMaximumAgeInSeconds( 52 ) ],
-		];
-	}
-
 }
