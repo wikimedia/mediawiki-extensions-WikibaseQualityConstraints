@@ -2,7 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Config\MutableConfig;
 
 /**
  * @author Lucas Werkmeister
@@ -12,11 +14,13 @@ trait DefaultConfig {
 
 	private static ?HashConfig $defaultConfig = null;
 
+	/**
+	 * @return Config&MutableConfig
+	 */
 	public static function getDefaultConfig(): HashConfig {
 		if ( self::$defaultConfig === null ) {
 			self::$defaultConfig = new HashConfig();
-			$extensionJsonFile = __DIR__ . '/../../extension.json';
-			$extensionJsonText = file_get_contents( $extensionJsonFile );
+			$extensionJsonText = file_get_contents( __DIR__ . '/../../extension.json' );
 			$extensionJson = json_decode( $extensionJsonText, /* assoc = */ true );
 			foreach ( $extensionJson['config'] as $key => $value ) {
 				self::$defaultConfig->set( $key, $value['value'] );
