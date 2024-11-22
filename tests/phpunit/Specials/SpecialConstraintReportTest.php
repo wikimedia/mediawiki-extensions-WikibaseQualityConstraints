@@ -122,9 +122,11 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	public function testExecute( $subPage, array $request, $userLanguage, array $matchers ) {
 		$request = new FauxRequest( $request );
 
-		// the added item is Q1; this solves the problem that the provider is executed before the test
-		$id = self::$idMap[ 'Q1' ];
-		$subPage = str_replace( '$id', $id->getSerialization(), $subPage );
+		if ( $subPage !== null ) {
+			// the added item is Q1; this solves the problem that the provider is executed before the test
+			$id = self::$idMap['Q1'];
+			$subPage = str_replace( '$id', $id->getSerialization(), $subPage );
+		}
 
 		// assert matchers
 		[ $output ] = $this->executeSpecialPage( $subPage, $request, $userLanguage );
@@ -179,6 +181,8 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 		$cases[ 'invalid input 1' ] = [ 'Qwertz', [], $userLanguage, $matchers ];
 		$cases[ 'invalid input 2' ] = [ '300', [], $userLanguage, $matchers ];
+		$cases[ 'invalid input 3 (subpage)' ] = [ '_', [], $userLanguage, $matchers ];
+		$cases[ 'invalid input 3 (POST)' ] = [ null, [ 'entityid' => '_' ], $userLanguage, $matchers ];
 
 		// Valid input but entity does not exist
 		unset( $matchers[ 'error' ] );

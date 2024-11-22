@@ -162,8 +162,13 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$postRequest = $this->getContext()->getRequest()->getVal( 'entityid' );
 		if ( $postRequest ) {
-			$out->redirect( $this->getPageTitle( strtoupper( $postRequest ) )->getLocalURL() );
-			return;
+			try {
+				$entityId = $this->entityIdParser->parse( $postRequest );
+				$out->redirect( $this->getPageTitle( $entityId->getSerialization() )->getLocalURL() );
+				return;
+			} catch ( EntityIdParsingException $e ) {
+				// fall through, error is shown later
+			}
 		}
 
 		$out->enableOOUI();
@@ -173,6 +178,14 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$out->addHTML( $this->getExplanationText() );
 		$this->buildEntityIdForm();
+
+		if ( $postRequest ) {
+			// must be an invalid entity ID (otherwise we would have redirected and returned above)
+			$out->addHTML(
+				$this->buildNotice( 'wbqc-constraintreport-invalid-entity-id', true )
+			);
+			return;
+		}
 
 		if ( !$subPage ) {
 			return;
