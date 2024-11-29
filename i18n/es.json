@@ -146,7 +146,7 @@
 	"wbqc-violation-message-units-none": "El valor de $1 no debe incluir una unidad.",
 	"wbqc-violation-message-units": "El valor para $1 debería tener {{PLURAL:$2|1=como unidad $4.|2=como unidad $4 o $5.|una de las siguientes unidades:$3}}",
 	"wbqc-violation-message-units-or-none": "El valor para $1 debería tener {{PLURAL:$2|1=de unidad $4|2=de unidad $4 o $5|una de las siguientes unidades}} o no tener unidad {{PLURAL:$2|1=definida.|2=definida.|definida: $3}}",
-	"wbqc-violation-message-entityType": "La propiedad $1 no debe utilizarse en este tipo de entidad, {{plural:$2|1=el único tipo de entidad válido es $4.|los únicos tipos de entidad válidos son $4 y $5.|los tipos de entidad son: $3}}",
+	"wbqc-violation-message-entityType": "La propiedad $1 no debe utilizarse en este tipo de entidad, {{plural:$2|1=el único tipo de entidad válido es $4.|2=los únicos tipos de entidad válidos son $4 y $5.|los tipos de entidad son: $3}}",
 	"wbqc-violation-message-integer": "Los valores de $1 deberían ser enteros, pero $2 tiene una parte fraccional.",
 	"wbqc-violation-message-integer-bounds": "Los valores de $1 deberían ser enteros, pero los límites de $2 tienen una parte fraccional.",
 	"wbqc-violation-message-citationNeeded": "Las declaraciones de $1 deberían tener al menos una referencia.",
