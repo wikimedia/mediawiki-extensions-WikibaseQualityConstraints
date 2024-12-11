@@ -142,6 +142,43 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 	}
 
+	public function testFormatConstraintParameterExceptionShellbox() {
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
+		$sparqlHelper = $this->createMock( SparqlHelper::class );
+		$shellboxClient = $this->getMockBuilder( Client::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'call' ] )
+			->getMock();
+		$shellboxClient->method( 'call' )
+			->willReturn( false );
+		$shellboxClientFactory = $this->getMockBuilder( ShellboxClientFactory::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getClient', 'isEnabled' ] )
+			->getMock();
+		$shellboxClientFactory->method( 'isEnabled' )
+			->willReturn( true );
+		$shellboxClientFactory->method( 'getClient' )
+			->willReturn( $shellboxClient );
+		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
+		$checker = new FormatChecker(
+			$this->getConstraintParameterParser(),
+			new HashConfig( [
+				'WBQualityConstraintsFormatCheckerShellboxRatio' => 1,
+				'WBQualityConstraintsSparqlMaxMillis' => 100,
+				'WBQualityConstraintsCheckFormatConstraint' => true,
+			] ),
+			$sparqlHelper,
+			$shellboxClientFactory
+		);
+
+		$this->expectException( ConstraintParameterException::class );
+
+		$checker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$constraint
+		);
+	}
+
 	public function testFormatConstraintWithSyntaxClarification() {
 		$syntaxClarificationId = self::getDefaultConfig()
 			->get( 'WBQualityConstraintsSyntaxClarificationId' );
@@ -257,6 +294,10 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertTodo( $result );
 	}
 
+	/**
+	 * A ShellboxError is an unexpected outcome of checking regex with shellbox. Meaning should
+	 * not be inferred.
+	 */
 	public function testFormatConstraintShellboxError() {
 		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
 		$sparqlHelper = $this->createMock( SparqlHelper::class );
@@ -286,7 +327,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 			$shellboxClientFactory
 		);
 
-		$this->expectException( ConstraintParameterException::class );
+		$this->expectException( ShellboxError::class );
 
 		$checker->checkConstraint(
 			new FakeSnakContext( $snak ),

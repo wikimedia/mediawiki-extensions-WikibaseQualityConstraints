@@ -43,6 +43,11 @@ Extension to Wikibase Repository that performs constraint checks.
   * Alternatively, to check “format” constraints without running a full SPARQL server,
     you can use the [minisparql] server.
 
+  * To check regex format constraints with [Shellbox](https://www.mediawiki.org/wiki/Shellbox),
+    configure `ShellboxUrls['constraint-regex-checker']` with the Shellbox url, and set
+    `WBQualityConstraintsFormatCheckerShellboxRatio` to the ratio of requests that should
+    go to Shellbox.
+
 * Run `php maintenance/run.php WikibaseQualityConstraints:ImportConstraintStatements.php`.
 
 [minisparql]: https://github.com/lucaswerkmeister/minisparql

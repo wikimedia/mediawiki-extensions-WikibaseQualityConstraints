@@ -7,7 +7,6 @@ use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use MediaWiki\Config\Config;
 use MediaWiki\Shell\ShellboxClientFactory;
-use Shellbox\ShellboxError;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -17,6 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ShellboxHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -184,31 +184,33 @@ class FormatChecker implements ConstraintChecker {
 		return $this->runRegexCheckUsingSparql( $text, $format );
 	}
 
+	/**
+	 * @throws ConstraintParameterException
+	 */
 	private function runRegexCheckUsingShellbox( string $text, string $format ): string {
 		if ( !$this->shellboxClientFactory->isEnabled( 'constraint-regex-checker' ) ) {
 			return CheckResult::STATUS_TODO;
 		}
-		try {
-			$pattern = '/^(?:' . str_replace( '/', '\/', $format ) . ')$/u';
-			$shellboxResponse = $this->shellboxClientFactory->getClient( [
-				'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000,
-				'service' => 'constraint-regex-checker',
-			] )->call(
-				'constraint-regex-checker',
-				'preg_match',
-				[ $pattern, $text ]
-			);
-		} catch ( ShellboxError $exception ) {
+
+		$shellboxResponse = $this->shellboxClientFactory->getClient( [
+			'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000,
+			'service' => 'constraint-regex-checker',
+		] )->call(
+			'constraint-regex-checker',
+			[ ShellboxHelper::class, 'runRegexCheck' ],
+			[ $format, $text ],
+			[ 'classes' => [ ShellboxHelper::class ] ],
+		);
+
+		if ( $shellboxResponse === 1 ) {
+			return CheckResult::STATUS_COMPLIANCE;
+		} elseif ( $shellboxResponse === 0 ) {
+			return CheckResult::STATUS_VIOLATION;
+		} else {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
-					->withInlineCode( $pattern, Role::CONSTRAINT_PARAMETER_VALUE )
+					->withInlineCode( $format, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
-		}
-
-		if ( $shellboxResponse ) {
-			return CheckResult::STATUS_COMPLIANCE;
-		} else {
-			return CheckResult::STATUS_VIOLATION;
 		}
 	}
 
