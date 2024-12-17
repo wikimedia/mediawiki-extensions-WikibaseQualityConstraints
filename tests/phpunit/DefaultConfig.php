@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
-use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Config\MutableConfig;
 
@@ -12,12 +11,9 @@ use MediaWiki\Config\MutableConfig;
  */
 trait DefaultConfig {
 
-	private static ?HashConfig $defaultConfig = null;
+	private static ?MutableConfig $defaultConfig = null;
 
-	/**
-	 * @return Config&MutableConfig
-	 */
-	public static function getDefaultConfig(): HashConfig {
+	public static function getDefaultConfig(): MutableConfig {
 		if ( self::$defaultConfig === null ) {
 			self::$defaultConfig = new HashConfig();
 			$extensionJsonText = file_get_contents( __DIR__ . '/../../extension.json' );
