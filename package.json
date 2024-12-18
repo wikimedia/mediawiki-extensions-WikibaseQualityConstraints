@@ -12,7 +12,7 @@
 		"grunt-eslint": "24.3.0",
 		"grunt-jasmine-nodejs": "^1.6.1",
 		"grunt-stylelint": "0.20.1",
-		"jasmine": "^5.1.0",
+		"jasmine": "^5.5.0",
 		"module-alias": "^2.2.3",
 		"sinon": "^19.0.0",
 		"stylelint-config-wikimedia": "0.17.2",
