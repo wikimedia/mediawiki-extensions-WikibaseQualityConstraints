@@ -697,6 +697,11 @@
 			"value": true,
 			"description": "Whether or not show the constraint violation indicator to users that are not logged in.",
 			"public": true
+		},
+		"WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns": {
+			"value": [],
+			"description": "An array of known-good regex patterns that can be checked directly, without using Shellbox. These regexes should be immune to ReDoS attacks.",
+			"public": true
 		}
 	},
 	"AutoloadNamespaces": {

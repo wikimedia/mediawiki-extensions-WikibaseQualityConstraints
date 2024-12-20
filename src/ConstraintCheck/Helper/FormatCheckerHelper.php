@@ -10,7 +10,7 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
  *
  * @license GPL-2.0-or-later
  */
-class ShellboxHelper {
+class FormatCheckerHelper {
 
 	/**
 	 * Wraps a call to preg_match, using parentheses as regex delimiters to avoid issues

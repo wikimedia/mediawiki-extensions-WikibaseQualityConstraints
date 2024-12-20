@@ -16,7 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\DummySparqlHelper;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ShellboxHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\FormatCheckerHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
@@ -175,43 +175,51 @@ class FormatChecker implements ConstraintChecker {
 		if ( !$this->config->get( 'WBQualityConstraintsCheckFormatConstraint' ) ) {
 			return CheckResult::STATUS_TODO;
 		}
-		if (
+		if ( in_array( $format, $this->config->get( 'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' ) ) ) {
+			$checkResult = FormatCheckerHelper::runRegexCheck( $format, $text );
+		} elseif (
 			$this->config->get( 'WBQualityConstraintsFormatCheckerShellboxRatio' ) > (float)wfRandom()
 		) {
-			return $this->runRegexCheckUsingShellbox( $text, $format );
-		}
-
-		return $this->runRegexCheckUsingSparql( $text, $format );
-	}
-
-	/**
-	 * @throws ConstraintParameterException
-	 */
-	private function runRegexCheckUsingShellbox( string $text, string $format ): string {
-		if ( !$this->shellboxClientFactory->isEnabled( 'constraint-regex-checker' ) ) {
-			return CheckResult::STATUS_TODO;
-		}
-
-		$shellboxResponse = $this->shellboxClientFactory->getClient( [
-			'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000,
-			'service' => 'constraint-regex-checker',
-		] )->call(
-			'constraint-regex-checker',
-			[ ShellboxHelper::class, 'runRegexCheck' ],
-			[ $format, $text ],
-			[ 'classes' => [ ShellboxHelper::class ] ],
-		);
-
-		if ( $shellboxResponse === 1 ) {
-			return CheckResult::STATUS_COMPLIANCE;
-		} elseif ( $shellboxResponse === 0 ) {
-			return CheckResult::STATUS_VIOLATION;
+			$checkResult = $this->runRegexCheckUsingShellbox( $text, $format );
 		} else {
+			return $this->runRegexCheckUsingSparql( $text, $format );
+		}
+
+		if ( $checkResult === 1 ) {
+			return CheckResult::STATUS_COMPLIANCE;
+		} elseif ( $checkResult === 0 ) {
+			return CheckResult::STATUS_VIOLATION;
+		} elseif ( $checkResult === false ) {
 			throw new ConstraintParameterException(
 				( new ViolationMessage( 'wbqc-violation-message-parameter-regex' ) )
 					->withInlineCode( $format, Role::CONSTRAINT_PARAMETER_VALUE )
 			);
+		} else {
+			return $checkResult;
 		}
+	}
+
+	/**
+	 * @return false|int|string Possible return values are:
+	 *   - 1 if $format matches $text
+	 *   - 0 if $format does not match $text
+	 *   - FALSE if $format is invalid regex
+	 *   - CheckResult::STATUS_TODO if Shellbox is not enabled
+	 */
+	private function runRegexCheckUsingShellbox( string $text, string $format ) {
+		if ( !$this->shellboxClientFactory->isEnabled( 'constraint-regex-checker' ) ) {
+			return CheckResult::STATUS_TODO;
+		}
+
+		return $this->shellboxClientFactory->getClient( [
+			'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000,
+			'service' => 'constraint-regex-checker',
+		] )->call(
+			'constraint-regex-checker',
+			[ FormatCheckerHelper::class, 'runRegexCheck' ],
+			[ $format, $text ],
+			[ 'classes' => [ FormatCheckerHelper::class ] ],
+		);
 	}
 
 	private function runRegexCheckUsingSparql( string $text, string $format ): string {

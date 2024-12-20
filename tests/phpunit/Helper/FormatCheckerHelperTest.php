@@ -4,17 +4,17 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ShellboxHelper;
+use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\FormatCheckerHelper;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ShellboxHelper
+ * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\FormatCheckerHelper
  *
  * @group WikibaseQualityConstraints
  *
  * @author Audrey Penven
  * @license GPL-2.0-or-later
  */
-class ShellboxHelperTest extends \PHPUnit\Framework\TestCase {
+class FormatCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 
 	public static function provideValidRegex(): iterable {
 		return [
@@ -30,7 +30,7 @@ class ShellboxHelperTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider provideValidRegex
 	 */
 	public function testRunRegexCheckValidRegex( string $pattern, string $text, int $expected ) {
-		self::assertEquals( $expected, ShellboxHelper::runRegexCheck( $pattern, $text ) );
+		self::assertEquals( $expected, FormatCheckerHelper::runRegexCheck( $pattern, $text ) );
 	}
 
 	public static function provideInvalidRegex(): iterable {
@@ -45,6 +45,6 @@ class ShellboxHelperTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testRunRegexCheckInvalidRegex( string $pattern, string $text ) {
 		// implicitly asserts that no warnings or errors occur
-		self::assertFalse( ShellboxHelper::runRegexCheck( $pattern, $text ) );
+		self::assertFalse( FormatCheckerHelper::runRegexCheck( $pattern, $text ) );
 	}
 }
