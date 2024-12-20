@@ -89,6 +89,31 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertCompliance( $result );
 	}
 
+	/** @dataProvider provideFormatConstraintCompliance */
+	public function testFormatConstraintComplianceKnownGoodRegex( string $pattern, string $text ) {
+		$config = $this->getMultiConfig( [
+			'WBQualityConstraintsFormatCheckerShellboxRatio' => 1,
+			'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' => [ $pattern ],
+		] );
+		$value = new StringValue( $text );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P345' ), $value );
+
+		// Verify that there is no attempt to use shellbox
+		$shellboxClientFactory = $this->createNoOpMock( ShellboxClientFactory::class );
+
+		$formatChecker = new FormatChecker(
+			$this->getConstraintParameterParser(),
+			$config,
+			new DummySparqlHelper(),
+			$shellboxClientFactory
+		);
+		$result = $formatChecker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
+		);
+		$this->assertCompliance( $result );
+	}
+
 	public static function provideFormatConstraintViolation() {
 		$imdbRegex = '(tt|nm|ch|co|ev)\d{7}';
 		$taxonRegex = '(|somevalue|novalue|.*virus.*|.*viroid.*|.*phage.*|((×)?[A-Z]([a-z]+-)?[a-z]+('
@@ -142,6 +167,32 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
 	}
 
+	/** @dataProvider provideFormatConstraintViolation */
+	public function testFormatConstraintViolationKnownGoodRegex( string $pattern, string $text ) {
+		$config = $this->getMultiConfig( [
+			'WBQualityConstraintsFormatCheckerShellboxRatio' => 1,
+			'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' => [ $pattern ],
+		] );
+		$value = new StringValue( $text );
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P345' ), $value );
+
+		// Verify that there is no attempt to use shellbox
+		$shellboxClientFactory = $this->createNoOpMock( ShellboxClientFactory::class );
+
+		$formatChecker = new FormatChecker(
+			$this->getConstraintParameterParser(),
+			$config,
+			new DummySparqlHelper(),
+			$shellboxClientFactory
+		);
+
+		$result = $formatChecker->checkConstraint(
+			new FakeSnakContext( $snak ),
+			$this->getConstraintMock( $this->formatParameter( $pattern ) )
+		);
+		$this->assertViolation( $result, 'wbqc-violation-message-format-clarification' );
+	}
+
 	public function testFormatConstraintParameterExceptionShellbox() {
 		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
 		$sparqlHelper = $this->createMock( SparqlHelper::class );
@@ -162,7 +213,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
-			new HashConfig( [
+			$this->getMultiConfig( [
 				'WBQualityConstraintsFormatCheckerShellboxRatio' => 1,
 				'WBQualityConstraintsSparqlMaxMillis' => 100,
 				'WBQualityConstraintsCheckFormatConstraint' => true,
@@ -278,7 +329,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 			->willReturn( false );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
-			new HashConfig( [
+			$this->getMultiConfig( [
 				'WBQualityConstraintsFormatCheckerShellboxRatio' => 1,
 				'WBQualityConstraintsCheckFormatConstraint' => true,
 			] ),
@@ -318,7 +369,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
-			new HashConfig( [
+			$this->getMultiConfig( [
 				'WBQualityConstraintsFormatCheckerShellboxRatio' => 1,
 				'WBQualityConstraintsSparqlMaxMillis' => 100,
 				'WBQualityConstraintsCheckFormatConstraint' => true,
