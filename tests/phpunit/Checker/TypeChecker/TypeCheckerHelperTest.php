@@ -383,7 +383,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 		$sparqlHelper = $this->getSparqlHelper(
 			true,
 			[
-				$this->identicalTo( 'Q1' ),
+				$this->equalTo( new ItemId( 'Q1' ) ),
 				$this->identicalTo( [ 'Q5' ] ),
 			]
 		);

@@ -19,6 +19,7 @@ use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -108,7 +109,7 @@ class SparqlHelper {
 
 	private int $maxQueryTimeMillis;
 
-	private string $subclassOfId;
+	private PropertyId $subclassOfId;
 
 	private int $cacheMapSize;
 
@@ -154,7 +155,7 @@ class SparqlHelper {
 		$this->primaryEndpoint = $config->get( 'WBQualityConstraintsSparqlEndpoint' );
 		$this->additionalEndpoints = $config->get( 'WBQualityConstraintsAdditionalSparqlEndpoints' ) ?: [];
 		$this->maxQueryTimeMillis = $config->get( 'WBQualityConstraintsSparqlMaxMillis' );
-		$this->subclassOfId = $config->get( 'WBQualityConstraintsSubclassOfId' );
+		$this->subclassOfId = new NumericPropertyId( $config->get( 'WBQualityConstraintsSubclassOfId' ) );
 		$this->cacheMapSize = $config->get( 'WBQualityConstraintsFormatCacheMapSize' );
 		$this->timeoutExceptionClasses = $config->get(
 			'WBQualityConstraintsSparqlTimeoutExceptionClasses'
@@ -218,20 +219,35 @@ END;
 PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
 		}
+		$namespaceName = RdfVocabulary::NS_ONTOLOGY;
 		$prefixes .= <<<END
-PREFIX wikibase: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_ONTOLOGY )}>\n
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
 		return $prefixes;
 	}
 
+	/** Return a SPARQL term like `wd:Q123` for the given ID. */
+	private function wd( EntityId $id ): string {
+		$repository = $this->rdfVocabulary->getEntityRepositoryName( $id );
+		$prefix = $this->rdfVocabulary->entityNamespaceNames[$repository];
+		return "$prefix:{$id->getSerialization()}";
+	}
+
+	/** Return a SPARQL term like `wdt:P123` for the given ID. */
+	private function wdt( PropertyId $id ): string {
+		$repository = $this->rdfVocabulary->getEntityRepositoryName( $id );
+		$prefix = $this->rdfVocabulary->propertyNamespaceNames[$repository][RdfVocabulary::NSP_DIRECT_CLAIM];
+		return "$prefix:{$id->getSerialization()}";
+	}
+
 	/**
-	 * @param string $id entity ID serialization of the entity to check
+	 * @param EntityId $id entity ID of the entity to check
 	 * @param string[] $classes entity ID serializations of the expected types
 	 *
 	 * @return CachedBool
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	public function hasType( string $id, array $classes ): CachedBool {
+	public function hasType( EntityId $id, array $classes ): CachedBool {
 		// TODO hint:gearing is a workaround for T168973 and can hopefully be removed eventually
 		$gearingHint = $this->sparqlHasWikibaseSupport ?
 			' hint:Prior hint:gearing "forward".' :
@@ -241,17 +257,17 @@ END;
 
 		foreach ( array_chunk( $classes, 20 ) as $classesChunk ) {
 			$classesValues = implode( ' ', array_map(
-				static function ( $class ) {
-					return 'wd:' . $class;
+				function ( string $class ) {
+					return $this->wd( new ItemId( $class ) );
 				},
 				$classesChunk
 			) );
 
 			$query = <<<EOF
 ASK {
-  BIND(wd:$id AS ?item)
+  BIND({$this->wd( $id )} AS ?item)
   VALUES ?class { $classesValues }
-  ?item wdt:{$this->subclassOfId}* ?class.$gearingHint
+  ?item {$this->wdt( $this->subclassOfId )}* ?class.$gearingHint
 }
 EOF;
 
