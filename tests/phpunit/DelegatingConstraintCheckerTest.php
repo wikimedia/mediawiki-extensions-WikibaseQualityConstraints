@@ -108,6 +108,8 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 			null,
 			'wikibase-item'
 		) );
+		// likewise for the P1 property (hard-coded in a bunch of examples, needs data type for DistinctValues)
+		$this->lookup->addEntity( new Property( new NumericPropertyId( 'P1' ), null, 'string' ) );
 
 		$pageNameNormalizer = $this->createMock( MediaWikiPageNameNormalizer::class );
 		$pageNameNormalizer->method( 'normalizePageName' )

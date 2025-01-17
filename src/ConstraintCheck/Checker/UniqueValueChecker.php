@@ -79,6 +79,7 @@ class UniqueValueChecker implements ConstraintChecker {
 				$statement = $context->getSnakStatement();
 				'@phan-var Statement $statement';
 				$result = $this->sparqlHelper->findEntitiesWithSameStatement(
+					$context->getEntity()->getId(),
 					$statement,
 					$separators
 				);
