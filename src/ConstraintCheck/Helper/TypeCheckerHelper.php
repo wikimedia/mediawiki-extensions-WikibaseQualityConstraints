@@ -172,7 +172,7 @@ class TypeCheckerHelper {
 					->start();
 
 				$hasType = $this->sparqlHelper->hasType(
-					$comparativeClass->getSerialization(),
+					$comparativeClass,
 					$classesToCheck
 				);
 
