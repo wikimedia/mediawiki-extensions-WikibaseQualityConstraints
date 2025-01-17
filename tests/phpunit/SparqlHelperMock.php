@@ -16,6 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper;
 trait SparqlHelperMock {
 
 	/**
+	 * @param EntityId $expectedEntityId
 	 * @param Statement $expectedStatement
 	 * @param (EntityId|null)[] $result
 	 * @param (PropertyId|null)[] $separators
@@ -23,13 +24,14 @@ trait SparqlHelperMock {
 	 * @return SparqlHelper
 	 */
 	private function getSparqlHelperMockFindEntities(
+		EntityId $expectedEntityId,
 		Statement $expectedStatement,
-		$result,
-		$separators = null
+		array $result,
+		?array $separators = null
 	) {
 		$mock = $this->createMock( SparqlHelper::class );
 
-		$args = [ $expectedStatement ];
+		$args = [ $expectedEntityId, $expectedStatement ];
 		if ( $separators ) {
 			$args[] = $separators;
 		}

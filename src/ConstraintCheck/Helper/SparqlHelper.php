@@ -4,8 +4,9 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
-use DataValues\DataValue;
-use DataValues\MonolingualTextValue;
+use DataValues\Geo\Values\GlobeCoordinateValue;
+use DataValues\TimeValue;
+use DataValues\UnboundedQuantityValue;
 use DateInterval;
 use InvalidArgumentException;
 use MapCacheLRU;
@@ -17,14 +18,17 @@ use UnexpectedValueException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
-use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
+use Wikibase\DataModel\Snak\PropertyNoValueSnak;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\Statement;
+use Wikibase\Repo\Rdf\NullDedupeBag;
+use Wikibase\Repo\Rdf\NullEntityMentionListener;
 use Wikibase\Repo\Rdf\RdfVocabulary;
+use Wikibase\Repo\Rdf\ValueSnakRdfBuilderFactory;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedBool;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedEntityIds;
@@ -37,6 +41,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDes
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer;
 use WikibaseQuality\ConstraintReport\Role;
 use Wikimedia\ObjectCache\WANObjectCache;
+use Wikimedia\Purtle\TurtleRdfWriter;
 use Wikimedia\Stats\IBufferingStatsdDataFactory;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
@@ -49,6 +54,17 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 class SparqlHelper {
 
 	private RdfVocabulary $rdfVocabulary;
+
+	/**
+	 * A copy of {@link self::$rdfVocabulary}, but with
+	 * {@link RdfVocabulary::$normalizedPropertyValueNamespace} set to all-null values;
+	 * this is needed so that when {@link self::getSnakPredicateAndObject()} formats values,
+	 * {@link \Wikibase\Repo\Rdf\Values\ExternalIdentifierRdfBuilder ExternalIdentifierRdfBuilder}
+	 * won’t emit additional triples for the normalized URI.
+	 */
+	private RdfVocabulary $rdfVocabularyWithoutNormalization;
+
+	private ValueSnakRdfBuilderFactory $valueSnakRdfBuilderFactory;
 
 	/**
 	 * @var string[]
@@ -125,6 +141,7 @@ class SparqlHelper {
 	public function __construct(
 		Config $config,
 		RdfVocabulary $rdfVocabulary,
+		ValueSnakRdfBuilderFactory $valueSnakRdfBuilderFactory,
 		EntityIdParser $entityIdParser,
 		PropertyDataTypeLookup $propertyDataTypeLookup,
 		WANObjectCache $cache,
@@ -137,6 +154,7 @@ class SparqlHelper {
 		HttpRequestFactory $requestFactory
 	) {
 		$this->rdfVocabulary = $rdfVocabulary;
+		$this->valueSnakRdfBuilderFactory = $valueSnakRdfBuilderFactory;
 		$this->entityIdParser = $entityIdParser;
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 		$this->cache = $cache;
@@ -168,6 +186,13 @@ class SparqlHelper {
 		);
 
 		$this->prefixes = $this->getQueryPrefixes( $rdfVocabulary );
+
+		$this->rdfVocabularyWithoutNormalization = clone $rdfVocabulary;
+		// @phan-suppress-next-line PhanTypeMismatchProperty
+		$this->rdfVocabularyWithoutNormalization->normalizedPropertyValueNamespace = array_fill_keys(
+			array_keys( $rdfVocabulary->normalizedPropertyValueNamespace ),
+			null
+		);
 	}
 
 	private function getQueryPrefixes( RdfVocabulary $rdfVocabulary ): string {
@@ -179,15 +204,12 @@ PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
 		}
 
-		$itemSourceName = $rdfVocabulary->getEntityRepositoryName( new ItemId( 'Q1' ) );
-		$namespaceName = $rdfVocabulary->statementNamespaceNames[$itemSourceName][RdfVocabulary::NS_STATEMENT];
-		$prefixes .= <<<END
-PREFIX wds: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+		foreach ( $rdfVocabulary->statementNamespaceNames as $sourceName => $sourceNamespaces ) {
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NS_VALUE];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
-		$namespaceName = $rdfVocabulary->statementNamespaceNames[$itemSourceName][RdfVocabulary::NS_VALUE];
-		$prefixes .= <<<END
-PREFIX wdv: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
-END;
+		}
 
 		foreach ( $rdfVocabulary->propertyNamespaceNames as $sourceName => $sourceNamespaces ) {
 			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_DIRECT_CLAIM];
@@ -199,6 +221,10 @@ END;
 PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
 			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_CLAIM_STATEMENT];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_CLAIM_VALUE];
 			$prefixes .= <<<END
 PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
@@ -238,6 +264,45 @@ END;
 		$repository = $this->rdfVocabulary->getEntityRepositoryName( $id );
 		$prefix = $this->rdfVocabulary->propertyNamespaceNames[$repository][RdfVocabulary::NSP_DIRECT_CLAIM];
 		return "$prefix:{$id->getSerialization()}";
+	}
+
+	/** Return a SPARQL term like `p:P123` for the given ID. */
+	private function p( PropertyId $id ): string {
+		$repository = $this->rdfVocabulary->getEntityRepositoryName( $id );
+		$prefix = $this->rdfVocabulary->propertyNamespaceNames[$repository][RdfVocabulary::NSP_CLAIM];
+		return "$prefix:{$id->getSerialization()}";
+	}
+
+	/** Return a SPARQL term like `pq:P123` for the given ID. */
+	private function pq( PropertyId $id ): string {
+		$repository = $this->rdfVocabulary->getEntityRepositoryName( $id );
+		$prefix = $this->rdfVocabulary->propertyNamespaceNames[$repository][RdfVocabulary::NSP_QUALIFIER];
+		return "$prefix:{$id->getSerialization()}";
+	}
+
+	/** Return a SPARQL term like `wdno:P123` for the given ID. */
+	private function wdno( PropertyId $id ): string {
+		$repository = $this->rdfVocabulary->getEntityRepositoryName( $id );
+		$prefix = $this->rdfVocabulary->propertyNamespaceNames[$repository][RdfVocabulary::NSP_NOVALUE];
+		return "$prefix:{$id->getSerialization()}";
+	}
+
+	/** Return a SPARQL term like `prov:NAME` for the given name. */
+	private function prov( string $name ): string {
+		$prefix = RdfVocabulary::NS_PROV;
+		return "$prefix:$name";
+	}
+
+	/** Return a SPARQL term like `wikibase:NAME` for the given name. */
+	private function wikibase( string $name ): string {
+		$prefix = RdfVocabulary::NS_ONTOLOGY;
+		return "$prefix:$name";
+	}
+
+	/** Return a SPARQL snippet like `MINUS { ?var wikibase:rank wikibase:DeprecatedRank. }`. */
+	private function minusDeprecatedRank( string $varName ): string {
+		$deprecatedRank = RdfVocabulary::RANK_MAP[Statement::RANK_DEPRECATED];
+		return "MINUS { $varName {$this->wikibase( 'rank' )} {$this->wikibase( $deprecatedRank )}. }";
 	}
 
 	/**
@@ -288,70 +353,76 @@ EOF;
 	}
 
 	/**
-	 * Helper function used by findEntitiesWithSameStatement to filter
-	 * out entities with different qualifiers or no qualifier value.
-	 */
-	private function nestedSeparatorFilter( PropertyId $separator ): string {
-		$filter = <<<EOF
-  MINUS {
-    ?statement pq:$separator ?qualifier.
-    FILTER NOT EXISTS {
-      ?otherStatement pq:$separator ?qualifier.
-    }
-  }
-  MINUS {
-    ?otherStatement pq:$separator ?qualifier.
-    FILTER NOT EXISTS {
-      ?statement pq:$separator ?qualifier.
-    }
-  }
-  MINUS {
-    ?statement a wdno:$separator.
-    FILTER NOT EXISTS {
-      ?otherStatement a wdno:$separator.
-    }
-  }
-  MINUS {
-    ?otherStatement a wdno:$separator.
-    FILTER NOT EXISTS {
-      ?statement a wdno:$separator.
-    }
-  }
-EOF;
-		return $filter;
-	}
-
-	/**
 	 * @param Statement $statement
 	 * @param PropertyId[] $separators
 	 *
 	 * @return CachedEntityIds
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
-	public function findEntitiesWithSameStatement( Statement $statement, array $separators ): CachedEntityIds {
-		$pid = $statement->getPropertyId()->getSerialization();
-		$guid = $statement->getGuid();
-		'@phan-var string $guid'; // statement must have a non-null GUID
-		$guidForRdf = str_replace( '$', '-', $guid );
+	public function findEntitiesWithSameStatement(
+		EntityId $entityId,
+		Statement $statement,
+		array $separators
+	): CachedEntityIds {
+		$mainSnak = $statement->getMainSnak();
+		if ( !( $mainSnak instanceof PropertyValueSnak ) ) {
+			return new CachedEntityIds( [], Metadata::blank() );
+		}
 
-		$separatorFilters = array_map( [ $this, 'nestedSeparatorFilter' ], $separators );
-		$finalSeparatorFilter = implode( "\n", $separatorFilters );
+		$propertyId = $statement->getPropertyId();
+		$pPredicateAndObject = "{$this->p( $propertyId )} ?otherStatement."; // p:P123 ?otherStatement.
+		$otherStatementPredicateAndObject = $this->getSnakPredicateAndObject(
+			$entityId,
+			$mainSnak,
+			RdfVocabulary::NSP_CLAIM_STATEMENT
+		);
 
-		$query = <<<EOF
+		$isSeparator = [];
+		$unusedSeparators = [];
+		foreach ( $separators as $separator ) {
+			$isSeparator[$separator->getSerialization()] = true;
+			$unusedSeparators[$separator->getSerialization()] = $separator;
+		}
+		$separatorFilters = '';
+		foreach ( $statement->getQualifiers() as $qualifier ) {
+			$qualPropertyId = $qualifier->getPropertyId();
+			if ( !( $isSeparator[$qualPropertyId->getSerialization()] ?? false ) ) {
+				continue;
+			}
+			unset( $unusedSeparators[$qualPropertyId->getSerialization()] );
+			// only look for other statements with the same qualifier
+			if ( $qualifier instanceof PropertyValueSnak ) {
+				$sepPredicateAndObject = $this->getSnakPredicateAndObject(
+					$entityId,
+					$qualifier,
+					RdfVocabulary::NSP_QUALIFIER
+				);
+				$separatorFilters .= "  ?otherStatement $sepPredicateAndObject\n";
+			} elseif ( $qualifier instanceof PropertyNoValueSnak ) {
+				$sepPredicateAndObject = "a {$this->wdno( $qualPropertyId )}."; // a wdno:P123.
+				$separatorFilters .= "  ?otherStatement $sepPredicateAndObject\n";
+			} else {
+				// "some value" / "unknown value" is always different from everything else,
+				// therefore the whole statement has no duplicates and we can return immediately
+				return new CachedEntityIds( [], Metadata::blank() );
+			}
+		}
+		foreach ( $unusedSeparators as $unusedSeparator ) {
+			// exclude other statements which have a separator that this one lacks
+			$separatorFilters .= "  MINUS { ?otherStatement {$this->pq( $unusedSeparator )} []. }\n";
+			$separatorFilters .= "  MINUS { ?otherStatement a {$this->wdno( $unusedSeparator )}. }\n";
+		}
+
+		$query = <<<SPARQL
 SELECT DISTINCT ?otherEntity WHERE {
-  BIND(wds:$guidForRdf AS ?statement)
-  BIND(p:$pid AS ?p)
-  BIND(ps:$pid AS ?ps)
-  ?entity ?p ?statement.
-  ?statement ?ps ?value.
-  ?otherStatement ?ps ?value.
-  ?otherEntity ?p ?otherStatement.
-  FILTER(?otherEntity != ?entity)
-  MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }
-  $finalSeparatorFilter
+  ?otherEntity $pPredicateAndObject
+  ?otherStatement $otherStatementPredicateAndObject
+  {$this->minusDeprecatedRank( '?otherStatement' )}
+  FILTER(?otherEntity != {$this->wd( $entityId )})
+$separatorFilters
 }
 LIMIT 10
-EOF;
+SPARQL;
 
 		$results = [ $this->runQuery( $query, $this->primaryEndpoint ) ];
 		foreach ( $this->additionalEndpoints as $endpoint ) {
@@ -376,41 +447,34 @@ EOF;
 		string $type,
 		bool $ignoreDeprecatedStatements
 	): CachedEntityIds {
-		$eid = $entityId->getSerialization();
-		$pid = $snak->getPropertyId()->getSerialization();
-		$prefix = $type === Context::TYPE_QUALIFIER ? 'pq' : 'pr';
-		$dataValue = $snak->getDataValue();
-		$dataType = $this->propertyDataTypeLookup->getDataTypeIdForProperty(
-			$snak->getPropertyId()
+		$propertyId = $snak->getPropertyId();
+		$pPredicateAndObject = "{$this->p( $propertyId )} ?otherStatement."; // p:P123 ?otherStatement.
+
+		$otherSubject = $type === Context::TYPE_QUALIFIER ?
+			'?otherStatement' :
+			"?otherStatement {$this->prov( 'wasDerivedFrom' )} ?reference.\n  ?reference";
+		$otherPredicateAndObject = $this->getSnakPredicateAndObject(
+			$entityId,
+			$snak,
+			$type === Context::TYPE_QUALIFIER ?
+				RdfVocabulary::NSP_QUALIFIER :
+				RdfVocabulary::NSP_REFERENCE
 		);
-		[ $value, $isFullValue ] = $this->getRdfLiteral( $dataType, $dataValue );
-		if ( $isFullValue ) {
-			$prefix .= 'v';
-		}
-		$path = $type === Context::TYPE_QUALIFIER ?
-			"$prefix:$pid" :
-			"prov:wasDerivedFrom/$prefix:$pid";
 
 		$deprecatedFilter = '';
 		if ( $ignoreDeprecatedStatements ) {
-			$deprecatedFilter = <<< EOF
-  MINUS { ?otherStatement wikibase:rank wikibase:DeprecatedRank. }
-EOF;
+			$deprecatedFilter = '  ' . $this->minusDeprecatedRank( '?otherStatement' );
 		}
 
-		$query = <<<EOF
+		$query = <<<SPARQL
 SELECT DISTINCT ?otherEntity WHERE {
-  BIND(wd:$eid AS ?entity)
-  BIND($value AS ?value)
-  ?entity ?p ?statement.
-  ?statement $path ?value.
-  ?otherStatement $path ?value.
-  ?otherEntity ?otherP ?otherStatement.
-  FILTER(?otherEntity != ?entity)
+  ?otherEntity $pPredicateAndObject
+  $otherSubject $otherPredicateAndObject
+  FILTER(?otherEntity != {$this->wd( $entityId )})
 $deprecatedFilter
 }
 LIMIT 10
-EOF;
+SPARQL;
 
 		$results = [ $this->runQuery( $query, $this->primaryEndpoint ) ];
 		foreach ( $this->additionalEndpoints as $endpoint ) {
@@ -418,6 +482,81 @@ EOF;
 		}
 
 		return $this->getOtherEntities( $results );
+	}
+
+	/**
+	 * Generate a SPARQL snippet for the property and value of the given snak.
+	 *
+	 * This reuses Wikibase’s RDF export using the Turtle (TTL) format. Turtle and SPARQL are
+	 * {@link https://www.w3.org/2011/rdf-wg/wiki/Diff_SPARQL_Turtle not fully compatible},
+	 * but most of the differences are additional SPARQL constructs not allowed in Turtle
+	 * (i.e. not relevant for the direction we use here),
+	 * and the main other issue, `\u` escape processing, should not affect us either
+	 * (N3Quoter escapes `"` as the unproblematic `\"` rather than the problematic `\u0022`).
+	 *
+	 * @param EntityId $entityId The subject to which the statement belongs
+	 * @param PropertyValueSnak $snak The snak we’re looking for
+	 * @param string $namespace Specifies which kind of snak we’re looking for:
+	 *  {@link RdfVocabulary::NSP_CLAIM_STATEMENT} for the main snak,
+	 *  {@link RdfVocabulary::NSP_QUALIFIER} for a qualifier
+	 *  or {@link RdfVocabulary::NSP_REFERENCE} for a reference.
+	 * @return string SPARQL snippet like `wdt:P31 wd:Q5.`
+	 */
+	private function getSnakPredicateAndObject(
+		EntityId $entityId,
+		PropertyValueSnak $snak,
+		string $namespace
+	): string {
+		// set up the writer, flush out the header (prefixes) and initialize the fake subject
+		$writer = new TurtleRdfWriter();
+		$writer->start();
+		$writer->drain();
+		$placeholder1 = 'wbqc';
+		$placeholder2 = 'x' . wfRandomString( 32 );
+		$writer->about( $placeholder1, $placeholder2 );
+
+		$propertyId = $snak->getPropertyId();
+		$pid = $propertyId->getSerialization();
+		$propertyRepository = $this->rdfVocabulary->getEntityRepositoryName( $propertyId );
+		$entityRepository = $this->rdfVocabulary->getEntityRepositoryName( $entityId );
+		$propertyNamespace = $this->rdfVocabulary->propertyNamespaceNames[$propertyRepository][$namespace];
+		$value = $snak->getDataValue();
+		if (
+			$value instanceof GlobeCoordinateValue ||
+			$value instanceof UnboundedQuantityValue ||
+			$value instanceof TimeValue
+		) {
+			// use the full value node via its hash
+			// ComplexValueRdfHelper::attachValueNode() always uses $valueLName = $value->getHash();
+			$writer->say(
+				$this->rdfVocabulary->claimToValue[$propertyNamespace],
+				$pid
+			)->is(
+				$this->rdfVocabulary->statementNamespaceNames[$entityRepository][RdfVocabulary::NS_VALUE],
+				$value->getHash()
+			);
+		} else {
+			// use the simple value directly
+			$valueSnakRdfBuilder = $this->valueSnakRdfBuilderFactory
+				->getValueSnakRdfBuilder(
+					0,
+					$this->rdfVocabularyWithoutNormalization,
+					$writer,
+					new NullEntityMentionListener(),
+					new NullDedupeBag()
+				);
+			$valueSnakRdfBuilder->addValue(
+				$writer,
+				$propertyNamespace,
+				$pid,
+				$this->propertyDataTypeLookup->getDataTypeIdForProperty( $propertyId ),
+				$this->rdfVocabulary->statementNamespaceNames[$entityRepository][RdfVocabulary::NS_VALUE], // should be unused
+				$snak
+			);
+		}
+
+		$triple = $writer->drain(); // wbqc:xRANDOM ps:PID "value". or similar
+		return trim( str_replace( "$placeholder1:$placeholder2", '', $triple ) );
 	}
 
 	/**
@@ -471,61 +610,6 @@ EOF;
 			Metadata::merge( $metadatas )
 		);
 	}
-
-	// phpcs:disable Generic.Metrics.CyclomaticComplexity,Squiz.WhiteSpace.FunctionSpacing
-	/**
-	 * Get an RDF literal or IRI with which the given data value can be matched in a query.
-	 *
-	 * @return array the literal or IRI as a string in SPARQL syntax,
-	 * and a boolean indicating whether it refers to a full value node or not
-	 */
-	private function getRdfLiteral( string $dataType, DataValue $dataValue ): array {
-		switch ( $dataType ) {
-			case 'string':
-			case 'external-id':
-				return [ $this->stringLiteral( $dataValue->getValue() ), false ];
-			case 'commonsMedia':
-				$url = $this->rdfVocabulary->getMediaFileURI( $dataValue->getValue() );
-				return [ '<' . $url . '>', false ];
-			case 'geo-shape':
-				$url = $this->rdfVocabulary->getGeoShapeURI( $dataValue->getValue() );
-				return [ '<' . $url . '>', false ];
-			case 'tabular-data':
-				$url = $this->rdfVocabulary->getTabularDataURI( $dataValue->getValue() );
-				return [ '<' . $url . '>', false ];
-			case 'url':
-				$url = $dataValue->getValue();
-				if ( !preg_match( '/^[^<>"{}\\\\|^`\\x00-\\x20]*$/D', $url ) ) {
-					// not a valid URL for SPARQL (see SPARQL spec, production 139 IRIREF)
-					// such an URL should never reach us, so just throw
-					throw new InvalidArgumentException( 'invalid URL: ' . $url );
-				}
-				return [ '<' . $url . '>', false ];
-			case 'wikibase-item':
-			case 'wikibase-property':
-				/** @var EntityIdValue $dataValue */
-				'@phan-var EntityIdValue $dataValue';
-				return [ 'wd:' . $dataValue->getEntityId()->getSerialization(), false ];
-			case 'monolingualtext':
-				/** @var MonolingualTextValue $dataValue */
-				'@phan-var MonolingualTextValue $dataValue';
-				$lang = $dataValue->getLanguageCode();
-				if ( !preg_match( '/^[a-zA-Z]+(-[a-zA-Z0-9]+)*$/D', $lang ) ) {
-					// not a valid language tag for SPARQL (see SPARQL spec, production 145 LANGTAG)
-					// such a language tag should never reach us, so just throw
-					throw new InvalidArgumentException( 'invalid language tag: ' . $lang );
-				}
-				return [ $this->stringLiteral( $dataValue->getText() ) . '@' . $lang, false ];
-			case 'globe-coordinate':
-			case 'quantity':
-			case 'time':
-				// @phan-suppress-next-line PhanUndeclaredMethod
-				return [ 'wdv:' . $dataValue->getHash(), true ];
-			default:
-				throw new InvalidArgumentException( 'unknown data type: ' . $dataType );
-		}
-	}
-	// phpcs:enable
 
 	/**
 	 * @throws SparqlHelperException if the query times out or some other error occurs
