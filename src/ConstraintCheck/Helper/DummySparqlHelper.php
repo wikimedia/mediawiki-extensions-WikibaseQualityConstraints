@@ -33,6 +33,7 @@ class DummySparqlHelper extends SparqlHelper {
 	}
 
 	public function findEntitiesWithSameStatement(
+		EntityId $entityId,
 		Statement $statement,
 		array $separators
 	): CachedEntityIds {
