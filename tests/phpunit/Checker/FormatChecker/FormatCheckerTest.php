@@ -304,7 +304,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$sparqlHelper->expects( $this->never() )->method( 'matchesRegularExpression' );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
-			new HashConfig( [ 'WBQualityConstraintsCheckFormatConstraint' => false ] ),
+			$this->getMultiConfig( [ 'WBQualityConstraintsCheckFormatConstraint' => false ] ),
 			$sparqlHelper,
 			MediaWikiServices::getInstance()->getShellboxClientFactory()
 		);

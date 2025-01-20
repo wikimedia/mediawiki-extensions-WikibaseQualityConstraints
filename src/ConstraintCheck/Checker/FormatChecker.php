@@ -48,6 +48,8 @@ class FormatChecker implements ConstraintChecker {
 	 */
 	private $shellboxClientFactory;
 
+	private array $knownGoodPatternsAsKeys;
+
 	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param Config $config
@@ -64,6 +66,10 @@ class FormatChecker implements ConstraintChecker {
 		$this->config = $config;
 		$this->sparqlHelper = $sparqlHelper;
 		$this->shellboxClientFactory = $shellboxClientFactory;
+		$this->knownGoodPatternsAsKeys = array_fill_keys(
+			$this->config->get( 'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' ),
+			null
+		);
 	}
 
 	/**
@@ -175,8 +181,7 @@ class FormatChecker implements ConstraintChecker {
 		if ( !$this->config->get( 'WBQualityConstraintsCheckFormatConstraint' ) ) {
 			return CheckResult::STATUS_TODO;
 		}
-		$knownGoodFormats = $this->config->get( 'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' );
-		if ( in_array( $format, $knownGoodFormats, true ) ) {
+		if ( \array_key_exists( $format, $this->knownGoodPatternsAsKeys ) ) {
 			$checkResult = FormatCheckerHelper::runRegexCheck( $format, $text );
 		} elseif (
 			$this->config->get( 'WBQualityConstraintsFormatCheckerShellboxRatio' ) > (float)wfRandom()
