@@ -175,7 +175,8 @@ class FormatChecker implements ConstraintChecker {
 		if ( !$this->config->get( 'WBQualityConstraintsCheckFormatConstraint' ) ) {
 			return CheckResult::STATUS_TODO;
 		}
-		if ( in_array( $format, $this->config->get( 'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' ) ) ) {
+		$knownGoodFormats = $this->config->get( 'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' );
+		if ( in_array( $format, $knownGoodFormats, true ) ) {
 			$checkResult = FormatCheckerHelper::runRegexCheck( $format, $text );
 		} elseif (
 			$this->config->get( 'WBQualityConstraintsFormatCheckerShellboxRatio' ) > (float)wfRandom()
