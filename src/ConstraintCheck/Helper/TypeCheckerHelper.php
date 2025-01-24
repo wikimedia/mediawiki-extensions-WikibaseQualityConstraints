@@ -265,7 +265,7 @@ class TypeCheckerHelper {
 				->toArray();
 		}
 
-		return call_user_func_array( 'array_merge', $statementArrays );
+		return array_merge( ...$statementArrays );
 	}
 
 	/**

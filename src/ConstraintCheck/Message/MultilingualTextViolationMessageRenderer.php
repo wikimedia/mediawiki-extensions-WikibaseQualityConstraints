@@ -46,7 +46,7 @@ class MultilingualTextViolationMessageRenderer extends ViolationMessageRenderer 
 		foreach ( $arguments as $argument ) {
 			$paramsLists[] = $this->renderArgument( $argument );
 		}
-		$regularParams = call_user_func_array( 'array_merge', $paramsLists );
+		$regularParams = array_merge( ...$paramsLists );
 
 		if ( $multilingualTextParams === null ) {
 			return $this->messageLocalizer

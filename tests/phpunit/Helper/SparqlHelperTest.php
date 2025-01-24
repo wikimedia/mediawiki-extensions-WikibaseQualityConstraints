@@ -677,7 +677,7 @@ EOF;
 			->willReturn( $this->selectResults( [ [] ] ) );
 
 		try {
-			call_user_func_array( [ $sparqlHelper, 'matchesRegularExpressionWithSparql' ], [ $text, $regex ] );
+			$sparqlHelper->matchesRegularExpressionWithSparql( $text, $regex );
 			$this->fail(
 				"matchesRegularExpressionWithSparql should have thrown a ConstraintParameterException with message "
 			. "⧼{$messageKey}⧽."

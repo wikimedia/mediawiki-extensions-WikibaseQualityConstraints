@@ -74,7 +74,7 @@ class ViolationMessageRenderer {
 			$params = $this->renderArgument( $argument );
 			$paramsLists[] = $params;
 		}
-		$allParams = call_user_func_array( 'array_merge', $paramsLists );
+		$allParams = array_merge( ...$paramsLists );
 		return $this->messageLocalizer
 			->msg( $messageKey )
 			->params( $allParams )
