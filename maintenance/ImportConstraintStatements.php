@@ -79,7 +79,7 @@ class ImportConstraintStatements extends Maintenance {
 					$propertyIdSerialization
 				);
 				$startTime = microtime( true );
-				$job = call_user_func( $this->newUpdateConstraintsTableJob, $propertyIdSerialization );
+				$job = ( $this->newUpdateConstraintsTableJob )( $propertyIdSerialization );
 				$job->run();
 				$endTime = microtime( true );
 				$millis = ( $endTime - $startTime ) * 1000;

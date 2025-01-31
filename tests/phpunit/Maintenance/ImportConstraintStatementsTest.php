@@ -118,7 +118,7 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 	}
 
 	public function testDefaultNewUpdateConstraintsTableJob() {
-		$job = call_user_func( $this->maintenance->newUpdateConstraintsTableJob, 'P1234' );
+		$job = ( $this->maintenance->newUpdateConstraintsTableJob )( 'P1234' );
 
 		$this->assertInstanceOf( UpdateConstraintsTableJob::class, $job );
 		$params = $job->getParams();
