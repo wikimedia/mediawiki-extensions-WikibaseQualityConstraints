@@ -167,7 +167,7 @@ class ViolationMessageRenderer {
 			array_fill( 0, count( $list ), $role )
 		);
 		$renderedParams = array_column( $renderedParamsLists, 0 );
-		$renderedElements = array_map( fn ( MessageParam $msg ) => $msg->getValue(), $renderedParams );
+		$renderedElements = array_map( static fn ( MessageParam $msg ) => $msg->getValue(), $renderedParams );
 		if ( isset( $truncated ) ) {
 			$renderedElements[] = $this->msgEscaped( 'ellipsis' );
 		}
