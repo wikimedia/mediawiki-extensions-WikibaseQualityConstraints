@@ -327,7 +327,7 @@ class CachingResultsSource implements ResultsSource {
 	) {
 		$cacheInfo = WANObjectCache::PASS_BY_REF;
 		$value = $this->cache->get( $entityId, $curTTL, [], $cacheInfo );
-		$now = call_user_func( $this->microtime, true );
+		$now = ( $this->microtime )( true );
 
 		$dependencyMetadata = $this->checkDependencyMetadata( $value,
 			[ $entityId->getSerialization() => $forRevision ] );
