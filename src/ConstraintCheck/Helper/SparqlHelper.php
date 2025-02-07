@@ -18,6 +18,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
 use Wikibase\DataModel\Entity\EntityIdValue;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -176,9 +177,15 @@ class SparqlHelper {
 PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
 		}
+
+		$itemSourceName = $rdfVocabulary->getEntityRepositoryName( new ItemId( 'Q1' ) );
+		$namespaceName = $rdfVocabulary->statementNamespaceNames[$itemSourceName][RdfVocabulary::NS_STATEMENT];
 		$prefixes .= <<<END
-PREFIX wds: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_STATEMENT )}>
-PREFIX wdv: <{$rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_VALUE )}>\n
+PREFIX wds: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+		$namespaceName = $rdfVocabulary->statementNamespaceNames[$itemSourceName][RdfVocabulary::NS_VALUE];
+		$prefixes .= <<<END
+PREFIX wdv: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
 
 		foreach ( $rdfVocabulary->propertyNamespaceNames as $sourceName => $sourceNamespaces ) {

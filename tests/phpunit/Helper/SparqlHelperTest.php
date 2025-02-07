@@ -89,6 +89,26 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	private function getRdfVocabulary(): RdfVocabulary {
+		$itemSource = new DatabaseEntitySource(
+			'local',
+			false,
+			[ 'item' => [ 'namespaceId' => 0, 'slot' => SlotRecord::MAIN ] ],
+			'http://www.wikidata.org/entity/',
+			'wd',
+			'',
+			'local'
+		);
+
+		return new RdfVocabulary(
+			[ 'local' => 'http://www.wikidata.org/entity/' ],
+			[ 'local' => 'http://www.wikidata.org/wiki/Special:EntityData/' ],
+			new EntitySourceDefinitions( [ 'local' => $itemSource ], new SubEntityTypesMapper( [] ) ),
+			[ 'local' => 'wd' ],
+			[ 'local' => '' ]
+		);
+	}
+
 	private function getSparqlHelper(
 		?Config $config = null,
 		?PropertyDataTypeLookup $dataTypeLookup = null,
@@ -99,13 +119,7 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 		return $this->getMockBuilder( SparqlHelper::class )
 			->setConstructorArgs( [
 				new MultiConfig( [ $config ?? new HashConfig(), self::getDefaultConfig() ] ),
-				new RdfVocabulary(
-					[ '' => 'http://www.wikidata.org/entity/' ],
-					[ '' => 'http://www.wikidata.org/wiki/Special:EntityData/' ],
-					new EntitySourceDefinitions( [], new SubEntityTypesMapper( [] ) ),
-					[ '' => 'wd' ],
-					[ '' => '' ]
-				),
+				$this->getRdfVocabulary(),
 				$entityIdParser,
 				$dataTypeLookup ?? new InMemoryDataTypeLookup(),
 				WANObjectCache::newEmpty(),
@@ -813,7 +827,7 @@ EOF;
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
-			$this->createMock( RdfVocabulary::class ),
+			$this->getRdfVocabulary(),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
 			WANObjectCache::newEmpty(),
@@ -854,7 +868,7 @@ EOF;
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			$config,
-			$this->createMock( RdfVocabulary::class ),
+			$this->getRdfVocabulary(),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
 			WANObjectCache::newEmpty(),
@@ -886,7 +900,7 @@ EOF;
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
-			$this->createMock( RdfVocabulary::class ),
+			$this->getRdfVocabulary(),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
 			WANObjectCache::newEmpty(),
@@ -919,7 +933,7 @@ EOF;
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			$config,
-			$this->createMock( RdfVocabulary::class ),
+			$this->getRdfVocabulary(),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
 			WANObjectCache::newEmpty(),
@@ -1101,7 +1115,7 @@ END;
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
-			$this->createMock( RdfVocabulary::class ),
+			$this->getRdfVocabulary(),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
 			WANObjectCache::newEmpty(),
@@ -1151,7 +1165,7 @@ END;
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
-			$this->createMock( RdfVocabulary::class ),
+			$this->getRdfVocabulary(),
 			$this->createMock( EntityIdParser::class ),
 			$this->createMock( PropertyDataTypeLookup::class ),
 			WANObjectCache::newEmpty(),
