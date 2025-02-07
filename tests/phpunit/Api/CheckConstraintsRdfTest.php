@@ -184,14 +184,16 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		$action->onView();
 		$actualOutput = ob_get_clean();
 
-		$wdsURI = $rdfVocabulary->getNamespaceURI( RdfVocabulary::NS_STATEMENT );
+		$propertyRepo = $rdfVocabulary->getEntityRepositoryName( new NumericPropertyId( 'P1' ) );
+		$wds = $rdfVocabulary->statementNamespaceNames[$propertyRepo][RdfVocabulary::NS_STATEMENT];
+		$wdsURI = $rdfVocabulary->getNamespaceURI( $wds );
 		$expectedOutput = <<<TEXT
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix s: <$wdsURI> .
+@prefix $wds: <$wdsURI> .
 @prefix wikibase: <http://wikiba.se/ontology#> .
 
-s:P1-00000000-0000-0000-0000-000000000000 wikibase:hasViolationForConstraint s:P1-00000000-0000-0000-0000-000000000000 .
+$wds:P1-00000000-0000-0000-0000-000000000000 wikibase:hasViolationForConstraint $wds:P1-00000000-0000-0000-0000-000000000000 .
 
 TEXT;
 		$this->assertSame( $expectedOutput, $actualOutput );
