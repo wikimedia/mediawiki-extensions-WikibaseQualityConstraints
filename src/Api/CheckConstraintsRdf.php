@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Api;
 use Article;
 use FormlessAction;
 use MediaWiki\Context\IContextSource;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Store\EntityIdLookup;
 use Wikibase\Repo\Rdf\RdfVocabulary;
 use Wikibase\Repo\WikibaseRepo;
@@ -145,8 +146,11 @@ class CheckConstraintsRdf extends FormlessAction {
 		$formatName = $writerFactory->getFormatName( $format );
 		$contentType = $writerFactory->getMimeTypes( $formatName )[0];
 
+		$propertyRepo = $this->rdfVocabulary->getEntityRepositoryName( new NumericPropertyId( 'P1' ) );
+		$wds = $this->rdfVocabulary->statementNamespaceNames[$propertyRepo][RdfVocabulary::NS_STATEMENT];
+
 		$writer = $writerFactory->getWriter( $formatName );
-		foreach ( [ RdfVocabulary::NS_STATEMENT, RdfVocabulary::NS_ONTOLOGY ] as $ns ) {
+		foreach ( [ $wds, RdfVocabulary::NS_ONTOLOGY ] as $ns ) {
 			$writer->prefix( $ns, $this->rdfVocabulary->getNamespaceURI( $ns ) );
 		}
 		$writer->start();
@@ -160,10 +164,10 @@ class CheckConstraintsRdf extends FormlessAction {
 				continue;
 			}
 			$writtenAny = true;
-			$writer->about( RdfVocabulary::NS_STATEMENT,
+			$writer->about( $wds,
 				$this->cleanupGuid( $checkResult->getContextCursor()->getStatementGuid() ) )
 				->say( RdfVocabulary::NS_ONTOLOGY, 'hasViolationForConstraint' )
-				->is( RdfVocabulary::NS_STATEMENT,
+				->is( $wds,
 					$this->cleanupGuid( $checkResult->getConstraint()->getConstraintId() ) );
 		}
 		$writer->finish();
