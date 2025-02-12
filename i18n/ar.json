@@ -119,7 +119,7 @@
 	"wbqc-violation-message-range-time-rightopen": "قيمة $1 ($2) لا ينبغي أن تكون قبل $3.",
 	"wbqc-violation-message-range-time-rightopen-leftnow": "قيمة $1 ($2) لا ينبغي أن تكون في الماضي.",
 	"wbqc-violation-message-single-value": "هذه الخاصية يجب أن تحتوي على قيمة واحدة فقط.",
-	"wbqc-violation-message-single-value-separators": "يجب أن تحتوي هذه الخاصية على قيمة منفردة فقط ولها {{PLURAL:$2|1=تصفية $4.|تصفيات من هذه الخاصيات: $3}}",
+	"wbqc-violation-message-single-value-separators": "يجب أن تحتوي هذه الخاصية على قيمة منفردة ولها {{PLURAL:$2|1=تصفية $4.|تصفيات من هذه الخاصيات: $3}}",
 	"wbqc-violation-message-single-best-value-no-preferred": "يجب أن تحتوي هذه الخاصية على قيمة \"أفضل\" واحدة، من بين القيم المتعددة الحالية، يجب تعليم واحدة بالترتيب \"المفضل\".",
 	"wbqc-violation-message-single-best-value-no-preferred-separators": "يجب أن تحتوي هذه الخاصية على قيمة ”مفضلة“ منفردة فقط ولها {{PLURAL:$2|1=تصفية $4.|تصفيات من هذه الخاصيات: $3}} من القيم المتعددة الحالية، يجب وضع علامة واحدة على الترتيب ”المفضل“.",
 	"wbqc-violation-message-single-best-value-multi-preferred": "يجب أن تحتوي هذه الخاصية على قيمة \"أفضل\" واحدة، يجب ألا يكون هناك أكثر من قيمة واحدة مع الترتيب \"المفضل\".",
