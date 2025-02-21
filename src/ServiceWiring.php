@@ -170,7 +170,7 @@ return [
 			$services->getMainWANObjectCache(),
 			ConstraintsServices::getViolationMessageSerializer( $services ),
 			ConstraintsServices::getViolationMessageDeserializer( $services ),
-			$services->getStatsdDataFactory(),
+			$services->getStatsFactory()->withComponent( 'WikibaseQualityConstraints' ),
 			ConstraintsServices::getExpiryLock( $services ),
 			ConstraintsServices::getLoggingHelper( $services ),
 			WikiMap::getCurrentWikiId() . ' WikibaseQualityConstraints ' . $services->getHttpRequestFactory()->getUserAgent(),
