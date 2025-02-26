@@ -50,6 +50,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 
 			mw.hook( 'wikibase.statement.saved' ).add( ( savedEntityId, statementId ) => {
 				mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.saveStatement' );
+				mw.track( 'stats.mediawiki_wikibase_quality_constraints_gadget_savestatement_total' );
 				this.snakCheck( api, lang, statementId );
 			} );
 		} );
@@ -64,6 +65,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 		}
 
 		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadEntity' );
+		mw.track( 'stats.mediawiki_wikibase_quality_constraints_gadget_loadentity_total' );
 		return this._fullCheckAllIds( api, lang, entityIds );
 	};
 
@@ -185,6 +187,7 @@ module.exports = ( function ( mw, wb, $, OO ) {
 
 	SELF.prototype.propertyParameterCheck = function ( api, lang, entityId ) {
 		mw.track( 'counter.MediaWiki.wikibase.quality.constraints.gadget.loadProperty' );
+		mw.track( 'stats.mediawiki_wikibase_quality_constraints_gadget_loadproperty_total' );
 		return api.get( {
 			action: 'wbcheckconstraintparameters',
 			format: 'json',
