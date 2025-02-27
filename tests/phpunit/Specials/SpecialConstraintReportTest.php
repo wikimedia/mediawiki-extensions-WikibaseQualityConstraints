@@ -18,7 +18,7 @@ use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\ConstraintsServices;
 use WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
-use Wikimedia\Stats\NullStatsdDataFactory;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
@@ -56,6 +56,9 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 	protected function newSpecialPage() {
 
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+
 		return new SpecialConstraintReport(
 			WikibaseRepo::getEntityLookup(),
 			WikibaseRepo::getEntityTitleLookup(),
@@ -66,7 +69,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			ConstraintsServices::getDelegatingConstraintChecker(),
 			ConstraintsServices::getViolationMessageRendererFactory(),
 			self::getDefaultConfig(),
-			new NullStatsdDataFactory()
+			$statsFactory
 		);
 	}
 
