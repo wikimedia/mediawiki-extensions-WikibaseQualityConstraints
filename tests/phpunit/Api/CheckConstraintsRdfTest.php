@@ -33,7 +33,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeseriali
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use Wikimedia\ObjectCache\WANObjectCache;
-use Wikimedia\Stats\NullStatsdDataFactory;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraintsRdf
@@ -109,8 +109,11 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 	 * @return LoggingHelper
 	 */
 	private function getLoggingHelper() {
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+
 		return new LoggingHelper(
-			new NullStatsdDataFactory(),
+			$statsFactory,
 			new NullLogger(),
 			new HashConfig( [
 				'WBQualityConstraintsCheckDurationInfoSeconds' => 5.0,

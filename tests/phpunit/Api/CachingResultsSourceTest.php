@@ -29,7 +29,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerialize
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
-use Wikimedia\Stats\NullStatsdDataFactory;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * @covers WikibaseQuality\ConstraintReport\Api\CachingResultsSource
@@ -96,8 +96,11 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 	 * @return LoggingHelper
 	 */
 	private function getLoggingHelper() {
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+
 		return new LoggingHelper(
-			new NullStatsdDataFactory(),
+			$statsFactory,
 			new NullLogger(),
 			new HashConfig( [
 				'WBQualityConstraintsCheckDurationInfoSeconds' => 5.0,

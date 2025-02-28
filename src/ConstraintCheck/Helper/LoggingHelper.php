@@ -9,7 +9,7 @@ use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
-use Wikimedia\Stats\IBufferingStatsdDataFactory;
+use Wikimedia\Stats\StatsFactory;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
@@ -21,9 +21,9 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 class LoggingHelper {
 
 	/**
-	 * @var IBufferingStatsdDataFactory
+	 * @var StatsFactory
 	 */
-	private $dataFactory;
+	private $statsFactory;
 
 	/**
 	 * @var LoggerInterface
@@ -41,16 +41,16 @@ class LoggingHelper {
 	private $constraintCheckOnEntityDurationLimits;
 
 	/**
-	 * @param IBufferingStatsdDataFactory $dataFactory
+	 * @param StatsFactory $statsFactory
 	 * @param LoggerInterface $logger
 	 * @param Config $config
 	 */
 	public function __construct(
-		IBufferingStatsdDataFactory $dataFactory,
+		StatsFactory $statsFactory,
 		LoggerInterface $logger,
 		Config $config
 	) {
-		$this->dataFactory = $dataFactory;
+		$this->statsFactory = $statsFactory;
 		$this->logger = $logger;
 		$this->constraintCheckDurationLimits = [
 			'info' => $config->get( 'WBQualityConstraintsCheckDurationInfoSeconds' ),
@@ -91,7 +91,7 @@ class LoggingHelper {
 
 	/**
 	 * Log a single constraint check.
-	 * The constraint check is tracked on the statsd data factory,
+	 * The constraint check is tracked on the StatsFactory data factory,
 	 * and also logged with the logger interface if it took longer than a certain time.
 	 * Multiple limits corresponding to different log levels can be specified in the configuration;
 	 * checks that exceed a higher limit are logged at a more severe level.
@@ -114,12 +114,11 @@ class LoggingHelper {
 		$constraintCheckerClassShortName = substr( strrchr( $constraintCheckerClass, '\\' ), 1 );
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
-		$this->dataFactory->timing(
-			'wikibase.quality.constraints.check.timing.' .
-				$constraintTypeItemId . '-' .
-				$constraintCheckerClassShortName,
-			$durationSeconds * 1000
-		);
+		$baseCheckTimingKey = 'wikibase.quality.constraints.check.timing';
+		$this->statsFactory
+			->getTiming( 'check_constraint_duration_seconds' )
+			->copyToStatsdAt( "$baseCheckTimingKey.$constraintTypeItemId-$constraintCheckerClassShortName" )
+			->observe( $durationSeconds * 1000 );
 
 		// find the longest limit (and associated log level) that the duration exceeds
 		[ $limitSeconds, $logLevel ] = $this->findLimit(
@@ -167,7 +166,7 @@ class LoggingHelper {
 
 	/**
 	 * Log a full constraint check on an entity.
-	 * The constraint check is tracked on the statsd data factory,
+	 * The constraint check is tracked on the StatsFactory data factory,
 	 * and also logged with the logger interface if it took longer than a certain time.
 	 * Multiple limits corresponding to different log levels can be specified in the configuration;
 	 * checks that exceed a higher limit are logged at a more severe level.
@@ -184,10 +183,11 @@ class LoggingHelper {
 		$durationSeconds,
 		$method
 	) {
-		$this->dataFactory->timing(
-			'wikibase.quality.constraints.check.entity.timing',
-			$durationSeconds * 1000
-		);
+		$checkEntityTimingKey = 'wikibase.quality.constraints.check.entity.timing';
+		$this->statsFactory
+			->getTiming( 'check_entity_constraint_duration_seconds' )
+			->copyToStatsdAt( $checkEntityTimingKey )
+			->observe( $durationSeconds * 1000 );
 
 		// find the longest limit (and associated log level) that the duration exceeds
 		[ $limitSeconds, $logLevel ] = $this->findLimit(
@@ -220,9 +220,11 @@ class LoggingHelper {
 	 * @param EntityId $entityId
 	 */
 	public function logCheckConstraintsCacheHit( EntityId $entityId ) {
-		$this->dataFactory->increment(
-			'wikibase.quality.constraints.cache.entity.hit'
-		);
+		$cacheEntityHitKey = 'wikibase.quality.constraints.cache.entity.hit';
+		$metric = $this->statsFactory->getCounter( 'cache_entity_hit_total' );
+		$metric->copyToStatsdAt(
+				$cacheEntityHitKey,
+			)->increment();
 	}
 
 	/**
@@ -231,10 +233,11 @@ class LoggingHelper {
 	 * @param EntityId[] $entityIds
 	 */
 	public function logCheckConstraintsCacheMisses( array $entityIds ) {
-		$this->dataFactory->updateCount(
-			'wikibase.quality.constraints.cache.entity.miss',
-			count( $entityIds )
-		);
+		$cacheEntityMissKey = 'wikibase.quality.constraints.cache.entity.miss';
+		$metric = $this->statsFactory->getCounter( 'cache_entity_miss_total' );
+		$metric->copyToStatsdAt(
+				$cacheEntityMissKey,
+			)->incrementBy( count( $entityIds ) );
 	}
 
 	/**
