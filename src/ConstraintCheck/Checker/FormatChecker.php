@@ -7,6 +7,10 @@ use DataValues\MultilingualTextValue;
 use DataValues\StringValue;
 use MediaWiki\Config\Config;
 use MediaWiki\Shell\ShellboxClientFactory;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Shellbox\ShellboxError;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
@@ -50,6 +54,8 @@ class FormatChecker implements ConstraintChecker {
 
 	private array $knownGoodPatternsAsKeys;
 
+	private LoggerInterface $logger;
+
 	/**
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param Config $config
@@ -60,7 +66,8 @@ class FormatChecker implements ConstraintChecker {
 		ConstraintParameterParser $constraintParameterParser,
 		Config $config,
 		SparqlHelper $sparqlHelper,
-		ShellboxClientFactory $shellboxClientFactory
+		ShellboxClientFactory $shellboxClientFactory,
+		?LoggerInterface $logger = null
 	) {
 		$this->constraintParameterParser = $constraintParameterParser;
 		$this->config = $config;
@@ -70,6 +77,7 @@ class FormatChecker implements ConstraintChecker {
 			$this->config->get( 'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' ),
 			null
 		);
+		$this->logger = $logger ?? new NullLogger();
 	}
 
 	/**
@@ -217,15 +225,31 @@ class FormatChecker implements ConstraintChecker {
 			return CheckResult::STATUS_TODO;
 		}
 
-		return $this->shellboxClientFactory->getClient( [
-			'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000,
-			'service' => 'constraint-regex-checker',
-		] )->call(
-			'constraint-regex-checker',
-			[ FormatCheckerHelper::class, 'runRegexCheck' ],
-			[ $format, $text ],
-			[ 'classes' => [ FormatCheckerHelper::class ] ],
-		);
+		try {
+			return $this->shellboxClientFactory->getClient( [
+				'timeout' => $this->config->get( 'WBQualityConstraintsSparqlMaxMillis' ) / 1000,
+				'service' => 'constraint-regex-checker',
+			] )->call(
+				'constraint-regex-checker',
+				[ FormatCheckerHelper::class, 'runRegexCheck' ],
+				[ $format, $text ],
+				[ 'classes' => [ FormatCheckerHelper::class ] ],
+			);
+		} catch ( ClientExceptionInterface $ce ) {
+			$this->logger->notice( __METHOD__ . ': Network error, skipping check: {exception}', [
+				'exception' => $ce,
+				'text' => $text,
+				'format' => $format,
+			] );
+			return CheckResult::STATUS_TODO;
+		} catch ( ShellboxError $e ) {
+			$this->logger->error( __METHOD__ . ': Shellbox error, skipping check: {exception}', [
+				'exception' => $e,
+				'text' => $text,
+				'format' => $format,
+			] );
+			return CheckResult::STATUS_TODO;
+		}
 	}
 
 	private function runRegexCheckUsingSparql( string $text, string $format ): string {

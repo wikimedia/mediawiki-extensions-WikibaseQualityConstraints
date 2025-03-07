@@ -3,11 +3,13 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Checker\FormatChecker;
 
 use DataValues\StringValue;
+use GuzzleHttp\Exception\TransferException;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Config\MultiConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Shell\ShellboxClientFactory;
+use Psr\Log\Test\TestLogger;
 use Shellbox\Client;
 use Shellbox\ShellboxError;
 use Wikibase\DataModel\Entity\EntityIdValue;
@@ -345,19 +347,8 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertTodo( $result );
 	}
 
-	/**
-	 * A ShellboxError is an unexpected outcome of checking regex with shellbox. Meaning should
-	 * not be inferred.
-	 */
-	public function testFormatConstraintShellboxError() {
-		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
+	private function setupFormatCheckedMockUsingShellboxClient( Client $shellboxClient, TestLogger $logger ) {
 		$sparqlHelper = $this->createMock( SparqlHelper::class );
-		$shellboxClient = $this->getMockBuilder( Client::class )
-			->disableOriginalConstructor()
-			->onlyMethods( [ 'call' ] )
-			->getMock();
-		$shellboxClient->method( 'call' )
-			->willThrowException( new ShellboxError() );
 		$shellboxClientFactory = $this->getMockBuilder( ShellboxClientFactory::class )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'getClient', 'isEnabled' ] )
@@ -366,7 +357,6 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 			->willReturn( true );
 		$shellboxClientFactory->method( 'getClient' )
 			->willReturn( $shellboxClient );
-		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
 		$checker = new FormatChecker(
 			$this->getConstraintParameterParser(),
 			$this->getMultiConfig( [
@@ -375,15 +365,55 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 				'WBQualityConstraintsCheckFormatConstraint' => true,
 			] ),
 			$sparqlHelper,
-			$shellboxClientFactory
+			$shellboxClientFactory,
+			$logger
 		);
+		return $checker;
+	}
 
-		$this->expectException( ShellboxError::class );
-
-		$checker->checkConstraint(
+	private function runConstraintCheck( Client $shellboxClient, TestLogger $logger ) {
+		$snak = new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( '' ) );
+		$constraint = $this->getConstraintMock( $this->formatParameter( '.' ) );
+		$checker = $this->setupFormatCheckedMockUsingShellboxClient( $shellboxClient, $logger );
+		$result = $checker->checkConstraint(
 			new FakeSnakContext( $snak ),
 			$constraint
 		);
+
+		$this->assertTodo( $result );
+	}
+
+	/**
+	 * A ShellboxError is an unexpected outcome of checking regex with shellbox. Meaning should
+	 * not be inferred.
+	 */
+	public function testFormatConstraintShellboxError() {
+		$shellboxClient = $this->getMockBuilder( Client::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'call' ] )
+			->getMock();
+		$shellboxClient->method( 'call' )
+			->willThrowException( new ShellboxError() );
+
+		$logger = new TestLogger();
+		$this->runConstraintCheck( $shellboxClient, $logger );
+
+		$this->assertFalse( $logger->hasNoticeRecords() );
+		$this->assertTrue( $logger->hasErrorThatContains( 'Shellbox error' ) );
+	}
+
+	public function testFormatConstraintNetworkError() {
+		$shellboxClient = $this->getMockBuilder( Client::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'call' ] )
+			->getMock();
+		$shellboxClient->method( 'call' )
+			->willThrowException( new TransferException() );
+
+		$logger = new TestLogger();
+		$this->runConstraintCheck( $shellboxClient, $logger );
+
+		$this->assertTrue( $logger->hasNoticeThatContains( 'Network error' ) );
 	}
 
 	public function testFormatConstraintDeprecatedStatement() {
