@@ -6,9 +6,9 @@ namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
 use DataValues\UnknownValue;
 use MediaWiki\Config\HashConfig;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Tests\Api\ApiTestCase;
+use Psr\Log\NullLogger;
 use ValueFormatters\FormatterOptions;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -137,7 +137,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				WikibaseRepo::getStatementGuidParser(),
 				new LoggingHelper(
 					$dataFactory,
-					LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
+					new NullLogger(),
 					$config
 				),
 				false,

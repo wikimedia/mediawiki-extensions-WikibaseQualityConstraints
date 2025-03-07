@@ -21,8 +21,7 @@ class ConstraintTest extends \MediaWikiIntegrationTestCase {
 	public function testConstructAndGetters() {
 		$repo = new ConstraintRepositoryLookup(
 			new FakeLoadBalancer( [ 'dbr' => $this->db ] ),
-			false,
-			true
+			false
 		);
 		$constraints = $repo->queryConstraintsForProperty( new NumericPropertyId( 'P1' ) );
 
