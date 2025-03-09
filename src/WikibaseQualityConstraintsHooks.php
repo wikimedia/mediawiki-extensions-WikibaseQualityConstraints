@@ -62,14 +62,14 @@ final class WikibaseQualityConstraintsHooks implements
 		}
 	}
 
-	private static function isSelectedForJobRunBasedOnPercentage() {
+	private static function isSelectedForJobRunBasedOnPercentage(): bool {
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		$percentage = $config->get( 'WBQualityConstraintsEnableConstraintsCheckJobsRatio' );
 
 		return mt_rand( 1, 100 ) <= $percentage;
 	}
 
-	public static function isConstraintStatementsChange( Config $config, Change $change ) {
+	public static function isConstraintStatementsChange( Config $config, Change $change ): bool {
 		if ( !( $change instanceof EntityChange ) ||
 			 $change->getAction() !== EntityChange::UPDATE ||
 			 !( $change->getEntityId() instanceof NumericPropertyId )

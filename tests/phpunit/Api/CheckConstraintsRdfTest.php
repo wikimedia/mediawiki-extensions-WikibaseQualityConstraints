@@ -54,10 +54,7 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		return $this->createMock( OutputPage::class );
 	}
 
-	/**
-	 * @param string $entityId entity ID serialization
-	 */
-	private function getCheckResult( $entityId, $status = CheckResult::STATUS_VIOLATION ) {
+	private function getCheckResult( string $entityId, string $status = CheckResult::STATUS_VIOLATION ): CheckResult {
 		return new CheckResult(
 			new MainSnakContextCursor(
 				$entityId,

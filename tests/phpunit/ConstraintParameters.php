@@ -398,7 +398,7 @@ trait ConstraintParameters {
 		}
 	}
 
-	public function separatorsParameter( array $separators ) {
+	public function separatorsParameter( array $separators ): array {
 		$separatorId = self::getDefaultConfig()->get( 'WBQualityConstraintsSeparatorId' );
 		return [
 			$separatorId => array_map(
@@ -412,7 +412,7 @@ trait ConstraintParameters {
 		];
 	}
 
-	public function propertyScopeParameter( array $contextTypes ) {
+	public function propertyScopeParameter( array $contextTypes ): array {
 		$config = self::getDefaultConfig();
 		$parameterId = $config->get( 'WBQualityConstraintsPropertyScopeId' );
 		return [

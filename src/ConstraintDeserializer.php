@@ -10,7 +10,7 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
  */
 class ConstraintDeserializer {
 
-	public function deserialize( array $serialization ) {
+	public function deserialize( array $serialization ): Constraint {
 		return new Constraint(
 			$serialization['id'],
 			new NumericPropertyId( $serialization['pid'] ),

@@ -132,7 +132,7 @@ class SparqlHelper {
 		IBufferingStatsdDataFactory $dataFactory,
 		ExpiryLock $throttlingLock,
 		LoggingHelper $loggingHelper,
-		$defaultUserAgent,
+		string $defaultUserAgent,
 		HttpRequestFactory $requestFactory
 	) {
 		$this->rdfVocabulary = $rdfVocabulary;
@@ -721,7 +721,7 @@ EOF;
 		return self::INVALID_RETRY_AFTER;
 	}
 
-	private function getTimestampInFuture( DateInterval $delta ) {
+	private function getTimestampInFuture( DateInterval $delta ): ConvertibleTimestamp {
 		$now = new ConvertibleTimestamp();
 		return new ConvertibleTimestamp( $now->timestamp->add( $delta ) );
 	}

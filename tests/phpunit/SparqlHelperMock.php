@@ -45,8 +45,8 @@ trait SparqlHelperMock {
 	private function getSparqlHelperMockFindEntitiesQualifierReference(
 		EntityId $expectedEntityId,
 		PropertyValueSnak $expectedSnak,
-		$expectedType,
-		$result
+		string $expectedType,
+		array $result
 	) {
 		$mock = $this->createMock( SparqlHelper::class );
 

@@ -39,7 +39,7 @@ class ViolationMessageDeserializer implements Deserializer {
 		$this->dataValueFactory = $dataValueFactory;
 	}
 
-	public function unabbreviateViolationMessageKey( $messageKeySuffix ) {
+	public function unabbreviateViolationMessageKey( string $messageKeySuffix ): string {
 		return ViolationMessage::MESSAGE_KEY_PREFIX . $messageKeySuffix;
 	}
 

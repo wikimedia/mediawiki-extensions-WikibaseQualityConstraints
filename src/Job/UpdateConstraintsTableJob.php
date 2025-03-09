@@ -38,7 +38,7 @@ class UpdateConstraintsTableJob extends Job {
 	 */
 	private const BATCH_SIZE = 50;
 
-	public static function newFromGlobalState( Title $title, array $params ) {
+	public static function newFromGlobalState( Title $title, array $params ): self {
 		Assert::parameterType( 'string', $params['propertyId'], '$params["propertyId"]' );
 		$services = MediaWikiServices::getInstance();
 		return new UpdateConstraintsTableJob(
@@ -130,7 +130,7 @@ class UpdateConstraintsTableJob extends Job {
 		$this->jobQueueGroup = $jobQueueGroup;
 	}
 
-	public function extractParametersFromQualifiers( SnakList $qualifiers ) {
+	public function extractParametersFromQualifiers( SnakList $qualifiers ): array {
 		$parameters = [];
 		foreach ( $qualifiers as $qualifier ) {
 			$qualifierId = $qualifier->getPropertyId()->getSerialization();
@@ -143,7 +143,7 @@ class UpdateConstraintsTableJob extends Job {
 	public function extractConstraintFromStatement(
 		NumericPropertyId $propertyId,
 		Statement $constraintStatement
-	) {
+	): Constraint {
 		$constraintId = $constraintStatement->getGuid();
 		'@phan-var string $constraintId'; // we know the statement has a non-null GUID
 		$snak = $constraintStatement->getMainSnak();

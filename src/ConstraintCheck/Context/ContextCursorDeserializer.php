@@ -11,7 +11,7 @@ use InvalidArgumentException;
  */
 class ContextCursorDeserializer {
 
-	public function deserialize( array $serialization ) {
+	public function deserialize( array $serialization ): ContextCursor {
 		switch ( $serialization['t'] ) {
 			case Context::TYPE_STATEMENT:
 				return new MainSnakContextCursor(

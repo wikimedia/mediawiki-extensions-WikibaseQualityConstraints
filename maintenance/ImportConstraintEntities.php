@@ -186,7 +186,7 @@ class ImportConstraintEntities extends Maintenance {
 		}
 	}
 
-	private function storageExceptionToEntityId( StorageException $storageException ) {
+	private function storageExceptionToEntityId( StorageException $storageException ): string {
 		$message = $storageException->getMessage();
 		// example messages:
 		// * Item [[Item:Q475|Q475]] already has label "as references"

@@ -78,13 +78,13 @@ class CheckingResultsSource implements ResultsSource {
 		);
 	}
 
-	public function defaultResultsPerContext( Context $context ) {
+	public function defaultResultsPerContext( Context $context ): array {
 		return $context->getType() === Context::TYPE_STATEMENT ?
 			[ new NullResult( $context->getCursor() ) ] :
 			[];
 	}
 
-	public function defaultResultsPerEntity( EntityId $entityId ) {
+	public function defaultResultsPerEntity( EntityId $entityId ): array {
 		return [
 			( new NullResult( new EntityContextCursor( $entityId->getSerialization() ) ) )
 				->withMetadata( Metadata::ofDependencyMetadata(
@@ -93,7 +93,7 @@ class CheckingResultsSource implements ResultsSource {
 		];
 	}
 
-	public function statusSelected( array $statusesFlipped, CheckResult $result ) {
+	public function statusSelected( array $statusesFlipped, CheckResult $result ): bool {
 		return array_key_exists( $result->getStatus(), $statusesFlipped ) ||
 			$result instanceof NullResult;
 	}

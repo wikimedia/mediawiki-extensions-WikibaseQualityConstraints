@@ -38,10 +38,7 @@ use Wikimedia\Stats\NullStatsdDataFactory;
  */
 class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 
-	/**
-	 * @param string $entityId entity ID serialization
-	 */
-	private function getCheckResult( $entityId, $status = CheckResult::STATUS_VIOLATION ) {
+	private function getCheckResult( string $entityId, string $status = CheckResult::STATUS_VIOLATION ): CheckResult {
 		return new CheckResult(
 			new MainSnakContextCursor(
 				$entityId,

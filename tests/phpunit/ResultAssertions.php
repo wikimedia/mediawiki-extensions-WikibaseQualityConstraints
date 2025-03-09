@@ -26,7 +26,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  */
 trait ResultAssertions {
 
-	private function renderMessage( CheckResult $result ) {
+	private function renderMessage( CheckResult $result ): string {
 		$resultMessage = $result->getMessage();
 		if ( $resultMessage === null ) {
 			return '';

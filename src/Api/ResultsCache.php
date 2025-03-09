@@ -25,7 +25,7 @@ class ResultsCache {
 	 */
 	private $formatVersion;
 
-	public static function getDefaultInstance() {
+	public static function getDefaultInstance(): self {
 		return new self(
 			MediaWikiServices::getInstance()->getMainWANObjectCache(),
 			'v2.2' // .1: T188384; .2: T189593

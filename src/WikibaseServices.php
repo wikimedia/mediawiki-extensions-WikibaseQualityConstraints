@@ -25,7 +25,7 @@ class WikibaseServices {
 	public const ENTITY_LOOKUP = 'WBQC_EntityLookup';
 	public const ENTITY_LOOKUP_WITHOUT_CACHE = 'WBQC_EntityLookupWithoutCache';
 
-	private static function getService( ?MediaWikiServices $services, $name ) {
+	private static function getService( ?MediaWikiServices $services, string $name ) {
 		$services ??= MediaWikiServices::getInstance();
 		return $services->getService( $name );
 	}
