@@ -68,7 +68,7 @@ class ContemporaryChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
 			Context::TYPE_QUALIFIER => CheckResult::STATUS_NOT_IN_SCOPE,
@@ -79,12 +79,12 @@ class ContemporaryChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return [ Context::TYPE_STATEMENT ];
 	}
 
 	/** @codeCoverageIgnore This method is purely declarative. */
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return self::ALL_ENTITY_TYPES_SUPPORTED;
 	}
 
@@ -97,7 +97,7 @@ class ContemporaryChecker implements ConstraintChecker {
 	 * @return CheckResult
 	 * @throws ConfigException
 	 */
-	public function checkConstraint( Context $context, Constraint $constraint ) {
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
 			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
@@ -258,7 +258,7 @@ class ContemporaryChecker implements ConstraintChecker {
 			->withDataValue( $maxStartValue, Role::OBJECT );
 	}
 
-	public function checkConstraintParameters( Constraint $constraint ) {
+	public function checkConstraintParameters( Constraint $constraint ): array {
 		// no parameters
 		return [];
 	}

@@ -20,23 +20,23 @@ class NoBoundsChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return self::ALL_CONTEXT_TYPES_SUPPORTED;
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return Context::ALL_CONTEXT_TYPES;
 	}
 
 	/** @codeCoverageIgnore This method is purely declarative. */
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return self::ALL_ENTITY_TYPES_SUPPORTED;
 	}
 
-	public function checkConstraint( Context $context, Constraint $constraint ) {
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		$snak = $context->getSnak();
 
 		if ( !$snak instanceof PropertyValueSnak ) {
@@ -58,7 +58,7 @@ class NoBoundsChecker implements ConstraintChecker {
 		return new CheckResult( $context, $constraint, CheckResult::STATUS_COMPLIANCE );
 	}
 
-	public function checkConstraintParameters( Constraint $constraint ) {
+	public function checkConstraintParameters( Constraint $constraint ): array {
 		// no parameters
 		return [];
 	}

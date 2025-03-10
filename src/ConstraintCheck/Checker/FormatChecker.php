@@ -75,19 +75,19 @@ class FormatChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return self::ALL_CONTEXT_TYPES_SUPPORTED;
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return Context::ALL_CONTEXT_TYPES;
 	}
 
 	/** @codeCoverageIgnore This method is purely declarative. */
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return self::ALL_ENTITY_TYPES_SUPPORTED;
 	}
 
@@ -100,7 +100,7 @@ class FormatChecker implements ConstraintChecker {
 	 * @throws ConstraintParameterException
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Context $context, Constraint $constraint ) {
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		$constraintParameters = $constraint->getConstraintParameters();
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
@@ -240,7 +240,7 @@ class FormatChecker implements ConstraintChecker {
 		}
 	}
 
-	public function checkConstraintParameters( Constraint $constraint ) {
+	public function checkConstraintParameters( Constraint $constraint ): array {
 		$constraintParameters = $constraint->getConstraintParameters();
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];

@@ -26,7 +26,7 @@ class FakeChecker implements ConstraintChecker {
 		$this->status = $status;
 	}
 
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
 			Context::TYPE_QUALIFIER => CheckResult::STATUS_COMPLIANCE,
@@ -34,7 +34,7 @@ class FakeChecker implements ConstraintChecker {
 		];
 	}
 
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT,
 			Context::TYPE_QUALIFIER,
@@ -42,18 +42,18 @@ class FakeChecker implements ConstraintChecker {
 		];
 	}
 
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return self::ALL_ENTITY_TYPES_SUPPORTED;
 	}
 
 	/**
 	 * @see ConstraintChecker::checkConstraint
 	 */
-	public function checkConstraint( Context $context, Constraint $constraint ) {
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		return new CheckResult( $context, $constraint, $this->status );
 	}
 
-	public function checkConstraintParameters( Constraint $constraint ) {
+	public function checkConstraintParameters( Constraint $constraint ): array {
 	}
 
 }
