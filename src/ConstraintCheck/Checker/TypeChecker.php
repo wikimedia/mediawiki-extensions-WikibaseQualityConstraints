@@ -47,21 +47,21 @@ class TypeChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return self::ALL_CONTEXT_TYPES_SUPPORTED;
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT,
 		];
 	}
 
 	/** @codeCoverageIgnore This method is purely declarative. */
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return self::ALL_ENTITY_TYPES_SUPPORTED;
 	}
 
@@ -75,7 +75,7 @@ class TypeChecker implements ConstraintChecker {
 	 * @throws SparqlHelperException if the checker uses SPARQL and the query times out or some other error occurs
 	 * @return CheckResult
 	 */
-	public function checkConstraint( Context $context, Constraint $constraint ) {
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		if ( $context->getSnakRank() === Statement::RANK_DEPRECATED ) {
 			return new CheckResult( $context, $constraint, CheckResult::STATUS_DEPRECATED );
 		}
@@ -127,7 +127,7 @@ class TypeChecker implements ConstraintChecker {
 			->withMetadata( $result->getMetadata() );
 	}
 
-	public function checkConstraintParameters( Constraint $constraint ) {
+	public function checkConstraintParameters( Constraint $constraint ): array {
 		$constraintParameters = $constraint->getConstraintParameters();
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 		$exceptions = [];

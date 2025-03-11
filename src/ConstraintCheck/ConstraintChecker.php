@@ -65,7 +65,7 @@ interface ConstraintChecker {
 	 *
 	 * @return array<string,string> Context type => result status
 	 */
-	public function getSupportedContextTypes();
+	public function getSupportedContextTypes(): array;
 
 	/**
 	 * Determines the context types where this constraint type is checked
@@ -83,7 +83,7 @@ interface ConstraintChecker {
 	 *
 	 * @return string[]
 	 */
-	public function getDefaultContextTypes();
+	public function getDefaultContextTypes(): array;
 
 	/**
 	 * Determines which entity types this constraint type supports.
@@ -97,7 +97,7 @@ interface ConstraintChecker {
 	 *
 	 * @return array<string,string> Entity type => result status
 	 */
-	public function getSupportedEntityTypes();
+	public function getSupportedEntityTypes(): array;
 
 	/**
 	 * @param Context $context
@@ -108,7 +108,7 @@ interface ConstraintChecker {
 	 * @throws ConstraintParameterException if the constraint parameters are invalid
 	 * @throws SparqlHelperException if the checker uses SPARQL and the query times out or some other error occurs
 	 */
-	public function checkConstraint( Context $context, Constraint $constraint );
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult;
 
 	/**
 	 * Check if the constraint parameters of $constraint are valid.
@@ -119,6 +119,6 @@ interface ConstraintChecker {
 	 *
 	 * @return ConstraintParameterException[]
 	 */
-	public function checkConstraintParameters( Constraint $constraint );
+	public function checkConstraintParameters( Constraint $constraint ): array;
 
 }

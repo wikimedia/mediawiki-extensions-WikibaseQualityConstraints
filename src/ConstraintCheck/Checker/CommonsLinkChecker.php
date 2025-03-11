@@ -63,7 +63,7 @@ class CommonsLinkChecker implements ConstraintChecker {
 	}
 
 	/** @codeCoverageIgnore This method is purely declarative. */
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return self::ALL_ENTITY_TYPES_SUPPORTED;
 	}
 

@@ -18,7 +18,7 @@ class CitationNeededChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getSupportedContextTypes() {
+	public function getSupportedContextTypes(): array {
 		return [
 			Context::TYPE_STATEMENT => CheckResult::STATUS_COMPLIANCE,
 			Context::TYPE_QUALIFIER => CheckResult::STATUS_NOT_IN_SCOPE,
@@ -29,16 +29,16 @@ class CitationNeededChecker implements ConstraintChecker {
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
 	 */
-	public function getDefaultContextTypes() {
+	public function getDefaultContextTypes(): array {
 		return [ Context::TYPE_STATEMENT ];
 	}
 
 	/** @codeCoverageIgnore This method is purely declarative. */
-	public function getSupportedEntityTypes() {
+	public function getSupportedEntityTypes(): array {
 		return self::ALL_ENTITY_TYPES_SUPPORTED;
 	}
 
-	public function checkConstraint( Context $context, Constraint $constraint ) {
+	public function checkConstraint( Context $context, Constraint $constraint ): CheckResult {
 		$referenceList = $context->getSnakStatement()->getReferences();
 
 		if ( $referenceList->isEmpty() ) {
@@ -55,7 +55,7 @@ class CitationNeededChecker implements ConstraintChecker {
 		return new CheckResult( $context, $constraint, CheckResult::STATUS_COMPLIANCE );
 	}
 
-	public function checkConstraintParameters( Constraint $constraint ) {
+	public function checkConstraintParameters( Constraint $constraint ): array {
 		// no parameters
 		return [];
 	}
