@@ -151,12 +151,14 @@ return [
 		}
 
 		$rdfVocabulary = WikibaseRepo::getRdfVocabulary( $services );
+		$valueSnakRdfBuilderFactory = WikibaseRepo::getValueSnakRdfBuilderFactory( $services );
 		$entityIdParser = WikibaseRepo::getEntityIdParser( $services );
 		$propertyDataTypeLookup = WikibaseRepo::getPropertyDataTypeLookup( $services );
 
 		return new SparqlHelper(
 			$services->getMainConfig(),
 			$rdfVocabulary,
+			$valueSnakRdfBuilderFactory,
 			$entityIdParser,
 			$propertyDataTypeLookup,
 			$services->getMainWANObjectCache(),
