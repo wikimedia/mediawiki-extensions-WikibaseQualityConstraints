@@ -88,7 +88,7 @@ trait ConstraintParameters {
 	}
 
 	/**
-	 * @param string[] $languageCode
+	 * @param string[] $languageCodes
 	 * @return array
 	 */
 	public function languageParameter( array $languageCodes ) {

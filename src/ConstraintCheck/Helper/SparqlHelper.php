@@ -353,6 +353,7 @@ EOF;
 	}
 
 	/**
+	 * @param EntityId $entityId
 	 * @param Statement $statement
 	 * @param PropertyId[] $separators
 	 *
@@ -436,7 +437,7 @@ SPARQL;
 	 * @param EntityId $entityId The entity ID on the containing entity
 	 * @param PropertyValueSnak $snak
 	 * @param string $type Context::TYPE_QUALIFIER or Context::TYPE_REFERENCE
-	 * @param boolean $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
+	 * @param bool $ignoreDeprecatedStatements Whether to ignore deprecated statements or not.
 	 *
 	 * @return CachedEntityIds
 	 * @throws SparqlHelperException if the query times out or some other error occurs
@@ -762,7 +763,7 @@ EOF;
 	 *
 	 * @param array $responseHeaders see MWHttpRequest::getResponseHeaders()
 	 *
-	 * @return int|boolean the max-age (in seconds)
+	 * @return int|bool the max-age (in seconds)
 	 * or a plain boolean if no max-age can be determined
 	 */
 	public function getCacheMaxAge( array $responseHeaders ) {

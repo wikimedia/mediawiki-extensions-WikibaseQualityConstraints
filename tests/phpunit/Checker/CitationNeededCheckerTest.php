@@ -9,7 +9,6 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\ReferenceList;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
-use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Statement\Statement;
 use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CitationNeededChecker;
@@ -29,7 +28,7 @@ class CitationNeededCheckerTest extends \PHPUnit\Framework\TestCase {
 	use ResultAssertions;
 
 	/**
-	 * @param Snak $snak
+	 * @param Statement $statement
 	 * @param string|null $messageKey key of violation message, or null if compliance is expected
 	 * @dataProvider provideStatements
 	 */

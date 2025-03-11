@@ -14,6 +14,7 @@ class InvalidConvertibleTimestamp extends ConvertibleTimestamp {
 	public function __construct() {
 	}
 
+	/** @inheritDoc */
 	public function getTimestamp( $style = TS_UNIX ) {
 		return 'invalid timestamp';
 	}

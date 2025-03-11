@@ -135,6 +135,7 @@ class CachingResultsSource implements ResultsSource {
 		$this->timeValueComparer = new TimeValueComparer();
 	}
 
+	/** @inheritDoc */
 	public function getResults(
 		array $entityIds,
 		array $claimIds,

@@ -77,7 +77,7 @@ interface Context {
 	 * The rank of the snak that is being checked.
 	 * Only the main snak of a statement has a rank.
 	 *
-	 * @return integer|null One of the Statement::RANK_* constants
+	 * @return int|null One of the Statement::RANK_* constants
 	 * if this is a statement context,
 	 * or null if it’s any other type of context.
 	 */

@@ -71,7 +71,7 @@ class TypeCheckerHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @param boolean $return
+	 * @param bool $return
 	 * @param array|null $arguments
 	 *
 	 * @return SparqlHelper expects that {@link SparqlHelper::hasType}

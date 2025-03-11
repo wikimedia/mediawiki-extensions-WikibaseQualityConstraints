@@ -29,7 +29,7 @@ class ConstraintRepositoryStore implements ConstraintStore {
 		$this->dbName = $dbName;
 	}
 
-	private function encodeConstraintParameters( array $constraintParameters ) {
+	private function encodeConstraintParameters( array $constraintParameters ): string {
 		$json = json_encode( $constraintParameters, JSON_FORCE_OBJECT );
 
 		if ( strlen( $json ) > 50000 ) {

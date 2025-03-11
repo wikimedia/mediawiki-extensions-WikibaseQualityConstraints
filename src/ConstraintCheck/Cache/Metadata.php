@@ -32,14 +32,14 @@ class Metadata {
 		return $ret;
 	}
 
-	public static function ofCachingMetadata( CachingMetadata $cachingMetadata ) {
+	public static function ofCachingMetadata( CachingMetadata $cachingMetadata ): self {
 		$ret = new self;
 		$ret->cachingMetadata = $cachingMetadata;
 		$ret->dependencyMetadata = DependencyMetadata::blank();
 		return $ret;
 	}
 
-	public static function ofDependencyMetadata( DependencyMetadata $dependencyMetadata ) {
+	public static function ofDependencyMetadata( DependencyMetadata $dependencyMetadata ): self {
 		$ret = new self;
 		$ret->cachingMetadata = CachingMetadata::fresh();
 		$ret->dependencyMetadata = $dependencyMetadata;

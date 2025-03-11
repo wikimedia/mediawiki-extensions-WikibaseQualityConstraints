@@ -128,6 +128,7 @@ class DelegatingConstraintCheckerTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @param string $name
+	 * @return string
 	 */
 	private function getConstraintTypeItemId( $name ) {
 		return self::getDefaultConfig()->get( 'WBQualityConstraints' . $name . 'ConstraintId' );

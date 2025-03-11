@@ -48,7 +48,7 @@ class ExpiryLock {
 	 * @param string $id of the lock
 	 * @param ConvertibleTimestamp $expiryTimestamp
 	 *
-	 * @return boolean success
+	 * @return bool success
 	 *
 	 * @throws \Wikimedia\Assert\ParameterTypeException
 	 */
@@ -70,7 +70,7 @@ class ExpiryLock {
 	/**
 	 * @param string $cacheId the converted cache id
 	 *
-	 * @return boolean representing if the Lock is Locked
+	 * @return bool representing if the Lock is Locked
 	 *
 	 * @throws \Wikimedia\Assert\ParameterTypeException
 	 */
@@ -97,7 +97,7 @@ class ExpiryLock {
 	/**
 	 * @param string $id of the lock
 	 *
-	 * @return boolean representing if the Lock is Locked
+	 * @return bool representing if the Lock is Locked
 	 *
 	 * @throws \Wikimedia\Assert\ParameterTypeException
 	 */

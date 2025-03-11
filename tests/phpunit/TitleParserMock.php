@@ -11,6 +11,7 @@ use MediaWiki\Title\TitleValue;
  */
 trait TitleParserMock {
 
+	/** @return TitleParser */
 	public function getTitleParserMock() {
 		$titleParser = $this->createMock( TitleParser::class );
 		$titleParser->method( 'parseTitle' )->willReturnCallback(

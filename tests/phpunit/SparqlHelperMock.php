@@ -19,7 +19,7 @@ trait SparqlHelperMock {
 	 * @param EntityId $expectedEntityId
 	 * @param Statement $expectedStatement
 	 * @param (EntityId|null)[] $result
-	 * @param (PropertyId|null)[] $separators
+	 * @param (PropertyId|null)[]|null $separators
 	 *
 	 * @return SparqlHelper
 	 */
@@ -44,6 +44,7 @@ trait SparqlHelperMock {
 		return $mock;
 	}
 
+	/** @return SparqlHelper */
 	private function getSparqlHelperMockFindEntitiesQualifierReference(
 		EntityId $expectedEntityId,
 		PropertyValueSnak $expectedSnak,

@@ -9,26 +9,32 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
  */
 class AppendingContextCursor implements ContextCursor {
 
+	/** @inheritDoc */
 	public function getType() {
 		return 'statement';
 	}
 
+	/** @inheritDoc */
 	public function getEntityId() {
 		return 'Q1';
 	}
 
+	/** @inheritDoc */
 	public function getStatementPropertyId() {
 		return 'P1';
 	}
 
+	/** @inheritDoc */
 	public function getStatementGuid() {
 		return 'Q1$fa6a039b-d27f-4849-9039-5b364314d97b';
 	}
 
+	/** @inheritDoc */
 	public function getSnakPropertyId() {
 		return 'P1';
 	}
 
+	/** @inheritDoc */
 	public function getSnakHash() {
 		return 'a35ee6b06a0f0e78614b517e4b72029b535479c0';
 	}

@@ -47,32 +47,38 @@ class MainSnakContextCursor extends ApiV2ContextCursor {
 
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
+	 * @inheritDoc
 	 */
 	public function getType() {
 		return Context::TYPE_STATEMENT;
 	}
 
+	/** @inheritDoc */
 	public function getEntityId() {
 		return $this->entityId;
 	}
 
+	/** @inheritDoc */
 	public function getStatementPropertyId() {
 		return $this->statementPropertyId;
 	}
 
+	/** @inheritDoc */
 	public function getStatementGuid() {
 		return $this->statementGuid;
 	}
 
+	/** @inheritDoc */
 	public function getSnakPropertyId() {
 		return $this->statementPropertyId;
 	}
 
+	/** @inheritDoc */
 	public function getSnakHash() {
 		return $this->snakHash;
 	}
 
-	protected function &getMainArray( array &$container ) {
+	protected function &getMainArray( array &$container ): array {
 		$statementArray = &$this->getStatementArray( $container );
 
 		if ( !array_key_exists( 'mainsnak', $statementArray ) ) {
