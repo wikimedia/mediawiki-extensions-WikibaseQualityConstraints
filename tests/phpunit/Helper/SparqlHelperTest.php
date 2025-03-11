@@ -93,7 +93,10 @@ class SparqlHelperTest extends \PHPUnit\Framework\TestCase {
 		$itemSource = new DatabaseEntitySource(
 			'local',
 			false,
-			[ 'item' => [ 'namespaceId' => 0, 'slot' => SlotRecord::MAIN ] ],
+			[
+				'item' => [ 'namespaceId' => 0, 'slot' => SlotRecord::MAIN ],
+				'property' => [ 'namespaceId' => 1, 'slot' => SlotRecord::MAIN ],
+			],
 			'http://www.wikidata.org/entity/',
 			'wd',
 			'',
@@ -154,7 +157,10 @@ EOF;
 			->willReturn( $this->askResult( true ) )
 			->with( $query );
 
-		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
+		$this->assertTrue( $sparqlHelper->hasType(
+			new ItemId( 'Q1' ),
+			[ 'Q100', 'Q101' ]
+		)->getBool() );
 	}
 
 	public function testHasTypeWithHint() {
@@ -175,7 +181,10 @@ EOF;
 			->willReturn( $this->askResult( true ) )
 			->with( $query );
 
-		$this->assertTrue( $sparqlHelper->hasType( 'Q1', [ 'Q100', 'Q101' ] )->getBool() );
+		$this->assertTrue( $sparqlHelper->hasType(
+			new ItemId( 'Q1' ),
+			[ 'Q100', 'Q101' ]
+		)->getBool() );
 	}
 
 	public static function provideSeparatorIdsAndExpectedFilters() {
