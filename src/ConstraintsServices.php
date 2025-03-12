@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport;
 
 use MediaWiki\MediaWikiServices;
+use Psr\Log\LoggerInterface;
 use WikibaseQuality\ConstraintReport\Api\ExpiryLock;
 use WikibaseQuality\ConstraintReport\Api\ResultsSource;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
@@ -23,6 +24,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerialize
  */
 class ConstraintsServices {
 
+	public const LOGGER = 'WBQC_Logger';
 	public const LOGGING_HELPER = 'WBQC_LoggingHelper';
 	public const CONSTRAINT_STORE = 'WBQC_ConstraintStore';
 	public const CONSTRAINT_LOOKUP = 'WBQC_ConstraintLookup';
@@ -43,6 +45,10 @@ class ConstraintsServices {
 	private static function getService( ?MediaWikiServices $services, string $name ) {
 		$services ??= MediaWikiServices::getInstance();
 		return $services->getService( $name );
+	}
+
+	public static function getLogger( ?MediaWikiServices $services = null ): LoggerInterface {
+		return self::getService( $services, self::LOGGER );
 	}
 
 	public static function getLoggingHelper( ?MediaWikiServices $services = null ): LoggingHelper {

@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\WikiMap\WikiMap;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\Repo\WikibaseRepo;
@@ -34,10 +35,14 @@ return [
 		return new ExpiryLock( $services->getObjectCacheFactory()->getInstance( CACHE_ANYTHING ) );
 	},
 
+	ConstraintsServices::LOGGER => static function ( MediaWikiServices $services ): LoggerInterface {
+		return LoggerFactory::getInstance( 'WikibaseQualityConstraints' );
+	},
+
 	ConstraintsServices::LOGGING_HELPER => static function ( MediaWikiServices $services ): LoggingHelper {
 		return new LoggingHelper(
 			$services->getStatsdDataFactory(),
-			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
+			ConstraintsServices::getLogger( $services ),
 			$services->getMainConfig()
 		);
 	},
@@ -71,7 +76,8 @@ return [
 		$dbName = $propertySource->getDatabaseName();
 		$rawLookup = new ConstraintRepositoryLookup(
 			$services->getDBLoadBalancerFactory()->getMainLB( $dbName ),
-			$dbName
+			$dbName,
+			ConstraintsServices::getLogger( $services )
 		);
 		return new CachingConstraintLookup( $rawLookup );
 	},
@@ -282,7 +288,7 @@ return [
 
 			foreach ( $entitySources as $entitySource ) {
 				if ( $entitySource->getSourceName() !== $localEntitySourceName ) {
-					LoggerFactory::getInstance( 'WikibaseQualityConstraints' )->warning(
+					ConstraintsServices::getLogger( $services )->warning(
 						'Cannot cache constraint check results for non-local source: ' .
 						$entitySource->getSourceName()
 					);
