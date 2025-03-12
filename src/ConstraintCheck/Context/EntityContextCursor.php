@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use LogicException;
@@ -18,65 +20,57 @@ use LogicException;
  */
 class EntityContextCursor extends ApiV2ContextCursor {
 
-	/**
-	 * @var string
-	 */
-	private $entityId;
+	private string $entityId;
 
-	/**
-	 * @param string $entityId
-	 */
 	public function __construct(
-		$entityId
+		string $entityId
 	) {
 		$this->entityId = $entityId;
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is not supported.
-	 * @inheritDoc
 	 */
-	public function getType() {
+	public function getType(): string {
 		throw new LogicException( 'EntityContextCursor has no full associated context' );
 	}
 
-	/** @inheritDoc */
-	public function getEntityId() {
+	public function getEntityId(): string {
 		return $this->entityId;
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is not supported.
 	 */
-	public function getStatementPropertyId() {
+	public function getStatementPropertyId(): string {
 		throw new LogicException( 'EntityContextCursor has no full associated context' );
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is not supported.
 	 */
-	public function getStatementGuid() {
+	public function getStatementGuid(): string {
 		throw new LogicException( 'EntityContextCursor has no full associated context' );
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is not supported.
 	 */
-	public function getSnakPropertyId() {
+	public function getSnakPropertyId(): string {
 		throw new LogicException( 'EntityContextCursor has no full associated context' );
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is not supported.
 	 */
-	public function getSnakHash() {
+	public function getSnakHash(): string {
 		throw new LogicException( 'EntityContextCursor has no full associated context' );
 	}
 
 	/**
 	 * @codeCoverageIgnore This method is not supported.
 	 */
-	public function &getMainArray( array &$container ) {
+	public function &getMainArray( array &$container ): array {
 		throw new LogicException( 'EntityContextCursor cannot store check results' );
 	}
 
@@ -86,7 +80,7 @@ class EntityContextCursor extends ApiV2ContextCursor {
 	 * @param ?array $result must be null
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( ?array $result, array &$container ) {
+	public function storeCheckResultInArray( ?array $result, array &$container ): void {
 		if ( $result !== null ) {
 			throw new LogicException( 'EntityContextCursor cannot store check results' );
 		}

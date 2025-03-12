@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 /**
@@ -15,42 +17,36 @@ interface ContextCursor {
 	 *
 	 * @return string one of the Context::TYPE_* constants
 	 */
-	public function getType();
+	public function getType(): string;
 
 	/**
 	 * The ID of the entity of the associated context.
 	 *
 	 * @return string {@link EntityId::getSerialization() entity ID serialization}
 	 */
-	public function getEntityId();
+	public function getEntityId(): string;
 
 	/**
 	 * The property ID of the main statement of the associated context.
 	 *
 	 * @return string {@link PropertyId::getSerialization() property ID serialization}
 	 */
-	public function getStatementPropertyId();
+	public function getStatementPropertyId(): string;
 
 	/**
 	 * The GUID of the main statement of the associated context.
-	 *
-	 * @return string
 	 */
-	public function getStatementGuid();
+	public function getStatementGuid(): string;
 
 	/**
 	 * The property ID serialization of the snak of the associated context.
-	 *
-	 * @return string
 	 */
-	public function getSnakPropertyId();
+	public function getSnakPropertyId(): string;
 
 	/**
 	 * The hash of the snak of the associated context.
-	 *
-	 * @return string
 	 */
-	public function getSnakHash();
+	public function getSnakHash(): string;
 
 	/**
 	 * Store the check result serialization $result
@@ -65,6 +61,6 @@ interface ContextCursor {
 	 * @param ?array $result
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( ?array $result, array &$container );
+	public function storeCheckResultInArray( ?array $result, array &$container ): void;
 
 }

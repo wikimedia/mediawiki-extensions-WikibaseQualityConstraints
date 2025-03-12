@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 /**
@@ -27,7 +29,7 @@ abstract class ApiV2ContextCursor implements ContextCursor {
 	 * @param array[] &$container
 	 * @return array
 	 */
-	protected function &getClaimsArray( array &$container ) {
+	protected function &getClaimsArray( array &$container ): array {
 		$entityId = $this->getEntityId();
 
 		if ( !array_key_exists( $entityId, $container ) ) {
@@ -49,7 +51,7 @@ abstract class ApiV2ContextCursor implements ContextCursor {
 	 * @param array[] &$container
 	 * @return array
 	 */
-	protected function &getStatementArray( array &$container ) {
+	protected function &getStatementArray( array &$container ): array {
 		$statementPropertyId = $this->getStatementPropertyId();
 		$statementGuid = $this->getStatementGuid();
 
@@ -82,13 +84,13 @@ abstract class ApiV2ContextCursor implements ContextCursor {
 	 * @param array[] &$container
 	 * @return array
 	 */
-	abstract protected function &getMainArray( array &$container );
+	abstract protected function &getMainArray( array &$container ): array;
 
 	/**
 	 * @param ?array $result
 	 * @param array[] &$container
 	 */
-	public function storeCheckResultInArray( ?array $result, array &$container ) {
+	public function storeCheckResultInArray( ?array $result, array &$container ): void {
 		$mainArray = &$this->getMainArray( $container );
 		if ( !array_key_exists( 'results', $mainArray ) ) {
 			$mainArray['results'] = [];

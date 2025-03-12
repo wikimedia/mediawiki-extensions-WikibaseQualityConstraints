@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 /**
@@ -7,44 +9,22 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
  */
 class QualifierContextCursor extends ApiV2ContextCursor {
 
-	/**
-	 * @var string
-	 */
-	private $entityId;
+	private string $entityId;
 
-	/**
-	 * @var string
-	 */
-	private $statementPropertyId;
+	private string $statementPropertyId;
 
-	/**
-	 * @var string
-	 */
-	private $statementGuid;
+	private string $statementGuid;
 
-	/**
-	 * @var string
-	 */
-	private $snakHash;
+	private string $snakHash;
 
-	/**
-	 * @var string
-	 */
-	private $snakPropertyId;
+	private string $snakPropertyId;
 
-	/**
-	 * @param string $entityId
-	 * @param string $statementPropertyId
-	 * @param string $statementGuid
-	 * @param string $snakHash
-	 * @param string $snakPropertyId
-	 */
 	public function __construct(
-		$entityId,
-		$statementPropertyId,
-		$statementGuid,
-		$snakHash,
-		$snakPropertyId
+		string $entityId,
+		string $statementPropertyId,
+		string $statementGuid,
+		string $snakHash,
+		string $snakPropertyId
 	) {
 		$this->entityId = $entityId;
 		$this->statementPropertyId = $statementPropertyId;
@@ -55,34 +35,28 @@ class QualifierContextCursor extends ApiV2ContextCursor {
 
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
-	 * @inheritDoc
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Context::TYPE_QUALIFIER;
 	}
 
-	/** @inheritDoc */
-	public function getEntityId() {
+	public function getEntityId(): string {
 		return $this->entityId;
 	}
 
-	/** @inheritDoc */
-	public function getStatementPropertyId() {
+	public function getStatementPropertyId(): string {
 		return $this->statementPropertyId;
 	}
 
-	/** @inheritDoc */
-	public function getStatementGuid() {
+	public function getStatementGuid(): string {
 		return $this->statementGuid;
 	}
 
-	/** @inheritDoc */
-	public function getSnakPropertyId() {
+	public function getSnakPropertyId(): string {
 		return $this->snakPropertyId;
 	}
 
-	/** @inheritDoc */
-	public function getSnakHash() {
+	public function getSnakHash(): string {
 		return $this->snakHash;
 	}
 
