@@ -63,36 +63,43 @@ class ReferenceContextCursor extends ApiV2ContextCursor {
 
 	/**
 	 * @codeCoverageIgnore This method is purely declarative.
+	 * @inheritDoc
 	 */
 	public function getType() {
 		return Context::TYPE_REFERENCE;
 	}
 
+	/** @inheritDoc */
 	public function getEntityId() {
 		return $this->entityId;
 	}
 
+	/** @inheritDoc */
 	public function getStatementPropertyId() {
 		return $this->statementPropertyId;
 	}
 
+	/** @inheritDoc */
 	public function getStatementGuid() {
 		return $this->statementGuid;
 	}
 
+	/** @inheritDoc */
 	public function getSnakPropertyId() {
 		return $this->snakPropertyId;
 	}
 
+	/** @inheritDoc */
 	public function getSnakHash() {
 		return $this->snakHash;
 	}
 
+	/** @return string */
 	public function getReferenceHash() {
 		return $this->referenceHash;
 	}
 
-	protected function &getMainArray( array &$container ) {
+	protected function &getMainArray( array &$container ): array {
 		$statementArray = &$this->getStatementArray( $container );
 
 		if ( !array_key_exists( 'references', $statementArray ) ) {

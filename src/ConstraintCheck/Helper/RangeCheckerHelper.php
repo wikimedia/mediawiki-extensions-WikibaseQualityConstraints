@@ -82,7 +82,7 @@ class RangeCheckerHelper {
 	 * @param DataValue|null $rhs right-hand side
 	 *
 	 * @throws InvalidArgumentException if the values do not both have the same, supported data value type
-	 * @return integer An integer less than, equal to, or greater than zero
+	 * @return int An integer less than, equal to, or greater than zero
 	 *                 when $lhs is respectively less than, equal to, or greater than $rhs.
 	 *                 (In other words, just like the “spaceship” operator <=>.)
 	 */

@@ -2,6 +2,7 @@
 <ruleset>
 	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
 		<exclude name="Generic.Metrics.CyclomaticComplexity.TooHigh" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.WrongStyle" />
 	</rule>
 
 	<rule ref="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment">
@@ -9,18 +10,6 @@
 	</rule>
 
 	<!-- BEGIN rules copied from wikibase-codesniffer (T268831) -->
-
-	<!-- The function comment sniff is way too rigorous about way too many details that need
-		exceptions:
-		* It complains about missing documentation on fully self-explanatory function headers
-		  with strict type hints.
-		* It complains about missing documentation if there is a proper @see tag.
-		* It complains about duplicate spaces in "@param <type>  $<var>", but removing these
-		  doesn't make the code easier to read.
-		* It does not understand "@param <type> [$optional,…]. -->
-	<rule ref="MediaWiki.Commenting.FunctionComment">
-		<severity>0</severity>
-	</rule>
 
 	<!-- Starting a function's body with an empty line can be helpful after a very large header.
 		The code is not guaranteed to be easier to read if this is disallowed. -->

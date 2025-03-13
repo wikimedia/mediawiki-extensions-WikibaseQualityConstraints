@@ -92,6 +92,7 @@ final class WikibaseQualityConstraintsHooks implements
 		return in_array( $propertyConstraintId, $aspects->getStatementChanges() );
 	}
 
+	/** @inheritDoc */
 	public function onArticlePurge( $wikiPage ) {
 		$entityContentFactory = WikibaseRepo::getEntityContentFactory();
 		if ( $entityContentFactory->isEntityContentModel( $wikiPage->getContentModel() ) ) {
@@ -104,6 +105,7 @@ final class WikibaseQualityConstraintsHooks implements
 		}
 	}
 
+	/** @inheritDoc */
 	public function onBeforePageDisplay( $out, $skin ): void {
 		$lookup = WikibaseRepo::getEntityNamespaceLookup();
 		$title = $out->getTitle();

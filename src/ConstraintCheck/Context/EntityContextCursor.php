@@ -34,11 +34,13 @@ class EntityContextCursor extends ApiV2ContextCursor {
 
 	/**
 	 * @codeCoverageIgnore This method is not supported.
+	 * @inheritDoc
 	 */
 	public function getType() {
 		throw new LogicException( 'EntityContextCursor has no full associated context' );
 	}
 
+	/** @inheritDoc */
 	public function getEntityId() {
 		return $this->entityId;
 	}

@@ -42,6 +42,7 @@ class ConstraintsServices {
 	public const EXPIRY_LOCK = 'WBQC_ExpiryLock';
 	public const VIOLATION_MESSAGE_RENDERER_FACTORY = 'WBQC_ViolationMessageRendererFactory';
 
+	/** @return mixed */
 	private static function getService( ?MediaWikiServices $services, string $name ) {
 		$services ??= MediaWikiServices::getInstance();
 		return $services->getService( $name );

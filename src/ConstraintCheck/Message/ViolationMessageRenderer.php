@@ -42,6 +42,9 @@ class ViolationMessageRenderer {
 	/**
 	 * @param EntityIdFormatter $entityIdFormatter
 	 * @param ValueFormatter $dataValueFormatter
+	 * @param LanguageNameUtils $languageNameUtils
+	 * @param string $userLanguageCode
+	 * @param TermLanguageFallbackChain $languageFallbackChain
 	 * @param MessageLocalizer $messageLocalizer
 	 * @param Config $config
 	 * @param int $maxListLength The maximum number of elements to be rendered in a list parameter.

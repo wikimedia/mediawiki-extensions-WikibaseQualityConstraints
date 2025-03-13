@@ -31,18 +31,22 @@ class NowValue extends TimeValue {
 		return gmdate( '+Y-m-d\TH:i:s\Z' );
 	}
 
+	/** @inheritDoc */
 	public function getTimezone() {
 		return 0;
 	}
 
+	/** @inheritDoc */
 	public function getCalendarModel() {
 		return parent::CALENDAR_GREGORIAN;
 	}
 
+	/** @inheritDoc */
 	public function getArrayValue() {
 		throw new LogicException( 'NowValue should never be serialized' );
 	}
 
+	/** @inheritDoc */
 	public function equals( $value ) {
 		return get_class( $value ) === self::class;
 	}

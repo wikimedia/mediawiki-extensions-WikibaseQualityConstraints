@@ -41,7 +41,7 @@ class LoggingHelper {
 	private $constraintCheckOnEntityDurationLimits;
 
 	/**
-	 * @param IBufferingStatsdDataFactory $dataFactory,
+	 * @param IBufferingStatsdDataFactory $dataFactory
 	 * @param LoggerInterface $logger
 	 * @param Config $config
 	 */
@@ -66,6 +66,7 @@ class LoggingHelper {
 	 * Find the longest limit in $limits which the $durationSeconds exceeds,
 	 * and return it along with the associated log level.
 	 *
+	 * @param float[] $limits
 	 * @param float $durationSeconds
 	 * @return array [ $limitSeconds, $logLevel ]
 	 */
@@ -175,6 +176,7 @@ class LoggingHelper {
 	 * @param EntityId $entityId
 	 * @param CheckResult[] $checkResults
 	 * @param float $durationSeconds
+	 * @param string $method
 	 */
 	public function logConstraintCheckOnEntity(
 		EntityId $entityId,
