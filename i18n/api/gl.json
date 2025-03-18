@@ -1,15 +1,31 @@
 {
 	"@metadata": {
 		"authors": [
-			"Elisardojm"
+			"Elisardojm",
+			"Toliño"
 		]
 	},
-	"apihelp-wbcheckconstraints-param-constraintid": "Filtro opcional para devolver só as constantes que teñen o ID de constante especificado.",
+	"apihelp-wbcheckconstraints-summary": "Realiza verificacións de restricións en calquera entidade que queiras e devolve o resultado.",
+	"apihelp-wbcheckconstraints-param-id": "Lista de identificadores das entidades das que obter os datos. Separa os valores con \"|\" ou similar.",
+	"apihelp-wbcheckconstraints-param-claimid": "Lista de identificadores GUID dunha afirmación para a que verificar un informe de restrición. Separa os valores con \"|\".",
+	"apihelp-wbcheckconstraints-param-constraintid": "Filtro opcional para devolver unicamente as constantes que teñen o identificador de restrición indicado.",
+	"apihelp-wbcheckconstraints-param-status": "Filtro opcional para devolver unicamente os resultados de verificación cos estados seleccionados.\n\nTen en conta que só se almacenan na memoria caché os resultados dos estados \"violation\", \"warning\", \"suggestion\" e \"bad-parameters\", polo que as solicitudes que seleccionan calquera estado máis aló destes catro non se benefician da memoria caché.",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "A declaración satisfai a restrición.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "A declaración viola a restrición.",
-	"apihelp-wbcheckconstraints-example-1": "Verificar tódalas constantes sobre os elementos Q5 e Q42.",
-	"apihelp-wbcheckconstraints-example-2": "Verificar tódalas constantes nunha soa instrucción.",
-	"apihelp-wbcheckconstraints-example-3": "Verificar unha restrición en particular sobre o obxecto Q2.",
+	"apihelp-wbcheckconstraints-paramvalue-status-exception": "A entidade suxeito da declaración é unha excepción coñecida á restrición.",
+	"apihelp-wbcheckconstraints-paramvalue-status-todo": "A restrición non está implementada.",
+	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "Os parámetros da restrición son erróneos.",
+	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "Non se comprobou a restrición porque a declaración está obsoleta.",
+	"apihelp-wbcheckconstraints-paramvalue-status-warning": "A declaración viola a restrición, pero a restrición non é obrigatoria.",
+	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "A declaración viola a restrición, pero a restrición é só unha suxestión.",
+	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "A restrición non está marcada neste tipo de snak (snak principal, cualificador ou referencia), polo que se salta a verificación de restricións.",
+	"apihelp-wbcheckconstraintparameters-summary": "Verifica os parámetros de restrición das declaracións de restricións.",
+	"apihelp-wbcheckconstraintparameters-extended-description": "Cómpre especificar ou ben o parámetro <var>property</var> ou o parámetro <var>constraintid</var> ou ben ambos os dous parámetros; verificaranse todas as restricións seleccionadas por calquera dos parámetros.",
+	"apihelp-wbcheckconstraintparameters-param-propertyid": "Lista de identificadores de propiedade a comprobar. Verificaranse todas as declaracións de restricións destas propiedades.\n\nSe se especifica este parámetro, non debe estar baleiro.",
+	"apihelp-wbcheckconstraintparameters-param-constraintid": "Lista de identificadores de restrición (identificadores GUID de declaración de restricións) a comprobar.\n\nSe se especifica este parámetro, non debe estar baleiro.",
+	"apihelp-wbcheckconstraints-example-1": "Verificar tódalas restricións sobre os elementos Q5 e Q42.",
+	"apihelp-wbcheckconstraints-example-2": "Verificar tódalas restricións sobre unha única declaración.",
+	"apihelp-wbcheckconstraints-example-3": "Verificar unha restrición en particular sobre o elemento Q2.",
 	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Verificar os parámetros de restrición de tódalas restricións dunha propiedade.",
 	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Verificar os parámetros de restrición de dúas restricións en particular."
 }
