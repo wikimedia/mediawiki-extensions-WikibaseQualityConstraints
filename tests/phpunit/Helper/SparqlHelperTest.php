@@ -57,8 +57,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Stats\BufferingStatsdDataFactory;
-use Wikimedia\Stats\IBufferingStatsdDataFactory;
-use Wikimedia\Stats\NullStatsdDataFactory;
+use Wikimedia\Stats\StatsFactory;
 use Wikimedia\TestingAccessWrapper;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
@@ -124,6 +123,8 @@ class SparqlHelperTest extends MediaWikiIntegrationTestCase {
 		?LoggingHelper $loggingHelper = null
 	) {
 		$entityIdParser = new ItemIdParser();
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
 
 		return $this->getMockBuilder( SparqlHelper::class )
 			->setConstructorArgs( [
@@ -138,7 +139,7 @@ class SparqlHelperTest extends MediaWikiIntegrationTestCase {
 					$entityIdParser,
 					new DataValueFactory( new DataValueDeserializer() )
 				),
-				new NullStatsdDataFactory(),
+				$statsFactory,
 				new ExpiryLock( new HashBagOStuff() ),
 				$loggingHelper ?? $this->createMock( LoggingHelper::class ),
 				'A fancy user agent',
@@ -804,6 +805,9 @@ EOF;
 				} )
 			);
 
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->getRdfVocabulary(),
@@ -813,7 +817,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( IBufferingStatsdDataFactory::class ),
+			$statsFactory,
 			$lock,
 			$loggingHelper,
 			'',
@@ -846,6 +850,9 @@ EOF;
 
 		$loggingHelper = $this->getLoggingHelperExpectingRetryAfterMissing();
 
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			$config,
 			$this->getRdfVocabulary(),
@@ -855,7 +862,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( IBufferingStatsdDataFactory::class ),
+			$statsFactory,
 			$this->getMockLock( SparqlHelper::EXPIRY_LOCK_ID, $expectedTimestamp ),
 			$loggingHelper,
 			'',
@@ -879,6 +886,9 @@ EOF;
 		$requestFactoryMock->method( 'create' )
 			->willReturn( $requestMock );
 
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->getRdfVocabulary(),
@@ -888,7 +898,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( IBufferingStatsdDataFactory::class ),
+			$statsFactory,
 			$lock,
 			$this->createMock( LoggingHelper::class ),
 			'',
@@ -913,6 +923,9 @@ EOF;
 
 		$loggingHelper = $this->getLoggingHelperExpectingRetryAfterMissing();
 
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			$config,
 			$this->getRdfVocabulary(),
@@ -922,7 +935,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( IBufferingStatsdDataFactory::class ),
+			$statsFactory,
 			$lock,
 			$loggingHelper,
 			'',
@@ -1048,6 +1061,9 @@ END;
 			[ 'wd' => '' ]
 		);
 
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$rdfVocabulary,
@@ -1057,7 +1073,7 @@ END;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$this->createMock( IBufferingStatsdDataFactory::class ),
+			$statsFactory,
 			$lock,
 			$this->createMock( LoggingHelper::class ),
 			'',
@@ -1096,6 +1112,9 @@ END;
 			->willReturn( $request );
 
 		$dataFactory = new BufferingStatsdDataFactory( '' );
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+		$statsFactory->withStatsdDataFactory( $dataFactory );
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
@@ -1106,7 +1125,7 @@ END;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$dataFactory,
+			$statsFactory,
 			new ExpiryLock( new HashBagOStuff() ),
 			$this->createMock( LoggingHelper::class ),
 			'',
@@ -1120,14 +1139,9 @@ END;
 			$statsdData = $dataFactory->getData();
 			// three data events: timing (ignored here), HTTP error, generic error
 			$this->assertCount( 3, $statsdData );
-			$this->assertSame(
-				'wikibase.quality.constraints.sparql.error.http.500',
-				$statsdData[1]->getKey()
-			);
-			$this->assertSame(
-				'wikibase.quality.constraints.sparql.error',
-				$statsdData[2]->getKey()
-			);
+			$this->assertSame( 1, $statsHelper->count( 'sparql_error_total' ) );
+			// TODO: Add type="http" to the selector when statsHelper selector method is fixed.
+			$this->assertSame( 1, $statsHelper->count( 'sparql_error_total{code="500"}' ) );
 		}
 	}
 
@@ -1147,6 +1161,9 @@ END;
 			->willReturn( $request );
 
 		$dataFactory = new BufferingStatsdDataFactory( '' );
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
+		$statsFactory->withStatsdDataFactory( $dataFactory );
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
@@ -1157,7 +1174,7 @@ END;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$dataFactory,
+			$statsFactory,
 			new ExpiryLock( new HashBagOStuff() ),
 			$this->createMock( LoggingHelper::class ),
 			'',
@@ -1171,14 +1188,9 @@ END;
 			$statsdData = $dataFactory->getData();
 			// three data events: timing (ignored here), JSON error, generic error
 			$this->assertCount( 3, $statsdData );
-			$this->assertSame(
-				'wikibase.quality.constraints.sparql.error.json.json_error_syntax',
-				$statsdData[1]->getKey()
-			);
-			$this->assertSame(
-				'wikibase.quality.constraints.sparql.error',
-				$statsdData[2]->getKey()
-			);
+			$this->assertSame( 1, $statsHelper->count( 'sparql_error_total' ) );
+			// TODO: Add type="json" to the selector when statsHelper selector method is fixed.
+			$this->assertSame( 1, $statsHelper->count( 'sparql_error_total{code="json_error_syntax"}' ) );
 		}
 	}
 

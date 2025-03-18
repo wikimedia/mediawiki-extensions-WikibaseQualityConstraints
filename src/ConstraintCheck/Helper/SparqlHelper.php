@@ -42,7 +42,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSer
 use WikibaseQuality\ConstraintReport\Role;
 use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Purtle\TurtleRdfWriter;
-use Wikimedia\Stats\IBufferingStatsdDataFactory;
+use Wikimedia\Stats\StatsFactory;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
@@ -83,7 +83,7 @@ class SparqlHelper {
 
 	private ViolationMessageDeserializer $violationMessageDeserializer;
 
-	private IBufferingStatsdDataFactory $dataFactory;
+	private StatsFactory $statsFactory;
 
 	private LoggingHelper $loggingHelper;
 
@@ -147,7 +147,7 @@ class SparqlHelper {
 		WANObjectCache $cache,
 		ViolationMessageSerializer $violationMessageSerializer,
 		ViolationMessageDeserializer $violationMessageDeserializer,
-		IBufferingStatsdDataFactory $dataFactory,
+		StatsFactory $statsFactory,
 		ExpiryLock $throttlingLock,
 		LoggingHelper $loggingHelper,
 		string $defaultUserAgent,
@@ -160,7 +160,7 @@ class SparqlHelper {
 		$this->cache = $cache;
 		$this->violationMessageSerializer = $violationMessageSerializer;
 		$this->violationMessageDeserializer = $violationMessageDeserializer;
-		$this->dataFactory = $dataFactory;
+		$this->statsFactory = $statsFactory;
 		$this->throttlingLock = $throttlingLock;
 		$this->loggingHelper = $loggingHelper;
 		$this->defaultUserAgent = $defaultUserAgent;
@@ -627,27 +627,47 @@ SPARQL;
 			hash( 'sha256', $regex )
 		);
 
+		$baseRegexCacheKey = 'wikibase.quality.constraints.regex.cache';
+		$metric = $this->statsFactory->getCounter( 'regex_cache_total' );
+
 		$cacheMapArray = $this->cache->getWithSetCallback(
 			$cacheKey,
 			WANObjectCache::TTL_DAY,
-			function ( $cacheMapArray ) use ( $text, $regex, $textHash ) {
+			function ( $cacheMapArray ) use ( $text, $regex, $textHash, $metric, $baseRegexCacheKey ) {
 				// Initialize the cache map if not set
 				if ( $cacheMapArray === false ) {
-					$key = 'wikibase.quality.constraints.regex.cache.refresh.init';
-					$this->dataFactory->increment( $key );
+					$metric
+						->setLabel( 'operation', 'refresh' )
+						->setLabel( 'status', 'init' )
+						->copyToStatsdAt( [
+							"$baseRegexCacheKey.refresh.init",
+						] )->increment();
+
 					return [];
 				}
 
-				$key = 'wikibase.quality.constraints.regex.cache.refresh';
-				$this->dataFactory->increment( $key );
 				$cacheMap = MapCacheLRU::newFromArray( $cacheMapArray, $this->cacheMapSize );
 				if ( $cacheMap->has( $textHash ) ) {
-					$key = 'wikibase.quality.constraints.regex.cache.refresh.hit';
-					$this->dataFactory->increment( $key );
+					$metric
+						->setLabel( 'operation', 'refresh' )
+						->setLabel( 'status', 'hit' )
+						->copyToStatsdAt( [
+							"$baseRegexCacheKey.refresh",
+							"$baseRegexCacheKey.refresh.hit",
+						] )
+						->increment();
+
 					$cacheMap->get( $textHash ); // ping cache
 				} else {
-					$key = 'wikibase.quality.constraints.regex.cache.refresh.miss';
-					$this->dataFactory->increment( $key );
+					$metric
+						->setLabel( 'operation', 'refresh' )
+						->setLabel( 'status', 'miss' )
+						->copyToStatsdAt( [
+							"$baseRegexCacheKey.refresh",
+							"$baseRegexCacheKey.refresh.miss",
+						] )
+						->increment();
+
 					try {
 						$matches = $this->matchesRegularExpressionWithSparql( $text, $regex );
 					} catch ( ConstraintParameterException $e ) {
@@ -677,8 +697,14 @@ SPARQL;
 		);
 
 		if ( isset( $cacheMapArray[$textHash] ) ) {
-			$key = 'wikibase.quality.constraints.regex.cache.hit';
-			$this->dataFactory->increment( $key );
+			$metric
+				->setLabel( 'operation', 'none' )
+				->setLabel( 'status', 'hit' )
+				->copyToStatsdAt( [
+					"$baseRegexCacheKey.hit",
+				] )
+				->increment();
+
 			$matches = $cacheMapArray[$textHash];
 			if ( is_bool( $matches ) ) {
 				return $matches;
@@ -694,8 +720,14 @@ SPARQL;
 				);
 			}
 		} else {
-			$key = 'wikibase.quality.constraints.regex.cache.miss';
-			$this->dataFactory->increment( $key );
+			$metric
+				->setLabel( 'operation', 'none' )
+				->setLabel( 'status', 'miss' )
+				->copyToStatsdAt( [
+					"$baseRegexCacheKey.miss",
+				] )
+				->increment();
+
 			return $this->matchesRegularExpressionWithSparql( $text, $regex );
 		}
 	}
@@ -840,8 +872,14 @@ EOF;
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	protected function runQuery( string $query, string $endpoint, bool $needsPrefixes = true ): CachedQueryResults {
+		$baseSPARQLKey = 'wikibase.quality.constraints.sparql';
+
 		if ( $this->throttlingLock->isLocked( self::EXPIRY_LOCK_ID ) ) {
-			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
+			$this->statsFactory
+				->getCounter( 'sparql_throttling_total' )
+				->copyToStatsdAt( "$baseSPARQLKey.throttling" )
+				->increment();
+
 			throw new TooManySparqlRequestsException();
 		}
 
@@ -872,21 +910,26 @@ EOF;
 			'userAgent' => $this->defaultUserAgent,
 		];
 		$request = $this->requestFactory->create( $url, $options, __METHOD__ );
-		$startTime = microtime( true );
+
+		$timing = $this->statsFactory
+			->getTiming( 'sparql_runQuery_duration_seconds' )
+			->copyToStatsdAt( "$baseSPARQLKey.timing" );
+
+		$timing->start();
 		$requestStatus = $request->execute();
-		$endTime = microtime( true );
-		$this->dataFactory->timing(
-			'wikibase.quality.constraints.sparql.timing',
-			( $endTime - $startTime ) * 1000
-		);
+		$timing->stop();
 
 		$this->guardAgainstTooManyRequestsError( $request );
 
 		$maxAge = $this->getCacheMaxAge( $request->getResponseHeaders() );
 		if ( $maxAge ) {
-			$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.cached' );
+			$this->statsFactory->getCounter( 'sparql_cached_total' )
+				->copyToStatsdAt( "$baseSPARQLKey.cached" )
+				->increment();
 		}
 
+		$sparqlErrorKey = "$baseSPARQLKey.error";
+		$metric = $this->statsFactory->getCounter( 'sparql_error_total' );
 		if ( $requestStatus->isOK() ) {
 			$json = $request->getContent();
 			$jsonStatus = FormatJson::parse( $json, FormatJson::FORCE_ASSOC );
@@ -901,24 +944,37 @@ EOF;
 				);
 			} else {
 				$jsonErrorCode = $jsonStatus->getErrors()[0]['message'];
-				$this->dataFactory->increment(
-					"wikibase.quality.constraints.sparql.error.json.$jsonErrorCode"
-				);
+				$metric
+					->setLabel( 'type', 'json' )
+					->setLabel( 'code', "$jsonErrorCode" )
+					->copyToStatsdAt( [
+						"$sparqlErrorKey",
+						"$sparqlErrorKey.json.$jsonErrorCode",
+					] )
+					->increment();
 				// fall through to general error handling
 			}
 		} else {
-			$this->dataFactory->increment(
-				"wikibase.quality.constraints.sparql.error.http.{$request->getStatus()}"
-			);
+			$metric
+				->setLabel( 'type', 'http' )
+				->setLabel( 'code', "{$request->getStatus()}" )
+				->copyToStatsdAt( [
+					"$sparqlErrorKey",
+					"$sparqlErrorKey.http.{$request->getStatus()}",
+				] )
+				->increment();
 			// fall through to general error handling
 		}
 
-		$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.error' );
-
 		if ( $this->isTimeout( $request->getContent() ) ) {
-			$this->dataFactory->increment(
-				'wikibase.quality.constraints.sparql.error.timeout'
-			);
+			$metric
+				->setLabel( 'type', 'timeout' )
+				->setLabel( 'code', 'none' )
+				->copyToStatsdAt( [
+					"$sparqlErrorKey",
+					"$sparqlErrorKey.timeout",
+				] )
+				->increment();
 		}
 
 		throw new SparqlHelperException();
@@ -942,7 +998,11 @@ EOF;
 				$fallbackBlockDuration );
 		}
 
-		$this->dataFactory->increment( 'wikibase.quality.constraints.sparql.throttling' );
+		$throttlingKey = "wikibase.quality.constraints.sparql.throttling";
+		$this->statsFactory->getCounter( 'sparql_throttling_total' )
+			->copyToStatsdAt( $throttlingKey )
+			->increment();
+
 		$throttlingUntil = $this->getThrottling( $request );
 		if ( !( $throttlingUntil instanceof ConvertibleTimestamp ) ) {
 			$this->loggingHelper->logSparqlHelperTooManyRequestsRetryAfterInvalid( $request );
