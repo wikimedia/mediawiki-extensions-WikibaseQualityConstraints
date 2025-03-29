@@ -101,7 +101,7 @@ module.exports = function ( $, mw, config, isQualifierContext, getMainSnakProper
 			filterFunction = function ( term ) {
 				let filter = false;
 				data.term.split( ' ' ).forEach( ( t ) => {
-					if ( term.toLowerCase().indexOf( t.toLowerCase() ) === -1 ) {
+					if ( !term.toLowerCase().includes( t.toLowerCase() ) ) {
 						filter = true;
 					}
 				} );
