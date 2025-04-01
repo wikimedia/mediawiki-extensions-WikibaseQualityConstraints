@@ -47,7 +47,7 @@
 			"factory": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::factory",
 			"services": [
 				"MainConfig",
-				"StatsdDataFactory",
+				"StatsFactory",
 				"WikibaseRepo.EntityIdHtmlLinkFormatterFactory",
 				"WikibaseRepo.EntityIdLabelFormatterFactory",
 				"WikibaseRepo.EntityIdParser",
