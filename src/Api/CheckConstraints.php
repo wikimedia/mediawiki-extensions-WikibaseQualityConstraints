@@ -19,7 +19,7 @@ use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use Wikimedia\ParamValidator\ParamValidator;
-use Wikimedia\Stats\IBufferingStatsdDataFactory;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * API module that performs constraint check of entities, claims and constraint ID
@@ -40,12 +40,12 @@ class CheckConstraints extends ApiBase {
 	private ApiErrorReporter $errorReporter;
 	private ResultsSource $resultsSource;
 	private CheckResultsRendererFactory $checkResultsRendererFactory;
-	private IBufferingStatsdDataFactory $dataFactory;
+	private StatsFactory $statsFactory;
 
 	public static function factory(
 		ApiMain $main,
 		string $name,
-		IBufferingStatsdDataFactory $dataFactory,
+		StatsFactory $statsFactory,
 		ApiHelperFactory $apiHelperFactory,
 		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
 		EntityIdParser $entityIdParser,
@@ -70,7 +70,7 @@ class CheckConstraints extends ApiBase {
 			$apiHelperFactory,
 			$resultsSource,
 			$checkResultsRendererFactory,
-			$dataFactory
+			$statsFactory
 		);
 	}
 
@@ -82,7 +82,7 @@ class CheckConstraints extends ApiBase {
 		ApiHelperFactory $apiHelperFactory,
 		ResultsSource $resultsSource,
 		CheckResultsRendererFactory $checkResultsRendererFactory,
-		IBufferingStatsdDataFactory $dataFactory
+		StatsFactory $statsFactory
 	) {
 		parent::__construct( $main, $name );
 		$this->entityIdParser = $entityIdParser;
@@ -91,16 +91,16 @@ class CheckConstraints extends ApiBase {
 		$this->errorReporter = $apiHelperFactory->getErrorReporter( $this );
 		$this->resultsSource = $resultsSource;
 		$this->checkResultsRendererFactory = $checkResultsRendererFactory;
-		$this->dataFactory = $dataFactory;
+		$this->statsFactory = $statsFactory;
 	}
 
 	/**
 	 * Evaluates the parameters, runs the requested constraint check, and sets up the result
 	 */
 	public function execute() {
-		$this->dataFactory->increment(
-			'wikibase.quality.constraints.api.checkConstraints.execute'
-		);
+		$baseKey = 'wikibase.quality.constraints.api.checkConstraints.execute';
+		$metric = $this->statsFactory->getCounter( 'check_constraints_execute_total' );
+		$metric->copyToStatsdAt( $baseKey )->increment();
 
 		$params = $this->extractRequestParams();
 

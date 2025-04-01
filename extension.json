@@ -64,7 +64,7 @@
 			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints",
 			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraints::factory",
 			"services": [
-				"StatsdDataFactory",
+				"StatsFactory",
 				"WikibaseRepo.ApiHelperFactory",
 				"WikibaseRepo.EntityIdLabelFormatterFactory",
 				"WikibaseRepo.EntityIdParser",

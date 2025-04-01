@@ -41,8 +41,8 @@ return [
 
 	ConstraintsServices::LOGGING_HELPER => static function ( MediaWikiServices $services ): LoggingHelper {
 		return new LoggingHelper(
-			$services->getStatsdDataFactory(),
-			ConstraintsServices::getLogger( $services ),
+			$services->getStatsFactory()->withComponent( 'WikibaseQualityConstraints' ),
+			LoggerFactory::getInstance( 'WikibaseQualityConstraints' ),
 			$services->getMainConfig()
 		);
 	},

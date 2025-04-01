@@ -38,7 +38,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\FakeChecker;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
 use Wikimedia\Assert\Assert;
-use Wikimedia\Stats\NullStatsdDataFactory;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraints
@@ -128,7 +128,10 @@ class CheckConstraintsTest extends ApiTestCase {
 					->getDatabaseSourceForEntityType( 'item' )
 					->getConceptBaseUri()
 			);
-			$dataFactory = new NullStatsdDataFactory();
+
+			$statsHelper = StatsFactory::newUnitTestingHelper();
+			$statsFactory = $statsHelper->getStatsFactory();
+
 			$constraintChecker = new DelegatingConstraintChecker(
 				self::$entityLookup,
 				self::$checkerMap,
@@ -136,7 +139,7 @@ class CheckConstraintsTest extends ApiTestCase {
 				$constraintParameterParser,
 				WikibaseRepo::getStatementGuidParser(),
 				new LoggingHelper(
-					$dataFactory,
+					$statsFactory,
 					new NullLogger(),
 					$config
 				),
@@ -165,7 +168,7 @@ class CheckConstraintsTest extends ApiTestCase {
 						$valueFormatterFactory
 					)
 				),
-				$dataFactory
+				$statsFactory
 			);
 		};
 	}
