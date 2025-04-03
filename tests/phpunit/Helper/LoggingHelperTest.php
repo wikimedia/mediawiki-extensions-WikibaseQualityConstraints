@@ -54,9 +54,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-		$statsFactory->withStatsdDataFactory( $dataFactory );
+		$statsFactory = StatsFactory::newNull()
+			->withStatsdDataFactory( $dataFactory );
 
 		$dataFactory->expects( $this->once() )
 			->method( 'timing' )
@@ -126,9 +125,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-		$statsFactory->withStatsdDataFactory( $dataFactory );
+		$statsFactory = StatsFactory::newNull()
+			->withStatsdDataFactory( $dataFactory );
 
 		$dataFactory->expects( $this->once() )
 			->method( 'timing' )
@@ -157,9 +155,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$entityId = new ItemId( 'Q1' );
 
 		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-		$statsFactory->withStatsdDataFactory( $dataFactory );
+		$statsFactory = StatsFactory::newNull()
+			->withStatsdDataFactory( $dataFactory );
 
 		$dataFactory->expects( $this->once() )
 			->method( 'timing' )
@@ -211,9 +208,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$entityId = new ItemId( 'Q1' );
 
 		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-		$statsFactory->withStatsdDataFactory( $dataFactory );
+		$statsFactory = StatsFactory::newNull()
+			->withStatsdDataFactory( $dataFactory );
 
 		$dataFactory->expects( $this->once() )
 			->method( 'timing' )
@@ -237,9 +233,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testlogSparqlHelperMadeTooManyRequestsRetryAfterPresent_CallsNotice() {
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
+		$statsFactory = StatsFactory::newNull();
 		$logger = $this->createMock( LoggerInterface::class );
 		$config = self::getDefaultConfig();
 		$timestamp = $this->createMock( ConvertibleTimestamp::class );
@@ -253,9 +247,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testlogSparqlHelperMadeTooManyRequestsRetryAfterMissing_CallsWarning() {
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
+		$statsFactory = StatsFactory::newNull();
 		$logger = $this->createMock( LoggerInterface::class );
 		$config = self::getDefaultConfig();
 		$request = $this->createMock( \MWHttpRequest::class );

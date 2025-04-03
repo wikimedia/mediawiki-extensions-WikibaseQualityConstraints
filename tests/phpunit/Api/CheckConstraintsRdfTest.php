@@ -105,15 +105,9 @@ class CheckConstraintsRdfTest extends \PHPUnit\Framework\TestCase {
 		return $context;
 	}
 
-	/**
-	 * @return LoggingHelper
-	 */
 	private function getLoggingHelper() {
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
 		return new LoggingHelper(
-			$statsFactory,
+			StatsFactory::newNull(),
 			new NullLogger(),
 			new HashConfig( [
 				'WBQualityConstraintsCheckDurationInfoSeconds' => 5.0,

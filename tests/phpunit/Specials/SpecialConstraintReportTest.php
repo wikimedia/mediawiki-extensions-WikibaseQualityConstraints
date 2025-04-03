@@ -55,10 +55,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	}
 
 	protected function newSpecialPage() {
-
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
 		return new SpecialConstraintReport(
 			WikibaseRepo::getEntityLookup(),
 			WikibaseRepo::getEntityTitleLookup(),
@@ -69,7 +65,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 			ConstraintsServices::getDelegatingConstraintChecker(),
 			ConstraintsServices::getViolationMessageRendererFactory(),
 			self::getDefaultConfig(),
-			$statsFactory
+			StatsFactory::newNull()
 		);
 	}
 

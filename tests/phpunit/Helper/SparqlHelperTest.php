@@ -123,8 +123,6 @@ class SparqlHelperTest extends MediaWikiIntegrationTestCase {
 		?LoggingHelper $loggingHelper = null
 	) {
 		$entityIdParser = new ItemIdParser();
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
 
 		return $this->getMockBuilder( SparqlHelper::class )
 			->setConstructorArgs( [
@@ -139,7 +137,7 @@ class SparqlHelperTest extends MediaWikiIntegrationTestCase {
 					$entityIdParser,
 					new DataValueFactory( new DataValueDeserializer() )
 				),
-				$statsFactory,
+				StatsFactory::newNull(),
 				new ExpiryLock( new HashBagOStuff() ),
 				$loggingHelper ?? $this->createMock( LoggingHelper::class ),
 				'A fancy user agent',
@@ -805,9 +803,6 @@ EOF;
 				} )
 			);
 
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->getRdfVocabulary(),
@@ -817,7 +812,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$statsFactory,
+			StatsFactory::newNull(),
 			$lock,
 			$loggingHelper,
 			'',
@@ -850,9 +845,6 @@ EOF;
 
 		$loggingHelper = $this->getLoggingHelperExpectingRetryAfterMissing();
 
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			$config,
 			$this->getRdfVocabulary(),
@@ -862,7 +854,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$statsFactory,
+			StatsFactory::newNull(),
 			$this->getMockLock( SparqlHelper::EXPIRY_LOCK_ID, $expectedTimestamp ),
 			$loggingHelper,
 			'',
@@ -886,9 +878,6 @@ EOF;
 		$requestFactoryMock->method( 'create' )
 			->willReturn( $requestMock );
 
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$this->getRdfVocabulary(),
@@ -898,7 +887,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$statsFactory,
+			StatsFactory::newNull(),
 			$lock,
 			$this->createMock( LoggingHelper::class ),
 			'',
@@ -923,9 +912,6 @@ EOF;
 
 		$loggingHelper = $this->getLoggingHelperExpectingRetryAfterMissing();
 
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			$config,
 			$this->getRdfVocabulary(),
@@ -935,7 +921,7 @@ EOF;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$statsFactory,
+			StatsFactory::newNull(),
 			$lock,
 			$loggingHelper,
 			'',
@@ -1061,9 +1047,6 @@ END;
 			[ 'wd' => '' ]
 		);
 
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
 			$rdfVocabulary,
@@ -1073,7 +1056,7 @@ END;
 			WANObjectCache::newEmpty(),
 			$this->createMock( ViolationMessageSerializer::class ),
 			$this->createMock( ViolationMessageDeserializer::class ),
-			$statsFactory,
+			StatsFactory::newNull(),
 			$lock,
 			$this->createMock( LoggingHelper::class ),
 			'',

@@ -129,8 +129,7 @@ class CheckConstraintsTest extends ApiTestCase {
 					->getConceptBaseUri()
 			);
 
-			$statsHelper = StatsFactory::newUnitTestingHelper();
-			$statsFactory = $statsHelper->getStatsFactory();
+			$statsFactory = StatsFactory::newNull();
 
 			$constraintChecker = new DelegatingConstraintChecker(
 				self::$entityLookup,

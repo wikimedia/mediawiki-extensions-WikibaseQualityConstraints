@@ -92,15 +92,9 @@ class CachingResultsSourceTest extends \PHPUnit\Framework\TestCase {
 		return $mock;
 	}
 
-	/**
-	 * @return LoggingHelper
-	 */
 	private function getLoggingHelper() {
-		$statsHelper = StatsFactory::newUnitTestingHelper();
-		$statsFactory = $statsHelper->getStatsFactory();
-
 		return new LoggingHelper(
-			$statsFactory,
+			StatsFactory::newNull(),
 			new NullLogger(),
 			new HashConfig( [
 				'WBQualityConstraintsCheckDurationInfoSeconds' => 5.0,
