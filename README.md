@@ -1,10 +1,6 @@
 # Wikibase Quality Constraints
-[![Scrutinizer Code Quality][scrutinizer-badge]][scrutinizer]
 
 Extension to Wikibase Repository that performs constraint checks.
-
-[scrutinizer-badge]: https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/badges/quality-score.png?b=master
-[scrutinizer]: https://scrutinizer-ci.com/g/wikimedia/mediawiki-extensions-WikibaseQualityConstraints/?branch=master
 
 ## Installation
 
