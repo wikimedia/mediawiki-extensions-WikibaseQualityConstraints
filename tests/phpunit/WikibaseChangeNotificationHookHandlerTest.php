@@ -1,7 +1,10 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Snak\SnakList;
@@ -9,28 +12,32 @@ use Wikibase\DataModel\Tests\NewStatement;
 use Wikibase\Lib\Changes\Change;
 use Wikibase\Lib\Changes\EntityChange;
 use Wikibase\Lib\Tests\Changes\TestChanges;
-use WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks;
+use WikibaseQuality\ConstraintReport\WikibaseChangeNotificationHookHandler;
+use Wikimedia\TestingAccessWrapper;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\WikibaseQualityConstraintsHooks
+ * @covers WikibaseQuality\ConstraintReport\WikibaseChangeNotificationHookHandler
  *
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
  */
-class WikibaseQualityConstraintsHooksTest extends \PHPUnit\Framework\TestCase {
+class WikibaseChangeNotificationHookHandlerTest extends TestCase {
 
 	use DefaultConfig;
 
 	/**
 	 * @dataProvider provideChanges
-	 * @param Change $change
-	 * @param bool $expected
 	 */
-	public function testIsConstraintStatementsChange( Change $change, $expected ) {
-		$actual = WikibaseQualityConstraintsHooks::isConstraintStatementsChange(
-			self::getDefaultConfig(),
+	public function testIsConstraintStatementsChange( Change $change, bool $expected ) {
+		$jobQueueMock = $this->createMock( \JobQueueGroup::class );
+		$hookHandler = new WikibaseChangeNotificationHookHandler(
+			$jobQueueMock,
+			self::getDefaultConfig()
+		);
+		$hookHandlerWrapper = TestingAccessWrapper::newFromObject( $hookHandler );
+		$actual = $hookHandlerWrapper->isConstraintStatementsChange(
 			$change
 		);
 		$this->assertSame( $expected, $actual );

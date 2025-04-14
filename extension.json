@@ -29,7 +29,7 @@
 	],
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": "schema",
-		"WikibaseChangeNotification": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsHooks::onWikibaseChange",
+		"WikibaseChangeNotification": "WikibaseChangeNotification",
 		"ArticlePurge": "main",
 		"BeforePageDisplay": "main"
 	},
@@ -39,6 +39,13 @@
 		},
 		"schema": {
 			"class": "WikibaseQuality\\ConstraintReport\\WikibaseQualityConstraintsSchemaHooks"
+		},
+		"WikibaseChangeNotification": {
+			"class": "WikibaseQuality\\ConstraintReport\\WikibaseChangeNotificationHookHandler",
+			"services": [
+				"JobQueueGroup",
+				"MainConfig"
+			]
 		}
 	},
 	"SpecialPages": {
