@@ -3,6 +3,7 @@
 		"authors": [
 			"Azouz.anis",
 			"BAB ZAA",
+			"Dyolf77 (WMF)",
 			"Meno25",
 			"Michel Bakni",
 			"Mr. Ibrahem",
@@ -37,7 +38,7 @@
 	"wbqc-constraintreport-result-link-to-claim": "اذهب إلى الادعاء",
 	"wbqc-constraintreport-result-link-to-constraint": "اذهب إلى المحددات",
 	"wbqc-constraintreport-no-parameter": "لا شيء",
-	"wbqc-issues-short": "قضايا",
+	"wbqc-issues-short": "اختلالات",
 	"wbqc-issues-long": "هذا البيان لديه بعض القضايا.",
 	"wbqc-potentialissues-short": "قضايا محتملة",
 	"wbqc-potentialissues-long": "يحتوي هذا البيان على بعض القضايا المحتملة.",
