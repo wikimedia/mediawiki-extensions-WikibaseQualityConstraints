@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests;
 
+use MediaWiki\JobQueue\JobQueueGroup;
 use PHPUnit\Framework\TestCase;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\Property;
@@ -31,7 +32,7 @@ class WikibaseChangeNotificationHookHandlerTest extends TestCase {
 	 * @dataProvider provideChanges
 	 */
 	public function testIsConstraintStatementsChange( Change $change, bool $expected ) {
-		$jobQueueMock = $this->createMock( \JobQueueGroup::class );
+		$jobQueueMock = $this->createMock( JobQueueGroup::class );
 		$hookHandler = new WikibaseChangeNotificationHookHandler(
 			$jobQueueMock,
 			self::getDefaultConfig()

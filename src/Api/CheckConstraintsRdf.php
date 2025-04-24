@@ -2,9 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Api;
 
-use Article;
-use FormlessAction;
+use MediaWiki\Actions\FormlessAction;
 use MediaWiki\Context\IContextSource;
+use MediaWiki\Page\Article;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Store\EntityIdLookup;
 use Wikibase\Repo\Rdf\RdfVocabulary;

@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
-use Job;
+use MediaWiki\JobQueue\Job;
 use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use Wikibase\DataModel\Entity\ItemId;

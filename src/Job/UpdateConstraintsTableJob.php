@@ -2,9 +2,9 @@
 
 namespace WikibaseQuality\ConstraintReport\Job;
 
-use Job;
-use JobQueueGroup;
 use MediaWiki\Config\Config;
+use MediaWiki\JobQueue\Job;
+use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Serializers\Serializer;

@@ -2,7 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Job;
 
-use Job;
+use MediaWiki\JobQueue\Job;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Wikibase\DataModel\Entity\EntityId;

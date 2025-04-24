@@ -4,9 +4,9 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport;
 
-use JobSpecification;
 use MediaWiki\Config\Config;
 use MediaWiki\JobQueue\JobQueueGroup;
+use MediaWiki\JobQueue\JobSpecification;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Changes\Change;
 use Wikibase\Lib\Changes\EntityChange;

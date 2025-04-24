@@ -2,10 +2,10 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Api;
 
-use Article;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Output\OutputPage;
+use MediaWiki\Page\Article;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Request\WebResponse;
 use MediaWiki\Title\Title;
