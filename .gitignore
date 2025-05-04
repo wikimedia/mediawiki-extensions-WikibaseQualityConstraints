@@ -43,3 +43,4 @@ Thumbs.db
 /build/logs
 /node_modules
 /.eslintcache
+/.stylelintcache
