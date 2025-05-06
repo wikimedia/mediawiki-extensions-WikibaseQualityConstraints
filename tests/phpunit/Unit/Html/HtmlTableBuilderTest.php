@@ -174,28 +174,40 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 	/**
 	 * @dataProvider toHtmlDataProvider
 	 */
-	public function testToHtml( $headers, $rows, $expectedHtml ) {
+	public function testToHtml( $headersContent, $rowsContent, $expectedHtml ) {
+		$headers = [];
+		foreach ( $headersContent as $headerContent ) {
+			if ( is_array( $headerContent ) ) {
+				[ $headerContent, $isSortable ] = $headerContent;
+			} else {
+				$isSortable = false;
+			}
+			$headers[] = $this->getHtmlTableHeaderMock( $headerContent, $isSortable );
+		}
+		$rows = [];
+		foreach ( $rowsContent as $content ) {
+			$rows[] = $this->getHtmlTableCellMock( $content );
+		}
+
 		// Create table
 		$htmlTable = new HtmlTableBuilder( $headers );
-		$htmlTable->appendRows( $rows );
+		$htmlTable->appendRows( [ $rows ] );
 
 		// Run assertions
 		$actualHtml = $htmlTable->toHtml();
 		$this->assertSame( $expectedHtml, $actualHtml );
 	}
 
-	public function toHtmlDataProvider() {
+	public static function toHtmlDataProvider() {
 		return [
 			[
 				[
-					$this->getHtmlTableHeaderMock( 'fu' ),
-					$this->getHtmlTableHeaderMock( 'bar' ),
+					'fu',
+					'bar',
 				],
 				[
-					[
-						$this->getHtmlTableCellMock( 'fucked up' ),
-						$this->getHtmlTableCellMock( 'beyond all recognition' ),
-					],
+					'fucked up',
+					'beyond all recognition',
 				],
 				'<table class="wikitable">'
 					. '<thead><tr><th>fu</th><th>bar</th></tr></thead>'
@@ -204,14 +216,12 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 			],
 			[
 				[
-					$this->getHtmlTableHeaderMock( 'fu' ),
-					$this->getHtmlTableHeaderMock( 'bar', true ),
+					'fu',
+					[ 'bar', true ],
 				],
 				[
-					[
-						$this->getHtmlTableCellMock( 'fucked up' ),
-						$this->getHtmlTableCellMock( 'beyond all recognition' ),
-					],
+					'fucked up',
+					'beyond all recognition',
 				],
 				'<table class="wikitable sortable">'
 					. '<thead><tr><th>fu</th><th>bar</th></tr></thead>'
