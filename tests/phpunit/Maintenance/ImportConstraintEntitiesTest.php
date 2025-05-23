@@ -96,7 +96,7 @@ class ImportConstraintEntitiesTest extends MaintenanceBaseTestCase {
 		$localEntityId = $this->maintenance->importEntityFromJson( 'Q21503250', $json );
 		$this->assertSame( '-Q21503250', $localEntityId );
 
-		$localEntityArray = json_decode( $this->getActualOutput(), true );
+		$localEntityArray = json_decode( $this->getActualOutputForAssertion(), true );
 		$this->assertSame( 'type constraint', $localEntityArray['labels']['en']['value'] );
 		$this->assertSame( [], $localEntityArray['sitelinks'] );
 		$this->assertSame( [], $localEntityArray['claims'] );
