@@ -209,7 +209,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$matchers['result for'] = both(
 			withTagName( 'h3' )
 		)->andAlso(
-			havingTextContents( containsString( '(wbqc-constraintreport-result-headline) ' ) )
+			havingTextContents( containsString( '(wbqc-constraintreport-result-headline)(word-separator)' ) )
 		);
 
 		$matchers['result table'] = tagMatchingOutline(
