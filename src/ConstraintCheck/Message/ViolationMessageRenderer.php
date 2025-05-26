@@ -78,10 +78,7 @@ class ViolationMessageRenderer {
 			$paramsLists[] = $params;
 		}
 		$allParams = array_merge( ...$paramsLists );
-		return $this->messageLocalizer
-			->msg( $messageKey )
-			->params( $allParams )
-			->escaped();
+		return $this->messageLocalizer->msg( $messageKey, ...$allParams )->escaped();
 	}
 
 	/**
@@ -159,9 +156,9 @@ class ViolationMessageRenderer {
 			];
 		}
 
-		if ( count( $list ) > $this->maxListLength ) {
+		$truncated = count( $list ) > $this->maxListLength;
+		if ( $truncated ) {
 			$list = array_slice( $list, 0, $this->maxListLength );
-			$truncated = true;
 		}
 
 		$renderedParamsLists = array_map(
@@ -170,22 +167,18 @@ class ViolationMessageRenderer {
 			array_fill( 0, count( $list ), $role )
 		);
 		$renderedParams = array_column( $renderedParamsLists, 0 );
-		$renderedElements = array_map( static fn ( MessageParam $msg ) => $msg->getValue(), $renderedParams );
-		if ( isset( $truncated ) ) {
+		$renderedElements = array_map( static fn ( MessageParam $p ) => $p->getValue(), $renderedParams );
+		if ( $truncated ) {
 			$renderedElements[] = $this->msgEscaped( 'ellipsis' );
 		}
 
-		return array_merge(
-			[
-				Message::numParam( count( $list ) ),
-				Message::rawParam(
-					'<ul><li>' .
-					implode( '</li><li>', $renderedElements ) .
-					'</li></ul>'
-				),
-			],
-			$renderedParams
-		);
+		return [
+			Message::numParam( count( $list ) ),
+			Message::rawParam(
+				'<ul><li>' . implode( '</li><li>', $renderedElements ) . '</li></ul>'
+			),
+			...$renderedParams,
+		];
 	}
 
 	/**
