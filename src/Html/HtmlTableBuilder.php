@@ -29,9 +29,6 @@ class HtmlTableBuilder {
 	 */
 	private $isSortable;
 
-	/**
-	 * @param array $headers
-	 */
 	public function __construct( array $headers ) {
 		foreach ( $headers as $header ) {
 			$this->addHeader( $header );

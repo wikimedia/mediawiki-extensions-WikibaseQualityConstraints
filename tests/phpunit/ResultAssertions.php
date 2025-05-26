@@ -60,8 +60,6 @@ trait ResultAssertions {
 
 	/**
 	 * Assert that $result indicates compliance with a constraint.
-	 *
-	 * @param CheckResult $result
 	 */
 	public function assertCompliance( CheckResult $result ) {
 		$this->assertSame(
@@ -101,8 +99,6 @@ trait ResultAssertions {
 
 	/**
 	 * Assert that $result indicates an unimplemented constraint.
-	 *
-	 * @param CheckResult $result
 	 */
 	public function assertTodo( CheckResult $result ) {
 		$this->assertSame(
@@ -139,8 +135,6 @@ trait ResultAssertions {
 
 	/**
 	 * Assert that $result indicates a skipped constraint check due to deprecated statement rank.
-	 *
-	 * @param CheckResult $result
 	 */
 	public function assertDeprecation( CheckResult $result ) {
 		$this->assertSame(
@@ -153,8 +147,6 @@ trait ResultAssertions {
 	/**
 	 * Assert that $result indicates a skipped constraint check
 	 * due to the snak not being within the scope of the constraint.
-	 *
-	 * @param CheckResult $result
 	 */
 	public function assertNotInScope( CheckResult $result ) {
 		$this->assertSame(

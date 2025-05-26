@@ -24,9 +24,6 @@ class QualifiersChecker implements ConstraintChecker {
 	 */
 	private $constraintParameterParser;
 
-	/**
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 */
 	public function __construct(
 		ConstraintParameterParser $constraintParameterParser
 	) {

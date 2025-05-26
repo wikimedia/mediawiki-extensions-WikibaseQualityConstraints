@@ -165,7 +165,7 @@ class ViolationMessage {
 	 * @param string $type one of the self::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
 	 * @param mixed $value the value, which should match the $type
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withArgument( $type, $role, $value ) {
 		$ret = clone $this;
@@ -179,7 +179,7 @@ class ViolationMessage {
 	 *
 	 * @param EntityId $entityId
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withEntityId( EntityId $entityId, $role = null ) {
 		return $this->withArgument( self::TYPE_ENTITY_ID, $role, $entityId );
@@ -197,7 +197,7 @@ class ViolationMessage {
 	 *
 	 * @param EntityId[] $entityIdList
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withEntityIdList( array $entityIdList, $role = null ) {
 		return $this->withArgument( self::TYPE_ENTITY_ID_LIST, $role, $entityIdList );
@@ -209,7 +209,7 @@ class ViolationMessage {
 	 *
 	 * @param ItemIdSnakValue $value
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withItemIdSnakValue( ItemIdSnakValue $value, $role = null ) {
 		return $this->withArgument( self::TYPE_ITEM_ID_SNAK_VALUE, $role, $value );
@@ -227,7 +227,7 @@ class ViolationMessage {
 	 *
 	 * @param ItemIdSnakValue[] $valueList
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withItemIdSnakValueList( array $valueList, $role = null ) {
 		return $this->withArgument( self::TYPE_ITEM_ID_SNAK_VALUE_LIST, $role, $valueList );
@@ -239,7 +239,7 @@ class ViolationMessage {
 	 *
 	 * @param DataValue $dataValue
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withDataValue( DataValue $dataValue, $role = null ) {
 		return $this->withArgument( self::TYPE_DATA_VALUE, $role, $dataValue );
@@ -255,7 +255,7 @@ class ViolationMessage {
 	 *
 	 * @param string $dataValueType
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withDataValueType( $dataValueType, $role = null ) {
 		return $this->withArgument( self::TYPE_DATA_VALUE_TYPE, $role, $dataValueType );
@@ -267,7 +267,7 @@ class ViolationMessage {
 	 *
 	 * @param string $code
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withInlineCode( $code, $role = null ) {
 		return $this->withArgument( self::TYPE_INLINE_CODE, $role, $code );
@@ -279,7 +279,7 @@ class ViolationMessage {
 	 *
 	 * @param string $scope one of the Context::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withConstraintScope( $scope, $role = null ) {
 		return $this->withArgument( self::TYPE_CONSTRAINT_SCOPE, $role, $scope );
@@ -291,7 +291,7 @@ class ViolationMessage {
 	 *
 	 * @param string[] $scopeList Role::* constants
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withConstraintScopeList( array $scopeList, $role = null ) {
 		return $this->withArgument( self::TYPE_CONSTRAINT_SCOPE_LIST, $role, $scopeList );
@@ -303,7 +303,7 @@ class ViolationMessage {
 	 *
 	 * @param string $scope one of the Context::TYPE_* constants
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withPropertyScope( $scope, $role = null ) {
 		return $this->withArgument( self::TYPE_PROPERTY_SCOPE, $role, $scope );
@@ -315,7 +315,7 @@ class ViolationMessage {
 	 *
 	 * @param string[] $scopeList Role::* constants
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withPropertyScopeList( array $scopeList, $role = null ) {
 		return $this->withArgument( self::TYPE_PROPERTY_SCOPE_LIST, $role, $scopeList );
@@ -331,7 +331,7 @@ class ViolationMessage {
 	 * (Language arguments do not support roles.)
 	 *
 	 * @param string $languageCode
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withLanguage( $languageCode ) {
 		return $this->withArgument( self::TYPE_LANGUAGE, null, $languageCode );
@@ -347,7 +347,7 @@ class ViolationMessage {
 	 * (Language arguments do not support roles.)
 	 *
 	 * @param string[] $languageCodes
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withLanguages( $languageCodes ) {
 		return $this->withArgument( self::TYPE_LANGUAGE_LIST, null, $languageCodes );
@@ -363,7 +363,7 @@ class ViolationMessage {
 	 *
 	 * @param MultilingualTextValue $text
 	 * @param string|null $role one of the Role::* constants
-	 * @return ViolationMessage
+	 * @return self
 	 */
 	public function withMultilingualText( MultilingualTextValue $text, $role = null ) {
 		return $this->withArgument( self::TYPE_MULTILINGUAL_TEXT, $role, $text );

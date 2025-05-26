@@ -488,8 +488,6 @@ class CachingResultsSource implements ResultsSource {
 
 	/**
 	 * Set a custom function to get the current time, instead of microtime().
-	 *
-	 * @param callable $microtime
 	 */
 	public function setMicrotimeFunction( callable $microtime ) {
 		$this->microtime = $microtime;
