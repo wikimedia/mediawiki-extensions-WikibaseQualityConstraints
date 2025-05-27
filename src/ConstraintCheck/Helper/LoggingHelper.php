@@ -216,8 +216,6 @@ class LoggingHelper {
 
 	/**
 	 * Log a cache hit for a complete constraint check result for the given entity ID.
-	 *
-	 * @param EntityId $entityId
 	 */
 	public function logCheckConstraintsCacheHit( EntityId $entityId ) {
 		$cacheEntityHitKey = 'wikibase.quality.constraints.cache.entity.hit';

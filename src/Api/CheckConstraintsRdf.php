@@ -58,7 +58,7 @@ class CheckConstraintsRdf extends FormlessAction {
 	/**
 	 * @param Article $page
 	 * @param IContextSource $context
-	 * @return CheckConstraintsRdf
+	 * @return self
 	 */
 	public static function newFromGlobalState(
 		object $page,
