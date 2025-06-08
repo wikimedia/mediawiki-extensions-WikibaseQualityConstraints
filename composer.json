@@ -21,7 +21,6 @@
 		"issues": "https://phabricator.wikimedia.org/project/profile/1202/"
 	},
 	"require": {
-		"php": ">=7.4.0",
 		"serialization/serialization": "^3.2.1|^4.0.0",
 		"data-values/data-values": "^3.0.0|^2.0.0|^1.0.0",
 		"data-values/common": "^1.0.0|^0.4.0|^0.3.0",
