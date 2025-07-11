@@ -382,6 +382,7 @@ class ViolationMessageRenderer {
 	 * @param string $languageCode MediaWiki language code
 	 * @param string|null $role one of the Role::* constants
 	 * @return MessageParam[] list of parameters as accepted by Message::params()
+	 * @suppress PhanUnusedPrivateMethodParameter
 	 */
 	private function renderLanguage( string $languageCode, ?string $role ): array {
 		return [

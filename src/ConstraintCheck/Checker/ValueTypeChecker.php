@@ -135,7 +135,7 @@ class ValueTypeChecker implements ConstraintChecker {
 
 		try {
 			$item = $this->entityLookup->getEntity( $dataValue->getEntityId() );
-		} catch ( UnresolvedEntityRedirectException $e ) {
+		} catch ( UnresolvedEntityRedirectException ) {
 			// Edge case (double redirect): Pretend the entity doesn't exist
 			$item = null;
 		}

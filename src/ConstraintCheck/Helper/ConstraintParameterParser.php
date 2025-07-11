@@ -228,6 +228,7 @@ class ConstraintParameterParser {
 		return $this->parsePropertyIdParameter( $constraintParameters[$propertyId][0], $propertyId );
 	}
 
+	/** @throws ConstraintParameterException */
 	private function parseItemIdParameter( PropertyValueSnak $snak, string $parameterId ): ItemIdSnakValue {
 		$dataValue = $snak->getDataValue();
 		if ( $dataValue instanceof EntityIdValue ) {
@@ -304,6 +305,7 @@ class ConstraintParameterParser {
 		bool $required,
 		string $parameterId
 	): array {
+		/** @throws ConstraintParameterException */
 		return array_map( static function ( ItemIdSnakValue $value ) use ( $parameterId ): ItemId {
 			if ( $value->isValue() ) {
 				return $value->getItemId();
@@ -393,7 +395,7 @@ class ConstraintParameterParser {
 	private function parseValueOrNoValueOrNowParameter( array $snakSerialization, string $parameterId ): ?DataValue {
 		try {
 			return $this->parseValueOrNoValueParameter( $snakSerialization, $parameterId );
-		} catch ( ConstraintParameterException $e ) {
+		} catch ( ConstraintParameterException ) {
 			// unknown value means “now”
 			return new NowValue();
 		}
@@ -814,6 +816,7 @@ class ConstraintParameterParser {
 		return [ $contextTypes, $entityTypes ];
 	}
 
+	/** @throws ConstraintParameterException */
 	private function checkValidScope( string $constraintTypeItemId, ?array $types, array $validTypes ): void {
 		$invalidTypes = array_diff( $types ?: [], $validTypes );
 		if ( $invalidTypes !== [] ) {

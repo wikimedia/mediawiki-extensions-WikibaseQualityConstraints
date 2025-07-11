@@ -124,7 +124,7 @@ class CheckConstraintParameters extends ApiBase {
 			function ( $propertyIdSerialization ) {
 				try {
 					return new NumericPropertyId( $propertyIdSerialization );
-				} catch ( InvalidArgumentException $e ) {
+				} catch ( InvalidArgumentException ) {
 					$this->apiErrorReporter->dieError(
 						"Invalid id: $propertyIdSerialization",
 						'invalid-property-id',
@@ -164,7 +164,7 @@ class CheckConstraintParameters extends ApiBase {
 						);
 					}
 					return $constraintId;
-				} catch ( StatementGuidParsingException $e ) {
+				} catch ( StatementGuidParsingException ) {
 					$this->apiErrorReporter->dieError(
 						"Invalid statement GUID: $constraintId",
 						'invalid-guid',

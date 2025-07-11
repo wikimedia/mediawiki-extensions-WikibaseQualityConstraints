@@ -146,7 +146,7 @@ class CheckConstraints extends ApiBase {
 		return array_map( function ( $id ) {
 			try {
 				return $this->entityIdParser->parse( $id );
-			} catch ( EntityIdParsingException $e ) {
+			} catch ( EntityIdParsingException ) {
 				$this->errorReporter->dieError(
 					"Invalid id: $id", 'invalid-entity-id', 0, [ self::PARAM_ID => $id ] );
 			}

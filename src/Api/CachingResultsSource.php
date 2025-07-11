@@ -144,7 +144,7 @@ class CachingResultsSource implements ResultsSource {
 	) {
 		$results = [];
 		$metadatas = [];
-		if ( $this->canUseStoredResults( $entityIds, $claimIds, $constraintIds, $statuses ) ) {
+		if ( $this->canUseStoredResults( $claimIds, $constraintIds, $statuses ) ) {
 			$storedEntityIds = [];
 			foreach ( $entityIds as $entityId ) {
 				$storedResults = $this->getStoredResults( $entityId );
@@ -182,14 +182,12 @@ class CachingResultsSource implements ResultsSource {
 	 * without restricting the set of constraints to check,
 	 * and with no statuses other than 'violation', 'warning' and 'bad-parameters'.
 	 *
-	 * @param EntityId[] $entityIds
 	 * @param string[] $claimIds
 	 * @param string[]|null $constraintIds
 	 * @param string[] $statuses
 	 * @return bool
 	 */
 	private function canUseStoredResults(
-		array $entityIds,
 		array $claimIds,
 		?array $constraintIds,
 		array $statuses
@@ -235,7 +233,7 @@ class CachingResultsSource implements ResultsSource {
 	) {
 		$results = $this->resultsSource->getResults( $entityIds, $claimIds, $constraintIds, $statuses );
 
-		if ( $this->canStoreResults( $entityIds, $claimIds, $constraintIds, $statuses ) ) {
+		if ( $this->canStoreResults( $constraintIds, $statuses ) ) {
 			foreach ( $entityIds as $entityId ) {
 				$this->storeResults( $entityId, $results );
 			}
@@ -256,15 +254,11 @@ class CachingResultsSource implements ResultsSource {
 	 * as long as all the results we want to cache are there,
 	 * we can filter out the extraneous ones before we serialize them.
 	 *
-	 * @param EntityId[] $entityIds
-	 * @param string[] $claimIds
 	 * @param ?string[] $constraintIds
 	 * @param string[] $statuses
 	 * @return bool
 	 */
 	private function canStoreResults(
-		array $entityIds,
-		array $claimIds,
 		?array $constraintIds,
 		array $statuses
 	) {

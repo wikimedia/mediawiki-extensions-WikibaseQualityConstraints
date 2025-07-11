@@ -593,7 +593,7 @@ SPARQL;
 							return $this->entityIdParser->parse(
 								substr( $entityIRI, $entityPrefixLength )
 							);
-						} catch ( EntityIdParsingException $e ) {
+						} catch ( EntityIdParsingException ) {
 							// fall through
 						}
 					}
@@ -672,7 +672,7 @@ SPARQL;
 						$matches = $this->matchesRegularExpressionWithSparql( $text, $regex );
 					} catch ( ConstraintParameterException $e ) {
 						$matches = $this->serializeConstraintParameterException( $e );
-					} catch ( SparqlHelperException $e ) {
+					} catch ( SparqlHelperException ) {
 						// don’t cache this
 						return $cacheMap->toArray();
 					}

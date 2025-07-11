@@ -82,7 +82,7 @@ class ExpiryLock {
 
 		try {
 			$lockExpiryTimeStamp = new ConvertibleTimestamp( $expiryTime );
-		} catch ( TimestampException $exception ) {
+		} catch ( TimestampException ) {
 			return false;
 		}
 

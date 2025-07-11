@@ -185,6 +185,7 @@ class FormatChecker implements ConstraintChecker {
 		return $message;
 	}
 
+	/** @throws ConstraintParameterException */
 	private function runRegexCheck( string $text, string $format ): string {
 		if ( !$this->config->get( 'WBQualityConstraintsCheckFormatConstraint' ) ) {
 			return CheckResult::STATUS_TODO;

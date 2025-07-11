@@ -166,7 +166,7 @@ class SpecialConstraintReport extends SpecialPage {
 				$entityId = $this->entityIdParser->parse( $postRequest );
 				$out->redirect( $this->getPageTitle( $entityId->getSerialization() )->getLocalURL() );
 				return;
-			} catch ( EntityIdParsingException $e ) {
+			} catch ( EntityIdParsingException ) {
 				// fall through, error is shown later
 			}
 		}
@@ -197,7 +197,7 @@ class SpecialConstraintReport extends SpecialPage {
 
 		try {
 			$entityId = $this->entityIdParser->parse( $subPage );
-		} catch ( EntityIdParsingException $e ) {
+		} catch ( EntityIdParsingException ) {
 			$out->addHTML(
 				$this->buildNotice( 'wbqc-constraintreport-invalid-entity-id', true )
 			);
@@ -364,7 +364,7 @@ class SpecialConstraintReport extends SpecialPage {
 		$constraintTypeItemId = $result->getConstraint()->getConstraintTypeItemId();
 		try {
 			$constraintTypeLabel = $this->entityIdLabelFormatter->formatEntityId( new ItemId( $constraintTypeItemId ) );
-		} catch ( InvalidArgumentException $e ) {
+		} catch ( InvalidArgumentException ) {
 			$constraintTypeLabel = htmlspecialchars( $constraintTypeItemId );
 		}
 		$constraintColumn = $this->getClaimLink(

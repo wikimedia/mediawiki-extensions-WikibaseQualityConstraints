@@ -67,7 +67,7 @@ class CheckConstraintsJob extends Job {
 	public function run() {
 		try {
 			$entityId = $this->entityIdParser->parse( $this->params['entityId'] );
-		} catch ( EntityIdParsingException $e ) {
+		} catch ( EntityIdParsingException ) {
 			return false;
 		}
 

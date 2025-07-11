@@ -156,7 +156,7 @@ class TypeCheckerHelper {
 				->observe( $entitiesChecked );
 
 			return new CachedBool( $isSubclass, Metadata::blank() );
-		} catch ( OverflowException $e ) {
+		} catch ( OverflowException ) {
 			$timing->setLabel( 'result', 'overflow' )
 				->copyToStatsdAt( 'wikibase.quality.constraints.type.php.overflow.timing' )
 				->stop();
