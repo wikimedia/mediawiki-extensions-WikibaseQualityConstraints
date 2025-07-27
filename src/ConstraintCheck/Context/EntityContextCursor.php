@@ -2,6 +2,8 @@
 
 declare( strict_types = 1 );
 
+// @phan-file-suppress PhanPluginNeverReturnMethod
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
 
 use LogicException;
@@ -16,7 +18,6 @@ use LogicException;
  *
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
- * @phan-file-suppress PhanPluginNeverReturnMethod
  */
 class EntityContextCursor extends ApiV2ContextCursor {
 

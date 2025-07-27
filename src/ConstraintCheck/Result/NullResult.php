@@ -2,6 +2,8 @@
 
 declare( strict_types = 1 );
 
+// @phan-file-suppress PhanPluginNeverReturnMethod
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Result;
 
 use DomainException;
@@ -16,7 +18,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursor;
  *
  * @author Lucas Werkmeister
  * @license GPL-2.0-or-later
- * @phan-file-suppress PhanPluginNeverReturnMethod
  */
 class NullResult extends CheckResult {
 

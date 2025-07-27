@@ -2,6 +2,8 @@
 
 declare( strict_types = 1 );
 
+// @phan-file-suppress PhanPluginNeverReturnMethod
+
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use LogicException;
@@ -20,7 +22,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedQueryResults;
  * See T196053#4514308 for details.
  *
  * @license GPL-2.0-or-later
- * @phan-file-suppress PhanPluginNeverReturnMethod
  */
 class DummySparqlHelper extends SparqlHelper {
 
