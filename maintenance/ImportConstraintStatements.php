@@ -57,7 +57,7 @@ class ImportConstraintStatements extends Maintenance {
 		// that can be overridden in tests.
 		$this->setupServices = function () {
 			$services = MediaWikiServices::getInstance();
-			$this->propertyInfoLookup = WikibaseRepo::getStore( $services )->getPropertyInfoLookup();
+			$this->propertyInfoLookup = WikibaseRepo::getPropertyInfoLookup( $services );
 		};
 	}
 
