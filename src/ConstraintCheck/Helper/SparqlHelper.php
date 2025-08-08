@@ -933,6 +933,7 @@ EOF;
 		if ( $requestStatus->isOK() ) {
 			$json = $request->getContent();
 			$jsonStatus = FormatJson::parse( $json, FormatJson::FORCE_ASSOC );
+			'@phan-var \MediaWiki\Status\Status<array> $jsonStatus';
 			if ( $jsonStatus->isOK() ) {
 				return new CachedQueryResults(
 					$jsonStatus->getValue(),
