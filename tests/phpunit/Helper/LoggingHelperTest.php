@@ -14,7 +14,6 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
-use Wikimedia\Stats\IBufferingStatsdDataFactory;
 use Wikimedia\Stats\StatsFactory;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
@@ -53,16 +52,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);
 
-		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
-		$statsFactory = StatsFactory::newNull()
-			->withStatsdDataFactory( $dataFactory );
-
-		$dataFactory->expects( $this->once() )
-			->method( 'timing' )
-			->with(
-				$this->identicalTo( 'wikibase.quality.constraints.check.timing.Q100-TestChecker' ),
-				$this->identicalTo( $durationSeconds * 1000 )
-			);
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
 
 		$logger = $this->createMock( LoggerInterface::class );
 		$logger->expects( $expectedLevel !== null ? $this->once() : $this->never() )
@@ -102,6 +93,9 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			'\Test\Namespace\TestChecker', $durationSeconds,
 			__METHOD__
 		);
+
+		$this->assertSame( 1, $statsHelper->count( 'check_constraint_duration_seconds' ) );
+		$this->assertSame( $durationSeconds * 1000.0, $statsHelper->sum( 'check_constraint_duration_seconds' ) );
 	}
 
 	public static function provideConstraintCheckDurationsAndLogLevels() {
@@ -124,16 +118,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			new ViolationMessage( 'wbqc-violation-message-single-value' )
 		);
 
-		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
-		$statsFactory = StatsFactory::newNull()
-			->withStatsdDataFactory( $dataFactory );
-
-		$dataFactory->expects( $this->once() )
-			->method( 'timing' )
-			->with(
-				$this->identicalTo( 'wikibase.quality.constraints.check.timing.Q100-TestChecker' ),
-				$this->identicalTo( 5000.0 )
-			);
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
 
 		$logger = $this->createMock( LoggerInterface::class );
 		$logger->expects( $this->never() )->method( 'log' );
@@ -146,6 +132,9 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			'\Test\Namespace\TestChecker', 5.0,
 			__METHOD__
 		);
+
+		$this->assertSame( 1, $statsHelper->count( 'check_constraint_duration_seconds' ) );
+		$this->assertSame( 5000.0, $statsHelper->sum( 'check_constraint_duration_seconds' ) );
 	}
 
 	/**
@@ -154,16 +143,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 	public function testLogConstraintCheckOnEntity( $durationSeconds, $expectedLevel, $expectedLimit ) {
 		$entityId = new ItemId( 'Q1' );
 
-		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
-		$statsFactory = StatsFactory::newNull()
-			->withStatsdDataFactory( $dataFactory );
-
-		$dataFactory->expects( $this->once() )
-			->method( 'timing' )
-			->with(
-				$this->identicalTo( 'wikibase.quality.constraints.check.entity.timing' ),
-				$this->identicalTo( $durationSeconds * 1000 )
-			);
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
 
 		$logger = $this->createMock( LoggerInterface::class );
 		$logger->expects( $expectedLevel !== null ? $this->once() : $this->never() )
@@ -194,6 +175,9 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			$durationSeconds,
 			__METHOD__
 		);
+
+		$this->assertSame( 1, $statsHelper->count( 'check_entity_constraint_duration_seconds' ) );
+		$this->assertSame( $durationSeconds * 1000.0, $statsHelper->sum( 'check_entity_constraint_duration_seconds' ) );
 	}
 
 	public static function provideConstraintCheckDurationsAndLogLevelsOnEntity() {
@@ -207,16 +191,8 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 	public function testLogConstraintCheckOnEntityDisabled() {
 		$entityId = new ItemId( 'Q1' );
 
-		$dataFactory = $this->createMock( IBufferingStatsdDataFactory::class );
-		$statsFactory = StatsFactory::newNull()
-			->withStatsdDataFactory( $dataFactory );
-
-		$dataFactory->expects( $this->once() )
-			->method( 'timing' )
-			->with(
-				$this->identicalTo( 'wikibase.quality.constraints.check.entity.timing' ),
-				$this->identicalTo( 10000.0 )
-			);
+		$statsHelper = StatsFactory::newUnitTestingHelper();
+		$statsFactory = $statsHelper->getStatsFactory();
 
 		$logger = $this->createMock( LoggerInterface::class );
 		$logger->expects( $this->never() )
@@ -230,6 +206,9 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 			10,
 			__METHOD__
 		);
+
+		$this->assertSame( 1, $statsHelper->count( 'check_entity_constraint_duration_seconds' ) );
+		$this->assertSame( 10000.0, $statsHelper->sum( 'check_entity_constraint_duration_seconds' ) );
 	}
 
 	public function testlogSparqlHelperMadeTooManyRequestsRetryAfterPresent_CallsNotice() {

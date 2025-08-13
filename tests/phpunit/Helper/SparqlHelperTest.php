@@ -56,7 +56,6 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
-use Wikimedia\Stats\BufferingStatsdDataFactory;
 use Wikimedia\Stats\StatsFactory;
 use Wikimedia\TestingAccessWrapper;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
@@ -1094,10 +1093,8 @@ END;
 		$requestFactory->method( 'create' )
 			->willReturn( $request );
 
-		$dataFactory = new BufferingStatsdDataFactory( '' );
 		$statsHelper = StatsFactory::newUnitTestingHelper();
 		$statsFactory = $statsHelper->getStatsFactory();
-		$statsFactory->withStatsdDataFactory( $dataFactory );
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
@@ -1119,9 +1116,8 @@ END;
 			$sparqlHelper->runQuery( 'query', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 			$this->fail( 'should have thrown' );
 		} catch ( SparqlHelperException $e ) {
-			$statsdData = $dataFactory->getData();
-			// three data events: timing (ignored here), HTTP error, generic error
-			$this->assertCount( 3, $statsdData );
+			// two data events: timing (ignored here) and HTTP error
+			$this->assertCount( 2, $statsHelper->getAllFormatted() );
 			$this->assertSame( 1, $statsHelper->count( 'sparql_error_total' ) );
 			// TODO: Add type="http" to the selector when statsHelper selector method is fixed.
 			$this->assertSame( 1, $statsHelper->count( 'sparql_error_total{code="500"}' ) );
@@ -1143,10 +1139,8 @@ END;
 		$requestFactory->method( 'create' )
 			->willReturn( $request );
 
-		$dataFactory = new BufferingStatsdDataFactory( '' );
 		$statsHelper = StatsFactory::newUnitTestingHelper();
 		$statsFactory = $statsHelper->getStatsFactory();
-		$statsFactory->withStatsdDataFactory( $dataFactory );
 
 		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
 			self::getDefaultConfig(),
@@ -1168,9 +1162,8 @@ END;
 			$sparqlHelper->runQuery( 'query', self::getDefaultConfig()->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 			$this->fail( 'should have thrown' );
 		} catch ( SparqlHelperException $e ) {
-			$statsdData = $dataFactory->getData();
-			// three data events: timing (ignored here), JSON error, generic error
-			$this->assertCount( 3, $statsdData );
+			// two data events: timing (ignored here) and HTTP error
+			$this->assertCount( 2, $statsHelper->getAllFormatted() );
 			$this->assertSame( 1, $statsHelper->count( 'sparql_error_total' ) );
 			// TODO: Add type="json" to the selector when statsHelper selector method is fixed.
 			$this->assertSame( 1, $statsHelper->count( 'sparql_error_total{code="json_error_syntax"}' ) );
