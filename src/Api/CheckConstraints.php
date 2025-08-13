@@ -98,9 +98,8 @@ class CheckConstraints extends ApiBase {
 	 * Evaluates the parameters, runs the requested constraint check, and sets up the result
 	 */
 	public function execute() {
-		$baseKey = 'wikibase.quality.constraints.api.checkConstraints.execute';
-		$metric = $this->statsFactory->getCounter( 'check_constraints_execute_total' );
-		$metric->copyToStatsdAt( $baseKey )->increment();
+		$this->statsFactory->getCounter( 'check_constraints_execute_total' )
+			->increment();
 
 		$params = $this->extractRequestParams();
 

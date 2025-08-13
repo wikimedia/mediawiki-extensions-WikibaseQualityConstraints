@@ -114,10 +114,7 @@ class LoggingHelper {
 		$constraintCheckerClassShortName = substr( strrchr( $constraintCheckerClass, '\\' ), 1 );
 		$constraintTypeItemId = $constraint->getConstraintTypeItemId();
 
-		$baseCheckTimingKey = 'wikibase.quality.constraints.check.timing';
-		$this->statsFactory
-			->getTiming( 'check_constraint_duration_seconds' )
-			->copyToStatsdAt( "$baseCheckTimingKey.$constraintTypeItemId-$constraintCheckerClassShortName" )
+		$this->statsFactory->getTiming( 'check_constraint_duration_seconds' )
 			->observe( $durationSeconds * 1000 );
 
 		// find the longest limit (and associated log level) that the duration exceeds
@@ -183,10 +180,7 @@ class LoggingHelper {
 		$durationSeconds,
 		$method
 	) {
-		$checkEntityTimingKey = 'wikibase.quality.constraints.check.entity.timing';
-		$this->statsFactory
-			->getTiming( 'check_entity_constraint_duration_seconds' )
-			->copyToStatsdAt( $checkEntityTimingKey )
+		$this->statsFactory->getTiming( 'check_entity_constraint_duration_seconds' )
 			->observe( $durationSeconds * 1000 );
 
 		// find the longest limit (and associated log level) that the duration exceeds
@@ -218,11 +212,8 @@ class LoggingHelper {
 	 * Log a cache hit for a complete constraint check result for the given entity ID.
 	 */
 	public function logCheckConstraintsCacheHit( EntityId $entityId ) {
-		$cacheEntityHitKey = 'wikibase.quality.constraints.cache.entity.hit';
-		$metric = $this->statsFactory->getCounter( 'cache_entity_hit_total' );
-		$metric->copyToStatsdAt(
-				$cacheEntityHitKey,
-			)->increment();
+		$this->statsFactory->getCounter( 'cache_entity_hit_total' )
+			->increment();
 	}
 
 	/**
@@ -231,11 +222,8 @@ class LoggingHelper {
 	 * @param EntityId[] $entityIds
 	 */
 	public function logCheckConstraintsCacheMisses( array $entityIds ) {
-		$cacheEntityMissKey = 'wikibase.quality.constraints.cache.entity.miss';
-		$metric = $this->statsFactory->getCounter( 'cache_entity_miss_total' );
-		$metric->copyToStatsdAt(
-				$cacheEntityMissKey,
-			)->incrementBy( count( $entityIds ) );
+		$this->statsFactory->getCounter( 'cache_entity_miss_total' )
+			->incrementBy( count( $entityIds ) );
 	}
 
 	/**

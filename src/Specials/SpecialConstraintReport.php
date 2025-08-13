@@ -207,9 +207,8 @@ class SpecialConstraintReport extends SpecialPage {
 			return;
 		}
 
-		$baseKey = 'wikibase.quality.constraints.specials.specialConstraintReport.executeCheck';
-		$metric = $this->statsFactory->getCounter( 'special_constraint_report_execute_check_total' );
-		$metric->copyToStatsdAt( $baseKey )->increment();
+		$this->statsFactory->getCounter( 'special_constraint_report_execute_check_total' )
+			->increment();
 		$results = $this->constraintChecker->checkAgainstConstraintsOnEntityId( $entityId );
 
 		if ( !$results ) {

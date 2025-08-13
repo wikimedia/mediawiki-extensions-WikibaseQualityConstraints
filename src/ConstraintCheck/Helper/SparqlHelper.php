@@ -627,21 +627,18 @@ SPARQL;
 			hash( 'sha256', $regex )
 		);
 
-		$baseRegexCacheKey = 'wikibase.quality.constraints.regex.cache';
 		$metric = $this->statsFactory->getCounter( 'regex_cache_total' );
 
 		$cacheMapArray = $this->cache->getWithSetCallback(
 			$cacheKey,
 			WANObjectCache::TTL_DAY,
-			function ( $cacheMapArray ) use ( $text, $regex, $textHash, $metric, $baseRegexCacheKey ) {
+			function ( $cacheMapArray ) use ( $text, $regex, $textHash, $metric ) {
 				// Initialize the cache map if not set
 				if ( $cacheMapArray === false ) {
 					$metric
 						->setLabel( 'operation', 'refresh' )
 						->setLabel( 'status', 'init' )
-						->copyToStatsdAt( [
-							"$baseRegexCacheKey.refresh.init",
-						] )->increment();
+						->increment();
 
 					return [];
 				}
@@ -651,10 +648,6 @@ SPARQL;
 					$metric
 						->setLabel( 'operation', 'refresh' )
 						->setLabel( 'status', 'hit' )
-						->copyToStatsdAt( [
-							"$baseRegexCacheKey.refresh",
-							"$baseRegexCacheKey.refresh.hit",
-						] )
 						->increment();
 
 					$cacheMap->get( $textHash ); // ping cache
@@ -662,10 +655,6 @@ SPARQL;
 					$metric
 						->setLabel( 'operation', 'refresh' )
 						->setLabel( 'status', 'miss' )
-						->copyToStatsdAt( [
-							"$baseRegexCacheKey.refresh",
-							"$baseRegexCacheKey.refresh.miss",
-						] )
 						->increment();
 
 					try {
@@ -700,9 +689,6 @@ SPARQL;
 			$metric
 				->setLabel( 'operation', 'none' )
 				->setLabel( 'status', 'hit' )
-				->copyToStatsdAt( [
-					"$baseRegexCacheKey.hit",
-				] )
 				->increment();
 
 			$matches = $cacheMapArray[$textHash];
@@ -723,9 +709,6 @@ SPARQL;
 			$metric
 				->setLabel( 'operation', 'none' )
 				->setLabel( 'status', 'miss' )
-				->copyToStatsdAt( [
-					"$baseRegexCacheKey.miss",
-				] )
 				->increment();
 
 			return $this->matchesRegularExpressionWithSparql( $text, $regex );
@@ -872,12 +855,9 @@ EOF;
 	 * @throws SparqlHelperException if the query times out or some other error occurs
 	 */
 	protected function runQuery( string $query, string $endpoint, bool $needsPrefixes = true ): CachedQueryResults {
-		$baseSPARQLKey = 'wikibase.quality.constraints.sparql';
-
 		if ( $this->throttlingLock->isLocked( self::EXPIRY_LOCK_ID ) ) {
 			$this->statsFactory
 				->getCounter( 'sparql_throttling_total' )
-				->copyToStatsdAt( "$baseSPARQLKey.throttling" )
 				->increment();
 
 			throw new TooManySparqlRequestsException();
@@ -912,8 +892,7 @@ EOF;
 		$request = $this->requestFactory->create( $url, $options, __METHOD__ );
 
 		$timing = $this->statsFactory
-			->getTiming( 'sparql_runQuery_duration_seconds' )
-			->copyToStatsdAt( "$baseSPARQLKey.timing" );
+			->getTiming( 'sparql_runQuery_duration_seconds' );
 
 		$timing->start();
 		$requestStatus = $request->execute();
@@ -924,11 +903,9 @@ EOF;
 		$maxAge = $this->getCacheMaxAge( $request->getResponseHeaders() );
 		if ( $maxAge ) {
 			$this->statsFactory->getCounter( 'sparql_cached_total' )
-				->copyToStatsdAt( "$baseSPARQLKey.cached" )
 				->increment();
 		}
 
-		$sparqlErrorKey = "$baseSPARQLKey.error";
 		$metric = $this->statsFactory->getCounter( 'sparql_error_total' );
 		if ( $requestStatus->isOK() ) {
 			$json = $request->getContent();
@@ -948,10 +925,6 @@ EOF;
 				$metric
 					->setLabel( 'type', 'json' )
 					->setLabel( 'code', "$jsonErrorCode" )
-					->copyToStatsdAt( [
-						"$sparqlErrorKey",
-						"$sparqlErrorKey.json.$jsonErrorCode",
-					] )
 					->increment();
 				// fall through to general error handling
 			}
@@ -959,10 +932,6 @@ EOF;
 			$metric
 				->setLabel( 'type', 'http' )
 				->setLabel( 'code', "{$request->getStatus()}" )
-				->copyToStatsdAt( [
-					"$sparqlErrorKey",
-					"$sparqlErrorKey.http.{$request->getStatus()}",
-				] )
 				->increment();
 			// fall through to general error handling
 		}
@@ -971,10 +940,6 @@ EOF;
 			$metric
 				->setLabel( 'type', 'timeout' )
 				->setLabel( 'code', 'none' )
-				->copyToStatsdAt( [
-					"$sparqlErrorKey",
-					"$sparqlErrorKey.timeout",
-				] )
 				->increment();
 		}
 
@@ -999,9 +964,7 @@ EOF;
 				$fallbackBlockDuration );
 		}
 
-		$throttlingKey = "wikibase.quality.constraints.sparql.throttling";
 		$this->statsFactory->getCounter( 'sparql_throttling_total' )
-			->copyToStatsdAt( $throttlingKey )
 			->increment();
 
 		$throttlingUntil = $this->getThrottling( $request );

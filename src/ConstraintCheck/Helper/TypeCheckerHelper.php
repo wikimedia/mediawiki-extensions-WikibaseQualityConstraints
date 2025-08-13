@@ -138,8 +138,7 @@ class TypeCheckerHelper {
 	public function isSubclassOfWithSparqlFallback( EntityId $comparativeClass, array $classesToCheck ) {
 		$timing = $this->statsFactory->getTiming( 'isSubclassOf_duration_seconds' )
 			->setLabel( 'result', 'success' )
-			->setLabel( 'TypeCheckerImplementation', 'php' )
-			->copyToStatsdAt( 'wikibase.quality.constraints.type.php.success.timing' );
+			->setLabel( 'TypeCheckerImplementation', 'php' );
 		$timing->start();
 
 		try {
@@ -152,23 +151,19 @@ class TypeCheckerHelper {
 			$this->statsFactory->getTiming( 'isSubclassOf_entities_total' )
 				->setLabel( 'TypeCheckerImplementation', 'php' )
 				->setLabel( 'result', 'success' )
-				->copyToStatsdAt( 'wikibase.quality.constraints.type.php.success.entities' )
 				->observe( $entitiesChecked );
 
 			return new CachedBool( $isSubclass, Metadata::blank() );
 		} catch ( OverflowException ) {
 			$timing->setLabel( 'result', 'overflow' )
-				->copyToStatsdAt( 'wikibase.quality.constraints.type.php.overflow.timing' )
 				->stop();
 
 			if ( !( $this->sparqlHelper instanceof DummySparqlHelper ) ) {
 				$this->statsFactory->getCounter( 'sparql_typeFallback_total' )
-					->copyToStatsdAt( 'wikibase.quality.constraints.sparql.typeFallback' )
 					->increment();
 
 				$timing->setLabel( 'TypeCheckerImplementation', 'sparql' )
 					->setLabel( 'result', 'success' )
-					->copyToStatsdAt( 'wikibase.quality.constraints.type.sparql.success.timing' )
 					->start();
 
 				$hasType = $this->sparqlHelper->hasType(
