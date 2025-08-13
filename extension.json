@@ -86,7 +86,7 @@
 			"class": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters",
 			"factory": "WikibaseQuality\\ConstraintReport\\Api\\CheckConstraintParameters::newFromGlobalState",
 			"services": [
-				"StatsdDataFactory",
+				"StatsFactory",
 				"WikibaseRepo.ApiHelperFactory",
 				"WikibaseRepo.LanguageFallbackChainFactory",
 				"WikibaseRepo.StatementGuidParser",
