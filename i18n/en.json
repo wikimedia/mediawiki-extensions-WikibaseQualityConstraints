@@ -143,5 +143,9 @@
 	"wbqc-violation-message-language": "Statements for $1 should be only on Lexemes with language set to {{PLURAL:$2|1=$4.|2=either $4 or $5.|one of the following: $3}}",
 	"wbqc-violation-message-label-lacking": "Entities with statements for $1 should also have a label at least in {{PLURAL:$2|1=$4 language.|any of the following languages: $3}}",
 	"wbqc-violation-message-property-scope": "The property $1 should not be used in this location ($2). The only valid {{PLURAL:$3|location|locations}} for this property {{PLURAL:$3|is $5.|are: $4}}",
-	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such."
+	"wbqc-violation-message-exception": "This entity is a known exception for this constraint and has been marked as such.",
+	"right-wbqc-check-constraints": "Perform constraint checks on entities",
+	"action-wbqc-check-constraints": "perform constraint checks on entities",
+	"right-wbqc-check-constraints-uncached": "Use Special:ConstraintReport to perform constraint checks on entities",
+	"action-wbqc-check-constraints-uncached": "use Special:ConstraintReport to perform constraint checks on entities"
 }

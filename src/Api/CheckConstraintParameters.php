@@ -94,6 +94,8 @@ class CheckConstraintParameters extends ApiBase {
 			'wikibase.quality.constraints.api.checkConstraintParameters.execute'
 		);
 
+		$this->checkUserRightsAny( 'wbqc-check-constraints' );
+
 		$params = $this->extractRequestParams();
 		$result = $this->getResult();
 

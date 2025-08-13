@@ -58,9 +58,14 @@ final class WikibaseQualityConstraintsHooks implements
 
 		$out->addModules( 'wikibase.quality.constraints.suggestions' );
 
-		if ( $config->get( 'WBQualityConstraintsShowConstraintViolationToNonLoggedInUsers' )
-			|| $out->getUser()->isRegistered() ) {
-				$out->addModules( 'wikibase.quality.constraints.gadget' );
+		$user = $out->getUser();
+		if (
+			$user->isAllowed( 'wbqc-check-constraints' ) && (
+				$config->get( 'WBQualityConstraintsShowConstraintViolationToNonLoggedInUsers' ) ||
+				$user->isRegistered()
+			)
+		) {
+			$out->addModules( 'wikibase.quality.constraints.gadget' );
 		}
 	}
 

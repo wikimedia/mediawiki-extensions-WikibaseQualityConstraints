@@ -126,6 +126,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	 * @return array wbcheckconstraintparameters response, slightly normalized
 	 */
 	private function doRequest( array $params ): array {
+		$this->setGroupPermissions( '*', 'wbqc-check-constraints', true );
 		$params['action'] = 'wbcheckconstraintparameters';
 
 		$result = $this->doApiRequest( $params, [], false, null )[0];
