@@ -101,6 +101,8 @@ class CheckConstraints extends ApiBase {
 		$this->statsFactory->getCounter( 'check_constraints_execute_total' )
 			->increment();
 
+		$this->checkUserRightsAny( 'wbqc-check-constraints' );
+
 		$params = $this->extractRequestParams();
 
 		$this->validateParameters( $params );

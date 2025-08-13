@@ -718,5 +718,23 @@
 	"TestAutoloadNamespaces": {
 		"WikibaseQuality\\ConstraintReport\\Tests\\": "tests/phpunit/"
 	},
+	"GroupPermissions": {
+		"*": {
+			"wbqc-check-constraints": true
+		},
+		"user": {
+			"wbqc-check-constraints-uncached": true
+		}
+	},
+	"AvailableRights": [
+		"wbqc-check-constraints",
+		"wbqc-check-constraints-uncached"
+	],
+	"GrantPermissions": {
+		"basic": {
+			"wbqc-check-constraints": true,
+			"wbqc-check-constraints-uncached": true
+		}
+	},
 	"manifest_version": 2
 }

@@ -91,7 +91,7 @@ class SpecialConstraintReport extends SpecialPage {
 		Config $config,
 		StatsFactory $statsFactory
 	) {
-		parent::__construct( 'ConstraintReport' );
+		parent::__construct( 'ConstraintReport', 'wbqc-check-constraints-uncached' );
 
 		$this->entityLookup = $entityLookup;
 		$this->entityTitleLookup = $entityTitleLookup;
@@ -158,6 +158,8 @@ class SpecialConstraintReport extends SpecialPage {
 	 * @throws UnexpectedValueException
 	 */
 	public function execute( $subPage ) {
+		parent::execute( $subPage );
+
 		$out = $this->getOutput();
 
 		$postRequest = $this->getContext()->getRequest()->getVal( 'entityid' );

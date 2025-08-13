@@ -5,6 +5,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Specials;
 use DataValues\StringValue;
 use HamcrestPHPUnitIntegration;
 use MediaWiki\Config\MultiConfig;
+use MediaWiki\Exception\PermissionsError;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
 use SpecialPageTestBase;
@@ -119,6 +120,7 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 	 * @dataProvider provideRequestsAndMatchers
 	 */
 	public function testExecute( $subPage, array $request, $userLanguage, array $matchers ) {
+		$this->setGroupPermissions( '*', 'wbqc-check-constraints-uncached', true );
 		$request = new FauxRequest( $request );
 
 		if ( $subPage !== null ) {
@@ -267,6 +269,13 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 		$cases[ 'valid input - existing item' ] = [ '$id', [], $userLanguage, $matchers ];
 
 		return $cases;
+	}
+
+	public function testExecuteAnonymous(): void {
+		$this->setGroupPermissions( '*', 'wbqc-check-constraints-uncached', false );
+
+		$this->expectException( PermissionsError::class );
+		$this->executeSpecialPage();
 	}
 
 }
