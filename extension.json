@@ -700,11 +700,6 @@
 			"description": "Float value between 0 and 1 determining ratio of requests made to shellbox (vs. WDQS) in FormatChecker in evaluating regexes. Zero disables requesting to shellbox (all going to WDQS) and one means all requests will go to shellbox.",
 			"public": true
 		},
-		"WBQualityConstraintsShowConstraintViolationToNonLoggedInUsers": {
-			"value": true,
-			"description": "Whether or not show the constraint violation indicator to users that are not logged in.",
-			"public": true
-		},
 		"WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns": {
 			"value": [],
 			"description": "An array of known-good regex patterns that can be checked directly, without using Shellbox. These regexes should be immune to ReDoS attacks.",
