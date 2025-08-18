@@ -142,5 +142,9 @@
 	"wbqc-violation-message-language": "$1 дӀахьедарш {{PLURAL:$2|1=$4 меттан.|2=$4 йа $5 меттан.|рогӀера меттанийн цхьана: $3}} лексемашкахь бен магош дац",
 	"wbqc-violation-message-label-lacking": "$1 дӀахьедар долчу хӀуманашна йукъахь хила йеза цӀе а {{PLURAL:$2|1=маттахь: $4.|рогӀерчу меттанийн йукъара цхьана маттахь мукъане а: $3}}",
 	"wbqc-violation-message-property-scope": "$1 билгало лело ца йеза кху ($2) меттигехь. Магийна {{PLURAL:$3|меттиг|меттигаш}} хӀокху билгалонан {{PLURAL:$3|$5 йу.|йу: $4}}",
-	"wbqc-violation-message-exception": "ХӀара хӀума — хӀокху дехкаран тӀера девзаш долу йукъарадаккхар ду, иштта билгалйаьккхина а йу."
+	"wbqc-violation-message-exception": "ХӀара хӀума — хӀокху дехкаран тӀера девзаш долу йукъарадаккхар ду, иштта билгалйаьккхина а йу.",
+	"right-wbqc-check-constraints": "Духашна тӀехь дехкарш таллар кхочушдо",
+	"action-wbqc-check-constraints": "духийн дехкарш таллар кхочушдо",
+	"right-wbqc-check-constraints-uncached": "Леладе Special:ConstraintReport духийн дехкарш толлуш",
+	"action-wbqc-check-constraints-uncached": "леладе Special:ConstraintReport духийн дехкарш толлуш"
 }

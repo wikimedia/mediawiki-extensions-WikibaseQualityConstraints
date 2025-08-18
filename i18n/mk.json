@@ -143,5 +143,9 @@
 	"wbqc-violation-message-language": "Исказите за $1 треба да бидат само на оние лексеми чиј зададен јазик е {{PLURAL:$2|1=$4.|2=или $4 или $5.|еден од следниве: $3}}",
 	"wbqc-violation-message-label-lacking": "Единиците со искази за $1 треба да имаат и натписи {{PLURAL:$2|1=на барем $4 јазик.|барем на некој од следниве јазици: $3}}",
 	"wbqc-violation-message-property-scope": "Својството $1 не треба да се користи на ова место ($2). {{PLURAL:$3|Единственото соодветно место|Единствените соодветни места}} за него {{PLURAL:$3|е $5.|се: $4}}",
-	"wbqc-violation-message-exception": "Оваа единица е познат исклучок од условов и е означена како таква."
+	"wbqc-violation-message-exception": "Оваа единица е познат исклучок од условов и е означена како таква.",
+	"right-wbqc-check-constraints": "Вршење проверки на ограничувања на единици",
+	"action-wbqc-check-constraints": "вршење проверки на ограничувања на единици",
+	"right-wbqc-check-constraints-uncached": "Употреба на Special:ConstraintReport за вршење на проверки на ограничувања на единици",
+	"action-wbqc-check-constraints-uncached": "употреба на Special:ConstraintReport за вршење на проверки на ограничувања на единици"
 }

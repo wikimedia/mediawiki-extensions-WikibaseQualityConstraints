@@ -147,5 +147,9 @@
 	"wbqc-violation-message-language": "As declaracións de $1 só deberían estar nos lexemas cuxa lingua definida sexa {{PLURAL:$2|1=$4.|2=$4 ou $5.|unha das seguintes: $3}}",
 	"wbqc-violation-message-label-lacking": "As entidades con declaracións de $1 tamén deberían ter unha etiqueta {{PLURAL:$2|1=en lingua $4.|calquera das seguintes linguas: $3}}",
 	"wbqc-violation-message-property-scope": "A propiedade $1 non debe usarse nesta localización ($2). {{PLURAL:$3|A única localización válida|As únicas localizacións válidas}} para esta propiedade {{PLURAL:$3|é $5.|son: $4}}",
-	"wbqc-violation-message-exception": "Esta entidade é unha excepción coñecida para esta restrición e marcouse como tal."
+	"wbqc-violation-message-exception": "Esta entidade é unha excepción coñecida para esta restrición e marcouse como tal.",
+	"right-wbqc-check-constraints": "Realizar comprobacións de restricións nas entidades",
+	"action-wbqc-check-constraints": "realizar comprobacións de restricións nas entidades",
+	"right-wbqc-check-constraints-uncached": "Utilizar «Special:ConstraintReport» para realizar comprobacións de restricións nas entidades",
+	"action-wbqc-check-constraints-uncached": "utilizar «Special:ConstraintReport» para realizar comprobacións de restricións nas entidades"
 }

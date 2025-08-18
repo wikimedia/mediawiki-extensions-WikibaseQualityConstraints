@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Ayack",
+			"Derugon",
 			"Eihel",
 			"Envlh",
 			"Framawiki",
@@ -153,5 +154,9 @@
 	"wbqc-violation-message-language": "La propriété $1 ne peut s’appliquer qu’aux lexèmes définis {{PLURAL:$2|1=en $4|2=en $4 ou en $5.|dans une des langues suivantes : $3}}.",
 	"wbqc-violation-message-label-lacking": "Les entités qui déclarent une propriété $1 doivent aussi comporter au moins un libellé {{PLURAL:$2|en $4.|dans une des langues suivantes : $3}}",
 	"wbqc-violation-message-property-scope": "La propriété $1 ne doit plus être utilisée à cet endroit ($2). {{PLURAL:$3|Le seul emplacement valide|Les seuls emplacements valides}} pour cette propriété {{PLURAL:$3|est $5.|sont : $4}}",
-	"wbqc-violation-message-exception": "Cette entité est une exception connue pour cette contrainte et a été marquée comme telle."
+	"wbqc-violation-message-exception": "Cette entité est une exception connue pour cette contrainte et a été marquée comme telle.",
+	"right-wbqc-check-constraints": "Effectuer des vérifications de contraintes sur des entités",
+	"action-wbqc-check-constraints": "effectuer des vérifications de contraintes sur des entités",
+	"right-wbqc-check-constraints-uncached": "Utiliser Special:ConstraintReport pour effectuer des vérifications de contraintes sur des entités",
+	"action-wbqc-check-constraints-uncached": "utiliser Special:ConstraintReport pour effectuer des vérifications de contraintes sur des entités"
 }
