@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"JeffreyKim",
+			"Ktchankt"
+		]
+	},
+	"apihelp-wbcheckconstraints-summary": "喺任何你想要嘅實體上面執行约束檢查，然後返返去結果。",
+	"apihelp-wbcheckconstraints-param-id": "要攞資料嘅實體嘅ID清單。用「|」分隔數值或者其他方法。",
+	"apihelp-wbcheckconstraints-param-claimid": "GUID 清單識別一個用嚟檢查约束報告嘅聲明。用「|」嚟分隔啲數值。",
+	"apihelp-wbcheckconstraints-param-constraintid": "可選篩選器，淨係返返去具有指定约束ID嘅约束。",
+	"apihelp-wbcheckconstraints-param-status": "可選篩選器，淨係會返返去所選狀態嘅檢查結果。\n\n請注意，淨係有「違規」、「警告」、「建議」同埋「壞參數」狀態嘅結果先會被快取，所以揀除咗呢四個狀態之外嘅任何狀態嘅請求都唔會受益於快取。",
+	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "呢個聲明滿足咗個約束。",
+	"apihelp-wbcheckconstraints-paramvalue-status-violation": "呢個聲明違反咗個約束。",
+	"apihelp-wbcheckconstraints-paramvalue-status-exception": "聲明嘅主體實體係已知嘅約束例外。",
+	"apihelp-wbcheckconstraints-paramvalue-status-todo": "個約束唔會實現。",
+	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "約束參數已經被打破咗。",
+	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "由於呢個語句已經唔再用，所以未檢查呢個約束。",
+	"apihelp-wbcheckconstraints-paramvalue-status-warning": "呢個陳述違反咗個約束，但係個約束唔係強制性嘅。",
+	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "呢個陳述違反咗個約束，但係個約束只不過係一個建議。",
+	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "呢種snak（主要snak、限定詞或者參考）上面唔會檢查約束，所以約束檢查會被略過咗。",
+	"apihelp-wbcheckconstraintparameters-summary": "檢查啲約束語句嘅約束參數。",
+	"apihelp-wbcheckconstraintparameters-extended-description": "可以指定<var>屬性</var>同<var>約束</var>參數入面嘅任何一個或者兩個；所有由任何一個參數所揀嘅約束都會被檢查。",
+	"apihelp-wbcheckconstraintparameters-param-propertyid": "要檢查嘅物業ID清單。呢啲屬性嘅所有约束語句都會被檢查。\n\n如果指定咗呢個參數，佢一定係非空嘅。",
+	"apihelp-wbcheckconstraintparameters-param-constraintid": "要檢查嘅約束ID（GUID嘅約束語句）清單。\n\n如果指定咗呢個參數，佢一定係非空嘅。",
+	"apihelp-wbcheckconstraints-example-1": "檢查晒項目Q5同Q42嘅所有約束。",
+	"apihelp-wbcheckconstraints-example-2": "檢查晒單一語句上嘅所有约束。",
+	"apihelp-wbcheckconstraints-example-3": "檢查吓項目Q2嘅一個特定約束。",
+	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "檢查晒屬性上所有約束嘅約束參數。",
+	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "檢查吓兩個特定約束嘅約束參數。"
+}
