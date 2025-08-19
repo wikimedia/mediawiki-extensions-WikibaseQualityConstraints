@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"JeffreyKim"
+			"JeffreyKim",
+			"Ktchankt"
 		]
 	},
 	"apihelp-wbcheckconstraints-summary": "喺任何你想要嘅實體上面執行约束檢查，然後返返去結果。",
@@ -14,7 +15,7 @@
 	"apihelp-wbcheckconstraints-paramvalue-status-exception": "聲明嘅主體實體係已知嘅約束例外。",
 	"apihelp-wbcheckconstraints-paramvalue-status-todo": "個約束唔會實現。",
 	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "約束參數已經被打破咗。",
-	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "由於呢個語句已經唔再使用，所以未檢查呢個約束。",
+	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "由於呢個語句已經唔再用，所以未檢查呢個約束。",
 	"apihelp-wbcheckconstraints-paramvalue-status-warning": "呢個陳述違反咗個約束，但係個約束唔係強制性嘅。",
 	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "呢個陳述違反咗個約束，但係個約束只不過係一個建議。",
 	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "呢種snak（主要snak、限定詞或者參考）上面唔會檢查約束，所以約束檢查會被略過咗。",
