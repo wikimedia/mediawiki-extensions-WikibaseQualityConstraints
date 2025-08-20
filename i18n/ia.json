@@ -142,5 +142,9 @@
 	"wbqc-violation-message-language": "Declarationes pro $1 debe esser solmente sur lexemas con le lingua fixate a {{PLURAL:$2|1=$4.|2=o $4 o $5.|un del sequentes: $3}}",
 	"wbqc-violation-message-label-lacking": "Entitates con declarationes pro $1 debe tamben haber un etiquetta al minus in {{PLURAL:$2|1=le lingua $4.|un del sequente linguas: $3}}",
 	"wbqc-violation-message-property-scope": "Le proprietate $1 non debe esser usate in iste loco ($2). Le sol {{PLURAL:$3|loco|locos}} valide pro iste proprietate {{PLURAL:$3|es $5.|es: $4}}",
-	"wbqc-violation-message-exception": "Iste entitate es un exception cognoscite pro iste restriction e ha essite marcate como tal."
+	"wbqc-violation-message-exception": "Iste entitate es un exception cognoscite pro iste restriction e ha essite marcate como tal.",
+	"right-wbqc-check-constraints": "Exequer verificationes de restriction sur entitates",
+	"action-wbqc-check-constraints": "exequer verificationes de restriction sur entitates",
+	"right-wbqc-check-constraints-uncached": "Usar Special:ConstraintReport pro exequer verificationes de restriction sur entitates",
+	"action-wbqc-check-constraints-uncached": "usar Special:ConstraintReport pro exequer verificationes de restriction sur entitates"
 }
