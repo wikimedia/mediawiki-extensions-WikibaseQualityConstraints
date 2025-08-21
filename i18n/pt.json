@@ -150,6 +150,6 @@
 	"wbqc-violation-message-exception": "Esta entidade é uma exceção conhecida para esta restrição e foi marcada como tal.",
 	"right-wbqc-check-constraints": "Executar verificações de restrições nas entidades",
 	"action-wbqc-check-constraints": "realizar verificações de restrição nas entidades",
-	"right-wbqc-check-constraints-uncached": "Use Special:ConstraintReport para executar verificações de restrições em entidades",
+	"right-wbqc-check-constraints-uncached": "Utilize \"Special:ConstraintReport\" para executar as verificações de restrições nas entidades",
 	"action-wbqc-check-constraints-uncached": "utilize Special:ConstraintReport para executar verificações de restrições nas entidades"
 }
