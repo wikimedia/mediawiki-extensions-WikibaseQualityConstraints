@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"JeffreyKim",
-			"Ktchankt"
+			"Ktchankt",
+			"Yueman"
 		]
 	},
 	"apihelp-wbcheckconstraints-summary": "喺任何你想要嘅實體上面執行约束檢查，然後返返去結果。",
@@ -21,7 +22,7 @@
 	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "呢種snak（主要snak、限定詞或者參考）上面唔會檢查約束，所以約束檢查會被略過咗。",
 	"apihelp-wbcheckconstraintparameters-summary": "檢查啲約束語句嘅約束參數。",
 	"apihelp-wbcheckconstraintparameters-extended-description": "可以指定<var>屬性</var>同<var>約束</var>參數入面嘅任何一個或者兩個；所有由任何一個參數所揀嘅約束都會被檢查。",
-	"apihelp-wbcheckconstraintparameters-param-propertyid": "要檢查嘅物業ID清單。呢啲屬性嘅所有约束語句都會被檢查。\n\n如果指定咗呢個參數，佢一定係非空嘅。",
+	"apihelp-wbcheckconstraintparameters-param-propertyid": "要檢查嘅屬性ID清單。呢啲屬性嘅所有约束語句都會被檢查。\n\n如果指定咗呢個參數，佢一定係非空嘅。",
 	"apihelp-wbcheckconstraintparameters-param-constraintid": "要檢查嘅約束ID（GUID嘅約束語句）清單。\n\n如果指定咗呢個參數，佢一定係非空嘅。",
 	"apihelp-wbcheckconstraints-example-1": "檢查晒項目Q5同Q42嘅所有約束。",
 	"apihelp-wbcheckconstraints-example-2": "檢查晒單一語句上嘅所有约束。",
