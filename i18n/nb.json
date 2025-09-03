@@ -146,5 +146,9 @@
 	"wbqc-violation-message-language": "Utsagn for $1 bør kun være på leksemer på {{PLURAL:$2|1=$4|2=$4 eller $5|ett av følgende språk: $3}}.",
 	"wbqc-violation-message-label-lacking": "Entiteter med utsagn for $1 bør også ha {{PLURAL:$2|en etikett på $4|etiketter på følgende språk: $3}}.",
 	"wbqc-violation-message-property-scope": "Egenskapen $1 bør ikke brukes for dette stedet ($2). {{PLURAL:$3|Det eneste gyldige stedet|De eneste gyldige stedene}} for denne egenskapen er {{PLURAL:$3|$5|$4}}.",
-	"wbqc-violation-message-exception": "Denne entiteten er et kjent unntak fra denne begrensningen og har blitt merket som det."
+	"wbqc-violation-message-exception": "Denne entiteten er et kjent unntak fra denne begrensningen og har blitt merket som det.",
+	"right-wbqc-check-constraints": "Utføre begrensningskontroller på entiteter",
+	"action-wbqc-check-constraints": "utføre begrensningskontroller på entiteter",
+	"right-wbqc-check-constraints-uncached": "Bruke Special:ConstraintReport for å utføre begrensningskontroller på entiteter",
+	"action-wbqc-check-constraints-uncached": "bruke Special:ConstraintReport for å utføre begrensningskontroller på entiteter"
 }
