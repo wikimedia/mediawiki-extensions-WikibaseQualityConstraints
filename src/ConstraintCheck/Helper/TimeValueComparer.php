@@ -6,7 +6,6 @@ use DataValues\TimeValue;
 use DataValues\TimeValueCalculator;
 
 /**
- *
  * @license GPL-2.0-or-later
  */
 class TimeValueComparer {
