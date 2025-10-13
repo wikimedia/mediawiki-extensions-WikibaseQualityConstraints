@@ -6,11 +6,18 @@
 	},
 	"wbqc-constraintreport": "لاڤورن ککڠن",
 	"wbqc-constraintreport-form-section": "ڤريقسا ککڠن اونتوق اينتيتي",
+	"wbqc-constraintreport-status-suggestion": "چادڠن",
 	"wbqc-constraintreport-result-table-header-constraint": "ککڠن",
+	"wbqc-potentialissues-short": "مسئله برڤوتينسي",
+	"wbqc-suggestions-short": "چادڠن",
 	"wbqc-badparameters-long": "کڽاتاءن ککڠن اين ممڤوڽاءي ببراڤ ڤاراميتر يڠ تيدق صح.",
+	"wbqc-constrainttypehelp-short": "بنتوان",
 	"wbqc-constrainttypehelp-long": "لامن بنتوان باݢي جنيس ککڠن اين",
+	"wbqc-constraintdiscuss-short": "بينچڠ",
 	"wbqc-constraintdiscuss-long": "لامن ڤربينچڠن تنتڠ ککڠن اين",
 	"wbq-subextension-name-wbqc": "ککڠن",
 	"wbqc-violations-group": "ککڠن",
-	"wbqc-violation-message-parameters-error-unknown": "ڤاراميتر ککڠن اين تيدق داڤت دأيمڤورت."
+	"wbqc-violation-message-parameters-error-unknown": "ڤاراميتر ککڠن اين تيدق داڤت دأيمڤورت.",
+	"wbqc-violation-message-inverse": "$1 جوݢ ڤاتوت اد کڽاتاءن سوڠسڠ $2 $3.",
+	"wbqc-violation-message-citationNeeded": "کڽاتاءن اونتوق $1 ڤاتوت اد سکورڠ-کورڠڽ ساتو رجوعن."
 }
