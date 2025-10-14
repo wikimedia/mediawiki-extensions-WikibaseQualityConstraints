@@ -1,0 +1,25 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tofeiku"
+		]
+	},
+	"wbqc-constraintreport": "Laporan kekangan",
+	"wbqc-constraintreport-form-submit-label": "Periksa",
+	"wbqc-constraintreport-form-entityid-label": "ID entiti:",
+	"wbqc-constraintreport-form-entityid-placeholder": "Qxx atau Pxx",
+	"wbqc-constraintreport-status-warning": "Amaran",
+	"wbqc-constraintreport-status-suggestion": "Cadangan",
+	"wbqc-constraintreport-result-table-header-status": "Status",
+	"wbqc-constraintreport-result-table-header-property": "Sifat",
+	"wbqc-constraintreport-result-table-header-message": "Pesanan",
+	"wbqc-constraintreport-result-table-header-constraint": "Kekangan",
+	"wbqc-constraintreport-no-parameter": "tiada",
+	"wbqc-issues-short": "Masalah-masalah",
+	"wbqc-suggestions-short": "Cadangan",
+	"wbqc-constrainttypehelp-short": "Bantuan",
+	"wbqc-constraintdiscuss-short": "Bincang",
+	"wbqc-violation-header-parameters": "Parameter:",
+	"wbqc-violations-group": "Kekangan",
+	"wbqc-violation-message-citationNeeded": "Kenyataan untuk $1 patut ada sekurang-kurangnya satu rujukan."
+}
