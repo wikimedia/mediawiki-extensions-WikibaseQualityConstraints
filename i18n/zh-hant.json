@@ -148,5 +148,9 @@
 	"wbqc-violation-message-language": "$1的陳述只能出現在詞彙的語言設定為{{PLURAL:$2|1=$4。|2=$4或$5。|以下之一：$3}}",
 	"wbqc-violation-message-label-lacking": "陳述 $1 的實體{{PLURAL:$2|1=還需要$4標籤。 |還需要以下任意語言的標籤：$3}}",
 	"wbqc-violation-message-property-scope": "屬性$1不應在此位置（$2）上使用，有效的位置僅為{{PLURAL:$3|$5。|：$4}}",
-	"wbqc-violation-message-exception": "此實體是該限制的已知例外，並已被如此標記。"
+	"wbqc-violation-message-exception": "此實體是該限制的已知例外，並已被如此標記。",
+	"right-wbqc-check-constraints": "對實體執行限制檢查",
+	"action-wbqc-check-constraints": "對實體執行限制檢查",
+	"right-wbqc-check-constraints-uncached": "使用 Special:ConstraintReport 對實體執行限制檢查",
+	"action-wbqc-check-constraints-uncached": "使用 Special:ConstraintReport 對實體執行限制檢查"
 }
