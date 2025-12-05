@@ -13,41 +13,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 		global.jQuery = sinon.stub();
 		global.OO = sinon.stub();
 
-		// poor man's Promise.all()
-		global.jQuery.when = function () {
-			const promises = arguments,
-				length = promises.length,
-				results = [];
-			for ( let i = 0; i < length; i++ ) {
-				promises[ i ].then( ( data ) => {
-					results.push( data );
-				} );
-			}
-			return {
-				then: function ( func ) {
-					const thenResult = func.apply( {}, results );
-					return {
-						then: function ( func2 ) {
-							func2( thenResult );
-							return {
-								promise: sinon.spy()
-							};
-						}
-					};
-				}
-			};
-		};
-		// poor man's Object.assign()
-		global.jQuery.extend = function () {
-			const objects = Array.from( arguments ),
-				target = objects.shift();
-			for ( let i = 0; i < objects.length; i++ ) {
-				for ( const name in objects[ i ] ) {
-					target[ name ] = objects[ i ][ name ];
-				}
-			}
-			return target;
-		};
+		global.jQuery.extend = Object.assign;
 
 		loadedEntity = {};
 
@@ -156,7 +122,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 			expect( done.calledOnce, 'to be true' );
 		} );
 
-		it( 'runs a fullCheck once mw loader is done and entityView.rendered fires', () => {
+		it( 'runs a fullCheck once mw loader is done and entityView.rendered fires', async () => {
 			const gadget = new Gadget(),
 				statementSavedSpy = sinon.spy(),
 				entityViewRenderedSpy = sinon.stub(),
@@ -174,11 +140,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 			global.mediaWiki.loader.getState = sinon.stub();
 			global.mediaWiki.loader.getState.withArgs( 'wikibase.quality.constraints.gadget' ).returns( 'executing' );
 			global.mediaWiki.Api = sinon.stub();
-			global.mediaWiki.Api.prototype.get = sinon.stub().returns( {
-				then: sinon.stub().returns( {
-					then: sinon.stub()
-				} )
-			} );
+			global.mediaWiki.Api.prototype.get = sinon.stub().resolves( {} );
 			global.mediaWiki.config.get.withArgs( 'wgUserLanguage' ).returns( wgUserLanguage );
 
 			global.mediaWiki.hook = sinon.stub();
@@ -194,6 +156,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 			gadget._renderWbcheckconstraintsResult = sinon.stub();
 
 			gadget.defaultBehavior();
+			await Promise.resolve();
 
 			expect( entityViewRenderedSpy.calledOnce, 'to be true' );
 			sinon.assert.calledWith(
@@ -274,7 +237,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 			} );
 		} );
 
-		it( 'uses api response to update DOM statements', () => {
+		it( 'uses api response to update DOM statements', async () => {
 			const gadget = new Gadget(),
 				lang = 'fr',
 				entityId = 'Q42',
@@ -318,9 +281,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 				uselang: 'fr',
 				id: [ entityId ],
 				status: gadget.config.CACHED_STATUSES
-			} ).returns( {
-				then: sinon.stub().yields( responseData )
-			} );
+			} ).resolves( responseData );
 			global.jQuery.withArgs( '.wbqc-constraint-warning' ).returns( {
 				remove: preExistingReportButtonsRemovedSpy
 			} );
@@ -330,7 +291,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 			gadget._addReportsToStatement = sinon.spy();
 
 			gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
-			gadget.fullCheck( api, lang );
+			await gadget.fullCheck( api, lang );
 
 			sinon.assert.called( preExistingReportButtonsRemovedSpy );
 			sinon.assert.calledWith( gadget._addReportsToStatement, responseData.wbcheckconstraints.Q42 );
@@ -338,51 +299,38 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 	} );
 
 	describe( '_fullCheckAllIds', () => {
-		it( 'chunks requests', () => {
+		it( 'chunks requests and combines their responses', async () => {
 			const gadget = new Gadget( { WBCHECKCONSTRAINTS_MAX_ID_COUNT: 2 } ),
 				api = sinon.stub(),
 				lang = 'fr';
 
-			gadget._wbcheckconstraints = sinon.stub();
-			gadget._wbcheckconstraints.returns( { then: sinon.stub() } );
-			gadget._aggregateMultipleWbcheckconstraintsResponses = sinon.spy();
+			gadget._wbcheckconstraints = sinon.spy( async ( _api, _lang, ids ) => {
+				const response = { wbcheckconstraints: {} };
+				for ( const id of ids ) {
+					response.wbcheckconstraints[ id ] = {};
+				}
+				return response;
+			} );
 			gadget._renderWbcheckconstraintsResult = sinon.spy();
 
-			gadget._fullCheckAllIds( api, lang, [ 'L2', 'L2-F1', 'L2-F2', 'L2-F3', 'L2-S1', 'L2-S2', 'L2-F3' ] );
+			await gadget._fullCheckAllIds( api, lang, [ 'L2', 'L2-F1', 'L2-F2', 'L2-F3', 'L2-S1', 'L2-S2', 'L2-S3' ] );
 
 			sinon.assert.callCount( gadget._wbcheckconstraints, 4 );
 			sinon.assert.calledWith( gadget._wbcheckconstraints, api, lang, [ 'L2', 'L2-F1' ] );
 			sinon.assert.calledWith( gadget._wbcheckconstraints, api, lang, [ 'L2-F2', 'L2-F3' ] );
 			sinon.assert.calledWith( gadget._wbcheckconstraints, api, lang, [ 'L2-S1', 'L2-S2' ] );
-			sinon.assert.calledWith( gadget._wbcheckconstraints, api, lang, [ 'L2-F3' ] );
+			sinon.assert.calledWith( gadget._wbcheckconstraints, api, lang, [ 'L2-S3' ] );
 
-			sinon.assert.callCount( gadget._aggregateMultipleWbcheckconstraintsResponses, 1 );
 			sinon.assert.callCount( gadget._renderWbcheckconstraintsResult, 1 );
-		} );
-	} );
-
-	describe( '_aggregateMultipleWbcheckconstraintsResponses', () => {
-		it( 'can combine multiple responses\' entity information', () => {
-			const gadget = new Gadget(),
-				responseOne = {
-					wbcheckconstraints: {
-						L2: {
-							data: 'here'
-						}
-					}
-				},
-				responseTwo = {
-					wbcheckconstraints: {
-						'L2-F1': {
-							data: 'more of it'
-						}
-					}
-				};
-
-			const combinedResponse = gadget._aggregateMultipleWbcheckconstraintsResponses( responseOne, responseTwo );
-
-			expect( combinedResponse.L2, 'to equal', responseOne.wbcheckconstraints.L2 );
-			expect( combinedResponse[ 'L2-F1' ], 'to equal', responseTwo.wbcheckconstraints[ 'L2-F1' ] );
+			sinon.assert.calledWith( gadget._renderWbcheckconstraintsResult, {
+				L2: {},
+				'L2-F1': {},
+				'L2-F2': {},
+				'L2-F3': {},
+				'L2-S1': {},
+				'L2-S2': {},
+				'L2-S3': {}
+			} );
 		} );
 	} );
 

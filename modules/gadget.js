@@ -80,21 +80,17 @@ module.exports = ( function ( mw, wb, $, OO ) {
 		} );
 	};
 
-	SELF.prototype._fullCheckAllIds = function ( api, lang, ids ) {
+	SELF.prototype._fullCheckAllIds = async function ( api, lang, ids ) {
 		const j = ids.length,
 			chunk = this.config.WBCHECKCONSTRAINTS_MAX_ID_COUNT,
-			promises = [];
+			entityConstraints = {};
 
 		for ( let i = 0; i < j; i += chunk ) {
-			promises.push(
-				this._wbcheckconstraints( api, lang, ids.slice( i, i + chunk ) )
-			);
+			const { wbcheckconstraints } = await this._wbcheckconstraints( api, lang, ids.slice( i, i + chunk ) );
+			$.extend( entityConstraints, wbcheckconstraints );
 		}
 
-		return $.when.apply( $, promises )
-			.then( this._aggregateMultipleWbcheckconstraintsResponses.bind( this ) )
-			.then( this._renderWbcheckconstraintsResult.bind( this ) )
-			.promise();
+		return this._renderWbcheckconstraintsResult( entityConstraints );
 	};
 
 	/**
@@ -116,18 +112,6 @@ module.exports = ( function ( mw, wb, $, OO ) {
 					self._addReportsToStatement( data[ entityId ], $( this ) );
 				}
 			} );
-	};
-
-	SELF.prototype._aggregateMultipleWbcheckconstraintsResponses = function ( /* multiple responses */ ) {
-		const responses = [].slice.call( arguments ),
-			responseCount = responses.length,
-			entityConstraints = {};
-
-		for ( let i = 0; i < responseCount; i++ ) {
-			$.extend( entityConstraints, responses[ i ].wbcheckconstraints );
-		}
-
-		return entityConstraints;
 	};
 
 	SELF.prototype._getEntityDataByStatementId = function ( response, statementId ) {
