@@ -2,9 +2,17 @@
 	"name": "WikibaseQualityConstraints",
 	"private": true,
 	"scripts": {
-		"test": "grunt test"
+		"test": "grunt test",
+		"cypress:install": "cypress install",
+		"cypress:open": "cypress open",
+		"cypress:run": "cypress run",
+		"selenium-test": "npm run cypress:run"
 	},
 	"devDependencies": {
+		"api-testing": "^1.7.0",
+		"cypress": "^15.7.1",
+		"cypress-axe": "^1.7.0",
+		"cypress-wikibase-api": "^0.0.7",
 		"eslint-config-wikimedia": "0.32.3",
 		"eslint-plugin-jasmine": "^4.1.3",
 		"grunt": "1.6.1",
