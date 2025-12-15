@@ -110,6 +110,24 @@ You can run the tests, combined with linting and few other tools for asserting c
   grunt test
 ```
 
+#### Cypress / UI tests
+
+Cypress is used to click-test the constraints implementation. The Cypress tests run locally and
+also in CI (through the `selenium-test` npm script), and since we do not have constraints properly
+registered on Wikis in CI, the tests stub responses to the `wbcheckconstraints` API - they are not
+true "end-to-end" tests.
+
+You can run the tests through the provided npm scripts:
+
+```sh
+ # from this extension's folder
+ npm install
+ npm run cypress:install
+ npm run cypress:run
+```
+
+To develop Cypress tests interactively, use the `cypress:open` script.
+
 ### Adding a new constraint type
 
 To add a new constraint type, the following steps are necessary:
