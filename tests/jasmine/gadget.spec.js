@@ -13,6 +13,9 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 		global.jQuery = sinon.stub();
 		global.OO = sinon.stub();
 
+		global.mediaWiki.config = sinon.stub();
+		global.mediaWiki.config.get = sinon.stub();
+
 		global.jQuery.extend = Object.assign;
 
 		loadedEntity = {};
@@ -77,8 +80,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 			const gadget = new Gadget();
 
 			gadget.fullCheck = sinon.stub();
-			global.mediaWiki.config = sinon.stub();
-			global.mediaWiki.config.get = sinon.stub();
+
 			global.mediaWiki.config.get.withArgs( 'wbEntityId' ).returns( 'Q42' );
 			global.mediaWiki.config.get.withArgs( 'wbIsEditView' ).returns( true );
 			global.mediaWiki.loader = sinon.stub();
@@ -108,8 +110,6 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 			const gadget = new Gadget(),
 				done = sinon.stub();
 
-			global.mediaWiki.config = sinon.stub();
-			global.mediaWiki.config.get = sinon.stub();
 			global.mediaWiki.config.get.withArgs( 'wbEntityId' ).returns( 'Q42' );
 			global.mediaWiki.config.get.withArgs( 'wbIsEditView' ).returns( true );
 			global.mediaWiki.loader = sinon.stub();
@@ -129,8 +129,6 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 				wgUserLanguage = 'de',
 				wbEntityId = 'Q42';
 
-			global.mediaWiki.config = sinon.stub();
-			global.mediaWiki.config.get = sinon.stub();
 			global.mediaWiki.config.get.withArgs( 'wbEntityId' ).returns( wbEntityId );
 			global.mediaWiki.config.get.withArgs( 'wbIsEditView' ).returns( true );
 			global.mediaWiki.loader = sinon.stub();

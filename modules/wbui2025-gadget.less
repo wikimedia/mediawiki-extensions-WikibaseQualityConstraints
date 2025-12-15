@@ -1,0 +1,40 @@
+@import 'mediawiki.skin.variables.less';
+
+.wikibase-wbui2025-wbqc-icon {
+	&--flag {
+		.cdx-mixin-css-icon( @cdx-icon-flag );
+		padding: 3px 0 3px 0;
+	}
+
+	&--notice {
+		.cdx-mixin-css-icon( @cdx-icon-notice );
+		padding: 3px 0 3px 0;
+	}
+
+	&--error {
+		.cdx-mixin-css-icon( @cdx-icon-error, @color-icon-error );
+		padding: 3px 0 3px 0;
+	}
+
+	&--alert {
+		.cdx-mixin-css-icon( @cdx-icon-alert, @color-icon-warning );
+		padding: 3px 0 3px 0;
+	}
+
+	&--flask {
+		.cdx-mixin-css-icon( @cdx-icon-lab-flask );
+		padding: 3px 0 3px 0;
+	}
+}
+
+.wikibase-wbui2025-wbqc-constraint-header {
+	padding-bottom: @spacing-150;
+	font-weight: @font-weight-bold;
+}
+
+.wikibase-wbui2025-wbqc-constraint-links {
+	display: flex;
+	gap: @spacing-75;
+	color: @color-progressive;
+	padding-top: @spacing-150;
+}

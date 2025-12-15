@@ -161,7 +161,10 @@
 		},
 		"wikibase.quality.constraints.gadget": {
 			"scripts": "gadget.js",
-			"styles": "gadget.less",
+			"styles": [
+				"gadget.less",
+				"wbui2025-gadget.less"
+			],
 			"dependencies": [
 				"mediawiki.api",
 				"oojs-ui-core",

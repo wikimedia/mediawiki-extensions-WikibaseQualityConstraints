@@ -54,6 +54,12 @@ final class WikibaseQualityConstraintsHooks implements
 		$isMobileView = ExtensionRegistry::getInstance()->isLoaded( 'MobileFrontend' ) &&
 			$services->getService( 'MobileFrontend.Context' )->shouldDisplayMobileView();
 		if ( $isMobileView ) {
+			$user = $out->getUser();
+			$isWbui2025Enabled = WikibaseRepo::getWbui2025FeatureFlag( $services )
+				->shouldRenderAsWbui2025( $user );
+			if ( $isWbui2025Enabled && $user->isAllowed( 'wbqc-check-constraints' ) ) {
+				$out->addModules( 'wikibase.quality.constraints.gadget' );
+			}
 			return;
 		}
 
