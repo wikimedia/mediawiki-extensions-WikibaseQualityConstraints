@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bennylin",
 			"Daud I.F. Argana",
 			"Pebaryan",
 			"RXerself",
@@ -83,7 +84,7 @@
 	"wbqc-violation-message-invalid-scope": "$1 bukan merupakan cakupan jenis pewatas $2 yang sah. Cakupan $3 yang sah untuk jenis pewatas ini adalah {{PLURAL:$3|$5.|2=$5 dan $6.|: $4}}",
 	"wbqc-violation-message-commons-link-no-existent": "Pranala Commons tidak ditemukan.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Pranala Commons mengandung karakter yang tidak sah.",
-	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Pemeriksaan belum diterapkan untuk ruangnama \"$1\".",
+	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Pemeriksaan belum diterapkan untuk ruang nama \"$1\".",
 	"wbqc-violation-message-conflicts-with-property": "Sebuah entitas seharusnya tidak memiliki pernyataan $1 dan $2 bersama-sama.",
 	"wbqc-violation-message-conflicts-with-claim": "Sebuah entitas tidak diperbolehkan memiliki pernyataan untuk $1 bersamaan dengan pernyataan $2 bernilai $3.",
 	"wbqc-violation-message-contemporary-subject-earlier": "Entitas $1 dan $3 ditautkan melalui $2 sebagai entitas dari periode yang sama namun nilai terakhir untuk $1 adalah $4 dan nilai paling awal untuk $3 adalah $5.",
