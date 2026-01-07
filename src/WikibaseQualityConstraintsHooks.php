@@ -43,12 +43,13 @@ final class WikibaseQualityConstraintsHooks implements
 		if ( !$lookup->isNamespaceWithEntities( $title->getNamespace() ) ) {
 			return;
 		}
-		if ( empty( $out->getJsConfigVars()['wbIsEditView'] ) ) {
+
+		$jsConfigVars = $out->getJsConfigVars();
+		if ( empty( $jsConfigVars['wbIsEditView'] ) || empty( $jsConfigVars['wbEntityId'] ) ) {
 			return;
 		}
 
 		$services = MediaWikiServices::getInstance();
-		$config = $services->getMainConfig();
 
 		$isMobileView = ExtensionRegistry::getInstance()->isLoaded( 'MobileFrontend' ) &&
 			$services->getService( 'MobileFrontend.Context' )->shouldDisplayMobileView();

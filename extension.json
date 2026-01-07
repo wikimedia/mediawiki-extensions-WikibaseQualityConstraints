@@ -169,8 +169,7 @@
 				"oojs-ui.styles.icons-alerts",
 				"wikibase.quality.constraints.icon",
 				"wikibase.quality.constraints.ui"
-			],
-			"skipFunction": "gadget-skip.js"
+			]
 		},
 		"wikibase.quality.constraints.suggestions": {
 			"packageFiles": [
