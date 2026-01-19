@@ -129,14 +129,18 @@
 				"wikibase"
 			],
 			"messages": [
+				"wbqc-issue-heading",
 				"wbqc-issues-short",
 				"wbqc-issues-long",
+				"wbqc-potentialissue-heading",
 				"wbqc-potentialissues-short",
 				"wbqc-potentialissues-long",
+				"wbqc-suggestion-heading",
 				"wbqc-suggestions-short",
 				"wbqc-suggestions-long",
 				"wbqc-badparameters-short",
 				"wbqc-badparameters-long",
+				"wbqc-parameterissue-heading",
 				"wbqc-parameterissues-short",
 				"wbqc-parameterissues-long",
 				"wbqc-constrainttypehelp-short",

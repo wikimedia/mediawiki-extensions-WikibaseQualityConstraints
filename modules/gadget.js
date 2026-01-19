@@ -136,6 +136,69 @@ module.exports = ( function ( mw, wb, $ ) {
 			} );
 		};
 
+		SELF.prototype._buildPopoverItemList = function ( results ) {
+			// this determines the order that the items appear in the popover
+			const statuses = [
+				{
+					status: 'violation',
+					icon: 'error',
+					title: mw.message( 'wbqc-issue-heading' ).text()
+				},
+				{
+					status: 'warning',
+					icon: 'notice',
+					title: mw.message( 'wbqc-potentialissue-heading' ).text()
+				},
+				{
+					status: 'suggestion',
+					icon: 'flag',
+					title: mw.message( 'wbqc-suggestion-heading' ).text()
+				},
+				{
+					status: 'bad-parameters',
+					icon: 'flask',
+					title: mw.message( 'wbqc-parameterissue-heading' ).text(),
+					description: mw.message( 'wbqc-parameterissues-long' ).text()
+				}
+			];
+			const resultsByStatus = {};
+			for ( const result of results ) {
+				resultsByStatus[ result.status ] = resultsByStatus[ result.status ] || [];
+				resultsByStatus[ result.status ].push( result );
+			}
+
+			const popoverItems = [];
+			for ( const statusConfig of statuses ) {
+				if ( statusConfig.status === 'bad-parameters' && popoverItems.length === 0 ) {
+					continue;
+				}
+				for ( const result of ( resultsByStatus[ statusConfig.status ] || [] ) ) {
+					const statusDescriptionHtml = statusConfig.description ? `
+	<div class="wikibase-wbui2025-wbqc-status-description">${ mw.html.escape( statusConfig.description ) }</div>` : '';
+					const bodyHtml = statusDescriptionHtml + `
+	<div class="wikibase-wbui2025-wbqc-constraint">
+		<div class="wikibase-wbui2025-wbqc-constraint-header">
+			<a target="_blank" href="${ mw.html.escape( result.constraint.link ) }">${ mw.html.escape( result.constraint.typeLabel ) }</a>
+		</div>
+		<div class="wikibase-wbui2025-wbqc-constraint-content">${ result[ 'message-html' ] }</div>
+	</div>`;
+					const footerHtml = `
+	<div class="wikibase-wbui2025-wbqc-constraint-links">
+		<a href="https://www.wikidata.org/wiki/Special:MyLanguage/Help:Property_constraints_portal/${ mw.html.escape( result.constraint.type ) }" title="${ mw.html.escape( mw.message( 'wbqc-constrainttypehelp-long' ).text() ) }">${ mw.message( 'wbqc-constrainttypehelp-short' ).parse() }</a>
+		 | <a href="${ mw.html.escape( result.constraint.discussLink ) }" title="${ mw.html.escape( mw.message( 'wbqc-constraintdiscuss-long' ).text() ) }">${ mw.message( 'wbqc-constraintdiscuss-short' ).parse() }</a>
+	</div>`;
+
+					popoverItems.push( {
+						title: statusConfig.title,
+						iconClass: `wikibase-wbui2025-wbqc-icon--${ statusConfig.icon }`,
+						bodyHtml,
+						footerHtml
+					} );
+				}
+			}
+			return popoverItems;
+		};
+
 		SELF.prototype._renderWbcheckconstraintsResult = async function ( data ) {
 			const require = await mw.loader.using( [
 				'wikibase.wbui2025.lib'
@@ -146,58 +209,14 @@ module.exports = ( function ( mw, wb, $ ) {
 				for ( const propertyList of Object.values( statementList.claims ) ) {
 					for ( const propertyData of propertyList ) {
 						if ( propertyData.mainsnak.results.length > 0 ) {
-							const result = propertyData.mainsnak.results[ 0 ];
-							let icon, titleMessageKey;
-
-							switch ( result.status ) {
-								case 'violation':
-									icon = 'notice';
-									titleMessageKey = 'wbqc-issues-short';
-									break;
-								case 'warning':
-									icon = 'error';
-									titleMessageKey = 'wbqc-potentialissues-short';
-									break;
-								case 'bad-parameters':
-									continue;
-								case 'advanced':
-									icon = 'flask';
-									titleMessageKey = 'wbqc-parameterissues-short';
-									break;
-								case 'suggestion':
-									icon = 'flag';
-									titleMessageKey = 'wbqc-suggestions-short';
-									break;
-								default:
-									throw new Error( 'unexpected status ' + result.status );
+							const popoverItems = this._buildPopoverItemList( propertyData.mainsnak.results );
+							if ( popoverItems.length > 0 ) {
+								wbui2025.store.setIndicatorsHtmlForSnakHash(
+									propertyData.mainsnak.hash,
+									`<span class="${ popoverItems[ 0 ].iconClass }"></span>`
+								);
+								wbui2025.store.setPopoverContentForSnakHash( propertyData.mainsnak.hash, popoverItems );
 							}
-
-							const bodyHtml = `
-	<div class="wikibase-wbui2025-wbqc-constraint">
-		<div class="wikibase-wbui2025-wbqc-constraint-header">
-			<a target="_blank" href="${ mw.html.escape( result.constraint.link ) }">${ mw.html.escape( result.constraint.typeLabel ) }</a>
-		</div>
-		<div class="wikibase-wbui2025-wbqc-constraint-content">${ result[ 'message-html' ] }</div>
-		<div class="wikibase-wbui2025-wbqc-constraint-links">
-			<a href="https://www.wikidata.org/wiki/Special:MyLanguage/Help:Property_constraints_portal/${ mw.html.escape( result.constraint.type ) }" title="${ mw.html.escape( mw.message( 'wbqc-constrainttypehelp-long' ).text() ) }">${ mw.message( 'wbqc-constrainttypehelp-short' ).parse() }</a>
-			 | <a href="${ mw.html.escape( result.constraint.discussLink ) }" title="${ mw.html.escape( mw.message( 'wbqc-constraintdiscuss-long' ).text() ) }">${ mw.message( 'wbqc-constraintdiscuss-short' ).parse() }</a>
-		</div>
-	</div>`;
-
-							const popoverContent = {
-								icon: `<span class="wikibase-wbui2025-wbqc-icon--${ icon }"></span>`,
-								// Messages that can be used here:
-								// * wbqc-issues-short
-								// * wbqc-potentialissues-short
-								// * wbqc-badparameters-short
-								// * wbqc-parameterissues-short
-								// * wbqc-suggestions-short
-								title: mw.message( titleMessageKey ).text(),
-								bodyHtml: bodyHtml
-							};
-
-							wbui2025.store.setIndicatorsHtmlForSnakHash( propertyData.mainsnak.hash, `<span class="wikibase-wbui2025-wbqc-icon--${ icon }"></span>` );
-							wbui2025.store.setPopoverContentForSnakHash( propertyData.mainsnak.hash, popoverContent );
 						}
 					}
 				}

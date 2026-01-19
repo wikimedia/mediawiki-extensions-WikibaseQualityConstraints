@@ -576,7 +576,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 		} );
 	} );
 
-	describe( 'snackCheck', () => {
+	describe( 'snakCheck', () => {
 		it( 'runs a full check', () => {
 			const gadget = new Gadget(),
 				api = sinon.stub(),
@@ -639,4 +639,308 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 		} );
 	} );
 
+} );
+
+describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
+	const expect = require( 'unexpected' ).clone(),
+		sinon = require( 'sinon' );
+	let Gadget,
+		loadedEntity,
+		setIndicatorsHtmlForSnakHashStub,
+		setPopoverContentForSnakHashStub;
+
+	beforeEach( () => {
+		// ensure the module, containing immediately invoked code, is loaded repeatedly
+		delete require.cache[ require.resolve( 'wikibase.quality.constraints.gadget' ) ];
+
+		global.mediaWiki = sinon.stub();
+		global.wikibase = sinon.stub();
+		global.jQuery = sinon.stub();
+		global.OO = sinon.stub();
+
+		global.mediaWiki.config = sinon.stub();
+		global.mediaWiki.config.get = sinon.stub();
+		global.mediaWiki.config.get.withArgs( 'wgMFMode' ).returns( true );
+
+		setIndicatorsHtmlForSnakHashStub = sinon.stub();
+		setPopoverContentForSnakHashStub = sinon.stub();
+
+		global.mediaWiki.loader = sinon.stub();
+		global.mediaWiki.loader.using = sinon.stub().returns(
+			sinon.stub().returns( {
+				store: {
+					setIndicatorsHtmlForSnakHash: setIndicatorsHtmlForSnakHashStub,
+					setPopoverContentForSnakHash: setPopoverContentForSnakHashStub
+				}
+			} )
+		);
+
+		global.mediaWiki.loader.getModuleNames = sinon.stub().returns( {
+			includes: sinon.stub().withArgs( 'wikibase.wbui2025.lib' ).returns( true )
+		} );
+
+		global.mediaWiki.message = sinon.stub().returns( {
+			text: sinon.stub().returns( 'header message' ),
+			parse: sinon.stub()
+		} );
+		global.mediaWiki.html = { escape: sinon.stub() };
+		global.mediaWiki.track = sinon.spy();
+		global.jQuery.extend = Object.assign;
+
+		loadedEntity = {};
+
+		global.wikibase.EntityInitializer = {
+			newFromEntityLoadedHook: function () {
+				return {
+					getEntity: function () {
+						return {
+							done: sinon.stub().yields( loadedEntity )
+						};
+					}
+				};
+			}
+		};
+
+		Gadget = require( 'wikibase.quality.constraints.gadget' );
+	} );
+
+	it( 'calls api with correct parameters', async () => {
+		const gadget = new Gadget(),
+			lang = 'fr',
+			entityId = 'Q42',
+			api = {
+				get: sinon.stub().returns( {
+					then: sinon.stub().returns( {
+						then: sinon.stub()
+					} )
+				} )
+			};
+
+		global.mediaWiki.track = sinon.spy();
+
+		gadget._renderWbcheckconstraintsResult = sinon.spy();
+
+		gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
+		gadget.fullCheck( api, lang );
+
+		sinon.assert.calledWith( api.get, {
+			action: 'wbcheckconstraints',
+			format: 'json',
+			formatversion: 2,
+			uselang: 'fr',
+			id: [ entityId ],
+			status: gadget.config.CACHED_STATUSES
+		} );
+	} );
+
+	it( 'adds a single issue to the store', async () => {
+		const gadget = new Gadget(),
+			lang = 'fr',
+			entityId = 'Q42',
+			api = {
+				get: sinon.stub()
+			},
+			responseData = {
+				wbcheckconstraints: {
+					Q42: {
+						claims: {
+							P9: [ {
+								id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+								mainsnak: {
+									hash: '261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+									results: [ {
+										status: 'warning',
+										property: 'P9',
+										constraint: {
+											id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+											type: 'Q1283',
+											typeLabel: 'MultiValueConstraintItem',
+											link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+											discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+										},
+										'message-html': 'This property should contain multiple values.',
+										claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+									} ]
+								}
+							} ]
+						}
+					}
+				}, success: 1
+			};
+
+		api.get.withArgs( {
+			action: 'wbcheckconstraints',
+			format: 'json',
+			formatversion: 2,
+			uselang: 'fr',
+			id: [ entityId ],
+			status: gadget.config.CACHED_STATUSES
+		} ).resolves( responseData );
+
+		gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
+		await gadget.fullCheck( api, lang );
+
+		expect( setIndicatorsHtmlForSnakHashStub.calledOnceWith(
+			'261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+			'<span class="wikibase-wbui2025-wbqc-icon--notice"></span>'
+		), 'to be true' );
+
+		expect( setPopoverContentForSnakHashStub.calledOnceWith(
+			'261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+			[ sinon.match.object ]
+		), 'to be true' );
+	} );
+
+	it( 'does not add anything if the only issue is "advanced"', async () => {
+		const gadget = new Gadget(),
+			lang = 'fr',
+			entityId = 'Q42',
+			api = {
+				get: sinon.stub()
+			},
+			responseData = {
+				wbcheckconstraints: {
+					Q42: {
+						claims: {
+							P9: [ {
+								id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+								mainsnak: {
+									hash: '261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+									results: [ {
+										status: 'bad-parameters',
+										property: 'P9',
+										constraint: {
+											id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+											type: 'Q1283',
+											typeLabel: 'MultiValueConstraintItem',
+											link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+											discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+										},
+										'message-html': 'This property should contain multiple values.',
+										claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+									} ]
+								}
+							} ]
+						}
+					}
+				}, success: 1
+			};
+		api.get.withArgs( {
+			action: 'wbcheckconstraints',
+			format: 'json',
+			formatversion: 2,
+			uselang: 'fr',
+			id: [ entityId ],
+			status: gadget.config.CACHED_STATUSES
+		} ).resolves( responseData );
+
+		gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
+		await gadget.fullCheck( api, lang );
+
+		expect( setIndicatorsHtmlForSnakHashStub.called, 'to be false' );
+		expect( setPopoverContentForSnakHashStub.called, 'to be false' );
+	} );
+
+	it( 'adds multiple issues to the store, including advanced issues', async () => {
+		const gadget = new Gadget(),
+			lang = 'fr',
+			entityId = 'Q42',
+			api = {
+				get: sinon.stub()
+			},
+			responseData = {
+				wbcheckconstraints: {
+					Q42: {
+						claims: {
+							P9: [ {
+								id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+								mainsnak: {
+									hash: '261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+									results: [
+										{
+											status: 'bad-parameters',
+											property: 'P9',
+											constraint: {
+												id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												type: 'Q1283',
+												typeLabel: 'MultiValueConstraintItem',
+												link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+											},
+											'message-html': 'parameters are wrong for this on.',
+											claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+										},
+										{
+											status: 'warning',
+											property: 'P9',
+											constraint: {
+												id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												type: 'Q1283',
+												typeLabel: 'MultiValueConstraintItem',
+												link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+											},
+											'message-html': 'This property should contain multiple values.',
+											claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+										},
+										{
+											status: 'suggestion',
+											property: 'P9',
+											constraint: {
+												id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												type: 'Q1283',
+												typeLabel: 'MultiValueConstraintItem',
+												link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+											},
+											'message-html': 'This property should contain multiple values.',
+											claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+										},
+										{
+											status: 'violation',
+											property: 'P9',
+											constraint: {
+												id: 'P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												type: 'Q1283',
+												typeLabel: 'MultiValueConstraintItem',
+												link: 'https://test.wikidata.org/wiki/Property:P9#P9$197313ce-4014-c893-e2c4-5eb1f9347945',
+												discussLink: 'https://test.wikidata.org/wiki/Property_talk:P9'
+											},
+											'message-html': 'This property should contain multiple values.',
+											claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
+										}
+									]
+								}
+							} ]
+						}
+					}
+				}, success: 1
+			};
+		api.get.withArgs( {
+			action: 'wbcheckconstraints',
+			format: 'json',
+			formatversion: 2,
+			uselang: 'fr',
+			id: [ entityId ],
+			status: gadget.config.CACHED_STATUSES
+		} ).resolves( responseData );
+
+		gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
+		await gadget.fullCheck( api, lang );
+
+		expect( setIndicatorsHtmlForSnakHashStub.calledOnceWith(
+			'261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+			'<span class="wikibase-wbui2025-wbqc-icon--error"></span>'
+		), 'to be true' );
+
+		expect( setPopoverContentForSnakHashStub.calledOnceWith(
+			'261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+			[
+				sinon.match.has( 'iconClass', 'wikibase-wbui2025-wbqc-icon--error' ),
+				sinon.match.has( 'iconClass', 'wikibase-wbui2025-wbqc-icon--notice' ),
+				sinon.match.has( 'iconClass', 'wikibase-wbui2025-wbqc-icon--flag' ),
+				sinon.match.has( 'iconClass', 'wikibase-wbui2025-wbqc-icon--flask' )
+			]
+		), 'to be true' );
+	} );
 } );

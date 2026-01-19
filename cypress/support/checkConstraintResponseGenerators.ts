@@ -12,6 +12,7 @@ export interface ConstraintReportExpectation {
 	constraintType: string;
 	constraintTypeLabel: string;
 	constraintReportHtml: string;
+	constraintStatusIcon: string;
 }
 
 interface ConstraintResponse {
@@ -38,6 +39,13 @@ interface ViolationData {
 	};
 	'message-html': string;
 }
+
+const statusToIconClass = {
+	violation: '.wikibase-wbui2025-wbqc-icon--error',
+	warning: '.wikibase-wbui2025-wbqc-icon--notice',
+	suggestion: '.wikibase-wbui2025-wbqc-icon--flag',
+	'bad-parameters': '.wikibase-wbui2025-wbqc-icon--flask',
+};
 
 export function generateCheckConstraintResponse(
 	itemId: string,
@@ -84,6 +92,7 @@ export function generateCheckConstraintResponse(
 			constraintType: datum.constraint.type,
 			constraintTypeLabel: datum.constraint.typeLabel,
 			constraintReportHtml: datum[ 'message-html' ],
+			constraintStatusIcon: statusToIconClass[ datum.status ],
 		} ) ),
 	};
 }
