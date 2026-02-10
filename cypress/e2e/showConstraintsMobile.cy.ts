@@ -48,51 +48,7 @@ describe( 'show constraints', () => {
 			popover.reportHtml().should( 'have.html', expectation.constraintReportHtml );
 		};
 
-		it( 'loads the item view with a simple violation', function () {
-			const statement = this.item.claims[ this.propertyId ][ 0 ];
-			const { responseData, expectations } = generateCheckConstraintResponse( this.itemId, statement, this.propertyId );
-			cy.intercept( '**/api.php?action=wbcheckconstraints&*', ( request ) => {
-				request.reply( responseData );
-			} ).as( 'wbcheckconstraints' );
-
-			const itemViewPage = new ItemViewPage( this.itemId, true );
-			itemViewPage.open();
-			cy.wait( '@wbcheckconstraints' ).its( 'request.query' ).should( 'deep.include', {
-				id: this.itemId,
-				status: 'violation|warning|suggestion|bad-parameters',
-			} );
-			const wbui2025StatementView = new Wbui2025StatementView( statement.id );
-			wbui2025StatementView.violationIndicatorIcon().click();
-
-			const wbui2025Popover = new Wbui2025ConstraintReportPopover();
-			matchPopoverToExpectation( wbui2025Popover, expectations[ 0 ] );
-		} );
-
-		it( 'does not add an indicator or popover when the only issue is bad-parameters', function () {
-			const statement = this.item.claims[ this.propertyId ][ 0 ];
-			const { responseData } = generateCheckConstraintResponse(
-				this.itemId,
-				statement,
-				this.propertyId,
-				[
-					{ status: 'bad-parameters', type: 'Q2', typeLabel: 'parameters problem', reportHtml: '<span>should not be shown</span>' },
-				],
-			);
-			cy.intercept( '**/api.php?action=wbcheckconstraints&*', ( request ) => {
-				request.reply( responseData );
-			} ).as( 'wbcheckconstraints' );
-
-			const itemViewPage = new ItemViewPage( this.itemId, true );
-			itemViewPage.open();
-			cy.wait( '@wbcheckconstraints' ).its( 'request.query' ).should( 'deep.include', {
-				id: this.itemId,
-				status: 'violation|warning|suggestion|bad-parameters',
-			} );
-			const wbui2025StatementView = new Wbui2025StatementView( statement.id );
-			wbui2025StatementView.violationIndicatorIcon().should( 'not.exist' );
-		} );
-
-		it( 'shows bad-parameter issue when another violation exists', function () {
+		it( 'adds an indicator, and a popover containing all violations', function () {
 			const statement = this.item.claims[ this.propertyId ][ 0 ];
 			const { responseData, expectations } = generateCheckConstraintResponse(
 				this.itemId,
