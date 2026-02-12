@@ -648,15 +648,23 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 		entityId = 'Q42';
 
 	let gadget,
-		setIndicatorsHtmlForSnakHashStub,
-		setPopoverContentForSnakHashStub;
+		setIndicatorHtmlForMainSnakStub,
+		setIndicatorHtmlForQualifierStub,
+		setIndicatorHtmlForReferenceSnakStub,
+		setPopoverContentForMainSnakStub,
+		setPopoverContentForQualifierStub,
+		setPopoverContentForReferenceSnakStub;
 
 	beforeEach( () => {
 		// ensure the module, containing immediately invoked code, is loaded repeatedly
 		delete require.cache[ require.resolve( 'wikibase.quality.constraints.gadget' ) ];
 
-		setIndicatorsHtmlForSnakHashStub = sinon.stub();
-		setPopoverContentForSnakHashStub = sinon.stub();
+		setIndicatorHtmlForMainSnakStub = sinon.stub();
+		setIndicatorHtmlForQualifierStub = sinon.stub();
+		setIndicatorHtmlForReferenceSnakStub = sinon.stub();
+		setPopoverContentForMainSnakStub = sinon.stub();
+		setPopoverContentForQualifierStub = sinon.stub();
+		setPopoverContentForReferenceSnakStub = sinon.stub();
 
 		global.mediaWiki = {
 			config: {
@@ -669,8 +677,12 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 				using: sinon.stub().returns(
 					sinon.stub().returns( {
 						store: {
-							setIndicatorsHtmlForSnakHash: setIndicatorsHtmlForSnakHashStub,
-							setPopoverContentForSnakHash: setPopoverContentForSnakHashStub
+							setIndicatorHtmlForMainSnak: setIndicatorHtmlForMainSnakStub,
+							setIndicatorHtmlForQualifier: setIndicatorHtmlForQualifierStub,
+							setIndicatorHtmlForReferenceSnak: setIndicatorHtmlForReferenceSnakStub,
+							setPopoverContentForMainSnak: setPopoverContentForMainSnakStub,
+							setPopoverContentForQualifier: setPopoverContentForQualifierStub,
+							setPopoverContentForReferenceSnak: setPopoverContentForReferenceSnakStub
 						}
 					} )
 				)
@@ -682,7 +694,7 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 				};
 			},
 			html: {
-				escape: sinon.stub()
+				escape: sinon.stub().callsFake( ( s ) => `escape( ${ s } )` )
 			},
 			track: sinon.spy()
 		};
@@ -721,7 +733,7 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 		} );
 	} );
 
-	it( 'adds a single issue to the store', async () => {
+	it( 'adds single issues (on main snak + qualifier) to the store', async () => {
 		const api = { get: sinon.stub() };
 		const responseData = {
 			wbcheckconstraints: {
@@ -744,6 +756,23 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 									'message-html': 'This property should contain multiple values.',
 									claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
 								} ]
+							},
+							qualifiers: {
+								P10: [ {
+									hash: 'c8459e533816c5da0702e1cd795b0b09dfbba1b0',
+									results: [ {
+										status: 'violation',
+										property: 'P10',
+										constraint: {
+											id: 'P10$197313ce-4014-c893-e2c4-5eb1f9347945',
+											type: 'Q1283',
+											typeLabel: 'MultiValueConstraintItem',
+											link: 'https://test.wikidata.org/wiki/Property:P10#P10$197313ce-4014-c893-e2c4-5eb1f9347945',
+											discussLink: 'https://test.wikidata.org/wiki/Property_talk:P10'
+										},
+										'message-html': 'This property should contain multiple values.'
+									} ]
+								} ]
 							}
 						} ]
 					}
@@ -763,14 +792,26 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 		gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
 		await gadget.fullCheck( api, lang );
 
-		expect( setIndicatorsHtmlForSnakHashStub.calledOnceWith(
-			'261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
+		expect( setIndicatorHtmlForMainSnakStub.calledOnceWith(
+			'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
 			'<span class="wikibase-wbui2025-wbqc-icon--notice"></span>'
 		), 'to be true' );
 
-		expect( setPopoverContentForSnakHashStub.calledOnceWith(
-			'261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
-			[ sinon.match.object ]
+		expect( setPopoverContentForMainSnakStub.calledOnceWith(
+			'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+			[ sinon.match( { bodyHtml: sinon.match( 'P9' ) } ) ]
+		), 'to be true' );
+
+		expect( setIndicatorHtmlForQualifierStub.calledOnceWith(
+			'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+			'c8459e533816c5da0702e1cd795b0b09dfbba1b0',
+			'<span class="wikibase-wbui2025-wbqc-icon--error"></span>'
+		), 'to be true' );
+
+		expect( setPopoverContentForQualifierStub.calledOnceWith(
+			'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+			'c8459e533816c5da0702e1cd795b0b09dfbba1b0',
+			[ sinon.match( { bodyHtml: sinon.match( 'P10' ) } ) ]
 		), 'to be true' );
 	} );
 
@@ -816,19 +857,21 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 		gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
 		await gadget.fullCheck( api, lang );
 
-		expect( setIndicatorsHtmlForSnakHashStub.called, 'to be false' );
-		expect( setPopoverContentForSnakHashStub.called, 'to be false' );
+		expect( setIndicatorHtmlForMainSnakStub.called, 'to be false' );
+		expect( setPopoverContentForMainSnakStub.called, 'to be false' );
 	} );
 
-	it( 'adds multiple issues to the store, including advanced issues', async () => {
+	it( 'adds multiple issues (on reference) to the store, including advanced issues', async () => {
 		const api = { get: sinon.stub() };
 		const responseData = {
 			wbcheckconstraints: {
-				Q42: {
-					claims: {
-						P9: [ {
-							id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
-							mainsnak: {
+				Q42: { claims: {
+					P9: [ {
+						id: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+						mainsnak: { results: [] },
+						references: [ {
+							hash: '56bed0d30a0bc154b768cdc835a1dc049b7fcfef',
+							snaks: { P9: [ {
 								hash: '261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
 								results: [
 									{
@@ -884,10 +927,10 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 										claim: 'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2'
 									}
 								]
-							}
+							} ] }
 						} ]
-					}
-				}
+					} ]
+				} }
 			}, success: 1
 		};
 
@@ -903,12 +946,16 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 		gadget.setEntity( { getId: sinon.stub().returns( entityId ) } );
 		await gadget.fullCheck( api, lang );
 
-		expect( setIndicatorsHtmlForSnakHashStub.calledOnceWith(
+		expect( setIndicatorHtmlForReferenceSnakStub.calledOnceWith(
+			'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+			'56bed0d30a0bc154b768cdc835a1dc049b7fcfef',
 			'261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
 			'<span class="wikibase-wbui2025-wbqc-icon--error"></span>'
 		), 'to be true' );
 
-		expect( setPopoverContentForSnakHashStub.calledOnceWith(
+		expect( setPopoverContentForReferenceSnakStub.calledOnceWith(
+			'Q42$2c9c5e39-4d4c-23f0-5bcb-b92615bf7aa2',
+			'56bed0d30a0bc154b768cdc835a1dc049b7fcfef',
 			'261be448fb9ca79fd5e3fb45e7b810c5d33c2e4d',
 			[
 				sinon.match( { title: 'wbqc-issue-heading', iconClass: 'wikibase-wbui2025-wbqc-icon--error' } ),

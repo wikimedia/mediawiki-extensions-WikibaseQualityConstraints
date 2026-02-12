@@ -137,6 +137,10 @@ module.exports = ( function ( mw, wb, $ ) {
 		};
 
 		SELF.prototype._buildPopoverItemList = function ( results ) {
+			if ( results.length === 0 ) {
+				return [];
+			}
+
 			// this determines the order that the items appear in the popover
 			const statuses = [
 				{
@@ -208,14 +212,46 @@ module.exports = ( function ( mw, wb, $ ) {
 			for ( const statementList of Object.values( data ) ) {
 				for ( const propertyList of Object.values( statementList.claims ) ) {
 					for ( const propertyData of propertyList ) {
-						if ( propertyData.mainsnak.results.length > 0 ) {
-							const popoverItems = this._buildPopoverItemList( propertyData.mainsnak.results );
-							if ( popoverItems.length > 0 ) {
-								wbui2025.store.setIndicatorsHtmlForSnakHash(
-									propertyData.mainsnak.hash,
-									`<span class="${ popoverItems[ 0 ].iconClass }"></span>`
+						const mainSnakItems = this._buildPopoverItemList( propertyData.mainsnak.results );
+						if ( mainSnakItems.length > 0 ) {
+							wbui2025.store.setIndicatorHtmlForMainSnak(
+								propertyData.id,
+								`<span class="${ mainSnakItems[ 0 ].iconClass }"></span>`
+							);
+							wbui2025.store.setPopoverContentForMainSnak( propertyData.id, mainSnakItems );
+						}
+						for ( const qualifier of [].concat( ...Object.values( propertyData.qualifiers || {} ) ) ) {
+							const qualifierItems = this._buildPopoverItemList( qualifier.results );
+							if ( qualifierItems.length > 0 ) {
+								wbui2025.store.setIndicatorHtmlForQualifier(
+									propertyData.id,
+									qualifier.hash,
+									`<span class="${ qualifierItems[ 0 ].iconClass }"></span>`
 								);
-								wbui2025.store.setPopoverContentForSnakHash( propertyData.mainsnak.hash, popoverItems );
+								wbui2025.store.setPopoverContentForQualifier(
+									propertyData.id,
+									qualifier.hash,
+									qualifierItems
+								);
+							}
+						}
+						for ( const reference of propertyData.references || [] ) {
+							for ( const snak of [].concat( ...Object.values( reference.snaks ) ) ) {
+								const referenceItems = this._buildPopoverItemList( snak.results );
+								if ( referenceItems.length > 0 ) {
+									wbui2025.store.setIndicatorHtmlForReferenceSnak(
+										propertyData.id,
+										reference.hash,
+										snak.hash,
+										`<span class="${ referenceItems[ 0 ].iconClass }"></span>`
+									);
+									wbui2025.store.setPopoverContentForReferenceSnak(
+										propertyData.id,
+										reference.hash,
+										snak.hash,
+										referenceItems
+									);
+								}
 							}
 						}
 					}
