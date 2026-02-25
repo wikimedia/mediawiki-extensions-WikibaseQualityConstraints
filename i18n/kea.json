@@ -2,9 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Quintino Lopes Castro Tavares",
-			"Waldyrious"
+			"Waldyrious",
+			"Letra.berdi"
 		]
 	},
-	"wbqc-constraintreport-result-table-header-property": "Propredadi",
-	"wbqc-constraintreport-result-table-header-message": "Mensajen"
+	"wbqc-constraintreport-result-table-header-property": "Prupiadadi",
+	"wbqc-constraintreport-result-table-header-message": "Mensáji"
 }
