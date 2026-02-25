@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Geraki",
 			"Glavkos",
 			"KATRINE1992",
 			"McDutchie",
@@ -13,7 +14,7 @@
 	},
 	"wbqc-constraintreport-result-table-header-property": "Ιδιότητα",
 	"wbqc-constraintreport-result-table-header-message": "Μήνυμα",
-	"wbqc-issues-short": "Ζητήματα.",
+	"wbqc-issues-short": "Ζήτημα",
 	"wbqc-issues-long": "Αυτή η δήλωση έχει μερικά ζητήματα.",
 	"wbqc-potentialissues-short": "Πιθανά ζητήματα.",
 	"wbqc-potentialissues-long": "Αυτή η δήλωση έχει μερικά πιθανά ζητήματα.",
