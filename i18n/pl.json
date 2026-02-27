@@ -22,6 +22,7 @@
 	"wbqc-constraintreport-result-table-header-property": "Właściwość",
 	"wbqc-constraintreport-result-table-header-message": "Wiadomość",
 	"wbqc-constraintreport-no-parameter": "brak",
+	"wbqc-issue-heading": "Problem",
 	"wbqc-badparameters-short": "Złe parametry",
 	"wbqc-constrainttypehelp-short": "Pomoc",
 	"wbqc-violation-header-parameters": "Parametry:",
