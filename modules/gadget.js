@@ -8,6 +8,9 @@ module.exports = ( function ( mw, wb, $ ) {
 
 	function SELF( config ) {
 		this.config = $.extend( {}, defaultConfig, config );
+		this.hasSetMainSnakIndicatorAndPopover = [];
+		this.hasSetQualifierIndicatorAndPopover = [];
+		this.hasSetReferenceIndicatorAndPopover = [];
 	}
 
 	SELF.prototype.setEntity = function ( entity ) {
@@ -219,9 +222,16 @@ module.exports = ( function ( mw, wb, $ ) {
 								`<span class="${ mainSnakItems[ 0 ].iconClass }"></span>`
 							);
 							wbui2025.store.setPopoverContentForMainSnak( propertyData.id, mainSnakItems );
+							this.hasSetMainSnakIndicatorAndPopover[ propertyData.id ] = true;
+						} else {
+							if ( this.hasSetMainSnakIndicatorAndPopover[ propertyData.id ] ) {
+								wbui2025.store.clearPopoverContentAndIndicatorForMainSnak( propertyData.id );
+								this.hasSetMainSnakIndicatorAndPopover[ propertyData.id ] = false;
+							}
 						}
 						for ( const qualifier of [].concat( ...Object.values( propertyData.qualifiers || {} ) ) ) {
 							const qualifierItems = this._buildPopoverItemList( qualifier.results );
+							const qualifierKey = propertyData.id + qualifier.hash;
 							if ( qualifierItems.length > 0 ) {
 								wbui2025.store.setIndicatorHtmlForQualifier(
 									propertyData.id,
@@ -233,11 +243,21 @@ module.exports = ( function ( mw, wb, $ ) {
 									qualifier.hash,
 									qualifierItems
 								);
+								this.hasSetQualifierIndicatorAndPopover[ qualifierKey ] = true;
+							} else {
+								if ( this.hasSetQualifierIndicatorAndPopover[ qualifierKey ] ) {
+									wbui2025.store.clearPopoverContentAndIndicatorForQualifier(
+										propertyData.id,
+										qualifier.hash
+									);
+									this.hasSetQualifierIndicatorAndPopover[ qualifierKey ] = false;
+								}
 							}
 						}
 						for ( const reference of propertyData.references || [] ) {
 							for ( const snak of [].concat( ...Object.values( reference.snaks ) ) ) {
 								const referenceItems = this._buildPopoverItemList( snak.results );
+								const referenceKey = propertyData.id + reference.hash + snak.hash;
 								if ( referenceItems.length > 0 ) {
 									wbui2025.store.setIndicatorHtmlForReferenceSnak(
 										propertyData.id,
@@ -251,6 +271,16 @@ module.exports = ( function ( mw, wb, $ ) {
 										snak.hash,
 										referenceItems
 									);
+									this.hasSetReferenceIndicatorAndPopover[ referenceKey ] = true;
+								} else {
+									if ( this.hasSetReferenceIndicatorAndPopover[ referenceKey ] ) {
+										wbui2025.store.clearPopoverContentAndIndicatorForReferenceSnak(
+											propertyData.id,
+											reference.hash,
+											snak.hash
+										);
+										this.hasSetReferenceIndicatorAndPopover[ referenceKey ] = false;
+									}
 								}
 							}
 						}
