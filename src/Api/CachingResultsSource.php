@@ -330,7 +330,6 @@ class CachingResultsSource implements ResultsSource {
 			return null;
 		}
 
-		// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 		$asOf = $cacheInfo[WANObjectCache::KEY_AS_OF];
 		$ageInSeconds = (int)ceil( $now - $asOf );
 		$cachingMetadata = $ageInSeconds > 0 ?
