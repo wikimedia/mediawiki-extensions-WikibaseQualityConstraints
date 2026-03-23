@@ -9,9 +9,9 @@ use MediaWiki\Config\HashConfig;
 use MediaWiki\Config\MultiConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Shell\ShellboxClientFactory;
-use Psr\Log\Test\TestLogger;
 use Shellbox\Client;
 use Shellbox\ShellboxError;
+use TestLogger;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -395,11 +395,12 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$shellboxClient->method( 'call' )
 			->willThrowException( new ShellboxError() );
 
-		$logger = new TestLogger();
+		$logger = new TestLogger( true );
 		$this->runConstraintCheck( $shellboxClient, $logger );
 
-		$this->assertFalse( $logger->hasNoticeRecords() );
-		$this->assertTrue( $logger->hasErrorThatContains( 'Shellbox error' ) );
+		$this->assertTrue( array_any( $logger->getBuffer(),
+			static fn ( $buffer ) => str_contains( $buffer[1], 'Shellbox error' )
+		) );
 	}
 
 	public function testFormatConstraintNetworkError() {
@@ -410,10 +411,12 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 		$shellboxClient->method( 'call' )
 			->willThrowException( new TransferException() );
 
-		$logger = new TestLogger();
+		$logger = new TestLogger( true );
 		$this->runConstraintCheck( $shellboxClient, $logger );
 
-		$this->assertTrue( $logger->hasNoticeThatContains( 'Network error' ) );
+		$this->assertTrue( array_any( $logger->getBuffer(),
+			static fn ( $buffer ) => str_contains( $buffer[1], 'Network error' )
+		) );
 	}
 
 	public function testFormatConstraintDeprecatedStatement() {
