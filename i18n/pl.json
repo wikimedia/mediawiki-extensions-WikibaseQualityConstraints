@@ -4,6 +4,7 @@
 			"Chrumps",
 			"CiaPan",
 			"InternerowyGołąb",
+			"Rzuwig",
 			"Woytecr"
 		]
 	},
@@ -35,8 +36,10 @@
 	"wbqc-violation-message-range-quantity-leftopen": "Wartość $1 ($2) nie powinna być większa od $3.",
 	"wbqc-violation-message-range-time-closed": "Wartość $1 ($2) powinna być powinna $3 oraz $4.",
 	"wbqc-violation-message-single-value": "Ta właściwość powinna zawierać tylko jedną wartość.",
+	"wbqc-violation-message-symmetric": "Element $1 powinien mieć symetryczną właściwość $2 $3.",
 	"wbqc-violation-message-target-required-claim": "$1 powinno mieć {{PLURAL:$3|0=deklarację $2.|1=deklarację $2 $5.|deklarację dla $2 z jedną z następujących wartości: $4}}",
 	"wbqc-violation-message-units-none": "Wartość $1 nie powinna mieć jednostki.",
 	"wbqc-violation-message-integer": "Wartości dla $1 powinny być liczbami całkowitymi, ale $2 ma część ułamkową.",
+	"wbqc-violation-message-citationNeeded": "Deklaracje dla właściwości $1 powinny mieć przynajmniej jeden przypis.",
 	"wbqc-violation-message-property-scope": "Właściwość $1 nie powinna być używana w tej lokalizacji ($2). {{PLURAL:$3| Jedyna prawidłowa|Jedyne prawidłowe}} dla tej właściwości {{PLURAL:$3|to $5|to: $4}}"
 }
