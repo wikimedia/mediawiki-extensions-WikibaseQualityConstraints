@@ -105,8 +105,6 @@ module.exports = ( function ( mw, wb, $ ) {
 			mw.loader.using( [
 				'mediawiki.api',
 				'pinia',
-				'wikibase.quality.constraints.icon',
-				'wikibase.quality.constraints.ui',
 				'wikibase.EntityInitializer',
 				'wikibase.wbui2025.lib'
 			] ).done( () => {

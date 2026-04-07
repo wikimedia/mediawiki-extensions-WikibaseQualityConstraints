@@ -128,6 +128,23 @@
 				"jquery.makeCollapsible",
 				"wikibase"
 			],
+			"scripts": [
+				"ui/module.js",
+				"ui/ConstraintReportPanel.js",
+				"ui/ConstraintReportGroup.js",
+				"ui/ConstraintReportList.js"
+			],
+			"styles": [
+				"ui/ConstraintReportPanel.less",
+				"ui/ConstraintReportGroup.less"
+			]
+		},
+		"wikibase.quality.constraints.gadget": {
+			"scripts": "gadget.js",
+			"styles": [
+				"gadget.less",
+				"wbui2025-gadget.less"
+			],
 			"messages": [
 				"wbqc-issue-heading",
 				"wbqc-issues-short",
@@ -152,30 +169,8 @@
 				"wbqc-cached-hours",
 				"wbqc-cached-days"
 			],
-			"scripts": [
-				"ui/module.js",
-				"ui/ConstraintReportPanel.js",
-				"ui/ConstraintReportGroup.js",
-				"ui/ConstraintReportList.js"
-			],
-			"styles": [
-				"ui/ConstraintReportPanel.less",
-				"ui/ConstraintReportGroup.less"
-			]
-		},
-		"wikibase.quality.constraints.gadget": {
-			"scripts": "gadget.js",
-			"styles": [
-				"gadget.less",
-				"wbui2025-gadget.less"
-			],
 			"dependencies": [
-				"mediawiki.api",
-				"oojs-ui-core",
-				"oojs-ui-widgets",
-				"oojs-ui.styles.icons-alerts",
-				"wikibase.quality.constraints.icon",
-				"wikibase.quality.constraints.ui"
+				"mediawiki.api"
 			]
 		},
 		"wikibase.quality.constraints.suggestions": {
