@@ -6,6 +6,7 @@ use MediaWiki\JobQueue\Job;
 use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\Repo\WikibaseRepo;
 use WikibaseQuality\ConstraintReport\Api\CachingResultsSource;
 use WikibaseQuality\ConstraintReport\Job\CheckConstraintsJob;
 
@@ -27,6 +28,19 @@ class CheckConstraintsJobTest extends MediaWikiIntegrationTestCase {
 	private function createJob( $titleString, $params ) {
 		$title = Title::makeTitle( NS_MAIN, $titleString );
 		return new CheckConstraintsJob( $title, $params );
+	}
+
+	public function setUp(): void {
+		parent::setUp();
+
+		$entitySources = WikibaseRepo::getEntitySourceDefinitions( $this->getServiceContainer() )->getSources();
+		$localEntitySourceName = WikibaseRepo::getLocalEntitySource( $this->getServiceContainer() )->getSourceName();
+
+		foreach ( $entitySources as $entitySource ) {
+			if ( $entitySource->getSourceName() !== $localEntitySourceName ) {
+				$this->markTestSkipped( 'CheckConstraintsJob does not support non-local entity sources (T244726)' );
+			}
+		}
 	}
 
 	public function testCreationFromFactory() {
