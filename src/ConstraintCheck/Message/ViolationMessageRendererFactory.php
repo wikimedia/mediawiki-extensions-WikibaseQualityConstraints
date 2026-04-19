@@ -6,8 +6,8 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Message;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Language\Language;
-use MediaWiki\Languages\LanguageNameUtils;
-use MessageLocalizer;
+use MediaWiki\Language\LanguageNameUtils;
+use MediaWiki\Language\MessageLocalizer;
 use ValueFormatters\FormatterOptions;
 use Wikibase\Lib\Formatters\OutputFormatValueFormatterFactory;
 use Wikibase\Lib\Formatters\SnakFormatter;

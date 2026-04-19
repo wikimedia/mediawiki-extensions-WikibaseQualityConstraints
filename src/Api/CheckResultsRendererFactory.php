@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace WikibaseQuality\ConstraintReport\Api;
 
 use MediaWiki\Language\Language;
-use MessageLocalizer;
+use MediaWiki\Language\MessageLocalizer;
 use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;

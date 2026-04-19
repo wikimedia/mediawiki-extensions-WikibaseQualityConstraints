@@ -3,7 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Helper;
 
 use MediaWiki\Config\Config;
-use MWHttpRequest;
+use MediaWiki\Http\MWHttpRequest;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\EntityId;
 use WikibaseQuality\ConstraintReport\Constraint;

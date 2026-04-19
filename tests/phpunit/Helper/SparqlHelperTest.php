@@ -15,6 +15,7 @@ use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Config\MultiConfig;
 use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Http\MWHttpRequest;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Status\Status;
 use MediaWikiIntegrationTestCase;
@@ -775,7 +776,7 @@ EOF;
 		$lock = $this->createMock( ExpiryLock::class );
 		$retryAfter = 1000;
 
-		$requestMock = $this->createMock( \MWHttpRequest::class );
+		$requestMock = $this->createMock( MWHttpRequest::class );
 		$requestMock->method( 'getResponseHeader' )
 			->with( $this->callback( function ( $headerName ) {
 				return strtolower( $headerName ) === 'retry-after';
@@ -826,7 +827,7 @@ EOF;
 		$fakeNow = 5000;
 		ConvertibleTimestamp::setFakeTime( $fakeNow );
 
-		$requestMock = $this->createMock( \MWHttpRequest::class );
+		$requestMock = $this->createMock( MWHttpRequest::class );
 		$requestMock->method( 'getStatus' )
 			->willReturn( 429 );
 		$requestMock->method( 'getResponseHeaders' )
@@ -869,7 +870,7 @@ EOF;
 		$lock->method( 'isLocked' )
 			->willReturn( true );
 
-		$requestMock = $this->createMock( \MWHttpRequest::class );
+		$requestMock = $this->createMock( MWHttpRequest::class );
 		$requestMock->expects( $this->never() )
 			->method( 'execute' );
 
@@ -948,7 +949,7 @@ EOF;
 	}
 
 	private function getMock429RequestFactory( $requestHeaders = [] ) {
-		$requestMock = $this->createMock( \MWHttpRequest::class );
+		$requestMock = $this->createMock( MWHttpRequest::class );
 
 		$requestMock->method( 'getStatus' )
 			->willReturn( 429 );
@@ -983,7 +984,7 @@ EOF;
 		$lock->method( 'isLocked' )
 			->willReturn( false );
 
-		$request = $this->createMock( \MWHttpRequest::class );
+		$request = $this->createMock( MWHttpRequest::class );
 		$request->method( 'getStatus' )
 			->willReturn( 200 );
 		$request->method( 'getResponseHeaders' )
@@ -1079,7 +1080,7 @@ END;
 	}
 
 	public function testRunQueryTracksError_http(): void {
-		$request = $this->createMock( \MWHttpRequest::class );
+		$request = $this->createMock( MWHttpRequest::class );
 		$request->method( 'getStatus' )
 			->willReturn( 500 );
 		$request->method( 'getResponseHeaders' )
@@ -1125,7 +1126,7 @@ END;
 	}
 
 	public function testRunQueryTracksError_json(): void {
-		$request = $this->createMock( \MWHttpRequest::class );
+		$request = $this->createMock( MWHttpRequest::class );
 		$request->method( 'getStatus' )
 			->willReturn( 200 );
 		$request->method( 'getResponseHeaders' )

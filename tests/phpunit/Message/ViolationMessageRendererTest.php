@@ -8,7 +8,7 @@ use DataValues\StringValue;
 use InvalidArgumentException;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
-use MediaWiki\Languages\LanguageNameUtils;
+use MediaWiki\Language\LanguageNameUtils;
 use MediaWiki\Message\Message;
 use MockMessageLocalizer;
 use ValueFormatters\StringFormatter;

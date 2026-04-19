@@ -8,7 +8,7 @@ use MediaWiki\Config\MultiConfig;
 use MediaWiki\Exception\PermissionsError;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
-use SpecialPageTestBase;
+use MediaWiki\Tests\Specials\SpecialPageTestBase;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\Property;

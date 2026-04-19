@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Http\MWHttpRequest;
 use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -216,7 +217,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$logger = $this->createMock( LoggerInterface::class );
 		$config = self::getDefaultConfig();
 		$timestamp = $this->createMock( ConvertibleTimestamp::class );
-		$request = $this->createMock( \MWHttpRequest::class );
+		$request = $this->createMock( MWHttpRequest::class );
 
 		$logger->expects( $this->once() )
 			->method( 'notice' );
@@ -229,7 +230,7 @@ class LoggingHelperTest extends \PHPUnit\Framework\TestCase {
 		$statsFactory = StatsFactory::newNull();
 		$logger = $this->createMock( LoggerInterface::class );
 		$config = self::getDefaultConfig();
-		$request = $this->createMock( \MWHttpRequest::class );
+		$request = $this->createMock( MWHttpRequest::class );
 
 		$logger->expects( $this->once() )
 			->method( 'warning' );

@@ -4,10 +4,10 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Html;
 
-use HtmlArmor;
 use InvalidArgumentException;
 use MediaWiki\Html\Html;
 use Wikimedia\Assert\Assert;
+use Wikimedia\HtmlArmor\HtmlArmor;
 
 /**
  * @author BP2014N1
