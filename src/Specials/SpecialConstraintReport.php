@@ -91,7 +91,7 @@ class SpecialConstraintReport extends SpecialPage {
 		Config $config,
 		StatsFactory $statsFactory
 	) {
-		parent::__construct( 'ConstraintReport', 'wbqc-check-constraints-uncached' );
+		parent::__construct( 'ConstraintReport' );
 
 		$this->entityLookup = $entityLookup;
 		$this->entityTitleLookup = $entityTitleLookup;
@@ -117,6 +117,11 @@ class SpecialConstraintReport extends SpecialPage {
 
 		$this->config = $config;
 		$this->statsFactory = $statsFactory;
+	}
+
+	/** @inheritDoc */
+	public function getRestriction(): string {
+		return 'wbqc-check-constraints-uncached';
 	}
 
 	/**
