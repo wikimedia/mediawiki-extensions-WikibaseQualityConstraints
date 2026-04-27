@@ -28,7 +28,7 @@
 	"wbqc-constraintreport-status-exception": "예외",
 	"wbqc-constraintreport-status-todo": "검사 불가",
 	"wbqc-constraintreport-status-bad-parameters": "잘못된 매개변수",
-	"wbqc-constraintreport-status-deprecated": "사용되지 않음",
+	"wbqc-constraintreport-status-deprecated": "구식임",
 	"wbqc-constraintreport-status-warning": "경고",
 	"wbqc-constraintreport-status-suggestion": "제안",
 	"wbqc-constraintreport-status-not-in-scope": "제약 조건 대상 아님",
