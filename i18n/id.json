@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bayahiu",
 			"Bennylin",
 			"Daud I.F. Argana",
 			"Pebaryan",
@@ -28,7 +29,7 @@
 	"wbqc-constraintreport-status-deprecated": "Usang",
 	"wbqc-constraintreport-status-warning": "Peringatan",
 	"wbqc-constraintreport-status-suggestion": "Saran",
-	"wbqc-constraintreport-status-not-in-scope": "Tidak termasuk cakupan",
+	"wbqc-constraintreport-status-not-in-scope": "Tidak dalam lingkup",
 	"wbqc-constraintreport-result-table-header-status": "Status",
 	"wbqc-constraintreport-result-table-header-property": "Atribut",
 	"wbqc-constraintreport-result-table-header-message": "Pesan",
@@ -81,7 +82,7 @@
 	"wbqc-violation-message-sparql-error": "Kueri SPARQL yang dihasilkan memiliki kesalahan.",
 	"wbqc-violation-message-parameters-error-unknown": "Parameter pewatas ini tidak dapat diimpor.",
 	"wbqc-violation-message-parameters-error-toolong": "Parameter pewatas ini tidak dapat diimpor karena terlalu panjang.",
-	"wbqc-violation-message-invalid-scope": "$1 bukan merupakan cakupan jenis pewatas $2 yang sah. Cakupan $3 yang sah untuk jenis pewatas ini adalah {{PLURAL:$3|$5.|2=$5 dan $6.|: $4}}",
+	"wbqc-violation-message-invalid-scope": "$1 bukanlah lingkup jenis pewatas $2 yang sah. Lingkup $3 yang sah untuk jenis pewatas ini adalah {{PLURAL:$3|$5.|2=$5 dan $6.|: $4}}",
 	"wbqc-violation-message-commons-link-no-existent": "Pranala Commons tidak ditemukan.",
 	"wbqc-violation-message-commons-link-not-well-formed": "Pranala Commons mengandung karakter yang tidak sah.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "Pemeriksaan belum diterapkan untuk ruang nama \"$1\".",
