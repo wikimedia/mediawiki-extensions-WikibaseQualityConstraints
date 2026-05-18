@@ -157,7 +157,7 @@
 	"wbqc-violation-message-property-scope": "$1 속성은 이 위치에 사용되어서는 안 됩니다 ($2). 이 속성에 대한 유일한 유효한 위치는 {{PLURAL:$3|1=$5입니다.|다음 중 하나입니다: $4}}",
 	"wbqc-violation-message-exception": "이 개체는 해당 제약에 대한 알려진 예외이며, 그렇게 표시되어 있습니다.",
 	"right-wbqc-check-constraints": "개체에 대한 제약 조건 검사를 수행",
-	"action-wbqc-check-constraints": "개체에 대한 제약 조건 검사를 수행할",
+	"action-wbqc-check-constraints": "개체에 대한 제약 조건 검사를 수행",
 	"right-wbqc-check-constraints-uncached": "개체에 대한 제약 조건 검사를 수행하기 위해 Special:ConstraintReport를 사용",
-	"action-wbqc-check-constraints-uncached": "개체에 대한 제약 조건 검사를 수행하기 위해 Special:ConstraintReport를 사용할"
+	"action-wbqc-check-constraints-uncached": "개체에 대한 제약 조건 검사를 수행하기 위해 Special:ConstraintReport를 사용"
 }
