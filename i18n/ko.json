@@ -102,8 +102,8 @@
 	"wbqc-violation-message-diff-within-range-leftopen": "$3 ($4)와 $1 ($2) 사이의 차이는 $5을(를) 넘을 수 없습니다.",
 	"wbqc-violation-message-diff-within-range-rightopen": "$3 ($4)와 $1 ($2) 사이의 차이는 $5 만큼이어야 합니다.",
 	"wbqc-violation-message-diff-within-range-must-have-equal-types": "매개변수에 정의된 속성은 이 속성과 동일한 유형의 값을 가져야 합니다.",
-	"wbqc-violation-message-format": "$1 ($2)의 값은 $3 정규식과 일치해야 합니다.",
-	"wbqc-violation-message-format-clarification": "$1 ($2)의 값은 \"$4\"와(과) 일치해야 합니다. (정규식: $3)",
+	"wbqc-violation-message-format": "$1 ($2)의 값은 $3 정규 표현식과 일치해야 합니다.",
+	"wbqc-violation-message-format-clarification": "$1 ($2)의 값은 \"$4\"와(과) 일치해야 합니다. (정규 표현식: $3)",
 	"wbqc-violation-message-inverse": "$1 항목 또한 $2 $3 반대 속성을 포함하는 것이 좋습니다.",
 	"wbqc-violation-message-item": "$1의 항목은 {{PLURAL:$3|0=$2 서술을 포함하는 것이 좋습니다.|1=$2 $5 서술을 포함하는 것이 좋습니다.|$2의 서술에 다음의 값 중 하나를 포함하는 것이 좋습니다:$4}}",
 	"wbqc-violation-message-mandatory-qualifier": "이 $1 서술에는 $2 한정어가 누락되어 있습니다.",
@@ -157,7 +157,7 @@
 	"wbqc-violation-message-property-scope": "$1 속성은 이 위치에 사용되어서는 안 됩니다 ($2). 이 속성에 대한 유일한 유효한 위치는 {{PLURAL:$3|1=$5입니다.|다음 중 하나입니다: $4}}",
 	"wbqc-violation-message-exception": "이 개체는 해당 제약에 대한 알려진 예외이며, 그렇게 표시되어 있습니다.",
 	"right-wbqc-check-constraints": "개체에 대한 제약 조건 검사를 수행",
-	"action-wbqc-check-constraints": "개체에 대한 제약 조건 검사를 수행할",
+	"action-wbqc-check-constraints": "개체에 대한 제약 조건 검사를 수행",
 	"right-wbqc-check-constraints-uncached": "개체에 대한 제약 조건 검사를 수행하기 위해 Special:ConstraintReport를 사용",
-	"action-wbqc-check-constraints-uncached": "개체에 대한 제약 조건 검사를 수행하기 위해 Special:ConstraintReport를 사용할"
+	"action-wbqc-check-constraints-uncached": "개체에 대한 제약 조건 검사를 수행하기 위해 Special:ConstraintReport를 사용"
 }
