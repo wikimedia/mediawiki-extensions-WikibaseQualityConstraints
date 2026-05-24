@@ -77,7 +77,7 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 		$this->expectOutputRegex( '/^' .
 			'Importing constraint statements for +P1... done in +\d+\.\d+ ms.\n' .
 			'Importing constraint statements for +P3... done in +\d+\.\d+ ms.\n' .
-			'Waiting for replication... done in +\d+\.\d+ ms.\n' .
+			'Waiting for replication... done in +\d+\.\d+ ms.' .
 			'$/' );
 		$this->assertSame( 2, $call, 'newUpdateConstraintsTableJob should have been called twice' );
 	}
@@ -111,7 +111,7 @@ class ImportConstraintStatementsTest extends MaintenanceBaseTestCase {
 			'Importing constraint statements for +P8... done in +\d+\.\d+ ms.\n' .
 			'Importing constraint statements for +P9... done in +\d+\.\d+ ms.\n' .
 			'Importing constraint statements for +P10... done in +\d+\.\d+ ms.\n' .
-			'Waiting for replication... done in +\d+\.\d+ ms.\n' .
+			'Waiting for replication... done in +\d+\.\d+ ms.' .
 			'$/' );
 		$this->assertSame( 10, $call,
 			'newUpdateConstraintsTableJob should have been called 10 times' );
