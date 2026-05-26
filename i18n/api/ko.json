@@ -5,13 +5,27 @@
 			"Tensama0415"
 		]
 	},
+	"apihelp-wbcheckconstraints-summary": "원하는 개체에 대한 제약 조건 검사를 수행하고 결과를 반환합니다.",
+	"apihelp-wbcheckconstraints-param-id": "데이터를 가져올 개체의 ID 목록입니다. 값은 '|' 또는 다른 문자로 구분합니다.",
+	"apihelp-wbcheckconstraints-param-claimid": "제약 조건 보고서를 확인할 주장을 식별하는 GUID 목록입니다. 값은 '|'로 구분합니다.",
+	"apihelp-wbcheckconstraints-param-constraintid": "지정된 제약 조건 ID를 가진 제약 조건만 반환하는 선택적 필터입니다.",
 	"apihelp-wbcheckconstraints-param-status": "선택된 상태의 결과만 반환하기 위한 선택적 필터입니다.\n\n'위반', '경고', '제안', '잘못된 변수' 상태의 결과만 캐시 처리되므로 이 네 가지를 벗어나는 상태를 선택한 요청은 캐시로 이득을 보지 않습니다.",
 	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "이 서술은 제약 조건을 충족합니다.",
 	"apihelp-wbcheckconstraints-paramvalue-status-violation": "이 서술은 제약 조건을 위반합니다.",
+	"apihelp-wbcheckconstraints-paramvalue-status-exception": "해당 서술의 개체는 제약 조건에 대한 알려진 예외입니다.",
 	"apihelp-wbcheckconstraints-paramvalue-status-todo": "이 제약 조건은 구현되지 않았습니다.",
 	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "제약 조건의 매개변수가 깨져 있습니다.",
+	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "해당 서술은 구식이므로 제약 조건이 확인되지 않았습니다.",
 	"apihelp-wbcheckconstraints-paramvalue-status-warning": "이 서술은 제약 조건을 위반하지만 이 제약 조건은 필수가 아닙니다.",
 	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "이 서술은 제약 조건을 위반하지만 이 제약 조건은 제안일 뿐입니다.",
+	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "이러한 종류의 snak (메인 snak, 한정어 또는 참고문헌)에서는 제약 조건을 확인하지 않으므로 제약 조건 확인이 건너뛰어집니다.",
+	"apihelp-wbcheckconstraintparameters-summary": "제약 조건 서술의 제약 조건 매개변수를 확인합니다.",
+	"apihelp-wbcheckconstraintparameters-extended-description": "<var>property</var> 및 <var>constraintid</var> 매개변수 중 하나 또는 둘 다를 지정할 수 있으며, 어느 매개변수로든 선택된 모든 제약 조건이 확인됩니다.",
+	"apihelp-wbcheckconstraintparameters-param-propertyid": "확인할 속성 ID 목록입니다. 이러한 속성의 모든 제약 조건 서술을 확인합니다.\n\n이 매개변수가 지정된 경우 비어 있지 않아야 합니다.",
+	"apihelp-wbcheckconstraintparameters-param-constraintid": "확인할 제약 조건 ID(제약 조건 서술 GUID) 목록입니다.\n\n이 매개변수가 지정된 경우 비어 있지 않아야 합니다.",
 	"apihelp-wbcheckconstraints-example-1": "Q5, Q42 항목의 모든 제약 조건을 검사합니다.",
-	"apihelp-wbcheckconstraints-example-2": "하나의 서술에 대한 모든 제약 조건을 검사합니다."
+	"apihelp-wbcheckconstraints-example-2": "하나의 서술에 대한 모든 제약 조건을 검사합니다.",
+	"apihelp-wbcheckconstraints-example-3": "항목 Q2에 대한 특정 제약을 확인합니다.",
+	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "속성에 대한 모든 제약 조건의 매개변수를 확인합니다.",
+	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "두 특정 제약 조건의 제약 조건 매개변수를 확인합니다."
 }
