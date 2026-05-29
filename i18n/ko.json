@@ -38,7 +38,7 @@
 	"wbqc-constraintreport-result-table-header-property": "속성",
 	"wbqc-constraintreport-result-table-header-message": "메시지",
 	"wbqc-constraintreport-result-table-header-constraint": "제약 조건",
-	"wbqc-constraintreport-result-link-to-claim": "클레임으로 이동",
+	"wbqc-constraintreport-result-link-to-claim": "주장으로 이동",
 	"wbqc-constraintreport-result-link-to-constraint": "제약으로 이동",
 	"wbqc-constraintreport-no-parameter": "없음",
 	"wbqc-issue-heading": "이슈",
