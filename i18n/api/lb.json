@@ -1,12 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
-			"Robby"
+			"Robby",
+			"Volvox"
 		]
 	},
-	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "D'Ausso respektéiert d'Limitatioun.",
-	"apihelp-wbcheckconstraints-paramvalue-status-violation": "D'Ausso respektéiert d'Limitatioun net.",
-	"apihelp-wbcheckconstraints-paramvalue-status-todo": "D'Limitatioun ass net implementéiert.",
-	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "D'Parameter vun der Limitatioun si falsch.",
-	"apihelp-wbcheckconstraints-example-2": "Kuckt all Limitatiounen op enger eenzeler Ausso no."
+	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "D'Ausso erfëllt d'Contrainte.",
+	"apihelp-wbcheckconstraints-paramvalue-status-violation": "D'Ausso violéiert d'Contrainte.",
+	"apihelp-wbcheckconstraints-paramvalue-status-exception": "D'Entitéit vum Sujet vun der Ausso ass eng bekannt Ausnam fir d'Contrainte.",
+	"apihelp-wbcheckconstraints-paramvalue-status-todo": "D'Contrainte ass net implementéiert.",
+	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "D'Parametere vun der Contrainte si futti.",
+	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "D'Contrainte gouf net iwwerpréift, well d'Ausso vereelzt ass.",
+	"apihelp-wbcheckconstraints-paramvalue-status-warning": "D'Ausso violéiert d'Contrainte, mee d'Contrainte ass net verflichtend.",
+	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "D'Ausso violéiert d'Contrainte, mee d'Contrainte ass just e Virschlag.",
+	"apihelp-wbcheckconstraints-example-2": "All Contraintë vun enger eenzeler Ausso iwwerpréiwen."
 }
