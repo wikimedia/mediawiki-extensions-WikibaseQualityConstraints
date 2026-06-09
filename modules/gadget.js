@@ -104,11 +104,9 @@ module.exports = ( function ( mw, wb, $ ) {
 
 			mw.loader.using( [
 				'mediawiki.api',
-				'pinia',
 				'wikibase.EntityInitializer',
 				'wikibase.wbui2025.lib'
-			] ).done( () => {
-				const Pinia = require( 'pinia' );
+			] ).done( ( require ) => {
 				const wbui2025 = require( 'wikibase.wbui2025.lib' );
 				const api = new mw.Api(),
 					lang = mw.config.get( 'wgUserLanguage' );
@@ -123,17 +121,18 @@ module.exports = ( function ( mw, wb, $ ) {
 					} );
 				} );
 
-				const pinia = Pinia.getActivePinia();
-				const editStatementStore = wbui2025.store.useEditStatementsStore( pinia );
-				editStatementStore.$onAction(
-					( { name, after } ) => {
-						after( () => {
-							if ( name === 'saveChangedStatements' ) {
-								this.fullCheck( api, lang );
-							}
-						} );
-					}
-				);
+				mw.hook( 'wikibase.wbui2025.piniaCreated' ).add( ( pinia ) => {
+					const editStatementStore = wbui2025.store.useEditStatementsStore( pinia );
+					editStatementStore.$onAction(
+						( { name, after } ) => {
+							after( () => {
+								if ( name === 'saveChangedStatements' ) {
+									this.fullCheck( api, lang );
+								}
+							} );
+						}
+					);
+				} );
 			} );
 		};
 
