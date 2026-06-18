@@ -197,7 +197,7 @@ TEXT;
 		$mockResponse = $this->createMock( WebResponse::class );
 		$mockResponse->expects( $this->once() )->method( 'statusHeader' )->with( 404 );
 		$action = $this->getCheckConstraintsRdf(
-			new Article( Title::newFromText( 'something strange' ) ),
+			new Article( Title::makeTitle( NS_MAIN, 'Something strange' ) ),
 			$mockResponse
 		);
 

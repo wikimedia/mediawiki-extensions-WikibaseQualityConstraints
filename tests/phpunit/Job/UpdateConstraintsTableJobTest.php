@@ -76,7 +76,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 	public function testExtractParametersFromQualifiers() {
 		$job = UpdateConstraintsTableJob::newFromGlobalState(
-			Title::newFromText( 'constraintsTableUpdate' ),
+			Title::makeTitle( NS_MAIN, 'ConstraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]
 		);
 
@@ -133,7 +133,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 	public function testExtractConstraintFromStatement_NoParameters() {
 		$config = self::getDefaultConfig();
 		$job = UpdateConstraintsTableJob::newFromGlobalState(
-			Title::newFromText( 'constraintsTableUpdate' ),
+			Title::makeTitle( NS_MAIN, 'ConstraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]
 		);
 		$singleValueId = $config->get( 'WBQualityConstraintsSingleValueConstraintId' );
@@ -158,7 +158,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 	public function testExtractConstraintFromStatement_Parameters() {
 		$job = UpdateConstraintsTableJob::newFromGlobalState(
-			Title::newFromText( 'constraintsTableUpdate' ),
+			Title::makeTitle( NS_MAIN, 'ConstraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]
 		);
 
@@ -217,7 +217,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 	public function testImportConstraintsForProperty() {
 		$config = self::getDefaultConfig();
 		$job = UpdateConstraintsTableJob::newFromGlobalState(
-			Title::newFromText( 'constraintsTableUpdate' ),
+			Title::makeTitle( NS_MAIN, 'ConstraintsTableUpdate' ),
 			[ 'propertyId' => 'P2' ]
 		);
 		$singleValueId = new ItemId( $config->get( 'WBQualityConstraintsSingleValueConstraintId' ) );
@@ -328,7 +328,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 			) );
 
 		$job = new UpdateConstraintsTableJob(
-			Title::newFromText( 'constraintsTableUpdate' ),
+			Title::makeTitle( NS_MAIN, 'ConstraintsTableUpdate' ),
 			[],
 			'P3',
 			null,
@@ -368,7 +368,7 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 
 		$lb = new FakeLoadBalancer( [ 'dbr' => $this->db ] );
 		$job = new UpdateConstraintsTableJob(
-			Title::newFromText( 'constraintsTableUpdate' ),
+			Title::makeTitle( NS_MAIN, 'ConstraintsTableUpdate' ),
 			[],
 			'P2',
 			null,
