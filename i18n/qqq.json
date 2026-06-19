@@ -66,7 +66,6 @@
 	"wbqc-cached-hours": "Message informing the user that a constraint check result might be outdated by up to ''n'' hours.\n{{Related|Wbqc-cached}}",
 	"wbqc-cached-days": "Message informing the user that a constraint check result might be outdated by up to ''n'' days.\n{{Related|wbqc-cached-minutes}}\n{{Related|wbqc-cached-generic}}",
 	"wbqc-dataValueType-wikibase-entityid": "The name of a data value type.\n{{related|Wbqc-dataValueType-wikibase}}",
-	"wbq-subextension-name-wbqc": "Name of this subextension. Is shown in special page that lists all the violations.\n{{Identical|Constraint}}",
 	"wbqc-violation-header-parameters": "Header for section in violations special page that displays the parameters of the constraint.\n{{Identical|Parameter}}",
 	"wbqc-violations-group": "Type of violations this extension finds.\n{{Identical|Constraint}}",
 	"wbqc-violation-message": "Generic message to tell that there was a violation.",
