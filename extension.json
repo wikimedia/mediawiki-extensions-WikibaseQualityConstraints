@@ -137,6 +137,12 @@
 			"styles": [
 				"ui/ConstraintReportPanel.less",
 				"ui/ConstraintReportGroup.less"
+			],
+			"messages": [
+				"wbqc-constraintdiscuss-short",
+				"wbqc-constraintdiscuss-long",
+				"wbqc-constrainttypehelp-short",
+				"wbqc-constrainttypehelp-long"
 			]
 		},
 		"wikibase.quality.constraints.gadget": {
