@@ -15,6 +15,7 @@ describe( 'wikibase.quality.constraints.gadget', () => {
 
 		global.mediaWiki.config = sinon.stub();
 		global.mediaWiki.config.get = sinon.stub();
+		global.mediaWiki.loader = { getState: sinon.stub() };
 
 		global.jQuery.extend = Object.assign;
 
@@ -676,10 +677,13 @@ describe( 'wikibase.quality.constraints.gadget with wbui2025', () => {
 			config: {
 				get: sinon.stub().withArgs( 'wgMFMode' ).returns( true )
 			},
+			hook: () => ( {
+				add: ( callback ) => callback()
+			} ),
 			loader: {
-				getModuleNames: sinon.stub().returns( {
-					includes: sinon.stub().withArgs( 'wikibase.wbui2025.lib' ).returns( true )
-				} ),
+				getState: sinon.stub()
+					.withArgs( 'wikibase.wbui2025.entityViewInit' )
+					.returns( 'loading' ),
 				using: sinon.stub().returns(
 					sinon.stub().returns( {
 						store: {

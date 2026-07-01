@@ -92,8 +92,9 @@ module.exports = ( function ( mw, wb, $ ) {
 		return null;
 	};
 
-	// It's on mobile and WBUI2025 is loaded
-	if ( mw.config.get( 'wgMFMode' ) && mw.loader.getModuleNames().includes( 'wikibase.wbui2025.lib' ) ) {
+	// It's on mobile and wbui2025 is active for this page (entityViewInit is being loaded)
+	const entityViewInitState = mw.loader.getState( 'wikibase.wbui2025.entityViewInit' );
+	if ( mw.config.get( 'wgMFMode' ) && [ 'loading', 'loaded', 'executing', 'ready' ].includes( entityViewInitState ) ) {
 
 		SELF.prototype.defaultBehavior = function () {
 			const entityId = mw.config.get( 'wbEntityId' );
@@ -204,6 +205,13 @@ module.exports = ( function ( mw, wb, $ ) {
 		};
 
 		SELF.prototype._renderWbcheckconstraintsResult = async function ( data ) {
+			// Ensure pinia is active before calling store functions. mw.hook.add fires
+			// immediately if the hook already fired, so this only waits when entityViewInit
+			// hasn't executed yet.
+			await new Promise( ( resolve ) => {
+				mw.hook( 'wikibase.wbui2025.piniaCreated' ).add( resolve );
+			} );
+
 			const require = await mw.loader.using( [
 				'wikibase.wbui2025.lib'
 			] );
