@@ -1,7 +1,6 @@
 {
 	"@metadata": {
 		"authors": [
-			"Amire80",
 			"Bjankuloski06",
 			"Vlad5250"
 		]
@@ -34,7 +33,7 @@
 	"wbqc-constraintreport-result-link-to-claim": "оди на тврдењето",
 	"wbqc-constraintreport-result-link-to-constraint": "оди на условот",
 	"wbqc-constraintreport-no-parameter": "нема",
-	"wbqc-issues-short": "Проблеми",
+	"wbqc-issues-short": "Проблем",
 	"wbqc-issues-long": "Исказов има извесни проблеми.",
 	"wbqc-potentialissues-short": "Потенцијални проблеми",
 	"wbqc-potentialissues-long": "Исказов има извесни потенцијални проблеми.",
