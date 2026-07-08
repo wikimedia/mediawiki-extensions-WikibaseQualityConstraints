@@ -53,7 +53,6 @@
 	"wbqc-cached-hours": "Ta rezultat je predpomnjen, zaradi česar je morda zastarel do {{PLURAL:$1|1=ene ure|$1&nbsp;ur}}.",
 	"wbqc-cached-days": "Ta rezultat je predpomnjen, zaradi česar je morda zastarel do {{PLURAL:$1|1=enega dne|$1&nbsp;dni}}.",
 	"wbqc-dataValueType-wikibase-entityid": "ID entitete",
-	"wbq-subextension-name-wbqc": "Omejitve",
 	"wbqc-violation-header-parameters": "Parametri:",
 	"wbqc-violations-group": "Omejitve",
 	"wbqc-violation-message": "Preverjanje omejitev je zaznalo kršitev. Za dodatne informacije kliknite ikono.",

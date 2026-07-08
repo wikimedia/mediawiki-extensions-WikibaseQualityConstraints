@@ -56,7 +56,6 @@
 	"wbqc-cached-hours": "यह परिणाम कैश में संग्रहीत है और {{PLURAL:$1|1=एक घंटे|$1&nbsp;घंटे}} तक पुराना हो सकता है।",
 	"wbqc-cached-days": "यह परिणाम कैश में संग्रहीत है और {{PLURAL:$1|1=एक घंटे|$1&nbsp;दिन}} तक पुराना हो सकता है।",
 	"wbqc-dataValueType-wikibase-entityid": "सत्ता ID:",
-	"wbq-subextension-name-wbqc": "बाधाएँ",
 	"wbqc-violation-header-parameters": "पैरामीटर्स:",
 	"wbqc-violations-group": "बाधाएँ",
 	"wbqc-violation-message-parameter-string": "\"$1\" पैरामीटर का वैल्यू एक स्ट्रिंग होना चाहिए, \"$2\" नहीं।",

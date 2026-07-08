@@ -59,7 +59,6 @@
 	"wbqc-cached-hours": "Dette resultatet er mellomlagret og kan være utdatert med opptil {{PLURAL:$1|én time|$1 timer}}.",
 	"wbqc-cached-days": "Dette resultatet er mellomlagret og kan være utdatert med opptil {{PLURAL:$1|én dag|$1 dager}}.",
 	"wbqc-dataValueType-wikibase-entityid": "Entitets-ID",
-	"wbq-subextension-name-wbqc": "Begrensing",
 	"wbqc-violation-header-parameters": "Parametre:",
 	"wbqc-violations-group": "Begrensing",
 	"wbqc-violation-message": "Begrensningssjekken har pekt ut et brudd. Klikk på ikonet for mer informasjon.",

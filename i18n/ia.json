@@ -55,7 +55,6 @@
 	"wbqc-cached-hours": "Iste resultato proveni del cache e pote esser obsolete per usque a {{PLURAL:$1|1=un hora|$1&nbsp;horas}}.",
 	"wbqc-cached-days": "Iste resultato proveni del cache e pote esser obsolete per usque a {{PLURAL:$1|1=un die|$1&nbsp;dies}}.",
 	"wbqc-dataValueType-wikibase-entityid": "ID de entitate",
-	"wbq-subextension-name-wbqc": "Restrictiones",
 	"wbqc-violation-header-parameters": "Parametros:",
 	"wbqc-violations-group": "Restrictiones",
 	"wbqc-violation-message": "Controlo de restriction ha identificate un violation. Per favor clicca sur le icone pro ulterior information.",

@@ -55,7 +55,6 @@
 	"wbqc-cached-hours": "Este resultado foi armazenado na cache e pode estar desatualizado em até {{PLURAL:$1|1=uma hora|$1&nbsp;horas}}.",
 	"wbqc-cached-days": "Este resultado foi armazenado na cache e pode estar desatualizado em até {{PLURAL:$1|1=um dia|$1&nbsp;dias}}.",
 	"wbqc-dataValueType-wikibase-entityid": "Identificador da entidade",
-	"wbq-subextension-name-wbqc": "Restrições",
 	"wbqc-violation-header-parameters": "Parâmetros:",
 	"wbqc-violations-group": "Restrições",
 	"wbqc-violation-message": "A verificação de restrição apontou uma violação. Clique no ícone para obter mais informações.",

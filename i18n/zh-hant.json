@@ -57,7 +57,6 @@
 	"wbqc-cached-hours": "此結果已被快取，並可能在 {{PLURAL:$1|1=1 小時|$1&nbsp;小時}}後過時。",
 	"wbqc-cached-days": "此結果已被快取，並可能在 {{PLURAL:$1|1=1 天|$1&nbsp;天}}後過時。",
 	"wbqc-dataValueType-wikibase-entityid": "實體ID",
-	"wbq-subextension-name-wbqc": "限制",
 	"wbqc-violation-header-parameters": "參數：",
 	"wbqc-violations-group": "限制",
 	"wbqc-violation-message": "限制檢查指出了一次違例，請點選圖標來獲得進一步資訊。",

@@ -56,7 +56,6 @@
 	"wbqc-cached-hours": "この結果はキャッシュされたもので、最新の状態ではありません（最大{{PLURAL:$1|$1時間}}）。",
 	"wbqc-cached-days": "この結果はキャッシュされたもので、最新の状態ではありません（最大{{PLURAL:$1|$1日}}）。",
 	"wbqc-dataValueType-wikibase-entityid": "エンティティID",
-	"wbq-subextension-name-wbqc": "制約",
 	"wbqc-violation-header-parameters": "パラメーター:",
 	"wbqc-violations-group": "制約",
 	"wbqc-violation-message": "プロパティ制約に違反しています。詳細はアイコンをクリックしてください。",

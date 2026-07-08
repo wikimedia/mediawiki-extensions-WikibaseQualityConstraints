@@ -57,7 +57,6 @@
 	"wbqc-cached-hours": "התוצאה הזאת מוטמנת וייתכן שהיא מיושנת {{PLURAL:$1|בשעה אחת|בשעתיים|ב־$1 שעות}}.",
 	"wbqc-cached-days": "התוצאה הזאת מוטמנת וייתכן שהיא מיושנת {{PLURAL:$1|ביום אחד|ביומיים|ב־$1 ימים}}.",
 	"wbqc-dataValueType-wikibase-entityid": "מזהה ישות",
-	"wbq-subextension-name-wbqc": "אילוצים",
 	"wbqc-violation-header-parameters": "פרמטרים:",
 	"wbqc-violations-group": "אילוצים",
 	"wbqc-violation-message": "בדיקת אילוצים הצביעה על הפרה. נא ללחוץ על הסמל למידע נוסף.",

@@ -53,7 +53,6 @@
 	"wbqc-cached-hours": "Dette resultat er mellemlagret og kan være op til {{PLURAL:$1| 1=en time|$1 timer}} forældet.",
 	"wbqc-cached-days": "Dette resultat er mellemlagret og kan være op til {{PLURAL:$1| 1=et døgn|$1 døgn}} forældet.",
 	"wbqc-dataValueType-wikibase-entityid": "Entitets-ID",
-	"wbq-subextension-name-wbqc": "Begrænsninger",
 	"wbqc-violation-header-parameters": "Parametre:",
 	"wbqc-violations-group": "Begrænsninger",
 	"wbqc-violation-message-parameters-error-toolong": "Parametrene til denne begrænsning kunne ikke importeres fordi de er for lange."

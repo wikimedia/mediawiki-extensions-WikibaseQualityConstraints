@@ -65,7 +65,6 @@
 	"wbqc-cached-hours": "Результат прокэширован и может отставать на {{PLURAL:$1|1=один час|$1&nbsp;часа|$1&nbsp;часов}}.",
 	"wbqc-cached-days": "Результат прокэширован и может отставать на {{PLURAL:$1|1=один день|$1&nbsp;дня|$1&nbsp;дней}}.",
 	"wbqc-dataValueType-wikibase-entityid": "Идентификатор сущности",
-	"wbq-subextension-name-wbqc": "Ограничения",
 	"wbqc-violation-header-parameters": "Параметры:",
 	"wbqc-violations-group": "Ограничения",
 	"wbqc-violation-message": "Проверка на ограничения обнаружила нарушение. Пожалуйста, кликните на иконку для получения дополнительной информации.",

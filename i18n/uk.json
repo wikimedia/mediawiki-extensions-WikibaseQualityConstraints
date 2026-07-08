@@ -60,7 +60,6 @@
 	"wbqc-cached-hours": "Цей результат є кешованим і, можливо, застарів на {{PLURAL:$1|$1&nbsp;годину|$1&nbsp;години|$1&nbsp;годин}}.",
 	"wbqc-cached-days": "Цей результат є кешованим і, можливо, застарів на {{PLURAL:$1|$1&nbsp;день|$1&nbsp;дні|$1&nbsp;днів}}.",
 	"wbqc-dataValueType-wikibase-entityid": "Ідентифікатор сутності",
-	"wbq-subextension-name-wbqc": "Обмеження",
 	"wbqc-violation-header-parameters": "Параметри:",
 	"wbqc-violations-group": "Обмеження",
 	"wbqc-violation-message": "Перевірка обмежень виявила порушення. Будь ласка, клацніть на іконці, щоб дізнатися більше.",

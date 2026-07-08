@@ -23,7 +23,6 @@
 	"wbqc-constrainttypehelp-short": "مدد",
 	"wbqc-constraintdiscuss-short": "گل بات",
 	"wbqc-dataValueType-wikibase-entityid": "چیز دا شناختی",
-	"wbq-subextension-name-wbqc": "نرودھ",
 	"wbqc-violation-header-parameters": "ماپ دنڈ:",
 	"wbqc-violations-group": "نرودھ",
 	"wbqc-violation-message-qualifiers": "$1 لئی $2 وشیشگتا نہیں درست اے۔ {{PLURAL:$3|1=صرف $5 ورت ہی سکدے۔|2=صرف $5 یا $6 ورت ہی سکدے۔|صرف ایہہ وشیشگتاواں ورت ہی سکدے: $4}}",

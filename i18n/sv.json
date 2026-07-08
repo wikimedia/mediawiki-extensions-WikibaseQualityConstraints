@@ -58,7 +58,6 @@
 	"wbqc-cached-hours": "Detta resultat cachelagras och kanske kan vara utdaterat upp {{PLURAL:$1|1=e timme|$1&nbsp;timmar}}.",
 	"wbqc-cached-days": "Detta resultat cachelagras och kanske kan vara utdaterat upp {{PLURAL:$1|1=en dag|$1&nbsp;dagar}}.",
 	"wbqc-dataValueType-wikibase-entityid": "Enhets-ID",
-	"wbq-subextension-name-wbqc": "Begränsningar",
 	"wbqc-violation-header-parameters": "Parametrar:",
 	"wbqc-violations-group": "Begränsningar",
 	"wbqc-violation-message": "Begränsningskontrollen har upptäckt en överträdelse. Klicka på ikonen för mer information.",

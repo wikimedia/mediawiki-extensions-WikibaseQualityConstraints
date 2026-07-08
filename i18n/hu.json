@@ -53,7 +53,6 @@
 	"wbqc-cached-hours": "Ez az eredmény gyorsítótárazva van, és akár $1 óra lemaradásban is lehet.",
 	"wbqc-cached-days": "Ez az eredmény gyorsítótárazva van, és akár $1 nap lemaradásban is lehet.",
 	"wbqc-dataValueType-wikibase-entityid": "Entitásazonosító",
-	"wbq-subextension-name-wbqc": "Kikötések",
 	"wbqc-violation-header-parameters": "Paraméterek:",
 	"wbqc-violations-group": "Kikötések",
 	"wbqc-violation-message": "Az ellenőrzés kikötésmegszegést talált. Kattints az ikonra további információkért.",

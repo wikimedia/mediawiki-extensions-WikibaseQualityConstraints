@@ -41,7 +41,6 @@
 	"wbqc-cached-hours": "Ovaj rezultat je keširan i možda je zastareo do {{PLURAL:$1|1=jedan sat|$1&nbsp;sat|$1&nbsp;sata|$1&nbsp;sati}}.",
 	"wbqc-cached-days": "Ovaj rezultat je keširan i možda je zastareo do {{PLURAL:$1|1=jedan dan|$1&nbsp;dan|$1&nbsp;dana}}.",
 	"wbqc-dataValueType-wikibase-entityid": "ID entiteta",
-	"wbq-subextension-name-wbqc": "Ograničenja",
 	"wbqc-violation-header-parameters": "Parametri:",
 	"wbqc-violations-group": "Ograničenja",
 	"wbqc-violation-message-value-needed-of-types-2": "Svojstva sa ograničenjem „$1” moraju imati vrednosti tipa „$2” ili „$3”.",

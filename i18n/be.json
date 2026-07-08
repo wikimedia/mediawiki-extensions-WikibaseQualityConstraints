@@ -56,7 +56,6 @@
 	"wbqc-cached-hours": "Гэты вынік кэшаваны і можа быць састарэлым ужо {{PLURAL:$1|$1&nbsp; гадзіну|$1&nbsp;гадзіны|$1&nbsp;гадзінаў|1=адну гадзіну}}.",
 	"wbqc-cached-days": "Гэты вынік кэшаваны і можа быць састарэлым ужо {{PLURAL:$1|$1&nbsp;дзень|$1&nbsp;дні|$1&nbsp;дзён|1=адзін дзень}}.",
 	"wbqc-dataValueType-wikibase-entityid": "Ідэнтыфікатар сутнасці",
-	"wbq-subextension-name-wbqc": "Абмежаванні",
 	"wbqc-violation-header-parameters": "Параметры:",
 	"wbqc-violations-group": "Абмежаванні",
 	"wbqc-violation-message": "Праверка абмежаванняў выявіла парушэнне. Калі ласка, націсніце на іконку для падрабязнай інфармацыі.",

@@ -52,7 +52,6 @@
 	"wbqc-cached-hours": "Овај резултат је кеширан и можда је застарео до {{PLURAL:$1|1=један сат|$1&nbsp;сат|$1&nbsp;сата|$1&nbsp;сати}}.",
 	"wbqc-cached-days": "Овај резултат је кеширан и можда је застарео до {{PLURAL:$1|1=један дан|$1&nbsp;дан|$1&nbsp;дана}}.",
 	"wbqc-dataValueType-wikibase-entityid": "ID ентитета",
-	"wbq-subextension-name-wbqc": "Ограничења",
 	"wbqc-violation-header-parameters": "Параметри:",
 	"wbqc-violations-group": "Ограничења",
 	"wbqc-violation-message-value-needed-of-types-2": "Својства са ограничењем „$1” морају имати вредности типа „$2” или „$3”.",

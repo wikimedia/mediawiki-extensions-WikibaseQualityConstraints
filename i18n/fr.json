@@ -68,7 +68,6 @@
 	"wbqc-cached-hours": "Ce résultat est en cache et peut prendre {{PLURAL:$1|1=une heure|$1 heures}} avant d’être mis à jour.",
 	"wbqc-cached-days": "Ce résultat est en cache et peut prendre {{PLURAL:$1|1=un jour|$1 jours}} avant d’être mis à jour.",
 	"wbqc-dataValueType-wikibase-entityid": "Identifiant de l’entité",
-	"wbq-subextension-name-wbqc": "Contraintes",
 	"wbqc-violation-header-parameters": "Paramètres :",
 	"wbqc-violations-group": "Contraintes",
 	"wbqc-violation-message": "La vérification de contrainte a identifié une violation. Veuillez cliquer sur l’icône pour plus d’informations.",

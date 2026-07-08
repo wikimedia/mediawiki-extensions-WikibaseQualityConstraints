@@ -59,7 +59,6 @@
 	"wbqc-cached-hours": "Bu sonuç önbelleğe alınmış bir sonuç olup, {{PLURAL:$1|1=bir saat|$1&nbsp;saat}} öncesine aittir.",
 	"wbqc-cached-days": "Bu sonuç önbelleğe alınmış bir sonuç olup, {{PLURAL:$1|1=bir gün|$1&nbsp;gün}} öncesine aittir.",
 	"wbqc-dataValueType-wikibase-entityid": "Varlık kimliği",
-	"wbq-subextension-name-wbqc": "Kısıtlamalar",
 	"wbqc-violation-header-parameters": "Parametreler:",
 	"wbqc-violations-group": "Kısıtlamalar",
 	"wbqc-violation-message": "Kısıtlama kontrolü bir ihlale işaret etti. Daha fazla bilgi için lütfen simgeye tıklayınız.",

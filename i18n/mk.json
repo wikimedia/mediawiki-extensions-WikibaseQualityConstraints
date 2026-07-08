@@ -56,7 +56,6 @@
 	"wbqc-cached-hours": "Исходот е меѓускладиран и затоа може да е застарен веќе {{PLURAL:$1|1=еден час|$1&nbsp;часа}}.",
 	"wbqc-cached-days": "Исходот е меѓускладиран и затоа може да е застарен веќе {{PLURAL:$1|1=еден ден|$1&nbsp;дена}}.",
 	"wbqc-dataValueType-wikibase-entityid": "Назнака на единицата",
-	"wbq-subextension-name-wbqc": "Услови",
 	"wbqc-violation-header-parameters": "Параметри:",
 	"wbqc-violations-group": "Услови",
 	"wbqc-violation-message": "Проверката на условите укажува на нескладност. Стиснете на иконата за повеќе информации.",

@@ -61,7 +61,6 @@
 	"wbqc-cached-hours": "Tento výsledek je cachovaný a může být až {{PLURAL:$1|1=jednu hodinu|$1&nbsp;hodiny|$1&nbsp;hodin}} neaktuální.",
 	"wbqc-cached-days": "Tento výsledek je cachovaný a může být až {{PLURAL:$1|1=jeden den|$1&nbsp;dny|$1&nbsp;dní}} neaktuální.",
 	"wbqc-dataValueType-wikibase-entityid": "ID entity",
-	"wbq-subextension-name-wbqc": "Omezení",
 	"wbqc-violation-header-parameters": "Parametry:",
 	"wbqc-violations-group": "Omezení",
 	"wbqc-violation-message": "Kontrola omezení objevila porušení. Více informací získáte kliknutím na ikonku.",

@@ -51,7 +51,6 @@
 	"wbqc-cached-hours": "ЖамӀ кэшехь ду, {{PLURAL:$1|1=цхьа сахьт|$1&nbsp;минот}} тӀаьхьа диса тарло.",
 	"wbqc-cached-days": "ЖамӀ кэшехь ду, {{PLURAL:$1|1=цхьа де|$1&nbsp;де}} тӀаьхьа диса тарло.",
 	"wbqc-dataValueType-wikibase-entityid": "Духан идентификатор",
-	"wbq-subextension-name-wbqc": "Дозатохарш",
 	"wbqc-violation-header-parameters": "Параметраш:",
 	"wbqc-violations-group": "Дозатохарш",
 	"wbqc-violation-message": "Дозатохар толлуш талхор гучудаьлла. Кхин тӀе информаци веназин тӀетаӀийна хьажа.",

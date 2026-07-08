@@ -56,7 +56,6 @@
 	"wbqc-cached-hours": "Kết quả này được lưu vào bộ đệm và có thể đã không được cập nhật được {{PLURAL:$1|1=một giờ|$1&nbsp;giờ}} rồi.",
 	"wbqc-cached-days": "Kết quả này được lưu vào bộ nhớ đệm và có thể đã không được cập nhật được {{PLURAL:$1|1=một ngày|$1&nbsp;ngày}} rồi.",
 	"wbqc-dataValueType-wikibase-entityid": "Mã thực thể",
-	"wbq-subextension-name-wbqc": "Ràng buộc",
 	"wbqc-violation-header-parameters": "Tham số:",
 	"wbqc-violations-group": "Ràng buộc",
 	"wbqc-violation-message": "Việc kiểm tra ràng buộc đã chỉ ra một vi phạm. Xin hãy nhấn chuột vào hình tượng để biết thêm thông tin.",

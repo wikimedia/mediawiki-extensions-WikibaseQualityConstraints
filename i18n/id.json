@@ -56,7 +56,6 @@
 	"wbqc-cached-hours": "Hasil ini berasal dari memori tembolok sehingga bisa jadi kurang aktual paling tidak selama {{PLURAL:$1|1=satu jam|$1&nbsp;jam}}.",
 	"wbqc-cached-days": "Hasil ini berasal dari memori tembolok sehingga bisa jadi kurang aktual paling tidak selama {{PLURAL:$1|1=satu hari|$1&nbsp;hari}}.",
 	"wbqc-dataValueType-wikibase-entityid": "ID Entitas",
-	"wbq-subextension-name-wbqc": "Pewatas",
 	"wbqc-violation-header-parameters": "Parameter:",
 	"wbqc-violations-group": "Pewatas",
 	"wbqc-violation-message": "Pemeriksaan pewatas telah menemukan sebuah pelanggaran. Silakan klik pada ikon untuk informasi lebih lanjut.",
