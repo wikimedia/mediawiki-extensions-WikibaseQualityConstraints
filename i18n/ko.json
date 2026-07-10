@@ -10,7 +10,8 @@
 			"Tensama0415",
 			"YeBoy371",
 			"Ykhwong",
-			"아라"
+			"아라",
+			"Suleiman the Magnificent Television"
 		]
 	},
 	"wbqc-constraintreport": "제약 보고서",
@@ -78,7 +79,7 @@
 	"wbqc-violation-message-value-entity-must-exist": "값 개체가 존재해야 합니다.",
 	"wbqc-violation-message-parameter-value": "\"$1\" 매개변수는 \"없는 값\"이나 \"알 수 없는 값\"이 아닌 사용자 지정 값이 있어야 합니다.",
 	"wbqc-violation-message-parameter-value-or-novalue": "\"$1\" 매개변수는 \"알 수 없는 값\"이 아닌 사용자 지정 값이 있어야 합니다.",
-	"wbqc-violation-message-parameter-entity": "\"$1\" 매개변수의 값은 \"$2\"이(가) 아닌 엔티티여야 합니다.",
+	"wbqc-violation-message-parameter-entity": "\"$1\" 매개변수의 값은 \"$2\"이(가) 아닌 개체여야 합니다.",
 	"wbqc-violation-message-parameter-item": "\"$1\" 매개변수의 값은 \"$2\"이(가) 아닌 항목이어야 합니다.",
 	"wbqc-violation-message-parameter-property": "\"$1\" 매개변수의 값은 \"$2\"이(가) 아닌 속성이어야 합니다.",
 	"wbqc-violation-message-parameter-string": "매개변수 \"$1\"의 값은 \"$2\"이(가) 아닌 문자열이어야 합니다.",
@@ -105,7 +106,7 @@
 	"wbqc-violation-message-format": "$1 ($2)의 값은 $3 정규 표현식과 일치해야 합니다.",
 	"wbqc-violation-message-format-clarification": "$1 ($2)의 값은 \"$4\"와(과) 일치해야 합니다. (정규 표현식: $3)",
 	"wbqc-violation-message-inverse": "$1 항목 또한 $2 $3 반대 속성을 포함하는 것이 좋습니다.",
-	"wbqc-violation-message-item": "$1의 항목은 {{PLURAL:$3|0=$2 서술을 포함하는 것이 좋습니다.|1=$2 $5 서술을 포함하는 것이 좋습니다.|$2의 서술에 다음의 값 중 하나를 포함하는 것이 좋습니다:$4}}",
+	"wbqc-violation-message-item": "$1의 개체는 {{PLURAL:$3|0=$2 서술을 포함하는 것이 좋습니다.|1=$2 $5 서술을 포함하는 것이 좋습니다.|$2의 서술에 다음의 값 중 하나를 포함하는 것이 좋습니다:$4}}",
 	"wbqc-violation-message-mandatory-qualifier": "이 $1 서술에는 $2 한정어가 누락되어 있습니다.",
 	"wbqc-violation-message-multi-value": "이 속성은 여러 개의 값을 포함해야 합니다.",
 	"wbqc-violation-message-multi-value-separators": "이 속성은 동일한 {{PLURAL:$2|1=$4 한정어|다음 속성에 대한 한정어 집합: $3}}을 가진 값을 여러개 포함해야 합니다.",
