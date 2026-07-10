@@ -110,6 +110,12 @@ class WikibaseChangeNotificationHookHandlerTest extends TestCase {
 		);
 		$change = $factory->newFromUpdate( EntityChange::UPDATE, $old, $new );
 		yield 'property-copy-constraint' => [ $change, true ];
+
+		$change = $factory->newFromUpdate( EntityChange::ADD, null, $new );
+		yield 'property-create-with-constraints' => [ $change, true ];
+
+		$change = $factory->newFromUpdate( EntityChange::RESTORE, null, $new );
+		yield 'property-restore-with-constraints' => [ $change, true ];
 	}
 
 }

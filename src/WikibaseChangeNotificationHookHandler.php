@@ -73,8 +73,8 @@ class WikibaseChangeNotificationHookHandler implements WikibaseChangeNotificatio
 
 	private function isConstraintStatementsChange( Change $change ): bool {
 		if ( !( $change instanceof EntityChange ) ||
-			 $change->getAction() !== EntityChange::UPDATE ||
-			 !( $change->getEntityId() instanceof NumericPropertyId )
+			!in_array( $change->getAction(), [ EntityChange::ADD, EntityChange::UPDATE, EntityChange::RESTORE ] ) ||
+			!( $change->getEntityId() instanceof NumericPropertyId )
 		) {
 			return false;
 		}
