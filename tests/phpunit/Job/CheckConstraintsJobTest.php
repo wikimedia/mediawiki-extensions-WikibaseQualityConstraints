@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Job;
 
-use MediaWiki\JobQueue\Job;
 use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use Wikibase\DataModel\Entity\ItemId;
@@ -44,7 +43,7 @@ class CheckConstraintsJobTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testCreationFromFactory() {
-		Job::factory(
+		$this->getServiceContainer()->getJobFactory()->newJob(
 			CheckConstraintsJob::COMMAND,
 			Title::newMainPage(),
 			[ 'entityId' => 'Q123' ]
