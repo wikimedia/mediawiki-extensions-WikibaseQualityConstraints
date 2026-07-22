@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"AhmedG612"
+		]
+	},
+	"apihelp-wbcheckconstraints-summary": "Waxay ku samaysaa hubinta xannibaadaha hay'ad kasta oo aad rabto waxayna soo celisaa natiijada.",
+	"apihelp-wbcheckconstraints-param-id": "Liiska aqoonsiyada hay'adaha laga helayo xogta. Kala saar qiimayaasha adigoo isticmaalaya \"|\" ama beddelkeeda.",
+	"apihelp-wbcheckconstraints-param-claimid": "Liiska GUID tilmaamaya sheegashooyinka lagu hubinayo warbixinta xannibaadda. Kala saar qiimayaasha adigoo isticmaalaya '|'.",
+	"apihelp-wbcheckconstraints-param-constraintid": "Shaandheeye ikhtiyaari ah oo soo celinaya oo keliya xannibaadaha leh aqoonsiga xannibaadda ee la cayimay.",
+	"apihelp-wbcheckconstraints-param-status": "Shaandheeye ikhtiyaari ah oo soo celinaya oo keliya natiijooyinka hubinta leh xaaladaha la doortay.\n\nOgsoonow in keliya natiijooyinka xaaladaha 'violation', 'warning', \"\n'suggestion' iyo 'bad-parameters' la kaydiyo, sidaas darteed codsiyada doorta xaalado ka baxsan afartaas kama faa'iidaystaan kaydinta.",
+	"apihelp-wbcheckconstraints-paramvalue-status-compliance": "Bayaanku wuxuu waafaqsan yahay xannibaadda.",
+	"apihelp-wbcheckconstraints-paramvalue-status-violation": "Bayaanku wuxuu jebinayaa xannibaadda.",
+	"apihelp-wbcheckconstraints-paramvalue-status-exception": "Hay'adda mawduuca ee bayaanka waa ka reebis la og yahay oo ka baxsan xannibaadda.",
+	"apihelp-wbcheckconstraints-paramvalue-status-todo": "Xannibaadda lama hirgelin.",
+	"apihelp-wbcheckconstraints-paramvalue-status-bad-parameters": "Halbeegyada xannibaadda jaban yihiin.",
+	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "Xannibaadda lama hubin sababtoo ah bayaanka waa duugoobay.",
+	"apihelp-wbcheckconstraints-paramvalue-status-warning": "Bayaanku wuxuu jebinayaa xannibaadda, laakiin xannibaaddu ma aha mid khasab ah.",
+	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "Bayaanku wuxuu jebinayaa xannibaadda, laakiin xannibaaddu waa talo keliya.",
+	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "Xannibaadda laguma hubiyo noocan snak-ka ah (snak-ka ugu weyn, qeexe ama tixraac), sidaas darteed hubinta xannibaadda waa la dhaafay.",
+	"apihelp-wbcheckconstraintparameters-summary": "Waxay hubisaa halbeegyada xannibaadaha ee bayaannada xannibaadaha.",
+	"apihelp-wbcheckconstraintparameters-extended-description": "Midkood ama labadaba halbeegyada <var>sifo</var> iyo <var>constraintid</var> waa la cayimi karaa; dhammaan xannibaadaha lagu doortay midkood halbeegyadaas waa la hubin doonaa.",
+	"apihelp-wbcheckconstraintparameters-param-propertyid": "Liiska aqoonsiyada sifooyinka la hubinayo. Dhammaan bayaannada xannibaadaha ee sifooyinkan waa la hubin doonaa.\n\nHaddii halbeeggan la cayimo, waa inuusan madhnaan.",
+	"apihelp-wbcheckconstraintparameters-param-constraintid": "Liiska aqoonsiyada xannibaadaha (GUID bayaannada xannibaadaha) la hubinayo.\n\nHaddii halbeeggan la cayimo, waa inuusan madhnaan.",
+	"apihelp-wbcheckconstraints-example-1": "Hubi dhammaan xannibaadaha ku jira shayaha Q5 iyo Q42.",
+	"apihelp-wbcheckconstraints-example-2": "Hubi dhammaan xannibaadaha ku jira hal bayaan.",
+	"apihelp-wbcheckconstraints-example-3": "Hubi hal xannibaad oo gaar ah oo ku jira walaxa Q2.",
+	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Hubi halbeegyada xannibaadaha ee dhammaan xannibaadaha ku jira sifad.",
+	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Hubi halbeegyada xannibaadaha ee laba xannibaadood oo gaar ah."
+}
