@@ -1,9 +1,27 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ahmed-Najib-Biabani-Ibrahimkhel"
+			"Ahmed-Najib-Biabani-Ibrahimkhel",
+			"شاه زمان پټان"
 		]
 	},
+	"wbqc-constraintreport-form-submit-label": "سم‌کتنه",
+	"wbqc-constraintreport-form-entityid-label": "شتونتيا پېژند:",
+	"wbqc-constraintreport-result-headline": "پايلې د",
+	"wbqc-constraintreport-invalid-entity-id": "ناسمې شتونتيا پېژند.",
+	"wbqc-constraintreport-not-existent-entity": "شتونتيا شتون نلري.",
+	"wbqc-constraintreport-status-violation": "سرغړونې",
+	"wbqc-constraintreport-status-compliance": "منښت",
+	"wbqc-constraintreport-status-exception": "استثنا",
+	"wbqc-constraintreport-status-todo": "چې بايد وشي",
+	"wbqc-constraintreport-status-bad-parameters": "بد ارزښتونه",
+	"wbqc-constraintreport-status-deprecated": "له  پامه غورځول شوی",
+	"wbqc-constraintreport-status-warning": "گواښنه",
+	"wbqc-constraintreport-status-suggestion": "وړانديز",
 	"wbqc-constraintreport-result-table-header-status": "دريځ",
-	"wbqc-constraintreport-no-parameter": "هېڅ"
+	"wbqc-constraintreport-result-table-header-property": "ځانتيا",
+	"wbqc-constraintreport-result-table-header-message": "پيغام",
+	"wbqc-constraintreport-no-parameter": "هېڅ",
+	"wbqc-issue-heading": "ستونزه",
+	"wbqc-issues-short": "ستونزې"
 }
