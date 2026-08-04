@@ -22,5 +22,12 @@
 	"wbqc-constraintreport-result-table-header-property": "ځانتيا",
 	"wbqc-constraintreport-result-table-header-message": "پيغام",
 	"wbqc-constraintreport-no-parameter": "هېڅ",
-	"wbqc-issues-short": "ستونزې"
+	"wbqc-issues-short": "ستونزې",
+	"wbqc-suggestions-short": "وړانديزونه",
+	"wbqc-badparameters-short": "بد ارزښتونه",
+	"wbqc-parameterissues-short": "پرمختللې ستونزې",
+	"wbqc-constrainttypehelp-short": "لارښود",
+	"wbqc-constraintdiscuss-short": "شنل",
+	"wbqc-dataValueType-wikibase-entityid": "شتونتيا پېژند",
+	"wbqc-violation-header-parameters": "ارزښتونه:"
 }
