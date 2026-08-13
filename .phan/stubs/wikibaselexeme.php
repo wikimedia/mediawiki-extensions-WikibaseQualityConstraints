@@ -9,12 +9,17 @@ namespace Wikibase\Lexeme\Domain\Model {
 
 	use Wikibase\DataModel\Entity\EntityId;
 	use Wikibase\DataModel\Entity\ItemId;
+	use Wikibase\DataModel\Term\TermList;
 
 	class Lexeme {
 		public const ENTITY_TYPE = 'lexeme';
 
 		public function getLanguage() {
 			return new ItemId( 'Q1' );
+		}
+
+		public function getLemmas(): TermList {
+			return new TermList();
 		}
 	}
 
