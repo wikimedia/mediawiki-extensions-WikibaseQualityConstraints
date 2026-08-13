@@ -129,11 +129,6 @@ class SparqlHelper {
 
 	private int $cacheMapSize;
 
-	/**
-	 * @var string[]
-	 */
-	private array $timeoutExceptionClasses;
-
 	private bool $sparqlHasWikibaseSupport;
 
 	private int $sparqlThrottlingFallbackDuration;
@@ -175,9 +170,6 @@ class SparqlHelper {
 		$this->maxQueryTimeMillis = $config->get( 'WBQualityConstraintsSparqlMaxMillis' );
 		$this->subclassOfId = new NumericPropertyId( $config->get( 'WBQualityConstraintsSubclassOfId' ) );
 		$this->cacheMapSize = $config->get( 'WBQualityConstraintsFormatCacheMapSize' );
-		$this->timeoutExceptionClasses = $config->get(
-			'WBQualityConstraintsSparqlTimeoutExceptionClasses'
-		);
 		$this->sparqlHasWikibaseSupport = $config->get(
 			'WBQualityConstraintsSparqlHasWikibaseSupport'
 		);
@@ -762,14 +754,8 @@ EOF;
 	/**
 	 * Check whether the text content of an error response indicates a query timeout.
 	 */
-	public function isTimeout( string $responseContent ): bool {
-		$timeoutRegex = implode( '|', array_map(
-			static function ( $fqn ) {
-				return preg_quote( $fqn, '/' );
-			},
-			$this->timeoutExceptionClasses
-		) );
-		return (bool)preg_match( '/' . $timeoutRegex . '/', $responseContent );
+	public function isTimeout( int $responseStatus, string $responseContent ): bool {
+		return ( $responseStatus === 504 && $responseContent === 'upstream request timeout' );
 	}
 
 	/**
@@ -936,7 +922,7 @@ EOF;
 			// fall through to general error handling
 		}
 
-		if ( $this->isTimeout( $request->getContent() ) ) {
+		if ( $this->isTimeout( $request->getStatus(), $request->getContent() ) ) {
 			$metric
 				->setLabel( 'type', 'timeout' )
 				->setLabel( 'code', 'none' )

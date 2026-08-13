@@ -688,57 +688,30 @@ EOF;
 	/**
 	 * @dataProvider provideTimeoutMessages
 	 */
-	public function testIsTimeout( string $content, bool $expected ): void {
+	public function testIsTimeout( int $status, string $content, bool $expected ): void {
 		$sparqlHelper = $this->getSparqlHelper();
 
-		$actual = $sparqlHelper->isTimeout( $content );
+		$actual = $sparqlHelper->isTimeout( $status, $content );
 
 		$this->assertSame( $expected, $actual );
-	}
-
-	public function testIsTimeoutRegex(): void {
-		$sparqlHelper = $this->getSparqlHelper(
-			new HashConfig( [
-				'WBQualityConstraintsSparqlTimeoutExceptionClasses' => [
-					'(?!this may look like a regular expression)',
-					'/but should not be interpreted as one/',
-					'(x+x+)+y',
-				],
-			] )
-		);
-		$content = '(x+x+)+y';
-
-		$actual = $sparqlHelper->isTimeout( $content );
-
-		$this->assertTrue( $actual );
 	}
 
 	public static function provideTimeoutMessages(): iterable {
 		return [
 			'empty' => [
+				200,
 				'',
 				false,
 			],
 			'syntax error' => [
+				200,
 				'org.openrdf.query.MalformedQueryException: ' .
 					'Encountered "<EOF>" at line 1, column 6.',
 				false,
 			],
-			'QueryTimeoutException' => [
-				'java.util.concurrent.ExecutionException: ' .
-					'java.util.concurrent.ExecutionException: ' .
-					'org.openrdf.query.QueryInterruptedException: ' .
-					'java.lang.RuntimeException: ' .
-					'java.util.concurrent.ExecutionException: ' .
-					'com.bigdata.bop.engine.QueryTimeoutException: ' .
-					'Query deadline is expired.',
-				true,
-			],
-			'TimeoutException' => [
-				"java.util.concurrent.TimeoutException\n" .
-					"\tat java.util.concurrent.FutureTask.get(FutureTask.java:205)\n" .
-					"\tat com.bigdata.rdf.sail.webapp.BigdataServlet.submitApiTask(BigdataServlet.java:289)\n" .
-					"\tat com.bigdata.rdf.sail.webapp.QueryServlet.doSparqlQuery(QueryServlet.java:653)\n",
+			'upstream timeout' => [
+				504,
+				'upstream request timeout',
 				true,
 			],
 		];
