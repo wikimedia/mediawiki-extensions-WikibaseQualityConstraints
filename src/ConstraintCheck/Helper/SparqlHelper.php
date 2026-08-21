@@ -236,8 +236,16 @@ END;
 			$prefixes .= <<<END
 PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
+			$namespaceName = $sourceNamespaces[RdfVocabulary::NSP_NOVALUE];
+			$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
 		}
 		$namespaceName = RdfVocabulary::NS_ONTOLOGY;
+		$prefixes .= <<<END
+PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
+END;
+		$namespaceName = RdfVocabulary::NS_PROV;
 		$prefixes .= <<<END
 PREFIX {$namespaceName}: <{$rdfVocabulary->getNamespaceURI( $namespaceName )}>\n
 END;
@@ -322,9 +330,8 @@ END;
 
 			$query = <<<EOF
 ASK {
-  BIND({$this->wd( $id )} AS ?item)
   VALUES ?class { $classesValues }
-  ?item {$this->wdt( $this->subclassOfId )}* ?class.$gearingHint
+  {$this->wd( $id )} {$this->wdt( $this->subclassOfId )}* ?class.$gearingHint
 }
 EOF;
 
@@ -733,7 +740,8 @@ SPARQL;
 		$regexStringLiteral = $this->stringLiteral( '^(?:' . $regex . ')$' );
 
 		$query = <<<EOF
-SELECT (REGEX($textStringLiteral, $regexStringLiteral) AS ?matches) {}
+SELECT (REGEX($textStringLiteral, $regexStringLiteral) AS ?matches)
+WHERE {}
 EOF;
 
 		$result = $this->runQuery( $query, $this->primaryEndpoint, false );

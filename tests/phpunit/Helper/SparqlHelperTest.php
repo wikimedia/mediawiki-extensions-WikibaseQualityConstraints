@@ -152,9 +152,8 @@ class SparqlHelperTest extends MediaWikiIntegrationTestCase {
 
 		$query = <<<EOF
 ASK {
-  BIND(wd:Q1 AS ?item)
   VALUES ?class { wd:Q100 wd:Q101 }
-  ?item wdt:P279* ?class.
+  wd:Q1 wdt:P279* ?class.
 }
 EOF;
 
@@ -176,9 +175,8 @@ EOF;
 
 		$query = <<<EOF
 ASK {
-  BIND(wd:Q1 AS ?item)
   VALUES ?class { wd:Q100 wd:Q101 }
-  ?item wdt:P279* ?class. hint:Prior hint:gearing "forward".
+  wd:Q1 wdt:P279* ?class. hint:Prior hint:gearing "forward".
 }
 EOF;
 
@@ -643,7 +641,8 @@ EOF;
 	public function testMatchesRegularExpressionWithSparql(): void {
 		$text = '"&quot;\'\\\\"<&lt;'; // "&quot;'\\"<&lt;
 		$regex = '\\"\\\\"\\\\\\"'; // \"\\"\\\"
-		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^(?:\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\")$") AS ?matches) {}';
+		$query = 'SELECT (REGEX("\\"&quot;\'\\\\\\\\\\"<&lt;", "^(?:\\\\\\"\\\\\\\\\\"\\\\\\\\\\\\\\")$") AS ?matches)' .
+			"\nWHERE {}";
 		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
 
 		$sparqlHelper->expects( $this->once() )
@@ -659,7 +658,8 @@ EOF;
 	public function testMatchesRegularExpressionWithSparqlBadRegex(): void {
 		$text = '';
 		$regex = '(.{2,5)?';
-		$query = 'SELECT (REGEX("", "^(?:(.{2,5)?)$") AS ?matches) {}';
+		$query = 'SELECT (REGEX("", "^(?:(.{2,5)?)$") AS ?matches)' .
+			"\nWHERE {}";
 		$sparqlHelper = TestingAccessWrapper::newFromObject( $this->getSparqlHelper() );
 		$messageKey = 'wbqc-violation-message-parameter-regex';
 
@@ -987,7 +987,9 @@ PREFIX pq: <http://wiki/prop/qualifier/>
 PREFIX pqv: <http://wiki/prop/qualifier/value/>
 PREFIX pr: <http://wiki/prop/reference/>
 PREFIX prv: <http://wiki/prop/reference/value/>
+PREFIX wdno: <http://wiki/prop/novalue/>
 PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
 END;
 					$expectedPrefix = rawurlencode( $expectedPrefix );
 					return substr( $query, 0, strlen( $expectedPrefix ) ) === $expectedPrefix;
@@ -1037,11 +1039,9 @@ END;
 		) );
 
 		$query = <<<END
-SELECT ?item ?itemLabel
-WHERE
-{
+SELECT ?item
+WHERE {
   ?item wdt:P31 wd:Q2934.
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
 END;
 
