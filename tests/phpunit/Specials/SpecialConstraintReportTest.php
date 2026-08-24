@@ -57,16 +57,15 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 	protected function newSpecialPage() {
 		return new SpecialConstraintReport(
-			WikibaseRepo::getEntityLookup(),
-			WikibaseRepo::getEntityTitleLookup(),
-			WikibaseRepo::getEntityIdLabelFormatterFactory(),
+			StatsFactory::newNull(),
 			WikibaseRepo::getEntityIdHtmlLinkFormatterFactory(),
+			WikibaseRepo::getEntityIdLabelFormatterFactory(),
 			WikibaseRepo::getEntityIdParser(),
+			WikibaseRepo::getEntityTitleLookup(),
 			WikibaseRepo::getLanguageFallbackChainFactory(),
+			WikibaseRepo::getEntityLookup(),
 			ConstraintsServices::getDelegatingConstraintChecker(),
 			ConstraintsServices::getViolationMessageRendererFactory(),
-			self::getDefaultConfig(),
-			StatsFactory::newNull()
 		);
 	}
 

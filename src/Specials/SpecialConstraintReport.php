@@ -5,7 +5,6 @@ declare( strict_types = 1 );
 namespace WikibaseQuality\ConstraintReport\Specials;
 
 use InvalidArgumentException;
-use MediaWiki\Config\Config;
 use MediaWiki\Html\Html;
 use MediaWiki\HTMLForm\Field\HTMLTextField;
 use MediaWiki\HTMLForm\HTMLForm;
@@ -13,14 +12,12 @@ use MediaWiki\SpecialPage\SpecialPage;
 use UnexpectedValueException;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Entity\EntityIdParsingException;
-use Wikibase\DataModel\Services\EntityId\EntityIdFormatter;
 use Wikibase\DataModel\Services\Lookup\EntityLookup;
 use Wikibase\Lib\LanguageFallbackChainFactory;
 use Wikibase\Lib\Store\EntityTitleLookup;
 use Wikibase\Repo\EntityIdLabelFormatterFactory;
 use Wikibase\View\EntityIdFormatterFactory;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker;
-use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRendererFactory;
 use Wikimedia\Stats\StatsFactory;
 
@@ -33,80 +30,18 @@ use Wikimedia\Stats\StatsFactory;
  */
 class SpecialConstraintReport extends SpecialPage {
 
-	private EntityIdParser $entityIdParser;
-	private EntityLookup $entityLookup;
-	private EntityTitleLookup $entityTitleLookup;
-	private EntityIdFormatter $entityIdLabelFormatter;
-	private EntityIdFormatter $entityIdLinkFormatter;
-	private DelegatingConstraintChecker $constraintChecker;
-	private ViolationMessageRenderer $violationMessageRenderer;
-	private Config $config;
-	private StatsFactory $statsFactory;
-
-	public static function factory(
-		Config $config,
-		StatsFactory $statsFactory,
-		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
-		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
-		EntityIdParser $entityIdParser,
-		EntityTitleLookup $entityTitleLookup,
-		LanguageFallbackChainFactory $languageFallbackChainFactory,
-		EntityLookup $entityLookup,
-		DelegatingConstraintChecker $delegatingConstraintChecker,
-		ViolationMessageRendererFactory $violationMessageRendererFactory
-	): self {
-		return new self(
-			$entityLookup,
-			$entityTitleLookup,
-			$entityIdLabelFormatterFactory,
-			$entityIdHtmlLinkFormatterFactory,
-			$entityIdParser,
-			$languageFallbackChainFactory,
-			$delegatingConstraintChecker,
-			$violationMessageRendererFactory,
-			$config,
-			$statsFactory
-		);
-	}
-
 	public function __construct(
-		EntityLookup $entityLookup,
-		EntityTitleLookup $entityTitleLookup,
-		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
-		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
-		EntityIdParser $entityIdParser,
-		LanguageFallbackChainFactory $languageFallbackChainFactory,
-		DelegatingConstraintChecker $constraintChecker,
-		ViolationMessageRendererFactory $violationMessageRendererFactory,
-		Config $config,
-		StatsFactory $statsFactory
+		private readonly StatsFactory $statsFactory,
+		private readonly EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
+		private readonly EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
+		private readonly EntityIdParser $entityIdParser,
+		private readonly EntityTitleLookup $entityTitleLookup,
+		private readonly LanguageFallbackChainFactory $languageFallbackChainFactory,
+		private readonly EntityLookup $entityLookup,
+		private readonly DelegatingConstraintChecker $constraintChecker,
+		private readonly ViolationMessageRendererFactory $violationMessageRendererFactory,
 	) {
 		parent::__construct( 'ConstraintReport' );
-
-		$this->entityLookup = $entityLookup;
-		$this->entityTitleLookup = $entityTitleLookup;
-		$this->entityIdParser = $entityIdParser;
-
-		$language = $this->getLanguage();
-
-		$this->entityIdLabelFormatter = $entityIdLabelFormatterFactory->getEntityIdFormatter(
-			$language
-		);
-
-		$this->entityIdLinkFormatter = $entityIdHtmlLinkFormatterFactory->getEntityIdFormatter(
-			$language
-		);
-
-		$this->constraintChecker = $constraintChecker;
-
-		$this->violationMessageRenderer = $violationMessageRendererFactory->getViolationMessageRenderer(
-			$language,
-			$languageFallbackChainFactory->newFromLanguage( $language ),
-			$this->getContext()
-		);
-
-		$this->config = $config;
-		$this->statsFactory = $statsFactory;
 	}
 
 	/** @inheritDoc */
@@ -290,14 +225,30 @@ class SpecialConstraintReport extends SpecialPage {
 	}
 
 	private function getConstraintReportTableBuilder(): ConstraintReportTableBuilder {
+		$language = $this->getLanguage();
+
+		$entityIdLabelFormatter = $this->entityIdLabelFormatterFactory->getEntityIdFormatter(
+			$language
+		);
+
+		$entityIdLinkFormatter = $this->entityIdHtmlLinkFormatterFactory->getEntityIdFormatter(
+			$language
+		);
+
+		$violationMessageRenderer = $this->violationMessageRendererFactory->getViolationMessageRenderer(
+			$language,
+			$this->languageFallbackChainFactory->newFromLanguage( $language ),
+			$this->getContext()
+		);
+
 		return new ConstraintReportTableBuilder(
 			$this->getLanguage(),
 			$this,
 			$this->entityTitleLookup,
-			$this->entityIdLabelFormatter,
-			$this->entityIdLinkFormatter,
-			$this->violationMessageRenderer,
-			$this->config,
+			$entityIdLabelFormatter,
+			$entityIdLinkFormatter,
+			$violationMessageRenderer,
+			$this->getConfig(),
 		);
 	}
 

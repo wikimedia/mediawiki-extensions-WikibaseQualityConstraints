@@ -51,9 +51,7 @@
 	"SpecialPages": {
 		"ConstraintReport": {
 			"class": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport",
-			"factory": "WikibaseQuality\\ConstraintReport\\Specials\\SpecialConstraintReport::factory",
 			"services": [
-				"MainConfig",
 				"StatsFactory",
 				"WikibaseRepo.EntityIdHtmlLinkFormatterFactory",
 				"WikibaseRepo.EntityIdLabelFormatterFactory",
