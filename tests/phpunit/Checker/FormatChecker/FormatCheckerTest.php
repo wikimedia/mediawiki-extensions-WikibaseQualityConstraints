@@ -480,9 +480,7 @@ class FormatCheckerTest extends \MediaWikiIntegrationTestCase {
 			->getMock();
 		$shellboxClient->method( 'call' )
 			->willReturnCallback(
-				function ( $route, $func_name, $args ) {
-					return $func_name( ...$args );
-				}
+				static fn ( $routeName, $functionName, $params ) => $functionName( ...$params )
 			);
 		$shellboxClientFactory = $this->getMockBuilder( ShellboxClientFactory::class )
 			->disableOriginalConstructor()

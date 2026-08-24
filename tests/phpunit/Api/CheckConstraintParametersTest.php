@@ -139,9 +139,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForNonexistentProperty() {
-		$this->checkConstraintParametersOnPropertyId = function ( $propertyId ) {
-			return [];
-		};
+		$this->checkConstraintParametersOnPropertyId = fn ( $propertyId ) => [];
 
 		$result = $this->doRequest(
 			[ CheckConstraintParameters::PARAM_PROPERTY_ID => self::P1 ]
@@ -151,9 +149,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForNonexistentConstraint() {
-		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
-			return null;
-		};
+		$this->checkConstraintParametersOnConstraintId = fn ( $constraintId ) => null;
 
 		$result = $this->doRequest(
 			[ CheckConstraintParameters::PARAM_CONSTRAINT_ID => self::P1_NONEXISTENT ]
@@ -172,9 +168,7 @@ class CheckConstraintParametersTest extends ApiTestCase {
 	}
 
 	public function testReportForGoodConstraint() {
-		$this->checkConstraintParametersOnConstraintId = function ( $constraintId ) {
-			return [];
-		};
+		$this->checkConstraintParametersOnConstraintId = fn ( $constraintId ) => [];
 
 		$result = $this->doRequest(
 			[
