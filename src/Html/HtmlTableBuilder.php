@@ -4,7 +4,6 @@ namespace WikibaseQuality\ConstraintReport\Html;
 
 use InvalidArgumentException;
 use MediaWiki\Html\Html;
-use Wikimedia\Assert\Assert;
 
 /**
  * @author BP2014N1
@@ -15,34 +14,23 @@ class HtmlTableBuilder {
 	/**
 	 * @var HtmlTableHeaderBuilder[]
 	 */
-	private $headers = [];
+	private array $headers = [];
+
+	/** @var HtmlTableCellBuilder[][] */
+	private array $rows = [];
+
+	private bool $isSortable = false;
 
 	/**
-	 * Array of HtmlTableCellBuilder arrays
-	 *
-	 * @var array[]
+	 * @param array<HtmlTableHeaderBuilder|string> $headers
 	 */
-	private $rows = [];
-
-	/**
-	 * @var bool
-	 */
-	private $isSortable;
-
 	public function __construct( array $headers ) {
 		foreach ( $headers as $header ) {
 			$this->addHeader( $header );
 		}
 	}
 
-	/**
-	 * @param string|HtmlTableHeaderBuilder $header
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	private function addHeader( $header ) {
-		Assert::parameterType( [ 'string', HtmlTableHeaderBuilder::class ], $header, '$header' );
-
+	private function addHeader( HtmlTableHeaderBuilder|string $header ): void {
 		if ( is_string( $header ) ) {
 			$header = new HtmlTableHeaderBuilder( $header );
 		}
@@ -57,32 +45,27 @@ class HtmlTableBuilder {
 	/**
 	 * @return HtmlTableHeaderBuilder[]
 	 */
-	public function getHeaders() {
+	public function getHeaders(): array {
 		return $this->headers;
 	}
 
 	/**
-	 * @return array[]
+	 * @return HtmlTableCellBuilder[][]
 	 */
-	public function getRows() {
+	public function getRows(): array {
 		return $this->rows;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isSortable() {
+	public function isSortable(): bool {
 		return $this->isSortable;
 	}
 
 	/**
 	 * Adds row with specified cells to table.
 	 *
-	 * @param string[]|HtmlTableCellBuilder[] $cells
-	 *
-	 * @throws InvalidArgumentException
+	 * @param array<HtmlTableCellBuilder|string> $cells
 	 */
-	public function appendRow( array $cells ) {
+	public function appendRow( array $cells ): void {
 		foreach ( $cells as $key => $cell ) {
 			if ( is_string( $cell ) ) {
 				$cells[$key] = new HtmlTableCellBuilder( $cell );
@@ -97,11 +80,9 @@ class HtmlTableBuilder {
 	/**
 	 * Adds rows with specified cells to table.
 	 *
-	 * @param array[] $rows
-	 *
-	 * @throws InvalidArgumentException
+	 * @param array<HtmlTableCellBuilder|string>[] $rows
 	 */
-	public function appendRows( array $rows ) {
+	public function appendRows( array $rows ): void {
 		foreach ( $rows as $cells ) {
 			if ( !is_array( $cells ) ) {
 				throw new InvalidArgumentException( '$rows must be array of arrays of HtmlTableCell objects.' );
@@ -111,48 +92,32 @@ class HtmlTableBuilder {
 		}
 	}
 
-	/**
-	 * Returns table as html.
-	 *
-	 * @return string
-	 */
-	public function toHtml() {
-		// Open table
-		$tableClasses = 'wikitable';
-		if ( $this->isSortable ) {
-			$tableClasses .= ' sortable';
-		}
-		$html = Html::openElement( 'table', [ 'class' => $tableClasses ] );
-
-		// Write headers
-		$html .= Html::openElement( 'thead' );
-		$html .= Html::openElement( 'tr' );
+	public function toHtml(): string {
+		$headers = '';
 		foreach ( $this->headers as $header ) {
-			$html .= $header->toHtml();
+			$headers .= $header->toHtml();
 		}
-		$html .= Html::closeElement( 'tr' );
-		$html .= Html::closeElement( 'thead' );
-		$html .= Html::openElement( 'tbody' );
 
-		// Write rows
+		$rows = '';
 		foreach ( $this->rows as $row ) {
-			$html .= Html::openElement( 'tr' );
-
-			/**
-			 * @var HtmlTableCellBuilder $cell
-			 */
+			$rows .= Html::openElement( 'tr' );
 			foreach ( $row as $cell ) {
-				$html .= $cell->toHtml();
+				$rows .= $cell->toHtml();
 			}
-
-			$html .= Html::closeElement( 'tr' );
+			$rows .= Html::closeElement( 'tr' );
 		}
 
-		// Close table
-		$html .= Html::closeElement( 'tbody' );
-		$html .= Html::closeElement( 'table' );
-
-		return $html;
+		return Html::rawElement( 'table', [
+				'class' => [
+					'wikitable',
+					'sortable' => $this->isSortable,
+				],
+			],
+			Html::rawElement( 'thead', [],
+				Html::rawElement( 'tr', [], $headers )
+			) .
+			Html::rawElement( 'tbody', [], $rows )
+		);
 	}
 
 }

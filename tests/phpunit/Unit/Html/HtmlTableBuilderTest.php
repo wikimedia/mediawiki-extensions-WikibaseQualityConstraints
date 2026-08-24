@@ -3,6 +3,7 @@
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Html;
 
 use InvalidArgumentException;
+use TypeError;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableCellBuilder;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
@@ -24,10 +25,10 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 	 * @dataProvider constructDataProvider
 	 */
 	public function testConstruct(
-		$headers,
-		?array $expectedHeaders,
-		$expectedIsSortable,
-		$expectedException
+		array $headers,
+		array $expectedHeaders,
+		bool $expectedIsSortable,
+		?string $expectedException
 	) {
 		if ( $expectedException !== null ) {
 			$this->expectException( $expectedException );
@@ -77,10 +78,10 @@ class HtmlTableBuilderTest extends \MediaWikiUnitTestCase {
 				null,
 			],
 			[
-				[ 42 ],
-				null,
+				[ null ],
+				[],
 				false,
-				InvalidArgumentException::class,
+				TypeError::class,
 			],
 		];
 	}
