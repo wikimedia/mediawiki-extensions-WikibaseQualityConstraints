@@ -32,7 +32,7 @@ use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Stats\StatsFactory;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Api\CachingResultsSource
+ * @covers \WikibaseQuality\ConstraintReport\Api\CachingResultsSource
  *
  * @license GPL-2.0-or-later
  */

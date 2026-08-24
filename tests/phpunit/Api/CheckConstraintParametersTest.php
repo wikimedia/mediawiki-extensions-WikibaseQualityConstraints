@@ -16,7 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRen
 use Wikimedia\Stats\StatsFactory;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters
+ * @covers \WikibaseQuality\ConstraintReport\Api\CheckConstraintParameters
  *
  * @group API
  * @group Database

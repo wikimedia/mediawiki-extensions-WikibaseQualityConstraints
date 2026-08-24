@@ -31,8 +31,8 @@ use WikibaseQuality\ConstraintReport\ConstraintSerializer;
 use WikibaseQuality\ConstraintReport\Role;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultSerializer
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResultDeserializer
  *
  * @group WikibaseQualityConstraints
  *

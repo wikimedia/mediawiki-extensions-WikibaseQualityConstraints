@@ -62,7 +62,7 @@ use Wikimedia\TestingAccessWrapper;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\SparqlHelper
  *
  * @group WikibaseQualityConstraints
  *

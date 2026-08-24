@@ -9,7 +9,7 @@ use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Api\ResultsCache
+ * @covers \WikibaseQuality\ConstraintReport\Api\ResultsCache
  *
  * @group WikibaseQualityConstraints
  *

@@ -7,7 +7,7 @@ use LogicException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue
  *
  * @group WikibaseQualityConstraints
  *

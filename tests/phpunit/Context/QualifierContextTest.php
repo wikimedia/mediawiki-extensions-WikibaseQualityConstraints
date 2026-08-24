@@ -14,8 +14,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContextCursor;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContext
  *
  * @group WikibaseQualityConstraints
  *

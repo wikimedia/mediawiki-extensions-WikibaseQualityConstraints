@@ -15,7 +15,7 @@ use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\PropertyScopeChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\PropertyScopeChecker
  *
  * @group WikibaseQualityConstraints
  *

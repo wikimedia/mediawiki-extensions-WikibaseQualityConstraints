@@ -11,7 +11,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata;
 use Wikimedia\Assert\ParameterElementTypeException;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\Metadata
  *
  * @group WikibaseQualityConstraints
  *

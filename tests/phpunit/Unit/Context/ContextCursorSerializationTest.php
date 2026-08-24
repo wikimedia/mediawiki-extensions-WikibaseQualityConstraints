@@ -13,8 +13,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContextCur
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContextCursor;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorSerializer
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ContextCursorDeserializer
  *
  * @group WikibaseQualityConstraints
  *

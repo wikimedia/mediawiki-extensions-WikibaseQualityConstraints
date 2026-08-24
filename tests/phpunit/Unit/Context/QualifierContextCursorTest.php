@@ -5,8 +5,8 @@ namespace WikibaseQuality\ConstraintReport\Tests\Unit\Context;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContextCursor;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2ContextCursor
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContextCursor
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2ContextCursor
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\QualifierContextCursor
  *
  * @group WikibaseQualityConstraints
  *

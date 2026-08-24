@@ -8,8 +8,8 @@ use WikibaseQuality\ConstraintReport\ConstraintDeserializer;
 use WikibaseQuality\ConstraintReport\ConstraintSerializer;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintSerializer
- * @covers WikibaseQuality\ConstraintReport\ConstraintDeserializer
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintSerializer
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintDeserializer
  *
  * @group WikibaseQualityConstraints
  *

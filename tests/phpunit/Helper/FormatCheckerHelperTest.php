@@ -7,7 +7,7 @@ namespace WikibaseQuality\ConstraintReport\Tests\Helper;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\FormatCheckerHelper;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\FormatCheckerHelper
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\FormatCheckerHelper
  *
  * @group WikibaseQualityConstraints
  *

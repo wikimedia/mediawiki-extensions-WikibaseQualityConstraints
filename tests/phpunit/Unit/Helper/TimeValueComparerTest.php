@@ -7,7 +7,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\NowValue;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\TimeValueComparer
  *
  * @group WikibaseQualityConstraints
  *

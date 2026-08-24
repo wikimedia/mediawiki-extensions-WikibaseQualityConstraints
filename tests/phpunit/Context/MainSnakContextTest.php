@@ -14,8 +14,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContextCursor;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext
  *
  * @group WikibaseQualityConstraints
  *

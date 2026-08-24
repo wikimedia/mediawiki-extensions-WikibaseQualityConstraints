@@ -20,6 +20,8 @@ use WikibaseQuality\ConstraintReport\Role;
 use Wikimedia\TestingAccessWrapper;
 
 /**
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer
+ *
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
@@ -37,11 +39,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserialize
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::unabbreviateViolationMessageKey
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::__construct
-	 */
 	public function testDeserialize_noArguments() {
 		$serialized = [ 'k' => 'single-value', 'a' => [] ];
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -55,10 +52,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( [], $message->getArguments() );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserialize
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeArgument
-	 */
 	public function testDeserialize_entityId() {
 		$serialized = [ 'k' => 'no-qualifiers', 'a' => [ [
 			't' => ViolationMessage::TYPE_ENTITY_ID,
@@ -78,10 +71,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserialize
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeArgument
-	 */
 	public function testDeserialize_unknownArgument() {
 		$serialized = [
 			'k' => 'unknown-argument-type',
@@ -97,9 +86,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$deserializer->deserialize( $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeStringByIdentity
-	 */
 	public function testDeserializeStringByIdentity_noEscaping() {
 		$serialized = '<pseudo html>&apos;; DROP TABLE Students; -- <![CDATA[ \write18{reboot} ]]>';
 		$serializer = $this->getViolationMessageDeserializer();
@@ -110,9 +96,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $serialized, $value );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeStringByIdentity
-	 */
 	public function testDeserializeStringByIdentity_empty() {
 		$serialized = '';
 		$serializer = $this->getViolationMessageDeserializer();
@@ -123,9 +106,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $serialized, $value );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeEntityId
-	 */
 	public function testDeserializeEntityId() {
 		$propertyId = new NumericPropertyId( 'P1' );
 		$mock = $this->createMock( EntityIdParser::class );
@@ -141,9 +121,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $propertyId, $deserialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeEntityIdList
-	 */
 	public function testDeserializeEntityIdList() {
 		$entityIdSerializations = [ 'Q1', 'P1' ];
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -157,9 +134,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeEntityIdList
-	 */
 	public function testDeserializeEntityIdList_Empty() {
 		$entityIdSerializations = [];
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -170,9 +144,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals( [], $deserialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValue
-	 */
 	public function testDeserializeItemIdSnakValue_itemId() {
 		$serialization = 'Q1';
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -185,9 +156,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals( new ItemId( 'Q1' ), $deserialized->getItemId() );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValue
-	 */
 	public function testDeserializeItemIdSnakValue_someValue() {
 		$serialization = '::somevalue';
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -199,9 +167,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertTrue( $deserialized->isSomeValue() );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValue
-	 */
 	public function testDeserializeItemIdSnakValue_noValue() {
 		$serialization = '::novalue';
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -213,9 +178,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertTrue( $deserialized->isNoValue() );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValueList
-	 */
 	public function testDeserializeItemIdSnakValueList() {
 		$serializations = [ 'Q1', '::somevalue', '::novalue' ];
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -231,9 +193,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertTrue( $deserialized[2]->isNoValue() );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeItemIdSnakValueList
-	 */
 	public function testDeserializeItemIdSnakValueList_empty() {
 		$serializations = [];
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -244,9 +203,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( [], $deserialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeDataValue
-	 */
 	public function testDeserializeDataValue() {
 		$serialization = [ 'type' => 'string', 'value' => '<a string>' ];
 		$deserializer = $this->getViolationMessageDeserializer(
@@ -261,7 +217,7 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeContextType
+	 * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeContextType
 	 * @dataProvider provideContextTypeAbbreviations
 	 */
 	public function testDeserializeContextType( $abbreviation, $contextType ) {
@@ -281,9 +237,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		];
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeContextTypeList
-	 */
 	public function testDeserializeContextTypeList() {
 		$serializations = [ 's', 'r', 'q' ];
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -299,9 +252,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $deserialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeContextTypeList
-	 */
 	public function testDeserializeContextTypeList_empty() {
 		$serializations = [];
 		$deserializer = $this->getViolationMessageDeserializer();
@@ -312,9 +262,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( [], $deserialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeMultilingualText
-	 */
 	public function testDeserializeMultilingualText() {
 		$textSerialization = [
 			[ 'language' => 'en', 'text' => 'must <strong>not</strong> contain punctuation' ],
@@ -334,9 +281,6 @@ class ViolationMessageDeserializerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageDeserializer::deserializeMultilingualText
-	 */
 	public function testDeserializeMultilingualText_empty() {
 		$textSerialization = [];
 		$deserializer = $this->getViolationMessageDeserializer();

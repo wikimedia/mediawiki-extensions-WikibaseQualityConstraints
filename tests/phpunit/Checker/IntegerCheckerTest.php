@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\IntegerChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\IntegerChecker
  *
  * @group WikibaseQualityConstraints
  *

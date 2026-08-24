@@ -13,7 +13,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\Tests\Fake\AppendingContextCursor;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckResults
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Cache\CachedCheckResults
  *
  * @group WikibaseQualityConstraints
  *

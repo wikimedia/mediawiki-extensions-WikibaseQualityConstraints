@@ -6,8 +6,8 @@ use LogicException;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2ContextCursor
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ApiV2ContextCursor
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\EntityContextCursor
  *
  * @group WikibaseQualityConstraints
  *

@@ -16,7 +16,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\MainSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CitationNeededChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CitationNeededChecker
  *
  * @group WikibaseQualityConstraints
  *

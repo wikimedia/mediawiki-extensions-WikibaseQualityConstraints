@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\InverseChecker
  *
  * @group WikibaseQualityConstraints
  *

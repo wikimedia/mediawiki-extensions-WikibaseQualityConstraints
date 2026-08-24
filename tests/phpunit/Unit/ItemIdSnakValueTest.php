@@ -14,7 +14,7 @@ use Wikibase\DataModel\Snak\PropertyValueSnak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\ItemIdSnakValue
  *
  * @group WikibaseQualityConstraints
  *

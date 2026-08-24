@@ -34,7 +34,7 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use WikibaseQuality\ConstraintReport\Tests\Fake\AppendingContextCursor;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Api\CheckResultsRenderer
+ * @covers \WikibaseQuality\ConstraintReport\Api\CheckResultsRenderer
  *
  * @license GPL-2.0-or-later
  */

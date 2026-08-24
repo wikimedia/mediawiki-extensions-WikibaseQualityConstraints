@@ -27,7 +27,7 @@ use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 use WikibaseQuality\ConstraintReport\Tests\SparqlHelperMock;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\UniqueValueChecker
  *
  * @group WikibaseQualityConstraints
  *

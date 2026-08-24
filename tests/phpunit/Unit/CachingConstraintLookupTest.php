@@ -7,7 +7,7 @@ use WikibaseQuality\ConstraintReport\CachingConstraintLookup;
 use WikibaseQuality\ConstraintReport\ConstraintLookup;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\CachingConstraintLookup
+ * @covers \WikibaseQuality\ConstraintReport\CachingConstraintLookup
  *
  * @group WikibaseQualityConstraints
  *

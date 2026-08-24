@@ -17,6 +17,8 @@ use WikibaseQuality\ConstraintReport\Role;
 use Wikimedia\TestingAccessWrapper;
 
 /**
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer
+ *
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
@@ -24,10 +26,6 @@ use Wikimedia\TestingAccessWrapper;
  */
 class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serialize
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::abbreviateViolationMessageKey
-	 */
 	public function testSerialize_noArguments() {
 		$message = new ViolationMessage( 'wbqc-violation-message-single-value' );
 		$serializer = new ViolationMessageSerializer();
@@ -40,10 +38,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serialize
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeArgument
-	 */
 	public function testSerialize_entityId_withRole() {
 		$message = ( new ViolationMessage( 'wbqc-violation-message-no-qualifiers' ) )
 			->withEntityId( new NumericPropertyId( 'P1' ), Role::CONSTRAINT_PROPERTY );
@@ -61,10 +55,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serialize
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeArgument
-	 */
 	public function testSerialize_unknownArgument() {
 		$message = $this->createMock( ViolationMessage::class );
 		$message->method( 'getMessageKey' )
@@ -77,9 +67,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$serializer->serialize( $message );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeStringByIdentity
-	 */
 	public function testSerializeStringByIdentity_noEscaping() {
 		$value = '<pseudo html>&apos;; DROP TABLE Students; -- <![CDATA[ \write18{reboot} ]]>';
 		$serializer = new ViolationMessageSerializer();
@@ -90,9 +77,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( $value, $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeStringByIdentity
-	 */
 	public function testSerializeStringByIdentity_empty() {
 		$value = '';
 		$serializer = new ViolationMessageSerializer();
@@ -103,9 +87,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( $value, $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeEntityId
-	 */
 	public function testSerializeEntityId() {
 		$entityId = new NumericPropertyId( 'P1' );
 		$serializer = new ViolationMessageSerializer();
@@ -116,9 +97,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( 'P1', $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeEntityIdList
-	 */
 	public function testSerializeEntityIdList() {
 		$entityIds = [ new ItemId( 'Q1' ), new NumericPropertyId( 'P1' ) ];
 		$serializer = new ViolationMessageSerializer();
@@ -129,9 +107,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( [ 'Q1', 'P1' ], $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeEntityIdList
-	 */
 	public function testSerializeEntityIdList_empty() {
 		$entityIds = [];
 		$serializer = new ViolationMessageSerializer();
@@ -142,9 +117,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( [], $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
-	 */
 	public function testSerializeItemIdSnakValue_itemId() {
 		$value = ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) );
 		$serializer = new ViolationMessageSerializer();
@@ -155,9 +127,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( 'Q1', $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
-	 */
 	public function testSerializeItemIdSnakValue_someValue() {
 		$value = ItemIdSnakValue::someValue();
 		$serializer = new ViolationMessageSerializer();
@@ -168,9 +137,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( '::somevalue', $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
-	 */
 	public function testSerializeItemIdSnakValue_noValue() {
 		$value = ItemIdSnakValue::noValue();
 		$serializer = new ViolationMessageSerializer();
@@ -185,7 +151,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	 * Verify that a string beginning with two colons is not a valid entity ID serialization.
 	 * If this ever changes, we’re in trouble because our serialization of
 	 * ItemIdSnakValue::someValue() and ItemIdSnakValue::noValue() might become ambiguous.
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
+	 * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValue
 	 */
 	public function testSerializeItemIdSnakValue_senseCheck() {
 		$this->expectException( InvalidArgumentException::class );
@@ -196,9 +162,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 			->getMockForAbstractClass();
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValueList
-	 */
 	public function testSerializeItemIdSnakValueList() {
 		$valueList = [
 			ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ),
@@ -213,9 +176,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( [ 'Q1', '::somevalue', '::novalue' ], $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeItemIdSnakValueList
-	 */
 	public function testSerializeItemIdSnakValueList_empty() {
 		$valueList = [];
 		$serializer = new ViolationMessageSerializer();
@@ -226,9 +186,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( [], $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeDataValue
-	 */
 	public function testSerializeDataValue() {
 		$dataValue = new StringValue( '<a string>' );
 		$serializer = new ViolationMessageSerializer();
@@ -240,7 +197,7 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeContextType
+	 * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeContextType
 	 * @dataProvider provideContextTypes
 	 */
 	public function testSerializeContextType( $contextType, $abbreviation ) {
@@ -260,9 +217,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		];
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeContextTypeList
-	 */
 	public function testSerializeContextTypeList() {
 		$contextTypeList = [
 			Context::TYPE_STATEMENT,
@@ -277,9 +231,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( [ 's', 'r', 'q' ], $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeContextTypeList
-	 */
 	public function testSerializeContextTypeList_empty() {
 		$contextTypeList = [];
 		$serializer = new ViolationMessageSerializer();
@@ -290,9 +241,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		$this->assertSame( [], $serialized );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeMultilingualText
-	 */
 	public function testSerializeMultilingualText() {
 		$text = new MultilingualTextValue( [
 			new MonolingualTextValue( 'en', 'the text' ),
@@ -314,9 +262,6 @@ class ViolationMessageSerializerTest extends \MediaWikiUnitTestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageSerializer::serializeMultilingualText
-	 */
 	public function testSerializeMultilingualText_empty() {
 		$text = new MultilingualTextValue( [] );
 		$serializer = new ViolationMessageSerializer();

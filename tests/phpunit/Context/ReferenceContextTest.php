@@ -16,8 +16,8 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContextCursor;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\AbstractContext
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Context\ReferenceContext
  *
  * @group WikibaseQualityConstraints
  *

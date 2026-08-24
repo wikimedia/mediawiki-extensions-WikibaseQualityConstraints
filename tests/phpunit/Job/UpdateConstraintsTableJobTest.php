@@ -32,7 +32,7 @@ use Wikimedia\Rdbms\ILBFactory;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob
+ * @covers \WikibaseQuality\ConstraintReport\Job\UpdateConstraintsTableJob
  *
  * @group WikibaseQualityConstraints
  * @group Database

@@ -21,7 +21,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\CommonsLinkChecker
  *
  * @group WikibaseQualityConstraints
  * @group Database

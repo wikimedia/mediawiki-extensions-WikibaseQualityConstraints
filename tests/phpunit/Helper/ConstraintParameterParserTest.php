@@ -32,7 +32,7 @@ use WikibaseQuality\ConstraintReport\Tests\PropertyDataTypeLookupMockingTrait;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ConstraintParameterParser
  *
  * @group WikibaseQualityConstraints
  *

@@ -20,7 +20,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Api\CheckingResultsSource
+ * @covers \WikibaseQuality\ConstraintReport\Api\CheckingResultsSource
  *
  * @license GPL-2.0-or-later
  */

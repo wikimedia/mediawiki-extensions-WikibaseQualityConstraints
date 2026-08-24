@@ -13,7 +13,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\EntityTypeChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\EntityTypeChecker
  *
  * @group WikibaseQualityConstraints
  *

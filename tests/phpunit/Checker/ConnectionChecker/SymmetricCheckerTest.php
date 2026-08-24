@@ -16,7 +16,7 @@ use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\SymmetricChecker
  *
  * @group WikibaseQualityConstraints
  *

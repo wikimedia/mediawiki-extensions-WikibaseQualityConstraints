@@ -22,7 +22,7 @@ use WikibaseQuality\ConstraintReport\Tests\DefaultConfig;
 use Wikimedia\Stats\StatsFactory;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
+ * @covers \WikibaseQuality\ConstraintReport\Specials\SpecialConstraintReport
  *
  * @group WikibaseQualityConstraints
  * @group Database

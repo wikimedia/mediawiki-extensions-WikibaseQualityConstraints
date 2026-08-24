@@ -18,7 +18,7 @@ use WikibaseQuality\ConstraintReport\Tests\ConstraintParameters;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ItemChecker
  *
  * @group WikibaseQualityConstraints
  *

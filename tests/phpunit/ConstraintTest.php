@@ -7,7 +7,7 @@ use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use WikibaseQuality\ConstraintReport\ConstraintRepositoryLookup;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Constraint
+ * @covers \WikibaseQuality\ConstraintReport\Constraint
  *
  * @group WikibaseQualityConstraints
  * @group Database

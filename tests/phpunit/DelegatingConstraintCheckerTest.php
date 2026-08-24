@@ -43,7 +43,7 @@ use WikibaseQuality\ConstraintReport\WikibaseServices;
 use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\DelegatingConstraintChecker
  *
  * @group WikibaseQualityConstraints
  * @group Database

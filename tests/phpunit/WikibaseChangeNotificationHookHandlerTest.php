@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\WikibaseChangeNotificationHookHandler;
 use Wikimedia\TestingAccessWrapper;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\WikibaseChangeNotificationHookHandler
+ * @covers \WikibaseQuality\ConstraintReport\WikibaseChangeNotificationHookHandler
  *
  * @group WikibaseQualityConstraints
  *

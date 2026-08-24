@@ -27,6 +27,8 @@ use WikibaseQuality\ConstraintReport\Role;
 use Wikimedia\TestingAccessWrapper;
 
 /**
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer
+ *
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
@@ -72,9 +74,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 */
 	public function testRender_simpleMessage() {
 		$messageKey = 'wbqc-violation-message-single-value';
 		$message = new ViolationMessage( $messageKey );
@@ -85,10 +84,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( '(' . $messageKey . ')', $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_entityId() {
 		$messageKey = 'wbqc-violation-message-no-qualifiers';
 		$entityId = new NumericPropertyId( 'P1' );
@@ -102,10 +97,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_entityIdList() {
 		$messageKey = 'wbqc-violation-message-unique-value';
 		$entityIdList = [ new ItemId( 'Q1' ), new NumericPropertyId( 'P2' ) ];
@@ -121,10 +112,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_itemIdSnakValue() {
 		$messageKey = 'wbqc-violation-message-conflicts-with-claim';
 		$itemIdSnakValue = ItemIdSnakValue::someValue();
@@ -142,10 +129,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_itemIdSnakValueList() {
 		$messageKey = 'wbqc-violation-message-one-of';
 		$valueList = [ ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ) ];
@@ -160,10 +143,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_dataValue() {
 		$messageKey = 'wbqc-violation-message-range-quantity-rightopen';
 		$dataValue = new StringValue( 'a string' );
@@ -179,10 +158,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_dataValueType() {
 		$messageKey = 'wbqc-violation-message-value-needed-of-type';
 		$dataValueType = 'string';
@@ -197,10 +172,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_inlineCode() {
 		$messageKey = 'wbqc-violation-message-format';
 		$code = 'https?://[^/]+/.*';
@@ -217,10 +188,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_constraintScope() {
 		$messageKey = 'wbqc-violation-message-invalid-scope';
 		$scope = Context::TYPE_STATEMENT;
@@ -234,10 +201,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_constraintScopeList() {
 		$messageKey = 'wbqc-violation-message-invalid-scope';
 		$scopeList = [ Context::TYPE_STATEMENT, Context::TYPE_REFERENCE ];
@@ -254,10 +217,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_propertyScope() {
 		$messageKey = 'wbqc-violation-message-invalid-scope';
 		$scope = Context::TYPE_STATEMENT;
@@ -271,10 +230,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_propertyScopeList() {
 		$messageKey = 'wbqc-violation-message-invalid-scope';
 		$scopeList = [ Context::TYPE_STATEMENT, Context::TYPE_REFERENCE ];
@@ -291,10 +246,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_language() {
 		$messageKey = 'wbqc-violation-message-parameter-single-per-language';
 		$languageCode = 'pt';
@@ -310,10 +261,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::render
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderArgument
-	 */
 	public function testRender_unknownArgumentType() {
 		$message = $this->createMock( ViolationMessage::class );
 		$message->method( 'getArguments' )
@@ -324,9 +271,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		$renderer->render( $message );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
-	 */
 	public function testRenderList() {
 		$valueList = [ '<any value>', new StringValue( 'any kind of value' ) ];
 		$role = null;
@@ -361,9 +305,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
-	 */
 	public function testRenderList_empty() {
 		$valueList = [];
 		$role = null;
@@ -387,9 +328,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
-	 */
 	public function testRenderList_tooLong() {
 		$valueList = [ 'Q1', 'P2', 'Q3' ];
 		$role = null;
@@ -420,9 +358,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderList
-	 */
 	public function testRenderList_withRole() {
 		$valueList = [ '<test item>' ];
 		$role = Role::OBJECT;
@@ -451,10 +386,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityId
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderEntityId() {
 		$entityId = new ItemId( 'Q1' );
 		$role = null;
@@ -474,10 +405,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityId
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderEntityId_withRole() {
 		$entityId = new NumericPropertyId( 'P1' );
 		$role = Role::PREDICATE;
@@ -496,10 +423,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityIdList
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderEntityIdList() {
 		$entityIdList = [ new ItemId( 'Q1' ), new NumericPropertyId( 'P2' ) ];
 		$role = null;
@@ -523,10 +446,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderEntityIdList
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderEntityIdList_withRole() {
 		$entityIdList = [ new ItemId( 'Q1' ) ];
 		$role = Role::OBJECT;
@@ -549,10 +468,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValue
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderItemIdSnakValue_itemId() {
 		$itemId = new ItemId( 'Q1' );
 		$itemIdSnakValue = ItemIdSnakValue::fromItemId( $itemId );
@@ -573,9 +488,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValue
-	 */
 	public function testRenderItemIdSnakValue_someValue() {
 		$itemIdSnakValue = ItemIdSnakValue::someValue();
 		$role = null;
@@ -598,9 +510,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValue
-	 */
 	public function testRenderItemIdSnakValue_noValue() {
 		$itemIdSnakValue = ItemIdSnakValue::noValue();
 		$role = null;
@@ -623,10 +532,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValue
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderItemIdSnakValue_withRole() {
 		$itemId = new ItemId( 'Q1' );
 		$itemIdSnakValue = ItemIdSnakValue::fromItemId( $itemId );
@@ -646,10 +551,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValueList
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderItemIdSnakValueList() {
 		$valueList = [
 			ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ),
@@ -676,10 +577,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderItemIdSnakValueList
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderItemIdSnakValueList_withRole() {
 		$valueList = [ ItemIdSnakValue::fromItemId( new ItemId( 'Q1' ) ) ];
 		$role = Role::OBJECT;
@@ -702,10 +599,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderDataValue
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderDataValue() {
 		$dataValue = new StringValue( 'a&nbsp;string' );
 		$role = null;
@@ -725,10 +618,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderDataValue
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderDataValue_withRole() {
 		$dataValue = new StringValue( 'test' );
 		$role = Role::OBJECT;
@@ -747,9 +636,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderDataValueType
-	 */
 	public function testRenderDataValueType_string() {
 		$dataValueType = 'string';
 		$role = null;
@@ -764,9 +650,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderDataValueType
-	 */
 	public function testRenderDataValueType_entityId() {
 		$dataValueType = 'wikibase-entityid';
 		$role = null;
@@ -781,10 +664,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderInlineCode
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderInlineCode() {
 		$code = 'https?://[^/]+/.*';
 		$role = null;
@@ -799,9 +678,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderInlineCode
-	 */
 	public function testRenderInlineCode_htmlEscape() {
 		$code = '<script>alert("im in ur html")</script>';
 		$role = null;
@@ -820,10 +696,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderInlineCode
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderInlineCode_withRole() {
 		$code = 'https?://[^/]+/.*';
 		$role = Role::CONSTRAINT_PARAMETER_VALUE;
@@ -843,8 +715,8 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScope
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
+	 * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScope
+	 * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
 	 * @dataProvider provideConstraintScopes
 	 */
 	public function testRenderConstraintScope( $contextType, $itemIdSerialization, $returnValue ) {
@@ -880,9 +752,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		];
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScope
-	 */
 	public function testRenderConstraintScope_unknown() {
 		$scope = 'some unknown scope';
 		$role = null;
@@ -904,10 +773,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScope
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderConstraintScope_withRole() {
 		$scope = Context::TYPE_STATEMENT;
 		$role = Role::CONSTRAINT_PARAMETER_VALUE;
@@ -924,10 +789,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScopeList
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderConstraintScopeList() {
 		$scopeList = [ Context::TYPE_STATEMENT, Context::TYPE_REFERENCE ];
 		$role = null;
@@ -951,10 +812,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderConstraintScopeList
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::addRole
-	 */
 	public function testRenderConstraintScopeList_withRole() {
 		$scopeList = [ Context::TYPE_STATEMENT ];
 		$role = Role::CONSTRAINT_PARAMETER_VALUE;
@@ -978,9 +835,6 @@ class ViolationMessageRendererTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRenderer::renderLanguage
-	 */
 	public function testRenderLanguage() {
 		$languageCode = 'pt';
 		$role = null;

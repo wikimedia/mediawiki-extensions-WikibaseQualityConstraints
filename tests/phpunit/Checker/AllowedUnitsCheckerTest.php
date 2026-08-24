@@ -20,7 +20,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\AllowedUnitsChecker
  *
  * @group WikibaseQualityConstraints
  *

@@ -7,7 +7,7 @@ use WikibaseQuality\ConstraintReport\Constraint;
 use WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup
+ * @covers \WikibaseQuality\ConstraintReport\Tests\Fake\InMemoryConstraintLookup
  *
  * @group WikibaseQualityConstraints
  *

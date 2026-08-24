@@ -26,7 +26,7 @@ use Wikimedia\Stats\StatsCache;
 use Wikimedia\Stats\StatsFactory;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\ValueTypeChecker
  *
  * @group WikibaseQualityConstraints
  *

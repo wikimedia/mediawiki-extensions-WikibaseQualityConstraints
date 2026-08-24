@@ -15,7 +15,7 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
 use WikibaseQuality\ConstraintReport\Role;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage
  *
  * @group WikibaseQualityConstraints
  *

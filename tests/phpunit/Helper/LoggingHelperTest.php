@@ -19,7 +19,7 @@ use Wikimedia\Stats\StatsFactory;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\LoggingHelper
  *
  * @group WikibaseQualityConstraints
  *

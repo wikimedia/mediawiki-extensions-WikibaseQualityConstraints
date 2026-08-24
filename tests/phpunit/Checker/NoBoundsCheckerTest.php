@@ -14,7 +14,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoBoundsChecker
  *
  * @group WikibaseQualityConstraints
  *

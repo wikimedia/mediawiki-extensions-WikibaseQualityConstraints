@@ -17,7 +17,7 @@ use WikibaseQuality\ConstraintReport\Tests\Fake\FakeSnakContext;
 use WikibaseQuality\ConstraintReport\Tests\ResultAssertions;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoneOfChecker
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Checker\NoneOfChecker
  *
  * @group WikibaseQualityConstraints
  *

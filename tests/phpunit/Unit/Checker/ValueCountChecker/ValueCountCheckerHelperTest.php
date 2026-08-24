@@ -8,7 +8,7 @@ use Wikibase\DataModel\Snak\PropertySomeValueSnak;
 use WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper;
 
 /**
- * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Helper\ValueCountCheckerHelper
  *
  * @group WikibaseQualityConstraints
  *

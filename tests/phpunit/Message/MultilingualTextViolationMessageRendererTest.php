@@ -26,6 +26,8 @@ use WikibaseQuality\ConstraintReport\Role;
 use Wikimedia\TestingAccessWrapper;
 
 /**
+ * @covers \WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer
+ *
  * @group WikibaseQualityConstraints
  *
  * @author Lucas Werkmeister
@@ -66,9 +68,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::render
-	 */
 	public function testRender_fallback() {
 		$messageKey = 'wbqc-violation-message-format';
 		$code = 'https?://[^/]+/.*';
@@ -85,9 +84,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::render
-	 */
 	public function testRender_multilingualText() {
 		$messageKey = 'wbqc-violation-message-format-clarification';
 		$monolingualText = new MonolingualTextValue( 'en', 'clarification' );
@@ -106,9 +102,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::render
-	 */
 	public function testRender_multilingualText_fallback() {
 		$messageKey = 'wbqc-violation-message-format-clarification';
 		$monolingualText1 = new MonolingualTextValue( 'en', 'clarification' );
@@ -128,9 +121,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::render
-	 */
 	public function testRender_multilingualText_noFallback() {
 		$messageKey = 'wbqc-violation-message-format-clarification';
 		$alternativeMessageKey = 'wbqc-violation-message-format';
@@ -150,10 +140,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$this->assertSame( $expected, $rendered );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::renderMultilingualText
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::addRole
-	 */
 	public function testRenderMultilingualText_English() {
 		$text = new MultilingualTextValue( [ new MonolingualTextValue( 'en', 'explanation' ) ] );
 		$role = null;
@@ -168,9 +154,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::renderMultilingualText
-	 */
 	public function testRenderMultilingualText_German() {
 		$text = new MultilingualTextValue( [ new MonolingualTextValue( 'de', 'Erklärung' ) ] );
 		$role = null;
@@ -185,9 +168,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::renderMultilingualText
-	 */
 	public function testRenderMultilingualText_AustrianGermanFallback() {
 		$text = new MultilingualTextValue( [ new MonolingualTextValue( 'de', 'Erklärung' ) ] );
 		$role = null;
@@ -202,9 +182,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::renderMultilingualText
-	 */
 	public function testRenderMultilingualText_KlingonFallback() {
 		$text = new MultilingualTextValue( [ new MonolingualTextValue( 'en', 'explanation' ) ] );
 		$role = null;
@@ -219,9 +196,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::renderMultilingualText
-	 */
 	public function testRenderMultilingualText_multipleLanguages() {
 		$text = new MultilingualTextValue( [
 			new MonolingualTextValue( 'en', 'explanation' ),
@@ -240,9 +214,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		);
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::renderMultilingualText
-	 */
 	public function testRenderMultilingualText_noFallback() {
 		$text = new MultilingualTextValue( [ new MonolingualTextValue( 'de', 'Erklärung' ) ] );
 		$role = null;
@@ -254,9 +225,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$this->assertNull( $params );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::renderMultilingualText
-	 */
 	public function testRenderMultilingualText_noLanguages() {
 		$text = new MultilingualTextValue( [] );
 		$role = null;
@@ -268,10 +236,6 @@ class MultilingualTextViolationMessageRendererTest extends \MediaWikiIntegration
 		$this->assertNull( $params );
 	}
 
-	/**
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::renderMultilingualText
-	 * @covers WikibaseQuality\ConstraintReport\ConstraintCheck\Message\MultilingualTextViolationMessageRenderer::addRole
-	 */
 	public function testRenderMultilingualText_withRole() {
 		$text = new MultilingualTextValue( [ new MonolingualTextValue( 'en', 'explanation' ) ] );
 		$role = Role::CONSTRAINT_PARAMETER_VALUE;
