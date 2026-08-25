@@ -14,12 +14,6 @@ use Wikimedia\Rdbms\IResultWrapper;
  */
 class ConstraintRepositoryLookup implements ConstraintLookup {
 
-	/** @var ILoadBalancer */
-	private $lb;
-
-	/** @var string|false */
-	private $dbName;
-
 	private LoggerInterface $logger;
 
 	/**
@@ -29,9 +23,11 @@ class ConstraintRepositoryLookup implements ConstraintLookup {
 	 * @param string|false $dbName Database name ($domain for ILoadBalancer methods).
 	 * @param LoggerInterface|null $logger
 	 */
-	public function __construct( ILoadBalancer $lb, $dbName, ?LoggerInterface $logger = null ) {
-		$this->lb = $lb;
-		$this->dbName = $dbName;
+	public function __construct(
+		private readonly ILoadBalancer $lb,
+		private readonly string|false $dbName,
+		?LoggerInterface $logger = null,
+	) {
 		$this->logger = $logger ?? new NullLogger();
 	}
 

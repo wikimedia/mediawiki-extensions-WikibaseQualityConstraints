@@ -4,9 +4,7 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Html;
 
-use InvalidArgumentException;
 use MediaWiki\Html\Html;
-use Wikimedia\Assert\Assert;
 use Wikimedia\HtmlArmor\HtmlArmor;
 
 /**
@@ -16,28 +14,13 @@ use Wikimedia\HtmlArmor\HtmlArmor;
 class HtmlTableHeaderBuilder {
 
 	/**
-	 * Html content of the header
-	 *
-	 * @var string|HtmlArmor
+	 * @param string|HtmlArmor $content Html content of the header
+	 * @param bool $isSortable Determines, whether the column should be sortable or not.
 	 */
-	private $content;
-
-	/**
-	 * Determines, whether the column should be sortable or not.
-	 */
-	private bool $isSortable;
-
-	/**
-	 * @param string|HtmlArmor $content
-	 * @param bool $isSortable
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	public function __construct( $content, bool $isSortable = false ) {
-		Assert::parameterType( [ 'string', HtmlArmor::class ], $content, '$content' );
-
-		$this->content = $content;
-		$this->isSortable = $isSortable;
+	public function __construct(
+		private readonly string|HtmlArmor $content,
+		private readonly bool $isSortable = false,
+	) {
 	}
 
 	/**

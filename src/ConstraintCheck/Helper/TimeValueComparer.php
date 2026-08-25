@@ -10,13 +10,9 @@ use DataValues\TimeValueCalculator;
  */
 class TimeValueComparer {
 
-	/**
-	 * @var TimeValueCalculator
-	 */
-	private $timeValueCalculator;
-
-	public function __construct( ?TimeValueCalculator $timeValueCalculator = null ) {
-		$this->timeValueCalculator = $timeValueCalculator ?: new TimeValueCalculator();
+	public function __construct(
+		private readonly TimeValueCalculator $timeValueCalculator = new TimeValueCalculator(),
+	) {
 	}
 
 	public function getComparison( TimeValue $lhs, TimeValue $rhs ): int {

@@ -14,33 +14,15 @@ use Wikibase\DataModel\Entity\ItemId;
 class UnitsParameter {
 
 	/**
-	 * @var ItemId[]
-	 */
-	private $unitItemIds;
-
-	/**
-	 * @var UnboundedQuantityValue[]
-	 */
-	private $unitQuantities;
-
-	/**
-	 * @var bool
-	 */
-	private $unitlessAllowed;
-
-	/**
 	 * @param ItemId[] $unitItemIds The item IDs of the allowed units.
 	 * @param UnboundedQuantityValue[] $unitQuantities Quantities with the allowed units.
 	 * @param bool $unitlessAllowed Whether unitless values (unit '1') are allowed or not.
 	 */
 	public function __construct(
-		array $unitItemIds,
-		array $unitQuantities,
-		$unitlessAllowed
+		private readonly array $unitItemIds,
+		private readonly array $unitQuantities,
+		private readonly bool $unitlessAllowed,
 	) {
-		$this->unitItemIds = $unitItemIds;
-		$this->unitQuantities = $unitQuantities;
-		$this->unitlessAllowed = $unitlessAllowed;
 	}
 
 	/**

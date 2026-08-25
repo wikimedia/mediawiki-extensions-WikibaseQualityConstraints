@@ -12,21 +12,16 @@ use Wikimedia\Rdbms\ILoadBalancer;
  */
 class ConstraintRepositoryStore implements ConstraintStore {
 
-	/** @var ILoadBalancer */
-	private $lb;
-
-	/** @var string|false */
-	private $dbName;
-
 	/**
 	 * @param ILoadBalancer $lb Load balancer for database connections.
 	 * Must match $dbName, i.e. if $dbName is not false,
 	 * then using the main DBLoadBalancer service may be incorrect.
 	 * @param string|false $dbName Database name ($domain for ILoadBalancer methods).
 	 */
-	public function __construct( ILoadBalancer $lb, $dbName ) {
-		$this->lb = $lb;
-		$this->dbName = $dbName;
+	public function __construct(
+		private readonly ILoadBalancer $lb,
+		private readonly string|false $dbName,
+	) {
 	}
 
 	private function encodeConstraintParameters( array $constraintParameters ): string {

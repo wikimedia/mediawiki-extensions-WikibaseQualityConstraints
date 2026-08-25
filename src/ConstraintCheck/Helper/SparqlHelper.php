@@ -53,8 +53,6 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  */
 class SparqlHelper {
 
-	private RdfVocabulary $rdfVocabulary;
-
 	/**
 	 * A copy of {@link self::$rdfVocabulary}, but with
 	 * {@link RdfVocabulary::$normalizedPropertyValueNamespace} set to all-null values;
@@ -64,32 +62,12 @@ class SparqlHelper {
 	 */
 	private RdfVocabulary $rdfVocabularyWithoutNormalization;
 
-	private ValueSnakRdfBuilderFactory $valueSnakRdfBuilderFactory;
-
 	/**
 	 * @var string[]
 	 */
 	private array $entityPrefixes;
 
 	private string $prefixes;
-
-	private EntityIdParser $entityIdParser;
-
-	private PropertyDataTypeLookup $propertyDataTypeLookup;
-
-	private WANObjectCache $cache;
-
-	private ViolationMessageSerializer $violationMessageSerializer;
-
-	private ViolationMessageDeserializer $violationMessageDeserializer;
-
-	private StatsFactory $statsFactory;
-
-	private LoggingHelper $loggingHelper;
-
-	private string $defaultUserAgent;
-
-	private ExpiryLock $throttlingLock;
 
 	/**
 	 * @var int stands for: No Retry-After header-field was sent back
@@ -114,8 +92,6 @@ class SparqlHelper {
 	 */
 	private const HTTP_TOO_MANY_REQUESTS = 429;
 
-	private HttpRequestFactory $requestFactory;
-
 	private string $primaryEndpoint;
 
 	/**
@@ -135,31 +111,19 @@ class SparqlHelper {
 
 	public function __construct(
 		Config $config,
-		RdfVocabulary $rdfVocabulary,
-		ValueSnakRdfBuilderFactory $valueSnakRdfBuilderFactory,
-		EntityIdParser $entityIdParser,
-		PropertyDataTypeLookup $propertyDataTypeLookup,
-		WANObjectCache $cache,
-		ViolationMessageSerializer $violationMessageSerializer,
-		ViolationMessageDeserializer $violationMessageDeserializer,
-		StatsFactory $statsFactory,
-		ExpiryLock $throttlingLock,
-		LoggingHelper $loggingHelper,
-		string $defaultUserAgent,
-		HttpRequestFactory $requestFactory
+		private readonly RdfVocabulary $rdfVocabulary,
+		private readonly ValueSnakRdfBuilderFactory $valueSnakRdfBuilderFactory,
+		private readonly EntityIdParser $entityIdParser,
+		private readonly PropertyDataTypeLookup $propertyDataTypeLookup,
+		private readonly WANObjectCache $cache,
+		private readonly ViolationMessageSerializer $violationMessageSerializer,
+		private readonly ViolationMessageDeserializer $violationMessageDeserializer,
+		private readonly StatsFactory $statsFactory,
+		private readonly ExpiryLock $throttlingLock,
+		private readonly LoggingHelper $loggingHelper,
+		private readonly string $defaultUserAgent,
+		private readonly HttpRequestFactory $requestFactory,
 	) {
-		$this->rdfVocabulary = $rdfVocabulary;
-		$this->valueSnakRdfBuilderFactory = $valueSnakRdfBuilderFactory;
-		$this->entityIdParser = $entityIdParser;
-		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
-		$this->cache = $cache;
-		$this->violationMessageSerializer = $violationMessageSerializer;
-		$this->violationMessageDeserializer = $violationMessageDeserializer;
-		$this->statsFactory = $statsFactory;
-		$this->throttlingLock = $throttlingLock;
-		$this->loggingHelper = $loggingHelper;
-		$this->defaultUserAgent = $defaultUserAgent;
-		$this->requestFactory = $requestFactory;
 		$this->entityPrefixes = [];
 		foreach ( $rdfVocabulary->entityNamespaceNames as $namespaceName ) {
 			$this->entityPrefixes[] = $rdfVocabulary->getNamespaceURI( $namespaceName );

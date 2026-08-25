@@ -20,19 +20,13 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
 class SingleBestValueChecker implements ConstraintChecker {
 
 	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
 	 * @var ValueCountCheckerHelper
 	 */
 	private $valueCountCheckerHelper;
 
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser
+		private readonly ConstraintParameterParser $constraintParameterParser,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
 		$this->valueCountCheckerHelper = new ValueCountCheckerHelper();
 	}
 

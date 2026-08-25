@@ -30,15 +30,6 @@ use Wikimedia\Message\MessageParam;
  */
 class ViolationMessageRenderer {
 
-	private EntityIdFormatter $entityIdFormatter;
-	private ValueFormatter $dataValueFormatter;
-	private LanguageNameUtils $languageNameUtils;
-	private string $userLanguageCode;
-	protected TermLanguageFallbackChain $languageFallbackChain;
-	protected MessageLocalizer $messageLocalizer;
-	private Config $config;
-	private int $maxListLength;
-
 	/**
 	 * @param EntityIdFormatter $entityIdFormatter
 	 * @param ValueFormatter $dataValueFormatter
@@ -51,23 +42,15 @@ class ViolationMessageRenderer {
 	 * Longer lists are truncated to this length and then rendered with an ellipsis in the HMTL list.
 	 */
 	public function __construct(
-		EntityIdFormatter $entityIdFormatter,
-		ValueFormatter $dataValueFormatter,
-		LanguageNameUtils $languageNameUtils,
-		string $userLanguageCode,
-		TermLanguageFallbackChain $languageFallbackChain,
-		MessageLocalizer $messageLocalizer,
-		Config $config,
-		int $maxListLength = 10
+		private readonly EntityIdFormatter $entityIdFormatter,
+		private readonly ValueFormatter $dataValueFormatter,
+		private readonly LanguageNameUtils $languageNameUtils,
+		private readonly string $userLanguageCode,
+		protected readonly TermLanguageFallbackChain $languageFallbackChain,
+		protected readonly MessageLocalizer $messageLocalizer,
+		private readonly Config $config,
+		private readonly int $maxListLength = 10,
 	) {
-		$this->entityIdFormatter = $entityIdFormatter;
-		$this->dataValueFormatter = $dataValueFormatter;
-		$this->languageNameUtils = $languageNameUtils;
-		$this->userLanguageCode = $userLanguageCode;
-		$this->languageFallbackChain = $languageFallbackChain;
-		$this->messageLocalizer = $messageLocalizer;
-		$this->config = $config;
-		$this->maxListLength = $maxListLength;
 	}
 
 	public function render( ViolationMessage $violationMessage ): string {

@@ -291,14 +291,17 @@ class UpdateConstraintsTableJobTest extends MediaWikiIntegrationTestCase {
 		$preferredConstraintStatement = NewStatement::forProperty( $propertyConstraintId )
 			->withValue( new ItemId( $usedForValuesOnlyId ) )
 			->withPreferredRank()
+			->withSomeGuid()
 			->build();
 		$normalConstraintStatement = NewStatement::forProperty( $propertyConstraintId )
 			->withValue( new ItemId( $usedAsQualifierId ) )
 			->withNormalRank()
+			->withSomeGuid()
 			->build();
 		$deprecatedConstraintStatement = NewStatement::forProperty( $propertyConstraintId )
 			->withValue( new ItemId( $usedAsReferenceId ) )
 			->withDeprecatedRank()
+			->withSomeGuid()
 			->build();
 		$property = new Property(
 			new NumericPropertyId( 'P3' ),

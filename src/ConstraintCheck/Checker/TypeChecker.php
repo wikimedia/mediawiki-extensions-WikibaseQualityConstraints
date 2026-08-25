@@ -19,29 +19,11 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  */
 class TypeChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var TypeCheckerHelper
-	 */
-	private $typeCheckerHelper;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser,
-		TypeCheckerHelper $typeCheckerHelper,
-		Config $config
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly TypeCheckerHelper $typeCheckerHelper,
+		private readonly Config $config,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->typeCheckerHelper = $typeCheckerHelper;
-		$this->config = $config;
 	}
 
 	/**

@@ -22,11 +22,6 @@ use Wikibase\Lib\Units\UnitConverter;
 class RangeCheckerHelper {
 
 	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
 	 * @var ValueParser
 	 */
 	private $timeParser;
@@ -41,20 +36,13 @@ class RangeCheckerHelper {
 	 */
 	private $timeValueComparer;
 
-	/**
-	 * @var UnitConverter|null
-	 */
-	private $unitConverter;
-
 	public function __construct(
-		Config $config,
-		?UnitConverter $unitConverter = null
+		private readonly Config $config,
+		private readonly ?UnitConverter $unitConverter = null,
 	) {
-		$this->config = $config;
 		$this->timeParser = new IsoTimestampParser();
 		$this->timeCalculator = new TimeValueCalculator();
 		$this->timeValueComparer = new TimeValueComparer( $this->timeCalculator );
-		$this->unitConverter = $unitConverter;
 	}
 
 	/**

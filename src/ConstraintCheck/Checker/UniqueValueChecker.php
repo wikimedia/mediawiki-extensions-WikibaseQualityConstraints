@@ -26,16 +26,10 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class UniqueValueChecker implements ConstraintChecker {
 
-	private SparqlHelper $sparqlHelper;
-
-	private ConstraintParameterParser $constraintParameterParser;
-
 	public function __construct(
-		SparqlHelper $sparqlHelper,
-		ConstraintParameterParser $constraintParameterParser
+		private readonly SparqlHelper $sparqlHelper,
+		private readonly ConstraintParameterParser $constraintParameterParser,
 	) {
-		$this->sparqlHelper = $sparqlHelper;
-		$this->constraintParameterParser = $constraintParameterParser;
 	}
 
 	/**

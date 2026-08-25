@@ -38,11 +38,6 @@ class CheckConstraintParameters extends ApiBase {
 	public const KEY_MESSAGE_HTML = 'message-html';
 
 	private ApiErrorReporter $apiErrorReporter;
-	private LanguageFallbackChainFactory $languageFallbackChainFactory;
-	private DelegatingConstraintChecker $delegatingConstraintChecker;
-	private ViolationMessageRendererFactory $violationMessageRendererFactory;
-	private StatementGuidParser $statementGuidParser;
-	private StatsFactory $statsFactory;
 
 	/**
 	 * Creates new instance from global state.
@@ -73,20 +68,15 @@ class CheckConstraintParameters extends ApiBase {
 		ApiMain $main,
 		string $name,
 		ApiHelperFactory $apiHelperFactory,
-		LanguageFallbackChainFactory $languageFallbackChainFactory,
-		DelegatingConstraintChecker $delegatingConstraintChecker,
-		ViolationMessageRendererFactory $violationMessageRendererFactory,
-		StatementGuidParser $statementGuidParser,
-		StatsFactory $statsFactory
+		private readonly LanguageFallbackChainFactory $languageFallbackChainFactory,
+		private readonly DelegatingConstraintChecker $delegatingConstraintChecker,
+		private readonly ViolationMessageRendererFactory $violationMessageRendererFactory,
+		private readonly StatementGuidParser $statementGuidParser,
+		private readonly StatsFactory $statsFactory,
 	) {
 		parent::__construct( $main, $name );
 
 		$this->apiErrorReporter = $apiHelperFactory->getErrorReporter( $this );
-		$this->languageFallbackChainFactory = $languageFallbackChainFactory;
-		$this->delegatingConstraintChecker = $delegatingConstraintChecker;
-		$this->violationMessageRendererFactory = $violationMessageRendererFactory;
-		$this->statementGuidParser = $statementGuidParser;
-		$this->statsFactory = $statsFactory;
 	}
 
 	public function execute() {

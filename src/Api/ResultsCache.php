@@ -15,16 +15,6 @@ use Wikimedia\ObjectCache\WANObjectCache;
  */
 class ResultsCache {
 
-	/**
-	 * @var WANObjectCache
-	 */
-	private $cache;
-
-	/**
-	 * @var string
-	 */
-	private $formatVersion;
-
 	public static function getDefaultInstance(): self {
 		return new self(
 			MediaWikiServices::getInstance()->getMainWANObjectCache(),
@@ -36,9 +26,10 @@ class ResultsCache {
 	 * @param WANObjectCache $cache
 	 * @param string $formatVersion The version of the API response format.
 	 */
-	public function __construct( WANObjectCache $cache, $formatVersion ) {
-		$this->cache = $cache;
-		$this->formatVersion = $formatVersion;
+	public function __construct(
+		private readonly WANObjectCache $cache,
+		private readonly string $formatVersion,
+	) {
 	}
 
 	/**

@@ -20,22 +20,10 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class ConflictsWithChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var ConnectionCheckerHelper
-	 */
-	private $connectionCheckerHelper;
-
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser,
-		ConnectionCheckerHelper $connectionCheckerHelper
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly ConnectionCheckerHelper $connectionCheckerHelper,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->connectionCheckerHelper = $connectionCheckerHelper;
 	}
 
 	/**

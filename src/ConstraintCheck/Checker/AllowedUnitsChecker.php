@@ -22,26 +22,10 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class AllowedUnitsChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var UnitConverter|null
-	 */
-	private $unitConverter;
-
-	/**
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param UnitConverter|null $unitConverter
-	 */
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser,
-		?UnitConverter $unitConverter
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly ?UnitConverter $unitConverter,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->unitConverter = $unitConverter;
 	}
 
 	/**

@@ -23,22 +23,10 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class LanguageChecker implements ConstraintChecker {
 
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser,
-		EntityLookup $lookup
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly EntityLookup $entityLookup,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->entityLookup = $lookup;
 	}
 
 	/**

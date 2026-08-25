@@ -28,29 +28,11 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class RangeChecker implements ConstraintChecker {
 
-	/**
-	 * @var PropertyDataTypeLookup
-	 */
-	private $propertyDataTypeLookup;
-
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var RangeCheckerHelper
-	 */
-	private $rangeCheckerHelper;
-
 	public function __construct(
-		PropertyDataTypeLookup $propertyDataTypeLookup,
-		ConstraintParameterParser $constraintParameterParser,
-		RangeCheckerHelper $rangeCheckerHelper
+		private readonly PropertyDataTypeLookup $propertyDataTypeLookup,
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly RangeCheckerHelper $rangeCheckerHelper,
 	) {
-		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->rangeCheckerHelper = $rangeCheckerHelper;
 	}
 
 	/**

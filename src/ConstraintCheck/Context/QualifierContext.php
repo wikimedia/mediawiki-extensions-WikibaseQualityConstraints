@@ -15,15 +15,12 @@ use Wikibase\DataModel\Statement\Statement;
  */
 class QualifierContext extends AbstractContext {
 
-	private Statement $statement;
-
 	public function __construct(
 		StatementListProvidingEntity $entity,
-		Statement $statement,
+		private readonly Statement $statement,
 		Snak $snak
 	) {
 		parent::__construct( $entity, $snak );
-		$this->statement = $statement;
 	}
 
 	public function getType(): string {

@@ -16,19 +16,13 @@ use Wikibase\DataModel\Statement\Statement;
  */
 class ReferenceContext extends AbstractContext {
 
-	private Statement $statement;
-
-	private Reference $reference;
-
 	public function __construct(
 		StatementListProvidingEntity $entity,
-		Statement $statement,
-		Reference $reference,
+		private readonly Statement $statement,
+		private readonly Reference $reference,
 		Snak $snak
 	) {
 		parent::__construct( $entity, $snak );
-		$this->statement = $statement;
-		$this->reference = $reference;
 	}
 
 	public function getType(): string {

@@ -11,42 +11,12 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
  */
 class Constraint {
 
-	/**
-	 * @var string
-	 */
-	private $constraintId;
-
-	/**
-	 * @var NumericPropertyId
-	 */
-	private $propertyId;
-
-	/**
-	 * @var string
-	 */
-	private $constraintTypeItemId;
-
-	/**
-	 * @var array
-	 */
-	private $constraintParameters;
-
-	/**
-	 * @param string $constraintId
-	 * @param NumericPropertyId $propertyId
-	 * @param string $constraintTypeItemId
-	 * @param array $constraintParameters
-	 */
 	public function __construct(
-		$constraintId,
-		NumericPropertyId $propertyId,
-		$constraintTypeItemId,
-		array $constraintParameters
+		private readonly string $constraintId,
+		private readonly NumericPropertyId $propertyId,
+		private readonly string $constraintTypeItemId,
+		private readonly array $constraintParameters,
 	) {
-		$this->constraintId = $constraintId;
-		$this->propertyId = $propertyId;
-		$this->constraintTypeItemId = $constraintTypeItemId;
-		$this->constraintParameters = $constraintParameters;
 	}
 
 	/**

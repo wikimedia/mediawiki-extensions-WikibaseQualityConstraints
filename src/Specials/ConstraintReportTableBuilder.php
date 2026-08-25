@@ -30,13 +30,13 @@ use Wikimedia\HtmlArmor\HtmlArmor;
 class ConstraintReportTableBuilder implements MessageLocalizer {
 
 	public function __construct(
-		private Language $language,
-		private MessageLocalizer $messageLocalizer,
-		private EntityTitleLookup $entityTitleLookup,
-		private EntityIdFormatter $entityIdLabelFormatter,
-		private EntityIdFormatter $entityIdLinkFormatter,
-		private ViolationMessageRenderer $violationMessageRenderer,
-		private Config $config,
+		private readonly Language $language,
+		private readonly MessageLocalizer $messageLocalizer,
+		private readonly EntityTitleLookup $entityTitleLookup,
+		private readonly EntityIdFormatter $entityIdLabelFormatter,
+		private readonly EntityIdFormatter $entityIdLinkFormatter,
+		private readonly ViolationMessageRenderer $violationMessageRenderer,
+		private readonly Config $config,
 	) {
 	}
 

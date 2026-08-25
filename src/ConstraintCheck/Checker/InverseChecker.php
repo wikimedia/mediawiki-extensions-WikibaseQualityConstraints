@@ -26,29 +26,11 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class InverseChecker implements ConstraintChecker {
 
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var ConnectionCheckerHelper
-	 */
-	private $connectionCheckerHelper;
-
 	public function __construct(
-		EntityLookup $lookup,
-		ConstraintParameterParser $constraintParameterParser,
-		ConnectionCheckerHelper $connectionCheckerHelper
+		private readonly EntityLookup $entityLookup,
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly ConnectionCheckerHelper $connectionCheckerHelper,
 	) {
-		$this->entityLookup = $lookup;
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->connectionCheckerHelper = $connectionCheckerHelper;
 	}
 
 	/**

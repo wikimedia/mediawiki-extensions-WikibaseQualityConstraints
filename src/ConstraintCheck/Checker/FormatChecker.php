@@ -32,52 +32,19 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class FormatChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var SparqlHelper
-	 */
-	private $sparqlHelper;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var ShellboxClientFactory
-	 */
-	private $shellboxClientFactory;
-
 	private array $knownGoodPatternsAsKeys;
 
-	private LoggerInterface $logger;
-
-	/**
-	 * @param ConstraintParameterParser $constraintParameterParser
-	 * @param Config $config
-	 * @param SparqlHelper $sparqlHelper
-	 * @param ShellboxClientFactory $shellboxClientFactory
-	 */
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser,
-		Config $config,
-		SparqlHelper $sparqlHelper,
-		ShellboxClientFactory $shellboxClientFactory,
-		?LoggerInterface $logger = null
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly Config $config,
+		private readonly SparqlHelper $sparqlHelper,
+		private readonly ShellboxClientFactory $shellboxClientFactory,
+		private readonly LoggerInterface $logger = new NullLogger(),
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->config = $config;
-		$this->sparqlHelper = $sparqlHelper;
-		$this->shellboxClientFactory = $shellboxClientFactory;
 		$this->knownGoodPatternsAsKeys = array_fill_keys(
 			$this->config->get( 'WBQualityConstraintsFormatCheckerKnownGoodRegexPatterns' ),
 			null
 		);
-		$this->logger = $logger ?? new NullLogger();
 	}
 
 	/**

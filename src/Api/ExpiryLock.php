@@ -19,10 +19,9 @@ use Wikimedia\Timestamp\TimestampException;
  */
 class ExpiryLock {
 
-	private BagOStuff $cache;
-
-	public function __construct( BagOStuff $cache ) {
-		$this->cache = $cache;
+	public function __construct(
+		private readonly BagOStuff $cache,
+	) {
 	}
 
 	/**

@@ -35,11 +35,6 @@ class CheckResultSerializer {
 	public const KEY_DEPENDENCY_METADATA_ENTITY_IDS = 'e';
 	public const KEY_DEPENDENCY_METADATA_FUTURE_TIME = 'f';
 
-	private ConstraintSerializer $constraintSerializer;
-	private ContextCursorSerializer $contextCursorSerializer;
-	private ViolationMessageSerializer $violationMessageSerializer;
-	private bool $serializeDependencyMetadata;
-
 	/**
 	 * @param ConstraintSerializer $constraintSerializer
 	 * @param ContextCursorSerializer $contextCursorSerializer
@@ -48,15 +43,11 @@ class CheckResultSerializer {
 	 * of a result’s {@link CheckResult::getMetadata metadata} or not.
 	 */
 	public function __construct(
-		ConstraintSerializer $constraintSerializer,
-		ContextCursorSerializer $contextCursorSerializer,
-		ViolationMessageSerializer $violationMessageSerializer,
-		bool $serializeDependencyMetadata = true
+		private readonly ConstraintSerializer $constraintSerializer,
+		private readonly ContextCursorSerializer $contextCursorSerializer,
+		private readonly ViolationMessageSerializer $violationMessageSerializer,
+		private readonly bool $serializeDependencyMetadata = true,
 	) {
-		$this->constraintSerializer = $constraintSerializer;
-		$this->contextCursorSerializer = $contextCursorSerializer;
-		$this->violationMessageSerializer = $violationMessageSerializer;
-		$this->serializeDependencyMetadata = $serializeDependencyMetadata;
 	}
 
 	public function serialize( CheckResult $checkResult ): array {

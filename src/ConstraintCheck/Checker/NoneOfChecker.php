@@ -18,15 +18,9 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class NoneOfChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser
+		private readonly ConstraintParameterParser $constraintParameterParser,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
 	}
 
 	/**

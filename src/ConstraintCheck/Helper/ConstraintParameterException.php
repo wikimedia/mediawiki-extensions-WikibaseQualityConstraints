@@ -13,16 +13,11 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessage;
  */
 class ConstraintParameterException extends Exception {
 
-	/**
-	 * @var ViolationMessage
-	 */
-	private $violationMessage;
-
-	public function __construct( ViolationMessage $violationMessage ) {
+	public function __construct(
+		private readonly ViolationMessage $violationMessage,
+	) {
 		$message = '⧼' . $violationMessage->getMessageKey() . '⧽';
 		parent::__construct( $message );
-
-		$this->violationMessage = $violationMessage;
 	}
 
 	/**

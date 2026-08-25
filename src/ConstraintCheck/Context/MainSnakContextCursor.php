@@ -9,24 +9,12 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Context;
  */
 class MainSnakContextCursor extends ApiV2ContextCursor {
 
-	private string $entityId;
-
-	private string $statementPropertyId;
-
-	private string $statementGuid;
-
-	private string $snakHash;
-
 	public function __construct(
-		string $entityId,
-		string $statementPropertyId,
-		string $statementGuid,
-		string $snakHash
+		private readonly string $entityId,
+		private readonly string $statementPropertyId,
+		private readonly string $statementGuid,
+		private readonly string $snakHash,
 	) {
-		$this->entityId = $entityId;
-		$this->statementPropertyId = $statementPropertyId;
-		$this->statementGuid = $statementGuid;
-		$this->snakHash = $snakHash;
 	}
 
 	/**

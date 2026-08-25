@@ -57,44 +57,6 @@ class UpdateConstraintsTableJob extends Job {
 	}
 
 	/**
-	 * @var string
-	 */
-	private $propertyId;
-
-	/**
-	 * @var int|null
-	 */
-	private $revisionId;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var ConstraintStore
-	 */
-	private $constraintStore;
-
-	/** @var ILBFactory */
-	private $lbFactory;
-
-	/**
-	 * @var EntityRevisionLookup
-	 */
-	private $entityRevisionLookup;
-
-	/**
-	 * @var Serializer
-	 */
-	private $snakSerializer;
-
-	/**
-	 * @var JobQueueGroup
-	 */
-	private $jobQueueGroup;
-
-	/**
 	 * @param Title $title
 	 * @param string[] $params should contain 'propertyId' => 'P...'
 	 * @param string $propertyId property ID of the property for this job (which has the constraint statements)
@@ -109,25 +71,16 @@ class UpdateConstraintsTableJob extends Job {
 	public function __construct(
 		Title $title,
 		array $params,
-		$propertyId,
-		$revisionId,
-		Config $config,
-		ConstraintStore $constraintStore,
-		ILBFactory $lbFactory,
-		EntityRevisionLookup $entityRevisionLookup,
-		Serializer $snakSerializer,
-		JobQueueGroup $jobQueueGroup
+		private readonly string $propertyId,
+		private readonly int|null $revisionId,
+		private readonly Config $config,
+		private readonly ConstraintStore $constraintStore,
+		private readonly ILBFactory $lbFactory,
+		private readonly EntityRevisionLookup $entityRevisionLookup,
+		private readonly Serializer $snakSerializer,
+		private readonly JobQueueGroup $jobQueueGroup,
 	) {
 		parent::__construct( 'constraintsTableUpdate', $title, $params );
-
-		$this->propertyId = $propertyId;
-		$this->revisionId = $revisionId;
-		$this->config = $config;
-		$this->constraintStore = $constraintStore;
-		$this->lbFactory = $lbFactory;
-		$this->entityRevisionLookup = $entityRevisionLookup;
-		$this->snakSerializer = $snakSerializer;
-		$this->jobQueueGroup = $jobQueueGroup;
 	}
 
 	public function extractParametersFromQualifiers( SnakList $qualifiers ): array {

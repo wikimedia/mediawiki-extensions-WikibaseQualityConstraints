@@ -16,15 +16,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\CheckResult;
  */
 class PropertyScopeChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser
+		private readonly ConstraintParameterParser $constraintParameterParser,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
 	}
 
 	/**

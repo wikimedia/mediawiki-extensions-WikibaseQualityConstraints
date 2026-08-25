@@ -40,34 +40,10 @@ use WikibaseQuality\ConstraintReport\ConstraintLookup;
  */
 class DelegatingConstraintChecker {
 
-	private EntityLookup $entityLookup;
-
 	/**
-	 * @var ConstraintChecker[]
-	 */
-	private array $checkerMap;
-
-	private ConstraintLookup $constraintLookup;
-
-	private ConstraintParameterParser $constraintParameterParser;
-
-	private StatementGuidParser $statementGuidParser;
-
-	private LoggingHelper $loggingHelper;
-
-	private bool $checkQualifiers;
-
-	private bool $checkReferences;
-
-	/**
-	 * @var string[]
-	 */
-	private array $propertiesWithViolatingQualifiers;
-
-	/**
-	 * @param EntityLookup $lookup
+	 * @param EntityLookup $entityLookup
 	 * @param ConstraintChecker[] $checkerMap
-	 * @param ConstraintLookup $constraintRepository
+	 * @param ConstraintLookup $constraintLookup
 	 * @param ConstraintParameterParser $constraintParameterParser
 	 * @param StatementGuidParser $statementGuidParser
 	 * @param LoggingHelper $loggingHelper
@@ -77,25 +53,16 @@ class DelegatingConstraintChecker {
 	 * qualifiers will not be checked
 	 */
 	public function __construct(
-		EntityLookup $lookup,
-		array $checkerMap,
-		ConstraintLookup $constraintRepository,
-		ConstraintParameterParser $constraintParameterParser,
-		StatementGuidParser $statementGuidParser,
-		LoggingHelper $loggingHelper,
-		bool $checkQualifiers,
-		bool $checkReferences,
-		array $propertiesWithViolatingQualifiers
+		private readonly EntityLookup $entityLookup,
+		private readonly array $checkerMap,
+		private readonly ConstraintLookup $constraintLookup,
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly StatementGuidParser $statementGuidParser,
+		private readonly LoggingHelper $loggingHelper,
+		private readonly bool $checkQualifiers,
+		private readonly bool $checkReferences,
+		private readonly array $propertiesWithViolatingQualifiers,
 	) {
-		$this->entityLookup = $lookup;
-		$this->checkerMap = $checkerMap;
-		$this->constraintLookup = $constraintRepository;
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->statementGuidParser = $statementGuidParser;
-		$this->loggingHelper = $loggingHelper;
-		$this->checkQualifiers = $checkQualifiers;
-		$this->checkReferences = $checkReferences;
-		$this->propertiesWithViolatingQualifiers = $propertiesWithViolatingQualifiers;
 	}
 
 	/**

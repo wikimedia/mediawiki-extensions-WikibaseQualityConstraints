@@ -18,15 +18,9 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
  */
 class CheckingResultsSource implements ResultsSource {
 
-	/**
-	 * @var DelegatingConstraintChecker
-	 */
-	private $delegatingConstraintChecker;
-
 	public function __construct(
-		DelegatingConstraintChecker $delegatingConstraintChecker
+		private readonly DelegatingConstraintChecker $delegatingConstraintChecker,
 	) {
-		$this->delegatingConstraintChecker = $delegatingConstraintChecker;
 	}
 
 	/**

@@ -21,12 +21,9 @@ use LogicException;
  */
 class EntityContextCursor extends ApiV2ContextCursor {
 
-	private string $entityId;
-
 	public function __construct(
-		string $entityId
+		private readonly string $entityId,
 	) {
-		$this->entityId = $entityId;
 	}
 
 	/**

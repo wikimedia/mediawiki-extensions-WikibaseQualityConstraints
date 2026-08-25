@@ -21,15 +21,10 @@ use WikibaseQuality\ConstraintReport\Job\CheckConstraintsJob;
  */
 class WikibaseChangeNotificationHookHandler implements WikibaseChangeNotificationHook {
 
-	private Config $config;
-	private JobQueueGroup $jobQueueGroup;
-
 	public function __construct(
-		JobQueueGroup $jobQueueGroup,
-		Config $config
+		private readonly JobQueueGroup $jobQueueGroup,
+		private readonly Config $config,
 	) {
-		$this->config = $config;
-		$this->jobQueueGroup = $jobQueueGroup;
 	}
 
 	/** @inheritDoc */

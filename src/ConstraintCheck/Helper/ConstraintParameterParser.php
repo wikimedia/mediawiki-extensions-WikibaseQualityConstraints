@@ -42,9 +42,7 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class ConstraintParameterParser {
 
-	private Config $config;
 	private SnakDeserializer $snakDeserializer;
-	private string $unitItemConceptBaseUri;
 
 	/**
 	 * @param Config $config
@@ -55,13 +53,11 @@ class ConstraintParameterParser {
 	 *   concept base URI of items used for units
 	 */
 	public function __construct(
-		Config $config,
+		private readonly Config $config,
 		DeserializerFactory $factory,
-		string $unitItemConceptBaseUri
+		private readonly string $unitItemConceptBaseUri,
 	) {
-		$this->config = $config;
 		$this->snakDeserializer = $factory->newSnakDeserializer();
-		$this->unitItemConceptBaseUri = $unitItemConceptBaseUri;
 	}
 
 	/**

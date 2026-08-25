@@ -10,19 +10,10 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
  */
 class CachedArray {
 
-	/**
-	 * @var array
-	 */
-	private $array;
-
-	/**
-	 * @var Metadata
-	 */
-	private $metadata;
-
-	public function __construct( array $array, Metadata $metadata ) {
-		$this->array = $array;
-		$this->metadata = $metadata;
+	public function __construct(
+		private readonly array $array,
+		private readonly Metadata $metadata,
+	) {
 	}
 
 	/**

@@ -13,25 +13,13 @@ use Wikibase\DataModel\Entity\ItemId;
 class EntityTypesParameter {
 
 	/**
-	 * @var string[]
-	 */
-	private $entityTypes;
-
-	/**
-	 * @var ItemId[]
-	 */
-	private $entityTypeItemIds;
-
-	/**
 	 * @param string[] $entityTypes The allowed entity types as strings.
 	 * @param ItemId[] $entityTypeItemIds The item IDs of the allowed entity types.
 	 */
 	public function __construct(
-		array $entityTypes,
-		array $entityTypeItemIds
+		private readonly array $entityTypes,
+		private readonly array $entityTypeItemIds,
 	) {
-		$this->entityTypes = $entityTypes;
-		$this->entityTypeItemIds = $entityTypeItemIds;
 	}
 
 	/**

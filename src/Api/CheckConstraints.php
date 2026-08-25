@@ -34,13 +34,8 @@ class CheckConstraints extends ApiBase {
 	public const PARAM_CONSTRAINT_ID = 'constraintid';
 	public const PARAM_STATUS = 'status';
 
-	private EntityIdParser $entityIdParser;
-	private StatementGuidValidator $statementGuidValidator;
 	private ResultBuilder $resultBuilder;
 	private ApiErrorReporter $errorReporter;
-	private ResultsSource $resultsSource;
-	private CheckResultsRendererFactory $checkResultsRendererFactory;
-	private StatsFactory $statsFactory;
 
 	public static function factory(
 		ApiMain $main,
@@ -77,21 +72,16 @@ class CheckConstraints extends ApiBase {
 	public function __construct(
 		ApiMain $main,
 		string $name,
-		EntityIdParser $entityIdParser,
-		StatementGuidValidator $statementGuidValidator,
+		private readonly EntityIdParser $entityIdParser,
+		private readonly StatementGuidValidator $statementGuidValidator,
 		ApiHelperFactory $apiHelperFactory,
-		ResultsSource $resultsSource,
-		CheckResultsRendererFactory $checkResultsRendererFactory,
-		StatsFactory $statsFactory
+		private readonly ResultsSource $resultsSource,
+		private readonly CheckResultsRendererFactory $checkResultsRendererFactory,
+		private readonly StatsFactory $statsFactory,
 	) {
 		parent::__construct( $main, $name );
-		$this->entityIdParser = $entityIdParser;
-		$this->statementGuidValidator = $statementGuidValidator;
 		$this->resultBuilder = $apiHelperFactory->getResultBuilder( $this );
 		$this->errorReporter = $apiHelperFactory->getErrorReporter( $this );
-		$this->resultsSource = $resultsSource;
-		$this->checkResultsRendererFactory = $checkResultsRendererFactory;
-		$this->statsFactory = $statsFactory;
 	}
 
 	/**

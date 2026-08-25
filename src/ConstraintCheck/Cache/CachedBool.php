@@ -10,23 +10,10 @@ namespace WikibaseQuality\ConstraintReport\ConstraintCheck\Cache;
  */
 class CachedBool {
 
-	/**
-	 * @var bool
-	 */
-	private $bool;
-
-	/**
-	 * @var Metadata
-	 */
-	private $metadata;
-
-	/**
-	 * @param bool $bool
-	 * @param Metadata $metadata
-	 */
-	public function __construct( $bool, Metadata $metadata ) {
-		$this->bool = $bool;
-		$this->metadata = $metadata;
+	public function __construct(
+		private readonly bool $bool,
+		private readonly Metadata $metadata,
+	) {
 	}
 
 	/**

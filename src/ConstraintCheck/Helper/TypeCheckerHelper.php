@@ -29,42 +29,12 @@ use Wikimedia\Stats\StatsFactory;
  */
 class TypeCheckerHelper {
 
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var SparqlHelper
-	 */
-	private $sparqlHelper;
-
-	/**
-	 * @var StatsFactory
-	 */
-	private $statsFactory;
-
-	/**
-	 * @param EntityLookup $lookup
-	 * @param Config $config
-	 * @param SparqlHelper $sparqlHelper
-	 * @param StatsFactory $statsFactory
-	 */
 	public function __construct(
-		EntityLookup $lookup,
-		Config $config,
-		SparqlHelper $sparqlHelper,
-		StatsFactory $statsFactory
+		private readonly EntityLookup $entityLookup,
+		private readonly Config $config,
+		private readonly SparqlHelper $sparqlHelper,
+		private readonly StatsFactory $statsFactory,
 	) {
-		$this->entityLookup = $lookup;
-		$this->config = $config;
-		$this->sparqlHelper = $sparqlHelper;
-		$this->statsFactory = $statsFactory;
 	}
 
 	/**

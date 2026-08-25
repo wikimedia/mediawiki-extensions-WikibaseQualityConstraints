@@ -21,16 +21,6 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 class LoggingHelper {
 
 	/**
-	 * @var StatsFactory
-	 */
-	private $statsFactory;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-
-	/**
 	 * @var float[]
 	 */
 	private $constraintCheckDurationLimits;
@@ -40,18 +30,11 @@ class LoggingHelper {
 	 */
 	private $constraintCheckOnEntityDurationLimits;
 
-	/**
-	 * @param StatsFactory $statsFactory
-	 * @param LoggerInterface $logger
-	 * @param Config $config
-	 */
 	public function __construct(
-		StatsFactory $statsFactory,
-		LoggerInterface $logger,
+		private readonly StatsFactory $statsFactory,
+		private readonly LoggerInterface $logger,
 		Config $config
 	) {
-		$this->statsFactory = $statsFactory;
-		$this->logger = $logger;
 		$this->constraintCheckDurationLimits = [
 			'info' => $config->get( 'WBQualityConstraintsCheckDurationInfoSeconds' ),
 			'warning' => $config->get( 'WBQualityConstraintsCheckDurationWarningSeconds' ),

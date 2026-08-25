@@ -20,10 +20,9 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class LabelInLanguageChecker implements ConstraintChecker {
 
-	private ConstraintParameterParser $constraintParameterParser;
-
-	public function __construct( ConstraintParameterParser $constraintParameterParser ) {
-		$this->constraintParameterParser = $constraintParameterParser;
+	public function __construct(
+		private readonly ConstraintParameterParser $constraintParameterParser,
+	) {
 	}
 
 	/**

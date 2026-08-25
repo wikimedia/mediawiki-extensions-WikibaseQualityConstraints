@@ -23,19 +23,6 @@ use Wikimedia\Purtle\RdfWriterFactory;
 class CheckConstraintsRdf extends FormlessAction {
 
 	/**
-	 * @var EntityIdLookup
-	 */
-	private $entityIdLookup;
-	/**
-	 * @var ResultsSource
-	 */
-	private $resultsSource;
-	/**
-	 * @var RdfVocabulary
-	 */
-	private $rdfVocabulary;
-
-	/**
 	 * @param Article $page
 	 * @param IContextSource $context
 	 * @param ResultsSource $resultsSource
@@ -45,14 +32,11 @@ class CheckConstraintsRdf extends FormlessAction {
 	public function __construct(
 		object $page,
 		IContextSource $context,
-		ResultsSource $resultsSource,
-		EntityIdLookup $entityIdLookup,
-		RdfVocabulary $rdfVocabulary
+		private readonly ResultsSource $resultsSource,
+		private readonly EntityIdLookup $entityIdLookup,
+		private readonly RdfVocabulary $rdfVocabulary,
 	) {
 		parent::__construct( $page, $context );
-		$this->resultsSource = $resultsSource;
-		$this->entityIdLookup = $entityIdLookup;
-		$this->rdfVocabulary = $rdfVocabulary;
 	}
 
 	/**

@@ -21,22 +21,10 @@ use Wikimedia\Assert\Assert;
  */
 class ViolationMessageDeserializer implements Deserializer {
 
-	/**
-	 * @var EntityIdParser
-	 */
-	private $entityIdParser;
-
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
-
 	public function __construct(
-		EntityIdParser $entityIdParser,
-		DataValueFactory $dataValueFactory
+		private readonly EntityIdParser $entityIdParser,
+		private readonly DataValueFactory $dataValueFactory,
 	) {
-		$this->entityIdParser = $entityIdParser;
-		$this->dataValueFactory = $dataValueFactory;
 	}
 
 	public function unabbreviateViolationMessageKey( string $messageKeySuffix ): string {

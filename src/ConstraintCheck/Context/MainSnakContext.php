@@ -19,12 +19,11 @@ use Wikibase\DataModel\Statement\StatementList;
  */
 class MainSnakContext extends AbstractContext {
 
-	private Statement $statement;
-
-	public function __construct( StatementListProvidingEntity $entity, Statement $statement ) {
+	public function __construct(
+		StatementListProvidingEntity $entity,
+		private readonly Statement $statement,
+	) {
 		parent::__construct( $entity, $statement->getMainSnak() );
-
-		$this->statement = $statement;
 	}
 
 	public function getType(): string {

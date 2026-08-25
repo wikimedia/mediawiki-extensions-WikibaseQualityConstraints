@@ -17,13 +17,10 @@ use Wikibase\DataModel\Statement\Statement;
  */
 abstract class AbstractContext implements Context {
 
-	protected StatementListProvidingEntity $entity;
-
-	protected Snak $snak;
-
-	public function __construct( StatementListProvidingEntity $entity, Snak $snak ) {
-		$this->entity = $entity;
-		$this->snak = $snak;
+	public function __construct(
+		protected readonly StatementListProvidingEntity $entity,
+		protected readonly Snak $snak,
+	) {
 	}
 
 	public function getSnak(): Snak {

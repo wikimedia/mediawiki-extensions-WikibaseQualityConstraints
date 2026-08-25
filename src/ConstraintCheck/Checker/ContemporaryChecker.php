@@ -29,21 +29,6 @@ use WikibaseQuality\ConstraintReport\Role;
 class ContemporaryChecker implements ConstraintChecker {
 
 	/**
-	 * @var RangeCheckerHelper
-	 */
-	private $rangeCheckerHelper;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
 	 * Name of the configuration variable for the array of IDs of the properties that
 	 * state the start time of the entities.
 	 */
@@ -56,13 +41,10 @@ class ContemporaryChecker implements ConstraintChecker {
 	public const CONFIG_VARIABLE_END_PROPERTY_IDS = 'WBQualityConstraintsEndTimePropertyIds';
 
 	public function __construct(
-		EntityLookup $entityLookup,
-		RangeCheckerHelper $rangeCheckerHelper,
-		Config $config
+		private readonly EntityLookup $entityLookup,
+		private readonly RangeCheckerHelper $rangeCheckerHelper,
+		private readonly Config $config,
 	) {
-		$this->entityLookup = $entityLookup;
-		$this->rangeCheckerHelper = $rangeCheckerHelper;
-		$this->config = $config;
 	}
 
 	/**

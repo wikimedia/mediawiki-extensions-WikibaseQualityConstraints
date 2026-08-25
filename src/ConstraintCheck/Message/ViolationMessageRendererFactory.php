@@ -19,21 +19,12 @@ use Wikibase\View\EntityIdFormatterFactory;
  */
 class ViolationMessageRendererFactory {
 
-	private Config $config;
-	private LanguageNameUtils $languageNameUtils;
-	private EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory;
-	private OutputFormatValueFormatterFactory $valueFormatterFactory;
-
 	public function __construct(
-		Config $config,
-		LanguageNameUtils $languageNameUtils,
-		EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
-		OutputFormatValueFormatterFactory $valueFormatterFactory
+		private readonly Config $config,
+		private readonly LanguageNameUtils $languageNameUtils,
+		private readonly EntityIdFormatterFactory $entityIdHtmlLinkFormatterFactory,
+		private readonly OutputFormatValueFormatterFactory $valueFormatterFactory,
 	) {
-		$this->config = $config;
-		$this->languageNameUtils = $languageNameUtils;
-		$this->entityIdHtmlLinkFormatterFactory = $entityIdHtmlLinkFormatterFactory;
-		$this->valueFormatterFactory = $valueFormatterFactory;
 	}
 
 	public function getViolationMessageRenderer(

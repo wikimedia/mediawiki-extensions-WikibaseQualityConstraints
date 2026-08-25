@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Html;
 
-use InvalidArgumentException;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableHeaderBuilder;
 
 /**
@@ -20,10 +19,7 @@ class HtmlTableHeaderBuilderTest extends \MediaWikiUnitTestCase {
 	/**
 	 * @dataProvider constructDataProvider
 	 */
-	public function testConstruct( $content, $isSortable, $expectedException = null ) {
-		if ( $expectedException !== null ) {
-			$this->expectException( $expectedException );
-		}
+	public function testConstruct( $content, $isSortable ) {
 		$header = new HtmlTableHeaderBuilder( $content, $isSortable );
 
 		$this->assertSame( $content, $header->getContent() );
@@ -38,11 +34,6 @@ class HtmlTableHeaderBuilderTest extends \MediaWikiUnitTestCase {
 			[
 				'foobar',
 				true,
-			],
-			[
-				42,
-				true,
-				InvalidArgumentException::class,
 			],
 		];
 	}

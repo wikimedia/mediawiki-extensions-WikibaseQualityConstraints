@@ -76,15 +76,7 @@ class CheckResult {
 	 * * update PARAM_STATUS type in CheckConstraints::getAllowedParams
 	 */
 
-	private Constraint $constraint;
 	private ContextCursor $contextCursor;
-
-	/**
-	 * @var string One of the self::STATUS_… constants
-	 */
-	private string $status;
-
-	private ?ViolationMessage $message;
 
 	private Metadata $metadata;
 
@@ -102,9 +94,9 @@ class CheckResult {
 	 */
 	public function __construct(
 		$contextCursor,
-		Constraint $constraint,
-		string $status = self::STATUS_TODO,
-		?ViolationMessage $message = null
+		private readonly Constraint $constraint,
+		private string $status = self::STATUS_TODO,
+		private ?ViolationMessage $message = null
 	) {
 		if ( $contextCursor instanceof Context ) {
 			$context = $contextCursor;
@@ -121,9 +113,6 @@ class CheckResult {
 			$this->snakType = null;
 			$this->dataValue = null;
 		}
-		$this->constraint = $constraint;
-		$this->status = $status;
-		$this->message = $message;
 		$this->metadata = Metadata::blank();
 		$this->constraintClarification = new MultilingualTextValue( [] );
 	}

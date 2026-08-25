@@ -37,56 +37,6 @@ class CachingResultsSource implements ResultsSource {
 	];
 
 	/**
-	 * @var ResultsSource
-	 */
-	private $resultsSource;
-
-	/**
-	 * @var ResultsCache
-	 */
-	private $cache;
-
-	/**
-	 * @var CheckResultSerializer
-	 */
-	private $checkResultSerializer;
-
-	/**
-	 * @var CheckResultDeserializer
-	 */
-	private $checkResultDeserializer;
-
-	/**
-	 * @var WikiPageEntityMetaDataAccessor
-	 */
-	private $wikiPageEntityMetaDataAccessor;
-
-	/**
-	 * @var EntityIdParser
-	 */
-	private $entityIdParser;
-
-	/**
-	 * @var int
-	 */
-	private $ttlInSeconds;
-
-	/**
-	 * @var string[]
-	 */
-	private $possiblyStaleConstraintTypes;
-
-	/**
-	 * @var int
-	 */
-	private $maxRevisionIds;
-
-	/**
-	 * @var LoggingHelper
-	 */
-	private $loggingHelper;
-
-	/**
 	 * @var TimeValueComparer
 	 */
 	private $timeValueComparer;
@@ -111,27 +61,17 @@ class CachingResultsSource implements ResultsSource {
 	 * @param LoggingHelper $loggingHelper
 	 */
 	public function __construct(
-		ResultsSource $resultsSource,
-		ResultsCache $cache,
-		CheckResultSerializer $checkResultSerializer,
-		CheckResultDeserializer $checkResultDeserializer,
-		WikiPageEntityMetaDataAccessor $wikiPageEntityMetaDataAccessor,
-		EntityIdParser $entityIdParser,
-		$ttlInSeconds,
-		array $possiblyStaleConstraintTypes,
-		$maxRevisionIds,
-		LoggingHelper $loggingHelper
+		private readonly ResultsSource $resultsSource,
+		private readonly ResultsCache $cache,
+		private readonly CheckResultSerializer $checkResultSerializer,
+		private readonly CheckResultDeserializer $checkResultDeserializer,
+		private readonly WikiPageEntityMetaDataAccessor $wikiPageEntityMetaDataAccessor,
+		private readonly EntityIdParser $entityIdParser,
+		private readonly int $ttlInSeconds,
+		private readonly array $possiblyStaleConstraintTypes,
+		private readonly int $maxRevisionIds,
+		private readonly LoggingHelper $loggingHelper,
 	) {
-		$this->resultsSource = $resultsSource;
-		$this->cache = $cache;
-		$this->checkResultSerializer = $checkResultSerializer;
-		$this->checkResultDeserializer = $checkResultDeserializer;
-		$this->wikiPageEntityMetaDataAccessor = $wikiPageEntityMetaDataAccessor;
-		$this->entityIdParser = $entityIdParser;
-		$this->ttlInSeconds = $ttlInSeconds;
-		$this->possiblyStaleConstraintTypes = $possiblyStaleConstraintTypes;
-		$this->maxRevisionIds = $maxRevisionIds;
-		$this->loggingHelper = $loggingHelper;
 		$this->timeValueComparer = new TimeValueComparer();
 	}
 

@@ -2,7 +2,6 @@
 
 namespace WikibaseQuality\ConstraintReport\Tests\Unit\Html;
 
-use InvalidArgumentException;
 use WikibaseQuality\ConstraintReport\Html\HtmlTableCellBuilder;
 
 /**
@@ -18,10 +17,7 @@ class HtmlTableCellBuilderTest extends \MediaWikiUnitTestCase {
 	/**
 	 * @dataProvider constructDataProvider
 	 */
-	public function testConstruct( $content, $attributes, $expectedException = null ) {
-		if ( $expectedException !== null ) {
-			$this->expectException( $expectedException );
-		}
+	public function testConstruct( $content, $attributes ) {
 		$cell = new HtmlTableCellBuilder( $content, $attributes );
 
 		$this->assertEquals( $content, $cell->getContent() );
@@ -43,11 +39,6 @@ class HtmlTableCellBuilderTest extends \MediaWikiUnitTestCase {
 					'rowspan' => 2,
 					'colspan' => 2,
 				],
-			],
-			[
-				42,
-				[],
-				InvalidArgumentException::class,
 			],
 		];
 	}

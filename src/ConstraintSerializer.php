@@ -9,15 +9,11 @@ namespace WikibaseQuality\ConstraintReport;
 class ConstraintSerializer {
 
 	/**
-	 * @var bool
-	 */
-	private $serializeConstraintParameters;
-
-	/**
 	 * @param bool $serializeConstraintParameters Whether to serialize constraint parameters or not.
 	 */
-	public function __construct( $serializeConstraintParameters = true ) {
-		$this->serializeConstraintParameters = $serializeConstraintParameters;
+	public function __construct(
+		private readonly bool $serializeConstraintParameters = true,
+	) {
 	}
 
 	/**

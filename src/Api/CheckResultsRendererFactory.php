@@ -16,21 +16,12 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Message\ViolationMessageRen
  */
 class CheckResultsRendererFactory {
 
-	private EntityTitleLookup $entityTitleLookup;
-	private EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory;
-	private LanguageFallbackChainFactory $languageFallbackChainFactory;
-	private ViolationMessageRendererFactory $violationMessageRendererFactory;
-
 	public function __construct(
-		EntityTitleLookup $entityTitleLookup,
-		EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
-		LanguageFallbackChainFactory $languageFallbackChainFactory,
-		ViolationMessageRendererFactory $violationMessageRendererFactory
+		private readonly EntityTitleLookup $entityTitleLookup,
+		private readonly EntityIdLabelFormatterFactory $entityIdLabelFormatterFactory,
+		private readonly LanguageFallbackChainFactory $languageFallbackChainFactory,
+		private readonly ViolationMessageRendererFactory $violationMessageRendererFactory,
 	) {
-		$this->entityTitleLookup = $entityTitleLookup;
-		$this->entityIdLabelFormatterFactory = $entityIdLabelFormatterFactory;
-		$this->languageFallbackChainFactory = $languageFallbackChainFactory;
-		$this->violationMessageRendererFactory = $violationMessageRendererFactory;
 	}
 
 	public function getCheckResultsRenderer(

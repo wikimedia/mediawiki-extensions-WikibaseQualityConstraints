@@ -24,21 +24,12 @@ use WikibaseQuality\ConstraintReport\ConstraintCheck\Result\NullResult;
  */
 class CheckResultsRenderer {
 
-	private EntityTitleLookup $entityTitleLookup;
-	private EntityIdFormatter $entityIdLabelFormatter;
-	private TermLanguageFallbackChain $languageFallbackChain;
-	private ViolationMessageRenderer $violationMessageRenderer;
-
 	public function __construct(
-		EntityTitleLookup $entityTitleLookup,
-		EntityIdFormatter $entityIdLabelFormatter,
-		TermLanguageFallbackChain $languageFallbackChain,
-		ViolationMessageRenderer $violationMessageRenderer
+		private readonly EntityTitleLookup $entityTitleLookup,
+		private readonly EntityIdFormatter $entityIdLabelFormatter,
+		private readonly TermLanguageFallbackChain $languageFallbackChain,
+		private readonly ViolationMessageRenderer $violationMessageRenderer,
 	) {
-		$this->entityTitleLookup = $entityTitleLookup;
-		$this->entityIdLabelFormatter = $entityIdLabelFormatter;
-		$this->languageFallbackChain = $languageFallbackChain;
-		$this->violationMessageRenderer = $violationMessageRenderer;
 	}
 
 	public function render( CachedCheckResults $checkResults ): CachedCheckConstraintsResponse {

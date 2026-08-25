@@ -23,29 +23,11 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class DiffWithinRangeChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var RangeCheckerHelper
-	 */
-	private $rangeCheckerHelper;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser,
-		RangeCheckerHelper $rangeCheckerHelper,
-		Config $config
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly RangeCheckerHelper $rangeCheckerHelper,
+		private readonly Config $config,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->rangeCheckerHelper = $rangeCheckerHelper;
-		$this->config = $config;
 	}
 
 	/**

@@ -14,11 +14,6 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 class CachingConstraintLookup implements ConstraintLookup {
 
 	/**
-	 * @var ConstraintLookup
-	 */
-	private $lookup;
-
-	/**
 	 * @var Constraint[][]
 	 */
 	private $cache = [];
@@ -26,8 +21,9 @@ class CachingConstraintLookup implements ConstraintLookup {
 	/**
 	 * @param ConstraintLookup $lookup The lookup to which all queries are delegated.
 	 */
-	public function __construct( ConstraintLookup $lookup ) {
-		$this->lookup = $lookup;
+	public function __construct(
+		private readonly ConstraintLookup $lookup,
+	) {
 	}
 
 	/**

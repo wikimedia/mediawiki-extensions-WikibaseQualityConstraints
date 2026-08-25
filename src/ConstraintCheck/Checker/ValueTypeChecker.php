@@ -27,36 +27,12 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class ValueTypeChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
-	 * @var TypeCheckerHelper
-	 */
-	private $typeCheckerHelper;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
 	public function __construct(
-		EntityLookup $lookup,
-		ConstraintParameterParser $constraintParameterParser,
-		TypeCheckerHelper $typeCheckerHelper,
-		Config $config
+		private readonly EntityLookup $entityLookup,
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly TypeCheckerHelper $typeCheckerHelper,
+		private readonly Config $config,
 	) {
-		$this->entityLookup = $lookup;
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->typeCheckerHelper = $typeCheckerHelper;
-		$this->config = $config;
 	}
 
 	/**

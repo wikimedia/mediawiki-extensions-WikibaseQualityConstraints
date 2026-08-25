@@ -24,22 +24,10 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class SymmetricChecker implements ConstraintChecker {
 
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
-	 * @var ConnectionCheckerHelper
-	 */
-	private $connectionCheckerHelper;
-
 	public function __construct(
-		EntityLookup $lookup,
-		ConnectionCheckerHelper $connectionCheckerHelper
+		private readonly EntityLookup $entityLookup,
+		private readonly ConnectionCheckerHelper $connectionCheckerHelper
 	) {
-		$this->entityLookup = $lookup;
-		$this->connectionCheckerHelper = $connectionCheckerHelper;
 	}
 
 	/**

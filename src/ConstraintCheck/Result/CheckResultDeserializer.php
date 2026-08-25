@@ -23,21 +23,12 @@ use WikibaseQuality\ConstraintReport\ConstraintDeserializer;
  */
 class CheckResultDeserializer {
 
-	private ConstraintDeserializer $constraintDeserializer;
-	private ContextCursorDeserializer $contextCursorDeserializer;
-	private ViolationMessageDeserializer $violationMessageDeserializer;
-	private EntityIdParser $entityIdParser;
-
 	public function __construct(
-		ConstraintDeserializer $constraintDeserializer,
-		ContextCursorDeserializer $contextCursorDeserializer,
-		ViolationMessageDeserializer $violationMessageDeserializer,
-		EntityIdParser $entityIdParser
+		private readonly ConstraintDeserializer $constraintDeserializer,
+		private readonly ContextCursorDeserializer $contextCursorDeserializer,
+		private readonly ViolationMessageDeserializer $violationMessageDeserializer,
+		private readonly EntityIdParser $entityIdParser,
 	) {
-		$this->constraintDeserializer = $constraintDeserializer;
-		$this->contextCursorDeserializer = $contextCursorDeserializer;
-		$this->violationMessageDeserializer = $violationMessageDeserializer;
-		$this->entityIdParser = $entityIdParser;
 	}
 
 	public function deserialize( array $serialization ): CheckResult {

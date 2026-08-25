@@ -23,29 +23,11 @@ use WikibaseQuality\ConstraintReport\Role;
  */
 class CommonsLinkChecker implements ConstraintChecker {
 
-	/**
-	 * @var ConstraintParameterParser
-	 */
-	private $constraintParameterParser;
-
-	/**
-	 * @var MediaWikiPageNameNormalizer
-	 */
-	private $pageNameNormalizer;
-
-	/**
-	 * @var PropertyDataTypeLookup
-	 */
-	private $propertyDatatypeLookup;
-
 	public function __construct(
-		ConstraintParameterParser $constraintParameterParser,
-		MediaWikiPageNameNormalizer $pageNameNormalizer,
-		PropertyDataTypeLookup $propertyDatatypeLookup
+		private readonly ConstraintParameterParser $constraintParameterParser,
+		private readonly MediaWikiPageNameNormalizer $pageNameNormalizer,
+		private readonly PropertyDataTypeLookup $propertyDatatypeLookup,
 	) {
-		$this->constraintParameterParser = $constraintParameterParser;
-		$this->pageNameNormalizer = $pageNameNormalizer;
-		$this->propertyDatatypeLookup = $propertyDatatypeLookup;
 	}
 
 	/**

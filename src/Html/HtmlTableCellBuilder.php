@@ -2,9 +2,7 @@
 
 namespace WikibaseQuality\ConstraintReport\Html;
 
-use InvalidArgumentException;
 use MediaWiki\Html\Html;
-use Wikimedia\Assert\Assert;
 use Wikimedia\HtmlArmor\HtmlArmor;
 
 /**
@@ -14,28 +12,13 @@ use Wikimedia\HtmlArmor\HtmlArmor;
 class HtmlTableCellBuilder {
 
 	/**
-	 * Html content of the cell.
-	 *
-	 * @var string|HtmlArmor
-	 */
-	private $content;
-
-	/**
-	 * @var array
-	 */
-	private $attributes;
-
-	/**
-	 * @param string|HtmlArmor $content
+	 * @param string|HtmlArmor $content Html content of the cell.
 	 * @param array $attributes
-	 *
-	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $content, array $attributes = [] ) {
-		Assert::parameterType( [ 'string', HtmlArmor::class ], $content, '$content' );
-
-		$this->content = $content;
-		$this->attributes = $attributes;
+	public function __construct(
+		private readonly string|HtmlArmor $content,
+		private readonly array $attributes = [],
+	) {
 	}
 
 	/**
