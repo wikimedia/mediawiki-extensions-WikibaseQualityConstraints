@@ -202,10 +202,6 @@ class SpecialConstraintReportTest extends SpecialPageTestBase {
 
 		// Valid input and entity exists
 		unset( $matchers[ 'error' ] );
-		$matchers[ 'result for' ] = [
-			'tag' => 'h3',
-			'content' => '(wbqc-constraintreport-result-headline) ',
-		];
 
 		$matchers['result for'] = both(
 			withTagName( 'h3' )
