@@ -106,15 +106,16 @@ class TypeCheckerHelper {
 	 * @throws SparqlHelperException if SPARQL is used and the query times out or some other error occurs
 	 */
 	public function isSubclassOfWithSparqlFallback( EntityId $comparativeClass, array $classesToCheck ) {
-		$timing = $this->statsFactory->getTiming( 'isSubclassOf_duration_seconds' )
+		$metric = $this->statsFactory->getTiming( 'isSubclassOf_duration_seconds' );
+		$timer = $metric
 			->setLabel( 'result', 'success' )
-			->setLabel( 'TypeCheckerImplementation', 'php' );
-		$timing->start();
+			->setLabel( 'TypeCheckerImplementation', 'php' )
+			->start();
 
 		try {
 			$entitiesChecked = 0;
 			$isSubclass = $this->isSubclassOf( $comparativeClass, $classesToCheck, $entitiesChecked );
-			$timing->stop();
+			$timer->stop();
 
 			// not really a timing, but works like one (we want percentiles etc.)
 			// TODO: probably a good candidate for T348796
@@ -125,14 +126,15 @@ class TypeCheckerHelper {
 
 			return new CachedBool( $isSubclass, Metadata::blank() );
 		} catch ( OverflowException ) {
-			$timing->setLabel( 'result', 'overflow' )
+			$timer->setLabel( 'result', 'overflow' )
 				->stop();
 
 			if ( !( $this->sparqlHelper instanceof DummySparqlHelper ) ) {
 				$this->statsFactory->getCounter( 'sparql_typeFallback_total' )
 					->increment();
 
-				$timing->setLabel( 'TypeCheckerImplementation', 'sparql' )
+				$sparqlTimer = $metric
+					->setLabel( 'TypeCheckerImplementation', 'sparql' )
 					->setLabel( 'result', 'success' )
 					->start();
 
@@ -141,7 +143,7 @@ class TypeCheckerHelper {
 					$classesToCheck
 				);
 
-				$timing->stop();
+				$sparqlTimer->stop();
 
 				return $hasType;
 			} else {

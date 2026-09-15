@@ -849,12 +849,11 @@ EOF;
 		];
 		$request = $this->requestFactory->create( $url, $options, __METHOD__ );
 
-		$timing = $this->statsFactory
-			->getTiming( 'sparql_runQuery_duration_seconds' );
-
-		$timing->start();
+		$timer = $this->statsFactory
+			->getTiming( 'sparql_runQuery_duration_seconds' )
+			->start();
 		$requestStatus = $request->execute();
-		$timing->stop();
+		$timer->stop();
 
 		$this->guardAgainstTooManyRequestsError( $request );
 
