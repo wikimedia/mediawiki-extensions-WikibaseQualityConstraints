@@ -714,6 +714,56 @@ EOF;
 				'upstream request timeout',
 				true,
 			],
+			'proxy gateway timeout' => [
+				504,
+				'{"errorType":"gateway_timeout","message":"Query deadline exceeded"}',
+				true,
+			],
+			'proxy backend timeout' => [
+				504,
+				'{"message":"Read deadline exceeded","errorType":"backend_timeout"}',
+				true,
+			],
+			'plaintext with wrong status' => [
+				500,
+				'upstream request timeout',
+				false,
+			],
+			'proxy timeout with wrong status' => [
+				500,
+				'{"errorType":"gateway_timeout"}',
+				false,
+			],
+			'unrelated proxy error' => [
+				504,
+				'{"errorType":"internal_server_error","message":"upstream request timeout"}',
+				false,
+			],
+			'missing error type' => [
+				504,
+				'{"message":"upstream request timeout"}',
+				false,
+			],
+			'invalid json' => [
+				504,
+				'{"errorType":"gateway_timeout"',
+				false,
+			],
+			'json scalar' => [
+				504,
+				'"gateway_timeout"',
+				false,
+			],
+			'json null' => [
+				504,
+				'null',
+				false,
+			],
+			'non-string error type' => [
+				504,
+				'{"errorType":true}',
+				false,
+			],
 		];
 	}
 
@@ -1050,6 +1100,52 @@ END;
 			self::$defaultConfig->get( 'WBQualityConstraintsSparqlEndpoint' ),
 			true
 		);
+	}
+
+	public function testRunQuerySendsBothTimeoutParameters(): void {
+		$config = self::getDefaultConfig();
+		$config->set( 'WBQualityConstraintsSparqlMaxMillis', 1234 );
+
+		$request = $this->createMock( MWHttpRequest::class );
+		$request->method( 'getStatus' )->willReturn( 200 );
+		$request->method( 'getResponseHeaders' )->willReturn( [] );
+		$request->method( 'execute' )->willReturn( Status::newGood() );
+		$request->method( 'getContent' )->willReturn( '{"boolean":true}' );
+
+		$requestFactory = $this->createMock( HttpRequestFactory::class );
+		$requestFactory->expects( $this->once() )
+			->method( 'create' )
+			->with(
+				$this->callback( function ( string $url ): bool {
+					parse_str( substr( $url, strpos( $url, '?' ) + 1 ), $parameters );
+					$this->assertSame( '1234', $parameters['maxQueryTimeMillis'] );
+					$this->assertSame( '1234ms', $parameters['timeout'] );
+					return true;
+				} ),
+				$this->callback( function ( array $options ): bool {
+					$this->assertSame( 2, $options['timeout'] );
+					return true;
+				} )
+			)
+			->willReturn( $request );
+
+		$sparqlHelper = TestingAccessWrapper::newFromObject( new SparqlHelper(
+			$config,
+			$this->getRdfVocabulary(),
+			$this->createMock( ValueSnakRdfBuilderFactory::class ),
+			$this->createMock( EntityIdParser::class ),
+			$this->createMock( PropertyDataTypeLookup::class ),
+			WANObjectCache::newEmpty(),
+			$this->createMock( ViolationMessageSerializer::class ),
+			$this->createMock( ViolationMessageDeserializer::class ),
+			StatsFactory::newNull(),
+			new ExpiryLock( new HashBagOStuff() ),
+			$this->createMock( LoggingHelper::class ),
+			'',
+			$requestFactory
+		) );
+
+		$sparqlHelper->runQuery( 'ASK {}', $config->get( 'WBQualityConstraintsSparqlEndpoint' ) );
 	}
 
 	public function testRunQueryTracksError_http(): void {

@@ -254,17 +254,17 @@
 		},
 		"WBQualityConstraintsSparqlEndpoint": {
 			"value": "",
-			"description": "The URL of the primary SPARQL endpoint. Should accept the URL parameters 'query', 'format' and 'maxQueryTimeMillis'. Set to '' (empty string, default) to disable SPARQL functionality.",
+			"description": "The URL of the primary SPARQL endpoint. Should accept the URL parameters 'query' and 'format', plus either 'maxQueryTimeMillis' (Blazegraph) or 'timeout' (WDQS proxy); both are sent. Set to '' (empty string, default) to disable SPARQL functionality.",
 			"public": true
 		},
 		"WBQualityConstraintsAdditionalSparqlEndpoints": {
 			"value": [],
-			"description": "The URLs of SPARQL endpoints to query in addition to the primary one. Should accept the URL parameters 'query', 'format' and 'maxQueryTimeMillis'. Set to [] (empty array, default) to only use the primary endpoint.",
+			"description": "The URLs of SPARQL endpoints to query in addition to the primary one. Should accept the URL parameters 'query' and 'format', plus either 'maxQueryTimeMillis' (Blazegraph) or 'timeout' (WDQS proxy); both are sent. Set to [] (empty array, default) to only use the primary endpoint.",
 			"public": true
 		},
 		"WBQualityConstraintsSparqlMaxMillis": {
 			"value": 10000,
-			"description": "The maximum runtime for queries on the configured SPARQL endpoint, in milliseconds.",
+			"description": "The maximum runtime for queries on the configured SPARQL endpoint, in milliseconds. Sent as both 'maxQueryTimeMillis' and 'timeout'.",
 			"public": true
 		},
 		"WBQualityConstraintsSparqlThrottlingFallbackDuration": {

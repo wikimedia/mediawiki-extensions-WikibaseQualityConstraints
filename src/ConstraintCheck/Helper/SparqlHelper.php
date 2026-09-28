@@ -725,9 +725,25 @@ EOF;
 
 	/**
 	 * Check whether the text content of an error response indicates a query timeout.
+	 * Recognized formats:
+	 * - Legacy WDQS setup: HTTP 504 with plain body "upstream request timeout"
+	 * - Proxy in front of QLever (T439360): HTTP 504 with JSON body
+	 * {"errorType":"gateway_timeout"|"backend_timeout", ...}
 	 */
 	public function isTimeout( int $responseStatus, string $responseContent ): bool {
-		return ( $responseStatus === 504 && $responseContent === 'upstream request timeout' );
+		if ( $responseStatus !== 504 ) {
+			return false;
+		}
+		if ( $responseContent === 'upstream request timeout' ) {
+			return true;
+		}
+
+		$response = FormatJson::decode( $responseContent, true );
+		return is_array( $response ) && in_array(
+			$response['errorType'] ?? null,
+			[ 'gateway_timeout', 'backend_timeout' ],
+			true
+		);
 	}
 
 	/**
@@ -835,6 +851,7 @@ EOF;
 				'query' => $query,
 				'format' => 'json',
 				'maxQueryTimeMillis' => $this->maxQueryTimeMillis,
+				'timeout' => $this->maxQueryTimeMillis . 'ms',
 			],
 			'', ini_get( 'arg_separator.output' ),
 			// encode spaces with %20, not +
