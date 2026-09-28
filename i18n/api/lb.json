@@ -13,5 +13,10 @@
 	"apihelp-wbcheckconstraints-paramvalue-status-deprecated": "D'Contrainte gouf net iwwerpréift, well d'Ausso vereelzt ass.",
 	"apihelp-wbcheckconstraints-paramvalue-status-warning": "D'Ausso violéiert d'Contrainte, mee d'Contrainte ass net verflichtend.",
 	"apihelp-wbcheckconstraints-paramvalue-status-suggestion": "D'Ausso violéiert d'Contrainte, mee d'Contrainte ass just e Virschlag.",
-	"apihelp-wbcheckconstraints-example-2": "All Contraintë vun enger eenzeler Ausso iwwerpréiwen."
+	"apihelp-wbcheckconstraints-paramvalue-status-not-in-scope": "D'Aschränkung gëtt fir dës Zort Snak (Haapt-Snak, Qualifikator oder Referenz) net iwwerpréift, dofir gëtt d'Aschränkungsiwwerpréiwung iwwersprongen.",
+	"apihelp-wbcheckconstraints-example-1": "All Aschränkunge vun den Elementer Q5 a Q42 iwwerpréiwen.",
+	"apihelp-wbcheckconstraints-example-2": "All Contraintë vun enger eenzeler Ausso iwwerpréiwen.",
+	"apihelp-wbcheckconstraints-example-3": "Eng bestëmmt Aschränkung vum Element Q2 iwwerpréiwen.",
+	"apihelp-wbcheckconstraintparameters-example-propertyid-1": "Aschränkungsparametere vun allen Aschränkunge vun enger Eegenschaft iwwerpréiwen.",
+	"apihelp-wbcheckconstraintparameters-example-constraintid-2": "Aschränkungsparametere vun zwou bestëmmten Aschränkungen iwwerpréiwen."
 }
