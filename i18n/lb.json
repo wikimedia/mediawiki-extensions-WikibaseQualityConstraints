@@ -87,7 +87,7 @@
 	"wbqc-violation-message-commons-link-not-well-formed": "De Commons Link soll gutt forméiert sinn.",
 	"wbqc-violation-message-commons-link-check-for-namespace-not-yet-implemented": "D'Iwwerpréiwe fir den Nummraum „$1“ ass nach net implementéiert.",
 	"wbqc-violation-message-conflicts-with-property": "Eng Entitéit soll keng Aussoen hu fir esouwuel $1 wéi $2.",
-	"wbqc-violation-message-conflicts-with-claim": "En Objet sollt keng Ausso mat $1 hunn, wann en och eng Ausso mat $2 an dem Wäert $3 huet.",
+	"wbqc-violation-message-conflicts-with-claim": "Eng Entitéit sollt keng Ausso mat $1 hunn, wann en och eng Ausso mat $2 an dem Wäert $3 huet.",
 	"wbqc-violation-message-diff-within-range": "Den Ënnerscheed tëscht $3 ($4) an $1 ($2) sollt tëscht $5 a(n) $6 leien.",
 	"wbqc-violation-message-diff-within-range-leftopen": "Den Ënnerscheed tëscht $3 ($4) an $1 ($2) sollt net méi wéi $5 sinn.",
 	"wbqc-violation-message-diff-within-range-rightopen": "Den Ënnerscheed tëscht $3 ($4) an $1 ($2) sollt net méi kleng wéi $5 sinn.",
