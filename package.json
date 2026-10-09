@@ -9,7 +9,7 @@
 		"selenium-test": "npm run cypress:run"
 	},
 	"devDependencies": {
-		"api-testing": "1.7.3",
+		"api-testing": "1.8.1",
 		"cypress": "^15.21.1",
 		"cypress-axe": "^1.7.0",
 		"cypress-wikibase-api": "^0.0.10",
