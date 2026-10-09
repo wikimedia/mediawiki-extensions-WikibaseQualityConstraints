@@ -210,10 +210,8 @@ module.exports = ( function ( mw, wb, $, OO ) {
 	 * @param {string} [flags] Optional custom flags the {@link OO.ui.PopupButtonWidget} can understand.
 	 */
 	SELF.prototype._buildPopup = function ( $content, $container, icon, titleMessageKey, classes, flags /* = '' */ ) {
-		// eslint-disable-next-line mediawiki/class-doc
 		const widget = new OO.ui.PopupButtonWidget( {
 			icon: icon,
-			// eslint-disable-next-line mediawiki/msg-doc
 			title: mw.message( titleMessageKey ).text(),
 			flags: flags || '',
 			framed: false,
