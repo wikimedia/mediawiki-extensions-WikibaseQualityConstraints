@@ -5,7 +5,7 @@ namespace WikibaseQuality\ConstraintReport;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
@@ -17,14 +17,12 @@ class ConstraintRepositoryLookup implements ConstraintLookup {
 	private LoggerInterface $logger;
 
 	/**
-	 * @param ILoadBalancer $lb Load balancer for database connections.
-	 * Must match $dbName, i.e. if $dbName is not false,
-	 * then using the main DBLoadBalancer service may be incorrect.
-	 * @param string|false $dbName Database name ($domain for ILoadBalancer methods).
+	 * @param IConnectionProvider $dbProvider
+	 * @param string|false $dbName Database name ($domain for IConnectionProvider methods).
 	 * @param LoggerInterface|null $logger
 	 */
 	public function __construct(
-		private readonly ILoadBalancer $lb,
+		private readonly IConnectionProvider $dbProvider,
 		private readonly string|false $dbName,
 		?LoggerInterface $logger = null,
 	) {
@@ -37,7 +35,7 @@ class ConstraintRepositoryLookup implements ConstraintLookup {
 	 * @return Constraint[]
 	 */
 	public function queryConstraintsForProperty( NumericPropertyId $propertyId ) {
-		$dbr = $this->lb->getConnection( ILoadBalancer::DB_REPLICA, [], $this->dbName );
+		$dbr = $this->dbProvider->getReplicaDatabase( $this->dbName );
 
 		$results = $dbr->newSelectQueryBuilder()
 			->select( [

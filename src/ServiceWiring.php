@@ -75,7 +75,7 @@ return [
 
 		$dbName = $propertySource->getDatabaseName();
 		$rawLookup = new ConstraintRepositoryLookup(
-			$services->getDBLoadBalancerFactory()->getMainLB( $dbName ),
+			$services->getConnectionProvider(),
 			$dbName,
 			ConstraintsServices::getLogger( $services )
 		);

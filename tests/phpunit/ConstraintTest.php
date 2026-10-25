@@ -3,7 +3,6 @@
 namespace WikibaseQuality\ConstraintReport\Tests;
 
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikibase\Lib\Tests\Store\Sql\Terms\Util\FakeLoadBalancer;
 use WikibaseQuality\ConstraintReport\ConstraintRepositoryLookup;
 
 /**
@@ -20,7 +19,7 @@ class ConstraintTest extends \MediaWikiIntegrationTestCase {
 
 	public function testConstructAndGetters() {
 		$repo = new ConstraintRepositoryLookup(
-			new FakeLoadBalancer( [ 'dbr' => $this->db ] ),
+			$this->getServiceContainer()->getConnectionProvider(),
 			false
 		);
 		$constraints = $repo->queryConstraintsForProperty( new NumericPropertyId( 'P1' ) );
