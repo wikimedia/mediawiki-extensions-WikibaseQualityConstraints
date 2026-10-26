@@ -280,6 +280,7 @@ You can see which dependencies have new releases by first running `npm ci` to en
 
  - [grunt-eslint](https://github.com/sindresorhus/grunt-eslint) no longer supports "flat" eslint config files (i.e. `.eslintrc.json`) since version 25.0.0 because of changes since eslint 9 (see issue [#176](https://github.com/sindresorhus/grunt-eslint/issues/176)). See [T364065](https://phabricator.wikimedia.org/T364065) for progress with our eslint 9 migration.
  - [grunt-stylelint](https://github.com/wikimedia/grunt-stylelint) switched to Stylelint 16+ in version 0.20.0, which no longer supports stylelint-stylistic, depended upon by [stylelint-config-wikimedia](https://github.com/wikimedia/stylelint-config-wikimedia). See issue [#225](https://github.com/wikimedia/stylelint-config-wikimedia/issues/225)
+ - [cypress](https://www.npmjs.com/package/cypress) is stuck at version 15 until cypress-axe gets cypress v16 support. See issue [#196](https://github.com/component-driven/cypress-axe/issues/196)
 
 #### PHP
 
