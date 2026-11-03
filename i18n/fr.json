@@ -15,7 +15,8 @@
 			"Wladek92",
 			"Yzelf",
 			"Jérémy-Günther-Heinz Jähnick",
-			"Raveloaritiana Mamisoa"
+			"Raveloaritiana Mamisoa",
+			"SleaY"
 		]
 	},
 	"wbqc-constraintreport": "Rapport de contrainte",
@@ -46,7 +47,7 @@
 	"wbqc-constraintreport-result-link-to-claim": "aller à la déclaration",
 	"wbqc-constraintreport-result-link-to-constraint": "aller à la contrainte",
 	"wbqc-constraintreport-no-parameter": "aucune",
-	"wbqc-issues-short": "Problème",
+	"wbqc-issues-short": "Problèmes",
 	"wbqc-issues-long": "Cette déclaration a quelques problèmes.",
 	"wbqc-potentialissues-short": "Problèmes potentiels",
 	"wbqc-potentialissues-long": "Cette instruction présente des problèmes potentiels.",
