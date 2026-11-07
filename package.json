@@ -23,7 +23,7 @@
 		"jasmine": "^7.0.0",
 		"module-alias": "^2.3.4",
 		"sinon": "^22.1.0",
-		"stylelint-config-wikimedia": "^0.19.4",
+		"stylelint-config-wikimedia": "0.20.0",
 		"unexpected": "^13.2.1"
 	},
 	"_moduleAliases": {
