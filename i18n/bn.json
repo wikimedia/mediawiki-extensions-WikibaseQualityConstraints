@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Aftabuzzaman",
-			"আফতাবুজ্জামান"
+			"আফতাবুজ্জামান",
+			"আজিজ"
 		]
 	},
 	"wbqc-constraintreport": "সীমাবদ্ধতার প্রতিবেদন",
@@ -15,7 +16,7 @@
 	"wbqc-constraintreport-status-todo": "করণীয়",
 	"wbqc-constraintreport-status-warning": "সতর্কীকরণ",
 	"wbqc-constraintreport-status-suggestion": "পরামর্শ",
-	"wbqc-constraintreport-result-table-header-status": "অবস্থা",
+	"wbqc-constraintreport-result-table-header-status": "স্থিতি",
 	"wbqc-constraintreport-result-table-header-property": "বৈশিষ্ট্য",
 	"wbqc-constraintreport-result-table-header-message": "বার্তা",
 	"wbqc-constraintreport-result-table-header-constraint": "সীমাবদ্ধতা",
